@@ -2883,7 +2883,7 @@ function WithoutFruitsIdStakeHolderEdit() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="photoPath">
-                          {t("farmer_photo")} (PDF/jpg/png)(Max:2mb)
+                          {t("farmer_photo")} (PDF/jpg/png)(Max:5MB)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control

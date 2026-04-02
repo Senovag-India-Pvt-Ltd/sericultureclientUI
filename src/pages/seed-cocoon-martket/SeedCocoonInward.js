@@ -41,7 +41,7 @@ function SeedCocoonInward() {
   const handleShowModalFC = () => {
     // getDocumentFile()
     pathList.forEach((path) => {
-      getDocumentFile(path);
+      // getDocumentFile(path);
     });
     setShowModalFC(true);
   };
@@ -349,10 +349,10 @@ const getIdList = (farmerId) => {
         // Fetch all files in parallel
         const updatedData = await Promise.all(
           dataResponse.map(async (data) => {
-            if (data.fitnessCertificatePath) {
-              const url = await getDocumentFile(data.fitnessCertificatePath);
-              return { ...data, previewUrl: url };
-            }
+            // if (data.fitnessCertificatePath) {
+            //   const url = await getDocumentFile(data.fitnessCertificatePath);
+            //   return { ...data, previewUrl: url };
+            // }
             return data;
           })
         );
@@ -371,6 +371,7 @@ const getIdList = (farmerId) => {
             lotVariety: singleLot.raceOfDfls,
             spunFromDate: singleLot.spunFromDate,
             spunToDate: singleLot.spunToDate,
+            fruitsId: singleLot.fruitsId,
           }));
         } else {
           // Multiple entries - wait for user to input
@@ -382,6 +383,7 @@ const getIdList = (farmerId) => {
             lotVariety: "",
            spunFromDate: "",
            spunToDate: "",
+           fruitsId: "",
           }));
         }
       } else {
@@ -1016,53 +1018,117 @@ const getIdList = (farmerId) => {
   // To get Photo
   const [selectedDocumentFile, setSelectedDocumentFile] = useState([]);
 
-  const getDocumentFile = async (file) => {
-    const parameters = `fileName=${file}`;
-    try {
-      const response = await api.get(
-        baseURLChawki + `v1/api/s3/download?${parameters}`,
+  // const getDocumentFile = async (file) => {
+  //   // const parameters = `fileName=${file}`;
+  //   try {
+  //     const response = await api.get(
+  //       baseURLChawki + `getFitenessCertificate`,
+  // //       {
+  // //         responseType: "arraybuffer",
+  // //       }
+  // //     );
+  // //     const blob = new Blob([response.data]);
+  // //     const url = URL.createObjectURL(blob);
+  // //     setSelectedDocumentFile((prev) => [...prev, url]);
+  // //   } catch (error) {
+  // //     console.error("Error fetching file:", error);
+  // //   }
+  // // };
+
+  // //  {
+  // //         applicationFormId: applicationFormId,
+  // //         schemeId: schemeId,
+  // //       },
+  //       {
+  //         responseType: "blob", //Force to receive data in a Blob Format
+  //       }
+  //     );
+
+  //     const file = new Blob([response.data], { type: "application/pdf" });
+  //     const fileURL = URL.createObjectURL(file);
+  //     window.open(fileURL);
+  //   } catch (error) {
+  //     // console.log("error", error);
+  //   }
+  // };
+
+  // const downloadFile = async (fitnessCertificateId, fruitsId) => {
+  //   // console.log("file", file);
+  //   // const parameters = `fileName=${file}`;
+  //   try {
+  //     const response = await api.get(
+  //       baseURLChawki + `getFitenessCertificate`,
+  // //       {
+  // //         responseType: "arraybuffer",
+  // //       }
+  // //     );
+  // //     const blob = new Blob([response.data]);
+  // //     const url = URL.createObjectURL(blob);
+
+  // //     const fileExtension = file.split(".").pop();
+
+  // //     const link = document.createElement("a");
+  // //     link.href = url;
+
+  // //     const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
+
+  // //     link.download = modifiedFileName;
+
+  // //     document.body.appendChild(link);
+  // //     link.click();
+
+  // //     document.body.removeChild(link);
+  // //   } catch (error) {
+  // //     console.error("Error fetching file:", error);
+  // //   }
+  // // };
+  //  {
+  //         fitnessCertificateId: fitnessCertificateId,
+  //         fruitsId: fruitsId,
+  //       },
+  //       {
+  //         responseType: "blob", //Force to receive data in a Blob Format
+  //       }
+  //     );
+
+  //     const file = new Blob([response.data], { type: "application/pdf" });
+  //     const fileURL = URL.createObjectURL(file);
+  //     window.open(fileURL);
+  //   } catch (error) {
+  //     // console.log("error", error);
+  //   }
+  // };
+
+  const downloadFile = async (fitnessCertificateId, fruitsId) => {
+  try {
+    const response = await api.post(
+      baseURLReport + `getFitenessCertificate`,
+      // {
+      //   params: {
+      //     fitnessCertificateId: fitnessCertificateId,
+      //     fruitsId: fruitsId,
+      //   },
+      //   responseType: "blob",
+      // }
+      {
+          fitnessCertificateId: fitnessCertificateId,
+           fruitsId: fruitsId,
+        },
         {
-          responseType: "arraybuffer",
+          responseType: "blob", //Force to receive data in a Blob Format
         }
-      );
-      const blob = new Blob([response.data]);
-      const url = URL.createObjectURL(blob);
-      setSelectedDocumentFile((prev) => [...prev, url]);
-    } catch (error) {
-      console.error("Error fetching file:", error);
-    }
-  };
 
-  const downloadFile = async (file) => {
-    console.log("file", file);
-    const parameters = `fileName=${file}`;
-    try {
-      const response = await api.get(
-        baseURLChawki + `v1/api/s3/download?${parameters}`,
-        {
-          responseType: "arraybuffer",
-        }
-      );
-      const blob = new Blob([response.data]);
-      const url = URL.createObjectURL(blob);
+    );
 
-      const fileExtension = file.split(".").pop();
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
 
-      const link = document.createElement("a");
-      link.href = url;
+    window.open(fileURL);
 
-      const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
-
-      link.download = modifiedFileName;
-
-      document.body.appendChild(link);
-      link.click();
-
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error("Error fetching file:", error);
-    }
-  };
+  } catch (error) {
+    console.error("Error downloading file:", error);
+  }
+};
 
   return (
     <Layout title={t("Seed Cocoon E-Inward")} show="true">
@@ -1464,7 +1530,7 @@ const getIdList = (farmerId) => {
   </Modal.Body>
 </Modal> */}
 
-<Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
+{/* <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
   <Modal.Header closeButton>
     <Modal.Title>{t("FC Details")}</Modal.Title>
   </Modal.Header>
@@ -1492,6 +1558,87 @@ const getIdList = (farmerId) => {
                   </Button>
                 </td>
               </tr>
+            ))}
+        </tbody>
+      </table>
+    </div>
+  </Modal.Body>
+</Modal> */}
+
+<Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
+  <Modal.Header closeButton>
+    <Modal.Title>{t("FC Details")}</Modal.Title>
+  </Modal.Header>
+
+  <Modal.Body>
+    <div className="d-flex flex-column justify-content-center">
+      <table className="table table-bordered">
+        <tbody>
+          {prepareEggs?.length > 0 &&
+            prepareEggs.map((data, index) => (
+              <React.Fragment key={index}>
+
+                {/* Fitness Certificate Image */}
+                <tr>
+                  <td style={styles.ctstyle}>{t("Fitness Certificate")}:</td>
+                  <td>
+                    <img
+                      style={{ height: "100px", width: "100px" }}
+                      src={data.previewUrl}
+                      alt={`Fitness Certificate ${index + 1}`}
+                    />
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      className="ms-2"
+                      // onClick={() => downloadFile(data.fitnessCertificatePath)}
+                      onClick={() =>
+                      downloadFile(data.fitnessCertificateId, data.fruitsId)
+                    }
+                                      >
+                      {t("Download File")}
+                    </Button>
+                  </td>
+                </tr>
+
+                {/* Parental Lot Number */}
+                <tr>
+                  <td style={styles.ctstyle}>{t("Parental Lot Number")}:</td>
+                  <td>{data.lotNumberRsp}</td>
+                </tr>
+
+                {/* DFL Lot Number */}
+                <tr>
+                  <td style={styles.ctstyle}>{t("DFL Lot Number")}:</td>
+                  <td>{data.numbersOfDfls}</td>
+                </tr>
+
+                {/* Lot Variety */}
+                <tr>
+                  <td style={styles.ctstyle}>{t("Lot Variety")}:</td>
+                  <td>{data.raceOfDfls}</td>
+                </tr>
+
+                {/* Spun From Date */}
+                <tr>
+                  <td style={styles.ctstyle}>{t("Spun From Date")}:</td>
+                  <td>{data.spunFromDate}</td>
+                </tr>
+
+                {/* Spun To Date */}
+                <tr>
+                  <td style={styles.ctstyle}>{t("Spun To Date")}:</td>
+                  <td>{data.spunToDate}</td>
+                </tr>
+
+                {/* Separator */}
+                <tr>
+                  <td colSpan="2">
+                    <hr />
+                  </td>
+                </tr>
+
+              </React.Fragment>
             ))}
         </tbody>
       </table>

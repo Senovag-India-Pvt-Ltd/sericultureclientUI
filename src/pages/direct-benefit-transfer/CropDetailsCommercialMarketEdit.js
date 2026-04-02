@@ -87,6 +87,8 @@ const { t } = useTranslation();
                 externalUnitRegistrationId: "",
                 eligibleQuantityCocoonsTransacted: "",
                 farmerName: "",
+                biddingSlipNumber: "",
+                receiptDate: "",
             });
             setValidated(false);
           }
@@ -122,6 +124,9 @@ const { t } = useTranslation();
     externalUnitRegistrationId: "",
     eligibleQuantityCocoonsTransacted: "",
     farmerName: "",
+    biddingSlipNumber: "",
+    receiptDate: "",
+
     });
   };
 
@@ -230,6 +235,10 @@ const { t } = useTranslation();
         })); 
 
          const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
+  const handleReceiptDateChange = (date, type) => {
     setData({ ...data, [type]: date });
   };
 
@@ -505,6 +514,31 @@ const { t } = useTranslation();
                       </Form.Group>
                     </Col>
 
+                    <Col lg="4">
+                                        <Form.Group className="form-group mt-n4">
+                                            <Form.Label htmlFor="sordfl">
+                                            {t("Receipt Date")}
+                                            {/* <span className="text-danger">*</span> */}
+                                            </Form.Label>
+                                            <div className="Date of seed cocoon supply">
+                                            <DatePicker
+                                                selected={data.receiptDate ? new Date(data.receiptDate) : null}
+                                                onChange={(date) =>
+                                                handleReceiptDateChange(date, "receiptDate")
+                                                }
+                                                peekNextMonth
+                                                showMonthDropdown
+                                                showYearDropdown
+                                                dropdownMode="select"
+                                                // maxDate={new Date()}
+                                                dateFormat="dd/MM/yyyy"
+                                                className="form-control"
+                                                // required
+                                            />
+                                            </div>
+                                        </Form.Group>
+                                        </Col>
+
                     
 
                     <Col lg="4">
@@ -529,12 +563,34 @@ const { t } = useTranslation();
                       </Form.Group>
                     </Col>
 
+                     <Col lg="4">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="sordfl">
+                              {t("Bidding Slip Number")}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="biddingSlipNumber"
+                                name="biddingSlipNumber"
+                                value={data.biddingSlipNumber}
+                                onChange={handleInputs}
+                                type="text"
+                                placeholder={t("Enter Bidding Slip Number")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                              Bidding Slip Number is required
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
                     
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("Chawki Percentage")}
+                          {t("Chawki Percentage")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -544,11 +600,11 @@ const { t } = useTranslation();
                             onChange={handleInputs}
                             type="text"
                             placeholder={t("Chawki Percentage")}
-                            // required
+                            required
                           />
-                          {/* <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
-                          </Form.Control.Feedback> */}
+                          <Form.Control.Feedback type="invalid">
+                          Chawki Percentage is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>

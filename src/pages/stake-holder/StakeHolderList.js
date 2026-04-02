@@ -60,7 +60,7 @@ function StakeHolderList() {
         size: countPerPage,
         type: 2,
         searchText: data.text,
-        joinColumnType
+        joinColumnType,
       },
     };
 
@@ -135,7 +135,7 @@ function StakeHolderList() {
             Swal.fire(
               "Deleted",
               "You successfully deleted this record",
-              "success"
+              "success",
             );
           })
           .catch((err) => {
@@ -172,7 +172,7 @@ function StakeHolderList() {
         disabled: "rgba(0,0,0,.12)",
       },
     },
-    "light"
+    "light",
   );
 
   const customStyles = {
@@ -271,13 +271,13 @@ function StakeHolderList() {
       sortable: true,
       hide: "md",
     },
-    {
-      name: t("farmer_dob"),
-      selector: (row) => row.dob,
-      cell: (row) => <span>{formatDate(row.dob)}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: t("farmer_dob"),
+    //   selector: (row) => row.dob,
+    //   cell: (row) => <span>{formatDate(row.dob)}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     // {
     //   name: "District",
     //   selector: (row) => row.districtName,
@@ -358,7 +358,7 @@ function StakeHolderList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                {t("Search By")}
+                  {t("Search By")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -371,8 +371,9 @@ function StakeHolderList() {
                       <option value="0">{t("Farmer Number")}</option>
                       <option value="1">{t("Fruits ID")}</option>
                       <option value="2">{t("Mobile Number")}</option>
-                      <option value="3">{t("Farmer Bank Account Number")}</option>
-
+                      <option value="3">
+                        {t("Farmer Bank Account Number")}
+                      </option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -389,7 +390,7 @@ function StakeHolderList() {
                 </Col>
                 <Col sm={3}>
                   <Button type="button" variant="primary" onClick={search}>
-                  {t("Search")}
+                    {t("Search")}
                   </Button>
                 </Col>
               </Form.Group>

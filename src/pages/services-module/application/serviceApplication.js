@@ -138,6 +138,7 @@ const generateFinalReport = async (selectedRows) => {
     silkExchangeId:"",
     form17JNo: "",
     dailyLimit: "",
+    monthlyLimit: "",
     boilerInKg: "",
     sanctionNo: "",
     calculationBasedOn: "",
@@ -470,11 +471,15 @@ useEffect(() => {
     estimatedCost:"",
     roofTypeId:"",
     proposalDate:"",
+    length:"",
+    breadth:"",
+    height:"",
   });
 
   const [equipment, setEquipment] = useState({
     unitType: "",
     description: "",
+    l1Rate: "",
     price: "",
     vendorId: "",
     payToVendor: false,
@@ -1222,24 +1227,27 @@ if (
     }
   }, [data.scSubSchemeDetailsId]);
 
+  const [defaultFinancialYearId, setDefaultFinancialYearId] = useState("");
+
   // Get Default Financial Year
 
   const getFinancialDefaultDetails = () => {
-    api
-      .get(baseURLMasterData + `financialYearMaster/get-is-default`)
-      .then((response) => {
-        setData((prev) => ({
-          ...prev,
-          financialYearMasterId: response.data.content.financialYearMasterId,
-        }));
-      })
-      .catch((err) => {
-        setData((prev) => ({
-          ...prev,
-          financialYearMasterId: "",
-        }));
-      });
-  };
+  api
+    .get(baseURLMasterData + `financialYearMaster/get-is-default`)
+    .then((response) => {
+      const id = response.data.content.financialYearMasterId;
+
+      setDefaultFinancialYearId(id);  // separate state
+
+      setData((prev) => ({
+        ...prev,
+        financialYearMasterId: id,
+      }));
+    })
+    .catch(() => {
+      setDefaultFinancialYearId("");
+    });
+};
 
   useEffect(() => {
     getFinancialDefaultDetails();
@@ -3289,12 +3297,42 @@ if (
     }
   }, [data.scComponentId, data.scCategoryId]);
 
-  const [chawkiData, setChawkiData] = useState({
-  equipmentList: [],  // repeating rows
+//   const [chawkiData, setChawkiData] = useState({
+//   equipmentList: [],  // repeating rows
+//   mulberry: {
+//     eligible: 0,
+//     claimed: "",
+//     percentage: ""
+//   },
+//   drip: {
+//     eligible: 0,
+//     claimed: "",
+//     percentage: ""
+//   },
+//   building: {
+//     eligible: 0,
+//     claimed: "",
+//     percentage: ""
+//   }
+// });
+
+const [chawkiData, setChawkiData] = useState({
+  equipmentList: [],
   mulberry: {
     eligible: 0,
     claimed: "",
-    percentage: ""
+    percentage: "",
+    district: "",
+    taluk: "",
+    village: "",
+    tsc: "",
+    trainingFromDate: "",
+    trainingToDate: "",
+    registerDate: "",
+    registerNo: "",
+    surveyNo: "",
+    acre: "",
+    vibhaga: ""
   },
   drip: {
     eligible: 0,
@@ -3304,7 +3342,23 @@ if (
   building: {
     eligible: 0,
     claimed: "",
-    percentage: ""
+    percentage: "",
+    district: "",
+    taluk: "",
+    village: "",
+    tsc: "",
+    surveyNo: "",
+    acre: "",
+    sqft: "",
+    length: "",
+    breadth: ""
+  },
+  equipment: {
+    district: "",
+    taluk: "",
+    village: "",
+    tsc: "",
+    place: ""
   }
 });
 
@@ -3347,22 +3401,52 @@ if (
         // claimed: first.establishmentOfMulberryGardenClaimedAmount || "",
         // percentage: first.establishmentOfMulberryGardenPercentageOfSubsidyAmount || ""
         claimed: "",
-        percentage: ""
+        percentage: "",
+        district: "",
+        taluk: "",
+        village: "",
+        tsc: "",
+        trainingFromDate: "",
+        trainingToDate: "",
+        registerDate: "",
+        registerNo: "",
+        surveyNo: "",
+        acre: "",
+        vibhaga: ""
       },
       drip: {
         eligible: first.installationOfDripIrrigationEligibleAmount,
         // claimed: first.installationOfDripIrrigationClaimedAmount || "",
         // percentage: first.installationOfDripIrrigationPercentageOfSubsidyAmount || ""
         claimed: "",
-        percentage: ""
+        percentage: "" 
       },
       building: {
         eligible: first.chawkiRearingBuildingEligibleAmount,
         // claimed: first.chawkiRearingBuildingClaimedAmount || "",
         // percentage: first.chawkiRearingBuildingPercentageOfSubsidyAmount || ""
         claimed: "",
-        percentage: ""
-      }
+        percentage: "",
+
+        district: "",
+          taluk: "",
+          village: "",
+          tsc: "",
+          surveyNo: "",
+          acre: "",
+          sqft: "",
+          length: "",
+          breadth: ""
+      },
+
+      equipment: {
+          // input fields - null by default
+          district: "",
+          taluk: "",
+          village: "",
+          tsc: "",
+          place: ""
+        }
     });
   })
 .catch((err) => {
@@ -3522,7 +3606,7 @@ const getAdoptingBoilerAmountList = (boilerInKg ,componentTypeId, componentId, c
       }
     })
     .then((response) => {
-      const incentiveData = response.data.content?.configureAdoptingBoiler || [];
+      const incentiveData = response.data?.content?.configureAdoptingBoiler || [];
       setAdoptingBoilerAmountListData(incentiveData);
 
       setAmountValue({
@@ -3572,7 +3656,7 @@ const getIcbAndArmAmountList = (icbBasinEnds ,componentTypeId, componentId, cate
       }
     })
     .then((response) => {
-      const incentiveData = response.data.content?.configureIcb || [];
+      const incentiveData = response.data?.content?.configureIcb || [];
       setIcbAndArmAmountListData(incentiveData);
 
       setAmountValue({
@@ -3842,7 +3926,38 @@ const isUserValid = React.useMemo(() => {
 
     chawkiRearingBuildingEligibleAmount: chawkiData.building.eligible,
     chawkiRearingBuildingClaimedAmount: Number(chawkiData.building.claimed || 0),
-    chawkiRearingBuildingPercentageOfSubsidyAmount: Number(chawkiData.building.percentage || 0)
+    chawkiRearingBuildingPercentageOfSubsidyAmount: Number(chawkiData.building.percentage || 0),
+
+    // Establishment of Mulberry new fields
+    establishmentOfMulberryDistrict: chawkiData.mulberry.district,
+    establishmentOfMulberryTaluk: chawkiData.mulberry.taluk,
+    establishmentOfMulberryVillage: chawkiData.mulberry.village,
+    establishmentOfMulberryTsc: chawkiData.mulberry.tsc,
+    establishmentOfMulberryTrainingFromDate: chawkiData.mulberry.trainingFromDate,
+    establishmentOfMulberryTrainingToDate: chawkiData.mulberry.trainingToDate,
+    establishmentOfMulberryRegisterDate: chawkiData.mulberry.registerDate,
+    establishmentOfMulberryRegisterNo: chawkiData.mulberry.registerNo,
+    establishmentOfMulberrySurveyNo: chawkiData.mulberry.surveyNo,
+    establishmentOfMulberryAcre: chawkiData.mulberry.acre,
+    establishmentOfMulberryVibhaga: chawkiData.mulberry.vibhaga,
+
+    // Chawki Rearing Building new fields
+    chawkiRearingBuildingDistrict: chawkiData.building.district,
+    chawkiRearingBuildingTaluk: chawkiData.building.taluk,
+    chawkiRearingBuildingVillage: chawkiData.building.village,
+    chawkiRearingBuildingTsc: chawkiData.building.tsc,
+    chawkiRearingBuildingSurveyNo: chawkiData.building.surveyNo,
+    chawkiRearingBuildingAcre: chawkiData.building.acre,
+    chawkiRearingBuildingSqft: chawkiData.building.sqft,
+    chawkiRearingBuildingLength: chawkiData.building.length,
+    chawkiRearingBuildingBreadth: chawkiData.building.breadth,
+
+    // Purchase of Equipment new fields
+    purchaseOfEquipmentDistrict: chawkiData.equipment.district,
+    purchaseOfEquipmentTaluk: chawkiData.equipment.taluk,
+    purchaseOfEquipmentVillage: chawkiData.equipment.village,
+    purchaseOfEquipmentTsc: chawkiData.equipment.tsc,
+    purchaseOfEquipmentPlace: chawkiData.equipment.place,
   }));
 
   const totals = calculateTotals(chawkiData);
@@ -3863,7 +3978,7 @@ const isUserValid = React.useMemo(() => {
       talukId: landData.talukId,
       newFarmer: true,
       componentId: data.scComponentId,
-      financialYearMasterId: data.financialYearMasterId,
+      financialYearMasterId: defaultFinancialYearId,
       devAcre: 0,
       devGunta: 0,
       devFGunta: 0,
@@ -3894,6 +4009,7 @@ const isUserValid = React.useMemo(() => {
       transactionDate: formattedDates.transactionDate,
       availBonus: data.availBonus,
       description: equipment.description,
+      l1Rate: equipment.l1Rate,
       loggedInUserId: localStorage.getItem("userMasterId"),
       month: data.month,
       machineQuantity: data.machineQuantity,
@@ -3907,6 +4023,9 @@ const isUserValid = React.useMemo(() => {
       extentOfMulberry: developedLand.extentOfMulberry,
       rhSqft: developedLand.rhSqft,
       estimatedCost: developedLand.estimatedCost,
+      length: developedLand.length,
+      breadth: developedLand.breadth,
+      height: developedLand.height,
       roofTypeId: developedLand.roofTypeId,
       raceId:data.raceId,
       renditta:data.renditta,
@@ -3916,6 +4035,7 @@ const isUserValid = React.useMemo(() => {
       silkExchangeId: data.silkExchangeId,
       form17JNo: data.form17JNo,
       dailyLimit: data.dailyLimit,
+       monthlyLimit:data.monthlyLimit,
       boilerInKg: data.boilerInKg,
       sanctionNo: data.sanctionNo,
       marketId: data.marketId,
@@ -4070,7 +4190,7 @@ const isUserValid = React.useMemo(() => {
   const generateAcknowledgmentRH = async (applicationFormId,schemeId,subSchemeId) => {
     try {
       const response = await api.post(
-        baseURLReport + `getBlankSample`,
+        baseURLReport + `getRHAck`,
         {
           applicationFormId: applicationFormId,
           schemeId: schemeId,
@@ -4092,7 +4212,7 @@ const isUserValid = React.useMemo(() => {
   const generateAcknowledgmentReelingShed = async (applicationFormId,schemeId,subSchemeId) => {
     try {
       const response = await api.post(
-        baseURLReport + `getReelerAcknowledgement`,
+        baseURLReport + `getReelingShedACK`,
         {
           applicationFormId: applicationFormId,
           schemeId: schemeId,
@@ -4115,7 +4235,118 @@ const isUserValid = React.useMemo(() => {
   const generateAcknowledgmentSilkIncentive = async (applicationFormId,schemeId,subSchemeId) => {
     try {
       const response = await api.post(
-        baseURLReport + `getSilkIncentive`,
+        baseURLReport + `getSilkIncentiveACK`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+
+  const generateAcknowledgmentChawki1500 = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getChawkiAck1500`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentBonusPM = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getBonus225ACKPM`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentBonusBV = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getBonus225ACKBV`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentIncentivePM = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getIncentive120ACKPM`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentIncentiveBV = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getIncentive120ACKBV`,
         {
           applicationFormId: applicationFormId,
           schemeId: schemeId,
@@ -4177,6 +4408,249 @@ const isUserValid = React.useMemo(() => {
       // console.log("error", error);
     }
   };
+
+   const generateAcknowledgmentIncentiveForBivoltineChawki = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getChawki1000Ack`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+   const generateAcknowledgmentBolilerACK = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getBoilerACK`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentHeatRU = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getHRUACK`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentICB = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getIcbACK`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentIMCB = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getIMCBACK`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentSolarWaterHeater = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getACKSolarWaterHeater`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentSilentGenerator= async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getACKSilentGenerator`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentSolarPowerGenerator= async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getACKSolarPowerGenerator`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentMERM= async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getACKMERM`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentRearingEquipmentSS= async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getACKRearingEquipmentSS`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentRegisteredPrivateBivCRC= async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getACKCRC`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
 
   const generateAcknowledgmentHRU = async (applicationFormId,schemeId,subSchemeId) => {
     try {
@@ -4280,6 +4754,7 @@ const isUserValid = React.useMemo(() => {
       silkExchangeId:"",
       form17JNo: "",
       dailyLimit: "",
+       monthlyLimit: "",
       boilerInKg: "",
       sanctionNo: ""
     });
@@ -4586,10 +5061,10 @@ const callAcknowledgmentFunction = (
   ) {
     generateAcknowledgmentReelingShed(applicationFormId, schemeId, subSchemeId);
 
-  } else if (
-    acknowledgementForScheme === "Adopting Heat Recovery Unit-PSF"
-  ) {
-    generateAcknowledgmentHRU(applicationFormId, schemeId, subSchemeId);
+  // } else if (
+  //   acknowledgementForScheme === "Adopting Heat Recovery Unit-PSF"
+  // ) {
+  //   generateAcknowledgmentHRU(applicationFormId, schemeId, subSchemeId);
 
   } else if (
     acknowledgementForScheme === "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP"
@@ -4613,7 +5088,167 @@ const callAcknowledgmentFunction = (
       schemeId,
       subSchemeId
     );
+
+    } else if (
+    acknowledgementForScheme === "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500"
+  ) {
+    generateAcknowledgmentChawki1500(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+    } else if (
+    acknowledgementForScheme === "Bonus PM"
+  ) {
+    generateAcknowledgmentBonusPM(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+    } else if (
+    acknowledgementForScheme === "Bonus BV"
+  ) {
+    generateAcknowledgmentBonusBV(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+    } else if (
+    acknowledgementForScheme === "Incentive PM"
+  ) {
+    generateAcknowledgmentIncentivePM(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+    } else if (
+    acknowledgementForScheme === "Incentive BV"
+  ) {
+    generateAcknowledgmentIncentiveBV(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+    } else if (
+    acknowledgementForScheme === "Incentive For Bivoltine Chawki Rearing Cost"
+  ) {
+    generateAcknowledgmentIncentiveForBivoltineChawki(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+    } else if (
+    acknowledgementForScheme === "Adopting Boiler-PSF"
+  ) {
+    generateAcknowledgmentBolilerACK(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+    } else if (
+    acknowledgementForScheme === "Adopting Heat Recovery Unit-PSF"
+  ) {
+    generateAcknowledgmentHeatRU(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+     } else if (
+    acknowledgementForScheme === "ICB-PSF"
+  ) {
+    generateAcknowledgmentICB(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+
+    } else if (
+    acknowledgementForScheme === "IMCB-PSF"
+  ) {
+    generateAcknowledgmentIMCB(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
   }
+
+  else if (
+    acknowledgementForScheme === "Adopting Solar Water Heater"
+  ) {
+    generateAcknowledgmentSolarWaterHeater(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+  }
+
+  else if (
+    acknowledgementForScheme === "Adopting Solar power Generator"
+  ) {
+    generateAcknowledgmentSolarPowerGenerator(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+  }
+
+  else if (
+    acknowledgementForScheme === "Adopting Silent Generator"
+  ) {
+    generateAcknowledgmentSilentGenerator(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+  }
+
+  else if (
+    acknowledgementForScheme === "MERM-PSF"
+  ) {
+    generateAcknowledgmentMERM(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+  }
+
+   else if (
+    acknowledgementForScheme === "Rearing Equipment SS"
+  ) {
+    generateAcknowledgmentRearingEquipmentSS(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+  }
+
+  else if (
+    acknowledgementForScheme === "Registered Private Bivoltine Chawki Rearing Center Subsidy"
+  ) {
+    generateAcknowledgmentRegisteredPrivateBivCRC(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+  }
+
+  
 };
 
 
@@ -5966,7 +6601,7 @@ const fetchReelerDetails = () => {
                               </Col>
 
                             <Col lg="6">
-                                <Form.Group className="form-group mt-n4">
+                                <Form.Group className="form-group mt-n3">
                                   <Form.Label htmlFor="imcbTable">
                                     {t("Table/Basin/Ends")} <span className="text-danger">*</span>
                                   </Form.Label>
@@ -6003,7 +6638,7 @@ const fetchReelerDetails = () => {
                               </Col>
 
                               <Col lg="6">
-                                <Form.Group className="form-group mt-n4">
+                                <Form.Group className="form-group mt-n3">
                                   <Form.Label htmlFor="imcbTable">
                                     {t("Renditta/Grade")} <span className="text-danger">*</span>
                                   </Form.Label>
@@ -6627,7 +7262,7 @@ const fetchReelerDetails = () => {
                               <Col lg="6">
                                   <Form.Group className="form-group mt-n4">
                                 <Form.Label htmlFor="icbBasinEnds">
-                                  {t("Solar Power Generator Capacity(HP)")} <span className="text-danger">*</span>
+                                  {t("Water Heater Capacity")} <span className="text-danger">*</span>
                                 </Form.Label>
                                 <div className="form-control-wrap">
                                   <Form.Select
@@ -6637,7 +7272,7 @@ const fetchReelerDetails = () => {
                                     onChange={handleInputs}
                                     required
                                   >
-                                    <option value="">{t("Select Reeling SQFT")}</option>
+                                    <option value="">{t("Select Water Heater Capacity")}</option>
                                     <option value="1000">1000</option>
                                     <option value="500">500</option>
                                     <option value="200">200</option>
@@ -6645,7 +7280,7 @@ const fetchReelerDetails = () => {
                                     
                                   </Form.Select>
                                   <Form.Control.Feedback type="invalid">
-                                    {t("Reeling SQFT is required")}
+                                    {t("Water Heater Capacity is required")}
                                   </Form.Control.Feedback>
                                 </div>
                               </Form.Group>
@@ -6751,7 +7386,7 @@ const fetchReelerDetails = () => {
                         
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
+                          <Form.Group className="form-group mt-n3">
                             <Form.Label>
                               {t("Approval Stage")}
                               <span className="text-danger">*</span>
@@ -6832,7 +7467,7 @@ const fetchReelerDetails = () => {
                         {/* ============ USER MASTER DROPDOWN ============ */}
                         {!allowAnyUser && (
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group mt-n3">
                               <Form.Label>
                                 {t("User Master")}
                                 <span className="text-danger">*</span>
@@ -6873,7 +7508,7 @@ const fetchReelerDetails = () => {
                         {/* ============ SELECT USER DROPDOWN ============ */}
                         {allowAnyUser && (
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group mt-n3">
                               <Form.Label>{t("Select User")}</Form.Label>
 
                               <ReactSelect
@@ -7107,8 +7742,8 @@ const fetchReelerDetails = () => {
                         <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
-                                {t("Monthly Limit")} 
-                                {/* <span className="text-danger">*</span> */}
+                                {t("Daily Limit")} 
+                                <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -7116,9 +7751,32 @@ const fetchReelerDetails = () => {
                                   name="dailyLimit"
                                   value={data.dailyLimit}
                                   onChange={handleInputs}
+                                  required
+                                  placeholder={t("Enter Daily Limit")}
+                                  // required
+                                />
+                                 <Form.Control.Feedback type="invalid">
+                                  {t("Daily Limit is required")}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                {t("Monthly Limit")} 
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  type="text"
+                                  name="monthlyLimit"
+                                  value={data.monthlyLimit}
+                                  onChange={handleInputs}
                                   // required
                                   placeholder={t("Enter Monthly Limit")}
-                                  // required
+                                  required
                                 />
                                  <Form.Control.Feedback type="invalid">
                                   {t("Monthly Limit is required")}
@@ -7129,7 +7787,7 @@ const fetchReelerDetails = () => {
 
 
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 {t("Quantity Of Cocoons in Kgs used to Produce Raw Silk")} 
                                 <span className="text-danger">*</span>
@@ -7751,10 +8409,8 @@ const fetchReelerDetails = () => {
                       <Card.Body>
                         <Row className="g-4">
 
-                          {/* ============================
-                              CARD 1: Rearing Equipment
-                          ============================= */}
-                          <Card>
+                          
+                          <Card className="p-0">
                             <Card.Header>Rearing Equipment Details</Card.Header>
                             <Card.Body>
                               <table className="table table-bordered">
@@ -7764,7 +8420,7 @@ const fetchReelerDetails = () => {
                                     <th>Subsidy Name</th>
                                     <th>Eligible Nos</th>
                                     <th>Eligible Value</th>
-                                    {/* <th>Rate</th> */}
+                                  
                                     <th>Max Subsidy</th>
                                     <th>Rate</th>
                                     <th>Purchased Nos</th>
@@ -7796,10 +8452,10 @@ const fetchReelerDetails = () => {
                                       <td>{row.subsidyName}</td>
                                       <td>{row.eligibleEquipmentInNos}</td>
                                       <td>{row.eligibleTotalValueInRs}</td>
-                                      {/* <td>{row.ratePerEligibleEquipment}</td> */}
+                                      
                                       <td>{row.maxAmountOfSubsidyEligible}</td>
 
-                                      {/* Purchased Nos */}
+                              
                                       <td>
                                         
                                         <input
@@ -7824,7 +8480,7 @@ const fetchReelerDetails = () => {
                                     />
                                       </td>
 
-                                      {/* Purchased Value */}
+                                    
                                       <td>
                                         <input
                                         type="number"
@@ -7837,7 +8493,7 @@ const fetchReelerDetails = () => {
 
                                       </td>
 
-                                      {/* Percentage */}
+                                     
                                       <td>
                                         <input
                                       type="number"
@@ -7853,22 +8509,22 @@ const fetchReelerDetails = () => {
                                   <tr style={{ fontWeight: "bold", background: "#f8f9fa" }}>
                                 <td colSpan="3" className="text-end">TOTAL</td>
 
-                                {/* Eligible Value */}
+                              
                                 <td>{calculateTotals(chawkiData).equipmentEligibleTotal}</td>
                                 
                                 <td>{calculateTotals(chawkiData).equipmentMaxSubsidyTotal}</td>
 
 
-                                <td></td> {/* Rate */}
-                                <td></td>  {/* Purchased Nos skip */}
+                                <td></td> 
+                                <td></td>  
 
     
-                                {/* <td></td> */}
+                                
 
-                                {/* Purchased Value */}
+                               
                                 <td>{calculateTotals(chawkiData).equipmentPurchasedTotal}</td>
 
-                                {/* Percentage Total */}
+                                
                                 <td>{calculateTotals(chawkiData).equipmentPercentageTotal}</td>
                               </tr>
 
@@ -7877,10 +8533,8 @@ const fetchReelerDetails = () => {
                             </Card.Body>
                           </Card>
 
-                          {/* ============================
-                              CARD 2: Mulberry Garden
-                          ============================= */}
-                          <Card className="mt-3">
+                         
+                          <Card className="p-0">
                             <Card.Header>Establishment Of Mulberry Garden</Card.Header>
                             <Card.Body>
                               <div>
@@ -7911,13 +8565,130 @@ const fetchReelerDetails = () => {
                                         />
                                     </Col>
                               </Row>
+
+                              <Row className="mt-3">
+                            <Col lg="3">
+                              <label>District</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="district"
+                                value={chawkiData.mulberry.district}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Taluk</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="taluk"
+                                value={chawkiData.mulberry.taluk}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Village</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="village"
+                                value={chawkiData.mulberry.village}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>TSC</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="tsc"
+                                value={chawkiData.mulberry.tsc}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                          </Row>
+
+                          <Row className="mt-3">
+                            <Col lg="3">
+                              <label>Training From Date</label>
+                              <input
+                                type="date"
+                                className="form-control"
+                                name="trainingFromDate"
+                                value={chawkiData.mulberry.trainingFromDate}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Training To Date</label>
+                              <input
+                                type="date"
+                                className="form-control"
+                                name="trainingToDate"
+                                value={chawkiData.mulberry.trainingToDate}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Register Date</label>
+                              <input
+                                type="date"
+                                className="form-control"
+                                name="registerDate"
+                                value={chawkiData.mulberry.registerDate}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Register No</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="registerNo"
+                                value={chawkiData.mulberry.registerNo}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                          </Row>
+
+                          <Row className="mt-3">
+                            <Col lg="4">
+                              <label>Survey No</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="surveyNo"
+                                value={chawkiData.mulberry.surveyNo}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="4">
+                              <label>Acre</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="acre"
+                                value={chawkiData.mulberry.acre}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="4">
+                              <label>Vibhaga</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="vibhaga"
+                                value={chawkiData.mulberry.vibhaga}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                          </Row>
                             </Card.Body>
                           </Card>
 
-                          {/* ============================
-                              CARD 3: Drip Irrigation
-                          ============================= */}
-                          <Card className="mt-3">
+                          
+                          <Card className="p-0">
                             <Card.Header>Installation Of Drip Irrigation</Card.Header>
                             <Card.Body>
                               <div>
@@ -7951,10 +8722,9 @@ const fetchReelerDetails = () => {
                             </Card.Body>
                           </Card>
 
-                          {/* ============================
-                              CARD 4: Chawki Rearing Building
-                          ============================= */}
-                          <Card className="mt-3">
+                          
+
+                          <Card className="p-0">
                             <Card.Header>Chawki Rearing Building</Card.Header>
                             <Card.Body>
                               <div>
@@ -7985,8 +8755,168 @@ const fetchReelerDetails = () => {
                                 />
                                 </Col>
                               </Row>
+
+                              <Row className="mt-3">
+                            <Col lg="3">
+                              <label>District</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="district"
+                                value={chawkiData.building.district}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Taluk</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="taluk"
+                                value={chawkiData.building.taluk}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Village</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="village"
+                                value={chawkiData.building.village}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>TSC</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="tsc"
+                                value={chawkiData.building.tsc}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                          </Row>
+
+                          <Row className="mt-3">
+                            <Col lg="4">
+                              <label>Survey No</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="surveyNo"
+                                value={chawkiData.building.surveyNo}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="4">
+                              <label>Acre</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="acre"
+                                value={chawkiData.building.acre}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="4">
+                              <label>Sqft</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="sqft"
+                                value={chawkiData.building.sqft}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                          </Row>
+
+                          <Row className="mt-3">
+                            <Col lg="6">
+                              <label>Length</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="length"
+                                value={chawkiData.building.length}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="6">
+                              <label>Breadth</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="breadth"
+                                value={chawkiData.building.breadth}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                          </Row>
                             </Card.Body>
                           </Card>
+
+                          <Card className="p-0">
+                          <Card.Header>Purchase of Equipment</Card.Header>
+                          <Card.Body>
+                            <Row>
+                              <Col lg="3">
+                                <label>District</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="district"
+                                  value={chawkiData.equipment.district}
+                                  onChange={(e) => handleSingleBlockChange("equipment", e)}
+                                />
+                              </Col>
+                              <Col lg="3">
+                                <label>Taluk</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="taluk"
+                                  value={chawkiData.equipment.taluk}
+                                  onChange={(e) => handleSingleBlockChange("equipment", e)}
+                                />
+                              </Col>
+                              <Col lg="3">
+                                <label>Village</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="village"
+                                  value={chawkiData.equipment.village}
+                                  onChange={(e) => handleSingleBlockChange("equipment", e)}
+                                />
+                              </Col>
+                              <Col lg="3">
+                                <label>TSC</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="tsc"
+                                  value={chawkiData.equipment.tsc}
+                                  onChange={(e) => handleSingleBlockChange("equipment", e)}
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg="6">
+                                <label>Place</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="place"
+                                  value={chawkiData.equipment.place}
+                                  onChange={(e) => handleSingleBlockChange("equipment", e)}
+                                />
+                              </Col>
+                            </Row>
+                          </Card.Body>
+                        </Card>
 
                           <Card className="mt-4">
                         <Card.Header style={{ fontWeight: "bold" }}>
@@ -7998,7 +8928,7 @@ const fetchReelerDetails = () => {
                             const t = calculateTotals(chawkiData);
                             return (
                               <>
-                              {/* <p><strong>Total Max Subsidy Amount:</strong> {t.totalMaxSubsidy}</p> */}
+                             
                                 <p><strong>Total Claimed Amount:</strong> {t.totalClaimed}</p>
                                 <p><strong>Total Eligible Amount:</strong> {t.totalEligible}</p>
                                 <p><strong>Total Subsidy Amount:</strong> {t.totalSubsidy}</p>
@@ -8015,6 +8945,8 @@ const fetchReelerDetails = () => {
                   </Block>
                 )
               }
+
+              
 
 
               {showCommercialMarketTransaction && (
@@ -8899,6 +9831,76 @@ const fetchReelerDetails = () => {
                             </div>
                           </Form.Group>
                         </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="landDeveloped">
+                              {t("Length")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="length"
+                                type="text"
+                                name="length"
+                                value={developedLand.length}
+                                onChange={handleDevelopedLandInputs}
+                                placeholder="Enter Length"
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Length is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="landDeveloped">
+                              {t("Breadth")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="breadth"
+                                type="text"
+                                name="breadth"
+                                value={developedLand.breadth}
+                                onChange={handleDevelopedLandInputs}
+                                placeholder="Enter Breadth"
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Breadth is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="landDeveloped">
+                              {t("Height")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="height"
+                                type="text"
+                                name="height"
+                                value={developedLand.height}
+                                onChange={handleDevelopedLandInputs}
+                                placeholder="Enter Height"
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {t("Height is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
                       </Row>
                     </Card.Body>
                   </Card>
@@ -8965,6 +9967,133 @@ const fetchReelerDetails = () => {
                               {/* <Form.Control.Feedback type="invalid">
                                 {t("Description is required")}
                               </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">
+                                    {t("Machine Type")}
+                                    {/* <span className="text-danger">*</span> */}
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      name="machineTypeId"
+                                      value={data.machineTypeId}
+                                      onChange={handleInputs}
+                                      onBlur={() => handleInputs}
+                                      required
+                                      isInvalid={
+                                        data.machineTypeId === undefined ||
+                                        data.machineTypeId === "0"
+                                      }
+                                    >
+                                      <option value="">{t("Select Machine Type")}</option>
+                                      {machineTypeListData.map((list) => (
+                                        <option
+                                          key={list.machineTypeId}
+                                          value={list.machineTypeId}
+                                        >
+                                          {list.machineTypeName}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                    {/* <Form.Control.Feedback type="invalid">
+                                      {t("Machine Type is required")}
+                                    </Form.Control.Feedback> */}
+                                  </div>
+                                </Form.Group>
+                              </Col>
+
+                              <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="description">
+                              {t("L1 Rate")}
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="l1Rate"
+                                type="text"
+                                name="l1Rate"
+                                value={equipment.l1Rate}
+                                onChange={handleEquipmentInputs}
+                                placeholder={t("Enter L1 Rate")}
+                                // required
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                                {t("Description is required")}
+                              </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="4">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">Quantity in kg
+                                  {/* <span className="text-danger">*</span> */}
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Control
+                                      id="machineQuantity"
+                                      type="text"
+                                      name="machineQuantity"
+                                      value={data.machineQuantity}
+                                      onChange={handleInputs}
+                                      placeholder="Enter Quantity in kg"
+                                      required
+                                      // readOnly
+                                    />
+                                  </div>
+                                </Form.Group>
+                              </Col>
+
+                        <Col lg="4">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label htmlFor="schemeAmount">Tax Invoice No</Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Control
+                                      id="taxInvoiceNo"
+                                      type="text"
+                                      name="taxInvoiceNo"
+                                      value={data.taxInvoiceNo}
+                                      onChange={handleInputs}
+                                      placeholder="Enter Tax Invoice No"
+                                      // required
+                                      // readOnly
+                                    />
+                                  </div>
+                                </Form.Group>
+                              </Col>
+
+                              <Col lg="4">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                              {t("Tax Invoice Date")}
+                              {/* <span className="text-danger">*</span> */}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <DatePicker
+                                selected={data.taxInvoiceDate}
+                                onChange={(date) =>
+                                  handleDateChange(date, "taxInvoiceDate")
+                                }
+                                // minDate={new Date("01/04/2023")}
+                                // maxDate={new Date("31/03/2024")}
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                                className="form-control"
+                                maxDate={new Date()}
+                                // readOnly={schemeDetails.calculationBasedOn === "Silk Samagra Central" || 
+                                //   schemeDetails.calculationBasedOn === "Silk Samagra State" || 
+                                //   !schemeDetails.calculationBasedOn}
+                                // readOnly 
+                                // required
+                              />
                             </div>
                           </Form.Group>
                         </Col>
@@ -9492,7 +10621,7 @@ const fetchReelerDetails = () => {
               <Col lg="5">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="accountImagePath">
-                    {t("Upload Documents(PDF/jpg/png)(Max:2mb)")}
+                    {t("Upload Documents(PDF/jpg/png)(Max:5MB)")}
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control

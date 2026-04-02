@@ -41,6 +41,8 @@ function CropDetailsForCommercialMarket() {
     externalUnitRegistrationId: "",
     eligibleQuantityCocoonsTransacted: "",
     farmerName: "",
+    biddingSlipNumber:"",
+    receiptDate: "",
   });
 
   const [transactionList, setTransactionList] = useState([]);
@@ -50,6 +52,7 @@ function CropDetailsForCommercialMarket() {
       marketId: "",
       biddingSlipNo: "",
       cocoonRatePerKg: "",
+      biddingSlipNumber: "",
     });
 
   const { t } = useTranslation();
@@ -142,6 +145,7 @@ const [showModal, setShowModal] = useState(false);
     biddingSlipNo: "",
     cocoonRatePerKg: "",
     eligibleQuantityCocoonsTransacted: "",
+    biddingSlipNumber: "",
   });
 
   setShowModal(false);
@@ -192,6 +196,7 @@ const [showModal, setShowModal] = useState(false);
     biddingSlipNo: "",
     cocoonRatePerKg: "",
     eligibleQuantityCocoonsTransacted: "",
+    biddingSlipNumber: "",
   });
 };
 
@@ -288,6 +293,7 @@ const [showModal, setShowModal] = useState(false);
     const formattedTransactionDate = formatDate(data.transactionDate);
     const formattedBrushingDate = formatDate(data.dateOfBrushing);
     const formattedChawkiDistribution = formatDate(data.dateOfDistributionOfChawkiWorms);
+    const formattedReceiptDate = formatDate(data.receiptDate);
 
     const payload = {
       ...data,
@@ -296,12 +302,14 @@ const [showModal, setShowModal] = useState(false);
       transactionDate: formattedTransactionDate,
       dateOfBrushing: formattedBrushingDate,
       dateOfDistributionOfChawkiWorms: formattedChawkiDistribution,
+      receiptDate: formattedReceiptDate,
 
       cropDetailsCommercialMarketDetailsRequests: transactionList.map((t) => ({
       eligibleQuantityCocoonsTransacted: t.eligibleQuantityCocoonsTransacted,
       transactionDate: formatDate(t.transactionDate),
       marketId: t.marketId,
       biddingSlipNo: t.biddingSlipNo,
+      biddingSlipNumber: t.biddingSlipNumber,
       cocoonRatePerKg: t.cocoonRatePerKg,
     })),
     };
@@ -334,6 +342,7 @@ const [showModal, setShowModal] = useState(false);
             externalUnitRegistrationId: "",
             eligibleQuantityCocoonsTransacted: "",
             farmerName: "",
+            biddingSlipNumber:""
             });
             setTransactionList([]); // ✅ CLEAR LIST
             setValidated(false);
@@ -370,6 +379,7 @@ const [showModal, setShowModal] = useState(false);
     externalUnitRegistrationId: "",
     eligibleQuantityCocoonsTransacted: "",
     farmerName: "",
+    biddingSlipNumber:""
     });
     // setLot({
     //   lotNumber: "",
@@ -631,6 +641,10 @@ const [showModal, setShowModal] = useState(false);
     setTransactionDetails({ ...transactionDetails, [type]: date });
   };
 
+   const handleReceiptDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
+
   const designationClear = () => {
     setTransactionDetails({
       transactionDate: "",
@@ -888,6 +902,31 @@ const [showModal, setShowModal] = useState(false);
                       </Form.Group>
                     </Col>
 
+                    <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                        {t("Receipt Date")}
+                        {/* <span className="text-danger">*</span> */}
+                        </Form.Label>
+                        <div className="Date of seed cocoon supply">
+                        <DatePicker
+                            selected={data.receiptDate}
+                            onChange={(date) =>
+                            handleReceiptDateChange(date, "receiptDate")
+                            }
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            // maxDate={new Date()}
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            // required
+                        />
+                        </div>
+                    </Form.Group>
+                    </Col>
+
                     
 
                     <Col lg="4">
@@ -912,12 +951,15 @@ const [showModal, setShowModal] = useState(false);
                       </Form.Group>
                     </Col>
 
+
+                   
+
                     
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("Chawki Percentage")}
+                          {t("Chawki Percentage")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -927,11 +969,11 @@ const [showModal, setShowModal] = useState(false);
                             onChange={handleInputs}
                             type="text"
                             placeholder={t("Chawki Percentage")}
-                            // required
+                            required
                           />
-                          {/* <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
-                          </Form.Control.Feedback> */}
+                          <Form.Control.Feedback type="invalid">
+                          Chawki Percentage is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
@@ -1280,6 +1322,7 @@ const [showModal, setShowModal] = useState(false);
                                               {/* <th></th> */}
                                               <th>{t("Action")}</th>
                                               <th>{t("Market")}</th>
+                                              <th>{t("Bidding Slip Number")}</th>
                                               <th>{t("Bidding Slip Lot No")}</th>
                                               <th>{t("Cocoon Rate Per Kg")}</th>
                                               <th>{t("Quantity Of Cocoon Produced")}</th>
@@ -1311,6 +1354,7 @@ const [showModal, setShowModal] = useState(false);
                                                   </div>
                                                 </td>
                                                 <td>{item.marketMasterName}</td>
+                                                <td>{item.biddingSlipNumber}</td>
                                                 <td>{item.biddingSlipNo}</td>
                                                 <td>{item.cocoonRatePerKg}</td>
                                                 <td>{item.eligibleQuantityCocoonsTransacted}</td>
@@ -1445,8 +1489,30 @@ const [showModal, setShowModal] = useState(false);
                       </Form.Group>
                     </Col>
 
-                    <Col lg="6">
+                     <Col lg="6">
                       <Form.Group className="form-group">
+                        <Form.Label htmlFor="sordfl">
+                          {t("Bidding Slip Number")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="biddingSlipNumber"
+                            name="biddingSlipNumber"
+                            value={transactionDetails.biddingSlipNumber}
+                            onChange={handleMapInputs}
+                            type="text"
+                            placeholder={t("Enter Bidding Slip Number")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                          Bidding Slip Number is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="program">{t("Bidding Slip Lot No")}<span className="text-danger">*</span></Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1610,6 +1676,28 @@ const [showModal, setShowModal] = useState(false);
 
                     <Col lg="6">
                       <Form.Group className="form-group">
+                        <Form.Label htmlFor="sordfl">
+                          {t("Bidding Slip Number")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="biddingSlipNumber"
+                            name="biddingSlipNumber"
+                            value={transactionDetails.biddingSlipNumber}
+                            onChange={handleMapInputs}
+                            type="text"
+                            placeholder={t("Enter Bidding Slip Number")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                          Bidding Slip Number is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="program">{t("Bidding Slip Lot No")}<span className="text-danger">*</span></Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control

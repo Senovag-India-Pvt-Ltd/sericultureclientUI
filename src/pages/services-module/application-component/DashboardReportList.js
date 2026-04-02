@@ -69,6 +69,22 @@ function DashboardReportList() {
     setPushToDbtData((prev) => ({ ...prev, [type]: formattedDate }));
   };
 
+  const parseDate = (value) => {
+  if (!value) return null;
+
+  // If already a Date object → return as-is
+  if (value instanceof Date) return value;
+
+  // If value is not a string → return null (avoid crash)
+  if (typeof value !== "string") return null;
+
+  // If string is not in YYYY-MM-DD format → return null
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+
+  const [y, m, d] = value.split("-");
+  return new Date(y, m - 1, d);
+};
+
   const handleDateForPropasalChange = (date, type) => {
     const formattedDate =
       date.getFullYear() +
@@ -571,6 +587,10 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
     rejectReasonWorkflowMasterId:"",
     comment: "",
     proposalDate: "",
+    selectionLetterDate: "",
+    empanelledVendorApprovedBy: "",
+    letterNo: "",
+    empanelledVendorDate: "",
   });
 
   const [allowAnyUser, setAllowAnyUser] = useState(false);
@@ -1566,8 +1586,89 @@ const callWorkOrderAcknowledgment = async (
       categoryId
     );
 
-  } else if (workOrderForScheme === "Adopting Heat Recovery Unit-PSF") {
-    generateWorkOrderOrderHRU(
+  // } else if (workOrderForScheme === "Adopting Heat Recovery Unit-PSF") {
+  //   generateWorkOrderOrderHRU(
+  //     applicationFormId,
+  //     workOrderSchemeId,
+  //     subSchemeId,
+  //     categoryId
+  //   );
+
+    } else if (workOrderForScheme === "Adopting Boiler-PSF") {
+    generateWorkOrderOrderAdoptingBoiler(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
+
+    } else if (workOrderForScheme === "ICB-PSF") {
+    generateWorkOrderOrderICB(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
+
+    } else if (workOrderForScheme === "Adopting Heat Recovery Unit-PSF") {
+    generateWorkOrderOrderAdoptingHeatRecoveryUnit(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
+
+    } else if (workOrderForScheme === "Adopting Silent Generator") {
+    generateWorkOrderOrderAdoptingSilentGenerator(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
+
+
+    } else if (workOrderForScheme === "Adopting Solar power Generator") {
+    generateWorkOrderOrderAdoptingSolarPowerGenerator(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
+
+    } else if (workOrderForScheme === "Adopting Solar Water Heater") {
+    generateWorkOrderOrderAdoptingSolarWaterHeater(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
+
+    } else if (workOrderForScheme === "MERM-PSF") {
+    generateWorkOrderOrderMERM(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
+
+    } else if (workOrderForScheme === "IMCB-PSF") {
+    generateWorkOrderOrderIMCB(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
+
+    } else if (workOrderForScheme === "Rearing Equipment SS") {
+    generateWorkOrderOrderRearingEquipmentSS(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
+
+    } else if (workOrderForScheme === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
+    generateWorkOrderOrderRegisteredPrivateBivCRC(
       applicationFormId,
       workOrderSchemeId,
       subSchemeId,
@@ -1623,15 +1724,15 @@ const handleDownloadWorkOrder = async (viewDetailsData) => {
         viewDetailsData.categoryId
       );
 
-    } else if (
-      viewDetailsData.workOrderForScheme === "Adopting Heat Recovery Unit-PSF"
-    ) {
-      generateWorkOrderOrderHRU(
-        viewDetailsData.applicationFormId,
-        viewDetailsData.workOrderSchemeId,
-        viewDetailsData.subSchemeId,
-        viewDetailsData.categoryId
-      );
+    // } else if (
+    //   viewDetailsData.workOrderForScheme === "Adopting Heat Recovery Unit-PSF"
+    // ) {
+    //   generateWorkOrderOrderHRU(
+    //     viewDetailsData.applicationFormId,
+    //     viewDetailsData.workOrderSchemeId,
+    //     viewDetailsData.subSchemeId,
+    //     viewDetailsData.categoryId
+    //   );
 
     } else {
       console.error("Unknown Work Order scheme type");
@@ -1683,7 +1784,8 @@ const handleDownloadWorkOrder = async (viewDetailsData) => {
       {
         applicationFormId: applicationFormId,
         schemeId: schemeId,
-        userId: userId, // ✅ Added userId
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
       },
       {
         responseType: "blob", // Force to receive data in a Blob Format
@@ -1704,7 +1806,7 @@ const generateWorkOrderReelingShed = async (applicationFormId, schemeId,subSchem
     const userId = localStorage.getItem("userMasterId");
 
     const response = await api.post(
-      baseURLReport + `getWorkOrderReelingShed`,
+      baseURLReport + `selection-reeling-shed`,
       {
         applicationFormId: applicationFormId,
         schemeId: schemeId,
@@ -1724,13 +1826,275 @@ const generateWorkOrderReelingShed = async (applicationFormId, schemeId,subSchem
   }
 };
 
-const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+// const generateWorkOrderOrderHRU = async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+//   try {
+//     // ✅ Get userId from localStorage
+//     const userId = localStorage.getItem("userMasterId");
+
+//     const response = await api.post(
+//       baseURLReport + `getWorkOrderHRU`,
+//       {
+//         applicationFormId: applicationFormId,
+//         schemeId: schemeId,
+//         subSchemeId: subSchemeId,
+//         categoryId:categoryId // ✅ Added userId
+//       },
+//       {
+//         responseType: "blob", // Force to receive data in a Blob Format
+//       }
+//     );
+
+//     const file = new Blob([response.data], { type: "application/pdf" });
+//     const fileURL = URL.createObjectURL(file);
+//     window.open(fileURL);
+//   } catch (error) {
+//     console.error("Error generating work order acknowledgment:", error);
+//   }
+// };
+
+
+const generateWorkOrderOrderAdoptingBoiler = async (applicationFormId, schemeId,subSchemeId,categoryId) => {
   try {
     // ✅ Get userId from localStorage
     const userId = localStorage.getItem("userMasterId");
 
     const response = await api.post(
-      baseURLReport + `getWorkOrderHRU`,
+      baseURLReport + `selection-boiler`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+
+const generateWorkOrderOrderAdoptingHeatRecoveryUnit= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `selection-heat-recovery-unit`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderOrderAdoptingSilentGenerator= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `selection-silent-generator`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderOrderAdoptingSolarPowerGenerator= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `selection-solar-generator`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderOrderAdoptingSolarWaterHeater= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `selection-solar-water-heater`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderOrderMERM= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `selection-MERM`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderOrderRearingEquipmentSS= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `SelectionRearingEquipmentSS`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderOrderRegisteredPrivateBivCRC= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `SelectionCRC`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderOrderICB= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `selection-icb`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderOrderIMCB= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `selection-imcb`,
       {
         applicationFormId: applicationFormId,
         schemeId: schemeId,
@@ -1826,7 +2190,8 @@ const handleGenerateSanctionOrderClick = async () => {
   applicationFormId,
   schemeId,
   subSchemeId,
-  categoryId
+  categoryId,
+  applicationFormIds = [] 
 ) => {
   // 🔴 HARD GUARD (centralized)
   const scSubSchemeDetailsId = actionFarmerData[0]?.subSchemeId;
@@ -1877,9 +2242,140 @@ const handleGenerateSanctionOrderClick = async () => {
             "farmer",
             schemeType,
             subSchemeId,
+            categoryId,
+            applicationFormIds
+          );
+        }
+
+        else if (
+          schemeType === "Rearing Equipment SS"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId,
+            applicationFormIds
+          );
+        }
+
+        
+
+        else if (schemeType === "Adopting Boiler-PSF") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
             categoryId
           );
-        } else {
+        }
+
+        else if (schemeType === "ICB-PSF") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
+        else if (schemeType === "IMCB-PSF") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
+        else if (schemeType === "Adopting Heat Recovery Unit-PSF") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
+         else if (schemeType === "Reeling Shed-PSF") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
+        else if (schemeType === "Adopting Silent Generator") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
+         else if (schemeType === "Adopting Solar power Generator") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
+        else if (schemeType === "Adopting Solar Water Heater") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
+        else if (schemeType === "MERM-PSF") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
+        else if (schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId,
+            applicationFormIds
+          );
+        }
+        
+        
+        else {
           console.error("Unknown scheme type for farmer sanction order.");
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -1901,6 +2397,19 @@ const handleGenerateSanctionOrderClick = async () => {
         } else if (
           schemeType === "Silk Samagra State" ||
           schemeType === "Silk Samagra Central"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        } 
+
+        else if (
+          schemeType === "Rearing Equipment SS"
         ) {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
@@ -1935,6 +2444,54 @@ const handleGenerateSanctionOrderClick = async () => {
             schemeType
           );
         }
+         else if (
+          schemeType === "MERM-PSF"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        }
+         else if (
+          schemeType === "Adopting Silent Generator"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        }
+         else if (
+          schemeType === "Adopting Solar power Generator"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        }
+         else if (
+          schemeType === "Adopting Solar Water Heater"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        }
         else if (
           schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy"
         ) {
@@ -1947,8 +2504,9 @@ const handleGenerateSanctionOrderClick = async () => {
             schemeType
           );
         }
+        
         else if (
-          schemeType === "Rearing Equipment SS"
+          schemeType === "Adopting Boiler-PSF"
         ) {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
@@ -1959,6 +2517,30 @@ const handleGenerateSanctionOrderClick = async () => {
             schemeType
           );
         }
+
+        else if (schemeType === "ICB-PSF") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        }
+
+        else if (schemeType === "IMCB-PSF") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            subSchemeId,
+            categoryId,
+            "company",
+            schemeType
+          );
+        }
+
+       
         else {
           console.error("Unknown Scheme type for company sanction order.");
         }
@@ -2039,7 +2621,8 @@ const handleGenerateSanctionOrderClick = async () => {
   recipientType,
   schemeType,
   subSchemeId,
-  categoryId
+  categoryId,
+  applicationFormIds = [] 
 ) => {
   try {
     const userId = localStorage.getItem("userMasterId");
@@ -2055,23 +2638,95 @@ const handleGenerateSanctionOrderClick = async () => {
       endpoint = baseURLReport + `getSanctionOrderRH`;
 
     }
+
+    else if (schemeType === "Rearing Equipment SS") {
+  endpoint =
+    recipientType === "company"
+      ? baseURLReport + `RearingEquipmentSSCompany`
+      : baseURLReport + `RearingEquipmentSSBeneficiary`;
+    }
+
     // -------------------------------
     // 2️⃣ PSF Schemes
     // -------------------------------
     else if (schemeType === "Reeling Shed-PSF") {
       endpoint = baseURLReport + `sanction-psfa-reeling-shed`;  // ✅ NEW
 
-    } else if (schemeType === "Adopting Heat Recovery Unit-PSF") {
-      endpoint = baseURLReport + `sanction-heat-unit`;          // ✅ NEW
+    } 
 
+    else if (schemeType === "MERM-PSF") {
+      endpoint = baseURLReport + `getMERMSanction`;  // ✅ NEW
+
+    } 
+    // else if (schemeType === "Adopting Heat Recovery Unit-PSF") {
+    //   endpoint = baseURLReport + `sanction-heat-unit`;          // ✅ NEW
+
+    // }
+
+    else if (schemeType === "Adopting Boiler-PSF") {
+  endpoint =
+    recipientType === "company"
+      ? baseURLReport + `getBoilerSDPCompany`
+      : baseURLReport + `getBoilerSDPBeneficiary`;
     }
+
+    
+    else if (schemeType === "IMCB-PSF") {
+  endpoint =
+    recipientType === "company"
+      ? baseURLReport + `getIMCBCompany`
+      : baseURLReport + `getIMCBBeneficiary`;
+    }
+
+    else if (schemeType === "ICB-PSF") {
+  endpoint =
+    recipientType === "company"
+      ? baseURLReport + `getICBCompany`
+      : baseURLReport + `getICBBeneficiary`;
+    }
+
+    else if (schemeType === "Adopting Heat Recovery Unit-PSF") {
+  endpoint =
+    recipientType === "company"
+      ? baseURLReport + `getHRUCompany`
+      : baseURLReport + `getHRUBeneficiary`;
+    }
+
+    else if (schemeType === "Adopting Silent Generator") {
+  endpoint =
+    recipientType === "company"
+      ? baseURLReport + `getSilentGeneratorCompany`
+      : baseURLReport + `getSilentGeneratorBeneficiary`;
+    }
+
+
+    else if (schemeType === "Adopting Solar power Generator") {
+  endpoint =
+    recipientType === "company"
+      ? baseURLReport + `getSolarPowerGeneratorCompany`
+      : baseURLReport + `getSolarPowerGeneratorBeneficiary`;
+    }
+
+    else if (schemeType === "Adopting Solar Water Heater") {
+  endpoint =
+    recipientType === "company"
+      ? baseURLReport + `getSolarWaterHeaterCompany`
+      : baseURLReport + `getSolarWaterHeaterBeneficiary`;
+    }
+
+  //   else if (schemeType === "MERM-PSF") {
+  // endpoint =
+  //   recipientType === "company"
+  //     ? baseURLReport + `getHRUCompany`
+  //     : baseURLReport + `getHRUBeneficiary`;
+  //   }
 
     else if (schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
-      endpoint = baseURLReport + `getChawkiSanctionOrderPdf`;
+      endpoint = baseURLReport + `PrivateCRCSanction`;
     }
-    else if (schemeType === "Rearing Equipment SS") {
-      endpoint = baseURLReport + `getSanctionOrderRHEquipment`;
-    }
+    // else if (schemeType === "Rearing Equipment SS") {
+    //   endpoint = baseURLReport + `getSanctionOrderRHEquipment`;
+    // }
     // -------------------------------
     // 3️⃣ PMKSY / PDMC (farmer/company)
     // -------------------------------
@@ -2091,27 +2746,76 @@ const handleGenerateSanctionOrderClick = async () => {
       }
     }
 
+    
+
     // -------------------------------
     // Build Payload
     // -------------------------------
-    const payload =
-      schemeType === "Silk Samagra State" ||
-      schemeType === "Silk Samagra Central" ||
-      schemeType === "Reeling Shed-PSF" ||
-      schemeType === "Adopting Heat Recovery Unit-PSF" ||
-      schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||  // NEW
-      schemeType === "Rearing Equipment SS"
-        ? {
-            applicationFormId: applicationId,
-            schemeId,
-            subSchemeId,
-            categoryId,
-            userId,
+    // const payload =
+    //   schemeType === "Silk Samagra State" ||
+    //   schemeType === "Silk Samagra Central" ||
+    //   schemeType === "Reeling Shed-PSF" ||
+    //   schemeType === "Adopting Heat Recovery Unit-PSF" ||
+    //   schemeType === "Adopting Boiler-PSF" ||
+    //   schemeType === "ICB-PSF" ||
+    //   schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||  // NEW
+    //   schemeType === "Rearing Equipment SS"
+    //     ? {
+    //         applicationFormId: applicationId,
+    //         schemeId,
+    //         subSchemeId,
+    //         categoryId,
+    //         userId,
+    //       }
+    //     : {
+    //         applicationFormId: applicationId,
+    //         schemeId,
+    //       };
+
+    // -------------------------------
+// Build Payload
+// -------------------------------
+          let payload;
+
+          if (
+            schemeType === "Silk Samagra State" ||
+            schemeType === "Silk Samagra Central" ||
+            schemeType === "Rearing Equipment SS" ||                        // ✅ was missing
+            schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy"
+          ) {
+            payload = {
+              applicationFormIds: applicationFormIds,   // ✅ ARRAY
+              schemeId,
+              subSchemeId,
+              categoryId,
+              userId,
+            };
           }
-        : {
-            applicationFormId: applicationId,
-            schemeId,
-          };
+          else if (
+            schemeType === "Reeling Shed-PSF" ||
+            schemeType === "Adopting Heat Recovery Unit-PSF" ||
+            schemeType === "Adopting Boiler-PSF" ||
+            schemeType === "ICB-PSF" ||
+            schemeType === "IMCB-PSF" ||          // ✅ was missing
+            schemeType === "Adopting Silent Generator" ||   // ✅ THE FIX
+            schemeType === "Adopting Solar power Generator" ||  // ✅ was missing
+            schemeType === "Adopting Solar Water Heater" ||     // ✅ was missing
+            schemeType === "MERM-PSF"
+          ) {
+            payload = {
+              applicationFormId: applicationId,
+              schemeId,
+              subSchemeId,
+              categoryId,
+              userId,
+            };
+          }
+          else {
+            payload = {
+              applicationFormId: applicationId,
+              schemeId,
+            };
+          }
 
     // -------------------------------
     // Call API & Open PDF
@@ -2127,6 +2831,18 @@ const handleGenerateSanctionOrderClick = async () => {
     console.error("Error generating sanction order:", error);
   }
 };
+
+const allowedSchemes = [
+  "IMCB-PSF",
+  "ICB-PSF",
+  "MERM-PSF",
+  "Atomatic Reeling Machine",
+  "Adopting Heat Recovery Unit-PSF",
+  "Adopting Boiler-PSF",
+  "Adopting Silent Generator",
+  "Adopting Solar power Generator",
+  "Adopting Solar Water Heater"
+];
 
 
 
@@ -2987,6 +3703,15 @@ const handleGenerateSanctionOrderClick = async () => {
         ddoCode: ddoCodeToSend,
         sanctionNo: actionData.sanctionNo,
         proposalDate: actionData.proposalDate,
+        userId: actionData.userId,
+        // userId: selectedUserId, 
+        stepId: actionData.stepId,
+        selectionLetterDate: actionData.selectionLetterDate,
+        rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
+        description: actionData.comment,
+        empanelledVendorApprovedBy: actionData.empanelledVendorApprovedBy,
+        letterNo: actionData.letterNo,
+        empanelledVendorDate: actionData.empanelledVendorDate,
         categoryId: actionFarmerData[0]?.categoryId,
         componentId: actionFarmerData[0]?.componentId,
         schemeId: actionFarmerData[0]?.schemeId,
@@ -2997,6 +3722,7 @@ const handleGenerateSanctionOrderClick = async () => {
 
       sendPost = {
         proposalDate: actionData.proposalDate,
+        selectionLetterDate: actionData.selectionLetterDate,
         description: actionData.comment,
         rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
         applicationFormId: applicationFormId,
@@ -3007,6 +3733,9 @@ const handleGenerateSanctionOrderClick = async () => {
         stepId: actionData.stepId,
         sanctionNo: actionData.sanctionNo,
         eligibleAmount: actionData.eligibleAmount,
+        empanelledVendorApprovedBy: actionData.empanelledVendorApprovedBy,
+        letterNo: actionData.letterNo,
+        empanelledVendorDate: actionData.empanelledVendorDate,
         pushToDBTRequestList: sendResponse,
       };
     }
@@ -3023,8 +3752,24 @@ const handleGenerateSanctionOrderClick = async () => {
       apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
     } else {
       // Case 2: workOrder update
-      if (actionFarmerData[0].workOrder) {
-        apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
+      // if (actionFarmerData[0].workOrder) {
+      //   apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
+      // }
+      if (actionFarmerData[0]?.workOrder) {
+
+        if (!actionFarmerData[0]?.financialDelegation) {
+          // financialDelegation false → always WorkOrder API
+          apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
+
+        } else if (actionFarmerData[0]?.financialDelegation && isSanctionOrderAllowed) {
+          // financialDelegation true and allowed
+          apiCall = api.post(baseURLDBT + `service/workOrderUpdate`, sendPost);
+
+        } else {
+          // financialDelegation true but not allowed
+          apiCall = api.post(baseURLDBT + `service/inspectionUpdate`, sendPost);
+        }
+
       }
 
       // Case 3: sanctionOrder update 
@@ -3104,12 +3849,17 @@ const handleGenerateSanctionOrderClick = async () => {
           .post(baseURLDBT + `service/sanctionOrderUpdate`, sendPost)
           .then((response) => {
             if (response.data.applicationFormId) {
+              const applicationFormIds =
+              response.data.applicationFormResponseList?.map(
+                (item) => item.applicationFormId
+              ) || [];
               setApplicationId(response.data.applicationFormId);
               handleGenerateSanctionOrder(
                 response.data.applicationFormId,
                 schemeId,
                 actionFarmerData[0]?.subSchemeId,
-                actionFarmerData[0]?.categoryId
+                actionFarmerData[0]?.categoryId,
+                applicationFormIds
               );
               setDisplaySubmit(false);
               getList();
@@ -3185,14 +3935,29 @@ const handleGenerateSanctionOrderClick = async () => {
             saveError(response.data.error_description);
           } else {
             // Work order acknowledgment
-           if (actionFarmerData[0].workOrder) {
-              callWorkOrderAcknowledgment(
-                actionFarmerData[0].workOrderForScheme,
-                applicationFormId,
-                workOrderSchemeId,
-                actionFarmerData[0]?.subSchemeId,
-                actionFarmerData[0]?.categoryId
-              );
+          //  if (actionFarmerData[0].workOrder) {
+          //     callWorkOrderAcknowledgment(
+          //       actionFarmerData[0].workOrderForScheme,
+          //       applicationFormId,
+          //       workOrderSchemeId,
+          //       actionFarmerData[0]?.subSchemeId,
+          //       actionFarmerData[0]?.categoryId
+          //     );
+          //   }
+          if (actionFarmerData[0]?.workOrder) {
+
+              if (!actionFarmerData[0]?.financialDelegation || isSanctionOrderAllowed) {
+
+                callWorkOrderAcknowledgment(
+                  actionFarmerData[0].workOrderForScheme,
+                  applicationFormId,
+                  workOrderSchemeId,
+                  actionFarmerData[0]?.subSchemeId,
+                  actionFarmerData[0]?.categoryId
+                );
+
+              }
+
             }
 
             saveSuccess();
@@ -4353,6 +5118,98 @@ const handleGenerateSanctionOrderClick = async () => {
 
                             )}
 
+                              {(
+                                (
+                                  (actionFarmerData[0]?.sanctionOrder &&
+                                    actionFarmerData[0]?.financialDelegation &&
+                                    isSanctionOrderAllowed) ||
+                                  actionFarmerData[0]?.directlyToFruits
+                                ) &&
+                                allowedSchemes.includes(actionFarmerData[0]?.sanctionOrderForScheme)
+                              ) && (
+                                <>
+                              <Col lg="6">
+                                    <Form.Group className="form-group">
+                                      <Form.Label>
+                                      {t("Empanelled Vendor Approved By")}<span className="text-danger">*</span>
+                                      </Form.Label>
+                                      <div className="form-control-wrap">
+                                        <Form.Select
+                                          name="empanelledVendorApprovedBy"
+                                          value={actionData.empanelledVendorApprovedBy}
+                                          onChange={handleActionInputs}
+                                          onBlur={() => handleActionInputs}
+                                          required
+                                          // isInvalid={
+                                          //   data.subSchemeType === undefined || data.subSchemeType === "0"
+                                          // }
+                                        >
+                                          <option value="0">{t("Select Empanelled Vendor Approved By")}</option>
+                                          <option value="ಕೇಂದ್ರ  ರೇಷ್ಮೆ ಮಂಡ̧ಳಿ  ಬೆಂಗಳೂರು">ಕೇಂದ್ರ  ರೇಷ್ಮೆ ಮಂಡ̧ಳಿ  ಬೆಂಗಳೂರು</option>
+                                          <option value="ರೇಷ್ಮೆ ಕೃಷಿ ಅಭಿವೃದ್ಧಿ ಆಯುಕ್ತರು ಹಾಗೂ ರೇಷ್ಮೆ ನಿರ್ದೇಶಕರು, ಬೆಂಗಳೂರು ">ರೇಷ್ಮೆ ಕೃಷಿ ಅಭಿವೃದ್ಧಿ ಆಯುಕ್ತರು ಹಾಗೂ ರೇಷ್ಮೆ ನಿರ್ದೇಶಕರು, ಬೆಂಗಳೂರು </option>
+                                          
+                                        </Form.Select>
+                                      </div>
+                                      <Form.Control.Feedback type="invalid">
+                                        Empanelled Vendor Approved By is required
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+                                  </Col>
+
+                                  <Col lg="6">
+                                      <Form.Group className="form-group">
+                                        <Form.Label htmlFor="subSchemeNameInKannada">
+                                        {t("Letter No")}<span className="text-danger">*</span>
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="letterNo"
+                                            type="text"
+                                            name="letterNo"
+                                            value={data.letterNo}
+                                            onChange={handleActionInputs}
+                                            placeholder={t("Enter Letter No")}
+                                            required
+                                          />
+                                          <Form.Control.Feedback type="invalid">
+                                          {t("Letter No is required")}
+                                          </Form.Control.Feedback>
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+
+                                  <Col lg="6">
+                                <Form.Group className="form-group">
+                                  <Form.Label htmlFor="sordfl">
+                                    Letter Date  <span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <DatePicker
+                                      selected={actionData.empanelledVendorDate ? new Date(actionData.empanelledVendorDate) : null}
+                                      onChange={(date) =>
+                                        handleDateForPropasalChange(date, "empanelledVendorDate")
+                                      }
+                                      // minDate={new Date("01/04/2023")}
+                                      // maxDate={new Date("31/03/2024")}
+                                      peekNextMonth
+                                      showMonthDropdown
+                                      showYearDropdown
+                                      dropdownMode="select"
+                                      dateFormat="dd/MM/yyyy"
+                                      className="form-control"
+                                      maxDate={new Date()}
+                                      required
+                                     
+                                    />
+                                  </div>
+                                </Form.Group>
+                              </Col>
+                                  </>
+
+                            )}
+
+
+                            
                               {/* {(actionFarmerData[0]?.sanctionOrder || actionFarmerData[0]?.directlyToFruits) && (
                                 <Col lg="6">
                                   <Form.Group className="form-group">
@@ -4401,44 +5258,7 @@ const handleGenerateSanctionOrderClick = async () => {
                                 </Col>
                               )}
 
-                              {allowAnyUser && (
-                                <Col lg="6">
-                                  <Form.Group className="form-group">
-                                    <Form.Label>
-                                      User <span className="text-danger">*</span>
-                                    </Form.Label>
-
-                                    <ReactSelect
-                                      options={userListData.map((u) => ({
-                                        value: u.userMasterId,
-                                        label: `${u.username} (${u.userMasterId})`,
-                                      }))}
-                                      isSearchable
-                                      placeholder={t("Select User")}
-                                      value={userListData
-                                        .map((u) => ({
-                                          value: u.userMasterId,
-                                          label: `${u.username} (${u.userMasterId})`,
-                                        }))
-                                        .find((opt) => opt.value === actionData.userId)}
-                                      onChange={(selectedOption) => {
-                                        setActionData((prev) => ({
-                                          ...prev,
-                                          userId: selectedOption?.value || "",
-                                        }));
-                                        if (validated) setValidated(false);
-                                      }}
-                                      className={validated && !isUserValid ? "is-invalid" : ""}
-                                    />
-
-                                    {validated && !isUserValid && (
-                                      <div className="invalid-feedback d-block">
-                                        User is required
-                                      </div>
-                                    )}
-                                  </Form.Group>
-                                </Col>
-                              )}
+                              
 
 
 
@@ -4510,11 +5330,31 @@ const handleGenerateSanctionOrderClick = async () => {
                                                 actionData.userId === "0"
                                               }
                                               // disabled={fieldsDisabled}
+                                              // disabled={
+                                              //   true || 
+                                              //   fieldsDisabled ||
+                                              //   fieldsSanctionOrderDisabled ||
+                                              //   pushToDbtStatus
+                                              // }
+                                               // disabled={fieldsDisabled}
+                                              // disabled={
+                                              //   true || 
+                                              //   fieldsDisabled ||
+                                              //   fieldsSanctionOrderDisabled ||
+                                              //   pushToDbtStatus
+                                              // }
+                                              // disabled={
+                                              //     !actionFarmerData[0]?.workOrder &&
+                                              //     (
+                                              //       fieldsDisabled ||
+                                              //       fieldsSanctionOrderDisabled ||
+                                              //       pushToDbtStatus
+                                              //     )
+                                              //   }
                                               disabled={
-                                                true || 
-                                                fieldsDisabled ||
-                                                fieldsSanctionOrderDisabled ||
-                                                pushToDbtStatus
+                                                actionFarmerData?.[0]?.workOrder
+                                                  ? false
+                                                  : (true || fieldsDisabled || fieldsSanctionOrderDisabled || pushToDbtStatus)
                                               }
                                               // isInvalid={
                                               //   actionData.userId === undefined ||
@@ -4701,6 +5541,45 @@ const handleGenerateSanctionOrderClick = async () => {
                                 </>
                               )}
 
+                              {allowAnyUser && (
+                                <Col lg="6">
+                                  <Form.Group className="form-group">
+                                    <Form.Label>
+                                      User <span className="text-danger">*</span>
+                                    </Form.Label>
+
+                                    <ReactSelect
+                                      options={userListData.map((u) => ({
+                                        value: u.userMasterId,
+                                        label: `${u.username} (${u.userMasterId})`,
+                                      }))}
+                                      isSearchable
+                                      placeholder={t("Select User")}
+                                      value={userListData
+                                        .map((u) => ({
+                                          value: u.userMasterId,
+                                          label: `${u.username} (${u.userMasterId})`,
+                                        }))
+                                        .find((opt) => opt.value === actionData.userId)}
+                                      onChange={(selectedOption) => {
+                                        setActionData((prev) => ({
+                                          ...prev,
+                                          userId: selectedOption?.value || "",
+                                        }));
+                                        if (validated) setValidated(false);
+                                      }}
+                                      className={validated && !isUserValid ? "is-invalid" : ""}
+                                    />
+
+                                    {validated && !isUserValid && (
+                                      <div className="invalid-feedback d-block">
+                                        User is required
+                                      </div>
+                                    )}
+                                  </Form.Group>
+                                </Col>
+                              )}
+
                               <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
@@ -4736,7 +5615,12 @@ const handleGenerateSanctionOrderClick = async () => {
 
                   {/* Work Order Details Accordion */}
                   {actionFarmerData.length > 0 &&
-                    actionFarmerData[0].workOrder && (
+  !actionFarmerData[0].workOrderNumber &&
+  actionFarmerData[0].workOrder &&
+  (
+    !actionFarmerData[0].financialDelegation || 
+    (actionFarmerData[0].financialDelegation && isSanctionOrderAllowed)
+  ) && (
                       <Accordion.Item eventKey="transaction">
                         <Accordion.Header
                           style={{
@@ -4751,6 +5635,27 @@ const handleGenerateSanctionOrderClick = async () => {
                           Generate Work Order
                         </Accordion.Header>
                         <Accordion.Body>
+
+                        <Col lg="3">
+                          <Form.Group className="form-group">
+                            <Form.Label style={{ fontWeight: "bold" }}>
+                              Selection Letter/Work Order Date <span className="text-danger">*</span>
+                            </Form.Label>
+              
+                            <DatePicker
+                              selected={parseDate(actionData.selectionLetterDate)}
+                              onChange={(date) => handleDateForPropasalChange(date, "selectionLetterDate")}
+                              dateFormat="dd/MM/yyyy"
+                              className="form-control"
+                              maxDate={new Date()}
+                              peekNextMonth
+                              showMonthDropdown
+                              showYearDropdown
+                              dropdownMode="select"
+                              required
+                            />
+                          </Form.Group>
+                        </Col>
                           
                         </Accordion.Body>
                       </Accordion.Item>
@@ -4835,7 +5740,7 @@ const handleGenerateSanctionOrderClick = async () => {
                               <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label htmlFor="accountImagePath">
-                                    Upload Sanction Order (PDF/jpg/png)(Max:2mb)
+                                    Upload Sanction Order (PDF/jpg/png)(Max:5MB)
                                   </Form.Label>
                                   <div className="form-control-wrap">
                                     <Form.Control
@@ -5145,7 +6050,7 @@ const handleGenerateSanctionOrderClick = async () => {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="accountImagePath">
-                    Upload Documents(PDF/jpg/png)(Max:2mb)
+                    Upload Documents(PDF/jpg/png)(Max:5MB)
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control

@@ -102,17 +102,18 @@ function ScSubSchemeDetailsEdit() {
         unitForScheme: "",
         acknowledgementForScheme: "",
         admGovtOrder: "",
-    schemeCircularNo: "",
-    deptDelegationNo: "",
-    allotReleaseNo: "",
-    admGovtDate: "",
-    schemeCircularDate: "",
-    deptDelegationDate: "",
-    allotReleaseDate: "",
-    sanctionEnable: false,
-    withLand: false,
-allowMultipleSanction: false,
-sanctionForReeling: false,
+        schemeCircularNo: "",
+        deptDelegationNo: "",
+        allotReleaseNo: "",
+        admGovtDate: "",
+        schemeCircularDate: "",
+        deptDelegationDate: "",
+        allotReleaseDate: "",
+        sanctionEnable: false,
+        withLand: false,
+        allowMultipleSanction: false,
+        sanctionForReeling: false,
+        schemeCodeForSanctionOrder: "",
     });
   };
 
@@ -461,6 +462,10 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             <option value="Silk Samagra State">Silk Samagra State</option>
                             <option value="Silk Samagra Central">Silk Samagra Central</option>
                             <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                            <option value="Bonus PM">Bonus PM</option>
+                            <option value="Bonus BV">Bonus BV</option>
+                            <option value="Incentive PM">Incentive PM</option>
+                            <option value="Incentive BV">Incentive BV</option>
                             <option value="Silk Incentive-PSF">Silk Incentive-PSF</option>
                             <option value="IMCB-PSF">IMCB-PSF</option>
                             <option value="ICB-PSF">ICB-PSF</option>
@@ -512,6 +517,10 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             <option value="Silk Samagra State">Silk Samagra State</option>
                             <option value="Silk Samagra Central">Silk Samagra Central</option>
                             <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                            <option value="Bonus PM">Bonus PM</option>
+                            <option value="Bonus BV">Bonus BV</option>
+                            <option value="Incentive PM">Incentive PM</option>
+                            <option value="Incentive BV">Incentive BV</option>
                             <option value="Silk Incentive-PSF">Silk Incentive-PSF</option>
                             <option value="IMCB-PSF">IMCB-PSF</option>
                             <option value="ICB-PSF">ICB-PSF</option>
@@ -563,6 +572,10 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             <option value="Silk Samagra State">Silk Samagra State</option>
                             <option value="Silk Samagra Central">Silk Samagra Central</option>
                             <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                            <option value="Bonus PM">Bonus PM</option>
+                            <option value="Bonus BV">Bonus BV</option>
+                            <option value="Incentive PM">Incentive PM</option>
+                            <option value="Incentive BV">Incentive BV</option>
                             <option value="Silk Incentive-PSF">Silk Incentive-PSF</option>
                             <option value="IMCB-PSF">IMCB-PSF</option>
                             <option value="ICB-PSF">ICB-PSF</option>
@@ -614,6 +627,10 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             <option value="Silk Samagra State">Silk Samagra State</option>
                             <option value="Silk Samagra Central">Silk Samagra Central</option>
                             <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                            <option value="Bonus PM">Bonus PM</option>
+                            <option value="Bonus BV">Bonus BV</option>
+                            <option value="Incentive PM">Incentive PM</option>
+                            <option value="Incentive BV">Incentive BV</option>
                             <option value="Silk Incentive-PSF">Silk Incentive-PSF</option>
                             <option value="IMCB-PSF">IMCB-PSF</option>
                             <option value="ICB-PSF">ICB-PSF</option>
@@ -665,6 +682,10 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             <option value="Silk Samagra State">Silk Samagra State</option>
                             <option value="Silk Samagra Central">Silk Samagra Central</option>
                             <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                            <option value="Bonus PM">Bonus PM</option>
+                            <option value="Bonus BV">Bonus BV</option>
+                            <option value="Incentive PM">Incentive PM</option>
+                            <option value="Incentive BV">Incentive BV</option>
                             <option value="Silk Incentive-PSF">Silk Incentive-PSF</option>
                             <option value="IMCB-PSF">IMCB-PSF</option>
                             <option value="ICB-PSF">ICB-PSF</option>
@@ -689,6 +710,29 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                         </div>
                       </Form.Group>
                     </Col>
+
+                     <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label htmlFor="title">
+                            {t("Scheme Code For Sanction Order")}
+                              <span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="schemeCodeForSanctionOrder"
+                                name="schemeCodeForSanctionOrder"
+                                type="text"
+                                value={data.schemeCodeForSanctionOrder}
+                                onChange={handleInputs}
+                                placeholder={t("Enter Scheme Code For Sanction Order")}
+                                required
+                              />
+                              <Form.Control.Feedback type="invalid">
+                              {t("Scheme Code For Sanction Order is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
                   
                   <Col lg="2">
                         <Form.Group className="form-group mt-n4">

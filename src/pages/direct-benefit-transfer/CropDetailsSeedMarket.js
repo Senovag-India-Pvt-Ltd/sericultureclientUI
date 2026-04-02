@@ -48,6 +48,7 @@ function CropDetailsForSeedMarket() {
     cocoonTransactedForSeedInKg: "",
     externalUnitRegistrationId: "",
     farmerName: "",
+    biddingSlipNumber: "",
   });
 
   const { t } = useTranslation();
@@ -193,6 +194,7 @@ function CropDetailsForSeedMarket() {
             cocoonTransactedForSeedInKg: "",
             externalUnitRegistrationId: "",
             farmerName: "",
+            biddingSlipNumber: "",
             });
             setValidated(false);
           }
@@ -236,6 +238,7 @@ function CropDetailsForSeedMarket() {
       cocoonTransactedForSeedInKg: "",
       externalUnitRegistrationId: "",
       farmerName: "",
+      biddingSlipNumber: "",
     });
     // setLot({
     //   lotNumber: "",
@@ -763,7 +766,7 @@ function CropDetailsForSeedMarket() {
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("CRC Bill No")}
+                          {t("CRC Bill Date")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -772,7 +775,7 @@ function CropDetailsForSeedMarket() {
                             value={data.crcBillNo}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("CRC Bill No")}
+                            placeholder={t("CRC Bill Date")}
                             // required
                           />
                           {/* <Form.Control.Feedback type="invalid">
@@ -806,12 +809,34 @@ function CropDetailsForSeedMarket() {
                       </Form.Group>
                     </Col>
 
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="sordfl">
+                          {t("Bidding Slip Number")} <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="biddingSlipNumber"
+                            name="biddingSlipNumber"
+                            value={data.biddingSlipNumber}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder={t("Enter Bidding Slip Number")}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                          Bidding Slip Number is required
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
                     
 
                     <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("Chawki Percentage")}
+                          {t("Chawki Percentage")} <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -821,11 +846,11 @@ function CropDetailsForSeedMarket() {
                             onChange={handleInputs}
                             type="text"
                             placeholder={t("Chawki Percentage")}
-                            // required
+                            required
                           />
-                          {/* <Form.Control.Feedback type="invalid">
-                          Screening Batch No is required
-                          </Form.Control.Feedback> */}
+                          <Form.Control.Feedback type="invalid">
+                          Chawki Percentage is required
+                          </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>

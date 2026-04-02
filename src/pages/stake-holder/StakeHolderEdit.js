@@ -917,7 +917,7 @@ function StakeHolderEdit() {
                 talukId: detail.talukId === 0 ? null : detail.talukId,
                 hobliId: detail.hobliId === 0 ? null : detail.hobliId,
                 villageId: detail.villageId === 0 ? null : detail.villageId,
-              })
+              }),
             );
 
             // Update farmer land list, ensuring 'prev' and 'modified' are arrays
@@ -1630,7 +1630,7 @@ function StakeHolderEdit() {
     if (farmerAddress.districtId) {
       console.log(
         "Effect triggered with districtId:",
-        farmerAddress.districtId
+        farmerAddress.districtId,
       );
       getAddressTalukList(farmerAddress.districtId);
     }
@@ -1885,7 +1885,7 @@ function StakeHolderEdit() {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
       console.log("File upload response:", response.data);
     } catch (error) {
@@ -1903,7 +1903,7 @@ function StakeHolderEdit() {
         baseURL2 + `api/s3/download?${parameters}`,
         {
           responseType: "arraybuffer",
-        }
+        },
       );
       const blob = new Blob([response.data]);
       const url = URL.createObjectURL(blob);
@@ -1936,7 +1936,7 @@ function StakeHolderEdit() {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
       console.log("File upload response:", response.data);
     } catch (error) {
@@ -1954,7 +1954,7 @@ function StakeHolderEdit() {
         baseURL2 + `api/s3/download?${parameters}`,
         {
           responseType: "arraybuffer",
-        }
+        },
       );
       const blob = new Blob([response.data]);
       const url = URL.createObjectURL(blob);
@@ -2135,7 +2135,7 @@ function StakeHolderEdit() {
                             onChange={handleInputs}
                             type="text"
                             placeholder={t(
-                              "enter_fathers_husbands_name_in_kannada"
+                              "enter_fathers_husbands_name_in_kannada",
                             )}
                             required
                             readOnly
@@ -2171,7 +2171,7 @@ function StakeHolderEdit() {
                           />
                         </div>
                       </Form.Group> */}
-
+                      {/* 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>{t("farmer_dob")}</Form.Label>
                         <div className="form-control-wrap">
@@ -2188,10 +2188,10 @@ function StakeHolderEdit() {
                             />
                           )}
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>{t("gender")}</Form.Label>
+                        <Form.Label>{t("Gender")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="genderId"
@@ -2208,30 +2208,6 @@ function StakeHolderEdit() {
                       </Form.Group>
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>
-                        {t("Caste")}<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="casteId"
-                            value={data.casteId}
-                            onChange={handleInputs}
-                            disabled
-                          >
-                            <option value="0">{t("select_Caste")}</option>
-                            {casteListData.map((list) => (
-                              <option key={list.id} value={list.id}>
-                                {list.title}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            {t("caste_is_required")}
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-
-                      <Form.Group className="form-group mt-3">
                         <Form.Label>{t("differently_abled")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -2244,19 +2220,6 @@ function StakeHolderEdit() {
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                           </Form.Select>
-                        </div>
-                      </Form.Group>
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="email">{t("email_id")}</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="email"
-                            name="email"
-                            value={data.email}
-                            onChange={handleInputs}
-                            type="email"
-                            placeholder={t("enter_email_id")}
-                          />
                         </div>
                       </Form.Group>
                     </Col>
@@ -2300,7 +2263,7 @@ function StakeHolderEdit() {
                         </div>
                       </Form.Group> */}
 
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="epicNumber">
                           {t("epic_number")}
                         </Form.Label>
@@ -2314,9 +2277,9 @@ function StakeHolderEdit() {
                             placeholder={t("enter_epic_number")}
                           />
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
 
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="rcard">
                           {t("ration_number")}
                         </Form.Label>
@@ -2330,9 +2293,9 @@ function StakeHolderEdit() {
                             placeholder={t("enter_ration_number")}
                           />
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
 
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                                               <Form.Label htmlFor="aadhaarNumber">
                                                 {t("Aadhaar Number")}
                                               </Form.Label>
@@ -2346,7 +2309,7 @@ function StakeHolderEdit() {
                                                   placeholder={t("Enter Aadhaar Number")}
                                                 />
                                               </div>
-                                            </Form.Group>
+                                            </Form.Group> */}
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="totalLandHolding">
@@ -2407,9 +2370,11 @@ function StakeHolderEdit() {
                           </Form.Select>
                         </div>
                       </Form.Group> */}
+
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                        {t("farmer_type")}<span className="text-danger">*</span>
+                          {t("farmer_type")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -2435,17 +2400,41 @@ function StakeHolderEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("select_farmer_type_is_required")}
+                            {t("select_farmer_type_is_required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label>
+                          {t("Caste")}
+                          <span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="casteId"
+                            value={data.casteId}
+                            onChange={handleInputs}
+                            disabled
+                          >
+                            <option value="0">{t("select_Caste")}</option>
+                            {casteListData.map((list) => (
+                              <option key={list.id} value={list.id}>
+                                {list.title}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            {t("caste_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="4">
-                      <Form.Group className="form-group">
+                      {/* <Form.Group className="form-group">
                         <Form.Label htmlFor="rid">
                           {t("farmer_number")}
-                          {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -2455,13 +2444,12 @@ function StakeHolderEdit() {
                             onChange={handleInputs}
                             type="text"
                             placeholder={t("enter_farmer_number")}
-                            // required
                           />
                           <Form.Control.Feedback type="invalid">
                             Farmer Number is required
                           </Form.Control.Feedback>
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
 
                       {/* <Form.Group className="form-group mt-3">
                         <Form.Label>Farmer Type</Form.Label>
@@ -2480,6 +2468,19 @@ function StakeHolderEdit() {
                           </Form.Select>
                         </div>
                       </Form.Group> */}
+                      <Form.Group className="form-group">
+                        <Form.Label htmlFor="email">{t("email_id")}</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="email"
+                            name="email"
+                            value={data.email}
+                            onChange={handleInputs}
+                            type="email"
+                            placeholder={t("enter_email_id")}
+                          />
+                        </div>
+                      </Form.Group>
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>{t("education")}</Form.Label>
@@ -2518,7 +2519,8 @@ function StakeHolderEdit() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                        {t("tsc")}<span className="text-danger">*</span>
+                          {t("tsc")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -2543,7 +2545,7 @@ function StakeHolderEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("tsc_is_required")}
+                            {t("tsc_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -2566,7 +2568,7 @@ function StakeHolderEdit() {
 
                       {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="photoPath">
-                          {t("farmer_photo")} (PDF/jpg/png)(Max:2mb)
+                          {t("farmer_photo")} (PDF/jpg/png)(Max:5MB)
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -2579,7 +2581,7 @@ function StakeHolderEdit() {
                       </Form.Group> */}
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="photoPath">
-                        {t("Farmer_Photo_(PDF/jpg/png)_(Max: 2mb)")}
+                          {t("Farmer_Photo_(PDF/jpg/png)_(Max: 5MB)")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -2733,7 +2735,7 @@ function StakeHolderEdit() {
                                           size="sm"
                                           onClick={() =>
                                             handleDeleteFamilyMembers(
-                                              item.farmerFamilyId
+                                              item.farmerFamilyId,
                                             )
                                           }
                                           // onClick={handleShowModal2}
@@ -2949,7 +2951,7 @@ function StakeHolderEdit() {
                                           size="sm"
                                           onClick={() =>
                                             handleFLGet(
-                                              item.farmerLandDetailsId
+                                              item.farmerLandDetailsId,
                                             )
                                           }
                                         >
@@ -3126,7 +3128,7 @@ function StakeHolderEdit() {
                       </Form.Group> */}
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="accountImagePath">
-                        {t("upload_bank")}
+                          {t("upload_bank")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -3206,7 +3208,7 @@ function StakeHolderEdit() {
                           />
                         </Col>
                         <Form.Label column sm={11} className="mt-n2">
-                        {t("Lock Bank Details")}
+                          {t("Lock Bank Details")}
                         </Form.Label>
                       </Form.Group>
                     </Col>
@@ -3275,7 +3277,8 @@ function StakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label>
-                  {t("relationship")}<span className="text-danger">*</span>
+                    {t("relationship")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3300,7 +3303,7 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("relationship_is_required")}
+                      {t("relationship_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -3382,7 +3385,8 @@ function StakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label>
-                  {t("relationship")}<span className="text-danger">*</span>
+                    {t("relationship")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3407,7 +3411,7 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("relationship_is_required")}
+                      {t("relationship_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -3453,7 +3457,8 @@ function StakeHolderEdit() {
               <Col lg="4">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("land_ownership")}<span className="text-danger">*</span>
+                    {t("land_ownership")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3478,14 +3483,15 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("land_ownership_required")}
+                      {t("land_ownership_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("soil_type")}<span className="text-danger">*</span>
+                    {t("soil_type")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3507,7 +3513,7 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("soil_type_required")}
+                      {t("soil_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -3529,7 +3535,8 @@ function StakeHolderEdit() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("source_of_Mulberry")}<span className="text-danger">*</span>
+                    {t("source_of_Mulberry")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3554,7 +3561,7 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("Mulberry_source_required")}
+                      {t("Mulberry_source_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -3575,14 +3582,15 @@ function StakeHolderEdit() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                    {t("Mulberry Area(in Acres_required)")}
+                      {t("Mulberry Area(in Acres_required)")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("Mulberry_Variety")}<span className="text-danger">*</span>
+                    {t("Mulberry_Variety")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3607,7 +3615,7 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("Mulberry_Variety_required")}
+                      {t("Mulberry_Variety_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -3661,7 +3669,8 @@ function StakeHolderEdit() {
               <Col lg="4">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("plantation_type")}<span className="text-danger">*</span>
+                    {t("plantation_type")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3686,14 +3695,15 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("plantation_type_required")}
+                      {t("plantation_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("irrigation_source")}<span className="text-danger">*</span>
+                    {t("irrigation_source")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3718,14 +3728,15 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("irrigation_source_required")}
+                      {t("irrigation_source_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("irrigation_type")}<span className="text-danger">*</span>
+                    {t("irrigation_type")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3750,7 +3761,7 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("irrigation_type_required")}
+                      {t("irrigation_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -3778,7 +3789,7 @@ function StakeHolderEdit() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("rearing_house_roof_type")}
+                    {t("rearing_house_roof_type")}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -3793,7 +3804,9 @@ function StakeHolderEdit() {
                         farmerLand.roofTypeId === "0"
                       }
                     >
-                      <option value="">{t("select_rearing_house_roof_type")}</option>
+                      <option value="">
+                        {t("select_rearing_house_roof_type")}
+                      </option>
                       {roofTypeListData.map((list) => (
                         <option key={list.roofTypeId} value={list.roofTypeId}>
                           {list.roofTypeName}
@@ -3808,7 +3821,7 @@ function StakeHolderEdit() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("silk_worm")}
+                    {t("silk_worm")}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -3905,7 +3918,7 @@ function StakeHolderEdit() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                    {t("rearing_required")}
+                      {t("rearing_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4324,7 +4337,8 @@ function StakeHolderEdit() {
               <Col lg="4">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("land_ownership")}<span className="text-danger">*</span>
+                    {t("land_ownership")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4349,13 +4363,14 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("land_ownership_required")}
+                      {t("land_ownership_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("soil_type")}<span className="text-danger">*</span>
+                    {t("soil_type")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4377,7 +4392,7 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("soil_type_required")}
+                      {t("soil_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4397,7 +4412,8 @@ function StakeHolderEdit() {
                 </Form.Group>
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("source_of_Mulberry")}<span className="text-danger">*</span>
+                    {t("source_of_Mulberry")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4422,7 +4438,7 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("Mulberry_source_required")}
+                      {t("Mulberry_source_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4442,13 +4458,14 @@ function StakeHolderEdit() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                    {t("Mulberry Area(in Acres_required)")}
+                      {t("Mulberry Area(in Acres_required)")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("Mulberry_Variety")}<span className="text-danger">*</span>
+                    {t("Mulberry_Variety")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4473,7 +4490,7 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("Mulberry_Variety_required")}
+                      {t("Mulberry_Variety_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4525,7 +4542,8 @@ function StakeHolderEdit() {
               <Col lg="4">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("plantation_type")}<span className="text-danger">*</span>
+                    {t("plantation_type")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4550,14 +4568,15 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("plantation_type_required")}
+                      {t("plantation_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("irrigation_source")}<span className="text-danger">*</span>
+                    {t("irrigation_source")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4582,14 +4601,15 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("irrigation_source_required")}
+                      {t("irrigation_source_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("irrigation_type")}<span className="text-danger">*</span>
+                    {t("irrigation_type")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4614,7 +4634,7 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("irrigation_type_required")}
+                      {t("irrigation_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4642,7 +4662,7 @@ function StakeHolderEdit() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("rearing_house_roof_type")}
+                    {t("rearing_house_roof_type")}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -4657,7 +4677,9 @@ function StakeHolderEdit() {
                         farmerLand.roofTypeId === "0"
                       }
                     >
-                      <option value="">{t("select_rearing_house_roof_type")}</option>
+                      <option value="">
+                        {t("select_rearing_house_roof_type")}
+                      </option>
                       {roofTypeListData.map((list) => (
                         <option key={list.roofTypeId} value={list.roofTypeId}>
                           {list.roofTypeName}
@@ -4665,14 +4687,14 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("rearing_house_roof_type_required")}
+                      {t("rearing_house_roof_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("silk_worm")}
+                    {t("silk_worm")}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -4698,7 +4720,7 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("silk_worm_required")}
+                      {t("silk_worm_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4769,7 +4791,7 @@ function StakeHolderEdit() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                    {t("rearing_required")}
+                      {t("rearing_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5187,7 +5209,8 @@ function StakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("state")}<span className="text-danger">*</span>
+                    {t("state")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5209,7 +5232,7 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("state_is_required")}
+                      {t("state_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5217,7 +5240,8 @@ function StakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("district")}<span className="text-danger">*</span>
+                    {t("district")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5244,7 +5268,7 @@ function StakeHolderEdit() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("district_is_required")}
+                      {t("district_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5252,7 +5276,8 @@ function StakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("taluk")}<span className="text-danger">*</span>
+                    {t("taluk")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5276,7 +5301,7 @@ function StakeHolderEdit() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("taluk_is_required")}
+                      {t("taluk_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5284,7 +5309,8 @@ function StakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("hobli")}<span className="text-danger">*</span>
+                    {t("hobli")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5308,7 +5334,7 @@ function StakeHolderEdit() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("hobli_is_required")}
+                      {t("hobli_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5316,7 +5342,8 @@ function StakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label htmlFor="Village">
-                  {t("village")}<span className="text-danger">*</span>
+                    {t("village")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5340,7 +5367,7 @@ function StakeHolderEdit() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("village_is_required")}
+                      {t("village_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5447,7 +5474,8 @@ function StakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("state")}<span className="text-danger">*</span>
+                    {t("state")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5469,7 +5497,7 @@ function StakeHolderEdit() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("state_is_required")}
+                      {t("state_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5477,7 +5505,8 @@ function StakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("district")}<span className="text-danger">*</span>
+                    {t("district")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5504,7 +5533,7 @@ function StakeHolderEdit() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("district_is_required")}
+                      {t("district_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5512,7 +5541,8 @@ function StakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("taluk")}<span className="text-danger">*</span>
+                    {t("taluk")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5536,7 +5566,7 @@ function StakeHolderEdit() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("taluk_is_required")}
+                      {t("taluk_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5544,7 +5574,8 @@ function StakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("hobli")}<span className="text-danger">*</span>
+                    {t("hobli")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5568,7 +5599,7 @@ function StakeHolderEdit() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("hobli_is_required")}
+                      {t("hobli_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5576,7 +5607,8 @@ function StakeHolderEdit() {
               <Col lg="6">
                 <Form.Group className="form-group mt-3">
                   <Form.Label htmlFor="Village">
-                  {t("village")}<span className="text-danger">*</span>
+                    {t("village")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5600,7 +5632,7 @@ function StakeHolderEdit() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("village_is_required")}
+                      {t("village_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5672,7 +5704,7 @@ function StakeHolderEdit() {
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleEditFA}> */}
                     <Button type="submit" variant="success">
-                    {t("update")}
+                      {t("update")}
                     </Button>
                   </div>
                   {/* <div className="gap-col">
@@ -5682,7 +5714,7 @@ function StakeHolderEdit() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal5}>
-                    {t("cancel")}
+                      {t("cancel")}
                     </Button>
                   </div>
                 </div>

@@ -53,6 +53,7 @@ function ScCategoryEdit() {
               description:"",
               dbtCode: "",
               categoryShortName: "",
+              categoryCodeForSanctionOrder: "",
             });
             setValidated(false);
           }
@@ -81,6 +82,7 @@ function ScCategoryEdit() {
       description:"",
       dbtCode: "",
       categoryShortName: "",
+      categoryCodeForSanctionOrder: "",
     });
   };
 
@@ -225,6 +227,29 @@ function ScCategoryEdit() {
                       </div>
                     </Form.Group>
                   </Col>
+
+                   <Col lg="6">
+                        <Form.Group className="form-group">
+                          <Form.Label htmlFor="title">
+                          {t("Category Code For Sanction Order")}
+                            <span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="categoryCodeForSanctionOrder"
+                              name="categoryCodeForSanctionOrder"
+                              type="text"
+                              value={data.categoryCodeForSanctionOrder}
+                              onChange={handleInputs}
+                              placeholder={t("Enter Category Code For Sanction Order")}
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                            {t("Category Code For Sanction Order is required")}
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
 
                   <Col lg="6">
                     <Form.Group className="form-group">

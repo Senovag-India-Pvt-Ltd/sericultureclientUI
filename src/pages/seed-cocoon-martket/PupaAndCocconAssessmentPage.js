@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURLChawki = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function PupaAndCocoonAssessmentPage() {
   const { t } = useTranslation(); // Initialize useTranslation
@@ -161,15 +162,15 @@ useEffect(() => {
    const [showModalFC, setShowModalFC] = useState(false);
    const handleShowModalFC = () => {
      // getDocumentFile()
-     pathList.forEach(path =>{
-       getDocumentFile(path);
-   })
+  //    pathList.forEach(path =>{
+  //      getDocumentFile(path);
+  //  })
      setShowModalFC(true);
    }
   //  const handleCloseModalFC = () => setShowModalFC(false);
 
   const handleCloseModalFC = () => {
-    setSelectedDocumentFile([]);
+    // setSelectedDocumentFile([]);
     setShowModalFC(false);
   };
 
@@ -342,55 +343,86 @@ if (form.checkValidity() === false) {
   const [fitnessCertificate, setFitnessCertificate] = useState({});
 
    // To get Photo
-   const [selectedDocumentFile, setSelectedDocumentFile] = useState([]);
+  //  const [selectedDocumentFile, setSelectedDocumentFile] = useState([]);
 
-   const getDocumentFile = async (file) => {
-     const parameters = `fileName=${file}`;
-     try {
-       const response = await api.get(
-         baseURLChawki + `v1/api/s3/download?${parameters}`,
-         {
-           responseType: "arraybuffer",
-         }
-       );
-       const blob = new Blob([response.data]);
-       const url = URL.createObjectURL(blob);
-       setSelectedDocumentFile(prev=>([...prev,url]));
-     } catch (error) {
-       console.error("Error fetching file:", error);
-     }
-   };
+  //  const getDocumentFile = async (file) => {
+  //    const parameters = `fileName=${file}`;
+  //    try {
+  //      const response = await api.get(
+  //        baseURLChawki + `v1/api/s3/download?${parameters}`,
+  //        {
+  //          responseType: "arraybuffer",
+  //        }
+  //      );
+  //      const blob = new Blob([response.data]);
+  //      const url = URL.createObjectURL(blob);
+  //      setSelectedDocumentFile(prev=>([...prev,url]));
+  //    } catch (error) {
+  //      console.error("Error fetching file:", error);
+  //    }
+  //  };
 
 
 
-   const downloadFile = async (file) => {
-    console.log("file",file);
-    const parameters = `fileName=${file}`;
+  //  const downloadFile = async (file) => {
+  //   console.log("file",file);
+  //   const parameters = `fileName=${file}`;
+  //   try {
+  //     const response = await api.get(
+  //       baseURLChawki + `v1/api/s3/download?${parameters}`,
+  //       {
+  //         responseType: "arraybuffer",
+  //       }
+  //     );
+  //     const blob = new Blob([response.data]);
+  //     const url = URL.createObjectURL(blob);
+
+  //     const fileExtension = file.split(".").pop();
+
+  //     const link = document.createElement("a");
+  //     link.href = url;
+
+  //     const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
+
+  //     link.download = modifiedFileName;
+
+  //     document.body.appendChild(link);
+  //     link.click();
+
+  //     document.body.removeChild(link);
+  //   } catch (error) {
+  //     console.error("Error fetching file:", error);
+  //   }
+  // };
+
+   const downloadFile = async (fitnessCertificateId, fruitsId) => {
     try {
-      const response = await api.get(
-        baseURLChawki + `v1/api/s3/download?${parameters}`,
+      const response = await api.post(
+        baseURLReport + `getFitenessCertificate`,
+        // {
+        //   params: {
+        //     fitnessCertificateId: fitnessCertificateId,
+        //     fruitsId: fruitsId,
+        //   },
+        //   responseType: "blob",
+        // }
         {
-          responseType: "arraybuffer",
-        }
+            fitnessCertificateId: fitnessCertificateId,
+             fruitsId: fruitsId,
+          },
+          {
+            responseType: "blob", //Force to receive data in a Blob Format
+          }
+  
       );
-      const blob = new Blob([response.data]);
-      const url = URL.createObjectURL(blob);
-
-      const fileExtension = file.split(".").pop();
-
-      const link = document.createElement("a");
-      link.href = url;
-
-      const modifiedFileName = file.replace(/_([^_]*)$/, ".$1");
-
-      link.download = modifiedFileName;
-
-      document.body.appendChild(link);
-      link.click();
-
-      document.body.removeChild(link);
+  
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+  
+      window.open(fileURL);
+  
     } catch (error) {
-      console.error("Error fetching file:", error);
+      console.error("Error downloading file:", error);
     }
   };
 
@@ -564,66 +596,12 @@ const saveError = (message = "Something went wrong!") => {
       </Modal.Body>
     </Modal>
 
-      <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
+      {/* <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>{t("FC Details")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* <div className="d-flex flex-column justify-content-center">
-            <Row className="g-5">
-              <Col
-                lg="12"
-                className="d-flex flex-column justify-content-center align-items-center"
-              >
-                <h3>Fitness Certificate</h3>
-                <img
-                  src="https://5.imimg.com/data5/ANDROID/Default/2024/7/434434494/XL/GV/OX/14251721/prod-20240712-2228471980760355427493851-jpg-1000x1000.jpg"
-                  alt="FC Details"
-                  width="300"
-                  height="300"
-                />
-              </Col>
-            </Row>
-            <Row className="g-5">
-              <Col
-                lg="12"
-                className="d-flex justify-content-center align-items-center"
-              >
-                <Form.Group className="form-group mt-3">
-                  <Form.Label style={{ fontSize: "20px" }}>
-                    Confirmed
-                  </Form.Label>
-                  <div className="form-control-wrap">
-                    <Row className="d-flex align-items-center">
-                      <Col lg="auto">
-                        <Form.Check
-                          type="radio"
-                          id="yes"
-                          name="subsidyAvailed"
-                          label="Yes"
-                          value="yes"
-                          // onChange={handleChange}
-                          // checked={selected === "yes"}
-                        />
-                      </Col>
-                      <Col lg="auto">
-                        <Form.Check
-                          type="radio"
-                          id="no"
-                          value="no"
-                          name="subsidyAvailed"
-                          defaultChecked
-                          // onChange={handleChange}
-                          // checked={selected === "no"}
-                          label="No"
-                        />
-                      </Col>
-                    </Row>
-                  </div>
-                </Form.Group>
-              </Col>
-            </Row>
-          </div> */}
+         
           <div className="d-flex flex-column justify-content-center">
       <tr>
       <td style={styles.ctstyle}>{t("Fitness Certificate")}:</td>
@@ -657,7 +635,89 @@ const saveError = (message = "Something went wrong!") => {
       </tr>
     </div>
         </Modal.Body>
+      </Modal> */}
+
+      <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>{t("FC Details")}</Modal.Title>
+        </Modal.Header>
+      
+        <Modal.Body>
+          <div className="d-flex flex-column justify-content-center">
+            <table className="table table-bordered">
+              <tbody>
+                {prepareEggs?.length > 0 &&
+                  prepareEggs.map((data, index) => (
+                    <React.Fragment key={index}>
+      
+                      {/* Fitness Certificate Image */}
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Fitness Certificate")}:</td>
+                        <td>
+                          <img
+                            style={{ height: "100px", width: "100px" }}
+                            src={data.previewUrl}
+                            alt={`Fitness Certificate ${index + 1}`}
+                          />
+                          <Button
+                            variant="primary"
+                            size="sm"
+                            className="ms-2"
+                            // onClick={() => downloadFile(data.fitnessCertificatePath)}
+                            onClick={() =>
+                            downloadFile(data.fitnessCertificateId, data.fruitsId)
+                          }
+                                            >
+                            {t("Download File")}
+                          </Button>
+                        </td>
+                      </tr>
+      
+                      {/* Parental Lot Number */}
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Parental Lot Number")}:</td>
+                        <td>{data.lotNumberRsp}</td>
+                      </tr>
+      
+                      {/* DFL Lot Number */}
+                      <tr>
+                        <td style={styles.ctstyle}>{t("DFL Lot Number")}:</td>
+                        <td>{data.numbersOfDfls}</td>
+                      </tr>
+      
+                      {/* Lot Variety */}
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Lot Variety")}:</td>
+                        <td>{data.raceOfDfls}</td>
+                      </tr>
+      
+                      {/* Spun From Date */}
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Spun From Date")}:</td>
+                        <td>{data.spunFromDate}</td>
+                      </tr>
+      
+                      {/* Spun To Date */}
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Spun To Date")}:</td>
+                        <td>{data.spunToDate}</td>
+                      </tr>
+      
+                      {/* Separator */}
+                      <tr>
+                        <td colSpan="2">
+                          <hr />
+                        </td>
+                      </tr>
+      
+                    </React.Fragment>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </Modal.Body>
       </Modal>
+
       <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg">
       <Modal.Header closeButton style={styles.modalHeader}>
         <Modal.Title style={styles.modalTitle}>{t("Crop Details")}</Modal.Title>
