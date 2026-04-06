@@ -5653,6 +5653,14 @@ const fetchReelerDetails = () => {
       hide: "md",
     },
     {
+      name: t("Hissa"),
+      selector: (row) => row.hissa,
+      cell: (row) => <span>{row.hissa}</span>,
+      sortable: true,
+      hide: "md",
+    },
+   
+    {
       name: t("survey_number"),
       selector: (row) => row.surveyNumber,
       cell: (row) => <span>{row.surveyNumber}</span>,
@@ -9272,11 +9280,6 @@ const fetchReelerDetails = () => {
                             </Form.Group>
                           </Col>
 
-                          
-
-
-                       
-
                           <Col lg="2">
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="schemeAmount">
@@ -9582,7 +9585,7 @@ const fetchReelerDetails = () => {
                         <Col lg="4">
                           <Form.Group className="form-group mt-n5">
                             <Form.Label htmlFor="expectedAmount">
-                              {t("Subsidy/Bonus/Incentive Amount")}
+                              {t("Total Subsidy/Bonus/Incentive Amount")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -9706,11 +9709,10 @@ const fetchReelerDetails = () => {
                     </Card.Header>
                     <Card.Body>
                       <Row className="g-gs">
-                        <Col lg="4">
+                        {/* <Col lg="4">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="landDeveloped">
                               {t("Unit")}
-                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -9722,12 +9724,10 @@ const fetchReelerDetails = () => {
                                 placeholder="Enter Unit"
                                 // required
                               />
-                              {/* <Form.Control.Feedback type="invalid">
-                                {t("Unit Quantity is required")}
-                              </Form.Control.Feedback> */}
+                             
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         <Col lg="4">
                           <Form.Group className="form-group mt-n3">
@@ -9779,7 +9779,7 @@ const fetchReelerDetails = () => {
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="landDeveloped">
                               {t("Estimated Cost")}
-                              {/* <span className="text-danger">*</span> */}
+                              <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -9789,11 +9789,11 @@ const fetchReelerDetails = () => {
                                 value={developedLand.estimatedCost}
                                 onChange={handleDevelopedLandInputs}
                                 placeholder="Enter Estimated Cost"
-                                // required
+                                required
                               />
-                              {/* <Form.Control.Feedback type="invalid">
-                                {t("Extent Of Mulberry is required")}
-                              </Form.Control.Feedback> */}
+                              <Form.Control.Feedback type="invalid">
+                                {t("Estimated Cost is required")}
+                              </Form.Control.Feedback>
                             </div>
                           </Form.Group>
                         </Col>
@@ -9835,7 +9835,7 @@ const fetchReelerDetails = () => {
                         <Col lg="4">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="landDeveloped">
-                              {t("Length")}
+                              {t("Length (in feet)")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -9849,7 +9849,7 @@ const fetchReelerDetails = () => {
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                {t("Length is required")}
+                                {t("Length (in feet) is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -9858,7 +9858,7 @@ const fetchReelerDetails = () => {
                         <Col lg="4">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="landDeveloped">
-                              {t("Breadth")}
+                              {t("Breadth (in feet)")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -9872,7 +9872,7 @@ const fetchReelerDetails = () => {
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                {t("Breadth is required")}
+                                {t("Breadth (in feet) is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>

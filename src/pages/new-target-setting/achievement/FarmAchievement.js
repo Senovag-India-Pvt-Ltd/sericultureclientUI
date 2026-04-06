@@ -1625,83 +1625,83 @@ const handleShowModal = () => {
                         </Col>
 
                         <Col lg="6">
-  <Form.Group className="form-group mt-n4">
-    <Form.Label>
-      {t("Month")}<span className="text-danger">*</span>
-    </Form.Label>
-    <div className="form-control-wrap">
-      <Form.Select
-        name="month"
-        value={data.month}
-        onChange={handleInputs}  
-        // onBlur={() => handleEditInputs}
-        required
-        // disabled
-      >
-        <option value="">{t("SELECT MONTH")}</option>
-  <option value="JANUARY">{t("JANUARY")}</option>
-  <option value="FEBRUARY">{t("FEBRUARY")}</option>
-  <option value="MARCH">{t("MARCH")}</option>
-  <option value="APRIL">{t("APRIL")}</option>
-  <option value="MAY">{t("MAY")}</option>
-  <option value="JUNE">{t("JUNE")}</option>
-  <option value="JULY">{t("JULY")}</option>
-  <option value="AUGUST">{t("AUGUST")}</option>
-  <option value="SEPTEMBER">{t("SEPTEMBER")}</option>
-  <option value="OCTOBER">{t("OCTOBER")}</option>
-  <option value="NOVEMBER">{t("NOVEMBER")}</option>
-  <option value="DECEMBER">{t("DECEMBER")}</option>
-</Form.Select>
-      <Form.Control.Feedback type="invalid">
-        {t("Month is required")}
-      </Form.Control.Feedback>
-    </div>
-  </Form.Group>
-</Col>
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>
+                            {t("Month")}<span className="text-danger">*</span>
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="month"
+                              value={data.month}
+                              onChange={handleInputs}  
+                              // onBlur={() => handleEditInputs}
+                              required
+                              // disabled
+                            >
+                              <option value="">{t("SELECT MONTH")}</option>
+                        <option value="JANUARY">{t("JANUARY")}</option>
+                        <option value="FEBRUARY">{t("FEBRUARY")}</option>
+                        <option value="MARCH">{t("MARCH")}</option>
+                        <option value="APRIL">{t("APRIL")}</option>
+                        <option value="MAY">{t("MAY")}</option>
+                        <option value="JUNE">{t("JUNE")}</option>
+                        <option value="JULY">{t("JULY")}</option>
+                        <option value="AUGUST">{t("AUGUST")}</option>
+                        <option value="SEPTEMBER">{t("SEPTEMBER")}</option>
+                        <option value="OCTOBER">{t("OCTOBER")}</option>
+                        <option value="NOVEMBER">{t("NOVEMBER")}</option>
+                        <option value="DECEMBER">{t("DECEMBER")}</option>
+                        </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                              {t("Month is required")}
+                            </Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
 
 
                        <Col lg="6">
-  <Form.Group className="form-group mt-n4">
-    <Form.Label>
-      {t("Target Type")}
-    </Form.Label>
-    <div className="form-control-wrap">
-      <Form.Select
-        name="target"
-        value={data.target}
-        onChange={handleInputs}
-        
-      >
-        <option value="">{t("Select Target Type")}</option>
-        <option value="Brushing">BRUSHING</option>
-        <option value="Cocoon Production">COCOON PRODUCTION</option>
-      </Form.Select>
-    </div>
-  </Form.Group>
-</Col>
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label>
+                            {t("Target Type")}
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="target"
+                              value={data.target}
+                              onChange={handleInputs}
+                              
+                            >
+                              <option value="">{t("Select Target Type")}</option>
+                              <option value="Brushing">BRUSHING</option>
+                              <option value="Cocoon Production">COCOON PRODUCTION</option>
+                            </Form.Select>
+                          </div>
+                        </Form.Group>
+                      </Col>
 
- <Col lg="6">
-  <Form.Group className="form-group mt-n4">
-    <Form.Label htmlFor="Target Value">
-      {t("Target Value")}<span className="text-danger">*</span>
-    </Form.Label>
-    <div className="form-control-wrap">
-      <Form.Control
-        id="value"
-        name="value"
-        value={data.value}
-        onChange={handleInputs}
-        type="text"
-        placeholder={t("Enter Value")}
-        required
-        // isInvalid={!data.value} 
-      />
-      <Form.Control.Feedback type="invalid">
-        {t("Target Value is required")}.
-      </Form.Control.Feedback>
-    </div>
-  </Form.Group>
-</Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="Target Value">
+                          {t("Achievement Value")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="value"
+                            name="value"
+                            value={data.value}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder={t("Enter Value")}
+                            required
+                            // isInvalid={!data.value} 
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {t("Achievement Value is required")}.
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">

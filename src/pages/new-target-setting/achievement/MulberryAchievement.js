@@ -827,64 +827,7 @@ useEffect(() => {
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   };
 
-  // const postData = (e) => {
-  //   axios
-  //     .post(baseURLMasterData + `Budget/add`, data, {
-  //       headers: _header,
-  //     })
-  //     .then((response) => {
-  //       saveSuccess();
-  //     })
-  //     .catch((err) => {
-  //       setData({});
-  //       saveError();
-  //     });
-  // };
-
-  // const postData = (event) => {
-  //   const form = event.currentTarget;
-  //   if (form.checkValidity() === false) {
-  //     event.preventDefault();
-  //     event.stopPropagation();
-  //     setValidated(true);
-  //   } else {
-  //     event.preventDefault();
-  //     // event.stopPropagation();
-  //     const {talukId,...rest} = data;
-  //     api
-  //       .post(
-  //         baseURLTargetSetting + `mulberryTargets/saveSISDMulberryTargets`,
-  //         // data
-  //         {...rest,naregaMonths:[naregaMonth],nonNaregaMonths:[nonNaregaMonth]}
-  //       )
-  //       .then((response) => {
-  //         if (response.data.content.error) {
-  //           saveError(response.data.content.error_description);
-  //         } else {
-  //           saveSuccess();
-  //           getList();
-  //           // clear();
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         if (
-  //           err.response &&
-  //           err.response &&
-  //           err.response.data &&
-  //           err.response.data.validationErrors
-  //         ) {
-  //           if (Object.keys(err.response.data.validationErrors).length > 0) {
-  //             saveError(err.response.data.validationErrors);
-  //           }
-  //         }else{
-  //           saveError("The target value exceeds the remaining target");
-  //         }
-  //       });
-  //     setValidated(true);
-  //   }
-  // };
-
-
+ 
   const postData = (event) => {
           const form = event.currentTarget;
           if (form.checkValidity() === false) {
@@ -2100,8 +2043,8 @@ useEffect(() => {
 
  <Col lg="6">
   <Form.Group className="form-group mt-n4">
-    <Form.Label htmlFor="Target Value">
-      {t("Target Value")}<span className="text-danger">*</span>
+    <Form.Label htmlFor="Achievement Value">
+      {t("Achievement Value")}<span className="text-danger">*</span>
     </Form.Label>
     <div className="form-control-wrap">
       <Form.Control
@@ -2115,7 +2058,7 @@ useEffect(() => {
         // isInvalid={!data.value} 
       />
       <Form.Control.Feedback type="invalid">
-        {t("Target Value is required")}.
+        {t("Achievement Value is required")}.
       </Form.Control.Feedback>
     </div>
   </Form.Group>
