@@ -1597,7 +1597,7 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
 <Col lg="6">
   <Form.Group className="form-group mt-n4">
     <Form.Label htmlFor="financialValue">
-      {t("Financial Target Value")}<span className="text-danger">*</span>
+      {t("Financial Achievement Value")}<span className="text-danger">*</span>
     </Form.Label>
     <div className="form-control-wrap">
       <Form.Control
@@ -1619,11 +1619,11 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
           });
         }}
         type="number"
-        placeholder={t("Enter Financial Value")}
+        placeholder={t("Enter Value")}
         required
       />
       <Form.Control.Feedback type="invalid">
-        {t("Financial Target Value is required")}
+        {t("Financial Achievement Value is required")}
       </Form.Control.Feedback>
     </div>
   </Form.Group>
@@ -1632,7 +1632,7 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
 <Col lg="6">
   <Form.Group className="form-group mt-n4">
     <Form.Label htmlFor="physicalValue">
-      {t("Physical Target Value")}<span className="text-danger">*</span>
+      {t("Physical Achievement Value")}<span className="text-danger">*</span>
     </Form.Label>
     <div className="form-control-wrap">
       <Form.Control
@@ -1654,11 +1654,11 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
           });
         }}
         type="number"
-        placeholder={t("Enter Physical Value")}
+        placeholder={t("Enter Value")}
         required
       />
       <Form.Control.Feedback type="invalid">
-        {t("Physical Target Value is required")}
+        {t("Physical Achievement Value is required")}
       </Form.Control.Feedback>
     </div>
   </Form.Group>

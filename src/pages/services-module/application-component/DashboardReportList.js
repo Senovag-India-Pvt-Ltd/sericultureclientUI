@@ -136,7 +136,18 @@ function DashboardReportList() {
 
   const [showModal4, setShowModal4] = useState(false);
 
-  const handleShowModal4 = () => setShowModal4(true);
+  // const handleShowModal4 = () => setShowModal4(true);
+const handleShowModal4 = (item) => {
+  const subSchemeId = item?.subSchemeId;
+  const approvalStageId = item?.approvalStageId;
+
+  if (subSchemeId && approvalStageId) {
+    getApprovalStageBeforeStepListDataList(subSchemeId, approvalStageId);
+  }
+
+  setShowModal4(true);
+};
+
   const handleCloseModal4 = () => setShowModal4(false);
 
   const [changeable, setChangeable] = useState({
@@ -518,6 +529,31 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
 
   // to get approvalStage Before Step
   const [
+    approvalStageBeforeStepListData,
+    setApprovalStageBeforeStepListData,
+  ] = useState([]);
+  const getApprovalStageBeforeStepListDataList = (
+    subSchemeId,
+    approvalStageId
+  ) => {
+    api
+      .post(
+        baseURLDBT +
+          `service/getRejectedBeforeStepDetailsAfterSubmitBySubSchemeIdAndApprovalStageId?subSchemeId=${subSchemeId}&approvalStageId=${approvalStageId}`
+      )
+      .then((response) => {
+        if (response.data.content) {
+          setApprovalStageBeforeStepListData(response.data.content);
+        }
+      })
+      .catch((err) => {
+        setApprovalStageBeforeStepListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+
+  const [
     approvalRejectStageBeforeStepListData,
     setApprovalRejectStageBeforeStepListData,
   ] = useState([]);
@@ -671,6 +707,10 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
         talukId
       );
   }, [actionData.stepId]);
+
+  
+
+  
 
   const [userOfStepsToApproveData, setUserOfStepsToApproveData] = useState([]);
 
@@ -2894,7 +2934,7 @@ const allowedSchemes = [
         setFieldsDisabled(false);
         getApprovalRejectStageBeforeStepListDataList(
           subSchemeId,
-          approvalStageId
+          actionFarmerData[0]?.approvalStageId
         ); // Calls before-step function for "Objection"
       } else if (value === "") {
         setFieldsDisabled(true);
@@ -3021,12 +3061,51 @@ const allowedSchemes = [
   const [assignData, setAssignData] = useState({
     applicationFormId: "",
     userId: "",
+    stepId: "",
   });
 
   const handleAssignInputs = (e) => {
     let { name, value } = e.target;
     setAssignData({ ...assignData, [name]: value });
   };
+
+  const [userFromDistrictForReassignData, setUserFromDistrictForReassignData] = useState([]);
+
+
+  const getUserFromDistrictListForReassign = (
+    subSchemeId,
+    approvalStageId,
+    districtId,
+    talukId
+  ) => {
+    api
+      .post(
+        baseURLDBT +
+          `service/getUserBySubSchemeIdAndScApprovalStageIdAndTalukIdAndDistrictId?subSchemeId=${subSchemeId}&approvalStageId=${approvalStageId}&districtId=${districtId}&talukId=${talukId}`
+      )
+      .then((response) => {
+        if (response.data.content) {
+          setUserFromDistrictForReassignData(response.data.content);
+        }
+      })
+      .catch((err) => {
+        setUserFromDistrictForReassignData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+ useEffect(() => {
+    const subSchemeId = listData[0]?.subSchemeId; // ✅ Get from listData
+
+    if (assignData.stepId && subSchemeId) {
+      getUserFromDistrictListForReassign(
+        subSchemeId,
+        assignData.stepId,
+        districtId,
+        talukId
+      );
+    }
+  }, [assignData.stepId]);
 
   //   const applicationDocumentId = data[0]?.applicationDocumentId; // Use data variable here
   // setApplicationFormId(applicationDocumentId);
@@ -3047,6 +3126,7 @@ const allowedSchemes = [
       const sendPost = {
         applicationFormId,
         userId: assignData.userId,
+        stepId: assignData.stepId,
       };
       api
         .post(baseURLDBT + `service/reassignToUser`, sendPost)
@@ -4110,14 +4190,20 @@ const allowedSchemes = [
       icon: "success",
       title: "Rejected successfully",
       text: message,
-    });
+    }).then(() => {
+    // Refresh entire page AFTER clicking OK
+    window.location.reload();
+  });
   };
   const saveAssignSuccess = (message) => {
     Swal.fire({
       icon: "success",
       title: "Assigned successfully",
       text: message,
-    });
+    }).then(() => {
+    // Refresh entire page AFTER clicking OK
+    window.location.reload();
+  });
   };
 
   const saveSuccess = (message) => {
@@ -4125,7 +4211,10 @@ const allowedSchemes = [
       icon: "success",
       title: "Saved successfully",
       text: message,
-    });
+    }).then(() => {
+    // Refresh entire page AFTER clicking OK
+    window.location.reload();
+  });
   };
   const saveError = (message) => {
     let errorMessage;
@@ -4149,6 +4238,7 @@ const allowedSchemes = [
     });
     handleCloseModal();
     getList();
+    window.location.reload(); 
   };
 
   const warningAlert = (message, title) => {
@@ -4319,7 +4409,7 @@ const allowedSchemes = [
             <Button
               variant="primary"
               size="sm"
-              onClick={() => handleShowModal4()}
+              onClick={() => handleShowModal4(row)}
             >
               Re-Assign
             </Button>
@@ -6302,6 +6392,38 @@ const allowedSchemes = [
           <Form noValidate validated={validated} onSubmit={postData}>
             {/* {docListData.map(({ documentMasterId, documentMasterName }) => ( */}
             <Row>
+
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label>
+                    Approval Stage{" "}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <Form.Select
+                    name="stepId"
+                    value={assignData.stepId}
+                    onChange={handleAssignInputs}
+                    required
+                    // disabled={fieldsDisabled}
+                  >
+                    <option value="">
+                      Select Approval Stage
+                    </option>
+                    {approvalStageBeforeStepListData.map((list) => (
+                      <option
+                        key={list.approvalStageId}
+                        value={list.approvalStageId}
+                      >
+                        {list.approvalStageName}
+                      </option>
+                    ))}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    Approval Stage Name is required
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label style={modalStyles.formGroupLabel}>
@@ -6317,7 +6439,7 @@ const allowedSchemes = [
                       // onBlur={() => handleInputs}
                     >
                       <option value="">Select User</option>
-                      {userFromDistrictData.map((list) => (
+                      {userFromDistrictForReassignData.map((list) => (
                         <option key={list.userId} value={list.userId}>
                           {list.userName}
                         </option>

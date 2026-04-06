@@ -18,6 +18,8 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 
 function StakeHolderRegister() {
+
+  const [isSaving, setIsSaving] = useState(false);
   const [familyMembersList, setFamilyMembersList] = useState([]);
   const [familyMembers, setFamilyMembers] = useState({
     relationshipId: "",
@@ -817,7 +819,6 @@ function StakeHolderRegister() {
   const handleCheckBox = (e) => {
     setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
   };
-
   const handleBankCheckBox = (e) => {
     setBank({ ...bank, lock: e.target.checked });
   };
@@ -891,6 +892,7 @@ function StakeHolderRegister() {
               .classList.remove("is-invalid");
             e.target.classList.remove("is-invalid");
           }
+
         } else {
           e.target.classList.remove("is-invalid");
           e.target.classList.add("is-valid");
@@ -1102,7 +1104,7 @@ function StakeHolderRegister() {
   // };
   // Old Postdata Commented Close
 
-  const postData = (event) => {
+  const postData =async (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -1110,25 +1112,10 @@ function StakeHolderRegister() {
       setValidated(true);
     } else {
       event.preventDefault();
-
-      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-        return;
-      }
-
-      if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
-        return;
-      }
-      if (
-        bank.farmerBankIfscCode.length < 11 ||
-        bank.farmerBankIfscCode.length > 11
-      ) {
-        return;
-      }
-      if (
-        bank.farmerBankAccountNumber !== bank.reenterFarmerBankAccountNumber
-      ) {
-        return;
-      }
+if (data.fruitsId.length !== 16) return;
+    if (data.mobileNumber.length !== 10) return;
+    if (bank.farmerBankIfscCode.length !== 11) return;
+    if (bank.farmerBankAccountNumber !== bank.reenterFarmerBankAccountNumber) return;
 
       if (farmerAddressList && farmerAddressList.length > 0) {
         if (
@@ -1162,7 +1149,8 @@ function StakeHolderRegister() {
       const date = String(now.getDate()).padStart(2, "0");
       const timeString = hours + minutes + seconds + date + month + year;
       setData((prev) => ({ ...prev, farmerNumber: timeString }));
-
+      setIsSaving(true);
+      try{
       const sendData = {
         farmerRequest: data,
         farmerBankAccountRequest: bank,
@@ -1170,9 +1158,11 @@ function StakeHolderRegister() {
         farmerFamilyRequestList: familyMembersList,
         farmerLandDetailsRequests: farmerLandList,
       };
-      api
-        .post(baseURL2 + `farmer/save-complete-farmer-details`, sendData)
-        .then((response) => {
+     
+      const response = await api.post(
+        baseURL2 + `farmer/save-complete-farmer-details`,
+        sendData
+      );
           // console.log(response.data)
           const farmerId = response.data.content.farmerId;
           const farmerBankAccountId = response.data.content.farmerBankAccountId;
@@ -1188,24 +1178,26 @@ function StakeHolderRegister() {
             saveSuccess();
           }
           // postDataBankAccount
-        })
-        .catch((err) => {
-          // setData({});
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
-          }
-        });
-      setValidated(true);
+        }
+       catch (err) {
+      if (
+        err.response &&
+        err.response.data &&
+        err.response.data.validationErrors
+      ) {
+        if (Object.keys(err.response.data.validationErrors).length > 0) {
+          saveError(err.response.data.validationErrors);
+        }
+      } else {
+        console.error(err);
+      }
+    } finally {
+      setIsSaving(false); // 🟢 enable button
     }
-  };
 
+    setValidated(true);
+  }
+};
   // to get tsc
   const [tscListData, setTscListData] = useState([]);
 
@@ -3210,6 +3202,7 @@ function StakeHolderRegister() {
                             value={bank.farmerBankAccountNumber}
                             onChange={handleBankInputs}
                             type="password"
+                            autoComplete="new-password"
                             placeholder={t("enter_bank_account_number")}
                             required
                           />
@@ -3230,8 +3223,11 @@ function StakeHolderRegister() {
                             name="reenterFarmerBankAccountNumber"
                             value={bank.reenterFarmerBankAccountNumber}
                             onChange={handleBankInputs}
-                            type="text"
+                            type="password"
                             placeholder={t("reenter_bank_account_number")}
+                            onPaste={(e) => e.preventDefault()}
+                            onCopy={(e) => e.preventDefault()}
+                            onCut={(e) => e.preventDefault()}
                             required
                           />
                           <Form.Control.Feedback id="reenter" type="invalid">
@@ -3342,8 +3338,8 @@ function StakeHolderRegister() {
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    {t("save")}
+                  <Button type="submit" variant="primary" disabled={isSaving}>
+                   {isSaving  ? "Saving..." : t("save")}
                   </Button>
                 </li>
                 <li>

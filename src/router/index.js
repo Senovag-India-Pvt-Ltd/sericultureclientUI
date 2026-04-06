@@ -1077,7 +1077,9 @@ import RegisteredPrivateChawkiList from "../pages/services-module/application-co
 import LotWisePriceFixation from "../pages/seed-cocoon-martket/LotWisePriceFixation";
 import SakalaDashboard from "../pages/services-module/application/SakalaDashboard";
 import CumulativeReport from "../pages/services-module/application/CumulativeReport";
-import DownloadSanctionOrder from "../pages/market-and-auction/DownloadSanctionOrder";
+import UserHierarchyMappingList from "../pages/masters/user-hierarchy-mapping/UserHierarchyMappingList";
+import UserHierarchyMappingEdit from "../pages/masters/user-hierarchy-mapping/UserHierarchyMappingEdit";
+
 import CropInspectionList from "../pages/chawki-management/CropInspectionList";
 
 // Admin and Reports
@@ -1091,20 +1093,11 @@ function Router() {
     const pathname = window.location.pathname;
     const displayAllLotPathPattern = /^\/seriui\/display-all-lot\/\d+$/;
     const applicationCheck = /^\/seriui\/application-status$/;
-    const downloadSanctionOrder = /^\/seriui\/download-sanction-order$/;
     console.log(pathname);
     console.log(displayAllLotPathPattern.test(pathname));
-    // if (!isAuthenticated && !displayAllLotPathPattern.test(pathname) && !applicationCheck.test(pathname)) {
-    //   navigate("/seriui");
-    // }
-    if (
-    !isAuthenticated &&
-    !displayAllLotPathPattern.test(pathname) &&
-    !applicationCheck.test(pathname) &&
-    !downloadSanctionOrder.test(pathname)
-  ) {
-    navigate("/seriui");
-  }
+    if (!isAuthenticated && !displayAllLotPathPattern.test(pathname) && !applicationCheck.test(pathname)) {
+      navigate("/seriui");
+    }
   }, [isAuthenticated, navigate]);
 
   return (
@@ -1118,11 +1111,6 @@ function Router() {
           path="/seriui/display-all-lot/:marketId"
           element={<DisplayAllLot />}
         />
-
-       <Route
-          path="/seriui/download-sanction-order"
-          element={<DownloadSanctionOrder />}
-        />
         {/* Application Check */}
          <Route
               path="/seriui/application-status"
@@ -1131,7 +1119,7 @@ function Router() {
 
         {/* Conditional rendering for protected route */}
         {isAuthenticated && (
-          <Route path="seriui">
+          <Route path="/seriui">
             <Route path="home-ecommerce" element={<HomeEcommerce />} />
             <Route path="home-project" element={<HomeProject />} />
             <Route path="home-marketing" element={<HomeMarketing />} />
@@ -3269,6 +3257,10 @@ function Router() {
               path="user-hierarchy-mapping"
               element={<UserHierarchyMapping />}
             />
+            <Route
+              path="user-hierarchy-mapping-list"
+              element={<UserHierarchyMappingList />}
+            />
 
             <Route
               path="user-and-manager-hierarchy-mapping"
@@ -3277,6 +3269,10 @@ function Router() {
             <Route
               path="user-and-manager-hierarchy-mapping-list"
               element={<UserAndManagerHierarchyMappingList />}
+            />
+             <Route
+              path="user-hierarchy-mapping-edit/:id"
+              element={<UserHierarchyMappingEdit />}
             />
             <Route
               path="sc-sub-scheme-details"
