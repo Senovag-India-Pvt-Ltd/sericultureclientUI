@@ -2441,12 +2441,13 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
+            "company",
+            schemeType,
             subSchemeId,
             categoryId,
-            "company",
-            schemeType
+            applicationFormIds
           );
-        } 
+        }
 
         else if (
           schemeType === "Rearing Equipment SS"
@@ -2454,22 +2455,23 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
+            "company",
+            schemeType,
             subSchemeId,
             categoryId,
-            "company",
-            schemeType
+            applicationFormIds
           );
-        } 
+        }
         else if (
           schemeType === "Reeling Shed-PSF"
         ) {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
         else if (
@@ -2478,10 +2480,10 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
          else if (
@@ -2490,10 +2492,10 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
          else if (
@@ -2502,10 +2504,10 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
          else if (
@@ -2514,10 +2516,10 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
          else if (
@@ -2526,10 +2528,10 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
         else if (
@@ -2538,23 +2540,24 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
+            "company",
+            schemeType,
             subSchemeId,
             categoryId,
-            "company",
-            schemeType
+            applicationFormIds
           );
         }
-        
+
         else if (
           schemeType === "Adopting Boiler-PSF"
         ) {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
 
@@ -2562,10 +2565,10 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
 
@@ -2573,10 +2576,10 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
 
