@@ -1148,11 +1148,15 @@ if (data.fruitsId.length !== 16) return;
       const seconds = String(now.getSeconds()).padStart(2, "0");
       const date = String(now.getDate()).padStart(2, "0");
       const timeString = hours + minutes + seconds + date + month + year;
-      setData((prev) => ({ ...prev, farmerNumber: timeString }));
+      // setData((prev) => ({ ...prev, farmerNumber: timeString }));
+            const updatedFarmerData = {
+        ...data,
+        farmerNumber: timeString,
+      };
       setIsSaving(true);
       try{
       const sendData = {
-        farmerRequest: data,
+        farmerRequest: updatedFarmerData,
         farmerBankAccountRequest: bank,
         farmerAddressRequests: farmerAddressList,
         farmerFamilyRequestList: familyMembersList,
@@ -1166,6 +1170,7 @@ if (data.fruitsId.length !== 16) return;
           // console.log(response.data)
           const farmerId = response.data.content.farmerId;
           const farmerBankAccountId = response.data.content.farmerBankAccountId;
+          const farmerNumber = response.data.content.farmerNumber;
           if (response.data.content.error) {
             saveFarmerError(response.data.content.error_description);
           } else {
@@ -1175,7 +1180,7 @@ if (data.fruitsId.length !== 16) return;
             if (bank.accountImagePath) {
               handleFileDocumentUpload(farmerBankAccountId);
             }
-            saveSuccess();
+            saveSuccess(farmerNumber);
           }
           // postDataBankAccount
         }
@@ -1747,11 +1752,11 @@ if (data.fruitsId.length !== 16) return;
   }, [farmerAddress.hobliId]);
 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+  const saveSuccess = (farmerNumber) => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      text: `Farmer Number: ${data.farmerNumber}`,
+      text: `Farmer Number: ${farmerNumber}`,
     }).then(() => {
       navigate("/seriui/stake-holder-list");
     });
