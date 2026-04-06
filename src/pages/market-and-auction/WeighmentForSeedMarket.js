@@ -332,7 +332,8 @@ function WeighmentForSeedMarket() {
         // setLotNumber("");
         if (isTriplet) {
           printTriplet();
-        } else {
+        } else 
+          {
           console.log("In Market Master Change setting");
         }
       }

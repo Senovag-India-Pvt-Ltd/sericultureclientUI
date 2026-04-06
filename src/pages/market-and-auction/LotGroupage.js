@@ -15,6 +15,7 @@ import ReactSelect from "react-select";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT; 
 
 function LotGroupage() {
   const { t } = useTranslation();
@@ -81,12 +82,14 @@ const [dataLotList, setDataLotList] = useState([]);
    }, [id]);
 
    const [requiredBasePrice, setRequiredBasePrice] = useState(false);
+   const [isTriplet, setIsTriplet] = useState("");
 
 // Example API call (adjust to your actual API)
 useEffect(() => {
   api.get(`${baseURL}marketMaster/get/${localStorage.getItem("marketId")}`)
     .then(response => {
-      setRequiredBasePrice(response.data.content.requiredBasePrice); 
+      setRequiredBasePrice(response.data.content.requiredBasePrice);
+      setIsTriplet(response.data.content.weighmentTripletGeneration); 
     });
 }, []);
 
@@ -470,10 +473,165 @@ const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight
      });
    };
 
+    
+     console.log(isTriplet);
+   
+    //  const getMarketDetails = () => {
+    //    // console.log("hello world");
+    //    api
+    //      .get(baseURL + `marketMaster/get/${localStorage.getItem("marketId")}`)
+    //      .then((response) => {
+    //        if (!response.data.content.error) {
+    //          setIsTriplet(response.data.content.weighmentTripletGeneration);
+    //        } else {
+    //          console.error(response.data.content.error_description);
+    //        }
+   
+    //        console.log(response);
+    //      })
+    //      .catch((err) => {});
+    //  };
+   
+    //  useEffect(() => {
+    //    getMarketDetails();
+    //  }, []);
+
  
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
  
+  // const postData = (event) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //     setValidated(true);
+  //   } else {
+  //     event.preventDefault();
+
+  //     // Format the auction date
+  //   const formattedAuctionDate = formatAuctionDate(auctionDate); 
+  
+  //     // Check if there is any lotGroupageId in the dataLotList
+  //     const hasLotGroupageId = dataLotList.some(item => item.lotGroupageId);
+  
+  //     if (hasLotGroupageId) {
+  //       // If lotGroupageId is present, prepare the update request
+  //       const requestData = {
+  //         marketId: localStorage.getItem("marketId"),
+  //         godownId: localStorage.getItem("godownId"),
+  //         lotGroupageRequestEditList: dataLotList.map(item => ({
+  //           lotGroupageId: item.lotGroupageId,
+  //           buyerType: item.buyerType,
+  //           buyerId: item.buyerId,
+  //           lotWeight: item.lotWeight,
+  //           amount: item.amount,
+  //           soldAmount: item.soldAmount,
+  //           externalUnitId: item.externalUnitId,
+  //           // dflLotNumber:item.dflLotNumber,
+  //           invoiceNumber:item.invoiceNumber,
+  //           //  averageYield: item.averageYield,
+  //           allottedLotId: allottedLotId,
+  //           // auctionDate: auctionDate,
+  //           auctionDate: formattedAuctionDate,
+  //           lotParentLevel: lotParentLevel,
+  //           averageYield: calculatedAverageYield,
+  //           dflLotNumber: noOfDFLs,
+  //           remainingCocoonWeight: remainingCocoonWeight,
+  //           fruitsId : fruitsId,
+  //           marketId: localStorage.getItem("marketId"),
+  //           godownId: localStorage.getItem("godownId"),
+  //         }))
+  //       };
+  
+  //       api.post(baseURLMarket + 'lotGroupage/updateLotGroupage', requestData)
+  //         .then(response => {
+  //           const updatedList = response.data.content;  // Fetch updated data
+
+  //           // Generate invoice details from the updated response data
+  //           const invoiceDetails = updatedList
+  //             .map(item => `${item.buyerType} = ${item.invoiceNumber ? item.invoiceNumber : 'No Invoice Available'}`)
+  //             .join("<br>");
+  
+  //           // Show the success message
+  //             Swal.fire({
+  //             icon: 'success',
+  //             title: 'Updated successfully',
+  //             html: `Invoice Details:<br>${invoiceDetails}`,
+  //           }).then(() => {
+  //             // Reload the page once user clicks OK
+  //             window.location.reload();
+  //           });
+  
+  //           clear();
+  //           setValidated(false);
+  //       })
+  //         .catch(error => {
+  //           Swal.fire({
+  //             icon: 'error',
+  //             title: 'Update failed',
+  //             text: 'There was an error updating the lot groupage details.'
+  //           });
+  //         });
+  //     } else {
+  //       // If no lotGroupageId is present, prepare the save request
+  //       // const sendPost = {
+  //       //   lotGroupageRequests: dataLotList,
+  //       // };
+  //       const sendPost = {
+  //         lotGroupageRequests: dataLotList.map(item => ({
+  //           ...item,
+  //           lotParentLevel: lotParentLevel,
+  //           fruitsId: fruitsId,
+  //           averageYield: calculatedAverageYield,
+  //           dflLotNumber: noOfDFLs, 
+  //           remainingCocoonWeight: remainingCocoonWeight,  // Include lotParentLevel
+  //           auctionDate: formatAuctionDate(item.auctionDate)  // Format and include auctionDate
+  //         })),
+  //       };
+  
+  //       api
+  //         .post(baseURLMarket + 'lotGroupage/saveLotGroupage', sendPost)
+  //         .then((response) => {
+  //           if (response.data.content.error) {
+  //             saveError(response.data.content.error_description);
+  //           } else {
+  //             saveSuccess(response.data.content);
+  //             setData({
+  //               buyerType: "",
+  //               buyerId: "",
+  //               lotWeight: "",
+  //               amount: "",
+  //               marketFee: "",
+  //               soldAmount: "",
+  //               allottedLotId: "",
+  //               auctionDate: "",
+  //               dflLotNumber: "",
+  //               averageYield: "",
+  //               externalUnitId: "",
+  //               fruitsId: "",
+  //             });
+  //             clear();
+  //             setValidated(false);
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           if (
+  //             err.response &&
+  //             err.response.data &&
+  //             err.response.data.validationErrors
+  //           ) {
+  //             if (Object.keys(err.response.data.validationErrors).length > 0) {
+  //               saveError(err.response.data.validationErrors);
+  //             }
+  //           }
+  //         });
+  //     }
+  
+  //     setValidated(true);
+  //   }
+  // };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -483,14 +641,10 @@ const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight
     } else {
       event.preventDefault();
 
-      // Format the auction date
-    const formattedAuctionDate = formatAuctionDate(auctionDate); 
-  
-      // Check if there is any lotGroupageId in the dataLotList
+      const formattedAuctionDate = formatAuctionDate(auctionDate); 
       const hasLotGroupageId = dataLotList.some(item => item.lotGroupageId);
   
       if (hasLotGroupageId) {
-        // If lotGroupageId is present, prepare the update request
         const requestData = {
           marketId: localStorage.getItem("marketId"),
           godownId: localStorage.getItem("godownId"),
@@ -502,17 +656,14 @@ const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight
             amount: item.amount,
             soldAmount: item.soldAmount,
             externalUnitId: item.externalUnitId,
-            // dflLotNumber:item.dflLotNumber,
-            invoiceNumber:item.invoiceNumber,
-            //  averageYield: item.averageYield,
+            invoiceNumber: item.invoiceNumber,
             allottedLotId: allottedLotId,
-            // auctionDate: auctionDate,
             auctionDate: formattedAuctionDate,
             lotParentLevel: lotParentLevel,
             averageYield: calculatedAverageYield,
             dflLotNumber: noOfDFLs,
             remainingCocoonWeight: remainingCocoonWeight,
-            fruitsId : fruitsId,
+            fruitsId: fruitsId,
             marketId: localStorage.getItem("marketId"),
             godownId: localStorage.getItem("godownId"),
           }))
@@ -520,26 +671,28 @@ const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight
   
         api.post(baseURLMarket + 'lotGroupage/updateLotGroupage', requestData)
           .then(response => {
-            const updatedList = response.data.content;  // Fetch updated data
-
-            // Generate invoice details from the updated response data
+            const updatedList = response.data.content;
             const invoiceDetails = updatedList
               .map(item => `${item.buyerType} = ${item.invoiceNumber ? item.invoiceNumber : 'No Invoice Available'}`)
               .join("<br>");
   
-            // Show the success message
-              Swal.fire({
+            Swal.fire({
               icon: 'success',
               title: 'Updated successfully',
               html: `Invoice Details:<br>${invoiceDetails}`,
             }).then(() => {
-              // Reload the page once user clicks OK
+              // ✅ Triplet logic after update success
+              if (isTriplet) {
+                printTriplet();
+              } else {
+                console.log("In Market Master Change setting");
+              }
               window.location.reload();
             });
   
             clear();
             setValidated(false);
-        })
+          })
           .catch(error => {
             Swal.fire({
               icon: 'error',
@@ -548,10 +701,6 @@ const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight
             });
           });
       } else {
-        // If no lotGroupageId is present, prepare the save request
-        // const sendPost = {
-        //   lotGroupageRequests: dataLotList,
-        // };
         const sendPost = {
           lotGroupageRequests: dataLotList.map(item => ({
             ...item,
@@ -559,8 +708,8 @@ const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight
             fruitsId: fruitsId,
             averageYield: calculatedAverageYield,
             dflLotNumber: noOfDFLs, 
-            remainingCocoonWeight: remainingCocoonWeight,  // Include lotParentLevel
-            auctionDate: formatAuctionDate(item.auctionDate)  // Format and include auctionDate
+            remainingCocoonWeight: remainingCocoonWeight,
+            auctionDate: formatAuctionDate(item.auctionDate)
           })),
         };
   
@@ -571,6 +720,14 @@ const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight
               saveError(response.data.content.error_description);
             } else {
               saveSuccess(response.data.content);
+
+              // ✅ Triplet logic after save success
+              if (isTriplet) {
+                printTriplet();
+              } else {
+                console.log("In Market Master Change setting");
+              }
+
               setData({
                 buyerType: "",
                 buyerId: "",
@@ -605,6 +762,45 @@ const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight
       setValidated(true);
     }
   };
+
+  const printTriplet = () => {
+      const newDate = new Date();
+      const formattedDate =
+        newDate.getFullYear() +
+        "-" +
+        (newDate.getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        newDate.getDate().toString().padStart(2, "0");
+      api
+        .post(
+          baseURLReport + `gettripletpdf-kannada-seed`,
+          {
+            marketId: localStorage.getItem("marketId"),
+            godownId: localStorage.getItem("godownId"),
+            allottedLotId: data.allottedLotId,
+            auctionDate: formattedDate,
+          },
+          {
+            responseType: "blob", //Force to receive data in a Blob Format
+          }
+        )
+        .then((response) => {
+          
+          const file = new Blob([response.data], { type: "application/pdf" });
+          const fileURL = URL.createObjectURL(file);
+          const printWindow = window.open(fileURL);
+          if (printWindow) {
+            printWindow.onload = () => {
+              printWindow.print();
+            };
+          } else {
+            console.error("Failed to open the print window.");
+          }
+        })
+        .catch((error) => {
+          // console.log("error", error);
+        });
+    };
   
 
   const updateLotGroupage = () => {

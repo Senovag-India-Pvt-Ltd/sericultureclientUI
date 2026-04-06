@@ -1078,6 +1078,7 @@ import LotWisePriceFixation from "../pages/seed-cocoon-martket/LotWisePriceFixat
 import SakalaDashboard from "../pages/services-module/application/SakalaDashboard";
 import CumulativeReport from "../pages/services-module/application/CumulativeReport";
 import DownloadSanctionOrder from "../pages/market-and-auction/DownloadSanctionOrder";
+import CropInspectionList from "../pages/chawki-management/CropInspectionList";
 
 // Admin and Reports
 
@@ -2209,6 +2210,10 @@ function Router() {
             <Route
               path="chawki-management-view/:id"
               element={<ChawkiManagementView />}
+            />
+            <Route
+              path="crop-inspection-list"
+              element={<CropInspectionList />}
             />
             <Route
               path="supply-of-disinfectants"
