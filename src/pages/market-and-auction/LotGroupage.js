@@ -764,20 +764,20 @@ const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight
   };
 
   const printTriplet = () => {
-      const newDate = new Date();
+      // const newDate = new Date();
       const formattedDate =
-        newDate.getFullYear() +
+        auctionDate.getFullYear() +
         "-" +
-        (newDate.getMonth() + 1).toString().padStart(2, "0") +
+        (auctionDate.getMonth() + 1).toString().padStart(2, "0") +
         "-" +
-        newDate.getDate().toString().padStart(2, "0");
+        auctionDate.getDate().toString().padStart(2, "0");
       api
         .post(
           baseURLReport + `gettripletpdf-kannada-seed`,
           {
             marketId: localStorage.getItem("marketId"),
             godownId: localStorage.getItem("godownId"),
-            allottedLotId: data.allottedLotId,
+            allottedLotId: allottedLotId,
             auctionDate: formattedDate,
           },
           {
