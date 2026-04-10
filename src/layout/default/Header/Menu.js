@@ -4567,9 +4567,19 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t(
+                                "DTR Report"
+                              )}
+                              to="/seriui/seed-dtr-report"
+                            />
+                          </MenuItem>
+                        ) : null}
                       </MenuSub>
                     </MenuItem>
-                  ) : null}
+                  ) : null}                 
 
                   {showMenu.Reports_Export_Report_Silk_Type_Market ? (
                     <MenuItem sub>
