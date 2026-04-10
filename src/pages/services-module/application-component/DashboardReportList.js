@@ -3124,39 +3124,51 @@ const allowedSchemes = [
     } else {
       event.preventDefault();
 
-      // const applicationFormId = assignData.applicationFormId || row?.applicationDocumentId;
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to re-assign this application?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Re-assign",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // const applicationFormId = assignData.applicationFormId || row?.applicationDocumentId;
 
-      const sendPost = {
-        applicationFormId,
-        userId: assignData.userId,
-        stepId: assignData.stepId,
-      };
-      api
-        .post(baseURLDBT + `service/reassignToUser`, sendPost)
-        .then((response) => {
-          if (response.data.errorCode === -1) {
-            saveError(response.data.errorMessages[0]);
-          } else if (response.data && response.data.error) {
-            saveError(response.data.error_description);
-          } else {
-            saveAssignSuccess();
-            clear();
-            setValidated(false);
-          }
-        })
-        .catch((err) => {
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
-          }
-        });
-      setValidated(true);
+          const sendPost = {
+            applicationFormId,
+            userId: assignData.userId,
+            stepId: assignData.stepId,
+          };
+          api
+            .post(baseURLDBT + `service/reassignToUser`, sendPost)
+            .then((response) => {
+              if (response.data.errorCode === -1) {
+                saveError(response.data.errorMessages[0]);
+              } else if (response.data && response.data.error) {
+                saveError(response.data.error_description);
+              } else {
+                saveAssignSuccess();
+                clear();
+                setValidated(false);
+              }
+            })
+            .catch((err) => {
+              if (
+                err.response &&
+                err.response.data &&
+                err.response.data.validationErrors
+              ) {
+                if (Object.keys(err.response.data.validationErrors).length > 0) {
+                  saveError(err.response.data.validationErrors);
+                }
+              }
+            });
+          setValidated(true);
+        }
+      });
     }
   };
 
@@ -4233,15 +4245,28 @@ const allowedSchemes = [
     });
   };
 
+  // const pushedSuccess = (b, f) => {
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Pushed successfully",
+  //     text: `Beneficiary Id is ${b} and Fruits Id is ${f}`,
+  //   });
+  //   handleCloseModal();
+  //   getList();
+  //   window.location.reload(); 
+  // };
   const pushedSuccess = (b, f) => {
     Swal.fire({
       icon: "success",
       title: "Pushed successfully",
       text: `Beneficiary Id is ${b} and Fruits Id is ${f}`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleCloseModal();
+        getList();
+        window.location.reload();
+      }
     });
-    handleCloseModal();
-    getList();
-    window.location.reload(); 
   };
 
   const warningAlert = (message, title) => {
@@ -5725,7 +5750,7 @@ const allowedSchemes = [
                           }}
                           className="mb-3"
                         >
-                          Generate Work Order
+                          Generate Work Order/Selection Letter
                         </Accordion.Header>
                         <Accordion.Body>
 
@@ -6031,6 +6056,7 @@ const allowedSchemes = [
                     >
                       View
                     </Button>
+                    
                     {directlyToFruits ? (
                       <Button
                         type="submit"
@@ -6044,6 +6070,9 @@ const allowedSchemes = [
                         Submit
                       </Button>
                     )}
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                      Cancel
+                    </Button>
 
                     {/* <Button
                       type="button"
@@ -6079,11 +6108,6 @@ const allowedSchemes = [
           )}
         </Modal.Body>
 
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-        </Modal.Footer>
       </Modal>
 
       <Block className="mt-n4">
@@ -6378,6 +6402,9 @@ const allowedSchemes = [
             )}
             <Col lg="12">
               <div className="d-flex justify-content-center gap-2 mt-3">
+                <Button variant="secondary" onClick={handleCloseModal3}>
+                  Cancel
+                </Button>
                 <Button type="submit" onClick={addToList} variant="primary">
                   Submit
                 </Button>
@@ -6387,81 +6414,173 @@ const allowedSchemes = [
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
-        <Modal.Header style={modalStyles.modalHeader} closeButton>
-          <Modal.Title style={modalStyles.modalTitle}>User</Modal.Title>
+      <Modal show={showModal4} onHide={handleCloseModal4} size="lg" centered>
+        <Modal.Header
+          closeButton
+          style={{
+            background: "linear-gradient(135deg, #1a3c6e 0%, #0f6cbf 100%)",
+            color: "white",
+            padding: "18px 24px",
+            borderBottom: "none",
+            borderTopLeftRadius: "12px",
+            borderTopRightRadius: "12px",
+          }}
+        >
+          <Modal.Title style={{ fontWeight: "700", fontSize: "18px", display: "flex", alignItems: "center", gap: "10px" }}>
+            <span style={{
+              background: "rgba(255,255,255,0.2)",
+              borderRadius: "50%",
+              width: "36px",
+              height: "36px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "18px",
+            }}>
+              &#8646;
+            </span>
+            Re-Assign Application
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body style={modalStyles.modalBody}>
-          <Form noValidate validated={validated} onSubmit={postData}>
-            {/* {docListData.map(({ documentMasterId, documentMasterName }) => ( */}
-            <Row>
 
-              <Col lg="6">
-                <Form.Group className="form-group">
-                  <Form.Label>
-                    Approval Stage{" "}
-                    <span className="text-danger">*</span>
-                  </Form.Label>
-                  <Form.Select
-                    name="stepId"
-                    value={assignData.stepId}
-                    onChange={handleAssignInputs}
-                    required
-                    // disabled={fieldsDisabled}
-                  >
-                    <option value="">
-                      Select Approval Stage
-                    </option>
-                    {approvalStageBeforeStepListData.map((list) => (
-                      <option
-                        key={list.approvalStageId}
-                        value={list.approvalStageId}
-                      >
-                        {list.approvalStageName}
-                      </option>
-                    ))}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    Approval Stage Name is required
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
+        <Modal.Body style={{ background: "#f4f7fb", padding: "28px 28px 10px 28px" }}>
+          <Form id="reassignForm" noValidate validated={validated} onSubmit={postData}>
+            <div style={{
+              background: "white",
+              borderRadius: "10px",
+              padding: "24px",
+              boxShadow: "0 2px 12px rgba(15, 108, 191, 0.08)",
+              border: "1px solid #e3eaf4",
+            }}>
+              <Row className="g-4">
+                <Col lg="12">
+                  <Form.Group>
+                    <Form.Label style={{
+                      fontWeight: "600",
+                      fontSize: "13px",
+                      color: "#4a5568",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
+                      marginBottom: "8px",
+                    }}>
+                      Approval Stage <span style={{ color: "#e53e3e" }}>*</span>
+                    </Form.Label>
+                    <Form.Select
+                      name="stepId"
+                      value={assignData.stepId}
+                      onChange={handleAssignInputs}
+                      required
+                      style={{
+                        borderRadius: "8px",
+                        border: "1.5px solid #d1dded",
+                        padding: "10px 14px",
+                        fontSize: "14px",
+                        color: "#2d3748",
+                        background: "#f9fbfe",
+                        boxShadow: "none",
+                        transition: "border-color 0.2s",
+                      }}
+                    >
+                      <option value="">— Select Approval Stage —</option>
+                      {approvalStageBeforeStepListData.map((list) => (
+                        <option key={list.approvalStageId} value={list.approvalStageId}>
+                          {list.approvalStageName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Please select an Approval Stage.
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
 
-              <Col lg="6">
-                <Form.Group className="form-group">
-                  <Form.Label style={modalStyles.formGroupLabel}>
-                    User
-                    {/* <span className="text-danger">*</span> */}
-                  </Form.Label>
-                  <div className="form-control-wrap">
+                <Col lg="12">
+                  <Form.Group>
+                    <Form.Label style={{
+                      fontWeight: "600",
+                      fontSize: "13px",
+                      color: "#4a5568",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
+                      marginBottom: "8px",
+                    }}>
+                      Assign To User <span style={{ color: "#e53e3e" }}>*</span>
+                    </Form.Label>
                     <Form.Select
                       name="userId"
                       value={assignData.userId}
-                      // onChange={(e) => handleListInput(e, row)}
                       onChange={handleAssignInputs}
-                      // onBlur={() => handleInputs}
+                      required
+                      style={{
+                        borderRadius: "8px",
+                        border: "1.5px solid #d1dded",
+                        padding: "10px 14px",
+                        fontSize: "14px",
+                        color: "#2d3748",
+                        background: "#f9fbfe",
+                        boxShadow: "none",
+                        transition: "border-color 0.2s",
+                      }}
                     >
-                      <option value="">Select User</option>
+                      <option value="">— Select User —</option>
                       {userFromDistrictForReassignData.map((list) => (
                         <option key={list.userId} value={list.userId}>
                           {list.userName}
                         </option>
                       ))}
                     </Form.Select>
-                  </div>
-                </Form.Group>
-              </Col>
-
-              <Col lg="12">
-                <div className="d-flex justify-content-center gap-2 mt-3">
-                  <Button type="submit" variant="success">
-                    Assign
-                  </Button>
-                </div>
-              </Col>
-            </Row>
+                    <Form.Control.Feedback type="invalid">
+                      Please select a User.
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </div>
           </Form>
         </Modal.Body>
+
+        <Modal.Footer style={{
+          background: "#f4f7fb",
+          borderTop: "1px solid #e3eaf4",
+          padding: "16px 28px 24px 28px",
+          borderBottomLeftRadius: "12px",
+          borderBottomRightRadius: "12px",
+          display: "flex",
+          justifyContent: "flex-end",
+          gap: "12px",
+        }}>
+          <Button
+            variant="outline-secondary"
+            onClick={handleCloseModal4}
+            style={{
+              borderRadius: "8px",
+              padding: "9px 24px",
+              fontWeight: "600",
+              fontSize: "14px",
+              border: "1.5px solid #cbd5e0",
+              color: "#4a5568",
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            form="reassignForm"
+            style={{
+              background: "linear-gradient(135deg, #1a3c6e 0%, #0f6cbf 100%)",
+              border: "none",
+              borderRadius: "8px",
+              padding: "9px 28px",
+              fontWeight: "700",
+              fontSize: "14px",
+              color: "white",
+              boxShadow: "0 4px 12px rgba(15, 108, 191, 0.35)",
+              letterSpacing: "0.3px",
+            }}
+          >
+            &#8646; Re-Assign
+          </Button>
+        </Modal.Footer>
       </Modal>
 
       <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
@@ -7046,7 +7165,7 @@ const allowedSchemes = [
                                       </Button>
                                     )} */}
 
-                                    {viewDetailsData?.workOrderNumber !== undefined &&
+                                    {/* {viewDetailsData?.workOrderNumber !== undefined &&
                                     viewDetailsData?.applicationFormId !== undefined && (
                                        <Button
                                         variant="primary"
@@ -7056,7 +7175,7 @@ const allowedSchemes = [
                                       >
                                         Download Work Order
                                       </Button>
-                                    )}
+                                    )} */}
 
 
                                   {/* {viewDetailsData?.sanctionOrderNumber && viewDetailsData?.applicationFormId && (

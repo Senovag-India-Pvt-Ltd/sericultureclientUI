@@ -1784,29 +1784,29 @@ if (
     api.get(`${baseURLMasterData}configurePmkysAmount/getClosestAmountBySpacingAndHectare/${spacingId}/${hectareId}`)
       .then((response) => {
         const result = response.data[0]; // Assuming the first element contains the relevant data
-        setAmountValue({
-          ...amountValue,
-          unitPrice: result.amount, // Set the Unit Price
-        });
+        setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: result.amount,
+        }));
         
         if (schemeDetails.calculationBasedOn !== "PMKSY") { // Only update expectedAmount if not PMKSY
-            setData({
-              ...data,
-              expectedAmount: result.amount, // Set the Subsidy amount to expectedAmount
-            });
+            setData((prev) => ({
+              ...prev,
+              expectedAmount: result.amount,
+            }));
         }
         setLoading(false);
       })
       .catch((err) => {
-        setAmountValue({
-          ...amountValue,
-          unitPrice: "", // Clear Unit Price if API call fails
-        });
+        setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: "",
+        }));
         if (schemeDetails.calculationBasedOn !== "PMKSY") {
-            setData({
-              ...data,
-              expectedAmount: "", // Clear expectedAmount if API call fails
-            });
+            setData((prev) => ({
+              ...prev,
+              expectedAmount: "",
+            }));
         }
         setLoading(false);
       });
@@ -1840,10 +1840,10 @@ const getEligibleAmount = () => {
                   text: "Please apply for PDMC before proceeding.",
               });
               setSaveDisabled(true);
-              setData({ ...data, expectedAmount: "" }); // Reset expectedAmount for PMKSY if no eligible amount
+              setData((prev) => ({ ...prev, expectedAmount: "" }));
           } else {
               setSaveDisabled(false);
-              setData({ ...data, expectedAmount: eligibleAmount || "" }); // Only set expectedAmount for PMKSY
+              setData((prev) => ({ ...prev, expectedAmount: eligibleAmount || "" }));
           }
       } else {
           setSaveDisabled(false);
@@ -1851,7 +1851,7 @@ const getEligibleAmount = () => {
       }
   })
   .catch(() => {
-      setData({ ...data, expectedAmount: "" });
+      setData((prev) => ({ ...prev, expectedAmount: "" }));
   })
   .finally(() => {
       setLoading(false);
@@ -2036,15 +2036,15 @@ const calculateAmountFor30Kg = () => {
   const calculatedAmount = cocoonsWeight * amountPerKg;
   const roundedAmount = Math.round(calculatedAmount * 100) / 100; // round to 2 decimals
 
-  setAmountValue({
-    ...amountValue,
+  setAmountValue((prev) => ({
+    ...prev,
     unitPrice: amountPerKg,
-  });
+  }));
 
-  setData({
-    ...data,
+  setData((prev) => ({
+    ...prev,
     expectedAmount: roundedAmount,
-  });
+  }));
 };
 
 const calculateAmountForBivoltineBonus = () => {
@@ -2094,15 +2094,15 @@ const calculateAmountForBivoltineBonus = () => {
   const roundedAmount = Math.round(calculatedAmount);
  // round to 2 decimals
 
-  setAmountValue({
-    ...amountValue,
+  setAmountValue((prev) => ({
+    ...prev,
     unitPrice: unitCost,
-  });
+  }));
 
-  setData({
-    ...data,
+  setData((prev) => ({
+    ...prev,
     expectedAmount: roundedAmount,
-  });
+  }));
 };
 
 // to get Program
@@ -2180,14 +2180,14 @@ const getreelingShedAmountList = (machineTypeId ,reelingSqft,componentTypeId, co
       const incentiveData = response.data.content?.configureReelingShed || [];
       setReelingShedAmountListData(incentiveData);
 
-      setAmountValue({
-          ...amountValue,
-          unitPrice: incentiveData.unitCost, // Set the Unit Price
-        });
-        setData({
-              ...data,
-              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
-            });
+      setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: incentiveData.unitCost,
+        }));
+        setData((prev) => ({
+              ...prev,
+              expectedAmount: incentiveData.unitCost,
+            }));
     })
     .catch((err) => {
       setReelingShedAmountListData([]);
@@ -3559,14 +3559,14 @@ const getImcbAndMermAmountList = (imcbTable ,componentTypeId, componentId, categ
       const incentiveData = response.data.content?.configureImcb || [];
       setImcbAndMermAmountListData(incentiveData);
 
-      setAmountValue({
-          ...amountValue,
-          unitPrice: incentiveData.unitCost, // Set the Unit Price
-        });
-        setData({
-              ...data,
-              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
-            });
+      setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: incentiveData.unitCost,
+        }));
+        setData((prev) => ({
+              ...prev,
+              expectedAmount: incentiveData.unitCost,
+            }));
     })
     .catch((err) => {
       setImcbAndMermAmountListData([]);
@@ -3582,12 +3582,15 @@ useEffect(() => {
     data.scComponentId &&
     data.scCategoryId
   ) {
-    getImcbAndMermAmountList(
-      data.imcbTable,
-      data.scSubSchemeDetailsId,
-      data.scComponentId,
-      data.scCategoryId
-    );
+    const timer = setTimeout(() => {
+      getImcbAndMermAmountList(
+        data.imcbTable,
+        data.scSubSchemeDetailsId,
+        data.scComponentId,
+        data.scCategoryId
+      );
+    }, 500);
+    return () => clearTimeout(timer);
   }
 }, [data.imcbTable,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
@@ -3609,14 +3612,14 @@ const getAdoptingBoilerAmountList = (boilerInKg ,componentTypeId, componentId, c
       const incentiveData = response.data?.content?.configureAdoptingBoiler || [];
       setAdoptingBoilerAmountListData(incentiveData);
 
-      setAmountValue({
-          ...amountValue,
-          unitPrice: incentiveData.unitCost, // Set the Unit Price
-        });
-        setData({
-              ...data,
-              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
-            });
+      setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: incentiveData.unitCost,
+        }));
+        setData((prev) => ({
+              ...prev,
+              expectedAmount: incentiveData.unitCost,
+            }));
     })
     .catch((err) => {
       setAdoptingBoilerAmountListData([]);
@@ -3632,12 +3635,15 @@ useEffect(() => {
     data.scComponentId &&
     data.scCategoryId
   ) {
-    getAdoptingBoilerAmountList(
-      data.boilerInKg,
-      data.scSubSchemeDetailsId,
-      data.scComponentId,
-      data.scCategoryId
-    );
+    const timer = setTimeout(() => {
+      getAdoptingBoilerAmountList(
+        data.boilerInKg,
+        data.scSubSchemeDetailsId,
+        data.scComponentId,
+        data.scCategoryId
+      );
+    }, 500);
+    return () => clearTimeout(timer);
   }
 }, [data.boilerInKg,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
@@ -3659,14 +3665,14 @@ const getIcbAndArmAmountList = (icbBasinEnds ,componentTypeId, componentId, cate
       const incentiveData = response.data?.content?.configureIcb || [];
       setIcbAndArmAmountListData(incentiveData);
 
-      setAmountValue({
-          ...amountValue,
-          unitPrice: incentiveData.unitCost, // Set the Unit Price
-        });
-        setData({
-              ...data,
-              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
-            });
+      setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: incentiveData.unitCost,
+        }));
+        setData((prev) => ({
+              ...prev,
+              expectedAmount: incentiveData.unitCost,
+            }));
     })
     .catch((err) => {
       setIcbAndArmAmountListData([]);
@@ -3682,12 +3688,15 @@ useEffect(() => {
     data.scComponentId &&
     data.scCategoryId
   ) {
-    getIcbAndArmAmountList( 
-      data.icbBasinEnds,
-      data.scSubSchemeDetailsId,
-      data.scComponentId, 
-      data.scCategoryId
-    );
+    const timer = setTimeout(() => {
+      getIcbAndArmAmountList(
+        data.icbBasinEnds,
+        data.scSubSchemeDetailsId,
+        data.scComponentId,
+        data.scCategoryId
+      );
+    }, 500);
+    return () => clearTimeout(timer);
   }
 }, [data.icbBasinEnds,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
@@ -3891,6 +3900,25 @@ const isUserValid = React.useMemo(() => {
       return; // Exit if the form is not valid
     }
 
+    // Reeling Shed-PSF: validate Kanesh Land Details and Constructed Area
+    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Reeling Shed-PSF") {
+      const missingFields = [];
+      if (data.addKaneshLand !== "yes") {
+        missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
+      }
+      if (!data.equordev.includes("constructedArea")) {
+        missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "Missing Details",
+          html: `Please enter details in:<br/><ul style="text-align:left">${missingFields.map(f => `<li>${f}</li>`).join("")}</ul>`,
+        });
+        return;
+      }
+    }
+
     const formattedDates = {
       periodFrom: formatDate(data.periodFrom),
       periodTo: formatDate(data.periodTo),
@@ -4043,6 +4071,8 @@ const isUserValid = React.useMemo(() => {
       taxInvoiceDate: data.taxInvoiceDate,
       rearingEquipmentDetailsId: data.rearingEquipmentDetailsId,
       beneficiaryShareAmount: data.beneficiaryShareAmount,
+      subsidyAmount: data.subsidyAmount,
+      shareInPercentage: sharePercentage,
       unitPrice:amountValue.unitPrice,
       equipmentEligibleTotal: totals.equipmentEligibleTotal,
       equipmentMaxSubsidyTotal: totals.equipmentMaxSubsidyTotal,
@@ -4756,7 +4786,7 @@ const isUserValid = React.useMemo(() => {
       dailyLimit: "",
        monthlyLimit: "",
       boilerInKg: "",
-      sanctionNo: ""
+      sanctionNo: "",
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -5735,7 +5765,7 @@ const fetchReelerDetails = () => {
           {/* {console.log("dada marre",i)} */}
           <Form.Control
             name="devAcre"
-            type="text"
+            type="number"
             value={developedArea[i]?.devAcre || ""}
             onChange={(e) => handleInlineDevelopedLandChange(e, i)}
             placeholder="Acre"
@@ -5743,7 +5773,7 @@ const fetchReelerDetails = () => {
           />
           <Form.Control
             name="devGunta"
-            type="text"
+            type="number"
             value={developedArea[i]?.devGunta || ""}
             onChange={(e) => handleInlineDevelopedLandChange(e, i)}
             placeholder="Gunta"
@@ -5751,7 +5781,7 @@ const fetchReelerDetails = () => {
           />
           <Form.Control
             name="devFGunta"
-            type="text"
+            type="number"
             value={developedArea[i]?.devFGunta || ""}
             onChange={(e) => handleInlineDevelopedLandChange(e, i)}
             placeholder="FGunta"
@@ -6464,9 +6494,10 @@ const fetchReelerDetails = () => {
                           )}
 
                           {(
-                          getIncentiveAndBonusData[0]?.unitForScheme === 
+                          getIncentiveAndBonusData[0]?.unitForScheme ===
                             "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||
-                          getIncentiveAndBonusData[0]?.sanctionForReeling
+                          (getIncentiveAndBonusData[0]?.sanctionForReeling &&
+                            getIncentiveAndBonusData[0]?.calculationBasedOn !== "Silk Incentive-PSF")
                         ) && (
                           <>
                             <Col lg="6">
