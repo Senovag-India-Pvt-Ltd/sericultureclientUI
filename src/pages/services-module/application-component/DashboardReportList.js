@@ -5126,15 +5126,33 @@ const allowedSchemes = [
                         </Card>
                       </Block>
 
+                      {/* ── Rejection Details Section ── */}
                       <Block className="mt-3">
                         <Card
                           className="mt-3"
                           style={{
-                            border: "none",
-                            boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+                            border: "1px solid #f5c6cb",
+                            borderRadius: "10px",
+                            boxShadow: "0 4px 12px rgba(220, 53, 69, 0.15)",
+                            overflow: "hidden",
                           }}
                         >
-                          <Card.Body>
+                          <Card.Header
+                            style={{
+                              background: "linear-gradient(135deg, #dc3545, #c82333)",
+                              color: "#fff",
+                              padding: "12px 20px",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "8px",
+                              fontWeight: "600",
+                              fontSize: "15px",
+                              letterSpacing: "0.4px",
+                            }}
+                          >
+                            🚫 Rejection Details
+                          </Card.Header>
+                          <Card.Body style={{ background: "#fff5f5", padding: "20px" }}>
                             <Row>
                               <Col lg="6">
                                 <Form.Group className="form-group">
@@ -5145,6 +5163,7 @@ const allowedSchemes = [
                                     name="rejectType"
                                     value={actionData.rejectType}
                                     onChange={handleActionInputs}
+                                    style={{ borderColor: "#f5c6cb" }}
                                   >
                                     <option value="">Select Reject Type</option>
                                     <option value="Permanent">Permanent</option>
@@ -5168,6 +5187,7 @@ const allowedSchemes = [
                                       actionData.rejectReasonWorkflowMasterId
                                     }
                                     onChange={handleActionInputs}
+                                    style={{ borderColor: "#f5c6cb" }}
                                   >
                                     <option value="">
                                       Select Reject Reason
@@ -5185,6 +5205,39 @@ const allowedSchemes = [
                                   </Form.Select>
                                 </Form.Group>
                               </Col>
+                            </Row>
+                          </Card.Body>
+                        </Card>
+                      </Block>
+
+                      {/* ── Action Details Section ── */}
+                      <Block className="mt-3">
+                        <Card
+                          className="mt-3"
+                          style={{
+                            border: "1px solid #bee5eb",
+                            borderRadius: "10px",
+                            boxShadow: "0 4px 12px rgba(23, 162, 184, 0.15)",
+                            overflow: "hidden",
+                          }}
+                        >
+                          <Card.Header
+                            style={{
+                              background: "linear-gradient(135deg, #17a2b8, #138496)",
+                              color: "#fff",
+                              padding: "12px 20px",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "8px",
+                              fontWeight: "600",
+                              fontSize: "15px",
+                              letterSpacing: "0.4px",
+                            }}
+                          >
+                            📋 Action Details
+                          </Card.Header>
+                          <Card.Body style={{ background: "#f0fdff", padding: "20px" }}>
+                            <Row>
                               <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
@@ -5727,7 +5780,6 @@ const allowedSchemes = [
                         </Card>
                       </Block>
 
-                      
                     </Accordion.Body>
                   </Accordion.Item>
 
@@ -5800,9 +5852,31 @@ const allowedSchemes = [
                         >
                           Sanction Order Details
                         </Accordion.Header>
-                        <Accordion.Body>
-                          <Block className="mt-n4">
-                            <Row>
+                        <Accordion.Body style={{ background: "#f8fbff", padding: "20px" }}>
+
+                          {/* Scheme Details Table */}
+                          <Card
+                            className="mb-4"
+                            style={{
+                              border: "1px solid #b8d4f0",
+                              borderRadius: "10px",
+                              overflow: "hidden",
+                              boxShadow: "0 2px 8px rgba(15,108,190,0.10)",
+                            }}
+                          >
+                            <Card.Header
+                              style={{
+                                background: "linear-gradient(135deg, #0F6CBE, #0a4f8e)",
+                                color: "#fff",
+                                fontWeight: "600",
+                                fontSize: "14px",
+                                padding: "10px 16px",
+                                letterSpacing: "0.3px",
+                              }}
+                            >
+                              📊 Scheme Details
+                            </Card.Header>
+                            <Card.Body style={{ padding: "0" }}>
                               <DataTable
                                 tableClassName="data-table-head-light table-responsive"
                                 columns={schemeDetailsListColumn}
@@ -5812,146 +5886,179 @@ const allowedSchemes = [
                                 theme="solarized"
                                 customStyles={customStyles}
                               />
-                            </Row>
-                            <Row className="mt-2">
-                              {/* <Col lg="6">
-                                <Form.Group className="form-group">
-                                  <Form.Label>
-                                    <strong>Sanction Order No.</strong>
-                                  </Form.Label>
-                                  <Form.Control
-                                    id="sanctionOrderNumber"
-                                    type="text"
-                                    name="sanctionOrderNumber"
-                                    value={actionData.sanctionOrderNumber}
-                                    onChange={handleActionInputs}
-                                    placeholder="Enter Sanction Order NO."
-                                  />
-                                </Form.Group>
-                              </Col> */}
+                            </Card.Body>
+                          </Card>
 
-                              <Col lg="6">
-                                <Form.Group className="form-group">
-                                  <Form.Label>
-                                    <strong>Documents</strong>
-                                  </Form.Label>
-                                  <Form.Select
-                                    name="documentTypeId"
-                                    value={sanctionOrderData.documentTypeId}
-                                    onChange={handleSanctionOrderInputs}
-                                  >
-                                    <option value="">
-                                      Select Document Type
-                                    </option>
-                                    {docListData.map((list) => (
-                                      <option
-                                        key={list.documentMasterId}
-                                        value={list.documentMasterId}
-                                      >
-                                        {list.documentMasterName}
+                          {/* Document Upload Section */}
+                          <Card
+                            className="mb-4"
+                            style={{
+                              border: "1px solid #b8d4f0",
+                              borderRadius: "10px",
+                              overflow: "hidden",
+                              boxShadow: "0 2px 8px rgba(15,108,190,0.10)",
+                            }}
+                          >
+                            <Card.Header
+                              style={{
+                                background: "linear-gradient(135deg, #0F6CBE, #0a4f8e)",
+                                color: "#fff",
+                                fontWeight: "600",
+                                fontSize: "14px",
+                                padding: "10px 16px",
+                                letterSpacing: "0.3px",
+                              }}
+                            >
+                              📎 Upload Sanction Order Document
+                            </Card.Header>
+                            <Card.Body style={{ background: "#f0f6ff", padding: "20px" }}>
+                              <Row className="align-items-end">
+                                <Col lg="6">
+                                  <Form.Group className="form-group">
+                                    <Form.Label>
+                                      <strong>Document Type</strong>
+                                    </Form.Label>
+                                    <Form.Select
+                                      name="documentTypeId"
+                                      value={sanctionOrderData.documentTypeId}
+                                      onChange={handleSanctionOrderInputs}
+                                      style={{ borderColor: "#b8d4f0" }}
+                                    >
+                                      <option value="">
+                                        Select Document Type
                                       </option>
-                                    ))}
-                                  </Form.Select>
-                                </Form.Group>
-                              </Col>
+                                      {docListData.map((list) => (
+                                        <option
+                                          key={list.documentMasterId}
+                                          value={list.documentMasterId}
+                                        >
+                                          {list.documentMasterName}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                  </Form.Group>
+                                </Col>
 
-                              <Col lg="6">
-                                <Form.Group className="form-group">
-                                  <Form.Label htmlFor="accountImagePath">
-                                    Upload Sanction Order (PDF/jpg/png)(Max:5MB)
-                                  </Form.Label>
-                                  <div className="form-control-wrap">
-                                    <Form.Control
-                                      type="file"
-                                      id="documentPath"
-                                      name="documentPath"
-                                      // value={data.photoPath}
-                                      onChange={handleSanctionOrderChange}
-                                    />
-                                  </div>
-                                </Form.Group>
+                                <Col lg="6">
+                                  <Form.Group className="form-group">
+                                    <Form.Label>
+                                      <strong>Upload File</strong>{" "}
+                                      <small className="text-muted">(PDF / JPG / PNG, Max: 5MB)</small>
+                                    </Form.Label>
+                                    <div className="form-control-wrap">
+                                      <Form.Control
+                                        type="file"
+                                        id="documentPath"
+                                        name="documentPath"
+                                        onChange={handleSanctionOrderChange}
+                                        style={{ borderColor: "#b8d4f0" }}
+                                      />
+                                    </div>
+                                  </Form.Group>
+                                  {sanctionOrderDocument && (
+                                    <div className="mt-2 d-flex justify-content-center">
+                                      <img
+                                        style={{
+                                          height: "100px",
+                                          width: "100px",
+                                          borderRadius: "8px",
+                                          border: "2px solid #b8d4f0",
+                                          objectFit: "cover",
+                                        }}
+                                        src={URL.createObjectURL(sanctionOrderDocument)}
+                                        alt="Preview"
+                                      />
+                                    </div>
+                                  )}
+                                </Col>
 
-                                <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                                  {sanctionOrderDocument ? (
-                                    <img
+                                <Col lg="12" className="mt-3 d-flex justify-content-center">
+                                  <Button
+                                    type="button"
+                                    variant={uploadSanctionOrderStatus[sanctionOrderData.documentTypeId] ? "success" : "primary"}
+                                    style={{ minWidth: "130px", borderRadius: "6px" }}
+                                    onClick={() => handleSanctionOrderUpload(sanctionOrderData.documentTypeId)}
+                                    disabled={uploadSanctionOrderStatus[sanctionOrderData.documentTypeId]}
+                                  >
+                                    {uploadSanctionOrderStatus[sanctionOrderData.documentTypeId]
+                                      ? "✔ Uploaded"
+                                      : "⬆ Upload"}
+                                  </Button>
+                                </Col>
+                              </Row>
+                            </Card.Body>
+                          </Card>
+
+                          {/* Uploaded Documents List */}
+                          {sanctionOrderUploadedDocuments.length > 0 && (
+                            <Card
+                              style={{
+                                border: "1px solid #b8d4f0",
+                                borderRadius: "10px",
+                                overflow: "hidden",
+                                boxShadow: "0 2px 8px rgba(15,108,190,0.10)",
+                              }}
+                            >
+                              <Card.Header
+                                style={{
+                                  background: "linear-gradient(135deg, #0F6CBE, #0a4f8e)",
+                                  color: "#fff",
+                                  fontWeight: "600",
+                                  fontSize: "14px",
+                                  padding: "10px 16px",
+                                  letterSpacing: "0.3px",
+                                }}
+                              >
+                                🗂 Uploaded Documents ({sanctionOrderUploadedDocuments.length})
+                              </Card.Header>
+                              <Card.Body style={{ background: "#f0f6ff", padding: "16px" }}>
+                                <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+                                  {sanctionOrderUploadedDocuments.map((doc, index) => (
+                                    <div
+                                      key={index}
                                       style={{
-                                        height: "100px",
-                                        width: "100px",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                        background: "#fff",
+                                        border: "1px solid #b8d4f0",
+                                        borderRadius: "8px",
+                                        padding: "10px",
+                                        minWidth: "120px",
+                                        boxShadow: "0 1px 4px rgba(15,108,190,0.08)",
                                       }}
-                                      src={URL.createObjectURL(
-                                        sanctionOrderDocument
+                                    >
+                                      {doc.documentFile && (
+                                        <img
+                                          src={URL.createObjectURL(doc.documentFile)}
+                                          alt={doc.documentName}
+                                          style={{
+                                            height: "80px",
+                                            width: "80px",
+                                            borderRadius: "6px",
+                                            objectFit: "cover",
+                                            border: "1px solid #dee2e6",
+                                          }}
+                                        />
                                       )}
-                                    />
-                                  ) : (
-                                    ""
-                                  )}
-                                </Form.Group>
-                              </Col>
-                            </Row>
-
-                            {sanctionOrderUploadedDocuments.length > 0 && (
-                              <div className="mt-3">
-                                <h5>Uploaded Documents</h5>
-                                <ul>
-                                  {sanctionOrderUploadedDocuments.map(
-                                    (doc, index) => (
-                                      <li
-                                        key={index}
-                                        className="d-flex align-items-center"
+                                      <span
+                                        style={{
+                                          marginTop: "6px",
+                                          fontSize: "12px",
+                                          color: "#0F6CBE",
+                                          fontWeight: "600",
+                                          textAlign: "center",
+                                        }}
                                       >
-                                        {/* Show the image if it's available */}
-                                        {doc.documentFile && (
-                                          <img
-                                            src={URL.createObjectURL(
-                                              doc.documentFile
-                                            )}
-                                            alt={doc.documentName}
-                                            style={{
-                                              height: "100px",
-                                              width: "100px",
-                                              marginRight: "10px",
-                                            }}
-                                          />
-                                        )}
-                                        {/* Show the document master name */}
-                                        {/* <span>Document Type: {doc.documentMasterName }</span> */}
-                                      </li>
-                                    )
-                                  )}
-                                </ul>
-                              </div>
-                            )}
-                          </Block>
+                                        Doc {index + 1}
+                                      </span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </Card.Body>
+                            </Card>
+                          )}
 
-                          <div className="gap-col mt-1">
-                            <ul className="d-flex align-items-center justify-content-center gap g-3">
-                              <li>
-                                <Button
-                                  type="button"
-                                  variant="primary"
-                                  className="me-2"
-                                  onClick={() =>
-                                    handleSanctionOrderUpload(
-                                      sanctionOrderData.documentTypeId
-                                    )
-                                  }
-                                  disabled={
-                                    uploadSanctionOrderStatus[
-                                      sanctionOrderData.documentTypeId
-                                    ]
-                                  } // Disable button if this document is uploaded
-                                >
-                                  {uploadSanctionOrderStatus[
-                                    sanctionOrderData.documentTypeId
-                                  ]
-                                    ? "Uploaded"
-                                    : "Upload"}
-                                </Button>
-                              </li>
-                            </ul>
-                          </div>
-
-                          
                         </Accordion.Body>
                       </Accordion.Item>
                     )}

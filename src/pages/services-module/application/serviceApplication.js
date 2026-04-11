@@ -3944,9 +3944,9 @@ const isUserValid = React.useMemo(() => {
     // ISCB-PSF: validate Kanesh Land Details and Equipment Purchase
     if (getIncentiveAndBonusData[0]?.calculationBasedOn === "ICB-PSF") {
       const missingFields = [];
-      if (data.addKaneshLand !== "yes") {
-        missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
-      }
+      // if (data.addKaneshLand !== "yes") {
+      //   missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
+      // }
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
       }
@@ -3991,6 +3991,44 @@ const isUserValid = React.useMemo(() => {
       if (!data.equordev.includes("constructedArea")) {
         missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
       }
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // IMCB-PSF: validate Equipment Purchase
+    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "IMCB-PSF") {
+      const missingFields = [];
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
       }
