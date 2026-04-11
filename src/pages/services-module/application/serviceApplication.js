@@ -3912,8 +3912,30 @@ const isUserValid = React.useMemo(() => {
       if (missingFields.length > 0) {
         Swal.fire({
           icon: "warning",
-          title: "Missing Details",
-          html: `Please enter details in:<br/><ul style="text-align:left">${missingFields.map(f => `<li>${f}</li>`).join("")}</ul>`,
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
         });
         return;
       }
@@ -3931,8 +3953,30 @@ const isUserValid = React.useMemo(() => {
       if (missingFields.length > 0) {
         Swal.fire({
           icon: "warning",
-          title: "Missing Details",
-          html: `Please enter details in:<br/><ul style="text-align:left">${missingFields.map(f => `<li>${f}</li>`).join("")}</ul>`,
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
         });
         return;
       }
