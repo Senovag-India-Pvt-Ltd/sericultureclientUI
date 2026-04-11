@@ -1081,6 +1081,7 @@ import UserHierarchyMappingList from "../pages/masters/user-hierarchy-mapping/Us
 import UserHierarchyMappingEdit from "../pages/masters/user-hierarchy-mapping/UserHierarchyMappingEdit";
 
 import CropInspectionList from "../pages/chawki-management/CropInspectionList";
+import SeedDtrReport from "../pages/reports-admin/market-auction/SeedDTRReport";
 
 // Admin and Reports
 
@@ -3273,6 +3274,10 @@ function Router() {
              <Route
               path="user-hierarchy-mapping-edit/:id"
               element={<UserHierarchyMappingEdit />}
+            />
+            <Route
+              path="seed-dtr-report"
+              element={<SeedDtrReport />}
             />
             <Route
               path="sc-sub-scheme-details"
