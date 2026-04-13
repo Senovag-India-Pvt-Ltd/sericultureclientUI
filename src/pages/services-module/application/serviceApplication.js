@@ -2345,6 +2345,8 @@ const calculateEquipmentRow = (item, sharePerc) => {
 
 const handleCalculateUnitPrice = () => {
 
+  setUnitPriceCalculated(true);
+
   const incentiveCalcBasedOn = getIncentiveAndBonusData[0]?.calculationBasedOn;
   const isChawki =
     incentiveCalcBasedOn ===
@@ -3900,6 +3902,30 @@ const isUserValid = React.useMemo(() => {
       return; // Exit if the form is not valid
     }
 
+    // All schemes: Calculate Unit Price must be clicked
+    if (!unitPriceCalculated) {
+      Swal.fire({
+        icon: "warning",
+        title: "⚠️ Unit Price Not Calculated",
+        html: `
+          <div style="text-align:center; font-size:15px; color:#555; margin-bottom:8px;">
+            Please click the <strong style="color:#0F6CBE;">"Calculate Unit Price"</strong> button before submitting the form.
+          </div>
+          <div style="text-align:center; font-size:13px; color:#888;">
+            This step is required to compute the eligible subsidy amount.
+          </div>
+        `,
+        confirmButtonText: "OK, I'll calculate",
+        confirmButtonColor: "#0F6CBE",
+        background: "#f0f6ff",
+        customClass: {
+          title: "swal-title-style",
+          popup: "swal-popup-style",
+        },
+      });
+      return;
+    }
+
     // Reeling Shed-PSF: validate Kanesh Land Details and Constructed Area
     if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Reeling Shed-PSF") {
       const missingFields = [];
@@ -4140,6 +4166,44 @@ const isUserValid = React.useMemo(() => {
       }
     }
 
+    // Adopting Solar power Generator: validate Equipment Purchase
+    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar power Generator") {
+      const missingFields = [];
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
     const formattedDates = {
       periodFrom: formatDate(data.periodFrom),
       periodTo: formatDate(data.periodTo),
@@ -4338,6 +4402,8 @@ const isUserValid = React.useMemo(() => {
     unitPrice: "",
     fullPrice: false,
   });
+
+  const [unitPriceCalculated, setUnitPriceCalculated] = useState(false);
 
   useEffect(() => {
     if (
