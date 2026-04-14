@@ -5215,15 +5215,15 @@ const allowedSchemes = [
                         <Card
                           className="mt-3"
                           style={{
-                            border: "1px solid #bee5eb",
+                            border: "1px solid #b8d4f0",
                             borderRadius: "10px",
-                            boxShadow: "0 4px 12px rgba(23, 162, 184, 0.15)",
-                            overflow: "hidden",
+                            boxShadow: "0 4px 12px rgba(15, 108, 190, 0.15)",
+                            overflow: "visible",
                           }}
                         >
                           <Card.Header
                             style={{
-                              background: "linear-gradient(135deg, #17a2b8, #138496)",
+                              background: "linear-gradient(135deg, #0F6CBE, #0a4f8e)",
                               color: "#fff",
                               padding: "12px 20px",
                               display: "flex",
@@ -5232,11 +5232,12 @@ const allowedSchemes = [
                               fontWeight: "600",
                               fontSize: "15px",
                               letterSpacing: "0.4px",
+                              borderRadius: "10px 10px 0 0",
                             }}
                           >
                             📋 Action Details
                           </Card.Header>
-                          <Card.Body style={{ background: "#f0fdff", padding: "20px" }}>
+                          <Card.Body style={{ background: "#f0f6ff", padding: "20px", overflow: "visible" }}>
                             <Row>
                               <Col lg="6">
                                 <Form.Group className="form-group">
@@ -5740,6 +5741,9 @@ const allowedSchemes = [
                                         if (validated) setValidated(false);
                                       }}
                                       className={validated && !isUserValid ? "is-invalid" : ""}
+                                      menuPortalTarget={document.body}
+                                      menuPosition="fixed"
+                                      styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                                     />
 
                                     {validated && !isUserValid && (

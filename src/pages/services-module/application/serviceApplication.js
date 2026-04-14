@@ -3926,6 +3926,50 @@ const isUserValid = React.useMemo(() => {
       return;
     }
 
+    // Silk Samagra State / Silk Samagra Central: validate Land Wise Constructed Area
+    if (
+      schemeDetails.calculationBasedOn === "Silk Samagra State" ||
+      schemeDetails.calculationBasedOn === "Silk Samagra Central"
+    ) {
+      const missingFields = [];
+      if (!data.equordev.includes("land")) {
+        missingFields.push("Land Wise Details (please check the Land Wise checkbox)");
+      }
+      if (!data.equordev.includes("constructedArea")) {
+        missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
     // Reeling Shed-PSF: validate Kanesh Land Details and Constructed Area
     if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Reeling Shed-PSF") {
       const missingFields = [];
@@ -4168,6 +4212,82 @@ const isUserValid = React.useMemo(() => {
 
     // Adopting Solar power Generator: validate Equipment Purchase
     if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar power Generator") {
+      const missingFields = [];
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // Adopting Solar Water Heater: validate Equipment Purchase
+    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar Water Heater") {
+      const missingFields = [];
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // Adopting Heat Recovery Unit-PSF: validate Equipment Purchase
+    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Heat Recovery Unit-PSF") {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
@@ -10300,12 +10420,12 @@ const fetchReelerDetails = () => {
                                       name="machineTypeId"
                                       value={data.machineTypeId}
                                       onChange={handleInputs}
-                                      onBlur={() => handleInputs}
-                                      required
-                                      isInvalid={
-                                        data.machineTypeId === undefined ||
-                                        data.machineTypeId === "0"
-                                      }
+                                      // onBlur={() => handleInputs}
+                                      // required
+                                      // isInvalid={
+                                      //   data.machineTypeId === undefined ||
+                                      //   data.machineTypeId === "0"
+                                      // }
                                     >
                                       <option value="">{t("Select Machine Type")}</option>
                                       {machineTypeListData.map((list) => (
