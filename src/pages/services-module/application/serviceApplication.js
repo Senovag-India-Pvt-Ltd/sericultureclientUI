@@ -4324,6 +4324,50 @@ const isUserValid = React.useMemo(() => {
       }
     }
 
+    // Rearing Equipment SS: validate Equipment Purchase, Constructed Area and Kanesh Land Details
+    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Rearing Equipment SS") {
+      const missingFields = [];
+      if (data.addKaneshLand !== "yes") {
+        missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
+      }
+      if (!data.equordev.includes("constructedArea")) {
+        missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
+      }
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
     const formattedDates = {
       periodFrom: formatDate(data.periodFrom),
       periodTo: formatDate(data.periodTo),
@@ -10170,7 +10214,7 @@ const fetchReelerDetails = () => {
                         <Col lg="4">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="landDeveloped">
-                              {t("Extent Of Mulberry")}
+                              {t("Extent Of Mulberry(In Acres)")}
                               {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
