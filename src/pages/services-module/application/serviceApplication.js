@@ -4327,8 +4327,8 @@ const isUserValid = React.useMemo(() => {
     // Rearing Equipment SS: validate Equipment Purchase, Constructed Area and Kanesh Land Details
     if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Rearing Equipment SS") {
       const missingFields = [];
-      if (data.addKaneshLand !== "yes") {
-        missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
+      if (!data.equordev.includes("land")) {
+        missingFields.push("Land Wise Details (please check the Land Wise checkbox)");
       }
       if (!data.equordev.includes("constructedArea")) {
         missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
