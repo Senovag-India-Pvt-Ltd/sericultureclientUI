@@ -3271,11 +3271,12 @@ function Menu() {
               <MenuItemLink text="My Tickets" to="/seriui/my-tickets" />
             </MenuItem>
           ) : null} */}
-            {showMenu.Helpdesk_FAQ ? (
+           {showMenu.Helpdesk_FAQ ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("KEDB")}
-                  to="/seriui/help-desk-faq-view"
+                  text={t("User Manual Videos")}
+                  // to="/seriui/help-desk-faq-view"
+                  to="https://drive.google.com/drive/folders/1V3JAJa_AbwV3072-6sHdgebgHCptU5sj?usp=sharing"
                 />
               </MenuItem>
             ) : null}
