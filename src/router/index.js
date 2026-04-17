@@ -1108,9 +1108,9 @@ function Router() {
     !downloadSanctionOrder.test(pathname)
   ) {
     navigate("/seriui");
-  }
-    if (!isAuthenticated && !displayAllLotPathPattern.test(pathname) && !applicationCheck.test(pathname)) {
-      navigate("/seriui");
+  // }
+  //   if (!isAuthenticated && !displayAllLotPathPattern.test(pathname) && !applicationCheck.test(pathname)) {
+  //     navigate("/seriui");
     }
   }, [isAuthenticated, navigate]);
 
@@ -1118,7 +1118,7 @@ function Router() {
     <ScrollToTop>
       <Routes>
         {/* <Route path="/blank" element={<Blank />} /> */}
-        <Route path="/seriui" element={<AuthLogin />} />
+        <Route path="seriui" element={<AuthLogin />} />
         <Route path="/seriui/home" element={<Home />} />
         {/* Display All Lot */}
         <Route
