@@ -244,6 +244,7 @@ function Menu() {
 
     Market_SeedMarket: false,
     Market_SeedMarket_Weighment: false,
+    Market_SeedMarket_Delete_Lot:false,
     Market_SeedMarket_Lot_Distribution: false,
 
     Market_SeedMarket_Payment: false,
@@ -2312,6 +2313,15 @@ function Menu() {
                         <MenuItemLink
                           text={t("Weighment")}
                           to="/seriui/weighment-for-seed-market"
+                        />
+                      </MenuItem>
+                    ) : null}
+
+                      {showMenu.Market_SeedMarket_Delete_Lot ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t("Delete Lot")}
+                          to="/seriui/delete-lot"
                         />
                       </MenuItem>
                     ) : null}

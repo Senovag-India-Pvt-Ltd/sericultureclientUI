@@ -194,6 +194,7 @@ import Payment from "../pages/market-and-auction/Payment";
 import RejectFarmerAuction from "../pages/market-and-auction/RejectFarmerAuction";
 import UpdateLotWeight from "../pages/market-and-auction/UpdateLotWeight";
 import AcceptFarmerAuction from "../pages/market-and-auction/AcceptFarmerAuction";
+import DeleteLotPage from "../pages/market-and-auction/DeleteLotPage";
 
 // Admin and Reports
 import ReportsAdmin from "../pages/reports-admin/ReportsAdmin";
@@ -3899,6 +3900,7 @@ function Router() {
             <Route path="base-price-fixation" element={<BasePriceFixation />} />
 
             <Route path="lot-wise-base-price-fixation" element={<LotWisePriceFixation />} /> 
+             <Route path="delete-lot" element={<DeleteLotPage />} /> 
 
             <Route
               path="pupa-test-and-assessment"
