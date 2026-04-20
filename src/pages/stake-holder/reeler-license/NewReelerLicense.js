@@ -480,11 +480,15 @@ function NewReelerLicense() {
       const date = String(now.getDate()).padStart(2, "0");
 
       const timeString = hours + minutes + seconds + date + month + year;
-      setData((prev) => ({ ...prev, reelerNumber: timeString }));
+      // setData((prev) => ({ ...prev, reelerNumber: timeString }));
+      const updatedData = {
+  ...data,
+  reelerNumber: timeString,
+};
 
       api
         .post(baseURL + `reeler/add`, {
-          ...data,
+          ...updatedData,
           dob: FormDob,
           dateOfMachineInstallation: FormDateOfMachineInstallation,
           inspectionDate: FormInspectionDate,
@@ -516,7 +520,7 @@ function NewReelerLicense() {
                       const bankError = response.data.content.error_description;
                       saveReelerError(bankError);
                     } else {
-                      saveSuccess(arnNumber);
+                      saveSuccess(arnNumber, updatedData.reelerNumber);
                     }
                   })
                   .catch((err) => {
@@ -529,7 +533,7 @@ function NewReelerLicense() {
                   });
               });
             } else {
-              saveSuccess(arnNumber);
+              saveSuccess(arnNumber, updatedData.reelerNumber);
             }
           }
         })
@@ -836,14 +840,24 @@ function NewReelerLicense() {
   };
 
   const navigate = useNavigate();
-  const saveSuccess = (arn) => {
-    Swal.fire({
-      icon: "success",
-      title: "Saved successfully",
-      text: `Generated ARN Number is ${arn}`,
-      text: `Reeler Number: ${data.reelerNumber}`,
-    }).then(() => navigate("/seriui/reeler-license-list"));
-  };
+  // const saveSuccess = (arn) => {
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Saved successfully",
+  //     text: `Generated ARN Number is ${arn}`,
+  //     text: `Reeler Number: ${data.reelerNumber}`,
+  //   }).then(() => navigate("/seriui/reeler-license-list"));
+  // };
+  const saveSuccess = (arn, reelerNumber) => {
+  Swal.fire({
+    icon: "success",
+    title: "Saved successfully",
+    html: `
+      Generated ARN Number: <b>${arn}</b><br/>
+      Reeler Number: <b>${reelerNumber}</b>
+    `,
+  }).then(() => navigate("/seriui/reeler-license-list"));
+};
   const saveError = (message) => {
     let errorMessage;
     if (typeof message === "object") {
