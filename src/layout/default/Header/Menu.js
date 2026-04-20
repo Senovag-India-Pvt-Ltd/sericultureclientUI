@@ -5461,11 +5461,11 @@ function Menu() {
                       </MenuItem>
                     ) : null}
 
-                    {showMenu.Reports_Format_Reports_WorkOrder ? (
+                    {/* {showMenu.Reports_Format_Reports_WorkOrder ? (
                       <MenuItem>
                         <MenuItemLink
                           text={t("Work Order")}
-                          to="/seriui/work-order"
+                          to="/seriui/generate-work-order"
                         />
                       </MenuItem>
                     ) : null}
@@ -5483,10 +5483,10 @@ function Menu() {
                       <MenuItem>
                         <MenuItemLink
                           text={t("Acknowledgement")}
-                          to="/seriui/acknowledgement"
+                          to="/seriui/generate-acknowledgement"
                         />
                       </MenuItem>
-                    ) : null}
+                    ) : null} */}
                   </MenuSub>
                 </MenuItem>
               ) : null}

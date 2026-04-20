@@ -1083,6 +1083,8 @@ import UserHierarchyMappingEdit from "../pages/masters/user-hierarchy-mapping/Us
 import CropInspectionList from "../pages/chawki-management/CropInspectionList";
 import SeedDtrReport from "../pages/reports-admin/market-auction/SeedDTRReport";
 import DownloadSanctionOrder from "../pages/market-and-auction/DownloadSanctionOrder";
+import GenerateAcknowledgement from "../pages/direct-benefit-transfer/GenerateAcknowledgement";
+import GenerateWorkOrder from "../pages/direct-benefit-transfer/GenerateWorkOrder";
 
 // Admin and Reports
 
@@ -2876,6 +2878,8 @@ function Router() {
             <Route path="registered-private-chawki-list" element={<RegisteredPrivateChawkiList  />} /> 
 
             <Route path="generate-sanction-order" element={<GenerateSanctionOrder />} />
+            <Route path="generate-acknowledgement" element={<GenerateAcknowledgement />} />
+            <Route path="generate-work-order" element={<GenerateWorkOrder />} />
             <Route path="crop-details-commercial-market" element={<CropDetailsForCommercialMarket />} />
             <Route path="crop-details-commercial-market-list" element={<CropDetailsForCommercialMarketList />} />
 
