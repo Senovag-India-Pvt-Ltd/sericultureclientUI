@@ -18,6 +18,7 @@ function GenerateAcknowledgement() {
   const { t } = useTranslation();
 
   const [addressDetails, setAddressDetails] = useState({
+    fruitsId: "",
     financialYearId: "",
     schemeId: "",
     componentId: "",
@@ -46,6 +47,7 @@ function GenerateAcknowledgement() {
             componentId: details.componentId || 0,
             scCategoryId: details.scCategoryId || 0,
             sanctionOrderNumber: details.sanctionOrderNumber || "",
+            fruitsId: details.fruitsId || "",
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -61,7 +63,6 @@ function GenerateAcknowledgement() {
         setAllApplicationIds(scApplicationFormIds);
         setApplicationFormId(recordData?.scApplicationFormId);
         setSubSchemeType(recordData?.subSchemeType);
-        setArn(recordData?.arn || "");
         setSanctionOrderForScheme(recordData?.sanctionOrderForScheme || null);
         setLoading(false);
       })
@@ -82,6 +83,7 @@ function GenerateAcknowledgement() {
             subSchemeId: addressDetails.subSchemeId || 0,
             componentId: addressDetails.componentId || 0,
             scCategoryId: addressDetails.scCategoryId || 0,
+            fruitsId: addressDetails.fruitsId || "",
             pageNumber: page,
             pageSize: countPerPage,
           },
@@ -126,8 +128,10 @@ function GenerateAcknowledgement() {
   };
 
   const handleSanctionOrderChange = (e) => {
-    const updated = { ...addressDetails, sanctionOrderNumber: e.target.value };
+    const value = e.target.value;
+    const updated = { ...addressDetails, sanctionOrderNumber: value };
     setAddressDetails(updated);
+    setArn(value);
     search(updated);
   };
 
@@ -140,12 +144,13 @@ function GenerateAcknowledgement() {
       addressDetails.scSchemeDetailsId &&
       addressDetails.subSchemeId &&
       addressDetails.componentId &&
-      addressDetails.scCategoryId
+      addressDetails.scCategoryId &&
+      addressDetails.fruitsId
     ) {
       api
         .post(
           baseURLDBT +
-            `service/getSanctionOrderNumbers?financialYearId=${addressDetails.financialYearId}&schemeId=${addressDetails.scSchemeDetailsId}&subSchemeId=${addressDetails.subSchemeId}&componentId=${addressDetails.componentId}&categoryId=${addressDetails.scCategoryId}`
+            `service/getSanctionOrderNumbers?financialYearId=${addressDetails.financialYearId}&schemeId=${addressDetails.scSchemeDetailsId}&subSchemeId=${addressDetails.subSchemeId}&componentId=${addressDetails.componentId}&categoryId=${addressDetails.scCategoryId}&fruitsId=${addressDetails.fruitsId || ""}`
         )
         .then((res) => {
           if (res.data && res.data.content)
@@ -161,7 +166,8 @@ function GenerateAcknowledgement() {
       addressDetails.scSchemeDetailsId &&
       addressDetails.subSchemeId &&
       addressDetails.componentId &&
-      addressDetails.scCategoryId
+      addressDetails.scCategoryId &&
+      addressDetails.fruitsId
     ) {
       loadSanctionOrderNumbers(addressDetails);
     }
@@ -171,6 +177,7 @@ function GenerateAcknowledgement() {
     addressDetails.subSchemeId,
     addressDetails.componentId,
     addressDetails.scCategoryId,
+    addressDetails.fruitsId,
   ]);
 
   // ── master data ───────────────────────────────────────────────────
@@ -244,12 +251,13 @@ function GenerateAcknowledgement() {
     if (!selectedSanctionOrder) {
       Swal.fire({
         icon: "warning",
-        title: "Sanction Order Required",
-        html: "<p style='color:#555;font-size:15px;margin:0'>Please select a <b>Sanction Order Number</b> before generating the PDF.</p>",
+        title: "Selection Required",
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(245,158,11,0.3)">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Action Needed</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">Please select an <b>ARN</b> from the dropdown before generating the PDF.</p></div></div></div>`,
         confirmButtonText: "Got it",
-        confirmButtonColor: "#6b46c1",
+        confirmButtonColor: "#d97706",
         background: "#fff",
-        customClass: { popup: "swal-rounded" },
+        showClass: { popup: "animate__animated animate__headShake animate__faster" },
+        customClass: { popup: "swal-pop" },
       });
       return;
     }
@@ -285,12 +293,13 @@ function GenerateAcknowledgement() {
   const showSchemeError = () =>
     Swal.fire({
       icon: "error",
-      title: "No Report Available",
-      html: "<p style='color:#555;font-size:15px;margin:0'>No downloadable report is configured for the selected scheme.</p>",
+      title: "Report Not Available",
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(229,62,62,0.3)">📭</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Not Configured</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">No downloadable report is configured for the selected scheme.</p></div></div></div>`,
       confirmButtonText: "Close",
       confirmButtonColor: "#e53e3e",
       background: "#fff",
-      customClass: { popup: "swal-rounded" },
+      showClass: { popup: "animate__animated animate__shakeX animate__faster" },
+      customClass: { popup: "swal-pop" },
     });
 
   const generateReport = async (endpoint, selectedSanctionOrder, usesApplicationIds) => {
@@ -310,12 +319,13 @@ function GenerateAcknowledgement() {
     if (!arn) {
       Swal.fire({
         icon: "info",
-        title: "File Not Available",
-        html: "<p style='color:#555;font-size:15px;margin:0'>No pre-generated PDF was found for this acknowledgement.<br/>Try <b>Generate PDF</b> instead.</p>",
+        title: "No File Found",
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#ebf8ff,#fff);border:1.5px solid #90cdf4;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1e67a8,#2d9cdb);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(30,103,168,0.3)">📂</div><div><p style="color:#2c5282;font-size:14px;font-weight:700;margin:0 0 5px">No Pre-Generated PDF</p><p style="color:#2a4365;font-size:13px;margin:0;line-height:1.65">No pre-generated PDF was found for this acknowledgement. Try <b>Generate PDF</b> instead.</p></div></div></div>`,
         confirmButtonText: "OK",
-        confirmButtonColor: "#6b46c1",
+        confirmButtonColor: "#1e67a8",
         background: "#fff",
-        customClass: { popup: "swal-rounded" },
+        showClass: { popup: "animate__animated animate__fadeInDown animate__faster" },
+        customClass: { popup: "swal-pop" },
       });
       return;
     }
@@ -338,27 +348,29 @@ function GenerateAcknowledgement() {
       window.URL.revokeObjectURL(url);
       Swal.fire({
         icon: "success",
-        title: "Downloaded Successfully!",
-        html: `<div style="text-align:center"><p style="color:#555;font-size:15px;margin:6px 0 0">Your <b>Acknowledgement PDF</b> has been saved to your device.</p></div>`,
+        title: "Download Complete!",
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#f0fff4,#fff);border:1.5px solid #9ae6b4;border-radius:14px;padding:18px 20px;text-align:center"><div style="font-size:34px;margin-bottom:10px">🎉</div><p style="color:#276749;font-size:14.5px;font-weight:700;margin:0 0 5px">Acknowledgement PDF Saved!</p><p style="color:#2f855a;font-size:13px;margin:0;line-height:1.6">Your file has been saved to your <b>Downloads</b> folder.</p></div></div>`,
         confirmButtonText: "✓ Done",
-        confirmButtonColor: "#6b46c1",
+        confirmButtonColor: "#38a169",
         background: "#fff",
         timer: 3000,
         timerProgressBar: true,
-        customClass: { popup: "swal-rounded" },
+        showClass: { popup: "animate__animated animate__bounceIn animate__faster" },
+        customClass: { popup: "swal-pop" },
       });
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Download Failed",
-        html: `<p style="color:#555;font-size:15px;margin:0">We couldn't fetch the PDF at this time.<br/>Please <b>check your connection</b> and try again.</p>`,
-        confirmButtonText: "Retry",
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left;margin-bottom:10px"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(229,62,62,0.3)">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Could Not Download</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">We couldn't retrieve the PDF. Please check your connection and try again.</p></div></div><div style="background:#f7fafc;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px"><span style="font-size:16px">💡</span><span style="color:#4a5568;font-size:12.5px">If the problem persists, contact your system administrator.</span></div></div>`,
+        confirmButtonText: "🔄 Retry",
         confirmButtonColor: "#e53e3e",
         showCancelButton: true,
         cancelButtonText: "Cancel",
-        cancelButtonColor: "#a0aec0",
+        cancelButtonColor: "#718096",
         background: "#fff",
-        customClass: { popup: "swal-rounded" },
+        showClass: { popup: "animate__animated animate__shakeX animate__faster" },
+        customClass: { popup: "swal-pop" },
       });
     } finally {
       setIsDownloading(false);
@@ -370,13 +382,13 @@ function GenerateAcknowledgement() {
     const style = document.createElement("style");
     style.id = "swal-custom-styles";
     style.innerHTML = `
-      .swal-rounded { border-radius: 18px !important; padding: 10px !important; }
-      .swal2-title { font-size: 20px !important; font-weight: 700 !important; color: #1a202c !important; }
-      .swal2-popup.swal-rounded { box-shadow: 0 20px 60px rgba(0,0,0,0.18) !important; }
-      .swal2-confirm { border-radius: 8px !important; padding: 10px 28px !important; font-weight: 600 !important; font-size: 14px !important; }
-      .swal2-cancel { border-radius: 8px !important; padding: 10px 28px !important; font-weight: 600 !important; font-size: 14px !important; }
-      .swal2-timer-progress-bar { background: #6b46c1 !important; height: 5px !important; }
-      .swal2-icon { margin: 18px auto 10px !important; }
+      .swal-pop { border-radius: 22px !important; padding: 8px !important; box-shadow: 0 30px 90px rgba(0,0,0,0.22), 0 0 0 1px rgba(0,0,0,0.03) !important; }
+      .swal-pop .swal2-title { font-size: 21px !important; font-weight: 800 !important; color: #1a202c !important; letter-spacing: -0.02em !important; padding-top: 2px !important; }
+      .swal-pop .swal2-icon { margin: 20px auto 4px !important; }
+      .swal-pop .swal2-html-container { margin: 0 !important; padding: 0 !important; }
+      .swal-pop .swal2-actions { gap: 10px !important; padding-bottom: 4px !important; margin-top: 2px !important; }
+      .swal-pop .swal2-confirm, .swal-pop .swal2-cancel { border-radius: 11px !important; padding: 12px 30px !important; font-weight: 700 !important; font-size: 14px !important; letter-spacing: 0.02em !important; box-shadow: 0 4px 14px rgba(0,0,0,0.13) !important; }
+      .swal-pop .swal2-timer-progress-bar { height: 4px !important; border-radius: 0 0 4px 4px !important; }
     `;
     document.head.appendChild(style);
   }
@@ -438,14 +450,14 @@ function GenerateAcknowledgement() {
           style={{
             borderRadius: "14px",
             border: "none",
-            boxShadow: "0 4px 24px rgba(107,70,193,0.10)",
+            boxShadow: "0 4px 24px rgba(30,103,168,0.10)",
             overflow: "hidden",
           }}
         >
           {/* Card Header */}
           <div
             style={{
-              background: "linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%)",
+              background: "linear-gradient(135deg, #1e67a8 0%, #2d9cdb 100%)",
               padding: "18px 28px",
               display: "flex",
               alignItems: "center",
@@ -477,7 +489,23 @@ function GenerateAcknowledgement() {
           </div>
 
           <Card.Body style={{ padding: "28px 32px 24px" }}>
-            <div style={{ fontSize: "12px", fontWeight: 700, color: "#6b46c1", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "18px" }}>
+
+            {/* Fruits ID — first field */}
+            <Row className="mb-3">
+              <Col md={6} style={fieldGroupStyle}>
+                <label style={labelStyle}>Fruits ID</label>
+                <Form.Control
+                  type="text"
+                  name="fruitsId"
+                  value={addressDetails.fruitsId || ""}
+                  onChange={handleInputsaddress}
+                  placeholder="Enter Fruits ID"
+                  style={selectStyle}
+                />
+              </Col>
+            </Row>
+
+            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1e67a8", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "18px" }}>
               Step 1 — Select Scheme Details
             </div>
 
@@ -547,37 +575,35 @@ function GenerateAcknowledgement() {
             </Row>
 
             <div style={{ borderTop: "1.5px dashed #d0d9e8", margin: "8px 0 20px" }} />
-            <div style={{ fontSize: "12px", fontWeight: 700, color: "#6b46c1", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "18px" }}>
-              Step 2 — Select Sanction Order &amp; Download Acknowledgement
+            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1e67a8", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "18px" }}>
+              Step 2 — Select ARN &amp; Download Acknowledgement
             </div>
 
             {/* Row 4 */}
             <Row className="align-items-end">
               <Col md={5} style={fieldGroupStyle}>
-                <label style={labelStyle}>Sanction Order Number</label>
+                <label style={labelStyle}>ARN</label>
                 <Form.Select name="sanctionOrderNumber" value={addressDetails.sanctionOrderNumber} onChange={handleSanctionOrderChange} style={selectStyle}>
-                  <option value="">— Select Sanction Order —</option>
+                  <option value="">— Select ARN —</option>
                   {sanctionOrderNumbers && sanctionOrderNumbers.length
-                    ? sanctionOrderNumbers.map((num, index) => (
-                        <option key={index} value={num}>{num}</option>
-                      ))
+                    ? sanctionOrderNumbers.map((num, index) => {
+                        const val = typeof num === "object" ? num.arn : num;
+                        return (
+                          <option key={index} value={val}>{val}</option>
+                        );
+                      })
                     : ""}
                 </Form.Select>
-                {!arn && addressDetails.sanctionOrderNumber && (
-                  <small style={{ color: "#e53e3e", fontSize: "12px", marginTop: "4px" }}>
-                    No pre-generated acknowledgement file found.
-                  </small>
-                )}
               </Col>
 
               <Col md={7} className="d-flex gap-3 flex-wrap pb-1">
                 <button
                   type="button"
                   onClick={downloadFile}
-                  disabled={!addressDetails.sanctionOrderNumber || isDownloading}
+                  disabled={!arn || isDownloading}
                   style={btnStyle(
-                    addressDetails.sanctionOrderNumber && !isDownloading,
-                    "#4c1d95", "#7c3aed", "rgba(107,70,193,0.35)"
+                    arn && !isDownloading,
+                    "#1e67a8", "#2d9cdb", "rgba(30,103,168,0.35)"
                   )}
                 >
                   {isDownloading ? (
@@ -590,7 +616,7 @@ function GenerateAcknowledgement() {
                   )}
                 </button>
 
-                <button
+                {/* <button
                   type="button"
                   onClick={handleGeneratePDF}
                   disabled={!addressDetails.sanctionOrderNumber}
@@ -600,7 +626,7 @@ function GenerateAcknowledgement() {
                   )}
                 >
                   🖨 Generate PDF
-                </button>
+                </button> */}
               </Col>
             </Row>
           </Card.Body>

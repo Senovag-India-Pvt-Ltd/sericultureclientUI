@@ -53,11 +53,12 @@ function GenerateSanctionOrder() {
   };
 
   const [addressDetails, setAddressDetails] = useState({
+    fruitsId: "",
     financialYearId: "",
       schemeId: "",
      componentId: "",
       subSchemeId: "",
-      sanctionOrderNumber: "",  
+      sanctionOrderNumber: "",
       scCategoryId: "",
       type: "",
     });
@@ -71,6 +72,7 @@ function GenerateSanctionOrder() {
       componentId: details.componentId || 0,
       scCategoryId: details.scCategoryId || 0,
       sanctionOrderNumber: details.sanctionOrderNumber || "",
+      fruitsId: details.fruitsId || "",
       pageNumber: page,
       pageSize: countPerPage,
     }
@@ -111,12 +113,14 @@ const getList = () => {
         {},
         {
           params: {
-             schemeId: addressDetails.schemeId || 0,
-          subSchemeId: addressDetails.subSchemeId || 0,
-          componentId: addressDetails.componentId || 0,
-          scCategoryId: addressDetails.scCategoryId || 0,
-          pageNumber: page,
-          pageSize: countPerPage,
+            financialYearId: addressDetails.financialYearId || 0,
+            schemeId: addressDetails.schemeId || 0,
+            subSchemeId: addressDetails.subSchemeId || 0,
+            componentId: addressDetails.componentId || 0,
+            scCategoryId: addressDetails.scCategoryId || 0,
+            fruitsId: addressDetails.fruitsId || "",
+            pageNumber: page,
+            pageSize: countPerPage,
           },
         }
       )
@@ -168,6 +172,7 @@ const getList = () => {
   setAddressDetails(updated);
 
   if (
+    updated.financialYearId &&
     updated.scSchemeDetailsId &&
     updated.subSchemeId &&
     updated.componentId &&
@@ -211,12 +216,13 @@ const [sanctionOrderNumbers, setSanctionOrderNumbers] = useState([]);
     addressDetails.scSchemeDetailsId &&
     addressDetails.subSchemeId &&
     addressDetails.componentId &&
-    addressDetails.scCategoryId
+    addressDetails.scCategoryId &&
+    addressDetails.fruitsId
   ) {
     api
       .post(
         baseURLDBT +
-          `service/getSanctionOrderNumbers?financialYearId=${addressDetails.financialYearId}&schemeId=${addressDetails.scSchemeDetailsId}&subSchemeId=${addressDetails.subSchemeId}&componentId=${addressDetails.componentId}&categoryId=${addressDetails.scCategoryId}`
+          `service/getSanctionOrderNumbers?financialYearId=${addressDetails.financialYearId}&schemeId=${addressDetails.scSchemeDetailsId}&subSchemeId=${addressDetails.subSchemeId}&componentId=${addressDetails.componentId}&categoryId=${addressDetails.scCategoryId}&fruitsId=${addressDetails.fruitsId || ""}`
       )
       .then((res) => {
         if (res.data && res.data.content) {
@@ -235,7 +241,8 @@ useEffect(() => {
     addressDetails.scSchemeDetailsId &&
     addressDetails.subSchemeId &&
     addressDetails.componentId &&
-    addressDetails.scCategoryId
+    addressDetails.scCategoryId &&
+    addressDetails.fruitsId
   ) {
     loadSanctionOrderNumbers(addressDetails);
   }
@@ -245,6 +252,7 @@ useEffect(() => {
   addressDetails.subSchemeId,
   addressDetails.componentId,
   addressDetails.scCategoryId,
+  addressDetails.fruitsId
 ]);
 
 
@@ -460,16 +468,13 @@ useEffect(() => {
     if (!selectedSanctionOrder) {
       Swal.fire({
         icon: "warning",
-        title: "Sanction Order Required",
-        html: "<p style='color:#555;font-size:15px;margin:0'>Please select a <b>Sanction Order Number</b> before generating the PDF.</p>",
+        title: "Selection Required",
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(245,158,11,0.3)">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Action Needed</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">Please select a <b>Sanction Order Number</b> from the dropdown before generating the PDF.</p></div></div></div>`,
         confirmButtonText: "Got it",
-        confirmButtonColor: "#1e67a8",
+        confirmButtonColor: "#d97706",
         background: "#fff",
-        customClass: {
-          popup: "swal-rounded",
-          title: "swal-title-warning",
-          confirmButton: "swal-btn-primary",
-        },
+        showClass: { popup: "animate__animated animate__headShake animate__faster" },
+        customClass: { popup: "swal-pop" },
       });
       return;
     }
@@ -496,12 +501,13 @@ useEffect(() => {
     } else {
       Swal.fire({
         icon: "error",
-        title: "No Report Available",
-        html: "<p style='color:#555;font-size:15px;margin:0'>No downloadable report is configured for the selected Sanction Order scheme.</p>",
+        title: "Report Not Available",
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(229,62,62,0.3)">📭</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Not Configured</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">No downloadable report is configured for the selected Sanction Order scheme.</p></div></div></div>`,
         confirmButtonText: "Close",
         confirmButtonColor: "#e53e3e",
         background: "#fff",
-        customClass: { popup: "swal-rounded" },
+        showClass: { popup: "animate__animated animate__shakeX animate__faster" },
+        customClass: { popup: "swal-pop" },
       });
     }
   };
@@ -517,12 +523,13 @@ useEffect(() => {
     } else {
       Swal.fire({
         icon: "error",
-        title: "Invalid Sub Scheme Type",
-        html: "<p style='color:#555;font-size:15px;margin:0'>The selected sub-scheme type is not supported for PDF generation.</p>",
+        title: "Unsupported Scheme Type",
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(229,62,62,0.3)">⛔</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Not Supported</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">The selected sub-scheme type is not supported for PDF generation.</p></div></div></div>`,
         confirmButtonText: "Close",
         confirmButtonColor: "#e53e3e",
         background: "#fff",
-        customClass: { popup: "swal-rounded" },
+        showClass: { popup: "animate__animated animate__shakeX animate__faster" },
+        customClass: { popup: "swal-pop" },
       });
     }
   };
@@ -617,12 +624,13 @@ useEffect(() => {
     if (!securityKey) {
       Swal.fire({
         icon: "info",
-        title: "File Not Available",
-        html: "<p style='color:#555;font-size:15px;margin:0'>No pre-generated PDF was found for this sanction order.<br/>Try <b>Generate PDF</b> instead.</p>",
+        title: "No File Found",
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#ebf8ff,#fff);border:1.5px solid #90cdf4;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1e67a8,#2d9cdb);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(30,103,168,0.3)">📂</div><div><p style="color:#2c5282;font-size:14px;font-weight:700;margin:0 0 5px">No Pre-Generated PDF</p><p style="color:#2a4365;font-size:13px;margin:0;line-height:1.65">No pre-generated PDF was found for this sanction order. Try <b>Generate PDF</b> instead.</p></div></div></div>`,
         confirmButtonText: "OK",
         confirmButtonColor: "#1e67a8",
         background: "#fff",
-        customClass: { popup: "swal-rounded" },
+        showClass: { popup: "animate__animated animate__fadeInDown animate__faster" },
+        customClass: { popup: "swal-pop" },
       });
       return;
     }
@@ -647,39 +655,29 @@ useEffect(() => {
       window.URL.revokeObjectURL(url);
       Swal.fire({
         icon: "success",
-        title: "Downloaded Successfully!",
-        html: `
-          <div style="text-align:center">
-            <p style="color:#555;font-size:15px;margin:6px 0 0">
-              Your <b>Sanction Order PDF</b> has been saved to your device.
-            </p>
-          </div>`,
+        title: "Download Complete!",
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#f0fff4,#fff);border:1.5px solid #9ae6b4;border-radius:14px;padding:18px 20px;text-align:center"><div style="font-size:34px;margin-bottom:10px">🎉</div><p style="color:#276749;font-size:14.5px;font-weight:700;margin:0 0 5px">Sanction Order PDF Saved!</p><p style="color:#2f855a;font-size:13px;margin:0;line-height:1.6">Your file has been saved to your <b>Downloads</b> folder.</p></div></div>`,
         confirmButtonText: "✓ Done",
-        confirmButtonColor: "#1e67a8",
+        confirmButtonColor: "#38a169",
         background: "#fff",
         timer: 3000,
         timerProgressBar: true,
-        customClass: {
-          popup: "swal-rounded",
-          timerProgressBar: "swal-progress-blue",
-        },
+        showClass: { popup: "animate__animated animate__bounceIn animate__faster" },
+        customClass: { popup: "swal-pop" },
       });
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Download Failed",
-        html: `
-          <p style="color:#555;font-size:15px;margin:0">
-            We couldn't fetch the PDF at this time.<br/>
-            Please <b>check your connection</b> and try again.
-          </p>`,
-        confirmButtonText: "Retry",
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left;margin-bottom:10px"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(229,62,62,0.3)">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Could Not Download</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">We couldn't retrieve the PDF. Please check your connection and try again.</p></div></div><div style="background:#f7fafc;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px"><span style="font-size:16px">💡</span><span style="color:#4a5568;font-size:12.5px">If the problem persists, contact your system administrator.</span></div></div>`,
+        confirmButtonText: "🔄 Retry",
         confirmButtonColor: "#e53e3e",
         showCancelButton: true,
         cancelButtonText: "Cancel",
-        cancelButtonColor: "#a0aec0",
+        cancelButtonColor: "#718096",
         background: "#fff",
-        customClass: { popup: "swal-rounded" },
+        showClass: { popup: "animate__animated animate__shakeX animate__faster" },
+        customClass: { popup: "swal-pop" },
       });
     } finally {
       setIsDownloading(false);
@@ -691,14 +689,13 @@ useEffect(() => {
     const style = document.createElement("style");
     style.id = "swal-custom-styles";
     style.innerHTML = `
-      .swal-rounded { border-radius: 18px !important; padding: 10px !important; }
-      .swal2-title { font-size: 20px !important; font-weight: 700 !important; color: #1a202c !important; }
-      .swal2-popup.swal-rounded { box-shadow: 0 20px 60px rgba(0,0,0,0.18) !important; }
-      .swal2-confirm.swal-btn-primary { border-radius: 8px !important; padding: 10px 28px !important; font-weight: 600 !important; font-size: 14px !important; }
-      .swal2-confirm { border-radius: 8px !important; padding: 10px 28px !important; font-weight: 600 !important; font-size: 14px !important; }
-      .swal2-cancel { border-radius: 8px !important; padding: 10px 28px !important; font-weight: 600 !important; font-size: 14px !important; }
-      .swal2-timer-progress-bar { background: #1e67a8 !important; height: 5px !important; }
-      .swal2-icon { margin: 18px auto 10px !important; }
+      .swal-pop { border-radius: 22px !important; padding: 8px !important; box-shadow: 0 30px 90px rgba(0,0,0,0.22), 0 0 0 1px rgba(0,0,0,0.03) !important; }
+      .swal-pop .swal2-title { font-size: 21px !important; font-weight: 800 !important; color: #1a202c !important; letter-spacing: -0.02em !important; padding-top: 2px !important; }
+      .swal-pop .swal2-icon { margin: 20px auto 4px !important; }
+      .swal-pop .swal2-html-container { margin: 0 !important; padding: 0 !important; }
+      .swal-pop .swal2-actions { gap: 10px !important; padding-bottom: 4px !important; margin-top: 2px !important; }
+      .swal-pop .swal2-confirm, .swal-pop .swal2-cancel { border-radius: 11px !important; padding: 12px 30px !important; font-weight: 700 !important; font-size: 14px !important; letter-spacing: 0.02em !important; box-shadow: 0 4px 14px rgba(0,0,0,0.13) !important; }
+      .swal-pop .swal2-timer-progress-bar { height: 4px !important; border-radius: 0 0 4px 4px !important; }
     `;
     document.head.appendChild(style);
   }
@@ -784,6 +781,22 @@ useEffect(() => {
           </div>
 
           <Card.Body style={{ padding: "28px 32px 24px" }}>
+
+            {/* Fruits ID — first field */}
+            <Row className="mb-3">
+              <Col md={6} style={fieldGroupStyle}>
+                <label style={labelStyle}>Fruits ID</label>
+                <Form.Control
+                  type="text"
+                  name="fruitsId"
+                  value={addressDetails.fruitsId || ""}
+                  onChange={handleInputsaddress}
+                  placeholder="Enter Fruits ID"
+                  style={selectStyle}
+                />
+              </Col>
+            </Row>
+
             {/* Section label */}
             <div
               style={{
@@ -932,11 +945,14 @@ useEffect(() => {
                 >
                   <option value="">— Select Sanction Order —</option>
                   {sanctionOrderNumbers && sanctionOrderNumbers.length
-                    ? sanctionOrderNumbers.map((num, index) => (
-                        <option key={index} value={num}>
-                          {num}
-                        </option>
-                      ))
+                    ? sanctionOrderNumbers.map((num, index) => {
+                        const val = typeof num === "object" ? num.sanctionOrderNumber : num;
+                        return (
+                          <option key={index} value={val}>
+                            {val}
+                          </option>
+                        );
+                      })
                     : ""}
                 </Form.Select>
                 {!securityKey && addressDetails.sanctionOrderNumber && (

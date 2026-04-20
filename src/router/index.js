@@ -973,6 +973,10 @@ import RemittanceForFarmList from "../pages/seed-and-dfl-managment/RemittanceFor
 import RemittanceForFarmEdit from "../pages/seed-and-dfl-managment/RemittanceForFarmEdit";
 import RemittanceForFarmView from "../pages/seed-and-dfl-managment/RemittanceForFarmView";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
+import SeedMarketInvoiceReport from "../pages/market-and-auction/SeedMarketInvoiceReport";
+import SeedMarketPermitReport from "../pages/market-and-auction/SeedMarketPermitReport";
+import SeedMarketCashReceiptReport from "../pages/market-and-auction/SeedMarketCashReceiptReport";
+import SeedMarketMarketReceiptReport from "../pages/market-and-auction/SeedMarketMarketReceiptReport";
 import ChawkiManagementReport from "../pages/stake-holder/ChawkiManagementReport";
 import ChawkiDistributionReport from "../pages/stake-holder/ChawkiDistributionReport";
 import SeedCuttingBankReport from "../pages/stake-holder/SeedCuttingBankReport";
@@ -1086,6 +1090,7 @@ import SeedDtrReport from "../pages/reports-admin/market-auction/SeedDTRReport";
 import DownloadSanctionOrder from "../pages/market-and-auction/DownloadSanctionOrder";
 import GenerateAcknowledgement from "../pages/direct-benefit-transfer/GenerateAcknowledgement";
 import GenerateWorkOrder from "../pages/direct-benefit-transfer/GenerateWorkOrder";
+import GenerateSelectionLetter from "../pages/direct-benefit-transfer/GenerateSelectionLetter";
 
 // Admin and Reports
 
@@ -2881,6 +2886,7 @@ function Router() {
             <Route path="generate-sanction-order" element={<GenerateSanctionOrder />} />
             <Route path="generate-acknowledgement" element={<GenerateAcknowledgement />} />
             <Route path="generate-work-order" element={<GenerateWorkOrder />} />
+            <Route path="generate-selection-letter" element={<GenerateSelectionLetter />} />
             <Route path="crop-details-commercial-market" element={<CropDetailsForCommercialMarket />} />
             <Route path="crop-details-commercial-market-list" element={<CropDetailsForCommercialMarketList />} />
 
@@ -3810,6 +3816,10 @@ function Router() {
             />
             <Route path="lot-groupage" element={<LotGroupage />} />
             <Route path="invoice-permit-market-receipt" element={<InvoicePermitAndMarketReceipt />} />
+            <Route path="seed-market-invoice-report" element={<SeedMarketInvoiceReport />} />
+            <Route path="seed-market-permit-report" element={<SeedMarketPermitReport />} />
+            <Route path="seed-market-cash-receipt-report" element={<SeedMarketCashReceiptReport />} />
+            <Route path="seed-market-market-receipt-report" element={<SeedMarketMarketReceiptReport />} />
             <Route path="lot-groupage-edit/:id" element={<LotGroupageEdit />} />
 
             <Route path="update-lot-weight" element={<UpdateLotWeight />} />

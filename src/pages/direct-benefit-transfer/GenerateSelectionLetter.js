@@ -10,7 +10,7 @@ const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
-function GenerateWorkOrder() {
+function GenerateSelectionLetter() {
   const [listData, setListData] = useState({});
   const [page] = useState(0);
   const countPerPage = 50;
@@ -252,7 +252,7 @@ function GenerateWorkOrder() {
       Swal.fire({
         icon: "warning",
         title: "Selection Required",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(245,158,11,0.3)">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Action Needed</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">Please select a <b>Work Order Number</b> from the dropdown before generating the PDF.</p></div></div></div>`,
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(245,158,11,0.3)">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Action Needed</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">Please select a <b>Selection Letter Number</b> from the dropdown before generating the PDF.</p></div></div></div>`,
         confirmButtonText: "Got it",
         confirmButtonColor: "#d97706",
         background: "#fff",
@@ -320,7 +320,7 @@ function GenerateWorkOrder() {
       Swal.fire({
         icon: "info",
         title: "No File Found",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#ebf8ff,#fff);border:1.5px solid #90cdf4;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1e67a8,#2d9cdb);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(30,103,168,0.3)">📂</div><div><p style="color:#2c5282;font-size:14px;font-weight:700;margin:0 0 5px">No Pre-Generated PDF</p><p style="color:#2a4365;font-size:13px;margin:0;line-height:1.65">No pre-generated PDF was found for this work order. Try <b>Generate PDF</b> instead.</p></div></div></div>`,
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#ebf8ff,#fff);border:1.5px solid #90cdf4;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1e67a8,#2d9cdb);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(30,103,168,0.3)">📂</div><div><p style="color:#2c5282;font-size:14px;font-weight:700;margin:0 0 5px">No Pre-Generated PDF</p><p style="color:#2a4365;font-size:13px;margin:0;line-height:1.65">No pre-generated PDF was found for this Selection Letter. Try <b>Generate PDF</b> instead.</p></div></div></div>`,
         confirmButtonText: "OK",
         confirmButtonColor: "#1e67a8",
         background: "#fff",
@@ -349,7 +349,7 @@ function GenerateWorkOrder() {
       Swal.fire({
         icon: "success",
         title: "Download Complete!",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#f0fff4,#fff);border:1.5px solid #9ae6b4;border-radius:14px;padding:18px 20px;text-align:center"><div style="font-size:34px;margin-bottom:10px">🎉</div><p style="color:#276749;font-size:14.5px;font-weight:700;margin:0 0 5px">Work Order PDF Saved!</p><p style="color:#2f855a;font-size:13px;margin:0;line-height:1.6">Your file has been saved to your <b>Downloads</b> folder.</p></div></div>`,
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#f0fff4,#fff);border:1.5px solid #9ae6b4;border-radius:14px;padding:18px 20px;text-align:center"><div style="font-size:34px;margin-bottom:10px">🎉</div><p style="color:#276749;font-size:14.5px;font-weight:700;margin:0 0 5px">Selection Letter PDF Saved!</p><p style="color:#2f855a;font-size:13px;margin:0;line-height:1.6">Your file has been saved to your <b>Downloads</b> folder.</p></div></div>`,
         confirmButtonText: "✓ Done",
         confirmButtonColor: "#38a169",
         background: "#fff",
@@ -435,11 +435,11 @@ function GenerateWorkOrder() {
 
   // ── render ────────────────────────────────────────────────────────
   return (
-    <Layout title="Work Order">
+    <Layout title="Selection Letter">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Work Order</Block.Title>
+            <Block.Title tag="h2">Selection Letter</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -480,10 +480,10 @@ function GenerateWorkOrder() {
             </div>
             <div>
               <div style={{ color: "#fff", fontWeight: 700, fontSize: "17px", lineHeight: 1.2 }}>
-                Work Order Filter
+                Selection Letter Filter
               </div>
               <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "2px" }}>
-                Select filters to load and download work order
+                Select filters to load and download Selection Letter
               </div>
             </div>
           </div>
@@ -576,15 +576,15 @@ function GenerateWorkOrder() {
 
             <div style={{ borderTop: "1.5px dashed #d0d9e8", margin: "8px 0 20px" }} />
             <div style={{ fontSize: "12px", fontWeight: 700, color: "#1a7a4a", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "18px" }}>
-              Step 2 — Select Work Order &amp; Download
+              Step 2 — Select Selection Letter &amp; Download
             </div>
 
             {/* Row 4 */}
             <Row className="align-items-end">
               <Col md={5} style={fieldGroupStyle}>
-                <label style={labelStyle}>Work Order Number</label>
+                <label style={labelStyle}>Selection Letter Number</label>
                 <Form.Select name="sanctionOrderNumber" value={addressDetails.sanctionOrderNumber} onChange={handleSanctionOrderChange} style={selectStyle}>
-                  <option value="">— Select Work Order —</option>
+                  <option value="">— Select Selection Letter —</option>
                   {sanctionOrderNumbers && sanctionOrderNumbers.length
                     ? sanctionOrderNumbers.map((num, index) => {
                         const val = typeof num === "object" ? num.workOrderNumber : num;
@@ -636,4 +636,4 @@ function GenerateWorkOrder() {
   );
 }
 
-export default GenerateWorkOrder;
+export default GenerateSelectionLetter;

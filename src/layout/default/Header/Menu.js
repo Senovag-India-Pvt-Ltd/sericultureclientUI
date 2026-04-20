@@ -5198,10 +5198,32 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t(
-                                  "Seed Market Invoice,Permit,Cash Receipt,Market Receipt"
-                                )}
-                                to="/seriui/invoice-permit-market-receipt"
+                                text={t("Invoice")}
+                                to="/seriui/seed-market-invoice-report"
+                              />
+                            </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Permit")}
+                                to="/seriui/seed-market-permit-report"
+                              />
+                            </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Cash Receipt")}
+                                to="/seriui/seed-market-cash-receipt-report"
+                              />
+                            </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Market Receipt")}
+                                to="/seriui/seed-market-market-receipt-report"
                               />
                             </MenuItem>
                           ) : null}
@@ -5462,16 +5484,16 @@ function Menu() {
                       </MenuItem>
                     ) : null}
 
-                    {showMenu.Reports_Format_Reports_Sanction_Order ? (
+                    {showMenu.Reports_Format_Reports_Acknowledgement ? (
                       <MenuItem>
                         <MenuItemLink
-                          text={t("Sanction Order")}
-                          to="/seriui/generate-sanction-order"
+                          text={t("Acknowledgement")}
+                          to="/seriui/generate-acknowledgement"
                         />
                       </MenuItem>
                     ) : null}
 
-                    {/* {showMenu.Reports_Format_Reports_WorkOrder ? (
+                    {showMenu.Reports_Format_Reports_WorkOrder ? (
                       <MenuItem>
                         <MenuItemLink
                           text={t("Work Order")}
@@ -5484,20 +5506,21 @@ function Menu() {
                       <MenuItem>
                         <MenuItemLink
                           text={t("Selection Letters")}
-                          to="/seriui/selection-letters"
+                          to="/seriui/generate-selection-letter"
                         />
                       </MenuItem>
                     ) : null}
 
-                    {showMenu.Reports_Format_Reports_Acknowledgement ? (
+                    {showMenu.Reports_Format_Reports_Sanction_Order ? (
                       <MenuItem>
                         <MenuItemLink
-                          text={t("Acknowledgement")}
-                          to="/seriui/generate-acknowledgement"
+                          text={t("Sanction Order")}
+                          to="/seriui/generate-sanction-order"
                         />
                       </MenuItem>
-                    ) : null} */}
-                  </MenuSub>
+                    ) : null}
+
+                 </MenuSub>
                 </MenuItem>
               ) : null}
 
