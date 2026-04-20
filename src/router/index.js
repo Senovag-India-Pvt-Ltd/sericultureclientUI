@@ -1082,6 +1082,10 @@ import UserHierarchyMappingList from "../pages/masters/user-hierarchy-mapping/Us
 import UserHierarchyMappingEdit from "../pages/masters/user-hierarchy-mapping/UserHierarchyMappingEdit";
 
 import CropInspectionList from "../pages/chawki-management/CropInspectionList";
+import SeedDtrReport from "../pages/reports-admin/market-auction/SeedDTRReport";
+import DownloadSanctionOrder from "../pages/market-and-auction/DownloadSanctionOrder";
+import GenerateAcknowledgement from "../pages/direct-benefit-transfer/GenerateAcknowledgement";
+import GenerateWorkOrder from "../pages/direct-benefit-transfer/GenerateWorkOrder";
 
 // Admin and Reports
 
@@ -1094,10 +1098,22 @@ function Router() {
     const pathname = window.location.pathname;
     const displayAllLotPathPattern = /^\/seriui\/display-all-lot\/\d+$/;
     const applicationCheck = /^\/seriui\/application-status$/;
+    const downloadSanctionOrder = /^\/seriui\/download-sanction-order$/;
     console.log(pathname);
     console.log(displayAllLotPathPattern.test(pathname));
-    if (!isAuthenticated && !displayAllLotPathPattern.test(pathname) && !applicationCheck.test(pathname)) {
-      navigate("/seriui");
+     // if (!isAuthenticated && !displayAllLotPathPattern.test(pathname) && !applicationCheck.test(pathname)) {
+    //   navigate("/seriui");
+    // }
+    if (
+    !isAuthenticated &&
+    !displayAllLotPathPattern.test(pathname) &&
+    !applicationCheck.test(pathname) &&
+    !downloadSanctionOrder.test(pathname)
+  ) {
+    navigate("/seriui");
+  // }
+  //   if (!isAuthenticated && !displayAllLotPathPattern.test(pathname) && !applicationCheck.test(pathname)) {
+  //     navigate("/seriui");
     }
   }, [isAuthenticated, navigate]);
 
@@ -1105,12 +1121,17 @@ function Router() {
     <ScrollToTop>
       <Routes>
         {/* <Route path="/blank" element={<Blank />} /> */}
-        <Route path="/seriui" element={<AuthLogin />} />
+        <Route path="seriui" element={<AuthLogin />} />
         <Route path="/seriui/home" element={<Home />} />
         {/* Display All Lot */}
         <Route
           path="/seriui/display-all-lot/:marketId"
-          element={<DisplayAllLot />}
+          element={<DisplayAllLot />}   
+        />
+
+          <Route
+          path="/seriui/download-sanction-order"
+          element={<DownloadSanctionOrder />}
         />
         {/* Application Check */}
          <Route
@@ -2858,6 +2879,8 @@ function Router() {
             <Route path="registered-private-chawki-list" element={<RegisteredPrivateChawkiList  />} /> 
 
             <Route path="generate-sanction-order" element={<GenerateSanctionOrder />} />
+            <Route path="generate-acknowledgement" element={<GenerateAcknowledgement />} />
+            <Route path="generate-work-order" element={<GenerateWorkOrder />} />
             <Route path="crop-details-commercial-market" element={<CropDetailsForCommercialMarket />} />
             <Route path="crop-details-commercial-market-list" element={<CropDetailsForCommercialMarketList />} />
 
@@ -3274,6 +3297,10 @@ function Router() {
              <Route
               path="user-hierarchy-mapping-edit/:id"
               element={<UserHierarchyMappingEdit />}
+            />
+            <Route
+              path="seed-dtr-report"
+              element={<SeedDtrReport />}
             />
             <Route
               path="sc-sub-scheme-details"

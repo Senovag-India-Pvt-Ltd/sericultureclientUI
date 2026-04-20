@@ -1784,29 +1784,29 @@ if (
     api.get(`${baseURLMasterData}configurePmkysAmount/getClosestAmountBySpacingAndHectare/${spacingId}/${hectareId}`)
       .then((response) => {
         const result = response.data[0]; // Assuming the first element contains the relevant data
-        setAmountValue({
-          ...amountValue,
-          unitPrice: result.amount, // Set the Unit Price
-        });
+        setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: result.amount,
+        }));
         
         if (schemeDetails.calculationBasedOn !== "PMKSY") { // Only update expectedAmount if not PMKSY
-            setData({
-              ...data,
-              expectedAmount: result.amount, // Set the Subsidy amount to expectedAmount
-            });
+            setData((prev) => ({
+              ...prev,
+              expectedAmount: result.amount,
+            }));
         }
         setLoading(false);
       })
       .catch((err) => {
-        setAmountValue({
-          ...amountValue,
-          unitPrice: "", // Clear Unit Price if API call fails
-        });
+        setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: "",
+        }));
         if (schemeDetails.calculationBasedOn !== "PMKSY") {
-            setData({
-              ...data,
-              expectedAmount: "", // Clear expectedAmount if API call fails
-            });
+            setData((prev) => ({
+              ...prev,
+              expectedAmount: "",
+            }));
         }
         setLoading(false);
       });
@@ -1840,10 +1840,10 @@ const getEligibleAmount = () => {
                   text: "Please apply for PDMC before proceeding.",
               });
               setSaveDisabled(true);
-              setData({ ...data, expectedAmount: "" }); // Reset expectedAmount for PMKSY if no eligible amount
+              setData((prev) => ({ ...prev, expectedAmount: "" }));
           } else {
               setSaveDisabled(false);
-              setData({ ...data, expectedAmount: eligibleAmount || "" }); // Only set expectedAmount for PMKSY
+              setData((prev) => ({ ...prev, expectedAmount: eligibleAmount || "" }));
           }
       } else {
           setSaveDisabled(false);
@@ -1851,7 +1851,7 @@ const getEligibleAmount = () => {
       }
   })
   .catch(() => {
-      setData({ ...data, expectedAmount: "" });
+      setData((prev) => ({ ...prev, expectedAmount: "" }));
   })
   .finally(() => {
       setLoading(false);
@@ -2036,15 +2036,15 @@ const calculateAmountFor30Kg = () => {
   const calculatedAmount = cocoonsWeight * amountPerKg;
   const roundedAmount = Math.round(calculatedAmount * 100) / 100; // round to 2 decimals
 
-  setAmountValue({
-    ...amountValue,
+  setAmountValue((prev) => ({
+    ...prev,
     unitPrice: amountPerKg,
-  });
+  }));
 
-  setData({
-    ...data,
+  setData((prev) => ({
+    ...prev,
     expectedAmount: roundedAmount,
-  });
+  }));
 };
 
 const calculateAmountForBivoltineBonus = () => {
@@ -2094,15 +2094,15 @@ const calculateAmountForBivoltineBonus = () => {
   const roundedAmount = Math.round(calculatedAmount);
  // round to 2 decimals
 
-  setAmountValue({
-    ...amountValue,
+  setAmountValue((prev) => ({
+    ...prev,
     unitPrice: unitCost,
-  });
+  }));
 
-  setData({
-    ...data,
+  setData((prev) => ({
+    ...prev,
     expectedAmount: roundedAmount,
-  });
+  }));
 };
 
 // to get Program
@@ -2180,14 +2180,14 @@ const getreelingShedAmountList = (machineTypeId ,reelingSqft,componentTypeId, co
       const incentiveData = response.data.content?.configureReelingShed || [];
       setReelingShedAmountListData(incentiveData);
 
-      setAmountValue({
-          ...amountValue,
-          unitPrice: incentiveData.unitCost, // Set the Unit Price
-        });
-        setData({
-              ...data,
-              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
-            });
+      setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: incentiveData.unitCost,
+        }));
+        setData((prev) => ({
+              ...prev,
+              expectedAmount: incentiveData.unitCost,
+            }));
     })
     .catch((err) => {
       setReelingShedAmountListData([]);
@@ -2344,6 +2344,8 @@ const calculateEquipmentRow = (item, sharePerc) => {
 
 
 const handleCalculateUnitPrice = () => {
+
+  setUnitPriceCalculated(true);
 
   const incentiveCalcBasedOn = getIncentiveAndBonusData[0]?.calculationBasedOn;
   const isChawki =
@@ -3559,14 +3561,14 @@ const getImcbAndMermAmountList = (imcbTable ,componentTypeId, componentId, categ
       const incentiveData = response.data.content?.configureImcb || [];
       setImcbAndMermAmountListData(incentiveData);
 
-      setAmountValue({
-          ...amountValue,
-          unitPrice: incentiveData.unitCost, // Set the Unit Price
-        });
-        setData({
-              ...data,
-              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
-            });
+      setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: incentiveData.unitCost,
+        }));
+        setData((prev) => ({
+              ...prev,
+              expectedAmount: incentiveData.unitCost,
+            }));
     })
     .catch((err) => {
       setImcbAndMermAmountListData([]);
@@ -3582,12 +3584,15 @@ useEffect(() => {
     data.scComponentId &&
     data.scCategoryId
   ) {
-    getImcbAndMermAmountList(
-      data.imcbTable,
-      data.scSubSchemeDetailsId,
-      data.scComponentId,
-      data.scCategoryId
-    );
+    const timer = setTimeout(() => {
+      getImcbAndMermAmountList(
+        data.imcbTable,
+        data.scSubSchemeDetailsId,
+        data.scComponentId,
+        data.scCategoryId
+      );
+    }, 500);
+    return () => clearTimeout(timer);
   }
 }, [data.imcbTable,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
@@ -3609,14 +3614,14 @@ const getAdoptingBoilerAmountList = (boilerInKg ,componentTypeId, componentId, c
       const incentiveData = response.data?.content?.configureAdoptingBoiler || [];
       setAdoptingBoilerAmountListData(incentiveData);
 
-      setAmountValue({
-          ...amountValue,
-          unitPrice: incentiveData.unitCost, // Set the Unit Price
-        });
-        setData({
-              ...data,
-              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
-            });
+      setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: incentiveData.unitCost,
+        }));
+        setData((prev) => ({
+              ...prev,
+              expectedAmount: incentiveData.unitCost,
+            }));
     })
     .catch((err) => {
       setAdoptingBoilerAmountListData([]);
@@ -3632,12 +3637,15 @@ useEffect(() => {
     data.scComponentId &&
     data.scCategoryId
   ) {
-    getAdoptingBoilerAmountList(
-      data.boilerInKg,
-      data.scSubSchemeDetailsId,
-      data.scComponentId,
-      data.scCategoryId
-    );
+    const timer = setTimeout(() => {
+      getAdoptingBoilerAmountList(
+        data.boilerInKg,
+        data.scSubSchemeDetailsId,
+        data.scComponentId,
+        data.scCategoryId
+      );
+    }, 500);
+    return () => clearTimeout(timer);
   }
 }, [data.boilerInKg,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
@@ -3659,14 +3667,14 @@ const getIcbAndArmAmountList = (icbBasinEnds ,componentTypeId, componentId, cate
       const incentiveData = response.data?.content?.configureIcb || [];
       setIcbAndArmAmountListData(incentiveData);
 
-      setAmountValue({
-          ...amountValue,
-          unitPrice: incentiveData.unitCost, // Set the Unit Price
-        });
-        setData({
-              ...data,
-              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
-            });
+      setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: incentiveData.unitCost,
+        }));
+        setData((prev) => ({
+              ...prev,
+              expectedAmount: incentiveData.unitCost,
+            }));
     })
     .catch((err) => {
       setIcbAndArmAmountListData([]);
@@ -3682,12 +3690,15 @@ useEffect(() => {
     data.scComponentId &&
     data.scCategoryId
   ) {
-    getIcbAndArmAmountList( 
-      data.icbBasinEnds,
-      data.scSubSchemeDetailsId,
-      data.scComponentId, 
-      data.scCategoryId
-    );
+    const timer = setTimeout(() => {
+      getIcbAndArmAmountList(
+        data.icbBasinEnds,
+        data.scSubSchemeDetailsId,
+        data.scComponentId,
+        data.scCategoryId
+      );
+    }, 500);
+    return () => clearTimeout(timer);
   }
 }, [data.icbBasinEnds,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
@@ -3891,6 +3902,472 @@ const isUserValid = React.useMemo(() => {
       return; // Exit if the form is not valid
     }
 
+    // All schemes: Calculate Unit Price must be clicked
+    if (!unitPriceCalculated) {
+      Swal.fire({
+        icon: "warning",
+        title: "⚠️ Unit Price Not Calculated",
+        html: `
+          <div style="text-align:center; font-size:15px; color:#555; margin-bottom:8px;">
+            Please click the <strong style="color:#0F6CBE;">"Calculate Unit Price"</strong> button before submitting the form.
+          </div>
+          <div style="text-align:center; font-size:13px; color:#888;">
+            This step is required to compute the eligible subsidy amount.
+          </div>
+        `,
+        confirmButtonText: "OK, I'll calculate",
+        confirmButtonColor: "#0F6CBE",
+        background: "#f0f6ff",
+        customClass: {
+          title: "swal-title-style",
+          popup: "swal-popup-style",
+        },
+      });
+      return;
+    }
+
+    // Silk Samagra State / Silk Samagra Central: validate Land Wise Constructed Area
+    if (
+      schemeDetails.calculationBasedOn === "Silk Samagra State" ||
+      schemeDetails.calculationBasedOn === "Silk Samagra Central"
+    ) {
+      const missingFields = [];
+      if (!data.equordev.includes("land")) {
+        missingFields.push("Land Wise Details (please check the Land Wise checkbox)");
+      }
+      if (!data.equordev.includes("constructedArea")) {
+        missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // Reeling Shed-PSF: validate Kanesh Land Details and Constructed Area
+    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Reeling Shed-PSF") {
+      const missingFields = [];
+      if (data.addKaneshLand !== "yes") {
+        missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
+      }
+      if (!data.equordev.includes("constructedArea")) {
+        missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // ISCB-PSF: validate Kanesh Land Details and Equipment Purchase
+    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "ICB-PSF") {
+      const missingFields = [];
+      // if (data.addKaneshLand !== "yes") {
+      //   missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
+      // }
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // MERM-PSF: validate Kanesh Land Details, Constructed Area and Equipment Purchase
+    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "MERM-PSF") {
+      const missingFields = [];
+      if (data.addKaneshLand !== "yes") {
+        missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
+      }
+      if (!data.equordev.includes("constructedArea")) {
+        missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
+      }
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // IMCB-PSF: validate Equipment Purchase
+    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "IMCB-PSF") {
+      const missingFields = [];
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // Adopting Boiler-PSF: validate Equipment Purchase
+    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Boiler-PSF") {
+      const missingFields = [];
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // Adopting Silent Generator: validate Equipment Purchase
+    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Silent Generator") {
+      const missingFields = [];
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // Adopting Solar power Generator: validate Equipment Purchase
+    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar power Generator") {
+      const missingFields = [];
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // Adopting Solar Water Heater: validate Equipment Purchase
+    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar Water Heater") {
+      const missingFields = [];
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // Adopting Heat Recovery Unit-PSF: validate Equipment Purchase
+    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Heat Recovery Unit-PSF") {
+      const missingFields = [];
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // Rearing Equipment SS: validate Equipment Purchase, Constructed Area and Kanesh Land Details
+    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Rearing Equipment SS") {
+      const missingFields = [];
+      if (!data.equordev.includes("land")) {
+        missingFields.push("Land Wise Details (please check the Land Wise checkbox)");
+      }
+      if (!data.equordev.includes("constructedArea")) {
+        missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
+      }
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
     const formattedDates = {
       periodFrom: formatDate(data.periodFrom),
       periodTo: formatDate(data.periodTo),
@@ -4043,6 +4520,8 @@ const isUserValid = React.useMemo(() => {
       taxInvoiceDate: data.taxInvoiceDate,
       rearingEquipmentDetailsId: data.rearingEquipmentDetailsId,
       beneficiaryShareAmount: data.beneficiaryShareAmount,
+      subsidyAmount: data.subsidyAmount,
+      shareInPercentage: sharePercentage,
       unitPrice:amountValue.unitPrice,
       equipmentEligibleTotal: totals.equipmentEligibleTotal,
       equipmentMaxSubsidyTotal: totals.equipmentMaxSubsidyTotal,
@@ -4087,6 +4566,8 @@ const isUserValid = React.useMemo(() => {
     unitPrice: "",
     fullPrice: false,
   });
+
+  const [unitPriceCalculated, setUnitPriceCalculated] = useState(false);
 
   useEffect(() => {
     if (
@@ -4756,7 +5237,7 @@ const isUserValid = React.useMemo(() => {
       dailyLimit: "",
        monthlyLimit: "",
       boilerInKg: "",
-      sanctionNo: ""
+      sanctionNo: "",
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -5735,7 +6216,7 @@ const fetchReelerDetails = () => {
           {/* {console.log("dada marre",i)} */}
           <Form.Control
             name="devAcre"
-            type="text"
+            type="number"
             value={developedArea[i]?.devAcre || ""}
             onChange={(e) => handleInlineDevelopedLandChange(e, i)}
             placeholder="Acre"
@@ -5743,7 +6224,7 @@ const fetchReelerDetails = () => {
           />
           <Form.Control
             name="devGunta"
-            type="text"
+            type="number"
             value={developedArea[i]?.devGunta || ""}
             onChange={(e) => handleInlineDevelopedLandChange(e, i)}
             placeholder="Gunta"
@@ -5751,7 +6232,7 @@ const fetchReelerDetails = () => {
           />
           <Form.Control
             name="devFGunta"
-            type="text"
+            type="number"
             value={developedArea[i]?.devFGunta || ""}
             onChange={(e) => handleInlineDevelopedLandChange(e, i)}
             placeholder="FGunta"
@@ -6464,9 +6945,10 @@ const fetchReelerDetails = () => {
                           )}
 
                           {(
-                          getIncentiveAndBonusData[0]?.unitForScheme === 
+                          getIncentiveAndBonusData[0]?.unitForScheme ===
                             "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||
-                          getIncentiveAndBonusData[0]?.sanctionForReeling
+                          (getIncentiveAndBonusData[0]?.sanctionForReeling &&
+                            getIncentiveAndBonusData[0]?.calculationBasedOn !== "Silk Incentive-PSF")
                         ) && (
                           <>
                             <Col lg="6">
@@ -6929,7 +7411,7 @@ const fetchReelerDetails = () => {
                                         data.reelingSqft === "0"
                                       }
                                     >
-                                      <option value="">{t("Select Machine Type")}</option>
+                                      <option value="">{t("Select Silent generator Capacity( KW )")}</option>
                                       {allDetailsData.map((list) => (
                                         <option
                                           key={list.reelingShedId}
@@ -9732,7 +10214,7 @@ const fetchReelerDetails = () => {
                         <Col lg="4">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="landDeveloped">
-                              {t("Extent Of Mulberry")}
+                              {t("Extent Of Mulberry(In Acres)")}
                               {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -9982,12 +10464,12 @@ const fetchReelerDetails = () => {
                                       name="machineTypeId"
                                       value={data.machineTypeId}
                                       onChange={handleInputs}
-                                      onBlur={() => handleInputs}
-                                      required
-                                      isInvalid={
-                                        data.machineTypeId === undefined ||
-                                        data.machineTypeId === "0"
-                                      }
+                                      // onBlur={() => handleInputs}
+                                      // required
+                                      // isInvalid={
+                                      //   data.machineTypeId === undefined ||
+                                      //   data.machineTypeId === "0"
+                                      // }
                                     >
                                       <option value="">{t("Select Machine Type")}</option>
                                       {machineTypeListData.map((list) => (
@@ -10042,7 +10524,7 @@ const fetchReelerDetails = () => {
                                       value={data.machineQuantity}
                                       onChange={handleInputs}
                                       placeholder="Enter Quantity in kg"
-                                      required
+                                      // required
                                       // readOnly
                                     />
                                   </div>

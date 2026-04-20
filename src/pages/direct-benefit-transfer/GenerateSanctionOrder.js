@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../../services/auth/api";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import { Button, Card, Form, Row, Col } from "react-bootstrap";
+import { Card, Form, Row, Col } from "react-bootstrap";
 import DataTable, { defaultThemes } from "react-data-table-component";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
@@ -86,18 +86,9 @@ function GenerateSanctionOrder() {
         setAllApplicationIds(scApplicationFormIds);
 
         setApplicationFormId(recordData?.scApplicationFormId);
-        setScApplicationFormServiceId(recordData?.scApplicationFormServiceId);
-        setWorkOrderSchemeId(recordData?.schemeId);
-
-        setWorkOrderNumber(recordData?.workOrderNumber);
-        setWorkOrderForScheme(recordData?.workOrderForScheme);
-
-        setSanctionOrderNumber(recordData?.sanctionOrderNumber);
-        setSanctionOrderForScheme(recordData?.sanctionOrderForScheme);
-        setCategoryId(recordData?.categoryId);
-        setSubSchemeId(recordData?.subSchemeId);
-        setSchemeId(recordData?.schemeId);
         setSubSchemeType(recordData?.subSchemeType);
+        setSecurityKey(recordData?.securityKey || "");
+        setSanctionOrderForScheme(recordData?.sanctionOrderForScheme || null);
         setLoading(false);
     })
     .catch((err) => {
@@ -106,17 +97,11 @@ function GenerateSanctionOrder() {
 };
 
 const [applicationFormId, setApplicationFormId] = useState(null);
-const [scApplicationFormServiceId, setScApplicationFormServiceId] = useState(null);
-const [workOrderSchemeId, setWorkOrderSchemeId] = useState(null);
-const [categoryId, setCategoryId] = useState(null);
-const [subSchemeId, setSubSchemeId] = useState(null);
-const [schemeId, setSchemeId] = useState(null);
-const [workOrderNumber, setWorkOrderNumber] = useState(null);
-const [workOrderForScheme, setWorkOrderForScheme] = useState(null);
-const [sanctionOrderNumber, setSanctionOrderNumber] = useState(null);
+
 const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
 const [allApplicationIds, setAllApplicationIds] = useState([]);
 const [subSchemeType, setSubSchemeType] = useState([]);
+const [securityKey, setSecurityKey] = useState("");
 
 const getList = () => {
     setLoading(true);
@@ -152,17 +137,9 @@ const getList = () => {
         setAllApplicationIds(applicationFormIdsFromApi);
 
         setApplicationFormId(recordData?.scApplicationFormId);
-        setScApplicationFormServiceId(recordData?.scApplicationFormServiceId);
-        setWorkOrderSchemeId(recordData?.schemeId);
-
-        setWorkOrderNumber(recordData?.workOrderNumber);
-        setWorkOrderForScheme(recordData?.workOrderForScheme);
-
-        setSanctionOrderNumber(recordData?.sanctionOrderNumber);
-        setSanctionOrderForScheme(recordData?.sanctionOrderForScheme);
-        setCategoryId(recordData?.categoryId);
-        setSubSchemeId(recordData?.subSchemeId);
         setSubSchemeType(recordData?.subSchemeType);
+        setSecurityKey(recordData?.securityKey || "");
+        setSanctionOrderForScheme(recordData?.sanctionOrderForScheme || null);
         setLoading(false);
       })
       .catch((err) => {
@@ -478,869 +455,571 @@ useEffect(() => {
         ];
 
   
-  const handleDownloadSanctionOrder = (
-      applicationFormId,
-      schemeId,
-      schemeType,
-      subSchemeId,
-      categoryId
-    ) => {
+  const handleDownload = () => {
+    const selectedSanctionOrder = addressDetails.sanctionOrderNumber;
+    if (!selectedSanctionOrder) {
       Swal.fire({
-        title: "Generate Sanction Order",
-        text: "Select the recipient:",
-        showCancelButton: true,
-        confirmButtonText: "Farmer/Reeler",
-        cancelButtonText: "Company",
-        showCloseButton: true,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // ✅ Farmer
-          if (schemeType === "PMKSY" || schemeType === "PDMC") {
-            downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "farmer", schemeType);
-          } else if (
-            schemeType === "Silk Samagra State" ||
-            schemeType === "Silk Samagra Central"
-          ) {
-            downloadSanctionOrderAcknowledgment(
-              applicationFormId,
-              schemeId,
-              "farmer",
-              schemeType,
-              subSchemeId,
-              categoryId
-            );
-          } else {
-            console.error("Unknown scheme type for farmer sanction order.");
-          }
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          // ✅ Company
-          if (schemeType === "PMKSY" || schemeType === "PDMC") {
-            downloadSanctionOrderAcknowledgment(applicationFormId, schemeId, "company", schemeType);
-          } else if (
-            schemeType === "Silk Samagra State" ||
-            schemeType === "Silk Samagra Central"
-          ) {
-            downloadSanctionOrderAcknowledgment(
-              applicationFormId,
-              schemeId,
-              "company",
-              schemeType,
-              subSchemeId,
-              categoryId
-            );
-          } else {
-            console.error("Unknown scheme type for company sanction order.");
-          }
-        }
+        icon: "warning",
+        title: "Sanction Order Required",
+        html: "<p style='color:#555;font-size:15px;margin:0'>Please select a <b>Sanction Order Number</b> before generating the PDF.</p>",
+        confirmButtonText: "Got it",
+        confirmButtonColor: "#1e67a8",
+        background: "#fff",
+        customClass: {
+          popup: "swal-rounded",
+          title: "swal-title-warning",
+          confirmButton: "swal-btn-primary",
+        },
       });
-    };
-    
-     const downloadSanctionOrderAcknowledgment = async (
-       applicationId,
-       schemeId,
-       recipientType,
-       schemeType,
-       subSchemeId,
-       categoryId,
-       userId
-     ) => {
-       try {
-         const userId = localStorage.getItem("userMasterId");
-         let endpoint;
-     
-         if (
-           schemeType === "Silk Samagra State" ||
-           schemeType === "Silk Samagra Central"
-         ) {
-           endpoint = baseURLReport + `getSanctionOrderRH`;
-         } else {
-           if (recipientType === "farmer") {
-             endpoint =
-               schemeType === "PMKSY"
-                 ? baseURLReport + `getSanctionOrderPmksy`
-                 : baseURLReport + `getSanctionOrderPDMC`;
-           } else if (recipientType === "company") {
-             endpoint =
-               schemeType === "PMKSY"
-                 ? baseURLReport + `getSanctionOrderPmksyCompany`
-                 : baseURLReport + `getSanctionOrderPDMCCompany`;
-           } else {
-             throw new Error("Invalid recipient type.");
-           }
-         }
-     
-         const payload =
-           schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central"
-             ? {
-                 applicationFormId: applicationId,
-                 schemeId,
-                 subSchemeId,
-                 categoryId,
-                 userId,
-               }
-             : {
-                 applicationFormId: applicationId,
-                 schemeId,
-               };
-     
-         const response = await api.post(endpoint, payload, {
-           responseType: "blob",
-         });
-     
-         const file = new Blob([response.data], { type: "application/pdf" });
-         const fileURL = URL.createObjectURL(file);
-         window.open(fileURL);
-       } catch (error) {
-         console.error("Error generating sanction order:", error);
-       }
-     };
-
-     const handleDownload = () => {
-  const selectedSanctionOrder = addressDetails.sanctionOrderNumber;
-
-  if (!selectedSanctionOrder) {
-    Swal.fire({
-      icon: "warning",
-      title: "Sanction Order Required",
-      text: "Please select a Sanction Order Number",
-      confirmButtonColor: "#3085d6",
-    });
-    return;
-  }
-
-  // --- Conditions based on sanctionOrderForScheme ---
-  if (sanctionOrderForScheme === "Bivoltine Bonus") {
-    downloadBonusIncentiveSeedCocoon(selectedSanctionOrder);
-
-  } else if (sanctionOrderForScheme === "Incentive For Bivoltine Cocoons-30/kg-PSF") {
-    generateReportFor30Rs(selectedSanctionOrder);
-
-  } else if (sanctionOrderForScheme === "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP") {
-    generateReportForNorthKarnataka(selectedSanctionOrder);
-
-  } else if (sanctionOrderForScheme === "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500") {
-    generateReportFor1500dfls(selectedSanctionOrder);
-
-  } else if (sanctionOrderForScheme === "Incentive For Bivoltine Chawki Rearing Cost") {
-    generateReportFor100Rs(selectedSanctionOrder);
-
+      return;
+    }
+    if (sanctionOrderForScheme === "Bivoltine Bonus") {
+      downloadBonusIncentiveSeedCocoon(selectedSanctionOrder);
+    } else if (sanctionOrderForScheme === "Incentive For Bivoltine Cocoons-30/kg-PSF") {
+      generateReportFor30Rs(selectedSanctionOrder);
+    } else if (sanctionOrderForScheme === "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP") {
+      generateReportForNorthKarnataka(selectedSanctionOrder);
+    } else if (sanctionOrderForScheme === "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500") {
+      generateReportFor1500dfls(selectedSanctionOrder);
+    } else if (sanctionOrderForScheme === "Incentive For Bivoltine Chawki Rearing Cost") {
+      generateReportFor100Rs(selectedSanctionOrder);
     } else if (sanctionOrderForScheme === "Silk Incentive-PSF") {
-    generateReportForSilkIncentive(allApplicationIds, selectedSanctionOrder);
-
-  } else if (sanctionOrderForScheme === "Reeling Shed-PSF") {
-    generateReportForReelingShed(applicationFormId, selectedSanctionOrder);
-
+      generateReportForSilkIncentive(allApplicationIds, selectedSanctionOrder);
+    } else if (sanctionOrderForScheme === "Reeling Shed-PSF") {
+      generateReportForReelingShed(applicationFormId, selectedSanctionOrder);
     } else if (sanctionOrderForScheme === "Adopting Heat Recovery Unit-PSF") {
-    generateReportForHRU(applicationFormId, selectedSanctionOrder);
-
+      generateReportForHRU(applicationFormId, selectedSanctionOrder);
     } else if (sanctionOrderForScheme === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
-    generateReportForRegisteredPrivate(applicationFormId, selectedSanctionOrder);
-
+      generateReportForRegisteredPrivate(applicationFormId, selectedSanctionOrder);
     } else if (sanctionOrderForScheme === "Rearing Equipment SS") {
-    generateReportForRearingEquipment(applicationFormId, selectedSanctionOrder);
+      generateReportForRearingEquipment(applicationFormId, selectedSanctionOrder);
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "No Report Available",
+        html: "<p style='color:#555;font-size:15px;margin:0'>No downloadable report is configured for the selected Sanction Order scheme.</p>",
+        confirmButtonText: "Close",
+        confirmButtonColor: "#e53e3e",
+        background: "#fff",
+        customClass: { popup: "swal-rounded" },
+      });
+    }
+  };
 
-  } else {
-    Swal.fire({
-      icon: "error",
-      title: "Invalid Selection",
-      text: "No download available for selected Sanction Order",
-      confirmButtonColor: "#d33",
-    });
+  const downloadBonusIncentiveSeedCocoon = (selectedSanctionOrder) => {
+    const type = Number(subSchemeType);
+    if (type === 2) {
+      generateReportForIncentive(listData, selectedSanctionOrder);
+    } else if (type === 3) {
+      generateReportForBonus(listData, selectedSanctionOrder);
+    } else if (type === 4) {
+      generateReportForSeedCocoon(listData, selectedSanctionOrder);
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Sub Scheme Type",
+        html: "<p style='color:#555;font-size:15px;margin:0'>The selected sub-scheme type is not supported for PDF generation.</p>",
+        confirmButtonText: "Close",
+        confirmButtonColor: "#e53e3e",
+        background: "#fff",
+        customClass: { popup: "swal-rounded" },
+      });
+    }
+  };
+
+  const generateReportForIncentive = async (rows, selectedSanctionOrder) => {
+    try {
+      const response = await api.post(baseURLReport + `get-Incentive`, { userMasterId: localStorage.getItem("userMasterId"), schemeId: addressDetails.scSchemeDetailsId, subSchemeId: addressDetails.subSchemeId, applicationFormIds: allApplicationIds, sanctionOrderNumber: selectedSanctionOrder }, { responseType: "blob" });
+      window.open(URL.createObjectURL(new Blob([response.data], { type: "application/pdf" })));
+    } catch (error) {}
+  };
+
+  const generateReportForBonus = async (rows, selectedSanctionOrder) => {
+    try {
+      const response = await api.post(baseURLReport + `get-Bonus`, { userMasterId: localStorage.getItem("userMasterId"), schemeId: addressDetails.scSchemeDetailsId, subSchemeId: addressDetails.subSchemeId, applicationFormIds: allApplicationIds, sanctionOrderNumber: selectedSanctionOrder }, { responseType: "blob" });
+      window.open(URL.createObjectURL(new Blob([response.data], { type: "application/pdf" })));
+    } catch (error) {}
+  };
+
+  const generateReportForSeedCocoon = async (rows, selectedSanctionOrder) => {
+    try {
+      const response = await api.post(baseURLReport + `get-seed-cocoon`, { userMasterId: localStorage.getItem("userMasterId"), schemeId: addressDetails.scSchemeDetailsId, subSchemeId: addressDetails.subSchemeId, applicationFormIds: allApplicationIds, sanctionOrderNumber: selectedSanctionOrder }, { responseType: "blob" });
+      window.open(URL.createObjectURL(new Blob([response.data], { type: "application/pdf" })));
+    } catch (error) {}
+  };
+
+  const generateReportForNorthKarnataka = async (rows, selectedSanctionOrder) => {
+    try {
+      const response = await api.post(baseURLReport + `get-TransportSubsidy`, { userMasterId: localStorage.getItem("userMasterId"), schemeId: addressDetails.scSchemeDetailsId, subSchemeId: addressDetails.subSchemeId, applicationFormIds: allApplicationIds, sanctionOrderNumber: selectedSanctionOrder }, { responseType: "blob" });
+      window.open(URL.createObjectURL(new Blob([response.data], { type: "application/pdf" })));
+    } catch (error) {}
+  };
+
+  const generateReportFor30Rs = async (rows, selectedSanctionOrder) => {
+    try {
+      const response = await api.post(baseURLReport + `get-PriceStabilizationIncentive`, { userMasterId: localStorage.getItem("userMasterId"), schemeId: addressDetails.scSchemeDetailsId, subSchemeId: addressDetails.subSchemeId, applicationFormIds: allApplicationIds, sanctionOrderNumber: selectedSanctionOrder }, { responseType: "blob" });
+      window.open(URL.createObjectURL(new Blob([response.data], { type: "application/pdf" })));
+    } catch (error) {}
+  };
+
+  const generateReportFor100Rs = async (rows, selectedSanctionOrder) => {
+    try {
+      const response = await api.post(baseURLReport + `get-MscSeedChawki1000`, { userMasterId: localStorage.getItem("userMasterId"), schemeId: addressDetails.scSchemeDetailsId, subSchemeId: addressDetails.subSchemeId, applicationFormIds: allApplicationIds, sanctionOrderNumber: selectedSanctionOrder }, { responseType: "blob" });
+      window.open(URL.createObjectURL(new Blob([response.data], { type: "application/pdf" })));
+    } catch (error) {}
+  };
+
+  const generateReportForSilkIncentive = async (rows, selectedSanctionOrder) => {
+    try {
+      const response = await api.post(baseURLReport + `sanction-silk-incentive`, { userMasterId: localStorage.getItem("userMasterId"), schemeId: addressDetails.scSchemeDetailsId, subSchemeId: addressDetails.subSchemeId, applicationFormIds: allApplicationIds, sanctionOrderNumber: selectedSanctionOrder }, { responseType: "blob" });
+      window.open(URL.createObjectURL(new Blob([response.data], { type: "application/pdf" })));
+    } catch (error) {}
+  };
+
+  const generateReportForReelingShed = async (rows, selectedSanctionOrder) => {
+    try {
+      const response = await api.post(baseURLReport + `sanction-psfa-reeling-shed`, { schemeId: addressDetails.scSchemeDetailsId, subSchemeId: addressDetails.subSchemeId, categoryId: addressDetails.scCategoryId, applicationFormId: applicationFormId, sanctionOrderNumber: selectedSanctionOrder }, { responseType: "blob" });
+      window.open(URL.createObjectURL(new Blob([response.data], { type: "application/pdf" })));
+    } catch (error) {}
+  };
+
+  const generateReportForHRU = async (rows, selectedSanctionOrder) => {
+    try {
+      const response = await api.post(baseURLReport + `sanction-heat-unit`, { schemeId: addressDetails.scSchemeDetailsId, subSchemeId: addressDetails.subSchemeId, categoryId: addressDetails.scCategoryId, applicationFormId: applicationFormId, sanctionOrderNumber: selectedSanctionOrder }, { responseType: "blob" });
+      window.open(URL.createObjectURL(new Blob([response.data], { type: "application/pdf" })));
+    } catch (error) {}
+  };
+
+  const generateReportForRegisteredPrivate = async (rows, selectedSanctionOrder) => {
+    try {
+      const response = await api.post(baseURLReport + `getChawkiSanctionOrderPdf`, { schemeId: addressDetails.scSchemeDetailsId, subSchemeId: addressDetails.subSchemeId, categoryId: addressDetails.scCategoryId, applicationFormId: applicationFormId, sanctionOrderNumber: selectedSanctionOrder }, { responseType: "blob" });
+      window.open(URL.createObjectURL(new Blob([response.data], { type: "application/pdf" })));
+    } catch (error) {}
+  };
+
+  const generateReportForRearingEquipment = async (rows, selectedSanctionOrder) => {
+    try {
+      const response = await api.post(baseURLReport + `getSanctionOrderRHEquipment`, { schemeId: addressDetails.scSchemeDetailsId, subSchemeId: addressDetails.subSchemeId, categoryId: addressDetails.scCategoryId, applicationFormId: applicationFormId, sanctionOrderNumber: selectedSanctionOrder }, { responseType: "blob" });
+      window.open(URL.createObjectURL(new Blob([response.data], { type: "application/pdf" })));
+    } catch (error) {}
+  };
+
+  const generateReportFor1500dfls = async (rows, selectedSanctionOrder) => {
+    try {
+      const response = await api.post(baseURLReport + `get-MscSeedChawki`, { userMasterId: localStorage.getItem("userMasterId"), schemeId: addressDetails.scSchemeDetailsId, subSchemeId: addressDetails.subSchemeId, applicationFormIds: allApplicationIds, sanctionOrderNumber: selectedSanctionOrder }, { responseType: "blob" });
+      window.open(URL.createObjectURL(new Blob([response.data], { type: "application/pdf" })));
+    } catch (error) {}
+  };
+
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const downloadFile = async () => {
+    if (!securityKey) {
+      Swal.fire({
+        icon: "info",
+        title: "File Not Available",
+        html: "<p style='color:#555;font-size:15px;margin:0'>No pre-generated PDF was found for this sanction order.<br/>Try <b>Generate PDF</b> instead.</p>",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#1e67a8",
+        background: "#fff",
+        customClass: { popup: "swal-rounded" },
+      });
+      return;
+    }
+    setIsDownloading(true);
+    try {
+      const fileNameWithExtension = `${securityKey}.pdf`;
+      const response = await api.get(
+        baseURLDBT + "dashboard/downLoadFileForURL",
+        {
+          params: { fileName: fileNameWithExtension },
+          responseType: "arraybuffer",
+        }
+      );
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileNameWithExtension;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      Swal.fire({
+        icon: "success",
+        title: "Downloaded Successfully!",
+        html: `
+          <div style="text-align:center">
+            <p style="color:#555;font-size:15px;margin:6px 0 0">
+              Your <b>Sanction Order PDF</b> has been saved to your device.
+            </p>
+          </div>`,
+        confirmButtonText: "✓ Done",
+        confirmButtonColor: "#1e67a8",
+        background: "#fff",
+        timer: 3000,
+        timerProgressBar: true,
+        customClass: {
+          popup: "swal-rounded",
+          timerProgressBar: "swal-progress-blue",
+        },
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Download Failed",
+        html: `
+          <p style="color:#555;font-size:15px;margin:0">
+            We couldn't fetch the PDF at this time.<br/>
+            Please <b>check your connection</b> and try again.
+          </p>`,
+        confirmButtonText: "Retry",
+        confirmButtonColor: "#e53e3e",
+        showCancelButton: true,
+        cancelButtonText: "Cancel",
+        cancelButtonColor: "#a0aec0",
+        background: "#fff",
+        customClass: { popup: "swal-rounded" },
+      });
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+  // inject Swal custom styles once
+  if (!document.getElementById("swal-custom-styles")) {
+    const style = document.createElement("style");
+    style.id = "swal-custom-styles";
+    style.innerHTML = `
+      .swal-rounded { border-radius: 18px !important; padding: 10px !important; }
+      .swal2-title { font-size: 20px !important; font-weight: 700 !important; color: #1a202c !important; }
+      .swal2-popup.swal-rounded { box-shadow: 0 20px 60px rgba(0,0,0,0.18) !important; }
+      .swal2-confirm.swal-btn-primary { border-radius: 8px !important; padding: 10px 28px !important; font-weight: 600 !important; font-size: 14px !important; }
+      .swal2-confirm { border-radius: 8px !important; padding: 10px 28px !important; font-weight: 600 !important; font-size: 14px !important; }
+      .swal2-cancel { border-radius: 8px !important; padding: 10px 28px !important; font-weight: 600 !important; font-size: 14px !important; }
+      .swal2-timer-progress-bar { background: #1e67a8 !important; height: 5px !important; }
+      .swal2-icon { margin: 18px auto 10px !important; }
+    `;
+    document.head.appendChild(style);
   }
-};
 
+  const selectStyle = {
+    borderRadius: "8px",
+    border: "1.5px solid #d0d9e8",
+    padding: "8px 12px",
+    fontSize: "14px",
+    background: "#f8fafd",
+    color: "#333",
+    width: "100%",
+    outline: "none",
+    transition: "border-color 0.2s",
+  };
 
+  const labelStyle = {
+    fontSize: "13px",
+    fontWeight: 600,
+    color: "#4a5568",
+    marginBottom: "5px",
+    display: "block",
+  };
 
-const downloadBonusIncentiveSeedCocoon = (selectedSanctionOrder) => {
-  const type = Number(subSchemeType); 
-
-
-  if (type === 2) {
-    generateReportForIncentive(listData, selectedSanctionOrder);
-  } else if (type === 3) {
-    generateReportForBonus(listData, selectedSanctionOrder);
-  } else if (type === 4) {
-    generateReportForSeedCocoon(listData, selectedSanctionOrder);
-  } else {
-    alert("Invalid Sub Scheme Type");
-  }
-};
-
-
-// const generateReportForIncentive = async (rows, selectedSanctionOrder) => {
-//   const applicationFormIds = rows.map(r => r.applicationDocumentId);
-
-//   await api.post(
-//     baseURLReport + `get-Incentive`,
-//     {
-//       userMasterId: localStorage.getItem("userMasterId"),
-//       schemeId:addressDetails.scSchemeDetailsId,
-//       subSchemeId:addressDetails.subSchemeId,
-//       applicationFormIds: allApplicationIds,
-//       sanctionOrderNumber: selectedSanctionOrder,
-//     },
-//     { responseType: "blob" }
-//   );
-// };
-
-// const generateReportForBonus = async (rows, selectedSanctionOrder) => {
-//   const applicationFormIds = rows.map(r => r.applicationDocumentId);
-
-//   await api.post(
-//     baseURLReport + `get-Bonus`,
-//     {
-//       userMasterId: localStorage.getItem("userMasterId"),
-//       schemeId:addressDetails.scSchemeDetailsId,
-//       subSchemeId:addressDetails.subSchemeId,
-//       applicationFormIds: allApplicationIds,
-//       sanctionOrderNumber: selectedSanctionOrder,
-//     },
-//     { responseType: "blob" }
-//   );
-// };
-
-// const generateReportForSeedCocoon = async (rows, selectedSanctionOrder) => {
-//   const applicationFormIds = rows.map(r => r.applicationDocumentId);
-
-//   await api.post(
-//     baseURLReport + `get-seed-cocoon`,
-//     {
-//       userMasterId: localStorage.getItem("userMasterId"),
-//       schemeId:addressDetails.scSchemeDetailsId,
-//       subSchemeId:addressDetails.subSchemeId,
-//       applicationFormIds: allApplicationIds,
-//       sanctionOrderNumber: selectedSanctionOrder,
-//     },
-//     { responseType: "blob" }
-//   );
-// };
-
-
-
-        const generateReportForBonusIncentiveSeedCocoon = (selectedRows) => {
-       if (subSchemeType === 2) {
-         generateReportForIncentive(selectedRows);
-       } else if (subSchemeType === 3) {
-         generateReportForBonus(selectedRows);
-       } else if (subSchemeType === 4) {
-         generateReportForSeedCocoon(selectedRows);
-       }
-     };
-
-
-
-     const generateReportForIncentive = async (rows, selectedSanctionOrder) => {
-       try {
-        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
-     
-         const response = await api.post(
-           baseURLReport + `get-Incentive`,
-           {
-            //  userMasterId: localStorage.getItem("userMasterId"),
-            //  schemeId,
-            //  subSchemeId,
-            //  applicationFormIds,
-            userMasterId: localStorage.getItem("userMasterId"),
-            schemeId:addressDetails.scSchemeDetailsId,
-            subSchemeId:addressDetails.subSchemeId,
-            applicationFormIds: allApplicationIds,
-            sanctionOrderNumber: selectedSanctionOrder,
-           },
-           {
-             responseType: "blob",
-           }
-         );
-     
-         const file = new Blob([response.data], { type: "application/pdf" });
-         const fileURL = URL.createObjectURL(file);
-         window.open(fileURL);
-       } catch (error) {
-         // console.error("Error generating bonus report", error);
-       }
-     };
-     
-     const generateReportForBonus = async (rows, selectedSanctionOrder) => {
-       try {
-        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
-     
-         const response = await api.post(
-           baseURLReport + `get-Bonus`,
-           {
-            //  userMasterId: localStorage.getItem("userMasterId"),
-            //  schemeId,
-            //  subSchemeId,
-            //  applicationFormIds,
-            userMasterId: localStorage.getItem("userMasterId"),
-            schemeId:addressDetails.scSchemeDetailsId,
-            subSchemeId:addressDetails.subSchemeId,
-            applicationFormIds: allApplicationIds,
-            sanctionOrderNumber: selectedSanctionOrder,
-           },
-           {
-             responseType: "blob",
-           }
-         );
-     
-         const file = new Blob([response.data], { type: "application/pdf" });
-         const fileURL = URL.createObjectURL(file);
-         window.open(fileURL);
-       } catch (error) {
-         // console.error("Error generating bonus report", error);
-       }
-     };
-     
-     const generateReportForSeedCocoon = async (rows, selectedSanctionOrder) => {
-       try {
-        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
-     
-         const response = await api.post(
-           baseURLReport + `get-seed-cocoon`,
-           {
-            //  userMasterId: localStorage.getItem("userMasterId"),
-            //  schemeId,
-            //  subSchemeId,
-            //  applicationFormIds,
-            userMasterId: localStorage.getItem("userMasterId"),
-            schemeId:addressDetails.scSchemeDetailsId,
-            subSchemeId:addressDetails.subSchemeId,
-            applicationFormIds: allApplicationIds,
-            sanctionOrderNumber: selectedSanctionOrder,
-           },
-           {
-             responseType: "blob",
-           }
-         );
-     
-         const file = new Blob([response.data], { type: "application/pdf" });
-         const fileURL = URL.createObjectURL(file);
-         window.open(fileURL);
-       } catch (error) {
-         // console.error("Error generating seed cocoon report", error);
-       }
-     };
-
-     const generateReportForNorthKarnataka = async (rows, selectedSanctionOrder) => {
-       try {
-        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
-     
-         const response = await api.post(
-           baseURLReport + `get-TransportSubsidy`,
-           {
-             userMasterId: localStorage.getItem("userMasterId"),
-            schemeId:addressDetails.scSchemeDetailsId,
-            subSchemeId:addressDetails.subSchemeId,
-            applicationFormIds: allApplicationIds,
-            sanctionOrderNumber: selectedSanctionOrder,
-           },
-           {
-             responseType: "blob",
-           }
-         );
-     
-         const file = new Blob([response.data], { type: "application/pdf" });
-         const fileURL = URL.createObjectURL(file);
-         window.open(fileURL);
-       } catch (error) {
-         // console.error("Error generating bonus report", error);
-       }
-     };
-     
-     
-     const generateReportFor30Rs = async (rows, selectedSanctionOrder) => {
-       try {
-        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
-     
-         const response = await api.post(
-           baseURLReport + `get-PriceStabilizationIncentive`,
-           {
-            //  userMasterId: localStorage.getItem("userMasterId"),
-            //  schemeId,
-            //  subSchemeId,
-            //  applicationFormIds,
-            userMasterId: localStorage.getItem("userMasterId"),
-            schemeId:addressDetails.scSchemeDetailsId,
-            subSchemeId:addressDetails.subSchemeId,
-            applicationFormIds: allApplicationIds,
-            sanctionOrderNumber: selectedSanctionOrder,
-           },
-           {
-             responseType: "blob",
-           }
-         );
-     
-         const file = new Blob([response.data], { type: "application/pdf" });
-         const fileURL = URL.createObjectURL(file);
-         window.open(fileURL);
-       } catch (error) {
-         // console.error("Error generating bonus report", error);
-       }
-     };
-     
-     const generateReportFor100Rs = async (rows, selectedSanctionOrder) => {
-       try {
-        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
-     
-         const response = await api.post(
-           baseURLReport + `get-MscSeedChawki1000`,
-           {
-            //  userMasterId: localStorage.getItem("userMasterId"),
-            //  schemeId,
-            //  subSchemeId,
-            //  applicationFormIds,
-            userMasterId: localStorage.getItem("userMasterId"),
-            schemeId:addressDetails.scSchemeDetailsId,
-            subSchemeId:addressDetails.subSchemeId,
-            applicationFormIds: allApplicationIds,
-            sanctionOrderNumber: selectedSanctionOrder,
-           },
-           {
-             responseType: "blob",
-           }
-         );
-     
-         const file = new Blob([response.data], { type: "application/pdf" });
-         const fileURL = URL.createObjectURL(file);
-         window.open(fileURL);
-       } catch (error) {
-         // console.error("Error generating bonus report", error);
-       }
-     };
-
-      const generateReportForSilkIncentive = async (rows, selectedSanctionOrder) => {
-       try {
-        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
-     
-         const response = await api.post(
-           baseURLReport + `sanction-silk-incentive`,
-           {
-            //  userMasterId: localStorage.getItem("userMasterId"),
-            //  schemeId,
-            //  subSchemeId,
-            //  applicationFormIds,
-            userMasterId: localStorage.getItem("userMasterId"),
-            schemeId:addressDetails.scSchemeDetailsId,
-            subSchemeId:addressDetails.subSchemeId,
-            applicationFormIds: allApplicationIds,
-            sanctionOrderNumber: selectedSanctionOrder,
-           },
-           {
-             responseType: "blob",
-           }
-         );
-     
-         const file = new Blob([response.data], { type: "application/pdf" });
-         const fileURL = URL.createObjectURL(file);
-         window.open(fileURL);
-       } catch (error) {
-         // console.error("Error generating bonus report", error);
-       }
-     };
-
-      const generateReportForReelingShed = async (rows, selectedSanctionOrder) => {
-       try {
-        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
-     
-         const response = await api.post(
-           baseURLReport + `sanction-psfa-reeling-shed`,
-           {
-            //  userMasterId: localStorage.getItem("userMasterId"),
-            //  schemeId,
-            //  subSchemeId,
-            //  applicationFormIds,
-            // userMasterId: localStorage.getItem("userMasterId"),
-            schemeId:addressDetails.scSchemeDetailsId,
-            subSchemeId:addressDetails.subSchemeId,
-            categoryId:addressDetails.scCategoryId,
-            applicationFormId: applicationFormId,
-            sanctionOrderNumber: selectedSanctionOrder,
-           },
-           {
-             responseType: "blob",
-           }
-         );
-     
-         const file = new Blob([response.data], { type: "application/pdf" });
-         const fileURL = URL.createObjectURL(file);
-         window.open(fileURL);
-       } catch (error) {
-         // console.error("Error generating bonus report", error);
-       }
-     };
-
-     const generateReportForHRU = async (rows, selectedSanctionOrder) => {
-       try {
-        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
-     
-         const response = await api.post(
-           baseURLReport + `sanction-heat-unit`,
-           {
-            //  userMasterId: localStorage.getItem("userMasterId"),
-            //  schemeId,
-            //  subSchemeId,
-            //  applicationFormIds,
-            // userMasterId: localStorage.getItem("userMasterId"),
-            schemeId:addressDetails.scSchemeDetailsId,
-            subSchemeId:addressDetails.subSchemeId,
-            categoryId:addressDetails.scCategoryId,
-            applicationFormId: applicationFormId,
-            sanctionOrderNumber: selectedSanctionOrder,
-           },
-           {
-             responseType: "blob",
-           }
-         );
-     
-         const file = new Blob([response.data], { type: "application/pdf" });
-         const fileURL = URL.createObjectURL(file);
-         window.open(fileURL);
-       } catch (error) {
-         // console.error("Error generating bonus report", error);
-       }
-     };
-
-      const generateReportForRegisteredPrivate = async (rows, selectedSanctionOrder) => {
-       try {
-        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
-     
-         const response = await api.post(
-           baseURLReport + `getChawkiSanctionOrderPdf`,
-           {
-            //  userMasterId: localStorage.getItem("userMasterId"),
-            //  schemeId,
-            //  subSchemeId,
-            //  applicationFormIds,
-            // userMasterId: localStorage.getItem("userMasterId"),
-            schemeId:addressDetails.scSchemeDetailsId,
-            subSchemeId:addressDetails.subSchemeId,
-            categoryId:addressDetails.scCategoryId,
-            applicationFormId: applicationFormId,
-            sanctionOrderNumber: selectedSanctionOrder,
-           },
-           {
-             responseType: "blob",
-           }
-         );
-     
-         const file = new Blob([response.data], { type: "application/pdf" });
-         const fileURL = URL.createObjectURL(file);
-         window.open(fileURL);
-       } catch (error) {
-         // console.error("Error generating bonus report", error);
-       }
-     };
-
-
-      const generateReportForRearingEquipment = async (rows, selectedSanctionOrder) => {
-       try {
-        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
-     
-         const response = await api.post(
-           baseURLReport + `getSanctionOrderRHEquipment`,
-           {
-            //  userMasterId: localStorage.getItem("userMasterId"),
-            //  schemeId,
-            //  subSchemeId,
-            //  applicationFormIds,
-            // userMasterId: localStorage.getItem("userMasterId"),
-            schemeId:addressDetails.scSchemeDetailsId,
-            subSchemeId:addressDetails.subSchemeId,
-            categoryId:addressDetails.scCategoryId,
-            applicationFormId: applicationFormId,
-            sanctionOrderNumber: selectedSanctionOrder,
-           },
-           {
-             responseType: "blob",
-           }
-         );
-     
-         const file = new Blob([response.data], { type: "application/pdf" });
-         const fileURL = URL.createObjectURL(file);
-         window.open(fileURL);
-       } catch (error) {
-         // console.error("Error generating bonus report", error);
-       }
-     };
-     
-     
-     
-     const generateReportFor1500dfls = async (rows, selectedSanctionOrder) => {
-       try {
-        //  const applicationFormIds = selectedRows.map(row => row.applicationDocumentId);
-     
-         const response = await api.post(
-           baseURLReport + `get-MscSeedChawki`,
-           {
-            //  userMasterId: localStorage.getItem("userMasterId"),
-            //  schemeId,
-            //  subSchemeId,
-            //  applicationFormIds,
-            userMasterId: localStorage.getItem("userMasterId"),
-            schemeId:addressDetails.scSchemeDetailsId,
-            subSchemeId:addressDetails.subSchemeId,
-            applicationFormIds: allApplicationIds,
-            sanctionOrderNumber: selectedSanctionOrder,
-           },
-           {
-             responseType: "blob",
-           }
-         );
-     
-         const file = new Blob([response.data], { type: "application/pdf" });
-         const fileURL = URL.createObjectURL(file);
-         window.open(fileURL);
-       } catch (error) {
-         // console.error("Error generating bonus report", error);
-       }
-     };
-
-  
+  const fieldGroupStyle = {
+    display: "flex",
+    flexDirection: "column",
+    marginBottom: "4px",
+  };
 
   return (
     <Layout title="Generate Sanction Order">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Sanction Order Download</Block.Title>
+            <Block.Title tag="h2">Generate Sanction Order</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
 
-     <Block className="mt-n4">
-       <Card className="mt-1">
-         <Row className="m-2">
-           <Col>
-             <Form.Group className="form-group" id="fid">
-    
-               <Row className="mb-3">
-                        <Form.Label column sm={1}>
-                          Type
-                          {/* <span className="text-danger">*</span> */}
-                        </Form.Label>
-                         <Col sm={3}>
-                          <Form.Select
-                            name="type"
-                            value={addressDetails.type}
-                            onChange={handleInputsaddress}
-                            // required
-                            // isInvalid={
-                            //   data.calculationBasedOn === undefined ||
-                            //   data.calculationBasedOn === "0"
-                            // }
-                          >
-                            <option value="">
-                              Select Type
-                            </option>
-                            {/* <option value="Acknowledgement">Acknowledgement</option>
-                            <option value="Work Order">Work Order</option> */}
-                            <option value="Sanction Order">Sanction Order</option>
-                            {/* <option value="Sericulture Development Programme">Sericulture Development Programme</option>
-                            <option value="Silk Samagra State">Silk Samagra State</option>
-                            <option value="Silk Samagra Central">Silk Samagra Central</option>
-                            <option value="Bivoltine Bonus">Bivoltine Bonus</option>
-                            <option value="Silk Incentive-PSF">Silk Incentive-PSF</option>
-                            <option value="IMCB-PSF">IMCB-PSF</option>
-                            <option value="ICB-PSF">ICB-PSF</option>
-                            <option value="MERM-PSF">MERM-PSF</option>
-                            <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
-                            <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
-                            <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
-                            <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option> */}
-                          </Form.Select>
-                          </Col>
+      <Block className="mt-n4">
+        <Card
+          className="mt-1"
+          style={{
+            borderRadius: "14px",
+            border: "none",
+            boxShadow: "0 4px 24px rgba(30,103,168,0.10)",
+            overflow: "hidden",
+          }}
+        >
+          {/* Card Header */}
+          <div
+            style={{
+              background: "linear-gradient(135deg, #1e67a8 0%, #2d9cdb 100%)",
+              padding: "18px 28px",
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+            }}
+          >
+            <div
+              style={{
+                width: "38px",
+                height: "38px",
+                borderRadius: "50%",
+                background: "rgba(255,255,255,0.2)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "18px",
+              }}
+            >
+              📄
+            </div>
+            <div>
+              <div style={{ color: "#fff", fontWeight: 700, fontSize: "17px", lineHeight: 1.2 }}>
+                Sanction Order Filter
+              </div>
+              <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "2px" }}>
+                Select filters to load and download sanction order
+              </div>
+            </div>
+          </div>
 
-                        <Form.Label column sm={1}>
-                          {t("Financial Year")}
-                        </Form.Label>
-                        <Col sm={3}>
-                          <Form.Select
-                            name="financialYearId"
-                            value={addressDetails.financialYearId || 0}
-                            onChange={handleInputsaddress}
-                          >
-                            <option value="">{t("Select Year")}</option>
-                            {financialyearListData.map((list) => (
-                              <option
-                                key={list.financialYearMasterId}
-                                value={list.financialYearMasterId}
-                              >
-                                {list.financialYear}
-                              </option>
-                            ))}
-                          </Form.Select>
-                        </Col>
-     
-               <Form.Label column sm={1}>
-                   Scheme
-                 </Form.Label>
-                 <Col sm={3}>
-                   <Form.Select
-                     name="scSchemeDetailsId"
-                     value={addressDetails.scSchemeDetailsId || 0}
-                     onChange={handleInputsaddress}
-                   >
-                     <option value="">Select Scheme Name</option>
-                     {scSchemeDetailsListData && scSchemeDetailsListData.length ?
-                       scSchemeDetailsListData.map((list) => (
-                         <option
-                           key={list.scSchemeDetailsId}
-                           value={list.scSchemeDetailsId}
-                         >
-                           {list.schemeName}
-                       </option>
-                     ))
-                           : ""}
-                   </Form.Select>
-                 </Col>
-                 </Row> 
-     
-     <Row className="mb-3">
-                <Form.Label column sm={1}>
-                 Component Type
-               </Form.Label>
-               <Col sm={3}>
-                 <Form.Select
-                   name="subSchemeId"
-                   value={addressDetails.subSchemeId || 0}
-                   onChange={handleInputsaddress}
-                 >
-                   <option value="">Select Component Type</option>
-                   {scSubSchemeDetailsListData && scSubSchemeDetailsListData.length
-                           ? scSubSchemeDetailsListData.map((list) => (
-                     <option
-                       key={list.scSubSchemeDetailsId}
-                       value={list.subSchemeId}
-                     >
-                       {list.subSchemeName}
-                     </option>
-                   ))
-                   : ""}
-                 </Form.Select>
-               </Col>
-                
-     
-     
-                 <Form.Label column sm={1}>
-                   Component
-                 </Form.Label>
-                 <Col sm={3}>
-                   <Form.Select
-                     name="componentId"
-                     value={addressDetails.componentId || 0}
-                     onChange={handleInputsaddress}
-                   >
-                     <option value="">Select Component</option>
-                     {scComponentListData  && scComponentListData.length
-                           ? scComponentListData.map((list) => (
-                       <option key={list.scComponentId} value={list.scComponentId}>
-                         {list.scComponentName}
-                       </option>
-                    ))
-                           : ""}
-                   </Form.Select>
-                 </Col> 
-                
-     
-                 
-               
-     
-               {/* Row 3 */}
-               
-     
-               <Form.Label column sm={1}>
-                   Sub Component
-                 </Form.Label>
-                 <Col sm={3}>
-                   <Form.Select
-                     name="scCategoryId"
-                     value={addressDetails.scCategoryId || 0}
-                     onChange={handleInputsaddress}
-                   >
-                     <option value="">Select Sub Component</option>
-                     {scCategoryListData &&
-                       scCategoryListData.length ? scCategoryListData.map((list) => (
-                         <option
-                           key={list.scCategoryId}
-                           value={list.scCategoryId}
-                         >
-                           {list.categoryName}
-                       </option>
-                     ))
-                           : ""}
-                   </Form.Select>
-                 </Col> 
-                 </Row>
+          <Card.Body style={{ padding: "28px 32px 24px" }}>
+            {/* Section label */}
+            <div
+              style={{
+                fontSize: "12px",
+                fontWeight: 700,
+                color: "#1e67a8",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                marginBottom: "18px",
+              }}
+            >
+              Step 1 — Select Scheme Details
+            </div>
 
-          <Row className="mb-3">
-                 <Form.Label column sm={1}>
-                    Sanction Order
-                  </Form.Label>
-                  <Col sm={3}>
-                    <Form.Select
-                      name="sanctionOrderNumber"
-                      value={addressDetails.sanctionOrderNumber}
-                      onChange={handleSanctionOrderChange}
-                    >
-                      <option value="">Select Sanction Order</option>
-                      {sanctionOrderNumbers && sanctionOrderNumbers.length
-                        ? sanctionOrderNumbers.map((num, index) => (
-                            <option key={index} value={num}>
-                              {num}
-                            </option>
-                          ))
-                        : ""}
-                    </Form.Select>
-                  </Col>
+            {/* Row 1 — Financial Year & Scheme */}
+            <Row className="mb-3">
+              <Col md={6} style={fieldGroupStyle}>
+                <label style={labelStyle}>Financial Year</label>
+                <Form.Select
+                  name="financialYearId"
+                  value={addressDetails.financialYearId || ""}
+                  onChange={handleInputsaddress}
+                  style={selectStyle}
+                >
+                  <option value="">— Select Financial Year —</option>
+                  {financialyearListData.map((list) => (
+                    <option key={list.financialYearMasterId} value={list.financialYearMasterId}>
+                      {list.financialYear}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Col>
 
+              <Col md={6} style={fieldGroupStyle}>
+                <label style={labelStyle}>Scheme</label>
+                <Form.Select
+                  name="scSchemeDetailsId"
+                  value={addressDetails.scSchemeDetailsId || ""}
+                  onChange={handleInputsaddress}
+                  style={selectStyle}
+                >
+                  <option value="">— Select Scheme —</option>
+                  {scSchemeDetailsListData && scSchemeDetailsListData.length
+                    ? scSchemeDetailsListData.map((list) => (
+                        <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
+                          {list.schemeName}
+                        </option>
+                      ))
+                    : ""}
+                </Form.Select>
+              </Col>
+            </Row>
 
-     
-                 <Col sm={2} className="d-flex">
-                   <Button
-                      type="button"
-                      variant="primary"
-                      onClick={handleDownload}
-                      className="me-2"
-                      disabled={!addressDetails.sanctionOrderNumber}
-                    >
-                      Download
-                    </Button>
+            {/* Row 2 — Component Type & Component */}
+            <Row className="mb-3">
+              <Col md={6} style={fieldGroupStyle}>
+                <label style={labelStyle}>Component Type</label>
+                <Form.Select
+                  name="subSchemeId"
+                  value={addressDetails.subSchemeId || ""}
+                  onChange={handleInputsaddress}
+                  style={selectStyle}
+                >
+                  <option value="">— Select Component Type —</option>
+                  {scSubSchemeDetailsListData && scSubSchemeDetailsListData.length
+                    ? scSubSchemeDetailsListData.map((list) => (
+                        <option key={list.scSubSchemeDetailsId} value={list.subSchemeId}>
+                          {list.subSchemeName}
+                        </option>
+                      ))
+                    : ""}
+                </Form.Select>
+              </Col>
 
-                   {/* <Button type="button" variant="primary" onClick={exportCsv}>
-                     Export
-                   </Button> */}
-                 </Col>
-               </Row>
-     
-             </Form.Group>
-           </Col>
-         </Row>
-       </Card>
-     </Block>
+              <Col md={6} style={fieldGroupStyle}>
+                <label style={labelStyle}>Component</label>
+                <Form.Select
+                  name="componentId"
+                  value={addressDetails.componentId || ""}
+                  onChange={handleInputsaddress}
+                  style={selectStyle}
+                >
+                  <option value="">— Select Component —</option>
+                  {scComponentListData && scComponentListData.length
+                    ? scComponentListData.map((list) => (
+                        <option key={list.scComponentId} value={list.scComponentId}>
+                          {list.scComponentName}
+                        </option>
+                      ))
+                    : ""}
+                </Form.Select>
+              </Col>
+            </Row>
 
+            {/* Row 3 — Sub Component */}
+            <Row className="mb-4">
+              <Col md={6} style={fieldGroupStyle}>
+                <label style={labelStyle}>Sub Component</label>
+                <Form.Select
+                  name="scCategoryId"
+                  value={addressDetails.scCategoryId || ""}
+                  onChange={handleInputsaddress}
+                  style={selectStyle}
+                >
+                  <option value="">— Select Sub Component —</option>
+                  {scCategoryListData && scCategoryListData.length
+                    ? scCategoryListData.map((list) => (
+                        <option key={list.scCategoryId} value={list.scCategoryId}>
+                          {list.categoryName}
+                        </option>
+                      ))
+                    : ""}
+                </Form.Select>
+              </Col>
+            </Row>
 
-     {/* <Block className='mt-3'>
-               <Card>
-               <DataTable
-                 //  title="Market List"
-                 tableClassName="data-table-head-light table-responsive"
-                 columns={ApplicationDataColumns}
-                 data={listData}
-                 highlightOnHover
-                 pagination
-                 paginationServer
-                 paginationTotalRows={totalRows}
-                 paginationPerPage={countPerPage}
-                 paginationComponentOptions={{
-                   noRowsPerPage: true,
-                 }}
-                 onChangePage={(page) => setPage(page - 1)}
-                 theme="solarized"
-                 customStyles={customStyles}
-               />
-             </Card>
-     
-           
-     
-           </Block> */}
+            {/* Divider with Step 2 label */}
+            <div
+              style={{
+                borderTop: "1.5px dashed #d0d9e8",
+                margin: "8px 0 20px",
+              }}
+            />
+            <div
+              style={{
+                fontSize: "12px",
+                fontWeight: 700,
+                color: "#1e67a8",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                marginBottom: "18px",
+              }}
+            >
+              Step 2 — Select Sanction Order &amp; Download
+            </div>
+
+            {/* Row 4 — Sanction Order + Buttons */}
+            <Row className="align-items-end">
+              <Col md={5} style={fieldGroupStyle}>
+                <label style={labelStyle}>Sanction Order Number</label>
+                <Form.Select
+                  name="sanctionOrderNumber"
+                  value={addressDetails.sanctionOrderNumber}
+                  onChange={handleSanctionOrderChange}
+                  style={selectStyle}
+                >
+                  <option value="">— Select Sanction Order —</option>
+                  {sanctionOrderNumbers && sanctionOrderNumbers.length
+                    ? sanctionOrderNumbers.map((num, index) => (
+                        <option key={index} value={num}>
+                          {num}
+                        </option>
+                      ))
+                    : ""}
+                </Form.Select>
+                {!securityKey && addressDetails.sanctionOrderNumber && (
+                  <small style={{ color: "#e53e3e", fontSize: "12px", marginTop: "4px" }}>
+                    No pre-generated file found for this order.
+                  </small>
+                )}
+              </Col>
+
+              <Col md={7} className="d-flex gap-3 flex-wrap pb-1">
+                {/* Download PDF — uses security key */}
+                <button
+                  type="button"
+                  onClick={downloadFile}
+                  disabled={!addressDetails.sanctionOrderNumber || isDownloading}
+                  style={{
+                    background:
+                      addressDetails.sanctionOrderNumber && !isDownloading
+                        ? "linear-gradient(135deg, #1e67a8, #2d9cdb)"
+                        : "#c8d6e5",
+                    border: "none",
+                    borderRadius: "9px",
+                    padding: "10px 26px",
+                    fontWeight: 700,
+                    fontSize: "14px",
+                    color: "#fff",
+                    cursor: addressDetails.sanctionOrderNumber && !isDownloading ? "pointer" : "not-allowed",
+                    boxShadow:
+                      addressDetails.sanctionOrderNumber && !isDownloading
+                        ? "0 4px 14px rgba(30,103,168,0.35)"
+                        : "none",
+                    transition: "all 0.2s ease",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "7px",
+                    minWidth: "160px",
+                    justifyContent: "center",
+                  }}
+                >
+                  {isDownloading ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                      Downloading…
+                    </>
+                  ) : (
+                    <>⬇ Download PDF</>
+                  )}
+                </button>
+
+                {/* Generate PDF — uses scheme-based report endpoints */}
+                {/* <button
+                  type="button"
+                  onClick={handleDownload}
+                  disabled={!addressDetails.sanctionOrderNumber}
+                  style={{
+                    background: addressDetails.sanctionOrderNumber
+                      ? "linear-gradient(135deg, #1a7a4a, #28a745)"
+                      : "#c8d6e5",
+                    border: "none",
+                    borderRadius: "9px",
+                    padding: "10px 26px",
+                    fontWeight: 700,
+                    fontSize: "14px",
+                    color: "#fff",
+                    cursor: addressDetails.sanctionOrderNumber ? "pointer" : "not-allowed",
+                    boxShadow: addressDetails.sanctionOrderNumber
+                      ? "0 4px 14px rgba(26,122,74,0.35)"
+                      : "none",
+                    transition: "all 0.2s ease",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "7px",
+                    minWidth: "160px",
+                    justifyContent: "center",
+                  }}
+                >
+                  🖨 Generate PDF
+                </button> */}
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
+      </Block>
     </Layout>
   );
 }
