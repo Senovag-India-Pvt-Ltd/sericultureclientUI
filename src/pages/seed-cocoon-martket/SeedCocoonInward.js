@@ -91,6 +91,7 @@ function SeedCocoonInward() {
   const [validatedDisplay, setValidatedDisplay] = useState(false);
 
   const [isActive, setIsActive] = useState(false);
+  const [bankLockError, setBankLockError] = useState(false);
 
   // const display = (event) => {
   //   const form = event.currentTarget;
@@ -214,6 +215,7 @@ function SeedCocoonInward() {
         type: select,
       };
 
+      setBankLockError(false);
       setLoading(true);
       api
         .post(
@@ -222,42 +224,45 @@ function SeedCocoonInward() {
           sendData
         )
         .then((response) => {
-          if (response.data && response.data.length > 0) {
-            const farmerResponse = response.data[0]; // Accessing the first farmer's details
-            // const farmerData = response.data;
-            // Update state with farmer details
+          const resData = response.data;
+
+          // Check for errorMessages in the response body (200 with error content)
+          if (resData?.errorMessages && resData.errorMessages.length > 0) {
+            const apiMsg =
+              resData.errorMessages[0]?.message?.[0]?.message ||
+              resData.errorMessages[0]?.message ||
+              "Validation error from server.";
+            showFarmerSearchError(apiMsg);
+            setLoading(false);
+            return;
+          }
+
+          if (Array.isArray(resData) && resData.length > 0) {
+            const farmerResponse = resData[0];
             setFarmerDetails(farmerResponse);
             setData((prev) => ({
               ...prev,
               farmerId: farmerResponse.farmerId,
-              // dflLotNumber: farmerResponse.numbersOfDfls, // Set dflLotNumber from response
-              // lotVariety: farmerResponse.raceOfDfls, // Set lotVariety from response
-              // lotParentalLevel: farmerResponse.lotNumberRsp, // Set lotParentLevel from response
             }));
-
-            // setFitnessCertificate(farmerResponse); // Save the fitness certificate path if available
-
-            // if (farmerData) {
-            //   // Automatically call the getDocumentFile function when the farmerId is received
-            //   getDocumentFile(farmerResponse.fitnessCertificatePath);
-            // }
-            // farmerData.forEach(farmerPhoto=>{
-            //   if(farmerPhoto.fitnessCertificatePath){
-            //     getDocumentFile(farmerPhoto.fitnessCertificatePath);
-            //   }
-            // })
             getIdList(farmerResponse.farmerId);
-
             setLoading(false);
             setIsActive(true);
           } else {
             searchError("No details found");
+            setLoading(false);
           }
         })
         .catch((err) => {
           console.error("Error fetching farmer details:", err);
-          if (err.response?.data?.validationErrors) {
-            searchError(err.response.data.validationErrors);
+          const errData = err.response?.data;
+          if (errData?.errorMessages && errData.errorMessages.length > 0) {
+            const apiMsg =
+              errData.errorMessages[0]?.message?.[0]?.message ||
+              errData.errorMessages[0]?.message ||
+              "Validation error from server.";
+            showFarmerSearchError(apiMsg);
+          } else if (errData?.validationErrors) {
+            searchError(errData.validationErrors);
           } else {
             Swal.fire({
               icon: "warning",
@@ -999,6 +1004,95 @@ const getIdList = (farmerId) => {
     });
   };
 
+  const showFarmerSearchError = (message) => {
+    setBankLockError(true);
+    if (!document.getElementById("swal-farmer-error-styles")) {
+      const style = document.createElement("style");
+      style.id = "swal-farmer-error-styles";
+      style.innerHTML = `
+        .swal-farmer-error {
+          border-radius: 24px !important;
+          padding: 0 !important;
+          overflow: hidden !important;
+          box-shadow: 0 30px 80px rgba(180,0,0,0.22), 0 8px 24px rgba(0,0,0,0.12) !important;
+          border: none !important;
+        }
+        .swal-farmer-error .swal2-icon {
+          width: 72px !important; height: 72px !important;
+          margin: 28px auto 4px !important;
+          border-color: #e53e3e !important;
+        }
+        .swal-farmer-error .swal2-icon .swal2-icon-content { font-size: 42px !important; color: #e53e3e !important; }
+        .swal-farmer-error .swal2-title {
+          font-size: 22px !important; font-weight: 800 !important;
+          color: #1a202c !important; padding: 0 28px !important; margin-top: 8px !important;
+          letter-spacing: -0.3px !important;
+        }
+        .swal-farmer-error .swal2-html-container { margin: 0 !important; padding: 0 !important; }
+        .swal-farmer-error .swal2-actions { padding: 0 28px 28px !important; margin-top: 6px !important; }
+        .swal-farmer-error .swal2-confirm {
+          border-radius: 12px !important; padding: 12px 36px !important;
+          font-weight: 700 !important; font-size: 15px !important;
+          letter-spacing: 0.3px !important; box-shadow: 0 6px 20px rgba(229,62,62,0.4) !important;
+          transition: transform 0.15s !important;
+        }
+        .swal-farmer-error .swal2-confirm:hover { transform: translateY(-1px) !important; }
+      `;
+      document.head.appendChild(style);
+    }
+    Swal.fire({
+      icon: "error",
+      title: "",
+      html: `
+        <div style="
+          background: linear-gradient(135deg, #fff5f5 0%, #fff 60%);
+          border-top: 4px solid #e53e3e;
+          padding: 20px 28px 8px;
+          margin-top: 4px;
+        ">
+          <div style="
+            display:flex; align-items:flex-start; gap:12px;
+            background:#fff; border:1.5px solid #fed7d7;
+            border-radius:14px; padding:16px 18px;
+            box-shadow: 0 2px 12px rgba(229,62,62,0.08);
+          ">
+            <div style="
+              min-width:36px; height:36px; border-radius:50%;
+              background:linear-gradient(135deg,#e53e3e,#c53030);
+              display:flex; align-items:center; justify-content:center;
+              font-size:18px; flex-shrink:0; margin-top:1px;
+              box-shadow: 0 3px 10px rgba(197,48,48,0.35);
+            ">🔒</div>
+            <div style="text-align:left">
+              <p style="
+                color:#c53030; font-size:15px; font-weight:700;
+                margin:0 0 6px; line-height:1.5;
+              ">${message}</p>
+              <p style="
+                color:#718096; font-size:12.5px; margin:0; line-height:1.6;
+              ">Please resolve the issue before proceeding with the submission.</p>
+            </div>
+          </div>
+          <div style="
+            margin-top:14px; padding:10px 14px;
+            background:#fff8f8; border-radius:10px;
+            border-left:4px solid #e53e3e;
+          ">
+            <p style="color:#742a2a; font-size:12px; margin:0; font-weight:600;">
+              ⚠ Submit button has been disabled until this is resolved.
+            </p>
+          </div>
+        </div>`,
+      confirmButtonText: "OK, Understood",
+      confirmButtonColor: "#e53e3e",
+      background: "#fff",
+      customClass: { popup: "swal-farmer-error" },
+      showClass: {
+        popup: "animate__animated animate__shakeX animate__faster",
+      },
+    });
+  };
+
   const searchError = (message = "Something went wrong!") => {
     let errorMessage;
     if (typeof message === "object") {
@@ -1303,9 +1397,16 @@ const getIdList = (farmerId) => {
                   <div className="gap-col mt-1">
                     <ul className="d-flex align-items-center justify-content-center gap g-3">
                       <li>
-                        <Button type="submit" variant="primary">
+                        <Button type="submit" variant="primary" disabled={bankLockError}>
                           {t("Submit")}
                         </Button>
+                        {bankLockError && (
+                          <div style={{ textAlign: "center", marginTop: "8px" }}>
+                            <small style={{ color: "#c53030", fontWeight: 600, fontSize: "13px" }}>
+                              ⚠ Submit is disabled due to a validation error.
+                            </small>
+                          </div>
+                        )}
                       </li>
                     </ul>
                   </div>
