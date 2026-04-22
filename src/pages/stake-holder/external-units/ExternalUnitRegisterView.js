@@ -154,6 +154,23 @@ function ExternalUnitRegisterView() {
                         <td style={styles.ctstyle}>{t("Lot Number Nomenclature")}</td>
                         <td>{ExternalUnitRegister.lotNumberNomenclature}</td>
                       </tr>
+                      <tr>
+                      <td style={styles.ctstyle}>Tsc</td>
+                      <td>{ExternalUnitRegister.tscName}</td>
+                      </tr>
+                      <tr>
+                      <td style={styles.ctstyle}> {t("district")}</td>
+                      <td>{ExternalUnitRegister.districtName}</td>
+                    </tr>
+                    <tr>
+                      <td style={styles.ctstyle}>{t("taluk")}</td>
+                      <td>{ExternalUnitRegister.talukName}</td>
+                    </tr>
+                     <tr>
+                      <td style={styles.ctstyle}>{t("Name in Kannada")}</td>
+                      <td>{ExternalUnitRegister.nameInKannada}</td>
+                    </tr>
+                    
                     </tbody>
                   </table>
                 </Col>
