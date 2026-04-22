@@ -3321,12 +3321,92 @@ function Menu() {
             </MenuItem>
           ) : null} */}
             {showMenu.Helpdesk_FAQ ? (
-              <MenuItem>
+              <MenuItem sub>
                 <MenuItemLink
-                  text={t("User Manual Videos")}
-                  // to="/seriui/help-desk-faq-view"
-                  to="https://drive.google.com/drive/folders/1V3JAJa_AbwV3072-6sHdgebgHCptU5sj?usp=sharing"
+                  text={t("Video Manual")}
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
                 />
+                <MenuSub>
+                  {/* <MenuItem>
+                    <MenuItemLink
+                      text={t("Adopting Silent Generator-PSF")}
+                      to="https://drive.google.com/open?id=1_nnRq0CQIhGaggjPBfInQafh-WsrBt87&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem> */}
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Adopting Solar Water Heater-PSF")}
+                      to="https://drive.google.com/open?id=10fZ3Gc7MXadMrAfPaD6Zq-ztLTLhO_p3&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Bonus For Bivoltine Cocoons")}
+                      to="https://drive.google.com/open?id=1dwLAfUi8hXky3wsZGuFVQEJXPTWPjGAT&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Adopting Silent Generator-PSF")}
+                      to="https://drive.google.com/open?id=1Vngj8MYf-gKAyIGRD_noNyWDJea5_Te-&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Incentive For Bivoltine Cocoons - Rs.30/KG-PSF")}
+                      to="https://drive.google.com/open?id=1mY6j8lxs3TuOCRWKo4ud-xpSURIEToXJ&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Incentive For Bivoltine Cocoons")}
+                      to="https://drive.google.com/open?id=1j6Ha4_Gy8cFwqkp09FHRfSlByMsxySeG&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Incentive For MSC Cocoons Rs.120 Per Kg")}
+                      to="https://drive.google.com/open?id=1xoGA8MQ0Gyypm5J4zACyI0FYXBMUVxS8&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("MSC Chawki Incentive - Unit Cost For 100 DFLs Rs.1500")}
+                      to="https://drive.google.com/open?id=1HXM7khZgYrQDPIJBQut687W5iMNP1sLL&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("North Karnataka Cocoon Transportation Incentive")}
+                      to="https://drive.google.com/open?id=1CBOM0Efx-K8f7HR7fTejp5MAH6PYPoc4&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Pure Mysore Bonus - Rs.225 Per Kg")}
+                      to="https://drive.google.com/open?id=1YGEX6JgtrF9AtpCji6Qe6QbiIrednfIS&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Silk Incentive-PSF")}
+                      to="https://drive.google.com/open?id=1fOBBDKYV3yBJjoMT1BJpWu2PJoTMCkMb&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                </MenuSub>
               </MenuItem>
             ) : null}
           </MenuSub>
@@ -4589,7 +4669,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.Reports_Export_Report_Silk_Type_Market ? (
+                  {/* {showMenu.Reports_Export_Report_Silk_Type_Market ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("Silk Exchange Market")}
@@ -4656,7 +4736,7 @@ function Menu() {
                         ) : null}
                       </MenuSub>
                     </MenuItem>
-                  ) : null}
+                  ) : null} */}
 
                   {showMenu.Reports_Export_Report_Seed_And_Dfl ? (
                     <MenuItem sub>
