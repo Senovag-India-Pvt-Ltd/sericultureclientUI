@@ -3406,6 +3406,34 @@ function Menu() {
                       blank
                     />
                   </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Rearing Equipment SS")}
+                      to="https://drive.google.com/open?id=1pxcyOv2UnjETdNqOiuf_Mponu7qDlD0r&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Adopting Solar Power Generator-PSF")}
+                      to="https://drive.google.com/open?id=1e2Ek2-48n9LYrYoq3ORX0ML-Zck4aXk9&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Adopting Heat Recovery Unit-PSF")}
+                      to="https://drive.google.com/open?id=1rj6FxnfIHRZ5wORqXujjzrDKoQS2ddmV&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Bivoltine Chawki Incentive")}
+                      to="https://drive.google.com/open?id=1Z1iN0s0NduOyIsYFSlqYzStpb9cUychA&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
                 </MenuSub>
               </MenuItem>
             ) : null}
