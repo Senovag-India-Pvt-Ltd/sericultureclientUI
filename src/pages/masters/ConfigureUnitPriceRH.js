@@ -18,6 +18,9 @@ function ConfigureRHUnitPriceAmount() {
     categoryId: "",
     amount: "",
     sqft: "",
+    centralAmount: "",
+    stateAmounts: "",
+
   });
 
   const [validated, setValidated] = useState(false);
@@ -52,6 +55,8 @@ function ConfigureRHUnitPriceAmount() {
             categoryId: "",
             amount: "",
             sqft: "",
+            centralAmount: "",
+            stateAmounts: "",
             });
             setValidated(false);
           }
@@ -71,6 +76,8 @@ function ConfigureRHUnitPriceAmount() {
     amountPerKg: "",
     amount: "",
     sqft: "",
+    centralAmount: "",
+    stateAmounts: "",
     });
   };
 
@@ -339,9 +346,58 @@ function ConfigureRHUnitPriceAmount() {
                       </div>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n3">
+                      <Form.Label htmlFor="title">
+                        Central Amount
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="centralAmount"
+                          name="centralAmount"
+                          type="text"
+                          value={data.centralAmount}
+                          onChange={handleInputs}
+                          placeholder="Enter Central Amount"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        Central Amount is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n3">
+                      <Form.Label htmlFor="title">
+                        State Amount
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="stateAmounts"
+                          name="stateAmounts"
+                          type="text"
+                          value={data.stateAmounts}
+                          onChange={handleInputs}
+                          placeholder="Enter State Amount"
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        State Amount is required
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
                 </Row>
               </Card.Body>
             </Card>
+
+            
 
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">

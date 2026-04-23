@@ -1642,15 +1642,27 @@ const callWorkOrderAcknowledgment = async (
       categoryId
     );
 
-    } else if (workOrderForScheme === "ICB-PSF") {
-    generateWorkOrderOrderICB(
-      applicationFormId,
-      workOrderSchemeId,
-      subSchemeId,
-      categoryId
-    );
+   } else if (workOrderForScheme === "SS Construction Of Low Cost Shed to Permanent Rearing House") {
+  generateWorkOrderRHSSconstruction(
+    applicationFormId,
+    workOrderSchemeId
+  );
 
-    } else if (workOrderForScheme === "Adopting Heat Recovery Unit-PSF") {
+} else if (workOrderForScheme === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House") {
+  generateWorkOrderRHSDPconstruction(
+    applicationFormId,
+    workOrderSchemeId
+  );
+
+} else if (workOrderForScheme === "ICB-PSF") {
+  generateWorkOrderOrderICB(
+    applicationFormId,
+    workOrderSchemeId,
+    subSchemeId,
+    categoryId
+  );
+
+} else if (workOrderForScheme === "Adopting Heat Recovery Unit-PSF") {
     generateWorkOrderOrderAdoptingHeatRecoveryUnit(
       applicationFormId,
       workOrderSchemeId,
@@ -1717,9 +1729,30 @@ const callWorkOrderAcknowledgment = async (
   }
 };
 
+const generateSanctionOrderRHSSConstruction = async (applicationFormId, schemeId) => {
+  try {
+    const response = await api.post(
+      baseURLReport + `getSanctionOrderRHSSConstruction`,
+      {
+        applicationFormId,
+        schemeId,
+        subSchemeId,
+        categoryId,
+      },
+      { responseType: "blob" }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+
+  } catch (error) {
+    console.error("Sanction order error:", error);
+  }
+};
+
 const handleDownloadWorkOrder = async (viewDetailsData) => {
   try {
-    // 🔴 DB check (sanction/work-order enabled or not)
 
     const isEnabled = await isSanctionEnabledFromDB(
       actionFarmerData[0]?.subSchemeId
@@ -1731,10 +1764,9 @@ const handleDownloadWorkOrder = async (viewDetailsData) => {
         title: "Work Order Not Allowed",
         text: "Work Order generation is not enabled for this scheme.",
       });
-      return; // ❌ STOP execution
+      return;
     }
-
-    // ✅ Allowed → generate work order
+    // ✅ WORK ORDER LOGIC (UNCHANGED)
     if (
       viewDetailsData.workOrderForScheme === "PDMC" ||
       viewDetailsData.workOrderForScheme === "PMKSY"
@@ -1754,6 +1786,23 @@ const handleDownloadWorkOrder = async (viewDetailsData) => {
       );
 
     } else if (
+      viewDetailsData.workOrderForScheme === "SS Construction Of Low Cost Shed to Permanent Rearing House"
+    ) {
+      generateWorkOrderRHSSconstruction(
+        viewDetailsData.applicationFormId,
+        viewDetailsData.workOrderSchemeId
+      );
+
+    }
+    else if (
+      viewDetailsData.workOrderForScheme === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+    ) {
+      generateWorkOrderRHSDPconstruction(
+        viewDetailsData.applicationFormId,
+        viewDetailsData.workOrderSchemeId
+      );
+
+    } else if (
       viewDetailsData.workOrderForScheme === "Reeling Shed-PSF" ||
       viewDetailsData.workOrderForScheme === "Silk Incentive-PSF"
     ) {
@@ -1764,19 +1813,10 @@ const handleDownloadWorkOrder = async (viewDetailsData) => {
         viewDetailsData.categoryId
       );
 
-    // } else if (
-    //   viewDetailsData.workOrderForScheme === "Adopting Heat Recovery Unit-PSF"
-    // ) {
-    //   generateWorkOrderOrderHRU(
-    //     viewDetailsData.applicationFormId,
-    //     viewDetailsData.workOrderSchemeId,
-    //     viewDetailsData.subSchemeId,
-    //     viewDetailsData.categoryId
-    //   );
-
     } else {
       console.error("Unknown Work Order scheme type");
     }
+
   } catch (error) {
     console.error("Error while downloading work order:", error);
     Swal.fire({
@@ -1829,7 +1869,60 @@ const handleDownloadWorkOrder = async (viewDetailsData) => {
       },
       {
         responseType: "blob", // Force to receive data in a Blob Format
-      }
+      }   
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+
+const generateWorkOrderRHSSconstruction = async (applicationFormId, schemeId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `getWorkOrderRHSSconstruction`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }   
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderRHSDPconstruction = async (applicationFormId, schemeId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `getWorkOrderSDPConstruction`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }   
     );
 
     const file = new Blob([response.data], { type: "application/pdf" });
@@ -2203,6 +2296,30 @@ const handleGenerateSanctionOrderClick = async () => {
   const userId = localStorage.getItem("userMasterId");
   const scSubSchemeDetailsId = actionFarmerData[0]?.subSchemeId;
 
+  const generateSanctionOrderRHSSConstruction = async (applicationFormId, schemeId) => {
+  try {
+    const response = await api.post(
+      baseURLReport + `getSanctionOrderRHSSConstruction`, // ✅ your API
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId: categoryId,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+
+  } catch (error) {
+    console.error("Error generating sanction order:", error);
+  }
+};
+
   // 🔴 Check from DB
   const isEnabled = await isSanctionEnabledFromDB(scSubSchemeDetailsId);
 
@@ -2286,6 +2403,36 @@ const handleGenerateSanctionOrderClick = async () => {
             applicationFormIds
           );
         }
+
+        else if (
+          schemeType === "SS Construction Of Low Cost Shed to Permanent Rearing House"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId,
+            applicationFormIds
+          );
+        }
+
+        else if (
+          schemeType === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId,
+            applicationFormIds
+          );
+        }
+
+        
 
         else if (
           schemeType === "Rearing Equipment SS"
@@ -2437,6 +2584,35 @@ const handleGenerateSanctionOrderClick = async () => {
         } else if (
           schemeType === "Silk Samagra State" ||
           schemeType === "Silk Samagra Central"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "company",
+            schemeType,
+            subSchemeId,
+            categoryId,
+            applicationFormIds
+          );
+        }
+
+
+        else if (
+          schemeType === "SS Construction Of Low Cost Shed to Permanent Rearing House"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "company",
+            schemeType,
+            subSchemeId,
+            categoryId,
+            applicationFormIds
+          );
+        }
+
+        else if (
+          schemeType === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
         ) {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
@@ -2675,12 +2851,22 @@ const handleGenerateSanctionOrderClick = async () => {
     // 1️⃣ Silk Samagra Schemes
     // -------------------------------
     if (
-      schemeType === "Silk Samagra State" ||
-      schemeType === "Silk Samagra Central"
-    ) {
-      endpoint = baseURLReport + `getSanctionOrderRH`;
+  schemeType === "Silk Samagra State" ||
+  schemeType === "Silk Samagra Central"
+) {
+  endpoint = baseURLReport + `getSanctionOrderRH`;
 
-    }
+} else if (
+  schemeType === "SS Construction Of Low Cost Shed to Permanent Rearing House"
+) {
+  endpoint = baseURLReport + `getSanctionOrderRHSSConstruction`;
+}
+
+else if (
+  schemeType === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+) {
+  endpoint = baseURLReport + `getSanctionOrderRHSSConstruction`;
+}
 
     else if (schemeType === "Rearing Equipment SS") {
   endpoint =
@@ -2824,7 +3010,10 @@ const handleGenerateSanctionOrderClick = async () => {
             schemeType === "Silk Samagra State" ||
             schemeType === "Silk Samagra Central" ||
             schemeType === "Rearing Equipment SS" ||                        // ✅ was missing
-            schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy"
+            schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||
+            schemeType === "SS Construction Of Low Cost Shed to Permanent Rearing House"||
+            schemeType === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+
           ) {
             payload = {
               applicationFormIds: applicationFormIds,   // ✅ ARRAY

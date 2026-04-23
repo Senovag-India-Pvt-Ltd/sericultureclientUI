@@ -210,6 +210,20 @@ function ConfiguredRHAmountList() {
         sortable: true,
         hide: "md",
     },
+    {
+        name: "Central Amount",
+        selector: (row) => row.centralAmount,
+        cell: (row) => <span>{row.centralAmount}</span>,
+        sortable: true,
+        hide: "md",
+    },
+    {
+        name: "State Amount",
+        selector: (row) => row.stateAmounts,
+        cell: (row) => <span>{row.stateAmounts}</span>,
+        sortable: true,
+        hide: "md",
+    },
   ];
 
   return (

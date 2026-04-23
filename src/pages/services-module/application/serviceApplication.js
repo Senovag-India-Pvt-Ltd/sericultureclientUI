@@ -41,6 +41,7 @@ function ServiceApplication() {
   }
 };
 
+const [originalStateAmount, setOriginalStateAmount] = useState(null);
 
 const generateFinalReport = async (selectedRows) => {
   const subSchemeDetailsId = selectedRows?.[0]?.subSchemeId;
@@ -147,8 +148,10 @@ const generateFinalReport = async (selectedRows) => {
     taxInvoiceDate: new Date(),
     rearingEquipmentDetailsId: "",
     beneficiaryShareAmount: "",
+    alreadyPaidAmount: 0,
+    stateAmount: "",
+    newFinancialYear: "",
   });
-
   const formatAuctionDate = (auctionDate) => {
     const distributionDate = new Date(auctionDate);
     return (
@@ -512,6 +515,8 @@ useEffect(() => {
 
   console.log("new dev data", developedArea);
 
+  const [showAmountBreakup, setShowAmountBreakup] = useState(false);
+
   const [landDetailsIds, setLandDetailsIds] = useState([]);
 
   
@@ -613,7 +618,7 @@ useEffect(() => {
   }, []);
 
   // to get sc-sub-scheme-details by sc-scheme-details
-  const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
+const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
     []
   );
   const getSubSchemeList = (_id) => {
@@ -1227,6 +1232,25 @@ if (
     }
   }, [data.scSubSchemeDetailsId]);
 
+  // to get Financial Year
+    const [financialyearListData, setFinancialyearListData] = useState([]);
+  
+    const getFinancialYearList = () => {
+      api
+        .get(baseURLMasterData + `financialYearMaster/get-all`)
+        .then((response) => {
+          setFinancialyearListData(response.data.content.financialYearMaster);
+        })
+        .catch((err) => {
+          setFinancialyearListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getFinancialYearList();
+    }, []);
+
+
   const [defaultFinancialYearId, setDefaultFinancialYearId] = useState("");
 
   // Get Default Financial Year
@@ -1727,6 +1751,66 @@ if (
   const handleInputs = (e) => {
     name = e.target.name;
     value = e.target.value;
+
+   if (name === "alreadyPaidAmount") {
+  const paid = Number(value || 0);
+
+  // const isSDP =
+  //   getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+  //   "SS Construction Of Low Cost Shed to Permanent Rearing House" ||
+  // getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+  //   "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House";
+
+  const calcType = (
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn || ""
+)
+  .toLowerCase()
+  .replace(/\s+/g, " ")
+  .trim();
+
+const isSDP =
+  calcType === "ss construction of low cost shed to permanent rearing house" ||
+  calcType === "sdp construction of low cost shed to permanent rearing house";
+
+  // ✅ SDP LOGIC
+  if (isSDP) {
+
+    if (originalStateAmount === null || originalStateAmount === undefined) {
+      setData({
+        ...data,
+        alreadyPaidAmount: paid
+      });
+      return;
+    }
+
+    const totalState = Number(originalStateAmount || 0);
+    const eligible = Math.max(totalState - paid, 0);
+
+    setData({
+      ...data,
+      alreadyPaidAmount: paid,
+      stateAmount: eligible,
+
+      // ✅ REQUIRED FIELD UPDATE
+      expectedAmount: eligible,
+      schemeAmount: eligible
+    });
+
+    return;
+  }
+
+  // ✅ EXISTING RH LOGIC (UNCHANGED)
+  const finalStateAmount = Math.max(originalStateAmount - paid, 0);
+
+  setData({
+    ...data,
+    alreadyPaidAmount: paid,
+    stateAmount: finalStateAmount
+  });
+
+  return;
+}
+
     setData({ ...data, [name]: value });
 
     if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
@@ -1879,9 +1963,61 @@ const getCalculateAmountForRH = () => {
       }
   })
   .then((response) => {
-      const result = response.data.content.configureRHAmount?.[0];
-      const sqft = result?.sqft;
-      const amount = result?.amount;
+
+  const list = response.data.content.configureRHAmount || [];
+
+  const result = list.find(item => item.stateAmounts !== null) || list[0];
+  const sqft = result?.sqft || 0;
+
+  const amount = result?.amount || 0;              // ✅ 350000
+  const centralAmount = result?.centralAmount || 0;
+  const stateAmounts = result?.stateAmounts || 0;
+
+  const calcType = (
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn || ""
+)
+  .toLowerCase()
+  .replace(/\s+/g, " ")
+  .trim();
+
+const isSDP =
+  calcType === "ss construction of low cost shed to permanent rearing house" ||
+  calcType === "sdp construction of low cost shed to permanent rearing house";
+
+  // 🔥 ONLY FOR THIS SCHEME
+  if (isSDP) {
+
+    // ✅ UNIT COST
+    setAmountValue((prev) => ({
+      ...prev,
+      unitPrice: amount
+    }));
+
+    setData((prev) => ({
+      ...prev,
+      estimatedCost: amount
+    }));
+
+    // ✅ TOTAL SUBSIDY = SAME AS UNIT COST
+    setData((prev) => ({
+      ...prev,
+      expectedAmount: amount,
+      schemeAmount: amount
+    }));
+
+    // ✅ STATE BREAKUP
+    setOriginalStateAmount(stateAmounts);
+
+    setData((prev) => ({
+      ...prev,
+      centralAmount: centralAmount,
+      stateAmount: stateAmounts
+    }));
+
+    return; // ❗ VERY IMPORTANT (stop other logic)
+  }
+
+      // ✅ EXISTING LOGIC (UNCHANGED)
       let calculatedAmount = "";
 
       if (schemeDetails.calculationBasedOn === "Sericulture Development Programme") {
@@ -1893,7 +2029,7 @@ const getCalculateAmountForRH = () => {
           schemeDetails.calculationBasedOn === "Silk Samagra State" || 
           schemeDetails.calculationBasedOn === "Silk Samagra Central"
       ) {
-          calculatedAmount = amount || ""; // Directly set amount from API
+          calculatedAmount = amount || "";
       }
 
       if (calculatedAmount) {
@@ -1927,6 +2063,63 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
 }
 }, [data.scComponentId, data.scCategoryId, data.scSchemeDetailsId]);
 
+
+useEffect(() => {
+
+  // const isSDP =
+  //   getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+  //   "SS Construction Of Low Cost Shed to Permanent Rearing House" ||
+  // getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+  //   "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House";
+
+  const calcType = (
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn || ""
+)
+  .toLowerCase()
+  .replace(/\s+/g, " ")
+  .trim();
+
+const isSDP =
+  calcType === "ss construction of low cost shed to permanent rearing house" ||
+  calcType === "sdp construction of low cost shed to permanent rearing house";
+
+  if (
+    isSDP &&
+    data.scComponentId &&
+    data.scCategoryId &&
+    data.scSchemeDetailsId
+  ) {
+    getCalculateAmountForRH();
+  }
+
+}, [
+  getIncentiveAndBonusData,
+  data.scComponentId,
+  data.scCategoryId,
+  data.scSchemeDetailsId
+]);
+
+useEffect(() => {
+
+  if (originalStateAmount !== null && originalStateAmount !== undefined) {
+
+    const paid = Number(data.alreadyPaidAmount || 0);
+
+    const finalStateAmount = Math.max(
+      originalStateAmount - paid,
+      0
+    );
+
+    setData((prev) => ({
+      ...prev,
+      stateAmount: finalStateAmount
+    }));
+  }
+
+}, [originalStateAmount, data.alreadyPaidAmount]);
+
+
+const [totalSubsidy, setTotalSubsidy] = useState(0);
 
 
 
@@ -2347,7 +2540,7 @@ const handleCalculateUnitPrice = () => {
 
   setUnitPriceCalculated(true);
 
-  const incentiveCalcBasedOn = getIncentiveAndBonusData[0]?.calculationBasedOn;
+  const incentiveCalcBasedOn = getIncentiveAndBonusData?.[0]?.calculationBasedOn;
   const isChawki =
     incentiveCalcBasedOn ===
     "Registered Private Bivoltine Chawki Rearing Center Subsidy";
@@ -2414,7 +2607,7 @@ const handleCalculateUnitPrice = () => {
   }
 
   // ✅ Check for Incentive/Bonus-based calculations
-  if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Bivoltine Bonus"  &&
+  if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Bivoltine Bonus"  &&
   selectedBonusMode === "Automatic") {
     if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
       Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
@@ -2462,7 +2655,7 @@ const handleCalculateUnitPrice = () => {
   }
 
 
- if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Bivoltine Bonus"  &&
+ if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Bivoltine Bonus"  &&
   selectedBonusMode === "Manual") {
     if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
       Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
@@ -2511,8 +2704,8 @@ const handleCalculateUnitPrice = () => {
 
 
 // ✅ Check for Incentive/Bonus-based calculations
-//   if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Incentive For Bivoltine Cocoons-30/kg-PSF" ||
-//     getIncentiveAndBonusData[0]?.calculationBasedOn === "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP"
+//   if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Incentive For Bivoltine Cocoons-30/kg-PSF" ||
+//     getIncentiveAndBonusData?.[0]?.calculationBasedOn === "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP"
 //   ) {
 //     if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
 //       Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
@@ -2560,9 +2753,9 @@ const handleCalculateUnitPrice = () => {
 //   }
 // ✅ Check for Incentive/Bonus-based calculations
 // if (
-//   getIncentiveAndBonusData[0]?.calculationBasedOn ===
+//   getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
 //     "Incentive For Bivoltine Cocoons-30/kg-PSF" ||
-//   getIncentiveAndBonusData[0]?.calculationBasedOn ===
+//   getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
 //     "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP"
 // ) {
 //   if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
@@ -2594,7 +2787,7 @@ const handleCalculateUnitPrice = () => {
 //     return;
 //   }
 
-//   const calcType = getIncentiveAndBonusData[0]?.calculationBasedOn;
+//   const calcType = getIncentiveAndBonusData?.[0]?.calculationBasedOn;
 
 //   // 🔥 APPLY MIN/MAX VALIDATION ONLY FOR BIVOLTINE INCENTIVE
 //   if (calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF") {
@@ -2628,7 +2821,7 @@ const handleCalculateUnitPrice = () => {
 
 // ... inside your function/handler
 
-const calcType = getIncentiveAndBonusData[0]?.calculationBasedOn;
+const calcType = getIncentiveAndBonusData?.[0]?.calculationBasedOn;
 
 if (
   calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF" ||
@@ -2693,7 +2886,7 @@ if (
 
 
 if (
-  getIncentiveAndBonusData[0]?.calculationBasedOn ===
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
     "Incentive For Bivoltine Chawki Rearing Cost"
 ) {
   if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
@@ -2733,7 +2926,7 @@ if (
 }
 
 if (
-  getIncentiveAndBonusData[0]?.calculationBasedOn ===
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
     "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500"
 ) {
 
@@ -2775,7 +2968,7 @@ if (
 
 
   // ✅ Special case: Silk Incentive - PSF
-  if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Silk Incentive-PSF") {
+  if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF") {
     if (!data.scSubSchemeDetailsId || !data.scComponentId || !data.scCategoryId || !data.machineTypeId || !data.silkTable || !data.renditta) {
       Swal.fire({
         icon: "warning",
@@ -2826,8 +3019,8 @@ if (
   }
 
   if (
-    getIncentiveAndBonusData[0]?.calculationBasedOn === "IMCB-PSF" ||
-    getIncentiveAndBonusData[0]?.calculationBasedOn === "MERM-PSF"
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "IMCB-PSF" ||
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "MERM-PSF"
   ) {
     if (
       !data.imcbTable ||
@@ -2872,7 +3065,7 @@ if (
 
 
   if (
-    getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Boiler-PSF" 
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Boiler-PSF" 
   ) {
     if (
       !data.boilerInKg ||
@@ -2916,7 +3109,7 @@ if (
   }
 
   if (
-    getIncentiveAndBonusData[0]?.calculationBasedOn === "ICB-PSF"
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "ICB-PSF"
   ) {
     if (
       !data.icbBasinEnds ||
@@ -2962,7 +3155,7 @@ if (
 
   
 if (
-    getIncentiveAndBonusData[0]?.calculationBasedOn === "Reeling Shed-PSF"
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Reeling Shed-PSF"
   ) {
     if (
       !data.machineTypeId ||
@@ -3009,7 +3202,7 @@ if (
 
 
   if (
-    getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Silent Generator"
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Silent Generator"
   ) {
     if (
       !data.machineTypeId ||
@@ -3055,7 +3248,7 @@ if (
   } 
 
   if (
-    getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar power Generator"
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar power Generator"
   ) {
     if (
       !data.machineTypeId ||
@@ -3102,7 +3295,7 @@ if (
 
 
   if (
-    getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar Water Heater"
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar Water Heater"
   ) {
     if (
       !data.machineTypeId ||
@@ -3150,7 +3343,7 @@ if (
   
 
   // ✅ Adopting Heat Recovery Unit - PSF
-  if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Heat Recovery Unit-PSF") {
+  if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Heat Recovery Unit-PSF") {
     if (!data.scSchemeDetailsId || !data.scSubSchemeDetailsId || !data.scComponentId) {
       Swal.fire({
         icon: "warning",
@@ -3187,7 +3380,7 @@ if (
 // FOR REGISTERED PRIVATE CHAWKI SUBSIDY CALCULATION
 // ===============================================
 // if (
-//   getIncentiveAndBonusData[0]?.calculationBasedOn === 
+//   getIncentiveAndBonusData?.[0]?.calculationBasedOn === 
 //   "Registered Private Bivoltine Chawki Rearing Center Subsidy"
 // ) {
 //   let sharePerc = getIncentiveAndBonusData[0]?.shareInPercentage || 0;
@@ -3225,7 +3418,7 @@ if (
 //   return;
 // }
 
-// if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
+// if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
       
 //       const totals = calculateTotals(chawkiData);
 //       const { totalEligible, totalClaimed } = totals;
@@ -3971,7 +4164,7 @@ const isUserValid = React.useMemo(() => {
     }
 
     // Reeling Shed-PSF: validate Kanesh Land Details and Constructed Area
-    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Reeling Shed-PSF") {
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Reeling Shed-PSF") {
       const missingFields = [];
       if (data.addKaneshLand !== "yes") {
         missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
@@ -4012,7 +4205,7 @@ const isUserValid = React.useMemo(() => {
     }
 
     // ISCB-PSF: validate Kanesh Land Details and Equipment Purchase
-    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "ICB-PSF") {
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "ICB-PSF") {
       const missingFields = [];
       // if (data.addKaneshLand !== "yes") {
       //   missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
@@ -4053,7 +4246,7 @@ const isUserValid = React.useMemo(() => {
     }
 
     // MERM-PSF: validate Kanesh Land Details, Constructed Area and Equipment Purchase
-    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "MERM-PSF") {
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "MERM-PSF") {
       const missingFields = [];
       if (data.addKaneshLand !== "yes") {
         missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
@@ -4097,7 +4290,7 @@ const isUserValid = React.useMemo(() => {
     }
 
     // IMCB-PSF: validate Equipment Purchase
-    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "IMCB-PSF") {
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "IMCB-PSF") {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
@@ -4135,7 +4328,7 @@ const isUserValid = React.useMemo(() => {
     }
 
     // Adopting Boiler-PSF: validate Equipment Purchase
-    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Boiler-PSF") {
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Boiler-PSF") {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
@@ -4173,7 +4366,7 @@ const isUserValid = React.useMemo(() => {
     }
 
     // Adopting Silent Generator: validate Equipment Purchase
-    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Silent Generator") {
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Silent Generator") {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
@@ -4211,7 +4404,7 @@ const isUserValid = React.useMemo(() => {
     }
 
     // Adopting Solar power Generator: validate Equipment Purchase
-    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar power Generator") {
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar power Generator") {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
@@ -4249,7 +4442,7 @@ const isUserValid = React.useMemo(() => {
     }
 
     // Adopting Solar Water Heater: validate Equipment Purchase
-    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar Water Heater") {
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar Water Heater") {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
@@ -4287,7 +4480,7 @@ const isUserValid = React.useMemo(() => {
     }
 
     // Adopting Heat Recovery Unit-PSF: validate Equipment Purchase
-    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Heat Recovery Unit-PSF") {
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Heat Recovery Unit-PSF") {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
@@ -4325,7 +4518,7 @@ const isUserValid = React.useMemo(() => {
     }
 
     // Rearing Equipment SS: validate Equipment Purchase, Constructed Area and Kanesh Land Details
-    if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Rearing Equipment SS") {
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS") {
       const missingFields = [];
       if (!data.equordev.includes("land")) {
         missingFields.push("Land Wise Details (please check the Land Wise checkbox)");
@@ -4530,7 +4723,9 @@ const isUserValid = React.useMemo(() => {
     totalClaimed: totals.totalClaimed,
     totalEligible: totals.totalEligible,
     totalSubsidy: totals.totalSubsidy,
-
+    alreadyPaidAmount: data.alreadyPaidAmount,
+    stateAmount: data.stateAmount,
+    newFinancialYear: data.newFinancialYear,
       chawkiSanctionOrderList: chawkiSanctionOrderList
     };
 
@@ -4672,6 +4867,28 @@ const isUserValid = React.useMemo(() => {
     try {
       const response = await api.post(
         baseURLReport + `getRHAck`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentRHSDPConstruction = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getSDPConstructionLowCostShedAck`,
         {
           applicationFormId: applicationFormId,
           schemeId: schemeId,
@@ -5238,6 +5455,9 @@ const isUserValid = React.useMemo(() => {
        monthlyLimit: "",
       boilerInKg: "",
       sanctionNo: "",
+      alreadyPaidAmount:"",
+      stateAmount: "",
+    newFinancialYear: "",
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -5541,6 +5761,11 @@ const callAcknowledgmentFunction = (
     acknowledgementForScheme === "Reeling Shed-PSF"
   ) {
     generateAcknowledgmentReelingShed(applicationFormId, schemeId, subSchemeId);
+
+  }else if (
+    acknowledgementForScheme === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+  ) {
+    generateAcknowledgmentRHSDPConstruction(applicationFormId, schemeId, subSchemeId);
 
   // } else if (
   //   acknowledgementForScheme === "Adopting Heat Recovery Unit-PSF"
@@ -6593,6 +6818,7 @@ const fetchReelerDetails = () => {
         </Form>
 
         
+
       </Block>
       <Row>
         <Block>
@@ -6755,8 +6981,8 @@ const fetchReelerDetails = () => {
                           </Form.Group>
                         </Col>
 
-                         {(getIncentiveAndBonusData[0]?.calculationBasedOn === "Bivoltine Bonus" ||
-                            getIncentiveAndBonusData[0]?.calculationBasedOn === "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500") && (
+                         {(getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Bivoltine Bonus" ||
+                            getIncentiveAndBonusData?.[0]?.calculationBasedOn === "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500") && (
                             <Col lg="6">
                                 <Form.Group className="form-group mt-n4">
                                   <Form.Label htmlFor="imcbTable">
@@ -6948,7 +7174,7 @@ const fetchReelerDetails = () => {
                           getIncentiveAndBonusData[0]?.unitForScheme ===
                             "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||
                           (getIncentiveAndBonusData[0]?.sanctionForReeling &&
-                            getIncentiveAndBonusData[0]?.calculationBasedOn !== "Silk Incentive-PSF")
+                            getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Silk Incentive-PSF")
                         ) && (
                           <>
                             <Col lg="6">
@@ -6998,7 +7224,7 @@ const fetchReelerDetails = () => {
                         )}
 
 
-                        {getIncentiveAndBonusData[0]?.calculationBasedOn === "Silk Incentive-PSF" && (
+                        {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF" && (
                             <>
                             <Col lg="6">
                                 <Form.Group className="form-group mt-n3">
@@ -7156,7 +7382,7 @@ const fetchReelerDetails = () => {
                             </>
                           )}
 
-                          {getIncentiveAndBonusData[0]?.calculationBasedOn === "ICB-PSF" && (
+                          {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "ICB-PSF" && (
                            
                             <Col lg="6">
                                   <Form.Group className="form-group mt-n4">
@@ -7183,7 +7409,7 @@ const fetchReelerDetails = () => {
                             </Col>
                                )}
 
-                               {getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Boiler-PSF" && (
+                               {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Boiler-PSF" && (
                            
                             <Col lg="6">
                                   <Form.Group className="form-group mt-n4">
@@ -7210,7 +7436,7 @@ const fetchReelerDetails = () => {
                                )}
 
 
-                            {getIncentiveAndBonusData[0]?.calculationBasedOn === "Reeling Shed-PSF" && (
+                            {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Reeling Shed-PSF" && (
                             <>
                             <Col lg="6">
                                 <Form.Group className="form-group mt-n3">
@@ -7310,7 +7536,7 @@ const fetchReelerDetails = () => {
                             </>
                                )}
 
-                               {getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Silent Generator" && (
+                               {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Silent Generator" && (
                             <>
                             <Col lg="6">
                                 <Form.Group className="form-group mt-n3">
@@ -7430,7 +7656,7 @@ const fetchReelerDetails = () => {
                             </>
                                )}
 
-                               {getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar power Generator" && (
+                               {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar power Generator" && (
                             <>
                             <Col lg="6">
                                 <Form.Group className="form-group mt-n3">
@@ -7550,7 +7776,7 @@ const fetchReelerDetails = () => {
                             </>
                                )}
 
-                                {getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar Water Heater" && (
+                                {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar Water Heater" && (
                             <>
                             <Col lg="6">
                                 <Form.Group className="form-group mt-n4">
@@ -7805,8 +8031,8 @@ const fetchReelerDetails = () => {
                                )}
 
 
-                          {(getIncentiveAndBonusData[0]?.calculationBasedOn === "IMCB-PSF" ||
-                            getIncentiveAndBonusData[0]?.calculationBasedOn === "MERM-PSF") && (
+                          {(getIncentiveAndBonusData?.[0]?.calculationBasedOn === "IMCB-PSF" ||
+                            getIncentiveAndBonusData?.[0]?.calculationBasedOn === "MERM-PSF") && (
                             <Col lg="6">
                                 <Form.Group className="form-group mt-n4">
                                   <Form.Label htmlFor="imcbTable">
@@ -8191,7 +8417,7 @@ const fetchReelerDetails = () => {
                 </Row>
               </Card>
 
-{getIncentiveAndBonusData[0]?.calculationBasedOn === "Silk Incentive-PSF" && (
+   {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF" && (
                             <>
               <Block className="mt-3">
               <Card className="mb-4">
@@ -8381,6 +8607,66 @@ const fetchReelerDetails = () => {
                 </Block>
                 </>
              )}
+
+            {(
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+    "SS Construction Of Low Cost Shed to Permanent Rearing House" ||
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+    "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+) && (
+
+  <Card className="mt-2">
+    <Card.Header>Financial Details</Card.Header>
+    <Card.Body>
+      <Row>
+
+        {/* Financial Year */}
+        <Col lg="4">
+          <Form.Group>
+            <Form.Label>
+              Financial Year <span className="text-danger">*</span>
+            </Form.Label>
+            <Form.Select
+              name="newFinancialYear"
+              value={data.newFinancialYear}
+              onChange={handleInputs}
+              required
+            >
+              <option value="">Select Year</option>
+              {financialyearListData.map((list) => (
+                <option
+                  key={list.financialYearMasterId}
+                  value={list.financialYearMasterId}
+                >
+                  {list.financialYear}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+        </Col>
+
+        {/* Already Paid */}
+        <Col lg="4">
+          <Form.Group>
+            <Form.Label>
+              Subsidy Amount Already Paid <span className="text-danger">*</span>
+            </Form.Label>
+            <Form.Control
+              type="number"
+              name="alreadyPaidAmount"
+              value={data.alreadyPaidAmount}
+              onChange={handleInputs}
+              placeholder="Enter Amount"
+              required
+            />
+          </Form.Group>
+        </Col>
+
+      </Row>
+    </Card.Body>
+  </Card>
+ )}
+
 
               {/* {showButton && ( */}
               {selectedBonusMode === "Automatic" && (
@@ -8655,7 +8941,7 @@ const fetchReelerDetails = () => {
               )}
 
 
-               {/* {getIncentiveAndBonusData[0]?.calculationBasedOn === "Registered Private Bivoltine Chawki Rearing Center Subsidy" && (
+               {/* {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Registered Private Bivoltine Chawki Rearing Center Subsidy" && (
                     <Block className="mt-3">
                       <Card>
                         <Card.Header style={{ fontWeight: "bold" }}>
@@ -8888,7 +9174,7 @@ const fetchReelerDetails = () => {
               )} */}
 
               {
-                getIncentiveAndBonusData[0]?.calculationBasedOn ===
+                getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
                   "Registered Private Bivoltine Chawki Rearing Center Subsidy" && (
                   <Block className="mt-3">
                     <Card>
@@ -9973,7 +10259,7 @@ const fetchReelerDetails = () => {
                             disabled={
                             !(
                               schemeDetails.calculationBasedOn ||
-                              getIncentiveAndBonusData[0]?.calculationBasedOn
+                              getIncentiveAndBonusData?.[0]?.calculationBasedOn
                             )
                           }
                           >
@@ -10037,6 +10323,8 @@ const fetchReelerDetails = () => {
                         </Form.Group>
                       </Col>
 
+                      
+
                       {/* <Col lg="4">
                         <Form.Group className="form-group mt-n5">
                           <Form.Label htmlFor="expectedAmount">
@@ -10062,7 +10350,7 @@ const fetchReelerDetails = () => {
 
                       {/* IF NOT sanctionForReeling → Show normal field */}
                     {!getIncentiveAndBonusData[0]?.sanctionForReeling &&
-                      getIncentiveAndBonusData[0]?.calculationBasedOn !==
+                      getIncentiveAndBonusData?.[0]?.calculationBasedOn !==
                         "Registered Private Bivoltine Chawki Rearing Center Subsidy" && (
                         <Col lg="4">
                           <Form.Group className="form-group mt-n5">
@@ -10083,12 +10371,85 @@ const fetchReelerDetails = () => {
                               />
                               <Form.Control.Feedback type="invalid">
                                 {t("Subsidy Amount is required")}
-                              </Form.Control.Feedback>
+                              </Form.Control.Feedback>                     
                             </div>
-                          </Form.Group>
+                          </Form.Group> 
                         </Col>
-                      )}
+                        )}  
 
+                        {/* ✅ KEEP ONLY THIS */}
+<Row className="mt-2">
+  <Col lg="12" className="text-end">
+    {(
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+    "SS Construction Of Low Cost Shed to Permanent Rearing House" ||
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+    "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+) && (
+      <Button onClick={() => setShowAmountBreakup(true)}>
+        View Breakup
+      </Button>
+    )}
+  </Col>
+</Row>
+
+{/* {showAmountBreakup && (
+  <Card className="mt-2">
+    <Card.Header>Amount Breakup</Card.Header>
+    <Card.Body>
+
+      <Row>
+        <Col md="4">
+          <strong>Central Amount:</strong> {data.centralAmount || 0}
+        </Col>
+
+        <Col md="4">
+          <strong>State Amount:</strong> {Math.max((data.stateAmount || 0) - (data.alreadyPaidAmount || 0),0)}
+        </Col>
+
+        <Col md="4">
+          <strong>Total Subsidy:</strong> 
+          {(data.centralAmount || 0) + (data.stateAmount || 0)}
+        </Col>
+      </Row>
+
+    </Card.Body>
+  </Card>
+)} */}
+
+
+{showAmountBreakup && (
+  <Card className="mt-2">
+    <Card.Header>Amount Breakup</Card.Header>
+    <Card.Body>
+
+      {(() => {
+        const remainingState = Math.max(
+          (data.stateAmount || 0) - (data.alreadyPaidAmount || 0),
+          0
+        );
+
+        return (
+          <Row>
+            <Col md="4">
+              <strong>Central Amount:</strong> {data.centralAmount || 0}
+            </Col>
+
+            <Col md="4">
+              <strong>State Amount:</strong> {remainingState}
+            </Col>
+
+            <Col md="4">
+              <strong>Total Subsidy:</strong> 
+              {(data.centralAmount || 0) + remainingState}
+            </Col>
+          </Row>
+        );
+      })()}
+
+    </Card.Body>
+  </Card>
+)}
 
 
                     {/* IF sanctionForReeling → Show Total Expected Amount (disabled) */}
@@ -10133,7 +10494,7 @@ const fetchReelerDetails = () => {
                       </Col>
                     )} */}
                     {(getIncentiveAndBonusData[0]?.sanctionForReeling ||
-                    getIncentiveAndBonusData[0]?.calculationBasedOn ===
+                    getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
                       "Registered Private Bivoltine Chawki Rearing Center Subsidy") && (
                     <Col lg="4">
                       <Form.Group className="form-group mt-n5">
@@ -10156,7 +10517,7 @@ const fetchReelerDetails = () => {
                   )}
 
                     {(getIncentiveAndBonusData[0]?.sanctionForReeling ||
-                        getIncentiveAndBonusData[0]?.calculationBasedOn ===
+                        getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
                           "Registered Private Bivoltine Chawki Rearing Center Subsidy") && (
                         <Col lg="4">
                           <Form.Group className="form-group mt-n5">
@@ -11190,6 +11551,58 @@ const fetchReelerDetails = () => {
                 </ul>
               </div>
             )}
+            {/* ✅ VIEW BREAKUP MODAL */}
+<Modal
+  show={showAmountBreakup}
+  onHide={() => setShowAmountBreakup(false)}
+  centered
+>
+  <Modal.Header closeButton>
+    <Modal.Title>Subsidy Breakdown</Modal.Title>
+  </Modal.Header>
+
+  <Modal.Body>
+    {(
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+    "SS Construction Of Low Cost Shed to Permanent Rearing House" ||
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+    "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+) && (
+
+      <Card>
+        <Card.Body>
+
+          <Row>
+            <Col>Central Amount</Col>
+            <Col>₹ {data.centralAmount}</Col>
+          </Row>
+
+          <Row>
+            <Col>Total State</Col>
+            <Col>₹ {originalStateAmount}</Col>
+          </Row>
+
+          <Row>
+            <Col>Already Paid</Col>
+            <Col>₹ {data.alreadyPaidAmount}</Col>
+          </Row>
+
+          <Row>
+            <Col><b>Remaining</b></Col>
+            <Col><b>₹ {data.stateAmount}</b></Col>
+          </Row>
+
+        </Card.Body>
+      </Card>
+    )}
+  </Modal.Body>
+
+  <Modal.Footer>
+    <Button onClick={() => setShowAmountBreakup(false)}>
+      Close
+    </Button>
+  </Modal.Footer>
+</Modal>
           </Block>
 
           {/* <Col lg="12"> */}
