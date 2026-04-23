@@ -974,6 +974,8 @@ import RemittanceForFarmEdit from "../pages/seed-and-dfl-managment/RemittanceFor
 import RemittanceForFarmView from "../pages/seed-and-dfl-managment/RemittanceForFarmView";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
 import SeedMarketInvoiceReport from "../pages/market-and-auction/SeedMarketInvoiceReport";
+import SeedMarketBiddingSlipReport from "../pages/market-and-auction/SeedMarketBiddingSlipReport";
+import SeedMarketTripletReport from "../pages/market-and-auction/SeedMarketTripletReport";
 import SeedMarketPermitReport from "../pages/market-and-auction/SeedMarketPermitReport";
 import SeedMarketCashReceiptReport from "../pages/market-and-auction/SeedMarketCashReceiptReport";
 import SeedMarketMarketReceiptReport from "../pages/market-and-auction/SeedMarketMarketReceiptReport";
@@ -1091,6 +1093,10 @@ import DownloadSanctionOrder from "../pages/market-and-auction/DownloadSanctionO
 import GenerateAcknowledgement from "../pages/direct-benefit-transfer/GenerateAcknowledgement";
 import GenerateWorkOrder from "../pages/direct-benefit-transfer/GenerateWorkOrder";
 import GenerateSelectionLetter from "../pages/direct-benefit-transfer/GenerateSelectionLetter";
+import FitnessCertificate from "../pages/market-and-auction/FitnessCertificateReport";
+
+import ReelerBalanceReport from "../pages/reports-admin/market-auction/ReelerBalanceReport";
+import ExternalUnitBalanceReport from "../pages/reports-admin/market-auction/ExternalUnitBalanceReport";
 
 // Admin and Reports
 
@@ -2849,7 +2855,7 @@ function Router() {
             <Route
               path="relationship-view/:id"
               element={<RelationshipView />}
-            />
+            />  
             <Route
               path="relationship-edit/:id"
               element={<RelationshipEdit />}
@@ -3817,6 +3823,9 @@ function Router() {
             <Route path="lot-groupage" element={<LotGroupage />} />
             <Route path="invoice-permit-market-receipt" element={<InvoicePermitAndMarketReceipt />} />
             <Route path="seed-market-invoice-report" element={<SeedMarketInvoiceReport />} />
+            <Route path="seed-market-bidding-slip-report" element={<SeedMarketBiddingSlipReport />} />
+            <Route path="seed-market-triplet-report" element={<SeedMarketTripletReport />} />
+            <Route path="fitness-certificate-report" element={<FitnessCertificate />} />
             <Route path="seed-market-permit-report" element={<SeedMarketPermitReport />} />
             <Route path="seed-market-cash-receipt-report" element={<SeedMarketCashReceiptReport />} />
             <Route path="seed-market-market-receipt-report" element={<SeedMarketMarketReceiptReport />} />
@@ -3902,6 +3911,14 @@ function Router() {
               path="form-13-report-by-dist"
               element={<FormReportByDist />}
             />
+
+             <Route
+              path="external-unit-balance"
+              element={<ExternalUnitBalanceReport />}
+            />
+            <Route path="reeler-balance" element={<ReelerBalanceReport />} />
+
+
             <Route path="dtr-all" element={<DtrAll />} />
             <Route path="form-13-dtr" element={<Form13Dtr />} />
             <Route path="form-13-dtr-bv" element={<Form13DtrBv />} />

@@ -572,6 +572,9 @@ function Menu() {
 
     Reports_Export_Report_Seed_Market: false,
     Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt: false,
+     Reports_Export_Report_Seed_Market_External_Unit_Balance_Report: false,
+    Reports_Export_Report_Seed_Market_Reeler_Balance_Report: false,
+   
 
     Reports_Export_Report_Silk_Type_Market: false,
     Reports_Export_Report_Silk_Type_Market_Dashboard: false,
@@ -645,6 +648,9 @@ function Menu() {
 
     Reports_Export_Report_Helpdesk: false,
     Reports_Export_Report_Helpdesk_Details_Report: false,
+
+    Reports_Export_Report_Admin: false,
+    Reports_Export_Report_Admin_User_Details_Report: false,
 
 
     // Reports_Pendency_Report: false,
@@ -1041,6 +1047,13 @@ function Menu() {
     if (data.includes("Reports_Export_Report_Helpdesk")) {
       Object.keys(updatedShowMenu).forEach((key) => {
         if (key.startsWith("Reports_Export_Report_Helpdesk_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("Reports_Export_Report_Admin")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_Export_Report_Admin_")) {
           updatedShowMenu[key] = true;
         }
       });
@@ -1550,6 +1563,18 @@ function Menu() {
         Reports: true,
         Reports_Export_Report: true,
         Reports_Export_Report_Helpdesk: true,
+      }));
+    }
+
+    const hasReportsExportReportAdmin = data.some((item) =>
+      item.startsWith("Reports_Export_Report_Admin_")
+    );
+    if (hasReportsExportReportAdmin) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Export_Report: true,
+        Reports_Export_Report_Admin: true,
       }));
     }
 
@@ -2306,7 +2331,7 @@ function Menu() {
                       <MenuItem>
                         <MenuItemLink
                           text={t(
-                            "Seed Market Invoice,Permit,Cash Receipt,Market Receipt"
+                            "Invoice, Permit, Cash Receipt, Market Receipt"
                           )}
                           to="/seriui/invoice-permit-market-receipt"
                         />
@@ -2341,7 +2366,7 @@ function Menu() {
                     {showMenu.Market_SeedCocoonMarket_Pupa_Test_Cocoon_Assessment_Page ? (
                       <MenuItem>
                         <MenuItemLink
-                          text={t("Pupa Test And Cocoon Assessment Page")}
+                          text={t("Pupa Test and Cocoon Assessment Page")}
                           to="/seriui/pupa-test-and-assessment-page"
                         />
                       </MenuItem>
@@ -2356,14 +2381,7 @@ function Menu() {
                       </MenuItem>
                     ) : null}
 
-                      {showMenu.Market_SeedMarket_Delete_Lot ? (
-                      <MenuItem>
-                        <MenuItemLink
-                          text={t("Delete Lot")}
-                          to="/seriui/delete-lot"
-                        />
-                      </MenuItem>
-                    ) : null}
+                      
                     {showMenu.Market_SeedMarket_Lot_Distribution ? (
                       <MenuItem>
                         <MenuItemLink
@@ -2376,7 +2394,7 @@ function Menu() {
                     {showMenu.Market_SeedMarket_Payment ? (
                       <MenuItem sub>
                         <MenuItemLink
-                          text={t("e-Payment For Seed Market")}
+                          text={t("e-Payment")}
                           onClick={menuToggle}
                           onMouseEnter={menuHover}
                           sub
@@ -2407,6 +2425,15 @@ function Menu() {
                             </MenuItem>
                           ) : null}
                         </MenuSub>
+                      </MenuItem>
+                    ) : null}
+
+                    {showMenu.Market_SeedMarket_Delete_Lot ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t("Delete Lot")}
+                          to="/seriui/delete-lot"
+                        />
                       </MenuItem>
                     ) : null}
                   </MenuSub>
@@ -3406,6 +3433,34 @@ function Menu() {
                       blank
                     />
                   </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Rearing Equipment SS")}
+                      to="https://drive.google.com/open?id=1pxcyOv2UnjETdNqOiuf_Mponu7qDlD0r&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Adopting Solar Power Generator-PSF")}
+                      to="https://drive.google.com/open?id=1e2Ek2-48n9LYrYoq3ORX0ML-Zck4aXk9&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Adopting Heat Recovery Unit-PSF")}
+                      to="https://drive.google.com/open?id=1rj6FxnfIHRZ5wORqXujjzrDKoQS2ddmV&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Bivoltine Chawki Incentive")}
+                      to="https://drive.google.com/open?id=1Z1iN0s0NduOyIsYFSlqYzStpb9cUychA&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
                 </MenuSub>
               </MenuItem>
             ) : null}
@@ -4139,7 +4194,7 @@ function Menu() {
                         {showMenu.Admin_Master_HelpDesk_Status ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Help Desk Status")}
+                              text={t("Helpdesk Status")}
                               to="/seriui/hd-status"
                             />
                           </MenuItem>
@@ -4147,7 +4202,7 @@ function Menu() {
                         {showMenu.Admin_Master_HelpDesk_Severity ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Help Desk Severity")}
+                              text={t("Helpdesk Severity")}
                               to="/seriui/hd-severity"
                             />
                           </MenuItem>
@@ -4155,7 +4210,7 @@ function Menu() {
                         {showMenu.Admin_Master_HelpDesk_Faq ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Help Desk FAQ")}
+                              text={t("Helpdesk FAQ")}
                               to="/seriui/hd-question"
                             />
                           </MenuItem>
@@ -5223,7 +5278,7 @@ function Menu() {
                   {showMenu.Reports_Export_Report_Helpdesk ? (
                     <MenuItem sub>
                       <MenuItemLink
-                        text={t("Help Desk")}
+                        text={t("Helpdesk")}
                         onClick={menuToggle}
                         onMouseEnter={menuHover}
                         sub
@@ -5240,7 +5295,28 @@ function Menu() {
                       </MenuSub>
                     </MenuItem>
                   ) : null}
-                 
+
+                  {showMenu.Reports_Export_Report_Admin ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("Admin")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Reports_Export_Report_Admin_User_Details_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("User Details Report")}
+                              to="/seriui/user-master-details-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+
                 </MenuSub>
               </MenuItem>
             ) : null}
@@ -5312,6 +5388,41 @@ function Menu() {
                               <MenuItemLink
                                 text={t("DTR Report")}
                                 to="/seriui/seed-dtr-report"
+                              />
+                            </MenuItem>
+                          ) : null}
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Fitness Certificate")}
+                              to="/seriui/fitness-certificate-report"
+                            />
+                          </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Bidding Slip")}
+                              to="/seriui/seed-market-bidding-slip-report"
+                            />
+                          </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Triplet For Bidding Slip")}
+                              to="/seriui/seed-market-triplet-report"
+                            />
+                          </MenuItem>
+
+                          {showMenu.Reports_Export_Report_Seed_Market_External_Unit_Balance_Report ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("External Unit Balance Report")}
+                                to="/seriui/external-unit-balance"
+                              />
+                            </MenuItem>
+                          ) : null}
+                           {showMenu.Reports_Export_Report_Seed_Market_Reeler_Balance_Report ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Reeler Balance Report")}
+                                to="/seriui/reeler-balance"
                               />
                             </MenuItem>
                           ) : null}
@@ -5604,7 +5715,7 @@ function Menu() {
                 </MenuItem>
               ) : null}
 
-              {showMenu.Reports_Admin ? (
+              {/* {showMenu.Reports_Admin ? (
                 <MenuItem sub>
                   <MenuItemLink
                     text={t("Admin")}
@@ -5623,7 +5734,7 @@ function Menu() {
                     ) : null}
                   </MenuSub>
                 </MenuItem>
-              ) : null}
+              ) : null} */}
 
               {/* {showMenu.Reports_Sanction_Order ? (
                 <MenuItem>
