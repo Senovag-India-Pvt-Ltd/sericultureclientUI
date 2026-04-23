@@ -59,7 +59,7 @@ function ReadyForPaymentForSeedMarket() {
       return;
     }
     api
-      .post(baseURLMarket + `auction/fp/addSeedMarketSelectedLotlistToReadyForPayment`, {
+      .post(baseURLMarket + `auction/fp/addSelectedLotlistToReadyForPaymentForSeedMarket`, {
         marketId: marketId,
         paymentDate: date,
         allottedLotList: [lot],
@@ -184,11 +184,12 @@ function ReadyForPaymentForSeedMarket() {
 
   const PaymentDataColumns = [
     {
+      
       name: t("Action"), // Add translation function
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
-        {paymentMode === "cash" && (
+        {paymentMode === "online" && (
           <Button
             variant="primary"
             size="sm"
@@ -200,7 +201,7 @@ function ReadyForPaymentForSeedMarket() {
               )
             }
           >
-              {t("Add to Payment")}
+              {t("Add to Bank")}
             </Button>
           )}
 

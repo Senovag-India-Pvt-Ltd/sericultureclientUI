@@ -5,7 +5,6 @@ import Block from "../../components/Block/Block";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import DatePicker from "react-datepicker";
-import { Icon, Select } from "../../components";
 import { useState, useEffect,useMemo  } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../../src/services/auth/api";
@@ -54,7 +53,8 @@ const [dataLotList, setDataLotList] = useState([]);
     lotParentLevel: "",
     externalUnitId: "",
      fruitsId: "",
-  })
+  });
+  setBalanceError(false);
  }
 
  const [id, setId] = useState(localStorage.getItem("userMasterId"));
@@ -115,6 +115,7 @@ const handleDateChange = (date) => {
   const [validatedEdit, setValidatedEdit] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showModal1, setShowModal1] = useState(false);
+  const [balanceError, setBalanceError] = useState(false);
   // const handleShowModal = () => setShowModal(true);
  const handleShowModal = () => {
   // CASE 1️⃣: Market requires base price → price must exist
@@ -287,25 +288,30 @@ const handleUpdateLotDetails = (e, i, changes) => {
   const handleInputs = (e) => {
   const { name, value } = e.target;
 
-  setData((prevData) => {
-    // Do NOT block user typing unless requiredBasePrice is true
-    if (name === "amount" && requiredBasePrice) {
-      return prevData;
-    }
+  // Do NOT block user typing unless requiredBasePrice is true
+  if (name === "amount" && requiredBasePrice) return;
 
-    const newData = { ...prevData, [name]: value };
+  const newData = { ...data, [name]: value };
 
-    // Recalculate soldAmount
-    if (newData.lotWeight && newData.amount) {
-      newData.soldAmount = Math.floor(
-        parseFloat(newData.lotWeight) * parseFloat(newData.amount)
-      );
-    } else {
-      newData.soldAmount = "";
-    }
+  // Recalculate soldAmount
+  if (newData.lotWeight && newData.amount) {
+    newData.soldAmount = Math.floor(
+      parseFloat(newData.lotWeight) * parseFloat(newData.amount)
+    );
+  } else {
+    newData.soldAmount = "";
+  }
 
-    return newData;
-  });
+  setData(newData);
+
+  // Re-validate balance whenever soldAmount is recalculated and a buyer is already selected
+  if (
+    (name === "lotWeight" || name === "amount" || name === "soldAmount") &&
+    newData.soldAmount &&
+    (newData.buyerId || newData.externalUnitId)
+  ) {
+    validateReelerBalance(newData);
+  }
 
   if (name === "allottedLotId") {
     setAllottedLotId(value);
@@ -456,6 +462,10 @@ const formattedRemainingCocoonWeight = Number(remainingCocoonWeight).toFixed(2);
 
 // Disable Add button if lotWeight exceeds remaining cocoon weight
 const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight);
+
+// When editing, add back the original lot's weight so its own weight doesn't count against remaining
+const editRemainingCocoonWeight = remainingCocoonWeight + Number(dataLotList[lotId]?.lotWeight || 0);
+const isEditDisabled = Number(data.lotWeight || 0) > Number(editRemainingCocoonWeight);
 
 
  
@@ -641,9 +651,10 @@ const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight
     } else {
       event.preventDefault();
 
-      const formattedAuctionDate = formatAuctionDate(auctionDate); 
+      const formattedAuctionDate = formatAuctionDate(auctionDate);
       const hasLotGroupageId = dataLotList.some(item => item.lotGroupageId);
-  
+      setIsSaving(true);
+
       if (hasLotGroupageId) {
         const requestData = {
           marketId: localStorage.getItem("marketId"),
@@ -668,36 +679,36 @@ const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight
             godownId: localStorage.getItem("godownId"),
           }))
         };
-  
+
         api.post(baseURLMarket + 'lotGroupage/updateLotGroupage', requestData)
           .then(response => {
             const updatedList = response.data.content;
-            const invoiceDetails = updatedList
-              .map(item => `${item.buyerType} = ${item.invoiceNumber ? item.invoiceNumber : 'No Invoice Available'}`)
-              .join("<br>");
-  
+            const invoiceRows = updatedList
+              .map(item => `<tr><td style="padding:6px 12px;color:#2d3748;font-weight:600">${item.buyerType}</td><td style="padding:6px 12px;color:#1e67a8;font-weight:700">${item.invoiceNumber || 'No Invoice Available'}</td></tr>`)
+              .join("");
+            setIsSaving(false);
             Swal.fire({
               icon: 'success',
-              title: 'Updated successfully',
-              html: `Invoice Details:<br>${invoiceDetails}`,
+              title: 'Updated Successfully',
+              html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#f0fff4,#f6fffa);border:1.5px solid #9ae6b4;border-radius:14px;padding:16px 20px;text-align:left"><p style="color:#276749;font-size:13px;font-weight:700;margin:0 0 10px">Invoice Details</p><table style="width:100%;border-collapse:collapse"><thead><tr style="background:#e6ffed"><th style="padding:6px 12px;color:#22543d;font-size:12px;text-align:left">Buyer Type</th><th style="padding:6px 12px;color:#22543d;font-size:12px;text-align:left">Invoice Number</th></tr></thead><tbody>${invoiceRows}</tbody></table></div></div>`,
+              confirmButtonText: 'OK', confirmButtonColor: '#1e67a8', background: '#fff',
+              showClass: { popup: 'animate__animated animate__bounceIn animate__faster' },
+              customClass: { popup: 'swal-pop' },
             }).then(() => {
-              // ✅ Triplet logic after update success
-              if (isTriplet) {
-                printTriplet();
-              } else {
-                console.log("In Market Master Change setting");
-              }
+              if (isTriplet) printTriplet();
               window.location.reload();
             });
-  
             clear();
             setValidated(false);
           })
           .catch(error => {
+            setIsSaving(false);
             Swal.fire({
-              icon: 'error',
-              title: 'Update failed',
-              text: 'There was an error updating the lot groupage details.'
+              icon: 'error', title: 'Update Failed',
+              html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">❌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Update Not Saved</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">There was an error updating the lot groupage details. Please try again.</p></div></div></div>`,
+              confirmButtonText: 'Close', confirmButtonColor: '#e53e3e', background: '#fff',
+              showClass: { popup: 'animate__animated animate__shakeX animate__faster' },
+              customClass: { popup: 'swal-pop' },
             });
           });
       } else {
@@ -707,27 +718,21 @@ const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight
             lotParentLevel: lotParentLevel,
             fruitsId: fruitsId,
             averageYield: calculatedAverageYield,
-            dflLotNumber: noOfDFLs, 
+            dflLotNumber: noOfDFLs,
             remainingCocoonWeight: remainingCocoonWeight,
             auctionDate: formatAuctionDate(item.auctionDate)
           })),
         };
-  
+
         api
           .post(baseURLMarket + 'lotGroupage/saveLotGroupage', sendPost)
           .then((response) => {
+            setIsSaving(false);
             if (response.data.content.error) {
               saveError(response.data.content.error_description);
             } else {
               saveSuccess(response.data.content);
-
-              // ✅ Triplet logic after save success
-              if (isTriplet) {
-                printTriplet();
-              } else {
-                console.log("In Market Master Change setting");
-              }
-
+              if (isTriplet) printTriplet();
               setData({
                 buyerType: "",
                 buyerId: "",
@@ -747,18 +752,16 @@ const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight
             }
           })
           .catch((err) => {
-            if (
-              err.response &&
-              err.response.data &&
-              err.response.data.validationErrors
-            ) {
-              if (Object.keys(err.response.data.validationErrors).length > 0) {
-                saveError(err.response.data.validationErrors);
-              }
+            setIsSaving(false);
+            if (err.response?.data?.validationErrors &&
+                Object.keys(err.response.data.validationErrors).length > 0) {
+              saveError(err.response.data.validationErrors);
+            } else {
+              saveError("There was an error saving the lot groupage details.");
             }
           });
       }
-  
+
       setValidated(true);
     }
   };
@@ -849,28 +852,130 @@ const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight
     });
   };
 
-   const handleManualReelerOption = (e) => {
-    const value = e.target.value;
-    const [chooseId, chooseName,chooseUnit] = value.split("_");
-    setData({
+  const showBalanceErrorAlert = (message) => {
+    setBalanceError(true);
+    if (!document.getElementById("swal-balance-styles")) {
+      const style = document.createElement("style");
+      style.id = "swal-balance-styles";
+      style.innerHTML = `
+        .swal-balance-alert { border-radius: 18px !important; padding: 10px !important; box-shadow: 0 20px 60px rgba(229,62,62,0.22) !important; }
+        .swal-balance-alert .swal2-title { font-size: 20px !important; font-weight: 700 !important; color: #c53030 !important; }
+        .swal-balance-alert .swal2-confirm { border-radius: 8px !important; padding: 10px 28px !important; font-weight: 600 !important; font-size: 14px !important; }
+        .swal-balance-alert .swal2-icon { margin: 14px auto 6px !important; }
+      `;
+      document.head.appendChild(style);
+    }
+    Swal.fire({
+      icon: "warning",
+      title: "Insufficient Balance",
+      html: `
+        <div style="text-align:center;padding:4px 0">
+          <p style="color:#c53030;font-size:15px;font-weight:600;margin:0;line-height:1.7">${message}</p>
+          <p style="color:#a0aec0;font-size:12px;margin:10px 0 0">Please ask the buyer to recharge their account.</p>
+        </div>`,
+      confirmButtonText: "OK, Got it",
+      confirmButtonColor: "#e53e3e",
+      background: "#fff",
+      customClass: { popup: "swal-balance-alert" },
+    });
+  };
+
+  const extractErrorMessage = (data) => {
+    // Format 1: errorMessages[0].message[0].message  (standard ResponseWrapper)
+    if (data?.errorMessages?.[0]?.message?.[0]?.message)
+      return data.errorMessages[0].message[0].message;
+    // Format 2: errorMessages is a plain string
+    if (typeof data?.errorMessages === "string") return data.errorMessages;
+    // Format 3: errorMessages is an array of strings
+    if (Array.isArray(data?.errorMessages) && typeof data.errorMessages[0] === "string")
+      return data.errorMessages[0];
+    // Format 4: top-level message field
+    if (data?.message) return data.message;
+    // Format 5: error_description (used by some endpoints)
+    if (data?.error_description) return data.error_description;
+    // Format 6: raw string body
+    if (typeof data === "string") return data;
+    return null;
+  };
+
+  const validateReelerBalance = (updatedData) => {
+    const { buyerType, buyerId, externalUnitId, soldAmount } = updatedData;
+
+    // Only validate for Reeling and RSP buyer types
+    if (!buyerType || ["Govt Grainage", "NSSO"].includes(buyerType)) return;
+    if (!buyerId && !externalUnitId) return;
+
+    const marketId = parseInt(
+      updatedData.marketId || localStorage.getItem("marketId")
+    );
+
+    setBalanceError(false); // reset while new validation is in-flight
+
+    api
+      .post(baseURLMarket + "lotGroupage/validateReelerBalance", {
+        lotGroupageRequests: [
+          {
+            marketId,
+            buyerType: buyerType || "",
+            buyerId: buyerId ? parseInt(buyerId) : null,
+            externalUnitId: externalUnitId ? parseInt(externalUnitId) : null,
+            soldAmount: soldAmount ? parseInt(soldAmount) : 0,
+          },
+        ],
+      })
+      .then((response) => {
+        // Some Spring implementations return 200 with error embedded in body
+        const data = response?.data;
+        const errMsg = extractErrorMessage(data);
+        if (errMsg && data?.content !== "Balance validation successful") {
+          showBalanceErrorAlert(errMsg);
+        } else {
+          setBalanceError(false); // validation passed
+        }
+      })
+      .catch((err) => {
+        const errMsg =
+          extractErrorMessage(err?.response?.data) ||
+          "Unable to validate buyer balance.";
+        showBalanceErrorAlert(errMsg);
+      });
+  };
+
+   const handleManualReelerOption = (selectedOption) => {
+    if (!selectedOption) {
+      setData((prev) => ({
+        ...prev,
+        buyerId: "",
+        reelerName: "",
+        buyerName: "",
+        externalUnitId: "",
+      }));
+      return;
+    }
+    const [chooseId, chooseName] = selectedOption.value.split("_");
+    const updatedData = {
       ...data,
       buyerId: chooseId,
       reelerName: chooseName,
       buyerName: chooseName,
-      externalUnitId:chooseUnit
-    });
+      externalUnitId: "",
+    };
+    setData(updatedData);
+    validateReelerBalance(updatedData);
   };
 
   const handleGrainageOption = (e) => {
     const value = e.target.value;
     const [chooseId, chooseName,chooseUnit] = value.split("_");
-    setData({
+    const updatedData = {
       ...data,
       buyerId: chooseId,
       grainageMasterName: chooseName,
       buyerName: chooseName,
-      externalUnitId:chooseUnit
-    });
+      externalUnitId: chooseUnit,
+    };
+    setData(updatedData);
+    validateReelerBalance(updatedData);
   };
 
   // District
@@ -913,6 +1018,21 @@ setAllottedLotId("");
   };
 
   const [loading, setLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  if (!document.getElementById("swal-lotgroupage-styles")) {
+    const s = document.createElement("style");
+    s.id = "swal-lotgroupage-styles";
+    s.innerHTML = `
+      .swal-pop { border-radius: 22px !important; padding: 8px !important; box-shadow: 0 30px 90px rgba(0,0,0,0.22) !important; }
+      .swal-pop .swal2-title { font-size: 21px !important; font-weight: 800 !important; color: #1a202c !important; }
+      .swal-pop .swal2-icon { margin: 20px auto 4px !important; }
+      .swal-pop .swal2-html-container { margin: 0 !important; padding: 0 !important; }
+      .swal-pop .swal2-actions { gap: 10px !important; }
+      .swal-pop .swal2-confirm, .swal-pop .swal2-cancel { border-radius: 11px !important; padding: 12px 30px !important; font-weight: 700 !important; font-size: 14px !important; }
+    `;
+    document.head.appendChild(s);
+  }
 
   // to get Market
   const [reelerListData, setReelerListData] = useState([]);
@@ -959,6 +1079,11 @@ setAllottedLotId("");
   value: `${list.userMasterId}_${list.address}_${list.externalUnitRegistrationId}`,
   label: `${list.address} (${list.licenseNumber})`,
 }));
+
+  const reelerOptions = reelerListData?.map((list) => ({
+    value: `${list.reelerId}_${list.reelerName}_${list.reelerId}`,
+    label: `${list.reelerName} (${list.reelingLicenseNumber || ""})`,
+  }));
 
 
   // to get Grainage
@@ -1085,18 +1210,17 @@ setAllottedLotId("");
   //   });
   // };
   const saveSuccess = (messages) => {
-    const invoiceDetails = messages
-      .map((item) => `${item.buyerType} = ${item.invoiceNumber}`)
-      .join("<br>");
-  
+    const invoiceRows = messages
+      .map((item) => `<tr><td style="padding:6px 12px;color:#2d3748;font-weight:600">${item.buyerType}</td><td style="padding:6px 12px;color:#1e67a8;font-weight:700">${item.invoiceNumber || 'N/A'}</td></tr>`)
+      .join("");
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
-      html: `Invoice Details:<br>${invoiceDetails}`, // Use 'html' instead of 'text'
-    }).then(() => {
-      // navigate("#");
-      window.location.reload();
-    });
+      title: "Saved Successfully",
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#f0fff4,#f6fffa);border:1.5px solid #9ae6b4;border-radius:14px;padding:16px 20px;text-align:left"><p style="color:#276749;font-size:13px;font-weight:700;margin:0 0 10px">Invoice Details</p><table style="width:100%;border-collapse:collapse"><thead><tr style="background:#e6ffed"><th style="padding:6px 12px;color:#22543d;font-size:12px;text-align:left">Buyer Type</th><th style="padding:6px 12px;color:#22543d;font-size:12px;text-align:left">Invoice Number</th></tr></thead><tbody>${invoiceRows}</tbody></table></div></div>`,
+      confirmButtonText: "OK", confirmButtonColor: "#1e67a8", background: "#fff",
+      showClass: { popup: "animate__animated animate__bounceIn animate__faster" },
+      customClass: { popup: "swal-pop" },
+    }).then(() => { window.location.reload(); });
   };
 
   const [purchaseMode, setPurchaseMode] = useState(""); // "Manual" or "Bid"
@@ -1109,16 +1233,15 @@ const handlePurchaseModeChange = (e) => {
   
   
   const saveError = (message) => {
-    let errorMessage;
-    if (typeof message === "object") {
-      errorMessage = Object.values(message).join("<br>");
-    } else {
-      errorMessage = message;
-    }
+    const errorMessage = typeof message === "object"
+      ? Object.values(message).join("<br>")
+      : message;
     Swal.fire({
-      icon: "error",
-      title: "Save attempt was not successful",
-      html: errorMessage,
+      icon: "error", title: "Save Not Successful",
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">❌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Could Not Save</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${errorMessage}</p></div></div></div>`,
+      confirmButtonText: "Close", confirmButtonColor: "#e53e3e", background: "#fff",
+      showClass: { popup: "animate__animated animate__shakeX animate__faster" },
+      customClass: { popup: "swal-pop" },
     });
   };
 
@@ -1157,13 +1280,18 @@ const handlePurchaseModeChange = (e) => {
       <Block className="mt-n4">
         {/* <Form action="#"> */}
         <Form noValidate validated={searchValidated} onSubmit={search}>
-          {/* <Row className="g-3 "> */}
-            <Card>
-              <Card.Body>
-                {/* <h3>Farmers Details</h3> */}
+            <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 4px 24px rgba(30,103,168,0.10)" }}>
+              <div style={{ background: "linear-gradient(135deg, #1e67a8 0%, #2d9cdb 100%)", padding: "16px 24px", borderRadius: "14px 14px 0 0", display: "flex", alignItems: "center", gap: "12px" }}>
+                <div style={{ width: "38px", height: "38px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px" }}>🔍</div>
+                <div>
+                  <div style={{ color: "#fff", fontWeight: 700, fontSize: "16px" }}>{t("Lot Distribution")}</div>
+                  <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px" }}>Search by bidding slip lot number and auction date</div>
+                </div>
+              </div>
+              <Card.Body style={{ padding: "14px 20px" }}>
                 <Row className="g-gs">
                   <Col lg="12">
-                    <Form.Group as={Row} className="form-group">
+                    <Form.Group as={Row} className="form-group mb-0">
                       <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
                         {t("Bidding Slip Lot NO.")}<span className="text-danger">*</span>
                       </Form.Label>
@@ -1211,9 +1339,12 @@ const handlePurchaseModeChange = (e) => {
 
             {showFarmerDetails && (
                   <Col lg="12">
-                  <Card>
-                    <Card.Header style={styles.cardHeader}>{t("Farmer Details")}</Card.Header>
-                    <Card.Body style={styles.cardBody}>
+                  <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 4px 20px rgba(30,103,168,0.10)", marginTop: "16px" }}>
+                    <div style={{ background: "linear-gradient(135deg, #1e67a8 0%, #2d9cdb 100%)", padding: "12px 24px", borderRadius: "14px 14px 0 0", display: "flex", alignItems: "center", gap: "10px" }}>
+                      <span style={{ fontSize: "18px" }}>👨‍🌾</span>
+                      <span style={{ color: "#fff", fontWeight: 700, fontSize: "15px" }}>{t("Farmer Details")}</span>
+                    </div>
+                    <Card.Body style={{ ...styles.cardBody, padding: "16px" }}>
                       <Row className="g-gs">
                         <Col lg="12">
                           <table style={styles.table} className="table small table-bordered">
@@ -1266,147 +1397,79 @@ const handlePurchaseModeChange = (e) => {
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-1 ">
             <Block className="mt-3">
-              <Card>
-                <Card.Header style={{ fontWeight: "bold" }}>
-                 {t("Buyers List")}
-                </Card.Header>
-                <Card.Body>
-                  {/* <h3>Family Members</h3> */}
-                  <Row className="g-gs mb-1">
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-1">
-                        <div className="form-control-wrap"></div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="6">
-                      <Form.Group className="form-group d-flex align-items-center justify-content-end gap g-3">
-                        <div className="form-control-wrap">
-                          <ul className="">
-                            <li>
-                              {/* <Button
-                                className="d-md-none"
-                                size="md"
-                                variant="primary"
-                                onClick={handleShowModal}
-                              >
-                                <Icon name="plus" />
-                                <span>Add</span>
-                              </Button>
-                            </li>
-                            <li>
-                              <Button
-                                className="d-none d-md-inline-flex"
-                                variant="primary"
-                                onClick={handleShowModal}
-                              >
-                                <Icon name="plus" />
-                                <span>Add</span>
-                              </Button> */}
-                              <Button
-                                className="d-md-none"
-                                size="md"
-                                variant="primary"
-                                onClick={handleShowModal}
-                                disabled={totalLotWeight >= farmerdetails.netWeight}
-                              >
-                                <Icon name="plus" />
-                                <span>{t("Add")}</span>
-                              </Button>
-                            </li>
-                            <li>
-                              <Button
-                                className="d-none d-md-inline-flex"
-                                variant="primary"
-                                onClick={handleShowModal}
-                                disabled={totalLotWeight >= farmerdetails.netWeight}
-                              >
-                                <Icon name="plus" />
-                                <span>{t("Add")}</span>
-                              </Button>
-                            </li>
-                          </ul>
-                        </div>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  {dataLotList && dataLotList.length > 0 ? (
-                    <Row className="g-gs">
-                      <Block>
-                        <Card>
-                          <div
-                            className="table-responsive"
-                            // style={{ paddingBottom: "30px" }}
-                          >
-                            <table className="table small">
-                              <thead>
-                                <tr style={{ backgroundColor: "#f1f2f7" }}>
-                                  {/* <th></th> */}
-                                  <th>{t("Action")}</th>
-                                  <th>{t("Buyer Type")}</th>
-                                  <th>{t("License Number/Address/Grainage/Name")}</th>
-                                  <th>{t("Quantity of Cocoons(In Kgs)")}</th>
-                                  {/* <th>No Of DFL</th>
-                                  <th>Average Yield</th> */}
-                                  <th>{t("Price(In Rs.)")}</th>
-                                  <th>{t("Total Amount")}</th>
-                                  <th>{t("Invoice Number")}</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {dataLotList.map((item, i) => (
-                                  <tr>
-                                    <td>
-                                      <div>
-                                        <Button
-                                          variant="primary"
-                                          size="sm"
-                                          onClick={() => handleGetLotDetails(i)}
-                                          disabled={!!item.lotGroupageId}
-                                        >
-                                          {t("Edit")}
-                                        </Button>
-                                        {/* <Button
-                                          variant="danger"
-                                          size="sm"
-                                          onClick={() =>
-                                            handleDeleteLotDetails(i)
-                                          }
-                                          // onClick={handleShowModal2}
-                                          className="ms-2"
-                                        >
-                                          Delete
-                                        </Button> */}
-                                      </div>
-                                    </td>
-                                    <td>{item.buyerType}</td>
-                                     {/* <td>
-                                    {item.buyerType === 'Reeler' ? (
-                                      item.reelerName
-                                    ) : item.buyerType === 'ExternalStakeHolders' ? (
-                                      item.name
-                                    ) : (
-                                      item.buyerId
-                                    )}
-                                  </td> */}
-                                  <td>{item.buyerName}</td>
-                                    <td>{item.lotWeight}</td>
-                                    {/* <td>{item.dflLotNumber}</td> */}
-                                    {/* <td>{item.marketFee}</td> */}
-                                    {/* <td>{item.averageYield}</td> */}
-                                    <td>{item.amount}</td>
-                                    <td>{item.soldAmount}</td>
-                                    <td>{item.invoiceNumber}</td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                        </Card>
-                      </Block>
-                    </Row>
-                  ) : (
-                    ""
+              <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 4px 20px rgba(30,103,168,0.10)", marginTop: "16px" }}>
+                <div style={{ background: "linear-gradient(135deg, #1e67a8 0%, #2d9cdb 100%)", padding: "12px 24px", borderRadius: "14px 14px 0 0", display: "flex", alignItems: "center", gap: "10px" }}>
+                  <span style={{ fontSize: "18px" }}>🛒</span>
+                  <span style={{ color: "#fff", fontWeight: 700, fontSize: "15px" }}>{t("Buyers List")}</span>
+                </div>
+                <Card.Body style={{ padding: "14px 20px" }}>
+                  <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "10px" }}>
+                    <button
+                      type="button"
+                      onClick={handleShowModal}
+                      disabled={totalLotWeight >= farmerdetails.netWeight}
+                      style={{
+                        background: totalLotWeight >= farmerdetails.netWeight ? "#c8d6e5" : "linear-gradient(135deg,#1e67a8,#2d9cdb)",
+                        border: "none", borderRadius: "9px", padding: "8px 18px",
+                        fontWeight: 700, fontSize: "13px", color: "#fff",
+                        cursor: totalLotWeight >= farmerdetails.netWeight ? "not-allowed" : "pointer",
+                        boxShadow: totalLotWeight >= farmerdetails.netWeight ? "none" : "0 3px 10px rgba(30,103,168,0.30)",
+                        display: "inline-flex", alignItems: "center", gap: "6px",
+                      }}
+                    >
+                      ➕ {t("Add")}
+                    </button>
+                  </div>
+                  {dataLotList && dataLotList.length > 0 && (
+                    <div className="table-responsive mt-2" style={{ borderRadius: "10px", overflow: "hidden", border: "1.5px solid #e2e8f0" }}>
+                      <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
+                        <thead>
+                          <tr style={{ background: "linear-gradient(135deg, #1e67a8 0%, #2d9cdb 100%)" }}>
+                            {[
+                              { label: t("Action"), align: "left" },
+                              { label: t("Buyer Type"), align: "left" },
+                              { label: t("License Number/Address/Grainage/Name"), align: "left" },
+                              { label: t("Quantity of Cocoons(In Kgs)"), align: "right" },
+                              { label: t("Price(In Rs.)"), align: "right" },
+                              { label: t("Total Amount"), align: "right" },
+                              { label: t("Invoice Number"), align: "left" },
+                            ].map((h) => (
+                              <th key={h.label} style={{ padding: "10px 14px", color: "#fff", fontWeight: 700, fontSize: "12px", letterSpacing: "0.04em", whiteSpace: "nowrap", border: "none", textAlign: h.align }}>{h.label}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {dataLotList.map((item, i) => (
+                            <tr key={i} style={{ background: i % 2 === 0 ? "#fff" : "#f8fafd", borderBottom: "1px solid #e2e8f0" }}>
+                              <td style={{ padding: "10px 14px" }}>
+                                <button
+                                  type="button"
+                                  onClick={() => handleGetLotDetails(i)}
+                                  disabled={!!item.lotGroupageId}
+                                  style={{
+                                    background: item.lotGroupageId ? "#e2e8f0" : "linear-gradient(135deg,#1e67a8,#2d9cdb)",
+                                    border: "none", borderRadius: "7px", padding: "5px 14px",
+                                    fontWeight: 600, fontSize: "12px", color: item.lotGroupageId ? "#a0aec0" : "#fff",
+                                    cursor: item.lotGroupageId ? "not-allowed" : "pointer",
+                                    boxShadow: item.lotGroupageId ? "none" : "0 2px 8px rgba(30,103,168,0.25)",
+                                  }}
+                                >
+                                  ✏️ {t("Edit")}
+                                </button>
+                              </td>
+                              <td style={{ padding: "10px 14px", color: "#2d3748", fontWeight: 500 }}>
+                                <span style={{ background: "#ebf4ff", color: "#1e67a8", borderRadius: "6px", padding: "2px 10px", fontSize: "12px", fontWeight: 700 }}>{item.buyerType}</span>
+                              </td>
+                              <td style={{ padding: "10px 14px", color: "#4a5568" }}>{item.buyerName}</td>
+                              <td style={{ padding: "10px 14px", color: "#2d3748", fontWeight: 600, textAlign: "right" }}>{item.lotWeight}</td>
+                              <td style={{ padding: "10px 14px", color: "#2d3748", textAlign: "right" }}>{item.amount}</td>
+                              <td style={{ padding: "10px 14px", color: "#276749", fontWeight: 700, textAlign: "right" }}>{item.soldAmount}</td>
+                              <td style={{ padding: "10px 14px", color: item.invoiceNumber ? "#1e67a8" : "#a0aec0", fontWeight: item.invoiceNumber ? 600 : 400 }}>{item.invoiceNumber || "—"}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   )}
                 </Card.Body>
               </Card>
@@ -1415,34 +1478,33 @@ const handlePurchaseModeChange = (e) => {
               </Row>
             
 
-            <div className="gap-col">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    {t("Save")}
-                  </Button>
-
-                </li>
-                <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  {/* <Button type="submit" variant="primary">
-                    Store
-                  </Button>
-                   */}
-                </li>
-                <li>
-                  {/* <Link
-                    to="/seriui/crate-list"
-                    className="btn btn-secondary border-0"
-                  >
-                    Cancel
-                  </Link> */}
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    {t("Cancel")}
-                  </Button>
-                </li>
-              </ul>
+            <div style={{ display: "flex", justifyContent: "center", gap: "12px", marginTop: "8px" }}>
+              <button
+                type="submit"
+                disabled={isSaving}
+                style={{
+                  background: isSaving ? "#c8d6e5" : "linear-gradient(135deg,#1e67a8,#2d9cdb)",
+                  border: "none", borderRadius: "10px", padding: "11px 32px",
+                  fontWeight: 700, fontSize: "14px", color: "#fff",
+                  cursor: isSaving ? "not-allowed" : "pointer",
+                  boxShadow: isSaving ? "none" : "0 4px 14px rgba(30,103,168,0.35)",
+                  display: "flex", alignItems: "center", gap: "8px",
+                  transition: "all 0.2s ease",
+                }}
+              >
+                {isSaving ? <><span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" /> {t("Saving")}…</> : <>💾 {t("Save")}</>}
+              </button>
+              <button
+                type="button"
+                onClick={clear}
+                style={{
+                  background: "#f1f5f9", border: "1.5px solid #d0d9e8", borderRadius: "10px",
+                  padding: "11px 28px", fontWeight: 600, fontSize: "14px", color: "#4a5568",
+                  cursor: "pointer", transition: "all 0.2s ease",
+                }}
+              >
+                {t("Cancel")}
+              </button>
             </div>
           {/* </Row> */}
         {/* </Form>
@@ -1454,10 +1516,13 @@ const handlePurchaseModeChange = (e) => {
       </Block>  
 
        <Modal show={showModal} onHide={handleCloseModal} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>{t("Add Lot Distribution Details")}</Modal.Title>
+        <Modal.Header closeButton style={{ background: "linear-gradient(135deg, #1e67a8 0%, #2d9cdb 100%)", borderRadius: "12px 12px 0 0", border: "none", padding: "16px 24px" }}>
+          <Modal.Title style={{ color: "#fff", fontWeight: 700, fontSize: "16px", display: "flex", alignItems: "center", gap: "10px" }}>
+            <span style={{ width: "32px", height: "32px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "16px" }}>➕</span>
+            {t("Add Lot Distribution Details")}
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ padding: "24px 28px", background: "#f8fafd" }}>
         <Form noValidate validated={validatedLot} onSubmit={handleAddLotDetails}>
           <Row className="g-5 "> 
           <>    
@@ -1600,29 +1665,24 @@ const handlePurchaseModeChange = (e) => {
                               {t("Reeler")}<span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
-                              <Form.Select
-                                name="buyerId"
-                                value={`${data.buyerId}_${data.reelerName}`}
-                                onChange={handleManualReelerOption}
-                                onBlur={handleManualReelerOption}
-                                required
-                                isInvalid={
-                                  data.buyerId === undefined || data.buyerId === "0"
+                              <ReactSelect
+                                options={reelerOptions}
+                                placeholder={t("Select Reeler")}
+                                isSearchable
+                                menuPlacement="auto"
+                                value={
+                                  reelerOptions?.find(
+                                    (opt) =>
+                                      opt.value.startsWith(`${data.buyerId}_`)
+                                  ) || null
                                 }
-                              >
-                                <option value="">{t("Select Reeler")}</option>
-                                {reelerListData.map((list) => (
-                                  <option
-                                    key={`${list.reelerId}_${list.reelerName}`}
-                                    value={`${list.reelerId}_${list.reelerName}`}
-                                  >
-                                    {list.reelerName}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                {t("Reeler is required")}
-                              </Form.Control.Feedback>
+                                onChange={handleManualReelerOption}
+                              />
+                              {!data.buyerId && (
+                                <div className="invalid-feedback d-block">
+                                  {t("Reeler is required")}
+                                </div>
+                              )}
                             </div>
                           </Form.Group>
                         </Col>
@@ -1660,13 +1720,15 @@ const handlePurchaseModeChange = (e) => {
                                 const [chooseId, chooseAddress, chooseUnit] =
                                   selectedOption.value.split("_");
 
-                                setData((prev) => ({
-                                  ...prev,
+                                const updatedData = {
+                                  ...data,
                                   buyerId: chooseId,
                                   address: chooseAddress,
                                   buyerName: chooseAddress,
                                   externalUnitId: chooseUnit,
-                                }));
+                                };
+                                setData(updatedData);
+                                validateReelerBalance(updatedData);
                               }}
                             />
 
@@ -1766,13 +1828,15 @@ const handlePurchaseModeChange = (e) => {
                                 const [chooseId, chooseAddress, chooseUnit] =
                                   selectedOption.value.split("_");
 
-                                setData((prev) => ({
-                                  ...prev,
+                                const updatedData = {
+                                  ...data,
                                   buyerId: chooseId,
                                   licenseNumber: chooseAddress,
                                   buyerName: chooseAddress,
                                   externalUnitId: chooseUnit,
-                                }));
+                                };
+                                setData(updatedData);
+                                validateReelerBalance(updatedData);
                               }}
                             />
                           <Form.Control.Feedback type="invalid">
@@ -1912,19 +1976,41 @@ const handlePurchaseModeChange = (e) => {
                 <div className="d-flex gap g-2 justify-content-center">
                   <div className="gap-col">
                     {/* <Button variant="primary" onClick={handleAddFamilyMembers}> */}
-                    <Button type="submit" variant="primary"
-                    // disabled={totalLotWeight >= farmerdetails.netWeight}
-                    disabled={isAddDisabled}
+                    <button
+                      type="submit"
+                      disabled={isAddDisabled || balanceError}
+                      title={balanceError ? "Buyer has insufficient balance" : ""}
+                      style={{
+                        background: (isAddDisabled || balanceError) ? "#c8d6e5" : "linear-gradient(135deg,#1e67a8,#2d9cdb)",
+                        border: "none", borderRadius: "10px", padding: "10px 28px",
+                        fontWeight: 700, fontSize: "14px", color: "#fff",
+                        cursor: (isAddDisabled || balanceError) ? "not-allowed" : "pointer",
+                        boxShadow: (isAddDisabled || balanceError) ? "none" : "0 4px 14px rgba(30,103,168,0.35)",
+                      }}
                     >
-                      {t("Add")}
-                    </Button>
+                      ➕ {t("Add")}
+                    </button>
                   </div>
                   <div className="gap-col">
-                    <Button variant="secondary" onClick={handleCloseModal}>
+                    <button
+                      type="button"
+                      onClick={handleCloseModal}
+                      style={{
+                        background: "#f1f5f9", border: "1.5px solid #d0d9e8", borderRadius: "10px",
+                        padding: "10px 24px", fontWeight: 600, fontSize: "14px", color: "#4a5568", cursor: "pointer",
+                      }}
+                    >
                       {t("Cancel")}
-                    </Button>
+                    </button>
                   </div>
                 </div>
+                {balanceError && (
+                  <div style={{ textAlign: "center", marginTop: "8px" }}>
+                    <small style={{ color: "#c53030", fontWeight: 600, fontSize: "13px" }}>
+                      ⚠ Add is disabled due to insufficient balance.
+                    </small>
+                  </div>
+                )}
               </Col>
             </Row>
           </Form>
@@ -1932,10 +2018,13 @@ const handlePurchaseModeChange = (e) => {
       </Modal>
 
       <Modal show={showModal1} onHide={handleCloseModal1} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>{t("Edit Lot Distribution Details")}</Modal.Title>
+        <Modal.Header closeButton style={{ background: "linear-gradient(135deg, #1e67a8 0%, #2d9cdb 100%)", borderRadius: "12px 12px 0 0", border: "none", padding: "16px 24px" }}>
+          <Modal.Title style={{ color: "#fff", fontWeight: 700, fontSize: "16px", display: "flex", alignItems: "center", gap: "10px" }}>
+            <span style={{ width: "32px", height: "32px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "16px" }}>✏️</span>
+            {t("Edit Lot Distribution Details")}
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ padding: "24px 28px", background: "#f8fafd" }}>
         <Form
             noValidate
             validated={validatedEdit}
@@ -2100,13 +2189,15 @@ const handlePurchaseModeChange = (e) => {
                                 const [chooseId, chooseAddress, chooseUnit] =
                                   selectedOption.value.split("_");
 
-                                setData((prev) => ({
-                                  ...prev,
+                                const updatedData = {
+                                  ...data,
                                   buyerId: chooseId,
                                   address: chooseAddress,
                                   buyerName: chooseAddress,
                                   externalUnitId: chooseUnit,
-                                }));
+                                };
+                                setData(updatedData);
+                                validateReelerBalance(updatedData);
                               }}
                             />
                             <Form.Control.Feedback type="invalid">
@@ -2205,13 +2296,15 @@ const handlePurchaseModeChange = (e) => {
                                 const [chooseId, chooseAddress, chooseUnit] =
                                   selectedOption.value.split("_");
 
-                                setData((prev) => ({
-                                  ...prev,
+                                const updatedData = {
+                                  ...data,
                                   buyerId: chooseId,
                                   licenseNumber: chooseAddress,
                                   buyerName: chooseAddress,
                                   externalUnitId: chooseUnit,
-                                }));
+                                };
+                                setData(updatedData);
+                                validateReelerBalance(updatedData);
                               }}
                             />
                           <Form.Control.Feedback type="invalid">
@@ -2238,17 +2331,17 @@ const handlePurchaseModeChange = (e) => {
                           type="number"
                           placeholder={t("Enter Quantity of Cocoons Allotted (In Kgs)")}
                           required
-                          isInvalid={parseFloat(data.lotWeight) > remainingCocoonWeight}
+                          isInvalid={parseFloat(data.lotWeight) > editRemainingCocoonWeight}
                         />
                         <Form.Control.Feedback type="invalid">
                         {t("Quantity of Cocoons Allotted (In Kgs) Should be less than Remaining Cocoon")}
                         </Form.Control.Feedback>
-                       
+
                       </div>
                     </Form.Group>
                   </Col>
 
-                  
+
                   {/* <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="approxWeightPerCrate">
@@ -2352,24 +2445,38 @@ const handlePurchaseModeChange = (e) => {
                 <div className="d-flex gap g-2 justify-content-center">
                   <div className="gap-col">
                     {/* <Button variant="primary" onClick={handleAddFamilyMembers}> */}
-                    <Button type="submit" variant="primary"
-                    // disabled={totalLotWeight >= farmerdetails.netWeight}
-                    disabled={isAddDisabled}
+                    <button
+                      type="submit"
+                      disabled={isEditDisabled}
+                      style={{
+                        background: isEditDisabled ? "#c8d6e5" : "linear-gradient(135deg,#1e67a8,#2d9cdb)",
+                        border: "none", borderRadius: "10px", padding: "10px 28px",
+                        fontWeight: 700, fontSize: "14px", color: "#fff",
+                        cursor: isEditDisabled ? "not-allowed" : "pointer",
+                        boxShadow: isEditDisabled ? "none" : "0 4px 14px rgba(30,103,168,0.35)",
+                      }}
                     >
-                      {t("Update")}
-                    </Button>
+                      ✏️ {t("Update")}
+                    </button>
                   </div>
                   <div className="gap-col">
-                    <Button variant="secondary" onClick={handleCloseModal}>
+                    <button
+                      type="button"
+                      onClick={handleCloseModal1}
+                      style={{
+                        background: "#f1f5f9", border: "1.5px solid #d0d9e8", borderRadius: "10px",
+                        padding: "10px 24px", fontWeight: 600, fontSize: "14px", color: "#4a5568", cursor: "pointer",
+                      }}
+                    >
                       {t("Cancel")}
-                    </Button>
+                    </button>
                   </div>
                 </div>
               </Col>
             </Row>
           </Form>
         </Modal.Body>
-      </Modal> 
+      </Modal>
     </Layout>
   );
 }
