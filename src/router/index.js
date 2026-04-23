@@ -1092,6 +1092,9 @@ import GenerateAcknowledgement from "../pages/direct-benefit-transfer/GenerateAc
 import GenerateWorkOrder from "../pages/direct-benefit-transfer/GenerateWorkOrder";
 import GenerateSelectionLetter from "../pages/direct-benefit-transfer/GenerateSelectionLetter";
 
+import ReelerBalanceReport from "../pages/reports-admin/market-auction/ReelerBalanceReport";
+import ExternalUnitBalanceReport from "../pages/reports-admin/market-auction/ExternalUnitBalanceReport";
+
 // Admin and Reports
 
 function Router() {
@@ -3902,6 +3905,14 @@ function Router() {
               path="form-13-report-by-dist"
               element={<FormReportByDist />}
             />
+
+             <Route
+              path="external-unit-balance"
+              element={<ExternalUnitBalanceReport />}
+            />
+            <Route path="reeler-balance" element={<ReelerBalanceReport />} />
+
+
             <Route path="dtr-all" element={<DtrAll />} />
             <Route path="form-13-dtr" element={<Form13Dtr />} />
             <Route path="form-13-dtr-bv" element={<Form13DtrBv />} />

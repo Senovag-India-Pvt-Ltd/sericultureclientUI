@@ -572,6 +572,9 @@ function Menu() {
 
     Reports_Export_Report_Seed_Market: false,
     Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt: false,
+     Reports_Export_Report_Seed_Market_External_Unit_Balance_Report: false,
+    Reports_Export_Report_Seed_Market_Reeler_Balance_Report: false,
+   
 
     Reports_Export_Report_Silk_Type_Market: false,
     Reports_Export_Report_Silk_Type_Market_Dashboard: false,
@@ -5232,6 +5235,23 @@ function Menu() {
                               <MenuItemLink
                                 text={t("DTR Report")}
                                 to="/seriui/seed-dtr-report"
+                              />
+                            </MenuItem>
+                          ) : null}
+
+                          {showMenu.Reports_Export_Report_Seed_Market_External_Unit_Balance_Report ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("External Unit Balance Report")}
+                                to="/seriui/external-unit-balance"
+                              />
+                            </MenuItem>
+                          ) : null}
+                           {showMenu.Reports_Export_Report_Seed_Market_Reeler_Balance_Report ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Reeler Balance Report")}
+                                to="/seriui/reeler-balance"
                               />
                             </MenuItem>
                           ) : null}
