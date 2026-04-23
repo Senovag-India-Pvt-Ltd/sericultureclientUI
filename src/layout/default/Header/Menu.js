@@ -649,6 +649,9 @@ function Menu() {
     Reports_Export_Report_Helpdesk: false,
     Reports_Export_Report_Helpdesk_Details_Report: false,
 
+    Reports_Export_Report_Admin: false,
+    Reports_Export_Report_Admin_User_Details_Report: false,
+
 
     // Reports_Pendency_Report: false,
 
@@ -1044,6 +1047,13 @@ function Menu() {
     if (data.includes("Reports_Export_Report_Helpdesk")) {
       Object.keys(updatedShowMenu).forEach((key) => {
         if (key.startsWith("Reports_Export_Report_Helpdesk_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("Reports_Export_Report_Admin")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Reports_Export_Report_Admin_")) {
           updatedShowMenu[key] = true;
         }
       });
@@ -1553,6 +1563,18 @@ function Menu() {
         Reports: true,
         Reports_Export_Report: true,
         Reports_Export_Report_Helpdesk: true,
+      }));
+    }
+
+    const hasReportsExportReportAdmin = data.some((item) =>
+      item.startsWith("Reports_Export_Report_Admin_")
+    );
+    if (hasReportsExportReportAdmin) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Export_Report: true,
+        Reports_Export_Report_Admin: true,
       }));
     }
 
@@ -2309,7 +2331,7 @@ function Menu() {
                       <MenuItem>
                         <MenuItemLink
                           text={t(
-                            "Seed Market Invoice,Permit,Cash Receipt,Market Receipt"
+                            "Invoice, Permit, Cash Receipt, Market Receipt"
                           )}
                           to="/seriui/invoice-permit-market-receipt"
                         />
@@ -2344,7 +2366,7 @@ function Menu() {
                     {showMenu.Market_SeedCocoonMarket_Pupa_Test_Cocoon_Assessment_Page ? (
                       <MenuItem>
                         <MenuItemLink
-                          text={t("Pupa Test And Cocoon Assessment Page")}
+                          text={t("Pupa Test and Cocoon Assessment Page")}
                           to="/seriui/pupa-test-and-assessment-page"
                         />
                       </MenuItem>
@@ -2359,14 +2381,7 @@ function Menu() {
                       </MenuItem>
                     ) : null}
 
-                      {showMenu.Market_SeedMarket_Delete_Lot ? (
-                      <MenuItem>
-                        <MenuItemLink
-                          text={t("Delete Lot")}
-                          to="/seriui/delete-lot"
-                        />
-                      </MenuItem>
-                    ) : null}
+                      
                     {showMenu.Market_SeedMarket_Lot_Distribution ? (
                       <MenuItem>
                         <MenuItemLink
@@ -2379,7 +2394,7 @@ function Menu() {
                     {showMenu.Market_SeedMarket_Payment ? (
                       <MenuItem sub>
                         <MenuItemLink
-                          text={t("e-Payment For Seed Market")}
+                          text={t("e-Payment")}
                           onClick={menuToggle}
                           onMouseEnter={menuHover}
                           sub
@@ -2410,6 +2425,15 @@ function Menu() {
                             </MenuItem>
                           ) : null}
                         </MenuSub>
+                      </MenuItem>
+                    ) : null}
+
+                    {showMenu.Market_SeedMarket_Delete_Lot ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t("Delete Lot")}
+                          to="/seriui/delete-lot"
+                        />
                       </MenuItem>
                     ) : null}
                   </MenuSub>
@@ -3324,12 +3348,120 @@ function Menu() {
             </MenuItem>
           ) : null} */}
             {showMenu.Helpdesk_FAQ ? (
-              <MenuItem>
+              <MenuItem sub>
                 <MenuItemLink
-                  text={t("User Manual Videos")}
-                  // to="/seriui/help-desk-faq-view"
-                  to="https://drive.google.com/drive/folders/1V3JAJa_AbwV3072-6sHdgebgHCptU5sj?usp=sharing"
+                  text={t("Video Manual")}
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
                 />
+                <MenuSub>
+                  {/* <MenuItem>
+                    <MenuItemLink
+                      text={t("Adopting Silent Generator-PSF")}
+                      to="https://drive.google.com/open?id=1_nnRq0CQIhGaggjPBfInQafh-WsrBt87&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem> */}
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Adopting Solar Water Heater-PSF")}
+                      to="https://drive.google.com/open?id=10fZ3Gc7MXadMrAfPaD6Zq-ztLTLhO_p3&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Bonus For Bivoltine Cocoons")}
+                      to="https://drive.google.com/open?id=1dwLAfUi8hXky3wsZGuFVQEJXPTWPjGAT&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Adopting Silent Generator-PSF")}
+                      to="https://drive.google.com/open?id=1Vngj8MYf-gKAyIGRD_noNyWDJea5_Te-&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Incentive For Bivoltine Cocoons - Rs.30/KG-PSF")}
+                      to="https://drive.google.com/open?id=1mY6j8lxs3TuOCRWKo4ud-xpSURIEToXJ&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Incentive For Bivoltine Cocoons")}
+                      to="https://drive.google.com/open?id=1j6Ha4_Gy8cFwqkp09FHRfSlByMsxySeG&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Incentive For MSC Cocoons Rs.120 Per Kg")}
+                      to="https://drive.google.com/open?id=1xoGA8MQ0Gyypm5J4zACyI0FYXBMUVxS8&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("MSC Chawki Incentive - Unit Cost For 100 DFLs Rs.1500")}
+                      to="https://drive.google.com/open?id=1HXM7khZgYrQDPIJBQut687W5iMNP1sLL&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("North Karnataka Cocoon Transportation Incentive")}
+                      to="https://drive.google.com/open?id=1CBOM0Efx-K8f7HR7fTejp5MAH6PYPoc4&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Pure Mysore Bonus - Rs.225 Per Kg")}
+                      to="https://drive.google.com/open?id=1YGEX6JgtrF9AtpCji6Qe6QbiIrednfIS&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Silk Incentive-PSF")}
+                      to="https://drive.google.com/open?id=1fOBBDKYV3yBJjoMT1BJpWu2PJoTMCkMb&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Rearing Equipment SS")}
+                      to="https://drive.google.com/open?id=1pxcyOv2UnjETdNqOiuf_Mponu7qDlD0r&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Adopting Solar Power Generator-PSF")}
+                      to="https://drive.google.com/open?id=1e2Ek2-48n9LYrYoq3ORX0ML-Zck4aXk9&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Adopting Heat Recovery Unit-PSF")}
+                      to="https://drive.google.com/open?id=1rj6FxnfIHRZ5wORqXujjzrDKoQS2ddmV&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Bivoltine Chawki Incentive")}
+                      to="https://drive.google.com/open?id=1Z1iN0s0NduOyIsYFSlqYzStpb9cUychA&usp=drive_copy"
+                      blank
+                    />
+                  </MenuItem>
+                </MenuSub>
               </MenuItem>
             ) : null}
           </MenuSub>
@@ -4062,7 +4194,7 @@ function Menu() {
                         {showMenu.Admin_Master_HelpDesk_Status ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Help Desk Status")}
+                              text={t("Helpdesk Status")}
                               to="/seriui/hd-status"
                             />
                           </MenuItem>
@@ -4070,7 +4202,7 @@ function Menu() {
                         {showMenu.Admin_Master_HelpDesk_Severity ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Help Desk Severity")}
+                              text={t("Helpdesk Severity")}
                               to="/seriui/hd-severity"
                             />
                           </MenuItem>
@@ -4078,7 +4210,7 @@ function Menu() {
                         {showMenu.Admin_Master_HelpDesk_Faq ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Help Desk FAQ")}
+                              text={t("Helpdesk FAQ")}
                               to="/seriui/hd-question"
                             />
                           </MenuItem>
@@ -4592,7 +4724,7 @@ function Menu() {
                     </MenuItem>
                   ) : null}
 
-                  {showMenu.Reports_Export_Report_Silk_Type_Market ? (
+                  {/* {showMenu.Reports_Export_Report_Silk_Type_Market ? (
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("Silk Exchange Market")}
@@ -4659,7 +4791,7 @@ function Menu() {
                         ) : null}
                       </MenuSub>
                     </MenuItem>
-                  ) : null}
+                  ) : null} */}
 
                   {showMenu.Reports_Export_Report_Seed_And_Dfl ? (
                     <MenuItem sub>
@@ -5146,7 +5278,7 @@ function Menu() {
                   {showMenu.Reports_Export_Report_Helpdesk ? (
                     <MenuItem sub>
                       <MenuItemLink
-                        text={t("Help Desk")}
+                        text={t("Helpdesk")}
                         onClick={menuToggle}
                         onMouseEnter={menuHover}
                         sub
@@ -5163,7 +5295,28 @@ function Menu() {
                       </MenuSub>
                     </MenuItem>
                   ) : null}
-                 
+
+                  {showMenu.Reports_Export_Report_Admin ? (
+                    <MenuItem sub>
+                      <MenuItemLink
+                        text={t("Admin")}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
+                      />
+                      <MenuSub>
+                        {showMenu.Reports_Export_Report_Admin_User_Details_Report ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("User Details Report")}
+                              to="/seriui/user-master-details-report"
+                            />
+                          </MenuItem>
+                        ) : null}
+                      </MenuSub>
+                    </MenuItem>
+                  ) : null}
+
                 </MenuSub>
               </MenuItem>
             ) : null}
@@ -5238,6 +5391,24 @@ function Menu() {
                               />
                             </MenuItem>
                           ) : null}
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Fitness Certificate")}
+                              to="/seriui/fitness-certificate-report"
+                            />
+                          </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Bidding Slip")}
+                              to="/seriui/seed-market-bidding-slip-report"
+                            />
+                          </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Triplet For Bidding Slip")}
+                              to="/seriui/seed-market-triplet-report"
+                            />
+                          </MenuItem>
 
                           {showMenu.Reports_Export_Report_Seed_Market_External_Unit_Balance_Report ? (
                             <MenuItem>
@@ -5544,7 +5715,7 @@ function Menu() {
                 </MenuItem>
               ) : null}
 
-              {showMenu.Reports_Admin ? (
+              {/* {showMenu.Reports_Admin ? (
                 <MenuItem sub>
                   <MenuItemLink
                     text={t("Admin")}
@@ -5563,7 +5734,7 @@ function Menu() {
                     ) : null}
                   </MenuSub>
                 </MenuItem>
-              ) : null}
+              ) : null} */}
 
               {/* {showMenu.Reports_Sanction_Order ? (
                 <MenuItem>

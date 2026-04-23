@@ -331,13 +331,13 @@ return (
                       <div className="d-grid gap-2">
                         <Button type="submit">Login to account</Button>
                         <Link
-  to="https://e-reshme.karnataka.gov.in/seriui/sericulture.apk"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="btn btn-primary"
->
-  Download Mobile App
-</Link>
+                            to="https://e-reshme.karnataka.gov.in/seriui/sericulture.apk"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-primary"
+                          >
+                            Download Mobile App
+                          </Link>
 
                       {/* </div> */}
 
