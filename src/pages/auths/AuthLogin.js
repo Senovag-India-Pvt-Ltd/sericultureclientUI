@@ -7,9 +7,11 @@ import Swal from "sweetalert2";
 import Layout from "../../layout/fullpage";
 import { login } from "../../services/authService";
 import LoginLogo from "../../components/Logo/LoginLogo";
+import { APP_ROUTES } from "../../config/appRoutes";
 import axios from "axios";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const joinUrl = (base, path) => `${(base || "").replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`;
 
 const AuthLoginPage = () => {
   const navigate = useNavigate();
@@ -53,47 +55,52 @@ const AuthLoginPage = () => {
       return;
     }
 
-    axios
+        axios
       .post(
         baseURL + "userMaster/generate-otp-by-user-name-and-password",
+
+ 
         data,
         { headers: _header }
-      )
+           )
       .then((res) => {
-        const temp = res.data.content;
-        if (!temp?.error) {
-          setToggle(true);
-          startTimer();
-          setMobileNumber("*".repeat(6) + temp.phoneNumber?.slice(6));
-        } else {
-          Swal.fire(
-            "Invalid Username or Password",
-            "Please enter valid credentials",
-            "error"
-          );
-        }
-      });
+      
+      const temp = res.data.content;
+      if (!temp?.error) {
+        setToggle(true);
+        startTimer();
+        setMobileNumber("*".repeat(6) + temp.phoneNumber?.slice(6));
+      } else {
+        Swal.fire(
+          "Invalid Username or Password",
+          "Please enter valid credentials",
+          "error"
+        );
+      }
+          });
+   
 
     setValidated(true);
   };
 
   /* ========= VERIFY OTP ========= */
-
   const verifyotp = () => {
     axios
       .post(
         baseURL + "userMaster/verify-otp-by-user-name",
+
         { username: data.username, enteredOtpByUser: otp },
         { headers: _header }
-      )
+           )
       .then((res) => {
-        if (res.data.content?.otpVerified) {
-          postLogin();
-        } else {
-          setOtp("");
-          setDisplay(true);
-        }
-      });
+      
+      if (res.data.content?.otpVerified) {
+        postLogin();
+      } else {
+        setOtp("");
+        setDisplay(true);
+      }
+         });
   };
 
   /* ========= FINAL LOGIN ========= */
@@ -102,7 +109,7 @@ const AuthLoginPage = () => {
     try {
       const success = await login(data.username, data.password);
       if (success) {
-        navigate("/seriui/homepage");
+        navigate(APP_ROUTES.homepage);
       } else {
         Swal.fire("Login failed", "Invalid credentials", "error");
       }
@@ -239,12 +246,7 @@ return (
 
                     <Button
                       size="lg"
-                      onClick={() =>
-                        (window.location.href =
-                          window.location.hostname === "localhost"
-                            ? "http://localhost:3000/seriui/application-status"
-                            : "https://e-reshme.karnataka.gov.in/seriui/application-status")
-                      }
+                      onClick={() => window.location.assign(APP_ROUTES.applicationStatus)}
                     >
                       View Application Status
                     </Button>
@@ -282,6 +284,7 @@ return (
           ? "http://localhost:3000/seriui/application-status"
           : "https://e-reshme.karnataka.gov.in/seriui/application-status")
     }
+    // onClick={() => window.location.assign(APP_ROUTES.applicationStatus)}
   >
     {/* ICON IN FRONT */}
     <div className="tile-icon">👤</div>
@@ -330,14 +333,14 @@ return (
 
                       <div className="d-grid gap-2">
                         <Button type="submit">Login to account</Button>
-                        <Link
-  to="https://e-reshme.karnataka.gov.in/seriui/sericulture.apk"
+{/* <Link
+  to={APP_ROUTES.mobileAppDownload}
   target="_blank"
   rel="noopener noreferrer"
   className="btn btn-primary"
 >
   Download Mobile App
-</Link>
+</Link> */}
 
                       {/* </div> */}
 

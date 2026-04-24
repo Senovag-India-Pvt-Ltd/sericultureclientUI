@@ -4,6 +4,7 @@ import Swal from "sweetalert2/src/sweetalert2.js";
 
 
 const API_URL = process.env.REACT_APP_API_BASE_URL_AUTH_LOGIN; // Replace with your server URL
+const joinUrl = (base, path) => `${(base || "").replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`;
 
 // const login = async (username, password) => {
 //   const response = await axios.post(`${API_URL}/auth/login`, { username, password });
@@ -12,7 +13,7 @@ const API_URL = process.env.REACT_APP_API_BASE_URL_AUTH_LOGIN; // Replace with y
 
 const login = async (username, password) => {
   try {
-    const response = await axios.post(`${API_URL}auth/login`, {
+    const response = await axios.post(joinUrl(API_URL, "auth/login"), {
       username,
       password,
     });

@@ -8,6 +8,7 @@ import { ScrollToTop } from "../components";
 import Blank from "../pages/Blank";
 // import Home from '../pages/Home';
 import Home from "../pages/home/Modules";
+import SeriUiHomePage from "../pages/home/Home.Page.js";
 import HomeEcommerce from "../pages/HomeEcommerce";
 import HomeProject from "../pages/HomeProject";
 import HomeMarketing from "../pages/HomeMarketing";
@@ -1078,6 +1079,7 @@ import LotWisePriceFixation from "../pages/seed-cocoon-martket/LotWisePriceFixat
 import SakalaDashboard from "../pages/services-module/application/SakalaDashboard";
 import CumulativeReport from "../pages/services-module/application/CumulativeReport";
 import DownloadSanctionOrder from "../pages/market-and-auction/DownloadSanctionOrder";
+import { APP_BASE_PATH, APP_BASE_SEGMENT, APP_ROUTES } from "../config/appRoutes";
 
 // Admin and Reports
 
@@ -1088,21 +1090,24 @@ function Router() {
 
   useEffect(() => {
     const pathname = window.location.pathname;
-    const displayAllLotPathPattern = /^\/seriui\/display-all-lot\/\d+$/;
-    const applicationCheck = /^\/seriui\/application-status$/;
-    const downloadSanctionOrder = /^\/seriui\/download-sanction-order$/;
+    const escapedBasePath = APP_BASE_PATH.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const displayAllLotPathPattern = new RegExp(`^${escapedBasePath}/display-all-lot/\\d+$`);
+    const applicationCheck = pathname === APP_ROUTES.applicationStatus;
+    const downloadSanctionOrder = pathname === APP_ROUTES.downloadSanctionOrder;
+    const loginPathPattern = pathname === APP_ROUTES.login;
     console.log(pathname);
     console.log(displayAllLotPathPattern.test(pathname));
-    // if (!isAuthenticated && !displayAllLotPathPattern.test(pathname) && !applicationCheck.test(pathname)) {
-    //   navigate("/seriui");
+    // if (!isAuthenticated && !displayAllLotPathPattern.test(pathname) && !applicationCheck) {
+    //   navigate(APP_ROUTES.root);
     // }
     if (
     !isAuthenticated &&
     !displayAllLotPathPattern.test(pathname) &&
-    !applicationCheck.test(pathname) &&
-    !downloadSanctionOrder.test(pathname)
+    !applicationCheck &&
+    !downloadSanctionOrder &&
+    !loginPathPattern
   ) {
-    navigate("/seriui");
+    navigate(APP_ROUTES.root);
   }
   }, [isAuthenticated, navigate]);
 
@@ -1110,27 +1115,29 @@ function Router() {
     <ScrollToTop>
       <Routes>
         {/* <Route path="/blank" element={<Blank />} /> */}
-        <Route path="/seriui" element={<AuthLogin />} />
-        <Route path="/seriui/home" element={<Home />} />
+        <Route path={APP_ROUTES.root} element={<SeriUiHomePage />} />
+        <Route path={APP_ROUTES.login} element={<AuthLogin />} />
+        <Route path={APP_ROUTES.home} element={<SeriUiHomePage />} />
         {/* Display All Lot */}
         <Route
-          path="/seriui/display-all-lot/:marketId"
+          path={`${APP_ROUTES.displayAllLotPrefix}/:marketId`}
           element={<DisplayAllLot />}
         />
 
        <Route
-          path="/seriui/download-sanction-order"
+          path={APP_ROUTES.downloadSanctionOrder}
           element={<DownloadSanctionOrder />}
         />
         {/* Application Check */}
          <Route
-              path="/seriui/application-status"
+              path={APP_ROUTES.applicationStatus}
               element={<DbtApplicationStatusCheck />}
             />
 
         {/* Conditional rendering for protected route */}
         {isAuthenticated && (
           <Route path="seriui">
+          
             <Route path="home-ecommerce" element={<HomeEcommerce />} />
             <Route path="home-project" element={<HomeProject />} />
             <Route path="home-marketing" element={<HomeMarketing />} />
@@ -3213,7 +3220,7 @@ function Router() {
             />
 
 
-<Route path="dbtStatusCheck" element={<DbtStatusCheck />} />
+            <Route path="dbtStatusCheck" element={<DbtStatusCheck />} />
             <Route
               path="dbtStatusCheck-list"
               element={<DbtStatusCheckList />}
