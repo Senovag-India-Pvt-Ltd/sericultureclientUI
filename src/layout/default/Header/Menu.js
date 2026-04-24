@@ -5337,8 +5337,6 @@ function Menu() {
                 <MenuItem sub>
                   <MenuItemLink
                     text={t("Format Reports")}
-                    to="https://e-reshme.karnataka.gov.in/ssrsreport/ssrsreport/BVM5_Format.aspx"
-                    blank={true}
                     onClick={menuToggle}
                     onMouseEnter={menuHover}
                     sub
@@ -5680,7 +5678,7 @@ function Menu() {
                     {showMenu.Reports_Format_Reports_Acknowledgement ? (
                       <MenuItem>
                         <MenuItemLink
-                          text={t("Acknowledgement")}
+                          text={t("Acknowledgements")}
                           to="/seriui/generate-acknowledgement"
                         />
                       </MenuItem>
@@ -5689,7 +5687,7 @@ function Menu() {
                     {showMenu.Reports_Format_Reports_WorkOrder ? (
                       <MenuItem>
                         <MenuItemLink
-                          text={t("Work Order")}
+                          text={t("Work Orders")}
                           to="/seriui/generate-work-order"
                         />
                       </MenuItem>
@@ -5707,11 +5705,19 @@ function Menu() {
                     {showMenu.Reports_Format_Reports_Sanction_Order ? (
                       <MenuItem>
                         <MenuItemLink
-                          text={t("Sanction Order")}
+                          text={t("Sanction Orders")}
                           to="/seriui/generate-sanction-order"
                         />
                       </MenuItem>
                     ) : null}
+
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Other Format Reports")}
+                        to="https://e-reshme.karnataka.gov.in/ssrsreport/ssrsreport/BVM5_Format.aspx"
+                        blank={true}
+                      />
+                    </MenuItem>
 
                  </MenuSub>
                 </MenuItem>
