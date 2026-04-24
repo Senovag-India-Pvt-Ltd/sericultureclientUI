@@ -2469,19 +2469,6 @@ const handleGenerateSanctionOrderClick = async () => {
           );
         }
 
-        else if (
-          schemeType === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
-        ) {
-          generateSanctionOrderAcknowledgment(
-            applicationFormId,
-            schemeId,
-            "farmer",
-            schemeType,
-            subSchemeId,
-            categoryId,
-            applicationFormIds
-          );
-        }
 
         
 
@@ -2623,6 +2610,17 @@ const handleGenerateSanctionOrderClick = async () => {
           );
         }
 
+        else if (schemeType === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
         else if (schemeType === "SDP Low Cost Shed") {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
@@ -2692,8 +2690,7 @@ const handleGenerateSanctionOrderClick = async () => {
             "company",
             schemeType,
             subSchemeId,
-            categoryId,
-            applicationFormIds
+            categoryId
           );
         }
 
@@ -2958,7 +2955,7 @@ const handleGenerateSanctionOrderClick = async () => {
 else if (
   schemeType === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
 ) {
-  endpoint = baseURLReport + `getSanctionOrderRHSSConstruction`;
+  endpoint = baseURLReport + `getSanctionOrderRHSDPConstruction`;
 }
 
     else if (schemeType === "Rearing Equipment SS") {
