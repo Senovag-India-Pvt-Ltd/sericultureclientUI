@@ -49,7 +49,9 @@ function ConfiguredRHAmountEdit() {
                 amount: "",
                 sqft: "",
                 centralAmount: "",
-            stateAmounts: "",
+                stateAmounts: "",
+                maxAmount: "",
+                minAmount: "",
             });
             setValidated(false);
           }
@@ -70,7 +72,9 @@ function ConfiguredRHAmountEdit() {
     amount: "",
     sqft: "",
     centralAmount: "",
-            stateAmounts: "",
+    stateAmounts: "",
+    maxAmount: "",
+    minAmount: "",
     });
   };
 
@@ -410,6 +414,52 @@ function ConfiguredRHAmountEdit() {
                         </div>
                     </Form.Group>
                     </Col>
+
+                    <Col lg="6">
+                        <Form.Group className="form-group mt-n3">
+                          <Form.Label htmlFor="title">
+                            Max Sqft
+                            {/* <span className="text-danger">*</span> */}
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="maxAmount"
+                              name="maxAmount"
+                              type="number"
+                              value={data.maxAmount}
+                              onChange={handleInputs}
+                              placeholder="Enter Max Sqft"
+                              // required
+                            />
+                            {/* <Form.Control.Feedback type="invalid">
+                            Max Sqft is required
+                            </Form.Control.Feedback> */}
+                          </div>
+                        </Form.Group>
+                      </Col>
+    
+                      <Col lg="6">
+                        <Form.Group className="form-group mt-n3">
+                          <Form.Label htmlFor="title">
+                            Min Sqft
+                            {/* <span className="text-danger">*</span> */}
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="minAmount"
+                              name="minAmount"
+                              type="number"
+                              value={data.minAmount}
+                              onChange={handleInputs}
+                              placeholder="Enter Min Sqft"
+                              // required
+                            />
+                            {/* <Form.Control.Feedback type="invalid">
+                            Min Sqft is required
+                            </Form.Control.Feedback> */}
+                          </div>
+                        </Form.Group>
+                      </Col>
 
                 </Row>
                 </Card.Body>

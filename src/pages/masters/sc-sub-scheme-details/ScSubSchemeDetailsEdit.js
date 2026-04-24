@@ -485,6 +485,8 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             <option value="Rearing Equipment SS">Rearing Equipment SS</option>
                             <option value="SS Construction Of Low Cost Shed to Permanent Rearing House">SS Construction Of Low Cost Shed to Permanent Rearing House</option>
                             <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
+                            <option value="SDP RH 225">SDP RH 225</option>
+                              <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -542,6 +544,8 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                              <option value="Rearing Equipment SS">Rearing Equipment SS</option>
                              <option value="SS Construction Of Low Cost Shed to Permanent Rearing House">SS Construction Of Low Cost Shed to Permanent Rearing House</option>
                              <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
+                             <option value="SDP RH 225">SDP RH 225</option>
+                              <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -599,6 +603,8 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                              <option value="Rearing Equipment SS">Rearing Equipment SS</option>
                              <option value="SS Construction Of Low Cost Shed to Permanent Rearing House">SS Construction Of Low Cost Shed to Permanent Rearing House</option>
                              <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
+                             <option value="SDP RH 225">SDP RH 225</option>
+                              <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -655,6 +661,8 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                              <option value="Registered Private Bivoltine Chawki Rearing Center Subsidy">Registered Private Bivoltine Chawki Rearing Center Subsidy</option>
                              <option value="Rearing Equipment SS">Rearing Equipment SS</option>
                             <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
+                            <option value="SDP RH 225">SDP RH 225</option>
+                              <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
 
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
@@ -713,6 +721,8 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                              <option value="Rearing Equipment SS">Rearing Equipment SS</option>
                              <option value="SS Construction Of Low Cost Shed to Permanent Rearing House">SS Construction Of Low Cost Shed to Permanent Rearing House</option>
                              <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
+                             <option value="SDP RH 225">SDP RH 225</option>
+                              <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required

@@ -2327,16 +2327,7 @@ function Menu() {
                     sub
                   />
                   <MenuSub>
-                    {showMenu.Market_SeedCocoonMarket_Inward ? (
-                      <MenuItem>
-                        <MenuItemLink
-                          text={t(
-                            "Invoice, Permit, Cash Receipt, Market Receipt"
-                          )}
-                          to="/seriui/invoice-permit-market-receipt"
-                        />
-                      </MenuItem>
-                    ) : null}
+                    
                     {showMenu.Market_SeedCocoonMarket_Inward ? (
                       <MenuItem>
                         <MenuItemLink
@@ -2433,6 +2424,17 @@ function Menu() {
                         <MenuItemLink
                           text={t("Delete Lot")}
                           to="/seriui/delete-lot"
+                        />
+                      </MenuItem>
+                    ) : null}
+
+                    {showMenu.Market_SeedCocoonMarket_Inward ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t(
+                            "Invoice, Permit, Cash Receipt, Market Receipt"
+                          )}
+                          to="/seriui/invoice-permit-market-receipt"
                         />
                       </MenuItem>
                     ) : null}
@@ -5405,7 +5407,7 @@ function Menu() {
                           </MenuItem>
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Triplet For Bidding Slip")}
+                              text={t("Triplet")}
                               to="/seriui/seed-market-triplet-report"
                             />
                           </MenuItem>

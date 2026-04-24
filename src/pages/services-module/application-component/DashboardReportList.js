@@ -1726,6 +1726,13 @@ const callWorkOrderAcknowledgment = async (
       subSchemeId,
       categoryId
     );
+
+    } else if (workOrderForScheme === "SDP RH 225") {
+    generateWorkOrderRHSDP225(applicationFormId, workOrderSchemeId, subSchemeId, categoryId);
+
+    } else if (workOrderForScheme === "SDP Low Cost Shed") {
+    generateWorkOrderRHSDPLowCostShed(applicationFormId, workOrderSchemeId, subSchemeId, categoryId);
+
   }
 };
 
@@ -1807,6 +1814,22 @@ const handleDownloadWorkOrder = async (viewDetailsData) => {
       viewDetailsData.workOrderForScheme === "Silk Incentive-PSF"
     ) {
       generateWorkOrderReelingShed(
+        viewDetailsData.applicationFormId,
+        viewDetailsData.workOrderSchemeId,
+        viewDetailsData.subSchemeId,
+        viewDetailsData.categoryId
+      );
+
+    } else if (viewDetailsData.workOrderForScheme === "SDP RH 225") {
+      generateWorkOrderRHSDP225(
+        viewDetailsData.applicationFormId,
+        viewDetailsData.workOrderSchemeId,
+        viewDetailsData.subSchemeId,
+        viewDetailsData.categoryId
+      );
+
+    } else if (viewDetailsData.workOrderForScheme === "SDP Low Cost Shed") {
+      generateWorkOrderRHSDPLowCostShed(
         viewDetailsData.applicationFormId,
         viewDetailsData.workOrderSchemeId,
         viewDetailsData.subSchemeId,
@@ -1930,6 +1953,34 @@ const generateWorkOrderRHSDPconstruction = async (applicationFormId, schemeId) =
     window.open(fileURL);
   } catch (error) {
     console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderRHSDP225 = async (applicationFormId, schemeId, subSchemeId, categoryId) => {
+  try {
+    const response = await api.post(
+      baseURLReport + `getRHSDP225WorkOrder`,
+      { applicationFormId, schemeId, subSchemeId, categoryId },
+      { responseType: "blob" }
+    );
+    const file = new Blob([response.data], { type: "application/pdf" });
+    window.open(URL.createObjectURL(file));
+  } catch (error) {
+    console.error("Error generating SDP RH 225 work order:", error);
+  }
+};
+
+const generateWorkOrderRHSDPLowCostShed = async (applicationFormId, schemeId, subSchemeId, categoryId) => {
+  try {
+    const response = await api.post(
+      baseURLReport + `getRHSDPLowCostShedWorkOrder`,
+      { applicationFormId, schemeId, subSchemeId, categoryId },
+      { responseType: "blob" }
+    );
+    const file = new Blob([response.data], { type: "application/pdf" });
+    window.open(URL.createObjectURL(file));
+  } catch (error) {
+    console.error("Error generating SDP Low Cost Shed work order:", error);
   }
 };
 
@@ -2560,8 +2611,29 @@ const handleGenerateSanctionOrderClick = async () => {
             applicationFormIds
           );
         }
-        
-        
+
+        else if (schemeType === "SDP RH 225") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
+        else if (schemeType === "SDP Low Cost Shed") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
         else {
           console.error("Unknown scheme type for farmer sanction order.");
         }
@@ -2759,7 +2831,28 @@ const handleGenerateSanctionOrderClick = async () => {
           );
         }
 
-       
+        else if (schemeType === "SDP RH 225") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "company",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
+        else if (schemeType === "SDP Low Cost Shed") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "company",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
         else {
           console.error("Unknown Scheme type for company sanction order.");
         }
@@ -2953,6 +3046,14 @@ else if (
     else if (schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
       endpoint = baseURLReport + `PrivateCRCSanction`;
     }
+
+    else if (schemeType === "SDP RH 225") {
+      endpoint = baseURLReport + `getSanctionOrderRHSDP225`;
+    }
+
+    else if (schemeType === "SDP Low Cost Shed") {
+      endpoint = baseURLReport + `getSanctionOrderRHSDPLowCostShed`;
+    }
     // else if (schemeType === "Rearing Equipment SS") {
     //   endpoint = baseURLReport + `getSanctionOrderRHEquipment`;
     // }
@@ -3028,11 +3129,13 @@ else if (
             schemeType === "Adopting Heat Recovery Unit-PSF" ||
             schemeType === "Adopting Boiler-PSF" ||
             schemeType === "ICB-PSF" ||
-            schemeType === "IMCB-PSF" ||          // ✅ was missing
-            schemeType === "Adopting Silent Generator" ||   // ✅ THE FIX
-            schemeType === "Adopting Solar power Generator" ||  // ✅ was missing
-            schemeType === "Adopting Solar Water Heater" ||     // ✅ was missing
-            schemeType === "MERM-PSF"
+            schemeType === "IMCB-PSF" ||
+            schemeType === "Adopting Silent Generator" ||
+            schemeType === "Adopting Solar power Generator" ||
+            schemeType === "Adopting Solar Water Heater" ||
+            schemeType === "MERM-PSF" ||
+            schemeType === "SDP RH 225" ||
+            schemeType === "SDP Low Cost Shed"
           ) {
             payload = {
               applicationFormId: applicationId,

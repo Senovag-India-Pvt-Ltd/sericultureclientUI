@@ -1,28 +1,83 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Card, Form, Row, Col } from "react-bootstrap";
 import Swal from "sweetalert2/src/sweetalert2.js";
-import { useNavigate } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DataTable from "react-data-table-component";
 import React, { useState, useEffect } from "react";
-// import axios from "axios";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
+if (!document.getElementById("lwpf-styles")) {
+  const s = document.createElement("style");
+  s.id = "lwpf-styles";
+  s.innerHTML = `
+    .swal-pop { border-radius: 22px !important; padding: 8px !important; box-shadow: 0 30px 90px rgba(0,0,0,0.22) !important; }
+    .swal-pop .swal2-title { font-size: 21px !important; font-weight: 800 !important; color: #1a202c !important; }
+    .swal-pop .swal2-icon { margin: 20px auto 4px !important; }
+    .swal-pop .swal2-html-container { margin: 0 !important; padding: 0 !important; }
+    .swal-pop .swal2-actions { gap: 10px !important; }
+    .swal-pop .swal2-confirm, .swal-pop .swal2-cancel { border-radius: 11px !important; padding: 12px 30px !important; font-weight: 700 !important; font-size: 14px !important; }
+    .lwpf-delete-btn { background: linear-gradient(135deg,#e53e3e,#fc5c7d); border: none; border-radius: 7px; padding: 5px 14px; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer; transition: opacity 0.15s; }
+    .lwpf-delete-btn:hover { opacity: 0.85; }
+  `;
+  document.head.appendChild(s);
+}
+
+const inputStyle = {
+  borderRadius: "8px",
+  border: "1.5px solid #d0d9e8",
+  padding: "8px 12px",
+  fontSize: "14px",
+  background: "#f8fafd",
+  color: "#333",
+  width: "100%",
+};
+const labelStyle = {
+  fontSize: "13px",
+  fontWeight: 600,
+  color: "#4a5568",
+  marginBottom: "5px",
+  display: "block",
+};
+const fieldGroupStyle = {
+  display: "flex",
+  flexDirection: "column",
+  marginBottom: "4px",
+};
+
+const customTableStyles = {
+  rows: { style: { minHeight: "40px", fontSize: "13px" } },
+  headCells: {
+    style: {
+      background: "linear-gradient(135deg,#1e67a8,#2d9cdb)",
+      color: "#fff",
+      fontSize: "13px",
+      fontWeight: 700,
+      paddingLeft: "12px",
+      paddingRight: "12px",
+    },
+  },
+  cells: {
+    style: {
+      paddingLeft: "12px",
+      paddingRight: "12px",
+      paddingTop: "6px",
+      paddingBottom: "6px",
+      borderBottom: "1px solid #e2e8f0",
+    },
+  },
+};
+
 function LotWisePriceFixation() {
-  const [listData, setListData] = useState({});
-  const [page, setPage] = useState(0);
-  const countPerPage = 5;
-  const [totalRows, setTotalRows] = useState(0);
+  const [listData, setListData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage } };
-  const navigate = useNavigate();
+  const [isSaving, setIsSaving] = useState(false);
+  const { t } = useTranslation();
+  const { id } = useParams();
 
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
@@ -31,333 +86,206 @@ function LotWisePriceFixation() {
     allottedLotId: "",
   });
 
-  const handleEdit = (_id) => {
-    navigate(`/seriui/lot-wise-price-fixation-edit/${_id}`);
-    // navigate("/seriui/taluk");
-  };
-
-  const deleteError = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
-    });
-  };
-
-  const deleteConfirm = (_id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "It will delete permanently!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.value) {
-        const response = api
-          .delete(baseURL1 + `cocoon/delete/${_id}`)
-          .then((response) => {
-            // deleteConfirm(_id);
-            getList();
-            Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
-              "success"
-            );
-          })
-          .catch((err) => {
-            deleteError();
-          });
-        // Swal.fire("Deleted", "You successfully deleted this record", "success");
-      } else {
-        console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
-      }
-    });
-  };
-
   const [validated, setValidated] = useState(false);
-  const [isActive,setIsActive] = useState(false);
-
-  const { id } = useParams();
-  const { t } = useTranslation();
-
-  const handleDateChange = (date, type) => {
-    setData({ ...data, [type]: date });
-  };
-
   const [allottedLotOptions, setAllottedLotOptions] = useState([]);
 
-const getAllottedLotIdsForPrice = async () => {
-  try {
-    const response = await api.post(
-      baseURL1 + `cocoon/getAllottedLotIdsForPrice`
-    );
-
-    if (response?.data?.content) {
-      setAllottedLotOptions(response.data.content);
-    } else {
+  const getAllottedLotIdsForPrice = async () => {
+    try {
+      const response = await api.post(
+        baseURL1 + `cocoon/getAllottedLotIdsForPrice`,
+      );
+      setAllottedLotOptions(response?.data?.content || []);
+    } catch {
       setAllottedLotOptions([]);
     }
-  } catch (error) {
-    setAllottedLotOptions([]);
-  }
-};
-useEffect(() => {
-  getAllottedLotIdsForPrice();
-}, []);
-
-
-
-  const acceptSuccess = () => {
-    Swal.fire({
-      icon: "success",
-      title: t("Price Added successfully"),
-      // text: "Auction Accepted Successfully",
-    }).then(() => {
-    // setIsActive(true);
-    window.location.reload();
-  });
-  };
-
-  const acceptError = (message = t("Something went wrong!")) => {
-    let errorMessage;
-    if (typeof message === "object") {
-      errorMessage = Object.values(message).join("<br>");
-    } else {
-      errorMessage = message;
-    }
-    Swal.fire({
-      icon: "error",
-      title: t("Accept attempt was not successful"),
-      html: errorMessage,
-    });
   };
 
   const getList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURL1 + `cocoon/getPrices`, _params)
+    api
+      .get(baseURL1 + `cocoon/getPrices`)
       .then((response) => {
-        setListData(response.data.content);
-        // setTotalRows(response.data.content.totalItems);
+        setListData(response.data.content || []);
         setLoading(false);
       })
-      .catch((err) => {
-        setListData({});
+      .catch(() => {
+        setListData([]);
         setLoading(false);
       });
   };
 
   useEffect(() => {
+    getAllottedLotIdsForPrice();
     getList();
-  }, [page]);
+  }, []);
 
   const handleLotIdInputs = (e) => {
-    // debugger;
-    let { name, value } = e.target;
+    const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
 
- 
+  const handleDateChange = (date, type) => {
+    setData({ ...data, [type]: date });
+  };
 
-//   const postData = (event) => {
-//     const form = event.currentTarget;
-    
-//     if (form.checkValidity() === false) {
-//         event.preventDefault();
-//         event.stopPropagation();
-//         setValidated(true);
-//     } else {
-//         event.preventDefault();
+  const acceptSuccess = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Price Fixed Successfully",
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#f0fff4,#fff);border:1.5px solid #9ae6b4;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#38a169,#48bb78);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">✅</div><div><p style="color:#22543d;font-size:14px;font-weight:700;margin:0 0 5px">Price Added Successfully</p><p style="color:#276749;font-size:13px;margin:0;line-height:1.65">The lot wise price has been recorded successfully.</p></div></div></div>`,
+      confirmButtonText: "OK",
+      confirmButtonColor: "#38a169",
+      background: "#fff",
+      customClass: { popup: "swal-pop" },
+    }).then(() => window.location.reload());
+  };
 
-//         api.post(baseURL1 + `cocoon/saveBasePriceKGLot`, {
-//             ...data,
-//         })
-//         .then((response) => {
-//             if (response.data.errorCode === 0) {
-//                 acceptSuccess();
-//             } else if (response.data.errorCode === -1) {
-//                 // Check if content exists and use it, otherwise use errorMessages
-//                 if (response.data.content) {
-//                     acceptError(response.data.content);
-//                 } else if (response.data.errorMessages.length > 0) {
-//                     acceptError(response.data.errorMessages[0].message);
-//                 } else {
-//                     acceptError(); // Default error if no specific message
-//                 }
-//             }
-//         })
-//         .catch((err) => {
-//             acceptError(); // Handle the error if the API call fails
-//         });
-//     }
-// };
+  const acceptError = (message = t("Something went wrong!")) => {
+    const errorMessage =
+      typeof message === "object"
+        ? Object.values(message).join("<br>")
+        : message;
+    Swal.fire({
+      icon: "error",
+      title: "Submission Failed",
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">❌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Could Not Save</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${errorMessage}</p></div></div></div>`,
+      confirmButtonText: "Close",
+      confirmButtonColor: "#e53e3e",
+      background: "#fff",
+      customClass: { popup: "swal-pop" },
+    });
+  };
 
-const postData = (event) => {
-  const form = event.currentTarget;
+  const deleteConfirm = (_id) => {
+    Swal.fire({
+      title: "Delete this record?",
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it",
+      confirmButtonColor: "#e53e3e",
+      cancelButtonColor: "#718096",
+      customClass: { popup: "swal-pop" },
+    }).then((result) => {
+      if (result.value) {
+        api
+          .delete(baseURL1 + `cocoon/delete/${_id}`)
+          .then(() => {
+            getList();
+            Swal.fire({
+              icon: "success",
+              title: "Deleted",
+              text: "Record deleted successfully.",
+              customClass: { popup: "swal-pop" },
+            });
+          })
+          .catch(() => {
+            Swal.fire({
+              icon: "error",
+              title: "Delete Failed",
+              text: "Something went wrong!",
+              customClass: { popup: "swal-pop" },
+            });
+          });
+      }
+    });
+  };
 
-  if (form.checkValidity() === false) {
-    event.preventDefault();
-    event.stopPropagation();
-    setValidated(true);
-  } else {
-    event.preventDefault();
-
-    api
-      .post(baseURL1 + `cocoon/saveLotWiseBasePriceKGLot`, {
-        ...data,
-      })
-      .then((response) => {
-        if (response.data.errorCode === 0) {
-          acceptSuccess();
-          getList(); // Refresh the table with the new data
-          setData({
-            marketId: localStorage.getItem("marketId"),
-            fixationDate: new Date(),
-            pricePerKg: "",
-            allottedLotId: "",
-          }); // Optionally reset the form
-        } else if (response.data.errorCode === -1) {
-          if (response.data.content) {
-            acceptError(response.data.content);
-          } else if (response.data.errorMessages.length > 0) {
-            acceptError(response.data.errorMessages[0].message);
-          } else {
-            acceptError(); // Default error if no specific message
+  const postData = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      event.preventDefault();
+      setIsSaving(true);
+      api
+        .post(baseURL1 + `cocoon/saveLotWiseBasePriceKGLot`, { ...data })
+        .then((response) => {
+          if (response.data.errorCode === 0) {
+            acceptSuccess();
+            getList();
+            setData({
+              marketId: localStorage.getItem("marketId"),
+              fixationDate: new Date(),
+              pricePerKg: "",
+              allottedLotId: "",
+            });
+          } else if (response.data.errorCode === -1) {
+            if (response.data.content) {
+              acceptError(response.data.content);
+            } else if (response.data.errorMessages?.length > 0) {
+              acceptError(response.data.errorMessages[0].message);
+            } else {
+              acceptError();
+            }
+            setIsSaving(false);
           }
-        }
-      })
-      .catch((err) => {
-        acceptError(); // Handle the error if the API call fails
-      });
-  }
-};
+        })
+        .catch(() => {
+          acceptError();
+          setIsSaving(false);
+        });
+    }
+  };
 
-
-// const customStyles = {
-//   rows: {
-//     style: {
-//       minHeight: "45px", // override the row height
-//     },
-//   },
-//   headCells: {
-//     style: {
-//       backgroundColor: "#1e67a8",
-//       color: "#fff",
-//       fontSize: "14px",
-//       paddingLeft: "8px", // override the cell padding for head cells
-//       paddingRight: "8px",
-//     },
-//   },
-//   cells: {
-//     style: {
-//       paddingLeft: "8px", // override the cell padding for data cells
-//       paddingRight: "8px",
-//     },
-//   },
-// };
-const customStyles = {
-  rows: {
-    style: {
-      minHeight: "30px", // Row height
+  const UserDataColumns = [
+    {
+      name: t("Sl.No."),
+      cell: (row, i) => (
+        <span style={{ fontWeight: 600, color: "#4a5568" }}>{i + 1}</span>
+      ),
+      width: "70px",
     },
-  },
-  headCells: {
-    style: {
-      backgroundColor: "#1e67a8", // Header background color
-      color: "#fff", // Header text color
-      borderStyle: "solid",
-      borderWidth: "1px",
-      borderColor: "black", // Header cell border color
-      paddingLeft: "8px",
-      paddingRight: "8px",
+    {
+      name: t("Bidding Slip Lot No"),
+      selector: (row) => row.allottedLotId,
+      cell: (row) => (
+        <span
+          style={{
+            background: "#ebf8ff",
+            color: "#1e67a8",
+            borderRadius: "6px",
+            padding: "3px 10px",
+            fontWeight: 700,
+            fontSize: "12px",
+          }}
+        >
+          {row.allottedLotId}
+        </span>
+      ),
+      sortable: true,
     },
-  },
-  cells: {
-    style: {
-      borderStyle: "solid",
-      borderWidth: "1px",
-      borderColor: "black", // Data cell border color
-      paddingTop: "3px",
-      paddingBottom: "3px",
-      paddingLeft: "8px",
-      paddingRight: "8px",
-      textAlign: "left", // Set alignment to left for all cells
+    {
+      name: t("Fixation Date"),
+      selector: (row) => row.fixationDate,
+      cell: (row) => <span>{row.fixationDate}</span>,
+      sortable: true,
     },
-  },
-};
-
-
-const UserDataColumns = [
-  {
-    name: t("Sl.No."),
-    selector: (row) => row.marketId,
-    cell: (row,i) => <span>{i+1}</span>,
-    sortable: true,
-    width: "80px",
-    hide: "md",
-  },
-  {
-    name: t("Bidding Slip Lot No"),
-    selector: (row) => row.allottedLotId,
-    cell: (row) => <span>{row.allottedLotId}</span>,
-    sortable: true,
-    // width: "100",
-    hide: "md",
-  },
-  {
-    name: t("Fixation Date"),
-    selector: (row) => row.fixationDate,
-    cell: (row) => <span>{row.fixationDate}</span>,
-    sortable: true,
-    // width: "100",
-    hide: "md",
-  },
-  {
-    name: t("Price Per Kg"),
-    selector: (row) => row.pricePerKg,
-    cell: (row) => <span>{row.pricePerKg}</span>,
-    sortable: true,
-    // width: "100",
-    hide: "md",
-  },
-  {
-        name: "Action",
-        cell: (row) => (
-          //   Button style
-          <div className="text-start w-100">
-            {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-            {/* <Button
-              variant="primary"
-              size="sm"
-              onClick={() => handleView(row.raceMarketMasterId)}
-            >
-              View
-            </Button> */}
-            {/* <Button
-              variant="primary"
-              size="sm"
-              className="ms-2"
-              onClick={() => handleEdit(row.id)}
-            >
-              Edit
-            </Button> */}
-            <Button
-              variant="danger"
-              size="sm"
-              onClick={() => deleteConfirm(row.id)}
-              className="ms-2"
-            >
-              Delete
-            </Button>
-          </div>
-        ),
-        sortable: false,
-        hide: "md",
-        // grow: 2,
-      },
- 
-];
+    {
+      name: t("Price Per Kg (₹)"),
+      selector: (row) => row.pricePerKg,
+      cell: (row) => (
+        <span style={{ fontWeight: 700, color: "#276749" }}>
+          ₹ {row.pricePerKg}
+        </span>
+      ),
+      sortable: true,
+    },
+    {
+      name: "Action",
+      cell: (row) => (
+        <button
+          type="button"
+          className="lwpf-delete-btn"
+          onClick={() => deleteConfirm(row.id)}
+        >
+          🗑 Delete
+        </button>
+      ),
+    },
+  ];
 
   return (
     <Layout title={t("Lot Wise Price Fixation")} show="true">
@@ -366,166 +294,300 @@ const UserDataColumns = [
           <Block.HeadContent>
             <Block.Title tag="h2">{t("Lot Wise Price Fixation")}</Block.Title>
           </Block.HeadContent>
-          {/* <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link to="#" className="btn btn-primary btn-md d-md-none">
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="#"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent> */}
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n5">
-        {/* <Form action="#"> */}
-        <Row className="g-3 ">
-          <Card>
-            <Card.Body>
-              <Row className="g-gs">
-                <Col lg="8">
-                  <Form noValidate validated={validated} onSubmit={postData}>
-                    <Form.Group as={Row} className="form-group">
+      <Block className="mt-n4">
+        {/* Form Card */}
+        <Card
+          style={{
+            borderRadius: "14px",
+            border: "none",
+            boxShadow: "0 4px 24px rgba(30,103,168,0.10)",
+            marginBottom: "16px",
+          }}
+        >
+          <div
+            style={{
+              background: "linear-gradient(135deg, #1e67a8 0%, #2d9cdb 100%)",
+              padding: "8px 16px",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              borderRadius: "14px 14px 0 0",
+            }}
+          >
+            <div
+              style={{
+                width: "26px",
+                height: "26px",
+                borderRadius: "50%",
+                background: "rgba(255,255,255,0.2)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "13px",
+                flexShrink: 0,
+              }}
+            >
+              💰
+            </div>
+            <div>
+              <div style={{ color: "#fff", fontWeight: 700, fontSize: "13px" }}>
+                Lot Wise Price Fixation
+              </div>
+              <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "11px", marginTop: "1px" }}>
+                Set price per kg for a bidding slip lot
+              </div>
+            </div>
+            <div
+              style={{
+                marginLeft: "auto",
+                background: "rgba(255,255,255,0.15)",
+                borderRadius: "20px",
+                padding: "4px 14px",
+              }}
+            >
+              <span
+                style={{ color: "#fff", fontSize: "12px", fontWeight: 600 }}
+              >
+                Seed Market
+              </span>
+            </div>
+          </div>
 
-                    {/* <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        {t("Bidding Slip Lot No")}
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={2}>
-                        <Form.Control
-                          id="allottedLotId"
-                          name="allottedLotId"
-                          value={data.allottedLotId}
-                          onChange={handleLotIdInputs}
-                          type="number"
-                          placeholder={t("Enter Bidding Slip Lot No")}
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {t("Bidding Slip Lot No is required.")}
-                        </Form.Control.Feedback>
-                      </Col> */}
-                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                          {t("Bidding Slip Lot No")}
-                          <span className="text-danger">*</span>
-                        </Form.Label>
+          <Card.Body style={{ padding: "10px 16px 12px" }}>
+            <div
+              style={{
+                fontSize: "11px",
+                fontWeight: 700,
+                color: "#1e67a8",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                marginBottom: "8px",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+              }}
+            >
+              <span
+                style={{
+                  width: "3px",
+                  height: "14px",
+                  background: "#1e67a8",
+                  borderRadius: "2px",
+                  display: "inline-block",
+                }}
+              />
+              Price Details
+            </div>
 
-                        <Col sm={2}>
-                          <Form.Select
-                            id="allottedLotId"
-                            name="allottedLotId"
-                            value={data.allottedLotId}
-                            onChange={handleLotIdInputs}
-                            required
-                          >
-                            <option value="">{t("Select Bidding Slip Lot No")}</option>
-
-                            {allottedLotOptions.map((lotId) => (
-                              <option key={lotId} value={lotId}>
-                                {lotId}
-                              </option>
-                            ))}
-                          </Form.Select>
-
-                          <Form.Control.Feedback type="invalid">
-                            {t("Bidding Slip Lot No is required.")}
-                          </Form.Control.Feedback>
-                        </Col>
-
-
-                      <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        {t("Price")}
-                        <span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={2}>
-                        <Form.Control
-                          id="pricePerKg"
-                          name="pricePerKg"
-                          value={data.pricePerKg}
-                          onChange={handleLotIdInputs}
-                          type="number"
-                          placeholder={t("Enter Price")}
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {t("Price is required.")}
-                        </Form.Control.Feedback>
-                      </Col>
-
-                      <Form.Label column sm={2} style={{ fontWeight: "bold" }}>
-                        {t("Market Date")}<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={4} className="ms-n5">
-                        <DatePicker
-                          selected={data.fixationDate}
-                          onChange={(date) =>
-                            handleDateChange(date, "fixationDate")
-                          }
-                          peekNextMonth
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select"
-                          dateFormat="dd/MM/yyyy"
-                          className="form-control"
-                          maxDate={new Date()} // Maximum date set to today
-                          minDate={new Date()} // Minimum date set to today
-                        />
-                      </Col>
-
-                     <Col lg="2">
-                      <Button type="submit" variant="primary" className="w-100">
-                        {t("Submit")}
-                      </Button>
-                    </Col>
-                    </Form.Group>
-                  </Form>
+            <Form noValidate validated={validated} onSubmit={postData}>
+              <Row className="g-3 align-items-end">
+                <Col md={3} style={fieldGroupStyle}>
+                  <label style={labelStyle}>
+                    Bidding Slip Lot No{" "}
+                    <span style={{ color: "#e53e3e" }}>*</span>
+                  </label>
+                  <Form.Select
+                    id="allottedLotId"
+                    name="allottedLotId"
+                    value={data.allottedLotId}
+                    onChange={handleLotIdInputs}
+                    style={inputStyle}
+                    required
+                  >
+                    <option value="">{t("Select Lot No")}</option>
+                    {allottedLotOptions.map((lotId) => (
+                      <option key={lotId} value={lotId}>
+                        {lotId}
+                      </option>
+                    ))}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    <span
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "5px",
+                        background: "#fff5f5",
+                        border: "1px solid #feb2b2",
+                        borderRadius: "6px",
+                        padding: "3px 9px",
+                        fontSize: "11px",
+                        fontWeight: 600,
+                        color: "#c53030",
+                        marginTop: "4px",
+                      }}
+                    >
+                      ⚠ {t("Bidding Slip Lot No is required.")}
+                    </span>
+                  </Form.Control.Feedback>
                 </Col>
-                {/* added New End */}
+
+                <Col md={3} style={fieldGroupStyle}>
+                  <label style={labelStyle}>
+                    Price Per Kg (₹) <span style={{ color: "#e53e3e" }}>*</span>
+                  </label>
+                  <Form.Control
+                    id="pricePerKg"
+                    name="pricePerKg"
+                    value={data.pricePerKg}
+                    onChange={handleLotIdInputs}
+                    type="number"
+                    placeholder={t("Enter Price")}
+                    style={inputStyle}
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    <span
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "5px",
+                        background: "#fff5f5",
+                        border: "1px solid #feb2b2",
+                        borderRadius: "6px",
+                        padding: "3px 9px",
+                        fontSize: "11px",
+                        fontWeight: 600,
+                        color: "#c53030",
+                        marginTop: "4px",
+                      }}
+                    >
+                      ⚠ {t("Price is required.")}
+                    </span>
+                  </Form.Control.Feedback>
+                </Col>
+
+                <Col md={3} style={fieldGroupStyle}>
+                  <label style={labelStyle}>
+                    Transaction Date <span style={{ color: "#e53e3e" }}>*</span>
+                  </label>
+                  <DatePicker
+                    selected={data.fixationDate}
+                    onChange={(date) => handleDateChange(date, "fixationDate")}
+                    peekNextMonth
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    dateFormat="dd/MM/yyyy"
+                    className="form-control"
+                    maxDate={new Date()}
+                    minDate={new Date()}
+                  />
+                </Col>
+
+                <Col md={3} style={fieldGroupStyle}>
+                  <label
+                    style={{
+                      ...labelStyle,
+                      visibility: "hidden",
+                      userSelect: "none",
+                    }}
+                  >
+                    _
+                  </label>
+                  <button
+                    type="submit"
+                    disabled={isSaving}
+                    style={{
+                      background: isSaving
+                        ? "#c8d6e5"
+                        : "linear-gradient(135deg,#1e67a8,#2d9cdb)",
+                      border: "none",
+                      borderRadius: "9px",
+                      padding: "8px 20px",
+                      fontWeight: 700,
+                      fontSize: "13px",
+                      color: "#fff",
+                      width: "100%",
+                      cursor: isSaving ? "not-allowed" : "pointer",
+                      boxShadow: isSaving
+                        ? "none"
+                        : "0 4px 12px rgba(30,103,168,0.32)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "7px",
+                      height: "38px",
+                    }}
+                  >
+                    {isSaving ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm" />{" "}
+                        Saving…
+                      </>
+                    ) : (
+                      <>✅ {t("Submit")}</>
+                    )}
+                  </button>
+                </Col>
               </Row>
-             
-            </Card.Body>
-          </Card>
-        </Row>
+            </Form>
+          </Card.Body>
+        </Card>
 
+        {/* Table Card */}
+        <Card
+          style={{
+            borderRadius: "14px",
+            border: "none",
+            boxShadow: "0 4px 24px rgba(30,103,168,0.10)",
+          }}
+        >
+          <div
+            style={{
+              background: "linear-gradient(135deg, #1e67a8 0%, #2d9cdb 100%)",
+              padding: "8px 16px",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              borderRadius: "14px 14px 0 0",
+            }}
+          >
+            <div
+              style={{
+                width: "26px",
+                height: "26px",
+                borderRadius: "50%",
+                background: "rgba(255,255,255,0.2)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "13px",
+                flexShrink: 0,
+              }}
+            >
+              📋
+            </div>
+            <div style={{ color: "#fff", fontWeight: 700, fontSize: "13px" }}>
+              Price Fixation Records
+            </div>
+          </div>
 
-{/* {isActive ? ( */}
-  
-              <Row className="mt-3">
-                <Col lg="4">
-  <DataTable
-    tableClassName="data-table-head-light table-responsive"
-    columns={UserDataColumns}
-    data={listData}
-    highlightOnHover
-    // pagination
-    // paginationServer
-    // paginationTotalRows={totalRows}
-    // paginationPerPage={countPerPage}
-    // paginationComponentOptions={{
-    //   noRowsPerPage: true,
-    // }}
-    // onChangePage={(page) => setPage(page - 1)}
-    progressPending={loading}
-    theme="solarized"
-    customStyles={customStyles}
-  />
-  </Col>
-  </Row>
- 
-{/* ) : (
-  ""
-)} */}
+          <Card.Body style={{ padding: "6px 16px 8px" }}>
+            <DataTable
+              columns={UserDataColumns}
+              data={listData}
+              highlightOnHover
+              progressPending={loading}
+              customStyles={customTableStyles}
+              noDataComponent={
+                <div
+                  style={{
+                    padding: "32px",
+                    textAlign: "center",
+                    color: "#718096",
+                    fontSize: "14px",
+                  }}
+                >
+                  📭 No price fixation records found.
+                </div>
+              }
+            />
+          </Card.Body>
+        </Card>
       </Block>
     </Layout>
   );

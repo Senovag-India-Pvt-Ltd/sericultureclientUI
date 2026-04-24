@@ -1950,13 +1950,13 @@ if (data.scComponentId && data.scCategoryId && data.fruitsId) {
 }, [data.scComponentId, data.scCategoryId, data.fruitsId]);
 
 
-const getCalculateAmountForRH = () => { 
+const getCalculateAmountForRH = () => {
   const { scSchemeDetailsId, scComponentId, scCategoryId } = data;
 
   if (!scSchemeDetailsId || !scComponentId || !scCategoryId) return;
 
   setLoading(true);
-  
+
   api.get(`${baseURLDBT}configureRHAmount/get-amount-by-scheme-category-and-component?scSchemeDetailsId=${scSchemeDetailsId}&componentId=${scComponentId}&categoryId=${scCategoryId}`, {}, {
       headers: {
           "Content-Type": "application/json"
@@ -1969,25 +1969,38 @@ const getCalculateAmountForRH = () => {
   const result = list.find(item => item.stateAmounts !== null) || list[0];
   const sqft = result?.sqft || 0;
 
-  const amount = result?.amount || 0;              // ✅ 350000
+  const amount = result?.amount || 0;
   const centralAmount = result?.centralAmount || 0;
   const stateAmounts = result?.stateAmounts || 0;
 
-  const calcType = (
-  getIncentiveAndBonusData?.[0]?.calculationBasedOn || ""
-)
-  .toLowerCase()
-  .replace(/\s+/g, " ")
-  .trim();
+  const calcBasedOn = getIncentiveAndBonusData?.[0]?.calculationBasedOn || "";
 
-const isSDP =
-  calcType === "ss construction of low cost shed to permanent rearing house" ||
-  calcType === "sdp construction of low cost shed to permanent rearing house";
+  const isSdpRH225OrLowCost =
+    calcBasedOn === "SDP RH 225" ||
+    calcBasedOn === "SDP Low Cost Shed";
 
-  // 🔥 ONLY FOR THIS SCHEME
+  if (isSdpRH225OrLowCost) {
+    const minAmt = result?.minAmount || 0;
+    const maxAmt = result?.maxAmount || 0;
+
+    setAmountValue((prev) => ({
+      ...prev,
+      unitPrice: amount,
+      minAmount: minAmt,
+      maxAmount: maxAmt,
+    }));
+
+    // Total Subsidy will be computed in the rhSqft useEffect
+    return;
+  }
+
+  const calcType = calcBasedOn.toLowerCase().replace(/\s+/g, " ").trim();
+
+  const isSDP =
+    calcType === "ss construction of low cost shed to permanent rearing house" ||
+    calcType === "sdp construction of low cost shed to permanent rearing house";
+
   if (isSDP) {
-
-    // ✅ UNIT COST
     setAmountValue((prev) => ({
       ...prev,
       unitPrice: amount
@@ -1998,14 +2011,12 @@ const isSDP =
       estimatedCost: amount
     }));
 
-    // ✅ TOTAL SUBSIDY = SAME AS UNIT COST
     setData((prev) => ({
       ...prev,
       expectedAmount: amount,
       schemeAmount: amount
     }));
 
-    // ✅ STATE BREAKUP
     setOriginalStateAmount(stateAmounts);
 
     setData((prev) => ({
@@ -2014,7 +2025,7 @@ const isSDP =
       stateAmount: stateAmounts
     }));
 
-    return; // ❗ VERY IMPORTANT (stop other logic)
+    return;
   }
 
       // ✅ EXISTING LOGIC (UNCHANGED)
@@ -2024,9 +2035,9 @@ const isSDP =
           if (sqft && amount) {
               calculatedAmount = sqft * amount;
           }
-      } 
+      }
       else if (
-          schemeDetails.calculationBasedOn === "Silk Samagra State" || 
+          schemeDetails.calculationBasedOn === "Silk Samagra State" ||
           schemeDetails.calculationBasedOn === "Silk Samagra Central"
       ) {
           calculatedAmount = amount || "";
@@ -2062,7 +2073,6 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
   getCalculateAmountForRH();
 }
 }, [data.scComponentId, data.scCategoryId, data.scSchemeDetailsId]);
-
 
 useEffect(() => {
 
@@ -2541,6 +2551,105 @@ const handleCalculateUnitPrice = () => {
   setUnitPriceCalculated(true);
 
   const incentiveCalcBasedOn = getIncentiveAndBonusData?.[0]?.calculationBasedOn;
+
+  const isSdpRH225OrLowCost =
+    incentiveCalcBasedOn === "SDP RH 225" ||
+    incentiveCalcBasedOn === "SDP Low Cost Shed";
+
+  if (isSdpRH225OrLowCost) {
+    const sqft = Number(developedLand.rhSqft);
+    const unitPrice = Number(amountValue.unitPrice);
+    const minAmount = Number(amountValue.minAmount);
+    const maxAmount = Number(amountValue.maxAmount);
+
+    if (!sqft) {
+      Swal.fire({
+        icon: "warning",
+        title: "Sqft Required",
+        html: `<p style="color:#555;font-size:15px;">Please enter the <strong>Constructed Area in Sqft</strong> before calculating.</p>`,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#f0a500",
+        showCloseButton: true,
+      });
+      return;
+    }
+
+    if (!unitPrice) {
+      Swal.fire({
+        icon: "warning",
+        title: "Unit Price Not Available",
+        html: `<p style="color:#555;font-size:15px;">Unit Price could not be fetched. Please select <strong>Component</strong> and <strong>Sub Component</strong> first.</p>`,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#f0a500",
+        showCloseButton: true,
+      });
+      return;
+    }
+
+    if (minAmount > 0 && sqft < minAmount) {
+      Swal.fire({
+        icon: "error",
+        title: "No Subsidy Available",
+        html: `
+          <div style="text-align:center;">
+            <div style="font-size:48px;margin-bottom:8px;">🏚️</div>
+            <p style="color:#444;font-size:15px;line-height:1.6;">
+              The entered area of <strong style="color:#d33;">${sqft} Sqft</strong> is below the
+              minimum eligible area of <strong style="color:#2d8a4e;">${minAmount} Sqft</strong>.
+            </p>
+            <p style="color:#777;font-size:13px;margin-top:8px;">No subsidy can be granted for this value.</p>
+          </div>`,
+        confirmButtonText: "Understood",
+        confirmButtonColor: "#d33",
+        background: "#fff9f9",
+        showCloseButton: true,
+        footer: `<span style="color:#aaa;font-size:12px;">💡 Enter a Sqft value ≥ ${minAmount} to be eligible.</span>`,
+      });
+      setData((prev) => ({ ...prev, expectedAmount: "", schemeAmount: "" }));
+      return;
+    }
+
+    const effectiveSqft = (maxAmount > 0 && sqft > maxAmount) ? maxAmount : sqft;
+    const totalSubsidy = effectiveSqft * unitPrice;
+
+    setData((prev) => ({
+      ...prev,
+      expectedAmount: totalSubsidy,
+      schemeAmount: totalSubsidy,
+    }));
+
+    const capped = maxAmount > 0 && sqft > maxAmount;
+    Swal.fire({
+      icon: "success",
+      title: "Subsidy Calculated!",
+      html: `
+        <div style="text-align:center;">
+          <div style="font-size:48px;margin-bottom:8px;">🏠</div>
+          <table style="width:100%;font-size:14px;border-collapse:collapse;margin-top:8px;">
+            <tr style="background:#f0f4ff;">
+              <td style="padding:8px 12px;text-align:left;color:#555;border-radius:4px;">Entered Sqft</td>
+              <td style="padding:8px 12px;font-weight:bold;color:#222;">${sqft} Sqft</td>
+            </tr>
+            ${capped ? `<tr><td style="padding:8px 12px;text-align:left;color:#555;">Capped at Max</td><td style="padding:8px 12px;font-weight:bold;color:#e65100;">${maxAmount} Sqft</td></tr>` : ""}
+            <tr style="background:#f0f4ff;">
+              <td style="padding:8px 12px;text-align:left;color:#555;">Unit Price</td>
+              <td style="padding:8px 12px;font-weight:bold;color:#222;">₹ ${unitPrice}</td>
+            </tr>
+            <tr style="background:#e8f5e9;">
+              <td style="padding:8px 12px;text-align:left;color:#2d8a4e;font-weight:bold;">Total Subsidy</td>
+              <td style="padding:8px 12px;font-weight:bold;font-size:16px;color:#2d8a4e;">₹ ${totalSubsidy.toLocaleString("en-IN")}</td>
+            </tr>
+          </table>
+        </div>`,
+      confirmButtonText: "Great!",
+      confirmButtonColor: "#2d8a4e",
+      background: "#f9fff9",
+      showCloseButton: true,
+    });
+
+    return;
+  }
+
   const isChawki =
     incentiveCalcBasedOn ===
     "Registered Private Bivoltine Chawki Rearing Center Subsidy";
@@ -4762,6 +4871,37 @@ const isUserValid = React.useMemo(() => {
     fullPrice: false,
   });
 
+  // Compute Total Subsidy based on rhSqft for SDP RH 225 / SDP Low Cost Shed
+  useEffect(() => {
+    const calcBasedOn = getIncentiveAndBonusData?.[0]?.calculationBasedOn || "";
+    const isSdpRH225OrLowCost =
+      calcBasedOn === "SDP RH 225" || calcBasedOn === "SDP Low Cost Shed";
+
+    if (!isSdpRH225OrLowCost) return;
+
+    const sqft = Number(developedLand.rhSqft);
+    const unitPrice = Number(amountValue.unitPrice);
+    const minAmount = Number(amountValue.minAmount);
+    const maxAmount = Number(amountValue.maxAmount);
+
+    if (!sqft || !unitPrice) return;
+
+    if (minAmount > 0 && sqft < minAmount) {
+      setData((prev) => ({ ...prev, expectedAmount: "", schemeAmount: "" }));
+      return;
+    }
+
+    const effectiveSqft = (maxAmount > 0 && sqft > maxAmount) ? maxAmount : sqft;
+    const totalSubsidy = effectiveSqft * unitPrice;
+
+    setData((prev) => ({
+      ...prev,
+      expectedAmount: totalSubsidy,
+      schemeAmount: totalSubsidy,
+    }));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [developedLand.rhSqft, amountValue.unitPrice, amountValue.minAmount, amountValue.maxAmount, getIncentiveAndBonusData]);
+
   const [unitPriceCalculated, setUnitPriceCalculated] = useState(false);
 
   useEffect(() => {
@@ -5349,6 +5489,44 @@ const isUserValid = React.useMemo(() => {
     }
   };
 
+
+  const generateAcknowledgmentRHSDP225 = async (applicationFormId, schemeId, subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getRHSDP225Ack`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob",
+        }
+      );
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {}
+  };
+
+  const generateAcknowledgmentRHSDPLowCostShed = async (applicationFormId, schemeId, subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getRHSDPLowCostShedAck`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob",
+        }
+      );
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {}
+  };
 
   const generateAcknowledgmentHRU = async (applicationFormId,schemeId,subSchemeId) => {
     try {
@@ -5952,9 +6130,15 @@ const callAcknowledgmentFunction = (
       subSchemeId
     );
 
+  } else if (acknowledgementForScheme === "SDP RH 225") {
+    generateAcknowledgmentRHSDP225(applicationFormId, schemeId, subSchemeId);
+
+  } else if (acknowledgementForScheme === "SDP Low Cost Shed") {
+    generateAcknowledgmentRHSDPLowCostShed(applicationFormId, schemeId, subSchemeId);
+
   }
 
-  
+
 };
 
 
@@ -7082,6 +7266,27 @@ const fetchReelerDetails = () => {
                             </div>
                           </Form.Group>
                         </Col>
+
+                        {(getIncentiveAndBonusData?.[0]?.calculationBasedOn === "SDP RH 225" ||
+                          getIncentiveAndBonusData?.[0]?.calculationBasedOn === "SDP Low Cost Shed") && (
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="rhSqft">
+                                {t("Constructed Area in Sqft")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="rhSqft"
+                                  type="text"
+                                  name="rhSqft"
+                                  value={developedLand.rhSqft}
+                                  onChange={handleDevelopedLandInputs}
+                                  placeholder="Enter Constructed Area in Sqft"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        )}
 
                          {getIncentiveAndBonusData[0]?.unitForScheme === "Rearing Equipment SS" && (
                             <>
@@ -10595,28 +10800,31 @@ const fetchReelerDetails = () => {
                           </Form.Group>
                         </Col>
 
-                        <Col lg="4">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="landDeveloped">
-                              {t("Constructed Area in Sqft")}
-                              {/* <span className="text-danger">*</span> */}
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="rhSqft"
-                                type="text"
-                                name="rhSqft"
-                                value={developedLand.rhSqft}
-                                onChange={handleDevelopedLandInputs}
-                                placeholder="Enter Constructed Area in Sqft"
-                                // required
-                              />
-                              {/* <Form.Control.Feedback type="invalid">
-                                {t("Extent Of Mulberry is required")}
-                              </Form.Control.Feedback> */}
-                            </div>
-                          </Form.Group>
-                        </Col>
+                        {!(getIncentiveAndBonusData?.[0]?.calculationBasedOn === "SDP RH 225" ||
+                          getIncentiveAndBonusData?.[0]?.calculationBasedOn === "SDP Low Cost Shed") && (
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="landDeveloped">
+                                {t("Constructed Area in Sqft")}
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="rhSqft"
+                                  type="text"
+                                  name="rhSqft"
+                                  value={developedLand.rhSqft}
+                                  onChange={handleDevelopedLandInputs}
+                                  placeholder="Enter Constructed Area in Sqft"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  {t("Extent Of Mulberry is required")}
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        )}
 
                         <Col lg="4">
                           <Form.Group className="form-group mt-n3">
