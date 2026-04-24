@@ -2548,8 +2548,6 @@ const calculateEquipmentRow = (item, sharePerc) => {
 
 const handleCalculateUnitPrice = () => {
 
-  setUnitPriceCalculated(true);
-
   const incentiveCalcBasedOn = getIncentiveAndBonusData?.[0]?.calculationBasedOn;
 
   const isSdpRH225OrLowCost =
@@ -2617,6 +2615,7 @@ const handleCalculateUnitPrice = () => {
       expectedAmount: totalSubsidy,
       schemeAmount: totalSubsidy,
     }));
+    setUnitPriceCalculated(true);
 
     const capped = maxAmount > 0 && sqft > maxAmount;
     Swal.fire({
@@ -2649,6 +2648,9 @@ const handleCalculateUnitPrice = () => {
 
     return;
   }
+
+  // All non-SDP paths: mark unit price as calculated
+  setUnitPriceCalculated(true);
 
   const isChawki =
     incentiveCalcBasedOn ===
@@ -4905,6 +4907,10 @@ const isUserValid = React.useMemo(() => {
   const [unitPriceCalculated, setUnitPriceCalculated] = useState(false);
 
   useEffect(() => {
+    // SDP RH 225 / SDP Low Cost Shed use a dedicated API for unitPrice — skip this generic endpoint
+    const calcBasedOn = getIncentiveAndBonusData?.[0]?.calculationBasedOn || "";
+    if (calcBasedOn === "SDP RH 225" || calcBasedOn === "SDP Low Cost Shed") return;
+
     if (
       data.scSchemeDetailsId &&
       data.scSubSchemeDetailsId &&
@@ -5552,12 +5558,16 @@ const isUserValid = React.useMemo(() => {
 
   const styles = {
     ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
+      backgroundColor: "#eef3fc",
+      color: "#1a2a4a",
       width: "10%",
+      fontWeight: 600,
+      fontSize: "0.85rem",
+      borderLeft: "3px solid #1e67a8",
+      paddingLeft: "10px",
     },
     top: {
-      backgroundColor: "rgb(15, 108, 190, 1)",
+      background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)",
       color: "rgb(255, 255, 255)",
       width: "50%",
       fontWeight: "bold",
@@ -6928,8 +6938,11 @@ const fetchReelerDetails = () => {
         {/* <Form action="#"> */}
         {/* <Form noValidate validated={searchValidated} onSubmit={search}> */}
         <Form noValidate validated={searchValidated} onSubmit={search}>
-          <Card>
-            <Card.Body>
+          <Card style={{ border: "none", borderRadius: "14px", boxShadow: "0 4px 18px rgba(30,103,168,0.12)", overflow: "hidden" }}>
+            <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", fontWeight: 700, color: "white", padding: "12px 20px" }}>
+              &#128269; {t("Search Beneficiary")}
+            </Card.Header>
+            <Card.Body style={{ background: "linear-gradient(135deg, #f8f9ff 0%, #eef3fc 100%)" }}>
               <Row className="g-gs">
                 <Col lg="12">
                   <Form.Group as={Row} className="form-group" controlId="fid">
@@ -7010,9 +7023,9 @@ const fetchReelerDetails = () => {
             <Row className="g-1 ">
               <Col lg={12}>
                 <Block className="mt-3">
-                  <Card>
-                    <Card.Header style={{ fontWeight: "bold" }}>
-                      {t("Scheme Details")}
+                  <Card style={{ border: "none", borderRadius: "14px", boxShadow: "0 4px 18px rgba(30,103,168,0.12)", overflow: "hidden" }}>
+                    <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", fontWeight: 700, color: "white", padding: "12px 20px", letterSpacing: "0.3px" }}>
+                      &#128203; {t("Scheme Details")}
                     </Card.Header>
                     <Card.Body>
                       <Row className="g-gs">
@@ -8877,7 +8890,7 @@ const fetchReelerDetails = () => {
               {selectedBonusMode === "Automatic" && (
                     <Block className="mt-3">
                       <Card>
-                        <Card.Header style={{ fontWeight: "bold" }}>
+                        <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", fontWeight: 700, color: "white", padding: "10px 16px", letterSpacing: "0.3px" }}>
                           {t("Transaction Details")}
                         </Card.Header>
                         <Card.Body>
@@ -9083,7 +9096,7 @@ const fetchReelerDetails = () => {
                       {/* Farmer Details Card - show only after lot is selected */}
                       {data.lotNo && farmerDetailsForIB.length > 0 && (
                         <Card className="mt-3">
-                          <Card.Header style={{ fontWeight: "bold" }}>
+                          <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", fontWeight: 700, color: "white", padding: "10px 16px", letterSpacing: "0.3px" }}>
                             {t("Farmer Details")}
                           </Card.Header>
                           <Card.Body>
@@ -9149,7 +9162,7 @@ const fetchReelerDetails = () => {
                {/* {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Registered Private Bivoltine Chawki Rearing Center Subsidy" && (
                     <Block className="mt-3">
                       <Card>
-                        <Card.Header style={{ fontWeight: "bold" }}>
+                        <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", fontWeight: 700, color: "white", padding: "10px 16px", letterSpacing: "0.3px" }}>
                           {t("Registered Private Bivoltine Chawki Rearing Center Subsidy Details")}
                         </Card.Header>
                         <Card.Body>
@@ -9383,7 +9396,7 @@ const fetchReelerDetails = () => {
                   "Registered Private Bivoltine Chawki Rearing Center Subsidy" && (
                   <Block className="mt-3">
                     <Card>
-                      <Card.Header style={{ fontWeight: "bold" }}>
+                      <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", fontWeight: 700, color: "white", padding: "10px 16px", letterSpacing: "0.3px" }}>
                         {t("Registered Private Bivoltine Chawki Rearing Center Subsidy Details")}
                       </Card.Header>
 
@@ -9900,7 +9913,7 @@ const fetchReelerDetails = () => {
                         </Card>
 
                           <Card className="mt-4">
-                        <Card.Header style={{ fontWeight: "bold" }}>
+                        <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", fontWeight: 700, color: "white", padding: "10px 16px", letterSpacing: "0.3px" }}>
                           Final Total Summary
                         </Card.Header>
 
@@ -9933,7 +9946,7 @@ const fetchReelerDetails = () => {
               {showCommercialMarketTransaction && (
                     <Block className="mt-3">
                       <Card>
-                        <Card.Header style={{ fontWeight: "bold" }}>
+                        <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", fontWeight: 700, color: "white", padding: "10px 16px", letterSpacing: "0.3px" }}>
                           {t("Transaction Details-Commercial Market")}
                         </Card.Header>
                         <Card.Body>
@@ -10154,7 +10167,7 @@ const fetchReelerDetails = () => {
                {selectedBonusMode === "Manual" && (
                     <Block className="mt-3">
                       <Card>
-                        <Card.Header style={{ fontWeight: "bold" }}>
+                        <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", fontWeight: 700, color: "white", padding: "10px 16px", letterSpacing: "0.3px" }}>
                           {t("Transaction Details-Seed Market")}
                         </Card.Header>
                         <Card.Body>
@@ -10444,7 +10457,7 @@ const fetchReelerDetails = () => {
 
               <Block className="mt-3">
                 <Card>
-                  <Card.Header style={{ fontWeight: "bold" }}>
+                  <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", fontWeight: 700, color: "white", padding: "10px 16px", letterSpacing: "0.3px" }}>
                     {t("Sanction Amount")}
                   </Card.Header>
                   <Card.Body>
@@ -10752,7 +10765,7 @@ const fetchReelerDetails = () => {
               {data.equordev.includes("constructedArea") && (
                 <Block className="mt-3">
                   <Card>
-                    <Card.Header style={{ fontWeight: "bold" }}>
+                    <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", fontWeight: 700, color: "white", padding: "10px 16px", letterSpacing: "0.3px" }}>
                       {t("Constructed Area")}
                     </Card.Header>
                     <Card.Body>
@@ -10961,7 +10974,7 @@ const fetchReelerDetails = () => {
               {data.equordev.includes("equipment") && (
                 <Block className="mt-3">
                   <Card>
-                    <Card.Header style={{ fontWeight: "bold" }}>
+                    <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", fontWeight: 700, color: "white", padding: "10px 16px", letterSpacing: "0.3px" }}>
                       {t("Equipment Purchase")}
                     </Card.Header>
                     <Card.Body>
@@ -11512,7 +11525,7 @@ const fetchReelerDetails = () => {
                 landDetailsList.length > 0 && (
                   <Block className="mt-3">
                     <Card>
-                      <Card.Header style={{ fontWeight: "bold" }}>
+                      <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", fontWeight: 700, color: "white", padding: "10px 16px", letterSpacing: "0.3px" }}>
                         {t("Land Wise")}
                       </Card.Header>
                       <Card.Body>
