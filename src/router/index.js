@@ -195,6 +195,7 @@ import Payment from "../pages/market-and-auction/Payment";
 import RejectFarmerAuction from "../pages/market-and-auction/RejectFarmerAuction";
 import UpdateLotWeight from "../pages/market-and-auction/UpdateLotWeight";
 import AcceptFarmerAuction from "../pages/market-and-auction/AcceptFarmerAuction";
+import DeleteLotPage from "../pages/market-and-auction/DeleteLotPage";
 
 // Admin and Reports
 import ReportsAdmin from "../pages/reports-admin/ReportsAdmin";
@@ -973,6 +974,12 @@ import RemittanceForFarmList from "../pages/seed-and-dfl-managment/RemittanceFor
 import RemittanceForFarmEdit from "../pages/seed-and-dfl-managment/RemittanceForFarmEdit";
 import RemittanceForFarmView from "../pages/seed-and-dfl-managment/RemittanceForFarmView";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
+import SeedMarketInvoiceReport from "../pages/market-and-auction/SeedMarketInvoiceReport";
+import SeedMarketBiddingSlipReport from "../pages/market-and-auction/SeedMarketBiddingSlipReport";
+import SeedMarketTripletReport from "../pages/market-and-auction/SeedMarketTripletReport";
+import SeedMarketPermitReport from "../pages/market-and-auction/SeedMarketPermitReport";
+import SeedMarketCashReceiptReport from "../pages/market-and-auction/SeedMarketCashReceiptReport";
+import SeedMarketMarketReceiptReport from "../pages/market-and-auction/SeedMarketMarketReceiptReport";
 import ChawkiManagementReport from "../pages/stake-holder/ChawkiManagementReport";
 import ChawkiDistributionReport from "../pages/stake-holder/ChawkiDistributionReport";
 import SeedCuttingBankReport from "../pages/stake-holder/SeedCuttingBankReport";
@@ -1078,7 +1085,19 @@ import RegisteredPrivateChawkiList from "../pages/services-module/application-co
 import LotWisePriceFixation from "../pages/seed-cocoon-martket/LotWisePriceFixation";
 import SakalaDashboard from "../pages/services-module/application/SakalaDashboard";
 import CumulativeReport from "../pages/services-module/application/CumulativeReport";
+import UserHierarchyMappingList from "../pages/masters/user-hierarchy-mapping/UserHierarchyMappingList";
+import UserHierarchyMappingEdit from "../pages/masters/user-hierarchy-mapping/UserHierarchyMappingEdit";
+
+import CropInspectionList from "../pages/chawki-management/CropInspectionList";
+import SeedDtrReport from "../pages/reports-admin/market-auction/SeedDTRReport";
 import DownloadSanctionOrder from "../pages/market-and-auction/DownloadSanctionOrder";
+import GenerateAcknowledgement from "../pages/direct-benefit-transfer/GenerateAcknowledgement";
+import GenerateWorkOrder from "../pages/direct-benefit-transfer/GenerateWorkOrder";
+import GenerateSelectionLetter from "../pages/direct-benefit-transfer/GenerateSelectionLetter";
+import FitnessCertificate from "../pages/market-and-auction/FitnessCertificateReport";
+
+import ReelerBalanceReport from "../pages/reports-admin/market-auction/ReelerBalanceReport";
+import ExternalUnitBalanceReport from "../pages/reports-admin/market-auction/ExternalUnitBalanceReport";
 import { APP_BASE_PATH, APP_BASE_SEGMENT, APP_ROUTES } from "../config/appRoutes";
 
 // Admin and Reports
@@ -1107,6 +1126,11 @@ function Router() {
     !downloadSanctionOrder &&
     !loginPathPattern
   ) {
+    // navigate("/seriui");
+  // }
+  //   if (!isAuthenticated && !displayAllLotPathPattern.test(pathname) && !applicationCheck.test(pathname)) {
+  //     navigate("/seriui");
+    // }
     navigate(APP_ROUTES.root);
   }
   }, [isAuthenticated, navigate]);
@@ -1115,14 +1139,21 @@ function Router() {
     <ScrollToTop>
       <Routes>
         {/* <Route path="/blank" element={<Blank />} /> */}
+        {/* <Route path="seriui" element={<AuthLogin />} />
+        <Route path="/seriui/home" element={<Home />} /> */}
         <Route path={APP_ROUTES.root} element={<SeriUiHomePage />} />
         <Route path={APP_ROUTES.login} element={<AuthLogin />} />
         <Route path={APP_ROUTES.home} element={<SeriUiHomePage />} />
         {/* Display All Lot */}
         <Route
+          // path="/seriui/display-all-lot/:marketId"
+          // element={<DisplayAllLot />}   
           path={`${APP_ROUTES.displayAllLotPrefix}/:marketId`}
           element={<DisplayAllLot />}
         />
+
+          {/* <Route
+          path="/seriui/download-sanction-order" */}
 
        <Route
           path={APP_ROUTES.downloadSanctionOrder}
@@ -1136,7 +1167,8 @@ function Router() {
 
         {/* Conditional rendering for protected route */}
         {isAuthenticated && (
-          <Route path="seriui">
+          <Route path="/seriui">
+      np    {/* <Route path="seriui"> */}
           
             <Route path="home-ecommerce" element={<HomeEcommerce />} />
             <Route path="home-project" element={<HomeProject />} />
@@ -2218,6 +2250,10 @@ function Router() {
               element={<ChawkiManagementView />}
             />
             <Route
+              path="crop-inspection-list"
+              element={<CropInspectionList />}
+            />
+            <Route
               path="supply-of-disinfectants"
               element={<SupplyOfDisinfectantsToFarmers />}
             />
@@ -2836,7 +2872,7 @@ function Router() {
             <Route
               path="relationship-view/:id"
               element={<RelationshipView />}
-            />
+            />  
             <Route
               path="relationship-edit/:id"
               element={<RelationshipEdit />}
@@ -2871,6 +2907,9 @@ function Router() {
             <Route path="registered-private-chawki-list" element={<RegisteredPrivateChawkiList  />} /> 
 
             <Route path="generate-sanction-order" element={<GenerateSanctionOrder />} />
+            <Route path="generate-acknowledgement" element={<GenerateAcknowledgement />} />
+            <Route path="generate-work-order" element={<GenerateWorkOrder />} />
+            <Route path="generate-selection-letter" element={<GenerateSelectionLetter />} />
             <Route path="crop-details-commercial-market" element={<CropDetailsForCommercialMarket />} />
             <Route path="crop-details-commercial-market-list" element={<CropDetailsForCommercialMarketList />} />
 
@@ -3271,6 +3310,10 @@ function Router() {
               path="user-hierarchy-mapping"
               element={<UserHierarchyMapping />}
             />
+            <Route
+              path="user-hierarchy-mapping-list"
+              element={<UserHierarchyMappingList />}
+            />
 
             <Route
               path="user-and-manager-hierarchy-mapping"
@@ -3279,6 +3322,14 @@ function Router() {
             <Route
               path="user-and-manager-hierarchy-mapping-list"
               element={<UserAndManagerHierarchyMappingList />}
+            />
+             <Route
+              path="user-hierarchy-mapping-edit/:id"
+              element={<UserHierarchyMappingEdit />}
+            />
+            <Route
+              path="seed-dtr-report"
+              element={<SeedDtrReport />}
             />
             <Route
               path="sc-sub-scheme-details"
@@ -3788,6 +3839,13 @@ function Router() {
             />
             <Route path="lot-groupage" element={<LotGroupage />} />
             <Route path="invoice-permit-market-receipt" element={<InvoicePermitAndMarketReceipt />} />
+            <Route path="seed-market-invoice-report" element={<SeedMarketInvoiceReport />} />
+            <Route path="seed-market-bidding-slip-report" element={<SeedMarketBiddingSlipReport />} />
+            <Route path="seed-market-triplet-report" element={<SeedMarketTripletReport />} />
+            <Route path="fitness-certificate-report" element={<FitnessCertificate />} />
+            <Route path="seed-market-permit-report" element={<SeedMarketPermitReport />} />
+            <Route path="seed-market-cash-receipt-report" element={<SeedMarketCashReceiptReport />} />
+            <Route path="seed-market-market-receipt-report" element={<SeedMarketMarketReceiptReport />} />
             <Route path="lot-groupage-edit/:id" element={<LotGroupageEdit />} />
 
             <Route path="update-lot-weight" element={<UpdateLotWeight />} />
@@ -3870,6 +3928,14 @@ function Router() {
               path="form-13-report-by-dist"
               element={<FormReportByDist />}
             />
+
+             <Route
+              path="external-unit-balance"
+              element={<ExternalUnitBalanceReport />}
+            />
+            <Route path="reeler-balance" element={<ReelerBalanceReport />} />
+
+
             <Route path="dtr-all" element={<DtrAll />} />
             <Route path="form-13-dtr" element={<Form13Dtr />} />
             <Route path="form-13-dtr-bv" element={<Form13DtrBv />} />
@@ -3905,6 +3971,7 @@ function Router() {
             <Route path="base-price-fixation" element={<BasePriceFixation />} />
 
             <Route path="lot-wise-base-price-fixation" element={<LotWisePriceFixation />} /> 
+             <Route path="delete-lot" element={<DeleteLotPage />} /> 
 
             <Route
               path="pupa-test-and-assessment"

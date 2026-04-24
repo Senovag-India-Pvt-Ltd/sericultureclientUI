@@ -41,6 +41,7 @@ function ServiceApplication() {
   }
 };
 
+const [originalStateAmount, setOriginalStateAmount] = useState(null);
 
 const generateFinalReport = async (selectedRows) => {
   const subSchemeDetailsId = selectedRows?.[0]?.subSchemeId;
@@ -147,8 +148,10 @@ const generateFinalReport = async (selectedRows) => {
     taxInvoiceDate: new Date(),
     rearingEquipmentDetailsId: "",
     beneficiaryShareAmount: "",
+    alreadyPaidAmount: 0,
+    stateAmount: "",
+    newFinancialYear: "",
   });
-
   const formatAuctionDate = (auctionDate) => {
     const distributionDate = new Date(auctionDate);
     return (
@@ -512,6 +515,8 @@ useEffect(() => {
 
   console.log("new dev data", developedArea);
 
+  const [showAmountBreakup, setShowAmountBreakup] = useState(false);
+
   const [landDetailsIds, setLandDetailsIds] = useState([]);
 
   
@@ -613,7 +618,7 @@ useEffect(() => {
   }, []);
 
   // to get sc-sub-scheme-details by sc-scheme-details
-  const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
+const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
     []
   );
   const getSubSchemeList = (_id) => {
@@ -1227,6 +1232,25 @@ if (
     }
   }, [data.scSubSchemeDetailsId]);
 
+  // to get Financial Year
+    const [financialyearListData, setFinancialyearListData] = useState([]);
+  
+    const getFinancialYearList = () => {
+      api
+        .get(baseURLMasterData + `financialYearMaster/get-all`)
+        .then((response) => {
+          setFinancialyearListData(response.data.content.financialYearMaster);
+        })
+        .catch((err) => {
+          setFinancialyearListData([]);
+        });
+    };
+  
+    useEffect(() => {
+      getFinancialYearList();
+    }, []);
+
+
   const [defaultFinancialYearId, setDefaultFinancialYearId] = useState("");
 
   // Get Default Financial Year
@@ -1727,6 +1751,66 @@ if (
   const handleInputs = (e) => {
     name = e.target.name;
     value = e.target.value;
+
+   if (name === "alreadyPaidAmount") {
+  const paid = Number(value || 0);
+
+  // const isSDP =
+  //   getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+  //   "SS Construction Of Low Cost Shed to Permanent Rearing House" ||
+  // getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+  //   "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House";
+
+  const calcType = (
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn || ""
+)
+  .toLowerCase()
+  .replace(/\s+/g, " ")
+  .trim();
+
+const isSDP =
+  calcType === "ss construction of low cost shed to permanent rearing house" ||
+  calcType === "sdp construction of low cost shed to permanent rearing house";
+
+  // ✅ SDP LOGIC
+  if (isSDP) {
+
+    if (originalStateAmount === null || originalStateAmount === undefined) {
+      setData({
+        ...data,
+        alreadyPaidAmount: paid
+      });
+      return;
+    }
+
+    const totalState = Number(originalStateAmount || 0);
+    const eligible = Math.max(totalState - paid, 0);
+
+    setData({
+      ...data,
+      alreadyPaidAmount: paid,
+      stateAmount: eligible,
+
+      // ✅ REQUIRED FIELD UPDATE
+      expectedAmount: eligible,
+      schemeAmount: eligible
+    });
+
+    return;
+  }
+
+  // ✅ EXISTING RH LOGIC (UNCHANGED)
+  const finalStateAmount = Math.max(originalStateAmount - paid, 0);
+
+  setData({
+    ...data,
+    alreadyPaidAmount: paid,
+    stateAmount: finalStateAmount
+  });
+
+  return;
+}
+
     setData({ ...data, [name]: value });
 
     if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
@@ -1784,29 +1868,29 @@ if (
     api.get(`${baseURLMasterData}configurePmkysAmount/getClosestAmountBySpacingAndHectare/${spacingId}/${hectareId}`)
       .then((response) => {
         const result = response.data[0]; // Assuming the first element contains the relevant data
-        setAmountValue({
-          ...amountValue,
-          unitPrice: result.amount, // Set the Unit Price
-        });
+        setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: result.amount,
+        }));
         
         if (schemeDetails.calculationBasedOn !== "PMKSY") { // Only update expectedAmount if not PMKSY
-            setData({
-              ...data,
-              expectedAmount: result.amount, // Set the Subsidy amount to expectedAmount
-            });
+            setData((prev) => ({
+              ...prev,
+              expectedAmount: result.amount,
+            }));
         }
         setLoading(false);
       })
       .catch((err) => {
-        setAmountValue({
-          ...amountValue,
-          unitPrice: "", // Clear Unit Price if API call fails
-        });
+        setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: "",
+        }));
         if (schemeDetails.calculationBasedOn !== "PMKSY") {
-            setData({
-              ...data,
-              expectedAmount: "", // Clear expectedAmount if API call fails
-            });
+            setData((prev) => ({
+              ...prev,
+              expectedAmount: "",
+            }));
         }
         setLoading(false);
       });
@@ -1840,10 +1924,10 @@ const getEligibleAmount = () => {
                   text: "Please apply for PDMC before proceeding.",
               });
               setSaveDisabled(true);
-              setData({ ...data, expectedAmount: "" }); // Reset expectedAmount for PMKSY if no eligible amount
+              setData((prev) => ({ ...prev, expectedAmount: "" }));
           } else {
               setSaveDisabled(false);
-              setData({ ...data, expectedAmount: eligibleAmount || "" }); // Only set expectedAmount for PMKSY
+              setData((prev) => ({ ...prev, expectedAmount: eligibleAmount || "" }));
           }
       } else {
           setSaveDisabled(false);
@@ -1851,7 +1935,7 @@ const getEligibleAmount = () => {
       }
   })
   .catch(() => {
-      setData({ ...data, expectedAmount: "" });
+      setData((prev) => ({ ...prev, expectedAmount: "" }));
   })
   .finally(() => {
       setLoading(false);
@@ -1866,34 +1950,97 @@ if (data.scComponentId && data.scCategoryId && data.fruitsId) {
 }, [data.scComponentId, data.scCategoryId, data.fruitsId]);
 
 
-const getCalculateAmountForRH = () => { 
+const getCalculateAmountForRH = () => {
   const { scSchemeDetailsId, scComponentId, scCategoryId } = data;
 
   if (!scSchemeDetailsId || !scComponentId || !scCategoryId) return;
 
   setLoading(true);
-  
+
   api.get(`${baseURLDBT}configureRHAmount/get-amount-by-scheme-category-and-component?scSchemeDetailsId=${scSchemeDetailsId}&componentId=${scComponentId}&categoryId=${scCategoryId}`, {}, {
       headers: {
           "Content-Type": "application/json"
       }
   })
   .then((response) => {
-      const result = response.data.content.configureRHAmount?.[0];
-      const sqft = result?.sqft;
-      const amount = result?.amount;
+
+  const list = response.data.content.configureRHAmount || [];
+
+  const result = list.find(item => item.stateAmounts !== null) || list[0];
+  const sqft = result?.sqft || 0;
+
+  const amount = result?.amount || 0;
+  const centralAmount = result?.centralAmount || 0;
+  const stateAmounts = result?.stateAmounts || 0;
+
+  const calcBasedOn = getIncentiveAndBonusData?.[0]?.calculationBasedOn || "";
+
+  const isSdpRH225OrLowCost =
+    calcBasedOn === "SDP RH 225" ||
+    calcBasedOn === "SDP Low Cost Shed";
+
+  if (isSdpRH225OrLowCost) {
+    const minAmt = result?.minAmount || 0;
+    const maxAmt = result?.maxAmount || 0;
+
+    setAmountValue((prev) => ({
+      ...prev,
+      unitPrice: amount,
+      minAmount: minAmt,
+      maxAmount: maxAmt,
+    }));
+
+    // Total Subsidy will be computed in the rhSqft useEffect
+    return;
+  }
+
+  const calcType = calcBasedOn.toLowerCase().replace(/\s+/g, " ").trim();
+
+  const isSDP =
+    calcType === "ss construction of low cost shed to permanent rearing house" ||
+    calcType === "sdp construction of low cost shed to permanent rearing house";
+
+  if (isSDP) {
+    setAmountValue((prev) => ({
+      ...prev,
+      unitPrice: amount
+    }));
+
+    setData((prev) => ({
+      ...prev,
+      estimatedCost: amount
+    }));
+
+    setData((prev) => ({
+      ...prev,
+      expectedAmount: amount,
+      schemeAmount: amount
+    }));
+
+    setOriginalStateAmount(stateAmounts);
+
+    setData((prev) => ({
+      ...prev,
+      centralAmount: centralAmount,
+      stateAmount: stateAmounts
+    }));
+
+    return;
+  }
+
+      // ✅ EXISTING LOGIC (UNCHANGED)
       let calculatedAmount = "";
 
       if (schemeDetails.calculationBasedOn === "Sericulture Development Programme") {
           if (sqft && amount) {
               calculatedAmount = sqft * amount;
           }
-      } 
+      }
       else if (
-          schemeDetails.calculationBasedOn === "Silk Samagra State" || 
+          schemeDetails.calculationBasedOn === "Silk Samagra State" ||
           schemeDetails.calculationBasedOn === "Silk Samagra Central"
       ) {
-          calculatedAmount = amount || ""; // Directly set amount from API
+          calculatedAmount = amount || "";
       }
 
       if (calculatedAmount) {
@@ -1927,6 +2074,62 @@ if (data.scComponentId && data.scCategoryId && data.scSchemeDetailsId) {
 }
 }, [data.scComponentId, data.scCategoryId, data.scSchemeDetailsId]);
 
+useEffect(() => {
+
+  // const isSDP =
+  //   getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+  //   "SS Construction Of Low Cost Shed to Permanent Rearing House" ||
+  // getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+  //   "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House";
+
+  const calcType = (
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn || ""
+)
+  .toLowerCase()
+  .replace(/\s+/g, " ")
+  .trim();
+
+const isSDP =
+  calcType === "ss construction of low cost shed to permanent rearing house" ||
+  calcType === "sdp construction of low cost shed to permanent rearing house";
+
+  if (
+    isSDP &&
+    data.scComponentId &&
+    data.scCategoryId &&
+    data.scSchemeDetailsId
+  ) {
+    getCalculateAmountForRH();
+  }
+
+}, [
+  getIncentiveAndBonusData,
+  data.scComponentId,
+  data.scCategoryId,
+  data.scSchemeDetailsId
+]);
+
+useEffect(() => {
+
+  if (originalStateAmount !== null && originalStateAmount !== undefined) {
+
+    const paid = Number(data.alreadyPaidAmount || 0);
+
+    const finalStateAmount = Math.max(
+      originalStateAmount - paid,
+      0
+    );
+
+    setData((prev) => ({
+      ...prev,
+      stateAmount: finalStateAmount
+    }));
+  }
+
+}, [originalStateAmount, data.alreadyPaidAmount]);
+
+
+const [totalSubsidy, setTotalSubsidy] = useState(0);
 
 
 
@@ -2036,15 +2239,15 @@ const calculateAmountFor30Kg = () => {
   const calculatedAmount = cocoonsWeight * amountPerKg;
   const roundedAmount = Math.round(calculatedAmount * 100) / 100; // round to 2 decimals
 
-  setAmountValue({
-    ...amountValue,
+  setAmountValue((prev) => ({
+    ...prev,
     unitPrice: amountPerKg,
-  });
+  }));
 
-  setData({
-    ...data,
+  setData((prev) => ({
+    ...prev,
     expectedAmount: roundedAmount,
-  });
+  }));
 };
 
 const calculateAmountForBivoltineBonus = () => {
@@ -2094,15 +2297,15 @@ const calculateAmountForBivoltineBonus = () => {
   const roundedAmount = Math.round(calculatedAmount);
  // round to 2 decimals
 
-  setAmountValue({
-    ...amountValue,
+  setAmountValue((prev) => ({
+    ...prev,
     unitPrice: unitCost,
-  });
+  }));
 
-  setData({
-    ...data,
+  setData((prev) => ({
+    ...prev,
     expectedAmount: roundedAmount,
-  });
+  }));
 };
 
 // to get Program
@@ -2180,14 +2383,14 @@ const getreelingShedAmountList = (machineTypeId ,reelingSqft,componentTypeId, co
       const incentiveData = response.data.content?.configureReelingShed || [];
       setReelingShedAmountListData(incentiveData);
 
-      setAmountValue({
-          ...amountValue,
-          unitPrice: incentiveData.unitCost, // Set the Unit Price
-        });
-        setData({
-              ...data,
-              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
-            });
+      setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: incentiveData.unitCost,
+        }));
+        setData((prev) => ({
+              ...prev,
+              expectedAmount: incentiveData.unitCost,
+            }));
     })
     .catch((err) => {
       setReelingShedAmountListData([]);
@@ -2345,7 +2548,108 @@ const calculateEquipmentRow = (item, sharePerc) => {
 
 const handleCalculateUnitPrice = () => {
 
-  const incentiveCalcBasedOn = getIncentiveAndBonusData[0]?.calculationBasedOn;
+  setUnitPriceCalculated(true);
+
+  const incentiveCalcBasedOn = getIncentiveAndBonusData?.[0]?.calculationBasedOn;
+
+  const isSdpRH225OrLowCost =
+    incentiveCalcBasedOn === "SDP RH 225" ||
+    incentiveCalcBasedOn === "SDP Low Cost Shed";
+
+  if (isSdpRH225OrLowCost) {
+    const sqft = Number(developedLand.rhSqft);
+    const unitPrice = Number(amountValue.unitPrice);
+    const minAmount = Number(amountValue.minAmount);
+    const maxAmount = Number(amountValue.maxAmount);
+
+    if (!sqft) {
+      Swal.fire({
+        icon: "warning",
+        title: "Sqft Required",
+        html: `<p style="color:#555;font-size:15px;">Please enter the <strong>Constructed Area in Sqft</strong> before calculating.</p>`,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#f0a500",
+        showCloseButton: true,
+      });
+      return;
+    }
+
+    if (!unitPrice) {
+      Swal.fire({
+        icon: "warning",
+        title: "Unit Price Not Available",
+        html: `<p style="color:#555;font-size:15px;">Unit Price could not be fetched. Please select <strong>Component</strong> and <strong>Sub Component</strong> first.</p>`,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#f0a500",
+        showCloseButton: true,
+      });
+      return;
+    }
+
+    if (minAmount > 0 && sqft < minAmount) {
+      Swal.fire({
+        icon: "error",
+        title: "No Subsidy Available",
+        html: `
+          <div style="text-align:center;">
+            <div style="font-size:48px;margin-bottom:8px;">🏚️</div>
+            <p style="color:#444;font-size:15px;line-height:1.6;">
+              The entered area of <strong style="color:#d33;">${sqft} Sqft</strong> is below the
+              minimum eligible area of <strong style="color:#2d8a4e;">${minAmount} Sqft</strong>.
+            </p>
+            <p style="color:#777;font-size:13px;margin-top:8px;">No subsidy can be granted for this value.</p>
+          </div>`,
+        confirmButtonText: "Understood",
+        confirmButtonColor: "#d33",
+        background: "#fff9f9",
+        showCloseButton: true,
+        footer: `<span style="color:#aaa;font-size:12px;">💡 Enter a Sqft value ≥ ${minAmount} to be eligible.</span>`,
+      });
+      setData((prev) => ({ ...prev, expectedAmount: "", schemeAmount: "" }));
+      return;
+    }
+
+    const effectiveSqft = (maxAmount > 0 && sqft > maxAmount) ? maxAmount : sqft;
+    const totalSubsidy = effectiveSqft * unitPrice;
+
+    setData((prev) => ({
+      ...prev,
+      expectedAmount: totalSubsidy,
+      schemeAmount: totalSubsidy,
+    }));
+
+    const capped = maxAmount > 0 && sqft > maxAmount;
+    Swal.fire({
+      icon: "success",
+      title: "Subsidy Calculated!",
+      html: `
+        <div style="text-align:center;">
+          <div style="font-size:48px;margin-bottom:8px;">🏠</div>
+          <table style="width:100%;font-size:14px;border-collapse:collapse;margin-top:8px;">
+            <tr style="background:#f0f4ff;">
+              <td style="padding:8px 12px;text-align:left;color:#555;border-radius:4px;">Entered Sqft</td>
+              <td style="padding:8px 12px;font-weight:bold;color:#222;">${sqft} Sqft</td>
+            </tr>
+            ${capped ? `<tr><td style="padding:8px 12px;text-align:left;color:#555;">Capped at Max</td><td style="padding:8px 12px;font-weight:bold;color:#e65100;">${maxAmount} Sqft</td></tr>` : ""}
+            <tr style="background:#f0f4ff;">
+              <td style="padding:8px 12px;text-align:left;color:#555;">Unit Price</td>
+              <td style="padding:8px 12px;font-weight:bold;color:#222;">₹ ${unitPrice}</td>
+            </tr>
+            <tr style="background:#e8f5e9;">
+              <td style="padding:8px 12px;text-align:left;color:#2d8a4e;font-weight:bold;">Total Subsidy</td>
+              <td style="padding:8px 12px;font-weight:bold;font-size:16px;color:#2d8a4e;">₹ ${totalSubsidy.toLocaleString("en-IN")}</td>
+            </tr>
+          </table>
+        </div>`,
+      confirmButtonText: "Great!",
+      confirmButtonColor: "#2d8a4e",
+      background: "#f9fff9",
+      showCloseButton: true,
+    });
+
+    return;
+  }
+
   const isChawki =
     incentiveCalcBasedOn ===
     "Registered Private Bivoltine Chawki Rearing Center Subsidy";
@@ -2412,7 +2716,7 @@ const handleCalculateUnitPrice = () => {
   }
 
   // ✅ Check for Incentive/Bonus-based calculations
-  if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Bivoltine Bonus"  &&
+  if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Bivoltine Bonus"  &&
   selectedBonusMode === "Automatic") {
     if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
       Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
@@ -2460,7 +2764,7 @@ const handleCalculateUnitPrice = () => {
   }
 
 
- if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Bivoltine Bonus"  &&
+ if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Bivoltine Bonus"  &&
   selectedBonusMode === "Manual") {
     if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
       Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
@@ -2509,8 +2813,8 @@ const handleCalculateUnitPrice = () => {
 
 
 // ✅ Check for Incentive/Bonus-based calculations
-//   if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Incentive For Bivoltine Cocoons-30/kg-PSF" ||
-//     getIncentiveAndBonusData[0]?.calculationBasedOn === "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP"
+//   if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Incentive For Bivoltine Cocoons-30/kg-PSF" ||
+//     getIncentiveAndBonusData?.[0]?.calculationBasedOn === "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP"
 //   ) {
 //     if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
 //       Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
@@ -2558,9 +2862,9 @@ const handleCalculateUnitPrice = () => {
 //   }
 // ✅ Check for Incentive/Bonus-based calculations
 // if (
-//   getIncentiveAndBonusData[0]?.calculationBasedOn ===
+//   getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
 //     "Incentive For Bivoltine Cocoons-30/kg-PSF" ||
-//   getIncentiveAndBonusData[0]?.calculationBasedOn ===
+//   getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
 //     "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP"
 // ) {
 //   if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
@@ -2592,7 +2896,7 @@ const handleCalculateUnitPrice = () => {
 //     return;
 //   }
 
-//   const calcType = getIncentiveAndBonusData[0]?.calculationBasedOn;
+//   const calcType = getIncentiveAndBonusData?.[0]?.calculationBasedOn;
 
 //   // 🔥 APPLY MIN/MAX VALIDATION ONLY FOR BIVOLTINE INCENTIVE
 //   if (calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF") {
@@ -2626,7 +2930,7 @@ const handleCalculateUnitPrice = () => {
 
 // ... inside your function/handler
 
-const calcType = getIncentiveAndBonusData[0]?.calculationBasedOn;
+const calcType = getIncentiveAndBonusData?.[0]?.calculationBasedOn;
 
 if (
   calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF" ||
@@ -2691,7 +2995,7 @@ if (
 
 
 if (
-  getIncentiveAndBonusData[0]?.calculationBasedOn ===
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
     "Incentive For Bivoltine Chawki Rearing Cost"
 ) {
   if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
@@ -2731,7 +3035,7 @@ if (
 }
 
 if (
-  getIncentiveAndBonusData[0]?.calculationBasedOn ===
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
     "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500"
 ) {
 
@@ -2773,7 +3077,7 @@ if (
 
 
   // ✅ Special case: Silk Incentive - PSF
-  if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Silk Incentive-PSF") {
+  if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF") {
     if (!data.scSubSchemeDetailsId || !data.scComponentId || !data.scCategoryId || !data.machineTypeId || !data.silkTable || !data.renditta) {
       Swal.fire({
         icon: "warning",
@@ -2824,8 +3128,8 @@ if (
   }
 
   if (
-    getIncentiveAndBonusData[0]?.calculationBasedOn === "IMCB-PSF" ||
-    getIncentiveAndBonusData[0]?.calculationBasedOn === "MERM-PSF"
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "IMCB-PSF" ||
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "MERM-PSF"
   ) {
     if (
       !data.imcbTable ||
@@ -2870,7 +3174,7 @@ if (
 
 
   if (
-    getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Boiler-PSF" 
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Boiler-PSF" 
   ) {
     if (
       !data.boilerInKg ||
@@ -2914,7 +3218,7 @@ if (
   }
 
   if (
-    getIncentiveAndBonusData[0]?.calculationBasedOn === "ICB-PSF"
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "ICB-PSF"
   ) {
     if (
       !data.icbBasinEnds ||
@@ -2960,7 +3264,7 @@ if (
 
   
 if (
-    getIncentiveAndBonusData[0]?.calculationBasedOn === "Reeling Shed-PSF"
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Reeling Shed-PSF"
   ) {
     if (
       !data.machineTypeId ||
@@ -3007,7 +3311,7 @@ if (
 
 
   if (
-    getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Silent Generator"
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Silent Generator"
   ) {
     if (
       !data.machineTypeId ||
@@ -3053,7 +3357,7 @@ if (
   } 
 
   if (
-    getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar power Generator"
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar power Generator"
   ) {
     if (
       !data.machineTypeId ||
@@ -3100,7 +3404,7 @@ if (
 
 
   if (
-    getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar Water Heater"
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar Water Heater"
   ) {
     if (
       !data.machineTypeId ||
@@ -3148,7 +3452,7 @@ if (
   
 
   // ✅ Adopting Heat Recovery Unit - PSF
-  if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Heat Recovery Unit-PSF") {
+  if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Heat Recovery Unit-PSF") {
     if (!data.scSchemeDetailsId || !data.scSubSchemeDetailsId || !data.scComponentId) {
       Swal.fire({
         icon: "warning",
@@ -3185,7 +3489,7 @@ if (
 // FOR REGISTERED PRIVATE CHAWKI SUBSIDY CALCULATION
 // ===============================================
 // if (
-//   getIncentiveAndBonusData[0]?.calculationBasedOn === 
+//   getIncentiveAndBonusData?.[0]?.calculationBasedOn === 
 //   "Registered Private Bivoltine Chawki Rearing Center Subsidy"
 // ) {
 //   let sharePerc = getIncentiveAndBonusData[0]?.shareInPercentage || 0;
@@ -3223,7 +3527,7 @@ if (
 //   return;
 // }
 
-// if (getIncentiveAndBonusData[0]?.calculationBasedOn === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
+// if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
       
 //       const totals = calculateTotals(chawkiData);
 //       const { totalEligible, totalClaimed } = totals;
@@ -3401,22 +3705,52 @@ const [chawkiData, setChawkiData] = useState({
         // claimed: first.establishmentOfMulberryGardenClaimedAmount || "",
         // percentage: first.establishmentOfMulberryGardenPercentageOfSubsidyAmount || ""
         claimed: "",
-        percentage: ""
+        percentage: "",
+        district: "",
+        taluk: "",
+        village: "",
+        tsc: "",
+        trainingFromDate: "",
+        trainingToDate: "",
+        registerDate: "",
+        registerNo: "",
+        surveyNo: "",
+        acre: "",
+        vibhaga: ""
       },
       drip: {
         eligible: first.installationOfDripIrrigationEligibleAmount,
         // claimed: first.installationOfDripIrrigationClaimedAmount || "",
         // percentage: first.installationOfDripIrrigationPercentageOfSubsidyAmount || ""
         claimed: "",
-        percentage: ""
+        percentage: "" 
       },
       building: {
         eligible: first.chawkiRearingBuildingEligibleAmount,
         // claimed: first.chawkiRearingBuildingClaimedAmount || "",
         // percentage: first.chawkiRearingBuildingPercentageOfSubsidyAmount || ""
         claimed: "",
-        percentage: ""
-      }
+        percentage: "",
+
+        district: "",
+          taluk: "",
+          village: "",
+          tsc: "",
+          surveyNo: "",
+          acre: "",
+          sqft: "",
+          length: "",
+          breadth: ""
+      },
+
+      equipment: {
+          // input fields - null by default
+          district: "",
+          taluk: "",
+          village: "",
+          tsc: "",
+          place: ""
+        }
     });
   })
 .catch((err) => {
@@ -3529,14 +3863,14 @@ const getImcbAndMermAmountList = (imcbTable ,componentTypeId, componentId, categ
       const incentiveData = response.data.content?.configureImcb || [];
       setImcbAndMermAmountListData(incentiveData);
 
-      setAmountValue({
-          ...amountValue,
-          unitPrice: incentiveData.unitCost, // Set the Unit Price
-        });
-        setData({
-              ...data,
-              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
-            });
+      setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: incentiveData.unitCost,
+        }));
+        setData((prev) => ({
+              ...prev,
+              expectedAmount: incentiveData.unitCost,
+            }));
     })
     .catch((err) => {
       setImcbAndMermAmountListData([]);
@@ -3552,12 +3886,15 @@ useEffect(() => {
     data.scComponentId &&
     data.scCategoryId
   ) {
-    getImcbAndMermAmountList(
-      data.imcbTable,
-      data.scSubSchemeDetailsId,
-      data.scComponentId,
-      data.scCategoryId
-    );
+    const timer = setTimeout(() => {
+      getImcbAndMermAmountList(
+        data.imcbTable,
+        data.scSubSchemeDetailsId,
+        data.scComponentId,
+        data.scCategoryId
+      );
+    }, 500);
+    return () => clearTimeout(timer);
   }
 }, [data.imcbTable,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
@@ -3579,14 +3916,14 @@ const getAdoptingBoilerAmountList = (boilerInKg ,componentTypeId, componentId, c
       const incentiveData = response.data?.content?.configureAdoptingBoiler || [];
       setAdoptingBoilerAmountListData(incentiveData);
 
-      setAmountValue({
-          ...amountValue,
-          unitPrice: incentiveData.unitCost, // Set the Unit Price
-        });
-        setData({
-              ...data,
-              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
-            });
+      setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: incentiveData.unitCost,
+        }));
+        setData((prev) => ({
+              ...prev,
+              expectedAmount: incentiveData.unitCost,
+            }));
     })
     .catch((err) => {
       setAdoptingBoilerAmountListData([]);
@@ -3602,12 +3939,15 @@ useEffect(() => {
     data.scComponentId &&
     data.scCategoryId
   ) {
-    getAdoptingBoilerAmountList(
-      data.boilerInKg,
-      data.scSubSchemeDetailsId,
-      data.scComponentId,
-      data.scCategoryId
-    );
+    const timer = setTimeout(() => {
+      getAdoptingBoilerAmountList(
+        data.boilerInKg,
+        data.scSubSchemeDetailsId,
+        data.scComponentId,
+        data.scCategoryId
+      );
+    }, 500);
+    return () => clearTimeout(timer);
   }
 }, [data.boilerInKg,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
@@ -3629,14 +3969,14 @@ const getIcbAndArmAmountList = (icbBasinEnds ,componentTypeId, componentId, cate
       const incentiveData = response.data?.content?.configureIcb || [];
       setIcbAndArmAmountListData(incentiveData);
 
-      setAmountValue({
-          ...amountValue,
-          unitPrice: incentiveData.unitCost, // Set the Unit Price
-        });
-        setData({
-              ...data,
-              expectedAmount: incentiveData.unitCost, // Set the Subsidy amount to expectedAmount
-            });
+      setAmountValue((prev) => ({
+          ...prev,
+          unitPrice: incentiveData.unitCost,
+        }));
+        setData((prev) => ({
+              ...prev,
+              expectedAmount: incentiveData.unitCost,
+            }));
     })
     .catch((err) => {
       setIcbAndArmAmountListData([]);
@@ -3652,12 +3992,15 @@ useEffect(() => {
     data.scComponentId &&
     data.scCategoryId
   ) {
-    getIcbAndArmAmountList( 
-      data.icbBasinEnds,
-      data.scSubSchemeDetailsId,
-      data.scComponentId, 
-      data.scCategoryId
-    );
+    const timer = setTimeout(() => {
+      getIcbAndArmAmountList(
+        data.icbBasinEnds,
+        data.scSubSchemeDetailsId,
+        data.scComponentId,
+        data.scCategoryId
+      );
+    }, 500);
+    return () => clearTimeout(timer);
   }
 }, [data.icbBasinEnds,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
@@ -3861,6 +4204,472 @@ const isUserValid = React.useMemo(() => {
       return; // Exit if the form is not valid
     }
 
+    // All schemes: Calculate Unit Price must be clicked
+    if (!unitPriceCalculated) {
+      Swal.fire({
+        icon: "warning",
+        title: "⚠️ Unit Price Not Calculated",
+        html: `
+          <div style="text-align:center; font-size:15px; color:#555; margin-bottom:8px;">
+            Please click the <strong style="color:#0F6CBE;">"Calculate Unit Price"</strong> button before submitting the form.
+          </div>
+          <div style="text-align:center; font-size:13px; color:#888;">
+            This step is required to compute the eligible subsidy amount.
+          </div>
+        `,
+        confirmButtonText: "OK, I'll calculate",
+        confirmButtonColor: "#0F6CBE",
+        background: "#f0f6ff",
+        customClass: {
+          title: "swal-title-style",
+          popup: "swal-popup-style",
+        },
+      });
+      return;
+    }
+
+    // Silk Samagra State / Silk Samagra Central: validate Land Wise Constructed Area
+    if (
+      schemeDetails.calculationBasedOn === "Silk Samagra State" ||
+      schemeDetails.calculationBasedOn === "Silk Samagra Central"
+    ) {
+      const missingFields = [];
+      if (!data.equordev.includes("land")) {
+        missingFields.push("Land Wise Details (please check the Land Wise checkbox)");
+      }
+      if (!data.equordev.includes("constructedArea")) {
+        missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // Reeling Shed-PSF: validate Kanesh Land Details and Constructed Area
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Reeling Shed-PSF") {
+      const missingFields = [];
+      if (data.addKaneshLand !== "yes") {
+        missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
+      }
+      if (!data.equordev.includes("constructedArea")) {
+        missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // ISCB-PSF: validate Kanesh Land Details and Equipment Purchase
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "ICB-PSF") {
+      const missingFields = [];
+      // if (data.addKaneshLand !== "yes") {
+      //   missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
+      // }
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // MERM-PSF: validate Kanesh Land Details, Constructed Area and Equipment Purchase
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "MERM-PSF") {
+      const missingFields = [];
+      if (data.addKaneshLand !== "yes") {
+        missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
+      }
+      if (!data.equordev.includes("constructedArea")) {
+        missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
+      }
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // IMCB-PSF: validate Equipment Purchase
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "IMCB-PSF") {
+      const missingFields = [];
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // Adopting Boiler-PSF: validate Equipment Purchase
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Boiler-PSF") {
+      const missingFields = [];
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // Adopting Silent Generator: validate Equipment Purchase
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Silent Generator") {
+      const missingFields = [];
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // Adopting Solar power Generator: validate Equipment Purchase
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar power Generator") {
+      const missingFields = [];
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // Adopting Solar Water Heater: validate Equipment Purchase
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar Water Heater") {
+      const missingFields = [];
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // Adopting Heat Recovery Unit-PSF: validate Equipment Purchase
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Heat Recovery Unit-PSF") {
+      const missingFields = [];
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // Rearing Equipment SS: validate Equipment Purchase, Constructed Area and Kanesh Land Details
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS") {
+      const missingFields = [];
+      if (!data.equordev.includes("land")) {
+        missingFields.push("Land Wise Details (please check the Land Wise checkbox)");
+      }
+      if (!data.equordev.includes("constructedArea")) {
+        missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
+      }
+      if (!data.equordev.includes("equipment")) {
+        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      }
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please provide the following required details before proceeding:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
     const formattedDates = {
       periodFrom: formatDate(data.periodFrom),
       periodTo: formatDate(data.periodTo),
@@ -3896,7 +4705,38 @@ const isUserValid = React.useMemo(() => {
 
     chawkiRearingBuildingEligibleAmount: chawkiData.building.eligible,
     chawkiRearingBuildingClaimedAmount: Number(chawkiData.building.claimed || 0),
-    chawkiRearingBuildingPercentageOfSubsidyAmount: Number(chawkiData.building.percentage || 0)
+    chawkiRearingBuildingPercentageOfSubsidyAmount: Number(chawkiData.building.percentage || 0),
+
+    // Establishment of Mulberry new fields
+    establishmentOfMulberryDistrict: chawkiData.mulberry.district,
+    establishmentOfMulberryTaluk: chawkiData.mulberry.taluk,
+    establishmentOfMulberryVillage: chawkiData.mulberry.village,
+    establishmentOfMulberryTsc: chawkiData.mulberry.tsc,
+    establishmentOfMulberryTrainingFromDate: chawkiData.mulberry.trainingFromDate,
+    establishmentOfMulberryTrainingToDate: chawkiData.mulberry.trainingToDate,
+    establishmentOfMulberryRegisterDate: chawkiData.mulberry.registerDate,
+    establishmentOfMulberryRegisterNo: chawkiData.mulberry.registerNo,
+    establishmentOfMulberrySurveyNo: chawkiData.mulberry.surveyNo,
+    establishmentOfMulberryAcre: chawkiData.mulberry.acre,
+    establishmentOfMulberryVibhaga: chawkiData.mulberry.vibhaga,
+
+    // Chawki Rearing Building new fields
+    chawkiRearingBuildingDistrict: chawkiData.building.district,
+    chawkiRearingBuildingTaluk: chawkiData.building.taluk,
+    chawkiRearingBuildingVillage: chawkiData.building.village,
+    chawkiRearingBuildingTsc: chawkiData.building.tsc,
+    chawkiRearingBuildingSurveyNo: chawkiData.building.surveyNo,
+    chawkiRearingBuildingAcre: chawkiData.building.acre,
+    chawkiRearingBuildingSqft: chawkiData.building.sqft,
+    chawkiRearingBuildingLength: chawkiData.building.length,
+    chawkiRearingBuildingBreadth: chawkiData.building.breadth,
+
+    // Purchase of Equipment new fields
+    purchaseOfEquipmentDistrict: chawkiData.equipment.district,
+    purchaseOfEquipmentTaluk: chawkiData.equipment.taluk,
+    purchaseOfEquipmentVillage: chawkiData.equipment.village,
+    purchaseOfEquipmentTsc: chawkiData.equipment.tsc,
+    purchaseOfEquipmentPlace: chawkiData.equipment.place,
   }));
 
   const totals = calculateTotals(chawkiData);
@@ -3982,6 +4822,8 @@ const isUserValid = React.useMemo(() => {
       taxInvoiceDate: data.taxInvoiceDate,
       rearingEquipmentDetailsId: data.rearingEquipmentDetailsId,
       beneficiaryShareAmount: data.beneficiaryShareAmount,
+      subsidyAmount: data.subsidyAmount,
+      shareInPercentage: sharePercentage,
       unitPrice:amountValue.unitPrice,
       equipmentEligibleTotal: totals.equipmentEligibleTotal,
       equipmentMaxSubsidyTotal: totals.equipmentMaxSubsidyTotal,
@@ -3990,7 +4832,9 @@ const isUserValid = React.useMemo(() => {
     totalClaimed: totals.totalClaimed,
     totalEligible: totals.totalEligible,
     totalSubsidy: totals.totalSubsidy,
-
+    alreadyPaidAmount: data.alreadyPaidAmount,
+    stateAmount: data.stateAmount,
+    newFinancialYear: data.newFinancialYear,
       chawkiSanctionOrderList: chawkiSanctionOrderList
     };
 
@@ -4026,6 +4870,39 @@ const isUserValid = React.useMemo(() => {
     unitPrice: "",
     fullPrice: false,
   });
+
+  // Compute Total Subsidy based on rhSqft for SDP RH 225 / SDP Low Cost Shed
+  useEffect(() => {
+    const calcBasedOn = getIncentiveAndBonusData?.[0]?.calculationBasedOn || "";
+    const isSdpRH225OrLowCost =
+      calcBasedOn === "SDP RH 225" || calcBasedOn === "SDP Low Cost Shed";
+
+    if (!isSdpRH225OrLowCost) return;
+
+    const sqft = Number(developedLand.rhSqft);
+    const unitPrice = Number(amountValue.unitPrice);
+    const minAmount = Number(amountValue.minAmount);
+    const maxAmount = Number(amountValue.maxAmount);
+
+    if (!sqft || !unitPrice) return;
+
+    if (minAmount > 0 && sqft < minAmount) {
+      setData((prev) => ({ ...prev, expectedAmount: "", schemeAmount: "" }));
+      return;
+    }
+
+    const effectiveSqft = (maxAmount > 0 && sqft > maxAmount) ? maxAmount : sqft;
+    const totalSubsidy = effectiveSqft * unitPrice;
+
+    setData((prev) => ({
+      ...prev,
+      expectedAmount: totalSubsidy,
+      schemeAmount: totalSubsidy,
+    }));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [developedLand.rhSqft, amountValue.unitPrice, amountValue.minAmount, amountValue.maxAmount, getIncentiveAndBonusData]);
+
+  const [unitPriceCalculated, setUnitPriceCalculated] = useState(false);
 
   useEffect(() => {
     if (
@@ -4130,6 +5007,28 @@ const isUserValid = React.useMemo(() => {
     try {
       const response = await api.post(
         baseURLReport + `getRHAck`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+  const generateAcknowledgmentRHSDPConstruction = async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getSDPConstructionLowCostShedAck`,
         {
           applicationFormId: applicationFormId,
           schemeId: schemeId,
@@ -4568,6 +5467,66 @@ const isUserValid = React.useMemo(() => {
     }
   };
 
+  const generateAcknowledgmentRegisteredPrivateBivCRC= async (applicationFormId,schemeId,subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getACKCRC`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob", //Force to receive data in a Blob Format
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      // console.log("error", error);
+    }
+  };
+
+
+  const generateAcknowledgmentRHSDP225 = async (applicationFormId, schemeId, subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getRHSDP225Ack`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob",
+        }
+      );
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {}
+  };
+
+  const generateAcknowledgmentRHSDPLowCostShed = async (applicationFormId, schemeId, subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getRHSDPLowCostShedAck`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob",
+        }
+      );
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {}
+  };
 
   const generateAcknowledgmentHRU = async (applicationFormId,schemeId,subSchemeId) => {
     try {
@@ -4673,7 +5632,10 @@ const isUserValid = React.useMemo(() => {
       dailyLimit: "",
        monthlyLimit: "",
       boilerInKg: "",
-      sanctionNo: ""
+      sanctionNo: "",
+      alreadyPaidAmount:"",
+      stateAmount: "",
+    newFinancialYear: "",
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -4978,10 +5940,15 @@ const callAcknowledgmentFunction = (
   ) {
     generateAcknowledgmentReelingShed(applicationFormId, schemeId, subSchemeId);
 
-  } else if (
-    acknowledgementForScheme === "Adopting Heat Recovery Unit-PSF"
+  }else if (
+    acknowledgementForScheme === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
   ) {
-    generateAcknowledgmentHRU(applicationFormId, schemeId, subSchemeId);
+    generateAcknowledgmentRHSDPConstruction(applicationFormId, schemeId, subSchemeId);
+
+  // } else if (
+  //   acknowledgementForScheme === "Adopting Heat Recovery Unit-PSF"
+  // ) {
+  //   generateAcknowledgmentHRU(applicationFormId, schemeId, subSchemeId);
 
   } else if (
     acknowledgementForScheme === "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP"
@@ -5154,7 +6121,24 @@ const callAcknowledgmentFunction = (
 
   }
 
-  
+  else if (
+    acknowledgementForScheme === "Registered Private Bivoltine Chawki Rearing Center Subsidy"
+  ) {
+    generateAcknowledgmentRegisteredPrivateBivCRC(
+      applicationFormId,
+      schemeId,
+      subSchemeId
+    );
+
+  } else if (acknowledgementForScheme === "SDP RH 225") {
+    generateAcknowledgmentRHSDP225(applicationFormId, schemeId, subSchemeId);
+
+  } else if (acknowledgementForScheme === "SDP Low Cost Shed") {
+    generateAcknowledgmentRHSDPLowCostShed(applicationFormId, schemeId, subSchemeId);
+
+  }
+
+
 };
 
 
@@ -5559,6 +6543,14 @@ const fetchReelerDetails = () => {
       hide: "md",
     },
     {
+      name: t("Hissa"),
+      selector: (row) => row.hissa,
+      cell: (row) => <span>{row.hissa}</span>,
+      sortable: true,
+      hide: "md",
+    },
+   
+    {
       name: t("survey_number"),
       selector: (row) => row.surveyNumber,
       cell: (row) => <span>{row.surveyNumber}</span>,
@@ -5633,7 +6625,7 @@ const fetchReelerDetails = () => {
           {/* {console.log("dada marre",i)} */}
           <Form.Control
             name="devAcre"
-            type="text"
+            type="number"
             value={developedArea[i]?.devAcre || ""}
             onChange={(e) => handleInlineDevelopedLandChange(e, i)}
             placeholder="Acre"
@@ -5641,7 +6633,7 @@ const fetchReelerDetails = () => {
           />
           <Form.Control
             name="devGunta"
-            type="text"
+            type="number"
             value={developedArea[i]?.devGunta || ""}
             onChange={(e) => handleInlineDevelopedLandChange(e, i)}
             placeholder="Gunta"
@@ -5649,7 +6641,7 @@ const fetchReelerDetails = () => {
           />
           <Form.Control
             name="devFGunta"
-            type="text"
+            type="number"
             value={developedArea[i]?.devFGunta || ""}
             onChange={(e) => handleInlineDevelopedLandChange(e, i)}
             placeholder="FGunta"
@@ -6010,6 +7002,7 @@ const fetchReelerDetails = () => {
         </Form>
 
         
+
       </Block>
       <Row>
         <Block>
@@ -6172,8 +7165,8 @@ const fetchReelerDetails = () => {
                           </Form.Group>
                         </Col>
 
-                         {(getIncentiveAndBonusData[0]?.calculationBasedOn === "Bivoltine Bonus" ||
-                            getIncentiveAndBonusData[0]?.calculationBasedOn === "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500") && (
+                         {(getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Bivoltine Bonus" ||
+                            getIncentiveAndBonusData?.[0]?.calculationBasedOn === "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500") && (
                             <Col lg="6">
                                 <Form.Group className="form-group mt-n4">
                                   <Form.Label htmlFor="imcbTable">
@@ -6274,6 +7267,27 @@ const fetchReelerDetails = () => {
                           </Form.Group>
                         </Col>
 
+                        {(getIncentiveAndBonusData?.[0]?.calculationBasedOn === "SDP RH 225" ||
+                          getIncentiveAndBonusData?.[0]?.calculationBasedOn === "SDP Low Cost Shed") && (
+                          <Col lg="6">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="rhSqft">
+                                {t("Constructed Area in Sqft")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="rhSqft"
+                                  type="text"
+                                  name="rhSqft"
+                                  value={developedLand.rhSqft}
+                                  onChange={handleDevelopedLandInputs}
+                                  placeholder="Enter Constructed Area in Sqft"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        )}
+
                          {getIncentiveAndBonusData[0]?.unitForScheme === "Rearing Equipment SS" && (
                             <>
 
@@ -6362,9 +7376,10 @@ const fetchReelerDetails = () => {
                           )}
 
                           {(
-                          getIncentiveAndBonusData[0]?.unitForScheme === 
+                          getIncentiveAndBonusData[0]?.unitForScheme ===
                             "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||
-                          getIncentiveAndBonusData[0]?.sanctionForReeling
+                          (getIncentiveAndBonusData[0]?.sanctionForReeling &&
+                            getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Silk Incentive-PSF")
                         ) && (
                           <>
                             <Col lg="6">
@@ -6414,7 +7429,7 @@ const fetchReelerDetails = () => {
                         )}
 
 
-                        {getIncentiveAndBonusData[0]?.calculationBasedOn === "Silk Incentive-PSF" && (
+                        {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF" && (
                             <>
                             <Col lg="6">
                                 <Form.Group className="form-group mt-n3">
@@ -6572,7 +7587,7 @@ const fetchReelerDetails = () => {
                             </>
                           )}
 
-                          {getIncentiveAndBonusData[0]?.calculationBasedOn === "ICB-PSF" && (
+                          {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "ICB-PSF" && (
                            
                             <Col lg="6">
                                   <Form.Group className="form-group mt-n4">
@@ -6599,7 +7614,7 @@ const fetchReelerDetails = () => {
                             </Col>
                                )}
 
-                               {getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Boiler-PSF" && (
+                               {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Boiler-PSF" && (
                            
                             <Col lg="6">
                                   <Form.Group className="form-group mt-n4">
@@ -6626,7 +7641,7 @@ const fetchReelerDetails = () => {
                                )}
 
 
-                            {getIncentiveAndBonusData[0]?.calculationBasedOn === "Reeling Shed-PSF" && (
+                            {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Reeling Shed-PSF" && (
                             <>
                             <Col lg="6">
                                 <Form.Group className="form-group mt-n3">
@@ -6726,7 +7741,7 @@ const fetchReelerDetails = () => {
                             </>
                                )}
 
-                               {getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Silent Generator" && (
+                               {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Silent Generator" && (
                             <>
                             <Col lg="6">
                                 <Form.Group className="form-group mt-n3">
@@ -6827,7 +7842,7 @@ const fetchReelerDetails = () => {
                                         data.reelingSqft === "0"
                                       }
                                     >
-                                      <option value="">{t("Select Machine Type")}</option>
+                                      <option value="">{t("Select Silent generator Capacity( KW )")}</option>
                                       {allDetailsData.map((list) => (
                                         <option
                                           key={list.reelingShedId}
@@ -6846,7 +7861,7 @@ const fetchReelerDetails = () => {
                             </>
                                )}
 
-                               {getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar power Generator" && (
+                               {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar power Generator" && (
                             <>
                             <Col lg="6">
                                 <Form.Group className="form-group mt-n3">
@@ -6966,7 +7981,7 @@ const fetchReelerDetails = () => {
                             </>
                                )}
 
-                                {getIncentiveAndBonusData[0]?.calculationBasedOn === "Adopting Solar Water Heater" && (
+                                {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar Water Heater" && (
                             <>
                             <Col lg="6">
                                 <Form.Group className="form-group mt-n4">
@@ -7221,8 +8236,8 @@ const fetchReelerDetails = () => {
                                )}
 
 
-                          {(getIncentiveAndBonusData[0]?.calculationBasedOn === "IMCB-PSF" ||
-                            getIncentiveAndBonusData[0]?.calculationBasedOn === "MERM-PSF") && (
+                          {(getIncentiveAndBonusData?.[0]?.calculationBasedOn === "IMCB-PSF" ||
+                            getIncentiveAndBonusData?.[0]?.calculationBasedOn === "MERM-PSF") && (
                             <Col lg="6">
                                 <Form.Group className="form-group mt-n4">
                                   <Form.Label htmlFor="imcbTable">
@@ -7607,7 +8622,7 @@ const fetchReelerDetails = () => {
                 </Row>
               </Card>
 
-{getIncentiveAndBonusData[0]?.calculationBasedOn === "Silk Incentive-PSF" && (
+   {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF" && (
                             <>
               <Block className="mt-3">
               <Card className="mb-4">
@@ -7797,6 +8812,66 @@ const fetchReelerDetails = () => {
                 </Block>
                 </>
              )}
+
+            {(
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+    "SS Construction Of Low Cost Shed to Permanent Rearing House" ||
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+    "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+) && (
+
+  <Card className="mt-2">
+    <Card.Header>Financial Details</Card.Header>
+    <Card.Body>
+      <Row>
+
+        {/* Financial Year */}
+        <Col lg="4">
+          <Form.Group>
+            <Form.Label>
+              Financial Year <span className="text-danger">*</span>
+            </Form.Label>
+            <Form.Select
+              name="newFinancialYear"
+              value={data.newFinancialYear}
+              onChange={handleInputs}
+              required
+            >
+              <option value="">Select Year</option>
+              {financialyearListData.map((list) => (
+                <option
+                  key={list.financialYearMasterId}
+                  value={list.financialYearMasterId}
+                >
+                  {list.financialYear}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+        </Col>
+
+        {/* Already Paid */}
+        <Col lg="4">
+          <Form.Group>
+            <Form.Label>
+              Subsidy Amount Already Paid <span className="text-danger">*</span>
+            </Form.Label>
+            <Form.Control
+              type="number"
+              name="alreadyPaidAmount"
+              value={data.alreadyPaidAmount}
+              onChange={handleInputs}
+              placeholder="Enter Amount"
+              required
+            />
+          </Form.Group>
+        </Col>
+
+      </Row>
+    </Card.Body>
+  </Card>
+ )}
+
 
               {/* {showButton && ( */}
               {selectedBonusMode === "Automatic" && (
@@ -8071,7 +9146,7 @@ const fetchReelerDetails = () => {
               )}
 
 
-               {/* {getIncentiveAndBonusData[0]?.calculationBasedOn === "Registered Private Bivoltine Chawki Rearing Center Subsidy" && (
+               {/* {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Registered Private Bivoltine Chawki Rearing Center Subsidy" && (
                     <Block className="mt-3">
                       <Card>
                         <Card.Header style={{ fontWeight: "bold" }}>
@@ -8304,7 +9379,7 @@ const fetchReelerDetails = () => {
               )} */}
 
               {
-                getIncentiveAndBonusData[0]?.calculationBasedOn ===
+                getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
                   "Registered Private Bivoltine Chawki Rearing Center Subsidy" && (
                   <Block className="mt-3">
                     <Card>
@@ -8315,10 +9390,8 @@ const fetchReelerDetails = () => {
                       <Card.Body>
                         <Row className="g-4">
 
-                          {/* ============================
-                              CARD 1: Rearing Equipment
-                          ============================= */}
-                          <Card>
+                          
+                          <Card className="p-0">
                             <Card.Header>Rearing Equipment Details</Card.Header>
                             <Card.Body>
                               <table className="table table-bordered">
@@ -8328,7 +9401,7 @@ const fetchReelerDetails = () => {
                                     <th>Subsidy Name</th>
                                     <th>Eligible Nos</th>
                                     <th>Eligible Value</th>
-                                    {/* <th>Rate</th> */}
+                                  
                                     <th>Max Subsidy</th>
                                     <th>Rate</th>
                                     <th>Purchased Nos</th>
@@ -8360,10 +9433,10 @@ const fetchReelerDetails = () => {
                                       <td>{row.subsidyName}</td>
                                       <td>{row.eligibleEquipmentInNos}</td>
                                       <td>{row.eligibleTotalValueInRs}</td>
-                                      {/* <td>{row.ratePerEligibleEquipment}</td> */}
+                                      
                                       <td>{row.maxAmountOfSubsidyEligible}</td>
 
-                                      {/* Purchased Nos */}
+                              
                                       <td>
                                         
                                         <input
@@ -8388,7 +9461,7 @@ const fetchReelerDetails = () => {
                                     />
                                       </td>
 
-                                      {/* Purchased Value */}
+                                    
                                       <td>
                                         <input
                                         type="number"
@@ -8401,7 +9474,7 @@ const fetchReelerDetails = () => {
 
                                       </td>
 
-                                      {/* Percentage */}
+                                     
                                       <td>
                                         <input
                                       type="number"
@@ -8417,22 +9490,22 @@ const fetchReelerDetails = () => {
                                   <tr style={{ fontWeight: "bold", background: "#f8f9fa" }}>
                                 <td colSpan="3" className="text-end">TOTAL</td>
 
-                                {/* Eligible Value */}
+                              
                                 <td>{calculateTotals(chawkiData).equipmentEligibleTotal}</td>
                                 
                                 <td>{calculateTotals(chawkiData).equipmentMaxSubsidyTotal}</td>
 
 
-                                <td></td> {/* Rate */}
-                                <td></td>  {/* Purchased Nos skip */}
+                                <td></td> 
+                                <td></td>  
 
     
-                                {/* <td></td> */}
+                                
 
-                                {/* Purchased Value */}
+                               
                                 <td>{calculateTotals(chawkiData).equipmentPurchasedTotal}</td>
 
-                                {/* Percentage Total */}
+                                
                                 <td>{calculateTotals(chawkiData).equipmentPercentageTotal}</td>
                               </tr>
 
@@ -8441,10 +9514,8 @@ const fetchReelerDetails = () => {
                             </Card.Body>
                           </Card>
 
-                          {/* ============================
-                              CARD 2: Mulberry Garden
-                          ============================= */}
-                          <Card className="mt-3">
+                         
+                          <Card className="p-0">
                             <Card.Header>Establishment Of Mulberry Garden</Card.Header>
                             <Card.Body>
                               <div>
@@ -8475,13 +9546,130 @@ const fetchReelerDetails = () => {
                                         />
                                     </Col>
                               </Row>
+
+                              <Row className="mt-3">
+                            <Col lg="3">
+                              <label>District</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="district"
+                                value={chawkiData.mulberry.district}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Taluk</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="taluk"
+                                value={chawkiData.mulberry.taluk}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Village</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="village"
+                                value={chawkiData.mulberry.village}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>TSC</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="tsc"
+                                value={chawkiData.mulberry.tsc}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                          </Row>
+
+                          <Row className="mt-3">
+                            <Col lg="3">
+                              <label>Training From Date</label>
+                              <input
+                                type="date"
+                                className="form-control"
+                                name="trainingFromDate"
+                                value={chawkiData.mulberry.trainingFromDate}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Training To Date</label>
+                              <input
+                                type="date"
+                                className="form-control"
+                                name="trainingToDate"
+                                value={chawkiData.mulberry.trainingToDate}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Register Date</label>
+                              <input
+                                type="date"
+                                className="form-control"
+                                name="registerDate"
+                                value={chawkiData.mulberry.registerDate}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Register No</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="registerNo"
+                                value={chawkiData.mulberry.registerNo}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                          </Row>
+
+                          <Row className="mt-3">
+                            <Col lg="4">
+                              <label>Survey No</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="surveyNo"
+                                value={chawkiData.mulberry.surveyNo}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="4">
+                              <label>Acre</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="acre"
+                                value={chawkiData.mulberry.acre}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                            <Col lg="4">
+                              <label>Vibhaga</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="vibhaga"
+                                value={chawkiData.mulberry.vibhaga}
+                                onChange={(e) => handleSingleBlockChange("mulberry", e)}
+                              />
+                            </Col>
+                          </Row>
                             </Card.Body>
                           </Card>
 
-                          {/* ============================
-                              CARD 3: Drip Irrigation
-                          ============================= */}
-                          <Card className="mt-3">
+                          
+                          <Card className="p-0">
                             <Card.Header>Installation Of Drip Irrigation</Card.Header>
                             <Card.Body>
                               <div>
@@ -8515,10 +9703,9 @@ const fetchReelerDetails = () => {
                             </Card.Body>
                           </Card>
 
-                          {/* ============================
-                              CARD 4: Chawki Rearing Building
-                          ============================= */}
-                          <Card className="mt-3">
+                          
+
+                          <Card className="p-0">
                             <Card.Header>Chawki Rearing Building</Card.Header>
                             <Card.Body>
                               <div>
@@ -8549,8 +9736,168 @@ const fetchReelerDetails = () => {
                                 />
                                 </Col>
                               </Row>
+
+                              <Row className="mt-3">
+                            <Col lg="3">
+                              <label>District</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="district"
+                                value={chawkiData.building.district}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Taluk</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="taluk"
+                                value={chawkiData.building.taluk}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>Village</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="village"
+                                value={chawkiData.building.village}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="3">
+                              <label>TSC</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="tsc"
+                                value={chawkiData.building.tsc}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                          </Row>
+
+                          <Row className="mt-3">
+                            <Col lg="4">
+                              <label>Survey No</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="surveyNo"
+                                value={chawkiData.building.surveyNo}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="4">
+                              <label>Acre</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="acre"
+                                value={chawkiData.building.acre}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="4">
+                              <label>Sqft</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="sqft"
+                                value={chawkiData.building.sqft}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                          </Row>
+
+                          <Row className="mt-3">
+                            <Col lg="6">
+                              <label>Length</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="length"
+                                value={chawkiData.building.length}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                            <Col lg="6">
+                              <label>Breadth</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="breadth"
+                                value={chawkiData.building.breadth}
+                                onChange={(e) => handleSingleBlockChange("building", e)}
+                              />
+                            </Col>
+                          </Row>
                             </Card.Body>
                           </Card>
+
+                          <Card className="p-0">
+                          <Card.Header>Purchase of Equipment</Card.Header>
+                          <Card.Body>
+                            <Row>
+                              <Col lg="3">
+                                <label>District</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="district"
+                                  value={chawkiData.equipment.district}
+                                  onChange={(e) => handleSingleBlockChange("equipment", e)}
+                                />
+                              </Col>
+                              <Col lg="3">
+                                <label>Taluk</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="taluk"
+                                  value={chawkiData.equipment.taluk}
+                                  onChange={(e) => handleSingleBlockChange("equipment", e)}
+                                />
+                              </Col>
+                              <Col lg="3">
+                                <label>Village</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="village"
+                                  value={chawkiData.equipment.village}
+                                  onChange={(e) => handleSingleBlockChange("equipment", e)}
+                                />
+                              </Col>
+                              <Col lg="3">
+                                <label>TSC</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="tsc"
+                                  value={chawkiData.equipment.tsc}
+                                  onChange={(e) => handleSingleBlockChange("equipment", e)}
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg="6">
+                                <label>Place</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="place"
+                                  value={chawkiData.equipment.place}
+                                  onChange={(e) => handleSingleBlockChange("equipment", e)}
+                                />
+                              </Col>
+                            </Row>
+                          </Card.Body>
+                        </Card>
 
                           <Card className="mt-4">
                         <Card.Header style={{ fontWeight: "bold" }}>
@@ -8562,7 +9909,7 @@ const fetchReelerDetails = () => {
                             const t = calculateTotals(chawkiData);
                             return (
                               <>
-                              {/* <p><strong>Total Max Subsidy Amount:</strong> {t.totalMaxSubsidy}</p> */}
+                             
                                 <p><strong>Total Claimed Amount:</strong> {t.totalClaimed}</p>
                                 <p><strong>Total Eligible Amount:</strong> {t.totalEligible}</p>
                                 <p><strong>Total Subsidy Amount:</strong> {t.totalSubsidy}</p>
@@ -8579,6 +9926,8 @@ const fetchReelerDetails = () => {
                   </Block>
                 )
               }
+
+              
 
 
               {showCommercialMarketTransaction && (
@@ -8904,11 +10253,6 @@ const fetchReelerDetails = () => {
                             </Form.Group>
                           </Col>
 
-                          
-
-
-                       
-
                           <Col lg="2">
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="schemeAmount">
@@ -9120,7 +10464,7 @@ const fetchReelerDetails = () => {
                             disabled={
                             !(
                               schemeDetails.calculationBasedOn ||
-                              getIncentiveAndBonusData[0]?.calculationBasedOn
+                              getIncentiveAndBonusData?.[0]?.calculationBasedOn
                             )
                           }
                           >
@@ -9184,6 +10528,8 @@ const fetchReelerDetails = () => {
                         </Form.Group>
                       </Col>
 
+                      
+
                       {/* <Col lg="4">
                         <Form.Group className="form-group mt-n5">
                           <Form.Label htmlFor="expectedAmount">
@@ -9209,12 +10555,12 @@ const fetchReelerDetails = () => {
 
                       {/* IF NOT sanctionForReeling → Show normal field */}
                     {!getIncentiveAndBonusData[0]?.sanctionForReeling &&
-                      getIncentiveAndBonusData[0]?.calculationBasedOn !==
+                      getIncentiveAndBonusData?.[0]?.calculationBasedOn !==
                         "Registered Private Bivoltine Chawki Rearing Center Subsidy" && (
                         <Col lg="4">
                           <Form.Group className="form-group mt-n5">
                             <Form.Label htmlFor="expectedAmount">
-                              {t("Subsidy/Bonus/Incentive Amount")}
+                              {t("Total Subsidy/Bonus/Incentive Amount")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -9230,12 +10576,85 @@ const fetchReelerDetails = () => {
                               />
                               <Form.Control.Feedback type="invalid">
                                 {t("Subsidy Amount is required")}
-                              </Form.Control.Feedback>
+                              </Form.Control.Feedback>                     
                             </div>
-                          </Form.Group>
+                          </Form.Group> 
                         </Col>
-                      )}
+                        )}  
 
+                        {/* ✅ KEEP ONLY THIS */}
+<Row className="mt-2">
+  <Col lg="12" className="text-end">
+    {(
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+    "SS Construction Of Low Cost Shed to Permanent Rearing House" ||
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+    "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+) && (
+      <Button onClick={() => setShowAmountBreakup(true)}>
+        View Breakup
+      </Button>
+    )}
+  </Col>
+</Row>
+
+{/* {showAmountBreakup && (
+  <Card className="mt-2">
+    <Card.Header>Amount Breakup</Card.Header>
+    <Card.Body>
+
+      <Row>
+        <Col md="4">
+          <strong>Central Amount:</strong> {data.centralAmount || 0}
+        </Col>
+
+        <Col md="4">
+          <strong>State Amount:</strong> {Math.max((data.stateAmount || 0) - (data.alreadyPaidAmount || 0),0)}
+        </Col>
+
+        <Col md="4">
+          <strong>Total Subsidy:</strong> 
+          {(data.centralAmount || 0) + (data.stateAmount || 0)}
+        </Col>
+      </Row>
+
+    </Card.Body>
+  </Card>
+)} */}
+
+
+{showAmountBreakup && (
+  <Card className="mt-2">
+    <Card.Header>Amount Breakup</Card.Header>
+    <Card.Body>
+
+      {(() => {
+        const remainingState = Math.max(
+          (data.stateAmount || 0) - (data.alreadyPaidAmount || 0),
+          0
+        );
+
+        return (
+          <Row>
+            <Col md="4">
+              <strong>Central Amount:</strong> {data.centralAmount || 0}
+            </Col>
+
+            <Col md="4">
+              <strong>State Amount:</strong> {remainingState}
+            </Col>
+
+            <Col md="4">
+              <strong>Total Subsidy:</strong> 
+              {(data.centralAmount || 0) + remainingState}
+            </Col>
+          </Row>
+        );
+      })()}
+
+    </Card.Body>
+  </Card>
+)}
 
 
                     {/* IF sanctionForReeling → Show Total Expected Amount (disabled) */}
@@ -9280,7 +10699,7 @@ const fetchReelerDetails = () => {
                       </Col>
                     )} */}
                     {(getIncentiveAndBonusData[0]?.sanctionForReeling ||
-                    getIncentiveAndBonusData[0]?.calculationBasedOn ===
+                    getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
                       "Registered Private Bivoltine Chawki Rearing Center Subsidy") && (
                     <Col lg="4">
                       <Form.Group className="form-group mt-n5">
@@ -9303,7 +10722,7 @@ const fetchReelerDetails = () => {
                   )}
 
                     {(getIncentiveAndBonusData[0]?.sanctionForReeling ||
-                        getIncentiveAndBonusData[0]?.calculationBasedOn ===
+                        getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
                           "Registered Private Bivoltine Chawki Rearing Center Subsidy") && (
                         <Col lg="4">
                           <Form.Group className="form-group mt-n5">
@@ -9338,11 +10757,10 @@ const fetchReelerDetails = () => {
                     </Card.Header>
                     <Card.Body>
                       <Row className="g-gs">
-                        <Col lg="4">
+                        {/* <Col lg="4">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="landDeveloped">
                               {t("Unit")}
-                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -9354,17 +10772,15 @@ const fetchReelerDetails = () => {
                                 placeholder="Enter Unit"
                                 // required
                               />
-                              {/* <Form.Control.Feedback type="invalid">
-                                {t("Unit Quantity is required")}
-                              </Form.Control.Feedback> */}
+                             
                             </div>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
 
                         <Col lg="4">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="landDeveloped">
-                              {t("Extent Of Mulberry")}
+                              {t("Extent Of Mulberry(In Acres)")}
                               {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -9384,34 +10800,37 @@ const fetchReelerDetails = () => {
                           </Form.Group>
                         </Col>
 
-                        <Col lg="4">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="landDeveloped">
-                              {t("Constructed Area in Sqft")}
-                              {/* <span className="text-danger">*</span> */}
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="rhSqft"
-                                type="text"
-                                name="rhSqft"
-                                value={developedLand.rhSqft}
-                                onChange={handleDevelopedLandInputs}
-                                placeholder="Enter Constructed Area in Sqft"
-                                // required
-                              />
-                              {/* <Form.Control.Feedback type="invalid">
-                                {t("Extent Of Mulberry is required")}
-                              </Form.Control.Feedback> */}
-                            </div>
-                          </Form.Group>
-                        </Col>
+                        {!(getIncentiveAndBonusData?.[0]?.calculationBasedOn === "SDP RH 225" ||
+                          getIncentiveAndBonusData?.[0]?.calculationBasedOn === "SDP Low Cost Shed") && (
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="landDeveloped">
+                                {t("Constructed Area in Sqft")}
+                                {/* <span className="text-danger">*</span> */}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="rhSqft"
+                                  type="text"
+                                  name="rhSqft"
+                                  value={developedLand.rhSqft}
+                                  onChange={handleDevelopedLandInputs}
+                                  placeholder="Enter Constructed Area in Sqft"
+                                  // required
+                                />
+                                {/* <Form.Control.Feedback type="invalid">
+                                  {t("Extent Of Mulberry is required")}
+                                </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        )}
 
                         <Col lg="4">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="landDeveloped">
                               {t("Estimated Cost")}
-                              {/* <span className="text-danger">*</span> */}
+                              <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -9421,11 +10840,11 @@ const fetchReelerDetails = () => {
                                 value={developedLand.estimatedCost}
                                 onChange={handleDevelopedLandInputs}
                                 placeholder="Enter Estimated Cost"
-                                // required
+                                required
                               />
-                              {/* <Form.Control.Feedback type="invalid">
-                                {t("Extent Of Mulberry is required")}
-                              </Form.Control.Feedback> */}
+                              <Form.Control.Feedback type="invalid">
+                                {t("Estimated Cost is required")}
+                              </Form.Control.Feedback>
                             </div>
                           </Form.Group>
                         </Col>
@@ -9467,7 +10886,7 @@ const fetchReelerDetails = () => {
                         <Col lg="4">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="landDeveloped">
-                              {t("Length")}
+                              {t("Length (in feet)")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -9481,7 +10900,7 @@ const fetchReelerDetails = () => {
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                {t("Length is required")}
+                                {t("Length (in feet) is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -9490,7 +10909,7 @@ const fetchReelerDetails = () => {
                         <Col lg="4">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="landDeveloped">
-                              {t("Breadth")}
+                              {t("Breadth (in feet)")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -9504,7 +10923,7 @@ const fetchReelerDetails = () => {
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                                {t("Breadth is required")}
+                                {t("Breadth (in feet) is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -9614,12 +11033,12 @@ const fetchReelerDetails = () => {
                                       name="machineTypeId"
                                       value={data.machineTypeId}
                                       onChange={handleInputs}
-                                      onBlur={() => handleInputs}
-                                      required
-                                      isInvalid={
-                                        data.machineTypeId === undefined ||
-                                        data.machineTypeId === "0"
-                                      }
+                                      // onBlur={() => handleInputs}
+                                      // required
+                                      // isInvalid={
+                                      //   data.machineTypeId === undefined ||
+                                      //   data.machineTypeId === "0"
+                                      // }
                                     >
                                       <option value="">{t("Select Machine Type")}</option>
                                       {machineTypeListData.map((list) => (
@@ -9674,7 +11093,7 @@ const fetchReelerDetails = () => {
                                       value={data.machineQuantity}
                                       onChange={handleInputs}
                                       placeholder="Enter Quantity in kg"
-                                      required
+                                      // required
                                       // readOnly
                                     />
                                   </div>
@@ -10340,6 +11759,58 @@ const fetchReelerDetails = () => {
                 </ul>
               </div>
             )}
+            {/* ✅ VIEW BREAKUP MODAL */}
+<Modal
+  show={showAmountBreakup}
+  onHide={() => setShowAmountBreakup(false)}
+  centered
+>
+  <Modal.Header closeButton>
+    <Modal.Title>Subsidy Breakdown</Modal.Title>
+  </Modal.Header>
+
+  <Modal.Body>
+    {(
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+    "SS Construction Of Low Cost Shed to Permanent Rearing House" ||
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
+    "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+) && (
+
+      <Card>
+        <Card.Body>
+
+          <Row>
+            <Col>Central Amount</Col>
+            <Col>₹ {data.centralAmount}</Col>
+          </Row>
+
+          <Row>
+            <Col>Total State</Col>
+            <Col>₹ {originalStateAmount}</Col>
+          </Row>
+
+          <Row>
+            <Col>Already Paid</Col>
+            <Col>₹ {data.alreadyPaidAmount}</Col>
+          </Row>
+
+          <Row>
+            <Col><b>Remaining</b></Col>
+            <Col><b>₹ {data.stateAmount}</b></Col>
+          </Row>
+
+        </Card.Body>
+      </Card>
+    )}
+  </Modal.Body>
+
+  <Modal.Footer>
+    <Button onClick={() => setShowAmountBreakup(false)}>
+      Close
+    </Button>
+  </Modal.Footer>
+</Modal>
           </Block>
 
           {/* <Col lg="12"> */}

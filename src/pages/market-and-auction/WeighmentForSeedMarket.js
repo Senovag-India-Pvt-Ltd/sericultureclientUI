@@ -330,11 +330,12 @@ function WeighmentForSeedMarket() {
         setCounter(0);
         setLastWeight("0");
         // setLotNumber("");
-        if (isTriplet) {
-          printTriplet();
-        } else {
-          console.log("In Market Master Change setting");
-        }
+        // if (isTriplet) {
+        //   printTriplet();
+        // } else 
+        //   {
+        //   console.log("In Market Master Change setting");
+        // }
       }
     });
   };

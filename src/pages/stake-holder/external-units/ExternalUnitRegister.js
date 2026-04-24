@@ -1,4 +1,4 @@
-import { Card, Form, Row, Col, Button,Modal} from "react-bootstrap";
+import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
@@ -14,115 +14,179 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function ExternalUnitRegister() {
-   // Translation
-   const { t } = useTranslation();
+  // Translation
+  const { t } = useTranslation();
 
-   const [vbAccountList, setVbAccountList] = useState([]);
+  const [vbAccountList, setVbAccountList] = useState([]);
   const [vbAccount, setVbAccount] = useState({
     virtualAccountNumber: "",
+    reEnterAccountNumber: "",
     branchName: "",
     ifscCode: "",
     marketMasterId: "",
+    marketMasterName: "",
+    lock: false,
   });
 
   const [validatedVbAccount, setValidatedVbAccount] = useState(false);
   const [validatedVbAccountEdit, setValidatedVbAccountEdit] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
-    const [showModal2, setShowModal2] = useState(false);
-  
-    const handleShowModal = () => setShowModal(true);
-    const handleCloseModal = () => setShowModal(false);
+  const [showModal2, setShowModal2] = useState(false);
 
-    const handleAdd = (e) => {
-      const form = e.currentTarget;
-      if (form.checkValidity() === false) {
-        e.preventDefault();
-        e.stopPropagation();
-        setValidatedVbAccount(true);
-      } else {
-        e.preventDefault();
-        if (vbAccount.ifscCode.length < 11 || vbAccount.ifscCode.length > 11) {
-          return;
-        }
-        setVbAccountList((prev) => [...prev, vbAccount]);
-        setVbAccount({
-          virtualAccountNumber: "",
-          branchName: "",
-          ifscCode: "",
-          marketMasterId: "",
-        });
-        setShowModal(false);
-        setValidatedVbAccount(false);
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
+  const handleAdd = (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+
+    setValidatedVbAccount(true);
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+      return;
+    }
+
+    if (vbAccount.ifscCode.length < 11 || vbAccount.ifscCode.length > 11) {
+      return;
+    }
+
+    if (vbAccount.virtualAccountNumber !== vbAccount.reEnterAccountNumber) {
+      Swal.fire("Error", "Account numbers do not match", "error");
+      return;
+    }
+
+    const exists = vbAccountList.some(
+      (item) =>
+        item.marketMasterId === vbAccount.marketMasterId &&
+        item.virtualAccountNumber === vbAccount.virtualAccountNumber,
+    );
+
+    if (exists) {
+      Swal.fire("Error", "Account already exists for this market", "error");
+      return;
+    }
+    setVbAccountList((prev) => [...prev, vbAccount]);
+    setVbAccount({
+      virtualAccountNumber: "",
+      reEnterAccountNumber: "",
+      branchName: "",
+      ifscCode: "",
+      marketMasterId: "",
+      marketMasterName: "",
+      lock: false,
+    });
+    setShowModal(false);
+    setValidatedVbAccount(false);
+  };
+
+  const handleLockCheckbox = (e) => {
+    setVbAccount({ ...vbAccount, lock: e.target.checked });
+  };
+  const handleDelete = (i) => {
+    if (vbAccountList[i].lock) return;
+    setVbAccountList((prev) => {
+      const newArray = prev.filter((item, place) => place !== i);
+      return newArray;
+    });
+  };
+
+  const [vbId, setVbId] = useState();
+  const handleGet = (i) => {
+    if (vbAccountList[i].lock) return;
+    setVbAccount(vbAccountList[i]);
+    setShowModal2(true);
+    setVbId(i);
+  };
+
+  const handleUpdate = (e, i, changes) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+
+    // ✅ LOCK CHECK
+    if (vbAccountList[i].lock) {
+      Swal.fire("Error", "Locked account cannot be edited", "error");
+      return;
+    }
+
+    // ✅ FORM VALIDATION FIRST
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+      setValidatedVbAccountEdit(true);
+      return;
+    }
+
+    // ✅ IFSC VALIDATION
+    if (changes.ifscCode.length !== 11) {
+      Swal.fire("Error", "IFSC must be 11 characters", "error");
+      return;
+    }
+
+    // ✅ MATCH VALIDATION (MAIN ISSUE FIX)
+    if (changes.virtualAccountNumber !== changes.reEnterAccountNumber) {
+      Swal.fire("Error", "Account numbers do not match", "error");
+      setValidatedVbAccountEdit(true);
+      return;
+    }
+    // ✅ UNIQUE CHECK
+    const exists = vbAccountList.some(
+      (item, index) =>
+        index !== i &&
+        item.marketMasterId === changes.marketMasterId &&
+        item.virtualAccountNumber === changes.virtualAccountNumber,
+    );
+
+    if (exists) {
+      Swal.fire("Error", "Account already exists for this market", "error");
+      return;
+    }
+
+    // ✅ UPDATE
+    setVbAccountList((prev) =>
+      prev.map((item, ix) => (ix === i ? changes : item)),
+    );
+
+    setShowModal2(false);
+    setValidatedVbAccountEdit(false);
+
+    // ✅ RESET
+    setVbAccount({
+      virtualAccountNumber: "",
+      reEnterAccountNumber: "",
+      branchName: "",
+      ifscCode: "",
+      marketMasterId: "",
+      marketMasterName: "",
+      lock: false,
+    });
+  };
+
+  const handleVbInputs = (e) => {
+    const { name, value } = e.target;
+    // setVbAccount({ ...vbAccount, [name]: value });
+    if (name === "reEnterAccountNumber") {
+      const prevLength = vbAccount.reEnterAccountNumber?.length || 0;
+
+      if (value.length > prevLength + 1) {
+        return; // ignore paste
       }
-    };
+    }
 
-    const handleDelete = (i) => {
-        setVbAccountList((prev) => {
-          const newArray = prev.filter((item, place) => place !== i);
-          return newArray;
-        });
-      };
-    
-      const [vbId, setVbId] = useState();
-      const handleGet = (i) => {
-        setVbAccount(vbAccountList[i]);
-        setShowModal2(true);
-        setVbId(i);
-      };
-
-      const handleUpdate = (e, i, changes) => {
-        setVbAccountList((prev) =>
-          prev.map((item, ix) => {
-            if (ix === i) {
-              return { ...item, ...changes };
-            }
-            return item;
-          })
-        );
-        const form = e.currentTarget;
-        if (form.checkValidity() === false) {
-          e.preventDefault();
-          e.stopPropagation();
-          setValidatedVbAccountEdit(true);
-        } else {
-          e.preventDefault();
-          if (vbAccount.ifscCode.length < 11 || vbAccount.ifscCode.length > 11) {
-            return;
-          }
-          setShowModal2(false);
-          setValidatedVbAccountEdit(false);
-          setVbAccount({
-            virtualAccountNumber: "",
-            branchName: "",
-            ifscCode: "",
-            marketMasterId: "",
-          });
-        }
-      };
-
-      const handleVbInputs = (e) => {
-        const { name, value } = e.target;
-        // setVbAccount({ ...vbAccount, [name]: value });
-    
-        if (name === "ifscCode" && (value.length < 11 || value.length > 11)) {
-          e.target.classList.add("is-invalid");
-          e.target.classList.remove("is-valid");
-        } else if (name === "ifscCode" && value.length === 11) {
-          e.target.classList.remove("is-invalid");
-          e.target.classList.add("is-valid");
-        }
-        if(name === "branchName"){
-          setVbAccount({ ...vbAccount, [name]: value.toUpperCase() });
-        }
-        else if(name === "ifscCode"){
-          setVbAccount({ ...vbAccount, [name]: value.toUpperCase() });
-        }
-        else{
-          setVbAccount({ ...vbAccount, [name]: value });
-        } 
-      
-      };
+    if (name === "ifscCode" && (value.length < 11 || value.length > 11)) {
+      e.target.classList.add("is-invalid");
+      e.target.classList.remove("is-valid");
+    } else if (name === "ifscCode" && value.length === 11) {
+      e.target.classList.remove("is-invalid");
+      e.target.classList.add("is-valid");
+    }
+    if (name === "branchName") {
+      setVbAccount({ ...vbAccount, [name]: value.toUpperCase() });
+    } else if (name === "ifscCode") {
+      setVbAccount({ ...vbAccount, [name]: value.toUpperCase() });
+    } else {
+      setVbAccount({ ...vbAccount, [name]: value });
+    }
+  };
 
   const handleShowModal2 = () => setShowModal2(true);
   const handleCloseModal2 = () => setShowModal2(false);
@@ -138,10 +202,14 @@ function ExternalUnitRegister() {
     capacity: "",
     lotNumberNomenclature: "",
     externalUnitRegistrationDetailsRequests: [],
+    districtId: "",
+    talukId: "",
+    tscMasterId: "",
+    nameKan: "",
   });
 
   const [validated, setValidated] = useState(false);
-
+  const [isSaving, setIsSaving] = useState(false);
   let name, value;
   const handleInputs = (e) => {
     // debugger;
@@ -153,15 +221,18 @@ function ExternalUnitRegister() {
 
   const postData = (event) => {
     const form = event.currentTarget;
+    if (isSaving) return;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
       setValidated(true);
     } else {
       event.preventDefault();
+      setIsSaving(true);
       const updatedData = {
         ...data,
-        externalUnitRegistrationDetailsRequests: vbAccountList,
+        externalUnitRegistrationDetailsRequests:
+          vbAccountList && vbAccountList.length > 0 ? vbAccountList : null,
       };
       api
         .post(baseURL2 + `external-unit-registration/add`, updatedData)
@@ -169,17 +240,26 @@ function ExternalUnitRegister() {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
           } else {
-          const externalUnitNumber = response.data.content.externalUnitNumber;
-          saveSuccess(externalUnitNumber);
-          clear();
-          setValidated(false);
+            const externalUnitNumber = response.data.content.externalUnitNumber;
+            saveSuccess(externalUnitNumber);
+            clear();
+            setValidated(false);
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
+          if (
+            err?.response?.data?.validationErrors &&
+            Object.keys(err.response.data.validationErrors || {}).length > 0
+          ) {
             saveError(err.response.data.validationErrors);
+          } else {
+            saveError("Something went wrong");
           }
+        })
+        .finally(() => {
+          setIsSaving(false); // ✅ re-enable button
         });
+
       setValidated(true);
     }
   };
@@ -195,6 +275,11 @@ function ExternalUnitRegister() {
       raceMasterId: "",
       capacity: "",
       lotNumberNomenclature: "",
+      districtId: "",
+      talukId: "",
+      tscMasterId: "",
+      nameKan: "",
+      externalUnitRegistrationDetailsRequests: "",
     });
     virtualAccountClear();
   };
@@ -209,8 +294,7 @@ function ExternalUnitRegister() {
     setVbAccountList([]);
   };
 
-
-   // Handle Options
+  // Handle Options
   // Market
   const handleMarketOption = (e) => {
     const value = e.target.value;
@@ -240,7 +324,6 @@ function ExternalUnitRegister() {
     getMarketList();
   }, []);
 
-
   // to get Race
   const [raceListData, setRaceListData] = useState([]);
 
@@ -258,6 +341,62 @@ function ExternalUnitRegister() {
   useEffect(() => {
     getRaceList();
   }, []);
+
+  const [districtListData, setDistrictListData] = useState([]);
+
+  const getDistrictList = () => {
+    api
+      .get(baseURL + `district/get-all`)
+      .then((response) => {
+        setDistrictListData(response.data.content.district);
+      })
+      .catch((err) => {
+        setDistrictListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+  useEffect(() => {
+    getDistrictList();
+  }, []);
+
+  const [tscListData, setTscListData] = useState([]);
+
+  const getTscList = () => {
+    const response = api
+      .get(baseURL + `tscMaster/get-all`)
+      .then((response) => {
+        setTscListData(response.data.content.tscMaster);
+      })
+      .catch((err) => {
+        setTscListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getTscList();
+  }, []);
+
+  // to get taluk
+
+  const [talukListData, setTalukListData] = useState([]);
+
+  const getTalukList = (_id) => {
+    api
+      .get(baseURL + `taluk/get-by-district-id/${_id}`)
+      .then((response) => {
+        setTalukListData(response.data.content.taluk);
+      })
+      .catch((err) => {
+        setTalukListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+  useEffect(() => {
+    if (data.districtId) {
+      getTalukList(data.districtId);
+    }
+  }, [data.districtId]);
 
   // to get external Unit
   const [externalUnitTypeListData, setExternalUnitTypeListData] = useState([]);
@@ -283,7 +422,7 @@ function ExternalUnitRegister() {
       icon: "success",
       title: "Saved successfully",
       text: `Generated External Unique Id is ${externalUnitNumber}`,
-    })
+    });
   };
   const saveError = (message) => {
     let errorMessage;
@@ -337,7 +476,6 @@ function ExternalUnitRegister() {
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
-            
             <Card>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
@@ -345,7 +483,7 @@ function ExternalUnitRegister() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                      {t("External Unit")}
+                        {t("External Unit")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -377,7 +515,9 @@ function ExternalUnitRegister() {
                     </Form.Group>
 
                     <Form.Group className="form-group">
-                      <Form.Label htmlFor="name">{t("Name of the Unit")}</Form.Label>
+                      <Form.Label htmlFor="name">
+                        {t("Name of the Unit")}
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="name"
@@ -401,7 +541,9 @@ function ExternalUnitRegister() {
                           value={data.organisationName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder={t("Enter Name of the Owner/Organisation")}
+                          placeholder={t(
+                            "Enter Name of the Owner/Organisation",
+                          )}
                         />
                       </div>
                     </Form.Group>
@@ -441,11 +583,76 @@ function ExternalUnitRegister() {
                         </Form.Select>
                       </div>
                     </Form.Group>
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        {t("district")}
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="districtId"
+                          value={data.districtId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.districtId === undefined ||
+                            data.districtId === "0"
+                          }
+                        >
+                          <option value="">{t("select_district")}</option>
+                          {districtListData && districtListData.length
+                            ? districtListData.map((list) => (
+                                <option
+                                  key={list.districtId}
+                                  value={list.districtId}
+                                >
+                                  {list.districtName}
+                                </option>
+                              ))
+                            : ""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          {t("district_is_required")}
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        {t("tsc")}
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="tscMasterId"
+                          value={String(data.tscMasterId || "")}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.tscMasterId === undefined ||
+                            data.tscMasterId === "0"
+                          }
+                        >
+                          <option value="">{t("select_tsc")}</option>
+                          {tscListData.map((list) => (
+                            <option
+                              key={list.tscMasterId}
+                              value={list.tscMasterId}
+                            >
+                              {list.name}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          {t("tsc_is_required")}
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
                   </Col>
 
                   <Col lg="6">
-                    
-
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="address">{t("address")}</Form.Label>
                       <div className="form-control-wrap">
@@ -478,7 +685,7 @@ function ExternalUnitRegister() {
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="capacity">
-                       {t("Capacity Of Production/Annum")}
+                        {t("Capacity Of Production/Annum")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -494,7 +701,7 @@ function ExternalUnitRegister() {
 
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="capacity">
-                       {t("Lot Number Nomenclature")}
+                        {t("Lot Number Nomenclature")}
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -507,7 +714,58 @@ function ExternalUnitRegister() {
                         />
                       </div>
                     </Form.Group>
-                    
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        {t("taluk")}
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="talukId"
+                          value={data.talukId}
+                          onChange={handleInputs}
+                          onBlur={() => handleInputs}
+                          required
+                          isInvalid={
+                            data.talukId === undefined || data.talukId === "0"
+                          }
+                        >
+                          <option value="">{t("select_taluk")}</option>
+                          {talukListData && talukListData.length
+                            ? talukListData.map((list) => (
+                                <option key={list.talukId} value={list.talukId}>
+                                  {list.talukName}
+                                </option>
+                              ))
+                            : ""}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          {t("taluk_is_required")}
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        {t(" Name in Kannada")}
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="nameKan"
+                          name="nameKan"
+                          value={data.nameKan}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder={t("Enter Name in Kannada")}
+                          required
+                      
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {t("Name in Kannada is required")}
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
                   </Col>
                 </Row>
               </Card.Body>
@@ -556,7 +814,7 @@ function ExternalUnitRegister() {
                     </Col>
                   </Row>
                   {vbAccountList.length > 0 ? (
-                    <Row className="g-gs">
+                    <Row className="g-3">
                       <Block>
                         <Card>
                           <div
@@ -572,6 +830,7 @@ function ExternalUnitRegister() {
                                   <th>{t("branch_name")}</th>
                                   <th>{t("ifsc_code")}</th>
                                   <th>{t("Market")}</th>
+                                  <th>{t("Status")}</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -582,6 +841,7 @@ function ExternalUnitRegister() {
                                         <Button
                                           variant="primary"
                                           size="sm"
+                                          disabled={item.lock}
                                           onClick={() => handleGet(i)}
                                         >
                                           {t("edit")}
@@ -589,6 +849,7 @@ function ExternalUnitRegister() {
                                         <Button
                                           variant="danger"
                                           size="sm"
+                                          disabled={item.lock}
                                           onClick={() => handleDelete(i)}
                                           className="ms-2"
                                         >
@@ -600,6 +861,17 @@ function ExternalUnitRegister() {
                                     <td>{item.branchName}</td>
                                     <td>{item.ifscCode}</td>
                                     <td>{item.marketMasterName}</td>
+                                    <td>
+                                      {item.lock ? (
+                                        <span className="badge bg-secondary">
+                                          Locked
+                                        </span>
+                                      ) : (
+                                        <span className="badge bg-success">
+                                          Active
+                                        </span>
+                                      )}
+                                    </td>
                                   </tr>
                                 ))}
                               </tbody>
@@ -619,13 +891,13 @@ function ExternalUnitRegister() {
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                  {t("save")}
+                  <Button type="submit" variant="primary" disabled={isSaving}>
+                    {isSaving ? "Saving..." : t("save")}
                   </Button>
                 </li>
                 <li>
-                <Button type="button" variant="secondary" onClick={clear}>
-                    {t( "Clear")}
+                  <Button type="button" variant="secondary" onClick={clear}>
+                    {t("Clear")}
                   </Button>
                 </li>
               </ul>
@@ -634,277 +906,373 @@ function ExternalUnitRegister() {
         </Form>
       </Block>
 
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
-              <Modal.Header closeButton>
-                <Modal.Title>Add Virtual Bank Account Details</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                {/* <Form action="#"> */}
-                <Form noValidate validated={validatedVbAccount} onSubmit={handleAdd}>
-                  <Row className="g-5 px-5">
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="virtualAccountNumber">
-                        {t("Virtual Account Number")}<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="virtualAccountNumber"
-                            name="virtualAccountNumber"
-                            value={vbAccount.virtualAccountNumber}
-                            onChange={handleVbInputs}
-                            type="text"
-                            placeholder={t("Enter Virtual Account Number")}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                          {t("Virtual Account Number is required")}
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-      
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="branchNamevb">
-                        {t("branch_name")}<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="branchNamevb"
-                            name="branchName"
-                            value={vbAccount.branchName}
-                            onChange={handleVbInputs}
-                            type="text"
-                            placeholder={t("enter_branch_name")}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Branch Name is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-      
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="ifscCodevb">
-                        {t("ifsc_code")}<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="ifscCodevb"
-                            name="ifscCode"
-                            value={vbAccount.ifscCode}
-                            onChange={handleVbInputs}
-                            type="text"
-                            maxLength="11"
-                            placeholder={t("enter_ifsc_code")}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            IFSC Code is required and equals to 11 digit
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-      
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label>
-                          {t("Market")}<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="marketMasterId"
-                            // value={vbAccount.marketMasterId}
-                            value={`${vbAccount.marketMasterId}_${vbAccount.marketMasterName}`}
-                            onChange={handleMarketOption}
-                            onBlur={() => handleMarketOption}
-                            required
-                            isInvalid={
-                              vbAccount.marketMasterId === undefined ||
-                              vbAccount.marketMasterId === "0"
-                            }
-                          >
-                            <option value="">{t("Select Market")}</option>
-                            {marketListData.length
-                              ? marketListData.map((list) => (
-                                  <option
-                                    key={list.marketMasterId}
-                                    value={`${list.marketMasterId}_${list.marketMasterName}`}
-                                  >
-                                    {list.marketMasterName}
-                                  </option>
-                                ))
-                              : ""}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            {t("Market is required")}
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-      
-                    <Col lg="12">
-                      <div className="d-flex justify-content-center gap g-2">
-                        <div className="gap-col">
-                          {/* <Button variant="success" onClick={handleAdd}> */}
-                          <Button type="submit" variant="success">
-                          {t("add")}
-                          </Button>
-                        </div>
-                        {/* <div className="gap-col">
+      <Modal show={showModal} onHide={handleCloseModal} centered size="lg">
+        <Modal.Header closeButton className="px-4 py-3 border-bottom">
+          <Modal.Title className="fw-semibold">
+            Add Virtual Bank Account Details
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="px-4 py-3">
+          {/* <Form action="#"> */}
+          <Form noValidate validated={validatedVbAccount} onSubmit={handleAdd}>
+            <Row className="g-3">
+              <Col lg="6">
+                <Form.Group className="form-group mt-3">
+                  <Form.Label
+                    className="mb-1 fw-medium"
+                    htmlFor="virtualAccountNumber"
+                  >
+                    {t("Virtual Account Number")}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="virtualAccountNumber"
+                      name="virtualAccountNumber"
+                      value={vbAccount.virtualAccountNumber}
+                      onChange={handleVbInputs}
+                      type="text"
+                      placeholder={t("Enter Virtual Account Number")}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Virtual Account Number is required")}
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+
+                <Form.Group className="form-group mt-3">
+                  <Form.Label
+                    className="mb-1 fw-medium"
+                    htmlFor="reEnterAccountNumber"
+                  >
+                    {t("Re-enter Virtual Account Number")}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <Form.Control
+                    id="reEnterAccountNumber"
+                    type="password" // ✅ masked
+                    name="reEnterAccountNumber"
+                    value={vbAccount.reEnterAccountNumber}
+                    onChange={handleVbInputs}
+                    placeholder={t("Re-enter Virtual Account Number")}
+                    onPaste={(e) => e.preventDefault()}
+                    onCopy={(e) => e.preventDefault()}
+                    onCut={(e) => e.preventDefault()}
+                    onContextMenu={(e) => e.preventDefault()} // ✅ RIGHT CLICK BLOCK
+                    onDrop={(e) => e.preventDefault()} // ✅ DRAG DROP BLOCK
+                    required
+                    isInvalid={
+                      vbAccount.reEnterAccountNumber &&
+                      vbAccount.reEnterAccountNumber !==
+                        vbAccount.virtualAccountNumber
+                    }
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Account numbers do not match
+                  </Form.Control.Feedback>
+                </Form.Group>
+
+                <Form.Group className="form-group mt-3">
+                  <Form.Label className="mb-1 fw-medium" htmlFor="branchNamevb">
+                    {t("branch_name")}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="branchNamevb"
+                      name="branchName"
+                      value={vbAccount.branchName}
+                      onChange={handleVbInputs}
+                      type="text"
+                      placeholder={t("enter_branch_name")}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Branch Name is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group mt-3">
+                  <Form.Label className="mb-1 fw-medium" htmlFor="ifscCodevb">
+                    {t("ifsc_code")}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="ifscCodevb"
+                      name="ifscCode"
+                      value={vbAccount.ifscCode}
+                      onChange={handleVbInputs}
+                      type="text"
+                      maxLength="11"
+                      placeholder={t("enter_ifsc_code")}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      IFSC Code is required and equals to 11 digit
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+
+                <Form.Group className="form-group mt-3">
+                  <Form.Label className="mb-1 fw-medium">
+                    {t("Market")}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="marketMasterId"
+                      // value={vbAccount.marketMasterId}
+                      value={`${vbAccount.marketMasterId}_${vbAccount.marketMasterName}`}
+                      onChange={handleMarketOption}
+                      onBlur={() => handleMarketOption}
+                      required
+                      isInvalid={
+                        vbAccount.marketMasterId === undefined ||
+                        vbAccount.marketMasterId === "0"
+                      }
+                    >
+                      <option value="">{t("Select Market")}</option>
+                      {marketListData.length
+                        ? marketListData.map((list) => (
+                            <option
+                              key={list.marketMasterId}
+                              value={`${list.marketMasterId}_${list.marketMasterName}`}
+                            >
+                              {list.marketMasterName}
+                            </option>
+                          ))
+                        : ""}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      {t("Market is required")}
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+              <Col lg="6">
+                <Form.Group as={Row} className="form-group mt-2">
+                  <Col sm={1}>
+                    <Form.Check
+                      type="checkbox"
+                      id="lock"
+                      checked={vbAccount.lock}
+                      onChange={handleLockCheckbox}
+                      // defaultChecked
+                    />
+                  </Col>
+                  <Form.Label className="mb-1 fw-medium">
+                    {t("Lock Bank Details")}
+                  </Form.Label>
+                </Form.Group>
+              </Col>
+
+              <Col lg="12">
+                <div className="d-flex justify-content-end gap-2 mt-3 border-top pt-3">
+                  <div className="gap-col">
+                    {/* <Button variant="success" onClick={handleAdd}> */}
+                    <Button type="submit" variant="success" className="px-4">
+                      {t("add")}
+                    </Button>
+                  </div>
+                  {/* <div className="gap-col">
                           <Button variant="danger" onClick={handleCloseModal1}>
                             Reject
                           </Button>
                         </div> */}
-                        <div className="gap-col">
-                          <Button variant="secondary" onClick={handleCloseModal}>
-                          {t("cancel")}
-                          </Button>
-                        </div>
-                      </div>
-                    </Col>
-                  </Row>
-                </Form>
-              </Modal.Body>
-            </Modal>
-      
-            <Modal show={showModal2} onHide={handleCloseModal2} size="lg">
-              <Modal.Header closeButton>
-                <Modal.Title>{t("Edit Virtual Bank Account")}</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                {/* <Form action="#"> */}
-                <Form
-                  noValidate
-                  validated={validatedVbAccountEdit}
-                  onSubmit={(e) => handleUpdate(e, vbId, vbAccount)}
-                >
-                  <Row className="g-5 px-5">
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="virtualAccountNumber">
-                          {t("Virtual Account Number")}<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="virtualAccountNumber"
-                            name="virtualAccountNumber"
-                            value={vbAccount.virtualAccountNumber}
-                            onChange={handleVbInputs}
-                            type="text"
-                            placeholder={t("Enter Virtual Account Number")}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                           {t("Virtual Account Number is required")}
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-      
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="branchNamevb">
-                        {t("branch_name")}<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="branchNamevb"
-                            name="branchName"
-                            value={vbAccount.branchName}
-                            onChange={handleVbInputs}
-                            type="text"
-                            placeholder={t("enter_branch_name")}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Branch Name is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-      
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="ifscCodevb">
-                        {t("ifsc_code")}<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="ifscCodevb"
-                            name="ifscCode"
-                            value={vbAccount.ifscCode}
-                            onChange={handleVbInputs}
-                            type="text"
-                            placeholder={t("enter_ifsc_code")}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            IFSC Code is required
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-      
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label>
-                          {t("Market")}<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="marketMasterId"
-                            // value={vbAccount.marketMasterId}
-                            value={`${vbAccount.marketMasterId}_${vbAccount.marketMasterName}`}
-                            onChange={handleMarketOption}
-                            onBlur={() => handleMarketOption}
-                            required
-                            isInvalid={
-                              vbAccount.marketMasterId === undefined ||
-                              vbAccount.marketMasterId === "0"
-                            }
-                          >
-                            <option value="">{t("Select Market")}</option>
-                            {marketListData.length
-                              ? marketListData.map((list) => (
-                                  <option
-                                    key={list.marketMasterId}
-                                    value={`${list.marketMasterId}_${list.marketMasterName}`}
-                                  >
-                                    {list.marketMasterName}
-                                  </option>
-                                ))
-                              : ""}
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            {t("Market is required")}
-                          </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-                    </Col>
-      
-                    <Col lg="12">
-                      <div className="d-flex justify-content-center gap g-2">
-                        <div className="gap-col">
-                          {/* <Button
+                  <div className="gap-col">
+                    <Button
+                      variant="secondary"
+                      className="px-4"
+                      onClick={handleCloseModal}
+                    >
+                      {t("cancel")}
+                    </Button>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </Form>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showModal2} onHide={handleCloseModal2} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>{t("Edit Virtual Bank Account")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* <Form action="#"> */}
+          <Form
+            noValidate
+            validated={validatedVbAccountEdit}
+            onSubmit={(e) => handleUpdate(e, vbId, vbAccount)}
+          >
+            <Row className="g-3">
+              <Col lg="6">
+                <Form.Group className="form-group mt-3">
+                  <Form.Label
+                    className="mb-1 fw-medium"
+                    htmlFor="virtualAccountNumber"
+                  >
+                    {t("Virtual Account Number")}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="virtualAccountNumber"
+                      name="virtualAccountNumber"
+                      value={vbAccount.virtualAccountNumber}
+                      onChange={handleVbInputs}
+                      type="text"
+                      placeholder={t("Enter Virtual Account Number")}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Virtual Account Number is required")}
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+                <Form.Group className="form-group mt-3">
+                  <Form.Label className="mb-1 fw-medium">
+                    Re-enter Virtual Account Number
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <Form.Control
+                    id="reEnterAccountNumber"
+                    type="password" // ✅ masked
+                    name="reEnterAccountNumber"
+                    value={vbAccount.reEnterAccountNumber}
+                    placeholder={t("Re-enter Virtual Account Number")}
+                    onChange={handleVbInputs}
+                    onPaste={(e) => e.preventDefault()}
+                    onCopy={(e) => e.preventDefault()}
+                    onCut={(e) => e.preventDefault()}
+                    onContextMenu={(e) => e.preventDefault()}
+                    onDrop={(e) => e.preventDefault()} // ✅ DRAG DROP BLOCK
+                    required
+                    isInvalid={
+                      vbAccount.reEnterAccountNumber &&
+                      vbAccount.reEnterAccountNumber !==
+                        vbAccount.virtualAccountNumber
+                    }
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Account numbers do not match
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group className="form-group mt-3">
+                  <Form.Label className="mb-1 fw-medium" htmlFor="branchNamevb">
+                    {t("branch_name")}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="branchNamevb"
+                      name="branchName"
+                      value={vbAccount.branchName}
+                      onChange={handleVbInputs}
+                      type="text"
+                      placeholder={t("enter_branch_name")}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Branch Name is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group mt-3">
+                  <Form.Label className="mb-1 fw-medium" htmlFor="ifscCodevb">
+                    {t("ifsc_code")}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="ifscCodevb"
+                      name="ifscCode"
+                      value={vbAccount.ifscCode}
+                      onChange={handleVbInputs}
+                      type="text"
+                      placeholder={t("enter_ifsc_code")}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      IFSC Code is required
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+
+                <Form.Group className="form-group mt-3">
+                  <Form.Label className="mb-1 fw-medium">
+                    {t("Market")}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="marketMasterId"
+                      // value={vbAccount.marketMasterId}
+                      value={`${vbAccount.marketMasterId}_${vbAccount.marketMasterName}`}
+                      onChange={handleMarketOption}
+                      onBlur={() => handleMarketOption}
+                      required
+                      disabled={vbAccountList[vbId]?.lock}
+                      isInvalid={
+                        vbAccount.marketMasterId === undefined ||
+                        vbAccount.marketMasterId === "0"
+                      }
+                    >
+                      <option value="">{t("Select Market")}</option>
+                      {marketListData.length
+                        ? marketListData.map((list) => (
+                            <option
+                              key={list.marketMasterId}
+                              value={`${list.marketMasterId}_${list.marketMasterName}`}
+                            >
+                              {list.marketMasterName}
+                            </option>
+                          ))
+                        : ""}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      {t("Market is required")}
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="12">
+                <div className="d-flex justify-content-end gap-2 mt-3 border-top pt-3">
+                  <div className="gap-col">
+                    {/* <Button
                             variant="success"
                             onClick={() => handleUpdate(vbId, vbAccount)}
                           > */}
-                          <Button type="submit" variant="success">
-                          {t("update")}
-                          </Button>
-                        </div>
-                        {/* <div className="gap-col">
+                    <Button type="submit" variant="success">
+                      {t("update")}
+                    </Button>
+                  </div>
+                  {/* <div className="gap-col">
                           <Button variant="danger" onClick={handleCloseModal1}>
                             Reject
                           </Button>
                         </div> */}
-                        <div className="gap-col">
-                          <Button variant="secondary" onClick={handleCloseModal2}>
-                          {t("cancel")}
-                          </Button>
-                        </div>
-                      </div>
-                    </Col>
-                  </Row>
-                </Form>
-              </Modal.Body>
-            </Modal>
+                  <div className="gap-col">
+                    <Button variant="secondary" onClick={handleCloseModal2}>
+                      {t("cancel")}
+                    </Button>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </Layout>
   );
 }

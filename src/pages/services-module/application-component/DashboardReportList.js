@@ -136,7 +136,18 @@ function DashboardReportList() {
 
   const [showModal4, setShowModal4] = useState(false);
 
-  const handleShowModal4 = () => setShowModal4(true);
+  // const handleShowModal4 = () => setShowModal4(true);
+const handleShowModal4 = (item) => {
+  const subSchemeId = item?.subSchemeId;
+  const approvalStageId = item?.approvalStageId;
+
+  if (subSchemeId && approvalStageId) {
+    getApprovalStageBeforeStepListDataList(subSchemeId, approvalStageId);
+  }
+
+  setShowModal4(true);
+};
+
   const handleCloseModal4 = () => setShowModal4(false);
 
   const [changeable, setChangeable] = useState({
@@ -518,6 +529,31 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
 
   // to get approvalStage Before Step
   const [
+    approvalStageBeforeStepListData,
+    setApprovalStageBeforeStepListData,
+  ] = useState([]);
+  const getApprovalStageBeforeStepListDataList = (
+    subSchemeId,
+    approvalStageId
+  ) => {
+    api
+      .post(
+        baseURLDBT +
+          `service/getRejectedBeforeStepDetailsAfterSubmitBySubSchemeIdAndApprovalStageId?subSchemeId=${subSchemeId}&approvalStageId=${approvalStageId}`
+      )
+      .then((response) => {
+        if (response.data.content) {
+          setApprovalStageBeforeStepListData(response.data.content);
+        }
+      })
+      .catch((err) => {
+        setApprovalStageBeforeStepListData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+
+  const [
     approvalRejectStageBeforeStepListData,
     setApprovalRejectStageBeforeStepListData,
   ] = useState([]);
@@ -671,6 +707,10 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
         talukId
       );
   }, [actionData.stepId]);
+
+  
+
+  
 
   const [userOfStepsToApproveData, setUserOfStepsToApproveData] = useState([]);
 
@@ -1602,15 +1642,27 @@ const callWorkOrderAcknowledgment = async (
       categoryId
     );
 
-    } else if (workOrderForScheme === "ICB-PSF") {
-    generateWorkOrderOrderICB(
-      applicationFormId,
-      workOrderSchemeId,
-      subSchemeId,
-      categoryId
-    );
+   } else if (workOrderForScheme === "SS Construction Of Low Cost Shed to Permanent Rearing House") {
+  generateWorkOrderRHSSconstruction(
+    applicationFormId,
+    workOrderSchemeId
+  );
 
-    } else if (workOrderForScheme === "Adopting Heat Recovery Unit-PSF") {
+} else if (workOrderForScheme === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House") {
+  generateWorkOrderRHSDPconstruction(
+    applicationFormId,
+    workOrderSchemeId
+  );
+
+} else if (workOrderForScheme === "ICB-PSF") {
+  generateWorkOrderOrderICB(
+    applicationFormId,
+    workOrderSchemeId,
+    subSchemeId,
+    categoryId
+  );
+
+} else if (workOrderForScheme === "Adopting Heat Recovery Unit-PSF") {
     generateWorkOrderOrderAdoptingHeatRecoveryUnit(
       applicationFormId,
       workOrderSchemeId,
@@ -1666,12 +1718,48 @@ const callWorkOrderAcknowledgment = async (
       subSchemeId,
       categoryId
     );
+
+    } else if (workOrderForScheme === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
+    generateWorkOrderOrderRegisteredPrivateBivCRC(
+      applicationFormId,
+      workOrderSchemeId,
+      subSchemeId,
+      categoryId
+    );
+
+    } else if (workOrderForScheme === "SDP RH 225") {
+    generateWorkOrderRHSDP225(applicationFormId, workOrderSchemeId, subSchemeId, categoryId);
+
+    } else if (workOrderForScheme === "SDP Low Cost Shed") {
+    generateWorkOrderRHSDPLowCostShed(applicationFormId, workOrderSchemeId, subSchemeId, categoryId);
+
+  }
+};
+
+const generateSanctionOrderRHSSConstruction = async (applicationFormId, schemeId) => {
+  try {
+    const response = await api.post(
+      baseURLReport + `getSanctionOrderRHSSConstruction`,
+      {
+        applicationFormId,
+        schemeId,
+        subSchemeId,
+        categoryId,
+      },
+      { responseType: "blob" }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+
+  } catch (error) {
+    console.error("Sanction order error:", error);
   }
 };
 
 const handleDownloadWorkOrder = async (viewDetailsData) => {
   try {
-    // 🔴 DB check (sanction/work-order enabled or not)
 
     const isEnabled = await isSanctionEnabledFromDB(
       actionFarmerData[0]?.subSchemeId
@@ -1683,10 +1771,9 @@ const handleDownloadWorkOrder = async (viewDetailsData) => {
         title: "Work Order Not Allowed",
         text: "Work Order generation is not enabled for this scheme.",
       });
-      return; // ❌ STOP execution
+      return;
     }
-
-    // ✅ Allowed → generate work order
+    // ✅ WORK ORDER LOGIC (UNCHANGED)
     if (
       viewDetailsData.workOrderForScheme === "PDMC" ||
       viewDetailsData.workOrderForScheme === "PMKSY"
@@ -1706,6 +1793,23 @@ const handleDownloadWorkOrder = async (viewDetailsData) => {
       );
 
     } else if (
+      viewDetailsData.workOrderForScheme === "SS Construction Of Low Cost Shed to Permanent Rearing House"
+    ) {
+      generateWorkOrderRHSSconstruction(
+        viewDetailsData.applicationFormId,
+        viewDetailsData.workOrderSchemeId
+      );
+
+    }
+    else if (
+      viewDetailsData.workOrderForScheme === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+    ) {
+      generateWorkOrderRHSDPconstruction(
+        viewDetailsData.applicationFormId,
+        viewDetailsData.workOrderSchemeId
+      );
+
+    } else if (
       viewDetailsData.workOrderForScheme === "Reeling Shed-PSF" ||
       viewDetailsData.workOrderForScheme === "Silk Incentive-PSF"
     ) {
@@ -1716,19 +1820,26 @@ const handleDownloadWorkOrder = async (viewDetailsData) => {
         viewDetailsData.categoryId
       );
 
-    // } else if (
-    //   viewDetailsData.workOrderForScheme === "Adopting Heat Recovery Unit-PSF"
-    // ) {
-    //   generateWorkOrderOrderHRU(
-    //     viewDetailsData.applicationFormId,
-    //     viewDetailsData.workOrderSchemeId,
-    //     viewDetailsData.subSchemeId,
-    //     viewDetailsData.categoryId
-    //   );
+    } else if (viewDetailsData.workOrderForScheme === "SDP RH 225") {
+      generateWorkOrderRHSDP225(
+        viewDetailsData.applicationFormId,
+        viewDetailsData.workOrderSchemeId,
+        viewDetailsData.subSchemeId,
+        viewDetailsData.categoryId
+      );
+
+    } else if (viewDetailsData.workOrderForScheme === "SDP Low Cost Shed") {
+      generateWorkOrderRHSDPLowCostShed(
+        viewDetailsData.applicationFormId,
+        viewDetailsData.workOrderSchemeId,
+        viewDetailsData.subSchemeId,
+        viewDetailsData.categoryId
+      );
 
     } else {
       console.error("Unknown Work Order scheme type");
     }
+
   } catch (error) {
     console.error("Error while downloading work order:", error);
     Swal.fire({
@@ -1781,7 +1892,7 @@ const handleDownloadWorkOrder = async (viewDetailsData) => {
       },
       {
         responseType: "blob", // Force to receive data in a Blob Format
-      }
+      }   
     );
 
     const file = new Blob([response.data], { type: "application/pdf" });
@@ -1789,6 +1900,87 @@ const handleDownloadWorkOrder = async (viewDetailsData) => {
     window.open(fileURL);
   } catch (error) {
     console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+
+const generateWorkOrderRHSSconstruction = async (applicationFormId, schemeId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `getWorkOrderRHSSconstruction`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }   
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderRHSDPconstruction = async (applicationFormId, schemeId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `getWorkOrderSDPConstruction`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }   
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateWorkOrderRHSDP225 = async (applicationFormId, schemeId, subSchemeId, categoryId) => {
+  try {
+    const response = await api.post(
+      baseURLReport + `getRHSDP225WorkOrder`,
+      { applicationFormId, schemeId, subSchemeId, categoryId },
+      { responseType: "blob" }
+    );
+    const file = new Blob([response.data], { type: "application/pdf" });
+    window.open(URL.createObjectURL(file));
+  } catch (error) {
+    console.error("Error generating SDP RH 225 work order:", error);
+  }
+};
+
+const generateWorkOrderRHSDPLowCostShed = async (applicationFormId, schemeId, subSchemeId, categoryId) => {
+  try {
+    const response = await api.post(
+      baseURLReport + `getRHSDPLowCostShedWorkOrder`,
+      { applicationFormId, schemeId, subSchemeId, categoryId },
+      { responseType: "blob" }
+    );
+    const file = new Blob([response.data], { type: "application/pdf" });
+    window.open(URL.createObjectURL(file));
+  } catch (error) {
+    console.error("Error generating SDP Low Cost Shed work order:", error);
   }
 };
 
@@ -2028,6 +2220,32 @@ const generateWorkOrderOrderRearingEquipmentSS= async (applicationFormId, scheme
   }
 };
 
+const generateWorkOrderOrderRegisteredPrivateBivCRC= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
+  try {
+    // ✅ Get userId from localStorage
+    const userId = localStorage.getItem("userMasterId");
+
+    const response = await api.post(
+      baseURLReport + `SelectionCRC`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId:categoryId // ✅ Added userId
+      },
+      {
+        responseType: "blob", // Force to receive data in a Blob Format
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
 const generateWorkOrderOrderICB= async (applicationFormId, schemeId,subSchemeId,categoryId) => {
   try {
     // ✅ Get userId from localStorage
@@ -2129,6 +2347,30 @@ const handleGenerateSanctionOrderClick = async () => {
   const userId = localStorage.getItem("userMasterId");
   const scSubSchemeDetailsId = actionFarmerData[0]?.subSchemeId;
 
+  const generateSanctionOrderRHSSConstruction = async (applicationFormId, schemeId) => {
+  try {
+    const response = await api.post(
+      baseURLReport + `getSanctionOrderRHSSConstruction`, // ✅ your API
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId: categoryId,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+
+  } catch (error) {
+    console.error("Error generating sanction order:", error);
+  }
+};
+
   // 🔴 Check from DB
   const isEnabled = await isSanctionEnabledFromDB(scSubSchemeDetailsId);
 
@@ -2212,6 +2454,36 @@ const handleGenerateSanctionOrderClick = async () => {
             applicationFormIds
           );
         }
+
+        else if (
+          schemeType === "SS Construction Of Low Cost Shed to Permanent Rearing House"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId,
+            applicationFormIds
+          );
+        }
+
+        else if (
+          schemeType === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId,
+            applicationFormIds
+          );
+        }
+
+        
 
         else if (
           schemeType === "Rearing Equipment SS"
@@ -2327,8 +2599,41 @@ const handleGenerateSanctionOrderClick = async () => {
             categoryId
           );
         }
-        
-        
+
+        else if (schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId,
+            applicationFormIds
+          );
+        }
+
+        else if (schemeType === "SDP RH 225") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
+        else if (schemeType === "SDP Low Cost Shed") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "farmer",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
         else {
           console.error("Unknown scheme type for farmer sanction order.");
         }
@@ -2355,12 +2660,42 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
+            "company",
+            schemeType,
             subSchemeId,
             categoryId,
-            "company",
-            schemeType
+            applicationFormIds
           );
-        } 
+        }
+
+
+        else if (
+          schemeType === "SS Construction Of Low Cost Shed to Permanent Rearing House"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "company",
+            schemeType,
+            subSchemeId,
+            categoryId,
+            applicationFormIds
+          );
+        }
+
+        else if (
+          schemeType === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+        ) {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "company",
+            schemeType,
+            subSchemeId,
+            categoryId,
+            applicationFormIds
+          );
+        }
 
         else if (
           schemeType === "Rearing Equipment SS"
@@ -2368,22 +2703,23 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
+            "company",
+            schemeType,
             subSchemeId,
             categoryId,
-            "company",
-            schemeType
+            applicationFormIds
           );
-        } 
+        }
         else if (
           schemeType === "Reeling Shed-PSF"
         ) {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
         else if (
@@ -2392,10 +2728,10 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
          else if (
@@ -2404,10 +2740,10 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
          else if (
@@ -2416,10 +2752,10 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
          else if (
@@ -2428,10 +2764,10 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
          else if (
@@ -2440,10 +2776,10 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
         else if (
@@ -2452,34 +2788,24 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
+            "company",
+            schemeType,
             subSchemeId,
             categoryId,
-            "company",
-            schemeType
+            applicationFormIds
           );
         }
-        else if (
-          schemeType === "Rearing Equipment SS"
-        ) {
-          generateSanctionOrderAcknowledgment(
-            applicationFormId,
-            schemeId,
-            subSchemeId,
-            categoryId,
-            "company",
-            schemeType
-          );
-        }
+
         else if (
           schemeType === "Adopting Boiler-PSF"
         ) {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
 
@@ -2487,10 +2813,10 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
 
@@ -2498,23 +2824,35 @@ const handleGenerateSanctionOrderClick = async () => {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
 
-        else if (schemeType === "Adopting Heat Recovery Unit-PSF") {
+        else if (schemeType === "SDP RH 225") {
           generateSanctionOrderAcknowledgment(
             applicationFormId,
             schemeId,
-            subSchemeId,
-            categoryId,
             "company",
-            schemeType
+            schemeType,
+            subSchemeId,
+            categoryId
           );
         }
+
+        else if (schemeType === "SDP Low Cost Shed") {
+          generateSanctionOrderAcknowledgment(
+            applicationFormId,
+            schemeId,
+            "company",
+            schemeType,
+            subSchemeId,
+            categoryId
+          );
+        }
+
         else {
           console.error("Unknown Scheme type for company sanction order.");
         }
@@ -2606,12 +2944,22 @@ const handleGenerateSanctionOrderClick = async () => {
     // 1️⃣ Silk Samagra Schemes
     // -------------------------------
     if (
-      schemeType === "Silk Samagra State" ||
-      schemeType === "Silk Samagra Central"
-    ) {
-      endpoint = baseURLReport + `getSanctionOrderRH`;
+  schemeType === "Silk Samagra State" ||
+  schemeType === "Silk Samagra Central"
+) {
+  endpoint = baseURLReport + `getSanctionOrderRH`;
 
-    }
+} else if (
+  schemeType === "SS Construction Of Low Cost Shed to Permanent Rearing House"
+) {
+  endpoint = baseURLReport + `getSanctionOrderRHSSConstruction`;
+}
+
+else if (
+  schemeType === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+) {
+  endpoint = baseURLReport + `getSanctionOrderRHSSConstruction`;
+}
 
     else if (schemeType === "Rearing Equipment SS") {
   endpoint =
@@ -2625,6 +2973,11 @@ const handleGenerateSanctionOrderClick = async () => {
     // -------------------------------
     else if (schemeType === "Reeling Shed-PSF") {
       endpoint = baseURLReport + `sanction-psfa-reeling-shed`;  // ✅ NEW
+
+    } 
+
+    else if (schemeType === "MERM-PSF") {
+      endpoint = baseURLReport + `getMERMSanction`;  // ✅ NEW
 
     } 
     // else if (schemeType === "Adopting Heat Recovery Unit-PSF") {
@@ -2683,19 +3036,27 @@ const handleGenerateSanctionOrderClick = async () => {
       : baseURLReport + `getSolarWaterHeaterBeneficiary`;
     }
 
-    else if (schemeType === "MERM-PSF") {
-  endpoint =
-    recipientType === "company"
-      ? baseURLReport + `getHRUCompany`
-      : baseURLReport + `getHRUBeneficiary`;
-    }
+  //   else if (schemeType === "MERM-PSF") {
+  // endpoint =
+  //   recipientType === "company"
+  //     ? baseURLReport + `getHRUCompany`
+  //     : baseURLReport + `getHRUBeneficiary`;
+  //   }
 
     else if (schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
-      endpoint = baseURLReport + `getChawkiSanctionOrderPdf`;
+      endpoint = baseURLReport + `PrivateCRCSanction`;
     }
-    else if (schemeType === "Rearing Equipment SS") {
-      endpoint = baseURLReport + `getSanctionOrderRHEquipment`;
+
+    else if (schemeType === "SDP RH 225") {
+      endpoint = baseURLReport + `getSanctionOrderRHSDP225`;
     }
+
+    else if (schemeType === "SDP Low Cost Shed") {
+      endpoint = baseURLReport + `getSanctionOrderRHSDPLowCostShed`;
+    }
+    // else if (schemeType === "Rearing Equipment SS") {
+    //   endpoint = baseURLReport + `getSanctionOrderRHEquipment`;
+    // }
     // -------------------------------
     // 3️⃣ PMKSY / PDMC (farmer/company)
     // -------------------------------
@@ -2749,7 +3110,11 @@ const handleGenerateSanctionOrderClick = async () => {
           if (
             schemeType === "Silk Samagra State" ||
             schemeType === "Silk Samagra Central" ||
-            schemeType === "Rearing Equipment SS"
+            schemeType === "Rearing Equipment SS" ||                        // ✅ was missing
+            schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||
+            schemeType === "SS Construction Of Low Cost Shed to Permanent Rearing House"||
+            schemeType === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+
           ) {
             payload = {
               applicationFormIds: applicationFormIds,   // ✅ ARRAY
@@ -2764,7 +3129,13 @@ const handleGenerateSanctionOrderClick = async () => {
             schemeType === "Adopting Heat Recovery Unit-PSF" ||
             schemeType === "Adopting Boiler-PSF" ||
             schemeType === "ICB-PSF" ||
-            schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy"
+            schemeType === "IMCB-PSF" ||
+            schemeType === "Adopting Silent Generator" ||
+            schemeType === "Adopting Solar power Generator" ||
+            schemeType === "Adopting Solar Water Heater" ||
+            schemeType === "MERM-PSF" ||
+            schemeType === "SDP RH 225" ||
+            schemeType === "SDP Low Cost Shed"
           ) {
             payload = {
               applicationFormId: applicationId,
@@ -2858,7 +3229,7 @@ const allowedSchemes = [
         setFieldsDisabled(false);
         getApprovalRejectStageBeforeStepListDataList(
           subSchemeId,
-          approvalStageId
+          actionFarmerData[0]?.approvalStageId
         ); // Calls before-step function for "Objection"
       } else if (value === "") {
         setFieldsDisabled(true);
@@ -2985,12 +3356,51 @@ const allowedSchemes = [
   const [assignData, setAssignData] = useState({
     applicationFormId: "",
     userId: "",
+    stepId: "",
   });
 
   const handleAssignInputs = (e) => {
     let { name, value } = e.target;
     setAssignData({ ...assignData, [name]: value });
   };
+
+  const [userFromDistrictForReassignData, setUserFromDistrictForReassignData] = useState([]);
+
+
+  const getUserFromDistrictListForReassign = (
+    subSchemeId,
+    approvalStageId,
+    districtId,
+    talukId
+  ) => {
+    api
+      .post(
+        baseURLDBT +
+          `service/getUserBySubSchemeIdAndScApprovalStageIdAndTalukIdAndDistrictId?subSchemeId=${subSchemeId}&approvalStageId=${approvalStageId}&districtId=${districtId}&talukId=${talukId}`
+      )
+      .then((response) => {
+        if (response.data.content) {
+          setUserFromDistrictForReassignData(response.data.content);
+        }
+      })
+      .catch((err) => {
+        setUserFromDistrictForReassignData([]);
+        // alert(err.response.data.errorMessages[0].message[0].message);
+      });
+  };
+
+ useEffect(() => {
+    const subSchemeId = listData[0]?.subSchemeId; // ✅ Get from listData
+
+    if (assignData.stepId && subSchemeId) {
+      getUserFromDistrictListForReassign(
+        subSchemeId,
+        assignData.stepId,
+        districtId,
+        talukId
+      );
+    }
+  }, [assignData.stepId]);
 
   //   const applicationDocumentId = data[0]?.applicationDocumentId; // Use data variable here
   // setApplicationFormId(applicationDocumentId);
@@ -3006,38 +3416,51 @@ const allowedSchemes = [
     } else {
       event.preventDefault();
 
-      // const applicationFormId = assignData.applicationFormId || row?.applicationDocumentId;
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to re-assign this application?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Re-assign",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // const applicationFormId = assignData.applicationFormId || row?.applicationDocumentId;
 
-      const sendPost = {
-        applicationFormId,
-        userId: assignData.userId,
-      };
-      api
-        .post(baseURLDBT + `service/reassignToUser`, sendPost)
-        .then((response) => {
-          if (response.data.errorCode === -1) {
-            saveError(response.data.errorMessages[0]);
-          } else if (response.data && response.data.error) {
-            saveError(response.data.error_description);
-          } else {
-            saveAssignSuccess();
-            clear();
-            setValidated(false);
-          }
-        })
-        .catch((err) => {
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
-          }
-        });
-      setValidated(true);
+          const sendPost = {
+            applicationFormId,
+            userId: assignData.userId,
+            stepId: assignData.stepId,
+          };
+          api
+            .post(baseURLDBT + `service/reassignToUser`, sendPost)
+            .then((response) => {
+              if (response.data.errorCode === -1) {
+                saveError(response.data.errorMessages[0]);
+              } else if (response.data && response.data.error) {
+                saveError(response.data.error_description);
+              } else {
+                saveAssignSuccess();
+                clear();
+                setValidated(false);
+              }
+            })
+            .catch((err) => {
+              if (
+                err.response &&
+                err.response.data &&
+                err.response.data.validationErrors
+              ) {
+                if (Object.keys(err.response.data.validationErrors).length > 0) {
+                  saveError(err.response.data.validationErrors);
+                }
+              }
+            });
+          setValidated(true);
+        }
+      });
     }
   };
 
@@ -4074,14 +4497,20 @@ const allowedSchemes = [
       icon: "success",
       title: "Rejected successfully",
       text: message,
-    });
+    }).then(() => {
+    // Refresh entire page AFTER clicking OK
+    window.location.reload();
+  });
   };
   const saveAssignSuccess = (message) => {
     Swal.fire({
       icon: "success",
       title: "Assigned successfully",
       text: message,
-    });
+    }).then(() => {
+    // Refresh entire page AFTER clicking OK
+    window.location.reload();
+  });
   };
 
   const saveSuccess = (message) => {
@@ -4089,7 +4518,10 @@ const allowedSchemes = [
       icon: "success",
       title: "Saved successfully",
       text: message,
-    });
+    }).then(() => {
+    // Refresh entire page AFTER clicking OK
+    window.location.reload();
+  });
   };
   const saveError = (message) => {
     let errorMessage;
@@ -4105,14 +4537,28 @@ const allowedSchemes = [
     });
   };
 
+  // const pushedSuccess = (b, f) => {
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Pushed successfully",
+  //     text: `Beneficiary Id is ${b} and Fruits Id is ${f}`,
+  //   });
+  //   handleCloseModal();
+  //   getList();
+  //   window.location.reload(); 
+  // };
   const pushedSuccess = (b, f) => {
     Swal.fire({
       icon: "success",
       title: "Pushed successfully",
       text: `Beneficiary Id is ${b} and Fruits Id is ${f}`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleCloseModal();
+        getList();
+        window.location.reload();
+      }
     });
-    handleCloseModal();
-    getList();
   };
 
   const warningAlert = (message, title) => {
@@ -4283,7 +4729,7 @@ const allowedSchemes = [
             <Button
               variant="primary"
               size="sm"
-              onClick={() => handleShowModal4()}
+              onClick={() => handleShowModal4(row)}
             >
               Re-Assign
             </Button>
@@ -4972,15 +5418,33 @@ const allowedSchemes = [
                         </Card>
                       </Block>
 
+                      {/* ── Rejection Details Section ── */}
                       <Block className="mt-3">
                         <Card
                           className="mt-3"
                           style={{
-                            border: "none",
-                            boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+                            border: "1px solid #f5c6cb",
+                            borderRadius: "10px",
+                            boxShadow: "0 4px 12px rgba(220, 53, 69, 0.15)",
+                            overflow: "hidden",
                           }}
                         >
-                          <Card.Body>
+                          <Card.Header
+                            style={{
+                              background: "linear-gradient(135deg, #dc3545, #c82333)",
+                              color: "#fff",
+                              padding: "12px 20px",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "8px",
+                              fontWeight: "600",
+                              fontSize: "15px",
+                              letterSpacing: "0.4px",
+                            }}
+                          >
+                            🚫 Rejection Details
+                          </Card.Header>
+                          <Card.Body style={{ background: "#fff5f5", padding: "20px" }}>
                             <Row>
                               <Col lg="6">
                                 <Form.Group className="form-group">
@@ -4991,6 +5455,7 @@ const allowedSchemes = [
                                     name="rejectType"
                                     value={actionData.rejectType}
                                     onChange={handleActionInputs}
+                                    style={{ borderColor: "#f5c6cb" }}
                                   >
                                     <option value="">Select Reject Type</option>
                                     <option value="Permanent">Permanent</option>
@@ -5014,6 +5479,7 @@ const allowedSchemes = [
                                       actionData.rejectReasonWorkflowMasterId
                                     }
                                     onChange={handleActionInputs}
+                                    style={{ borderColor: "#f5c6cb" }}
                                   >
                                     <option value="">
                                       Select Reject Reason
@@ -5031,6 +5497,40 @@ const allowedSchemes = [
                                   </Form.Select>
                                 </Form.Group>
                               </Col>
+                            </Row>
+                          </Card.Body>
+                        </Card>
+                      </Block>
+
+                      {/* ── Action Details Section ── */}
+                      <Block className="mt-3">
+                        <Card
+                          className="mt-3"
+                          style={{
+                            border: "1px solid #b8d4f0",
+                            borderRadius: "10px",
+                            boxShadow: "0 4px 12px rgba(15, 108, 190, 0.15)",
+                            overflow: "visible",
+                          }}
+                        >
+                          <Card.Header
+                            style={{
+                              background: "linear-gradient(135deg, #0F6CBE, #0a4f8e)",
+                              color: "#fff",
+                              padding: "12px 20px",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "8px",
+                              fontWeight: "600",
+                              fontSize: "15px",
+                              letterSpacing: "0.4px",
+                              borderRadius: "10px 10px 0 0",
+                            }}
+                          >
+                            📋 Action Details
+                          </Card.Header>
+                          <Card.Body style={{ background: "#f0f6ff", padding: "20px", overflow: "visible" }}>
+                            <Row>
                               <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
@@ -5104,9 +5604,9 @@ const allowedSchemes = [
                                           onChange={handleActionInputs}
                                           onBlur={() => handleActionInputs}
                                           required
-                                          isInvalid={
-                                            data.subSchemeType === undefined || data.subSchemeType === "0"
-                                          }
+                                          // isInvalid={
+                                          //   data.subSchemeType === undefined || data.subSchemeType === "0"
+                                          // }
                                         >
                                           <option value="0">{t("Select Empanelled Vendor Approved By")}</option>
                                           <option value="ಕೇಂದ್ರ  ರೇಷ್ಮೆ ಮಂಡ̧ಳಿ  ಬೆಂಗಳೂರು">ಕೇಂದ್ರ  ರೇಷ್ಮೆ ಮಂಡ̧ಳಿ  ಬೆಂಗಳೂರು</option>
@@ -5533,6 +6033,9 @@ const allowedSchemes = [
                                         if (validated) setValidated(false);
                                       }}
                                       className={validated && !isUserValid ? "is-invalid" : ""}
+                                      menuPortalTarget={document.body}
+                                      menuPosition="fixed"
+                                      styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                                     />
 
                                     {validated && !isUserValid && (
@@ -5573,7 +6076,6 @@ const allowedSchemes = [
                         </Card>
                       </Block>
 
-                      
                     </Accordion.Body>
                   </Accordion.Item>
 
@@ -5596,7 +6098,7 @@ const allowedSchemes = [
                           }}
                           className="mb-3"
                         >
-                          Generate Work Order
+                          Generate Work Order/Selection Letter
                         </Accordion.Header>
                         <Accordion.Body>
 
@@ -5646,9 +6148,31 @@ const allowedSchemes = [
                         >
                           Sanction Order Details
                         </Accordion.Header>
-                        <Accordion.Body>
-                          <Block className="mt-n4">
-                            <Row>
+                        <Accordion.Body style={{ background: "#f8fbff", padding: "20px" }}>
+
+                          {/* Scheme Details Table */}
+                          <Card
+                            className="mb-4"
+                            style={{
+                              border: "1px solid #b8d4f0",
+                              borderRadius: "10px",
+                              overflow: "hidden",
+                              boxShadow: "0 2px 8px rgba(15,108,190,0.10)",
+                            }}
+                          >
+                            <Card.Header
+                              style={{
+                                background: "linear-gradient(135deg, #0F6CBE, #0a4f8e)",
+                                color: "#fff",
+                                fontWeight: "600",
+                                fontSize: "14px",
+                                padding: "10px 16px",
+                                letterSpacing: "0.3px",
+                              }}
+                            >
+                              📊 Scheme Details
+                            </Card.Header>
+                            <Card.Body style={{ padding: "0" }}>
                               <DataTable
                                 tableClassName="data-table-head-light table-responsive"
                                 columns={schemeDetailsListColumn}
@@ -5658,146 +6182,179 @@ const allowedSchemes = [
                                 theme="solarized"
                                 customStyles={customStyles}
                               />
-                            </Row>
-                            <Row className="mt-2">
-                              {/* <Col lg="6">
-                                <Form.Group className="form-group">
-                                  <Form.Label>
-                                    <strong>Sanction Order No.</strong>
-                                  </Form.Label>
-                                  <Form.Control
-                                    id="sanctionOrderNumber"
-                                    type="text"
-                                    name="sanctionOrderNumber"
-                                    value={actionData.sanctionOrderNumber}
-                                    onChange={handleActionInputs}
-                                    placeholder="Enter Sanction Order NO."
-                                  />
-                                </Form.Group>
-                              </Col> */}
+                            </Card.Body>
+                          </Card>
 
-                              <Col lg="6">
-                                <Form.Group className="form-group">
-                                  <Form.Label>
-                                    <strong>Documents</strong>
-                                  </Form.Label>
-                                  <Form.Select
-                                    name="documentTypeId"
-                                    value={sanctionOrderData.documentTypeId}
-                                    onChange={handleSanctionOrderInputs}
-                                  >
-                                    <option value="">
-                                      Select Document Type
-                                    </option>
-                                    {docListData.map((list) => (
-                                      <option
-                                        key={list.documentMasterId}
-                                        value={list.documentMasterId}
-                                      >
-                                        {list.documentMasterName}
+                          {/* Document Upload Section */}
+                          <Card
+                            className="mb-4"
+                            style={{
+                              border: "1px solid #b8d4f0",
+                              borderRadius: "10px",
+                              overflow: "hidden",
+                              boxShadow: "0 2px 8px rgba(15,108,190,0.10)",
+                            }}
+                          >
+                            <Card.Header
+                              style={{
+                                background: "linear-gradient(135deg, #0F6CBE, #0a4f8e)",
+                                color: "#fff",
+                                fontWeight: "600",
+                                fontSize: "14px",
+                                padding: "10px 16px",
+                                letterSpacing: "0.3px",
+                              }}
+                            >
+                              📎 Upload Sanction Order Document
+                            </Card.Header>
+                            <Card.Body style={{ background: "#f0f6ff", padding: "20px" }}>
+                              <Row className="align-items-end">
+                                <Col lg="6">
+                                  <Form.Group className="form-group">
+                                    <Form.Label>
+                                      <strong>Document Type</strong>
+                                    </Form.Label>
+                                    <Form.Select
+                                      name="documentTypeId"
+                                      value={sanctionOrderData.documentTypeId}
+                                      onChange={handleSanctionOrderInputs}
+                                      style={{ borderColor: "#b8d4f0" }}
+                                    >
+                                      <option value="">
+                                        Select Document Type
                                       </option>
-                                    ))}
-                                  </Form.Select>
-                                </Form.Group>
-                              </Col>
+                                      {docListData.map((list) => (
+                                        <option
+                                          key={list.documentMasterId}
+                                          value={list.documentMasterId}
+                                        >
+                                          {list.documentMasterName}
+                                        </option>
+                                      ))}
+                                    </Form.Select>
+                                  </Form.Group>
+                                </Col>
 
-                              <Col lg="6">
-                                <Form.Group className="form-group">
-                                  <Form.Label htmlFor="accountImagePath">
-                                    Upload Sanction Order (PDF/jpg/png)(Max:5MB)
-                                  </Form.Label>
-                                  <div className="form-control-wrap">
-                                    <Form.Control
-                                      type="file"
-                                      id="documentPath"
-                                      name="documentPath"
-                                      // value={data.photoPath}
-                                      onChange={handleSanctionOrderChange}
-                                    />
-                                  </div>
-                                </Form.Group>
+                                <Col lg="6">
+                                  <Form.Group className="form-group">
+                                    <Form.Label>
+                                      <strong>Upload File</strong>{" "}
+                                      <small className="text-muted">(PDF / JPG / PNG, Max: 5MB)</small>
+                                    </Form.Label>
+                                    <div className="form-control-wrap">
+                                      <Form.Control
+                                        type="file"
+                                        id="documentPath"
+                                        name="documentPath"
+                                        onChange={handleSanctionOrderChange}
+                                        style={{ borderColor: "#b8d4f0" }}
+                                      />
+                                    </div>
+                                  </Form.Group>
+                                  {sanctionOrderDocument && (
+                                    <div className="mt-2 d-flex justify-content-center">
+                                      <img
+                                        style={{
+                                          height: "100px",
+                                          width: "100px",
+                                          borderRadius: "8px",
+                                          border: "2px solid #b8d4f0",
+                                          objectFit: "cover",
+                                        }}
+                                        src={URL.createObjectURL(sanctionOrderDocument)}
+                                        alt="Preview"
+                                      />
+                                    </div>
+                                  )}
+                                </Col>
 
-                                <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                                  {sanctionOrderDocument ? (
-                                    <img
+                                <Col lg="12" className="mt-3 d-flex justify-content-center">
+                                  <Button
+                                    type="button"
+                                    variant={uploadSanctionOrderStatus[sanctionOrderData.documentTypeId] ? "success" : "primary"}
+                                    style={{ minWidth: "130px", borderRadius: "6px" }}
+                                    onClick={() => handleSanctionOrderUpload(sanctionOrderData.documentTypeId)}
+                                    disabled={uploadSanctionOrderStatus[sanctionOrderData.documentTypeId]}
+                                  >
+                                    {uploadSanctionOrderStatus[sanctionOrderData.documentTypeId]
+                                      ? "✔ Uploaded"
+                                      : "⬆ Upload"}
+                                  </Button>
+                                </Col>
+                              </Row>
+                            </Card.Body>
+                          </Card>
+
+                          {/* Uploaded Documents List */}
+                          {sanctionOrderUploadedDocuments.length > 0 && (
+                            <Card
+                              style={{
+                                border: "1px solid #b8d4f0",
+                                borderRadius: "10px",
+                                overflow: "hidden",
+                                boxShadow: "0 2px 8px rgba(15,108,190,0.10)",
+                              }}
+                            >
+                              <Card.Header
+                                style={{
+                                  background: "linear-gradient(135deg, #0F6CBE, #0a4f8e)",
+                                  color: "#fff",
+                                  fontWeight: "600",
+                                  fontSize: "14px",
+                                  padding: "10px 16px",
+                                  letterSpacing: "0.3px",
+                                }}
+                              >
+                                🗂 Uploaded Documents ({sanctionOrderUploadedDocuments.length})
+                              </Card.Header>
+                              <Card.Body style={{ background: "#f0f6ff", padding: "16px" }}>
+                                <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+                                  {sanctionOrderUploadedDocuments.map((doc, index) => (
+                                    <div
+                                      key={index}
                                       style={{
-                                        height: "100px",
-                                        width: "100px",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                        background: "#fff",
+                                        border: "1px solid #b8d4f0",
+                                        borderRadius: "8px",
+                                        padding: "10px",
+                                        minWidth: "120px",
+                                        boxShadow: "0 1px 4px rgba(15,108,190,0.08)",
                                       }}
-                                      src={URL.createObjectURL(
-                                        sanctionOrderDocument
+                                    >
+                                      {doc.documentFile && (
+                                        <img
+                                          src={URL.createObjectURL(doc.documentFile)}
+                                          alt={doc.documentName}
+                                          style={{
+                                            height: "80px",
+                                            width: "80px",
+                                            borderRadius: "6px",
+                                            objectFit: "cover",
+                                            border: "1px solid #dee2e6",
+                                          }}
+                                        />
                                       )}
-                                    />
-                                  ) : (
-                                    ""
-                                  )}
-                                </Form.Group>
-                              </Col>
-                            </Row>
-
-                            {sanctionOrderUploadedDocuments.length > 0 && (
-                              <div className="mt-3">
-                                <h5>Uploaded Documents</h5>
-                                <ul>
-                                  {sanctionOrderUploadedDocuments.map(
-                                    (doc, index) => (
-                                      <li
-                                        key={index}
-                                        className="d-flex align-items-center"
+                                      <span
+                                        style={{
+                                          marginTop: "6px",
+                                          fontSize: "12px",
+                                          color: "#0F6CBE",
+                                          fontWeight: "600",
+                                          textAlign: "center",
+                                        }}
                                       >
-                                        {/* Show the image if it's available */}
-                                        {doc.documentFile && (
-                                          <img
-                                            src={URL.createObjectURL(
-                                              doc.documentFile
-                                            )}
-                                            alt={doc.documentName}
-                                            style={{
-                                              height: "100px",
-                                              width: "100px",
-                                              marginRight: "10px",
-                                            }}
-                                          />
-                                        )}
-                                        {/* Show the document master name */}
-                                        {/* <span>Document Type: {doc.documentMasterName }</span> */}
-                                      </li>
-                                    )
-                                  )}
-                                </ul>
-                              </div>
-                            )}
-                          </Block>
+                                        Doc {index + 1}
+                                      </span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </Card.Body>
+                            </Card>
+                          )}
 
-                          <div className="gap-col mt-1">
-                            <ul className="d-flex align-items-center justify-content-center gap g-3">
-                              <li>
-                                <Button
-                                  type="button"
-                                  variant="primary"
-                                  className="me-2"
-                                  onClick={() =>
-                                    handleSanctionOrderUpload(
-                                      sanctionOrderData.documentTypeId
-                                    )
-                                  }
-                                  disabled={
-                                    uploadSanctionOrderStatus[
-                                      sanctionOrderData.documentTypeId
-                                    ]
-                                  } // Disable button if this document is uploaded
-                                >
-                                  {uploadSanctionOrderStatus[
-                                    sanctionOrderData.documentTypeId
-                                  ]
-                                    ? "Uploaded"
-                                    : "Upload"}
-                                </Button>
-                              </li>
-                            </ul>
-                          </div>
-
-                          
                         </Accordion.Body>
                       </Accordion.Item>
                     )}
@@ -5902,6 +6459,7 @@ const allowedSchemes = [
                     >
                       View
                     </Button>
+                    
                     {directlyToFruits ? (
                       <Button
                         type="submit"
@@ -5915,6 +6473,9 @@ const allowedSchemes = [
                         Submit
                       </Button>
                     )}
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                      Cancel
+                    </Button>
 
                     {/* <Button
                       type="button"
@@ -5950,11 +6511,6 @@ const allowedSchemes = [
           )}
         </Modal.Body>
 
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-        </Modal.Footer>
       </Modal>
 
       <Block className="mt-n4">
@@ -6249,6 +6805,9 @@ const allowedSchemes = [
             )}
             <Col lg="12">
               <div className="d-flex justify-content-center gap-2 mt-3">
+                <Button variant="secondary" onClick={handleCloseModal3}>
+                  Cancel
+                </Button>
                 <Button type="submit" onClick={addToList} variant="primary">
                   Submit
                 </Button>
@@ -6258,49 +6817,173 @@ const allowedSchemes = [
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
-        <Modal.Header style={modalStyles.modalHeader} closeButton>
-          <Modal.Title style={modalStyles.modalTitle}>User</Modal.Title>
+      <Modal show={showModal4} onHide={handleCloseModal4} size="lg" centered>
+        <Modal.Header
+          closeButton
+          style={{
+            background: "linear-gradient(135deg, #1a3c6e 0%, #0f6cbf 100%)",
+            color: "white",
+            padding: "18px 24px",
+            borderBottom: "none",
+            borderTopLeftRadius: "12px",
+            borderTopRightRadius: "12px",
+          }}
+        >
+          <Modal.Title style={{ fontWeight: "700", fontSize: "18px", display: "flex", alignItems: "center", gap: "10px" }}>
+            <span style={{
+              background: "rgba(255,255,255,0.2)",
+              borderRadius: "50%",
+              width: "36px",
+              height: "36px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "18px",
+            }}>
+              &#8646;
+            </span>
+            Re-Assign Application
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body style={modalStyles.modalBody}>
-          <Form noValidate validated={validated} onSubmit={postData}>
-            {/* {docListData.map(({ documentMasterId, documentMasterName }) => ( */}
-            <Row>
-              <Col lg="6">
-                <Form.Group className="form-group">
-                  <Form.Label style={modalStyles.formGroupLabel}>
-                    User
-                    {/* <span className="text-danger">*</span> */}
-                  </Form.Label>
-                  <div className="form-control-wrap">
+
+        <Modal.Body style={{ background: "#f4f7fb", padding: "28px 28px 10px 28px" }}>
+          <Form id="reassignForm" noValidate validated={validated} onSubmit={postData}>
+            <div style={{
+              background: "white",
+              borderRadius: "10px",
+              padding: "24px",
+              boxShadow: "0 2px 12px rgba(15, 108, 191, 0.08)",
+              border: "1px solid #e3eaf4",
+            }}>
+              <Row className="g-4">
+                <Col lg="12">
+                  <Form.Group>
+                    <Form.Label style={{
+                      fontWeight: "600",
+                      fontSize: "13px",
+                      color: "#4a5568",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
+                      marginBottom: "8px",
+                    }}>
+                      Approval Stage <span style={{ color: "#e53e3e" }}>*</span>
+                    </Form.Label>
+                    <Form.Select
+                      name="stepId"
+                      value={assignData.stepId}
+                      onChange={handleAssignInputs}
+                      required
+                      style={{
+                        borderRadius: "8px",
+                        border: "1.5px solid #d1dded",
+                        padding: "10px 14px",
+                        fontSize: "14px",
+                        color: "#2d3748",
+                        background: "#f9fbfe",
+                        boxShadow: "none",
+                        transition: "border-color 0.2s",
+                      }}
+                    >
+                      <option value="">— Select Approval Stage —</option>
+                      {approvalStageBeforeStepListData.map((list) => (
+                        <option key={list.approvalStageId} value={list.approvalStageId}>
+                          {list.approvalStageName}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Please select an Approval Stage.
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="12">
+                  <Form.Group>
+                    <Form.Label style={{
+                      fontWeight: "600",
+                      fontSize: "13px",
+                      color: "#4a5568",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
+                      marginBottom: "8px",
+                    }}>
+                      Assign To User <span style={{ color: "#e53e3e" }}>*</span>
+                    </Form.Label>
                     <Form.Select
                       name="userId"
                       value={assignData.userId}
-                      // onChange={(e) => handleListInput(e, row)}
                       onChange={handleAssignInputs}
-                      // onBlur={() => handleInputs}
+                      required
+                      style={{
+                        borderRadius: "8px",
+                        border: "1.5px solid #d1dded",
+                        padding: "10px 14px",
+                        fontSize: "14px",
+                        color: "#2d3748",
+                        background: "#f9fbfe",
+                        boxShadow: "none",
+                        transition: "border-color 0.2s",
+                      }}
                     >
-                      <option value="">Select User</option>
-                      {userFromDistrictData.map((list) => (
+                      <option value="">— Select User —</option>
+                      {userFromDistrictForReassignData.map((list) => (
                         <option key={list.userId} value={list.userId}>
                           {list.userName}
                         </option>
                       ))}
                     </Form.Select>
-                  </div>
-                </Form.Group>
-              </Col>
-
-              <Col lg="12">
-                <div className="d-flex justify-content-center gap-2 mt-3">
-                  <Button type="submit" variant="success">
-                    Assign
-                  </Button>
-                </div>
-              </Col>
-            </Row>
+                    <Form.Control.Feedback type="invalid">
+                      Please select a User.
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </div>
           </Form>
         </Modal.Body>
+
+        <Modal.Footer style={{
+          background: "#f4f7fb",
+          borderTop: "1px solid #e3eaf4",
+          padding: "16px 28px 24px 28px",
+          borderBottomLeftRadius: "12px",
+          borderBottomRightRadius: "12px",
+          display: "flex",
+          justifyContent: "flex-end",
+          gap: "12px",
+        }}>
+          <Button
+            variant="outline-secondary"
+            onClick={handleCloseModal4}
+            style={{
+              borderRadius: "8px",
+              padding: "9px 24px",
+              fontWeight: "600",
+              fontSize: "14px",
+              border: "1.5px solid #cbd5e0",
+              color: "#4a5568",
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            form="reassignForm"
+            style={{
+              background: "linear-gradient(135deg, #1a3c6e 0%, #0f6cbf 100%)",
+              border: "none",
+              borderRadius: "8px",
+              padding: "9px 28px",
+              fontWeight: "700",
+              fontSize: "14px",
+              color: "white",
+              boxShadow: "0 4px 12px rgba(15, 108, 191, 0.35)",
+              letterSpacing: "0.3px",
+            }}
+          >
+            &#8646; Re-Assign
+          </Button>
+        </Modal.Footer>
       </Modal>
 
       <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
@@ -6885,7 +7568,7 @@ const allowedSchemes = [
                                       </Button>
                                     )} */}
 
-                                    {viewDetailsData?.workOrderNumber !== undefined &&
+                                    {/* {viewDetailsData?.workOrderNumber !== undefined &&
                                     viewDetailsData?.applicationFormId !== undefined && (
                                        <Button
                                         variant="primary"
@@ -6895,7 +7578,7 @@ const allowedSchemes = [
                                       >
                                         Download Work Order
                                       </Button>
-                                    )}
+                                    )} */}
 
 
                                   {/* {viewDetailsData?.sanctionOrderNumber && viewDetailsData?.applicationFormId && (

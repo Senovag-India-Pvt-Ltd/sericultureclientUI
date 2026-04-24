@@ -2059,8 +2059,8 @@ required
 
  <Col lg="6">
   <Form.Group className="form-group mt-n4">
-    <Form.Label htmlFor="Target Value">
-      {t("Target Value")}<span className="text-danger">*</span>
+    <Form.Label htmlFor="Achievement Value">
+      {t("Achievement Value")}<span className="text-danger">*</span>
     </Form.Label>
     <div className="form-control-wrap">
       <Form.Control
@@ -2074,7 +2074,7 @@ required
         // isInvalid={!data.value} 
       />
       <Form.Control.Feedback type="invalid">
-        {t("Target Value is required")}.
+        {t("Achievement Value is required")}.
       </Form.Control.Feedback>
     </div>
   </Form.Group>

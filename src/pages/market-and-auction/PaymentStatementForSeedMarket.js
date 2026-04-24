@@ -45,37 +45,37 @@ function PaymentStatementForSeedMarket() {
 
  
 
-//   const handleRemove = (marketId, godown, date, lot) => {
-//     // alert("Added To Bank");
+  const handleRemove = (marketId, godown, date, lot) => {
+    // alert("Added To Bank");
+  console.log("DEBUG →", { marketId, godown, date, lot });
+    api
+      .post(
+        baseURLMarket + `auction/fp/removeSelectedLotlistfromReadyForPaymentForSeedMarket`,
+        {
+          marketId: marketId,
+          godownId: godown,
+          paymentDate: date,
+          allottedLotList: [lot],
+        }
+      )
+      .then((response) => {
+        if (response.data.errorCode === 0) {
+          getBankStatement();
+        }
 
-//     api
-//       .post(
-//         baseURLMarket + `auction/fp/removeSelectedLotlistfromReadyForPayment`,
-//         {
-//           marketId: marketId,
-//           godownId: godown,
-//           paymentDate: date,
-//           allottedLotList: [lot],
-//         }
-//       )
-//       .then((response) => {
-//         if (response.data.errorCode === 0) {
-//           getBankStatement();
-//         }
+        // const res = response.data.content.body.content;
+        // console.log(res);
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "warning",
+          title: err.response.data.errorMessages[0].message[0].message,
+        });
 
-//         // const res = response.data.content.body.content;
-//         // console.log(res);
-//       })
-//       .catch((err) => {
-//         Swal.fire({
-//           icon: "warning",
-//           title: err.response.data.errorMessages[0].message[0].message,
-//         });
-
-//         // setData({});
-//         // saveError();
-//       });
-//   };
+        // setData({});
+        // saveError();
+      });
+  };
 
   createTheme(
     "solarized",
@@ -154,21 +154,22 @@ function PaymentStatementForSeedMarket() {
         //   Button style
         <div className="text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          {/* <Button
+           <Button
             variant="primary"
             size="sm"
             // onClick={() => handleView(row.id)}
-            onClick={() =>
+            onClick={() =>{
+            console.log("ROW DATA:", row);
               handleRemove(
                 localStorage.getItem("marketId"),
                 data.godownId,
-                row.lotTransactionDate,
+                row.auctionDate,
                 row.allottedLotId
               )
-            }
+            }}
           >
             {t("Remove")}
-          </Button> */}
+          </Button> 
         </div>
       ),
       sortable: false,
@@ -380,50 +381,50 @@ function PaymentStatementForSeedMarket() {
     }
   };
 
-  // const requestJobToProcessPayment = (e) => {
-  //   if (fileNameError === "") {
-  //     const { paymentDate, fileName } = data;
-  //     if (paymentDate === "") {
-  //       return Swal.fire({
-  //         icon: "warning",
-  //         title: "Date Not Selected",
-  //       });
-  //     }
-  //     api
-  //       .post(baseURLMarket + `auction/fp/requestJobToProcessPayment`, {
-  //         marketId: localStorage.getItem("marketId"),
-  //         godownId: data.godownId,
-  //         paymentDate: paymentDate,
-  //         fileName: fileName,
-  //       })
-  //       .then((response) => {
-  //         console.log(response);
-  //         if (response.data.errorCode === 0) {
-  //           Swal.fire({
-  //             icon: "success",
-  //             title: "Request has been sent to Bank",
-  //           });
-  //         }
-  //         if (response.data.errorCode === -1) {
-  //           Swal.fire({
-  //             icon: "warning",
-  //             title: response.data.errorMessages[0],
-  //           });
-  //         }
+  const requestJobToProcessPayment = (e) => {
+    if (fileNameError === "") {
+      const { paymentDate, fileName } = data;
+      if (paymentDate === "") {
+        return Swal.fire({
+          icon: "warning",
+          title: "Date Not Selected",
+        });
+      }
+      api
+        .post(baseURLMarket + `auction/fp/requestJobToProcessPayment`, {
+          marketId: localStorage.getItem("marketId"),
+          godownId: data.godownId,
+          paymentDate: paymentDate,
+          fileName: fileName,
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.data.errorCode === 0) {
+            Swal.fire({
+              icon: "success",
+              title: "Request has been sent to Bank",
+            });
+          }
+          if (response.data.errorCode === -1) {
+            Swal.fire({
+              icon: "warning",
+              title: response.data.errorMessages[0],
+            });
+          }
 
-  //         // if (response.data.content) {
-  //         //   setBankStatementList(
-  //         //     response.data.content.farmerPaymentInfoResponseList
-  //         //   );
-  //         // }
-  //       })
-  //       .catch((err) => {
-  //         // setBankStatementList([]);
-  //       });
-  //   } else {
-  //     console.error("Validation error:", fileNameError);
-  //   }
-  // };
+          // if (response.data.content) {
+          //   setBankStatementList(
+          //     response.data.content.farmerPaymentInfoResponseList
+          //   );
+          // }
+        })
+        .catch((err) => {
+          // setBankStatementList([]);
+        });
+    } else {
+      console.error("Validation error:", fileNameError);
+    }
+  };
 
 
   const markCashPaymentLotListToSuccess = (e) => {
@@ -461,41 +462,41 @@ function PaymentStatementForSeedMarket() {
   };
 
   // Generate CSV after process for payment  file
-  // const checkBankGeneratedStatement = (e) => {
-  //   if (fileNameError === "") {
-  //     const { fileName } = data;
-  //     const parameters = `marketId=${localStorage.getItem(
-  //       "marketId"
-  //     )}&fileName=${fileName}`;
-  //     api
-  //       .get(baseURLMarket + `auction/filedownloader/download?${parameters}`, {
-  //         headers: {
-  //           accept: "*/*",
-  //           "Content-Type": "application/json",
-  //           "Access-Control-Allow-Origin": "*",
-  //         },
-  //       })
-  //       .then((response) => {
-  //         const blob = new Blob([response.data], { type: "application/csv" });
-  //         const link = document.createElement("a");
-  //         link.href = window.URL.createObjectURL(blob);
-  //         link.download = `${fileName}.csv`;
-  //         document.body.appendChild(link);
-  //         link.click();
+  const checkBankGeneratedStatement = (e) => {
+    if (fileNameError === "") {
+      const { fileName } = data;
+      const parameters = `marketId=${localStorage.getItem(
+        "marketId"
+      )}&fileName=${fileName}`;
+      api
+        .get(baseURLMarket + `auction/filedownloader/download?${parameters}`, {
+          headers: {
+            accept: "*/*",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+        .then((response) => {
+          const blob = new Blob([response.data], { type: "application/csv" });
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = `${fileName}.csv`;
+          document.body.appendChild(link);
+          link.click();
 
-  //         document.body.removeChild(link);
-  //         window.URL.revokeObjectURL(link.href);
-  //       })
-  //       .catch((err) => {
-  //         Swal.fire({
-  //           icon: "warning",
-  //           title: "Either file name is incorrect or Wait for few minutes!!!",
-  //         });
-  //       });
-  //   } else {
-  //     console.error("Validation error:", fileNameError);
-  //   }
-  // };
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(link.href);
+        })
+        .catch((err) => {
+          Swal.fire({
+            icon: "warning",
+            title: "Either file name is incorrect or Wait for few minutes!!!",
+          });
+        });
+    } else {
+      console.error("Validation error:", fileNameError);
+    }
+  };
 
   const _header = {
     "Content-Type": "application/json",
@@ -654,7 +655,7 @@ function PaymentStatementForSeedMarket() {
                   </>
                 ) : (
                   <>
-                    {/* <Col sm={2}>
+                    <Col sm={2}>
                       <Button
                         type="button"
                         variant="primary"
@@ -664,9 +665,9 @@ function PaymentStatementForSeedMarket() {
                       >
                         {t("Process For Payment")}
                       </Button>
-                    </Col> */}
+                    </Col>
 
-                    {/* <Col sm={2}>
+                    <Col sm={2}>
                       <Button
                         type="button"
                         variant="primary"
@@ -676,7 +677,7 @@ function PaymentStatementForSeedMarket() {
                       >
                         {t("Check Bank Generated File")}
                       </Button>
-                    </Col> */}
+                    </Col>
                   </>
                 )}
 

@@ -18,6 +18,8 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 
 function StakeHolderRegister() {
+
+  const [isSaving, setIsSaving] = useState(false);
   const [familyMembersList, setFamilyMembersList] = useState([]);
   const [familyMembers, setFamilyMembers] = useState({
     relationshipId: "",
@@ -184,7 +186,7 @@ function StakeHolderRegister() {
               .post(
                 baseURLFarmer +
                   `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
-                { fruitsId: data.fruitsId }
+                { fruitsId: data.fruitsId },
                 // {
                 //   headers: _header,
                 // }
@@ -219,7 +221,7 @@ function StakeHolderRegister() {
                           detail.villageId = null;
                         }
                         return detail;
-                      }
+                      },
                     );
                   // console.log(modified);FF
 
@@ -380,7 +382,7 @@ function StakeHolderRegister() {
             return { ...item, ...changes };
           }
           return item;
-        })
+        }),
       );
       setShowModal1(false);
       setValidatedFamilyMembersEdit(false);
@@ -585,7 +587,7 @@ function StakeHolderRegister() {
             return { ...item, ...changes };
           }
           return item;
-        })
+        }),
       );
       setShowModal3(false);
       setValidatedFarmerLandEdit(false);
@@ -642,18 +644,18 @@ function StakeHolderRegister() {
     setFarmerLand({ ...farmerLand, [name]: value });
   };
 
-  useEffect(() => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    const seconds = String(now.getSeconds()).padStart(2, "0");
-    const date = String(now.getDate()).padStart(2, "0");
+  // useEffect(() => {
+  //   const now = new Date();
+  //   const year = now.getFullYear();
+  //   const month = String(now.getMonth() + 1).padStart(2, "0");
+  //   const hours = String(now.getHours()).padStart(2, "0");
+  //   const minutes = String(now.getMinutes()).padStart(2, "0");
+  //   const seconds = String(now.getSeconds()).padStart(2, "0");
+  //   const date = String(now.getDate()).padStart(2, "0");
 
-    const timeString = hours + minutes + seconds + date + month + year;
-    setData((prev) => ({ ...prev, farmerNumber: timeString }));
-  }, [data.fruitsId]);
+  //   const timeString = hours + minutes + seconds + date + month + year;
+  //   setData((prev) => ({ ...prev, farmerNumber: timeString }));
+  // }, [data.fruitsId]);
 
   const [farmerAddressList, setFarmerAddressList] = useState([]);
   const [farmerAddress, setFarmerAddress] = useState({
@@ -679,7 +681,7 @@ function StakeHolderRegister() {
               return { ...item, defaultAddress: false };
             }
             return item;
-          })
+          }),
         );
       }
     }
@@ -769,7 +771,7 @@ function StakeHolderRegister() {
     if (farmerAddressList.length) {
       if (changes.defaultAddress) {
         setFarmerAddressList((prev) =>
-          prev.map((item) => ({ ...item, defaultAddress: false }))
+          prev.map((item) => ({ ...item, defaultAddress: false })),
         );
       }
       const form = e.currentTarget;
@@ -817,7 +819,6 @@ function StakeHolderRegister() {
   const handleCheckBox = (e) => {
     setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
   };
-
   const handleBankCheckBox = (e) => {
     setBank({ ...bank, lock: e.target.checked });
   };
@@ -891,6 +892,7 @@ function StakeHolderRegister() {
               .classList.remove("is-invalid");
             e.target.classList.remove("is-invalid");
           }
+
         } else {
           e.target.classList.remove("is-invalid");
           e.target.classList.add("is-valid");
@@ -1102,7 +1104,7 @@ function StakeHolderRegister() {
   // };
   // Old Postdata Commented Close
 
-  const postData = (event) => {
+  const postData =async (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -1110,25 +1112,10 @@ function StakeHolderRegister() {
       setValidated(true);
     } else {
       event.preventDefault();
-
-      if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-        return;
-      }
-
-      if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
-        return;
-      }
-      if (
-        bank.farmerBankIfscCode.length < 11 ||
-        bank.farmerBankIfscCode.length > 11
-      ) {
-        return;
-      }
-      if (
-        bank.farmerBankAccountNumber !== bank.reenterFarmerBankAccountNumber
-      ) {
-        return;
-      }
+if (data.fruitsId.length !== 16) return;
+    if (data.mobileNumber.length !== 10) return;
+    if (bank.farmerBankIfscCode.length !== 11) return;
+    if (bank.farmerBankAccountNumber !== bank.reenterFarmerBankAccountNumber) return;
 
       if (farmerAddressList && farmerAddressList.length > 0) {
         if (
@@ -1153,20 +1140,37 @@ function StakeHolderRegister() {
         });
         return;
       }
-
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const seconds = String(now.getSeconds()).padStart(2, "0");
+      const date = String(now.getDate()).padStart(2, "0");
+      const timeString = hours + minutes + seconds + date + month + year;
+      // setData((prev) => ({ ...prev, farmerNumber: timeString }));
+            const updatedFarmerData = {
+        ...data,
+        farmerNumber: timeString,
+      };
+      setIsSaving(true);
+      try{
       const sendData = {
-        farmerRequest: data,
+        farmerRequest: updatedFarmerData,
         farmerBankAccountRequest: bank,
         farmerAddressRequests: farmerAddressList,
         farmerFamilyRequestList: familyMembersList,
         farmerLandDetailsRequests: farmerLandList,
       };
-      api
-        .post(baseURL2 + `farmer/save-complete-farmer-details`, sendData)
-        .then((response) => {
+     
+      const response = await api.post(
+        baseURL2 + `farmer/save-complete-farmer-details`,
+        sendData
+      );
           // console.log(response.data)
           const farmerId = response.data.content.farmerId;
           const farmerBankAccountId = response.data.content.farmerBankAccountId;
+          const farmerNumber = response.data.content.farmerNumber;
           if (response.data.content.error) {
             saveFarmerError(response.data.content.error_description);
           } else {
@@ -1176,27 +1180,29 @@ function StakeHolderRegister() {
             if (bank.accountImagePath) {
               handleFileDocumentUpload(farmerBankAccountId);
             }
-            saveSuccess();
+            saveSuccess(farmerNumber);
           }
           // postDataBankAccount
-        })
-        .catch((err) => {
-          // setData({});
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
-          }
-        });
-      setValidated(true);
+        }
+       catch (err) {
+      if (
+        err.response &&
+        err.response.data &&
+        err.response.data.validationErrors
+      ) {
+        if (Object.keys(err.response.data.validationErrors).length > 0) {
+          saveError(err.response.data.validationErrors);
+        }
+      } else {
+        console.error(err);
+      }
+    } finally {
+      setIsSaving(false); // 🟢 enable button
     }
-  };
 
+    setValidated(true);
+  }
+};
   // to get tsc
   const [tscListData, setTscListData] = useState([]);
 
@@ -1638,7 +1644,7 @@ function StakeHolderRegister() {
     if (farmerAddress.districtId) {
       console.log(
         "Effect triggered with districtId:",
-        farmerAddress.districtId
+        farmerAddress.districtId,
       );
       getAddressTalukList(farmerAddress.districtId);
     }
@@ -1746,11 +1752,11 @@ function StakeHolderRegister() {
   }, [farmerAddress.hobliId]);
 
   const navigate = useNavigate();
-  const saveSuccess = () => {
+  const saveSuccess = (farmerNumber) => {
     Swal.fire({
       icon: "success",
       title: "Saved successfully",
-      // text: "You clicked the button!",
+      text: `Farmer Number: ${farmerNumber}`,
     }).then(() => {
       navigate("/seriui/stake-holder-list");
     });
@@ -2088,7 +2094,7 @@ function StakeHolderRegister() {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
       console.log("File upload response:", response.data);
     } catch (error) {
@@ -2121,7 +2127,7 @@ function StakeHolderRegister() {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
       console.log("File upload response:", response.data);
     } catch (error) {
@@ -2199,7 +2205,7 @@ function StakeHolderRegister() {
                     </Col>
                     <Col sm={2}>
                       <Button type="submit" variant="primary" onClick={clear}>
-                      {t( "Clear")}
+                        {t("Clear")}
                       </Button>
                     </Col>
                     <Col sm={2}>
@@ -2210,7 +2216,7 @@ function StakeHolderRegister() {
                         target="_blank"
                         // onClick={search}
                       >
-                        {t( "Generate_FRUITS_ID")}
+                        {t("Generate_FRUITS_ID")}
                       </Button>
                     </Col>
                   </Form.Group>
@@ -2309,7 +2315,7 @@ function StakeHolderRegister() {
                             onChange={handleInputs}
                             type="text"
                             placeholder={t(
-                              "enter_fathers_husbands_name_in_kannada"
+                              "enter_fathers_husbands_name_in_kannada",
                             )}
                             required
                             readOnly
@@ -2320,14 +2326,14 @@ function StakeHolderRegister() {
                         </div>
                       </Form.Group>
 
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label>{t("farmer_dob")}</Form.Label>
-                        <div className="form-control-wrap">
-                          {/* <DatePicker
+                        <div className="form-control-wrap"> */}
+                      {/* <DatePicker
                             selected={data.dob}
                             onChange={(date) => handleDateChange(date, "dob")}
                           /> */}
-                          <DatePicker
+                      {/* <DatePicker
                             selected={data.dob}
                             onChange={(date) => handleDateChange(date, "dob")}
                             peekNextMonth
@@ -2339,10 +2345,10 @@ function StakeHolderRegister() {
                             maxDate={new Date()}
                           />
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>{t("gender")}</Form.Label>
+                        <Form.Label>{t("Gender")}</Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="genderId"
@@ -2360,7 +2366,8 @@ function StakeHolderRegister() {
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                        {t("Caste")}<span className="text-danger">*</span>
+                          {t("Caste")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -2377,24 +2384,8 @@ function StakeHolderRegister() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("caste_is_required")}
+                            {t("caste_is_required")}
                           </Form.Control.Feedback>
-                        </div>
-                      </Form.Group>
-
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label>{t("differently_abled")}</Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Select
-                            name="differentlyAbled"
-                            value={data.differentlyAbled}
-                            onChange={handleInputs}
-                            disabled
-                          >
-                            <option value="">{t("select")}</option>
-                            <option value="true">Yes</option>
-                            <option value="false">No</option>
-                          </Form.Select>
                         </div>
                       </Form.Group>
                     </Col>
@@ -2452,7 +2443,7 @@ function StakeHolderRegister() {
                         </div>
                       </Form.Group> */}
 
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="epicNumber">
                           {t("epic_number")}
                         </Form.Label>
@@ -2466,9 +2457,9 @@ function StakeHolderRegister() {
                             placeholder={t("enter_epic_number")}
                           />
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
 
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="rcard">
                           {t("ration_number")}
                         </Form.Label>
@@ -2482,9 +2473,9 @@ function StakeHolderRegister() {
                             placeholder={t("enter_ration_number")}
                           />
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
 
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="rcard">
                           {t("Aadhaar Number")}
                         </Form.Label>
@@ -2496,9 +2487,9 @@ function StakeHolderRegister() {
                             // onChange={handleInputs}
                             type="text"
                             placeholder={t("Enter Aadhaar Number")}
-                          />
+                          />a
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="totalLandHolding">
@@ -2561,7 +2552,8 @@ function StakeHolderRegister() {
                       </Form.Group> */}
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                        {t("farmer_type")} <span className="text-danger">*</span>
+                          {t("farmer_type")}{" "}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -2587,18 +2579,33 @@ function StakeHolderRegister() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("select_farmer_type_is_required")}
+                            {t("select_farmer_type_is_required")}
                           </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                      <Form.Group className="form-group mt-3">
+                        <Form.Label>{t("differently_abled")}</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="differentlyAbled"
+                            value={data.differentlyAbled}
+                            onChange={handleInputs}
+                            disabled
+                          >
+                            <option value="">{t("select")}</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                          </Form.Select>
                         </div>
                       </Form.Group>
                     </Col>
 
                     <Col lg="4">
-                      <Form.Group className="form-group">
+                      {/* <Form.Group className="form-group">
                         <Form.Label htmlFor="rid">
-                          {t("farmer_number")}
-                          {/* <span className="text-danger">*</span> */}
-                        </Form.Label>
+                          {t("farmer_number")} */}
+                      {/* <span className="text-danger">*</span> */}
+                      {/* </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
                             id="farmerNumber"
@@ -2614,7 +2621,7 @@ function StakeHolderRegister() {
                             Farmer Number is required
                           </Form.Control.Feedback>
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
 
                       {/* <Form.Group className="form-group mt-3">
                         <Form.Label>Farmer Type</Form.Label>
@@ -2638,7 +2645,10 @@ function StakeHolderRegister() {
                       </Form.Group> */}
 
                       <Form.Group className="form-group mt-3">
-                        <Form.Label>{t("education")}</Form.Label>
+                        <Form.Label>
+                          {t("education")}
+                          <span className="text-danger">*</span>
+                        </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="educationId"
@@ -2658,7 +2668,8 @@ function StakeHolderRegister() {
                       {/* <Col lg="4"> */}
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
-                        {t("tsc")}<span className="text-danger">*</span>
+                          {t("tsc")}
+                          <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -2683,7 +2694,7 @@ function StakeHolderRegister() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                          {t("tsc_is_required")}
+                            {t("tsc_is_required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -3196,6 +3207,7 @@ function StakeHolderRegister() {
                             value={bank.farmerBankAccountNumber}
                             onChange={handleBankInputs}
                             type="password"
+                            autoComplete="new-password"
                             placeholder={t("enter_bank_account_number")}
                             required
                           />
@@ -3216,8 +3228,11 @@ function StakeHolderRegister() {
                             name="reenterFarmerBankAccountNumber"
                             value={bank.reenterFarmerBankAccountNumber}
                             onChange={handleBankInputs}
-                            type="text"
+                            type="password"
                             placeholder={t("reenter_bank_account_number")}
+                            onPaste={(e) => e.preventDefault()}
+                            onCopy={(e) => e.preventDefault()}
+                            onCut={(e) => e.preventDefault()}
                             required
                           />
                           <Form.Control.Feedback id="reenter" type="invalid">
@@ -3226,7 +3241,7 @@ function StakeHolderRegister() {
                         </div>
                       </Form.Group>
 
-                      {/* <Form.Group className="form-group mt-3">
+            {/* <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="accountImagePath">
                           Upload Bank Passbook (PDF/jpg/png)(Max:5MB)
                         </Form.Label>
@@ -3241,9 +3256,9 @@ function StakeHolderRegister() {
                         </div>
                       </Form.Group> */}
 
-                      <Form.Group className="form-group mt-3">
+            <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="accountImagePath">
-                        {t("upload_bank")}
+                          {t("upload_bank")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -3255,8 +3270,8 @@ function StakeHolderRegister() {
                         </div>
                       </Form.Group>
 
-                      {/* Preview section for uploaded file */}
-                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
+            {/* Preview section for uploaded file */}
+            <Form.Group className="form-group mt-3 d-flex justify-content-center">
                         {documentFile ? (
                           <>
                             {documentFile.type.startsWith("image/") ||
@@ -3291,7 +3306,7 @@ function StakeHolderRegister() {
                         )}
                       </Form.Group>
 
-                      {/* <Form.Group className="form-group mt-3 d-flex justify-content-center">
+            {/* <Form.Group className="form-group mt-3 d-flex justify-content-center">
                         {document ? (
                           <img
                             style={{ height: "100px", width: "100px" }}
@@ -3301,9 +3316,9 @@ function StakeHolderRegister() {
                           ""
                         )}
                       </Form.Group> */}
-                    </Col>
+            </Col>
 
-                    <Col lg="6">
+            <Col lg="6">
                       <Form.Group as={Row} className="form-group">
                         <Col sm={1}>
                           <Form.Check
@@ -3315,7 +3330,7 @@ function StakeHolderRegister() {
                           />
                         </Col>
                         <Form.Label column sm={11} className="mt-n1">
-                        {t("Lock Bank Details")}
+                          {t("Lock Bank Details")}
                         </Form.Label>
                       </Form.Group>
                     </Col>
@@ -3328,8 +3343,8 @@ function StakeHolderRegister() {
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    {t("save")}
+                  <Button type="submit" variant="primary" disabled={isSaving}>
+                   {isSaving  ? "Saving..." : t("save")}
                   </Button>
                 </li>
                 <li>
@@ -3384,7 +3399,8 @@ function StakeHolderRegister() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label>
-                   {t("relationship")}<span className="text-danger">*</span>
+                    {t("relationship")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3410,7 +3426,7 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("relationship_is_required")}
+                      {t("relationship_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -3474,7 +3490,8 @@ function StakeHolderRegister() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label>
-                  {t("relationship")}<span className="text-danger">*</span>
+                    {t("relationship")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3565,7 +3582,8 @@ function StakeHolderRegister() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("land_ownership")}<span className="text-danger">*</span>
+                    {t("land_ownership")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3590,14 +3608,15 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("land_ownership_required")}
+                      {t("land_ownership_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("soil_type")}<span className="text-danger">*</span>
+                    {t("soil_type")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3622,7 +3641,7 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("soil_type_required")}
+                      {t("soil_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -3644,7 +3663,8 @@ function StakeHolderRegister() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("source_of_Mulberry")}<span className="text-danger">*</span>
+                    {t("source_of_Mulberry")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3669,7 +3689,7 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("Mulberry_source_required")}
+                      {t("Mulberry_source_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -3690,14 +3710,15 @@ function StakeHolderRegister() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                    {t("Mulberry Area(in Acres_required)")}
+                      {t("Mulberry Area(in Acres_required)")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("Mulberry_Variety")}<span className="text-danger">*</span>
+                    {t("Mulberry_Variety")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3722,7 +3743,7 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("Mulberry_Variety_required")}
+                      {t("Mulberry_Variety_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -3769,7 +3790,8 @@ function StakeHolderRegister() {
               <Col lg="4">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("plantation_type")}<span className="text-danger">*</span>
+                    {t("plantation_type")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3794,14 +3816,15 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("plantation_type_required")}
+                      {t("plantation_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("irrigation_source")}<span className="text-danger">*</span>
+                    {t("irrigation_source")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3826,14 +3849,15 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("irrigation_source_required")}
+                      {t("irrigation_source_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("irrigation_type")}<span className="text-danger">*</span>
+                    {t("irrigation_type")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -3858,7 +3882,7 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("irrigation_type_required")}
+                      {t("irrigation_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -3886,7 +3910,7 @@ function StakeHolderRegister() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("rearing_house_roof_type")}
+                    {t("rearing_house_roof_type")}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -3901,7 +3925,9 @@ function StakeHolderRegister() {
                       //   farmerLand.roofTypeId === "0"
                       // }
                     >
-                      <option value="">{t("select_rearing_house_roof_type")}</option>
+                      <option value="">
+                        {t("select_rearing_house_roof_type")}
+                      </option>
                       {roofTypeListData.map((list) => (
                         <option
                           key={list.roofTypeId}
@@ -3912,14 +3938,14 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("rearing_house_roof_type_required")}
+                      {t("rearing_house_roof_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("silk_worm")}
+                    {t("silk_worm")}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -3945,7 +3971,7 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("silk_worm_required")}
+                      {t("silk_worm_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4014,7 +4040,7 @@ function StakeHolderRegister() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                    {t("rearing_required")}
+                      {t("rearing_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4468,7 +4494,8 @@ function StakeHolderRegister() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("land_ownership")}<span className="text-danger">*</span>
+                    {t("land_ownership")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4493,14 +4520,15 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("land_ownership_required")}
+                      {t("land_ownership_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("soil_type")}<span className="text-danger">*</span>
+                    {t("soil_type")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4525,7 +4553,7 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("soil_type_required")}
+                      {t("soil_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4547,7 +4575,8 @@ function StakeHolderRegister() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("source_of_Mulberry")}<span className="text-danger">*</span>
+                    {t("source_of_Mulberry")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4572,7 +4601,7 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("Mulberry_source_required")}
+                      {t("Mulberry_source_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4593,14 +4622,15 @@ function StakeHolderRegister() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                    {t("Mulberry Area(in Acres_required)")}
+                      {t("Mulberry Area(in Acres_required)")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("Mulberry_Variety")}<span className="text-danger">*</span>
+                    {t("Mulberry_Variety")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4625,7 +4655,7 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("Mulberry_Variety_required")}
+                      {t("Mulberry_Variety_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4679,7 +4709,8 @@ function StakeHolderRegister() {
               <Col lg="4">
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("plantation_type")}<span className="text-danger">*</span>
+                    {t("plantation_type")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4704,14 +4735,15 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("plantation_type_required")}
+                      {t("plantation_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("irrigation_source")}<span className="text-danger">*</span>
+                    {t("irrigation_source")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4736,14 +4768,15 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("irrigation_source_required")}
+                      {t("irrigation_source_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("irrigation_type")}<span className="text-danger">*</span>
+                    {t("irrigation_type")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -4768,7 +4801,7 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("irrigation_type_required")}
+                      {t("irrigation_type_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -4796,7 +4829,7 @@ function StakeHolderRegister() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("rearing_house_roof_type")}
+                    {t("rearing_house_roof_type")}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -4811,7 +4844,9 @@ function StakeHolderRegister() {
                       //   farmerLand.roofTypeId === "0"
                       // }
                     >
-                      <option value="">{t("select_rearing_house_roof_type")}</option>
+                      <option value="">
+                        {t("select_rearing_house_roof_type")}
+                      </option>
                       {roofTypeListData.map((list) => (
                         <option
                           key={list.roofTypeId}
@@ -4829,7 +4864,7 @@ function StakeHolderRegister() {
 
                 <Form.Group className="form-group mt-3">
                   <Form.Label>
-                  {t("silk_worm")}
+                    {t("silk_worm")}
                     {/* <span className="text-danger">*</span> */}
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -4925,7 +4960,7 @@ function StakeHolderRegister() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                    {t("rearing_required")}
+                      {t("rearing_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5397,7 +5432,8 @@ function StakeHolderRegister() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label>
-                  {t("state")}<span className="text-danger">*</span>
+                    {t("state")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5422,7 +5458,7 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("state_is_required")}
+                      {t("state_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5430,7 +5466,8 @@ function StakeHolderRegister() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label>
-                  {t("district")}<span className="text-danger">*</span>
+                    {t("district")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5457,7 +5494,7 @@ function StakeHolderRegister() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("district_is_required")}
+                      {t("district_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5465,7 +5502,8 @@ function StakeHolderRegister() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label>
-                  {t("taluk")}<span className="text-danger">*</span>
+                    {t("taluk")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5492,7 +5530,7 @@ function StakeHolderRegister() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                     {t("taluk_is_required")}
+                      {t("taluk_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5500,7 +5538,8 @@ function StakeHolderRegister() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label>
-                  {t("hobli")}<span className="text-danger">*</span>
+                    {t("hobli")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5527,7 +5566,7 @@ function StakeHolderRegister() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("hobli_is_required")}
+                      {t("hobli_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5535,7 +5574,8 @@ function StakeHolderRegister() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="Village">
-                  {t("village")}<span className="text-danger">*</span>
+                    {t("village")}
+                    <span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -5562,7 +5602,7 @@ function StakeHolderRegister() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                    {t("village_is_required")}
+                      {t("village_is_required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -5938,7 +5978,7 @@ function StakeHolderRegister() {
                       onClick={() => handleUpdateFa(faId, farmerAddress)}
                     > */}
                     <Button type="submit" variant="success">
-                    {t("update")}
+                      {t("update")}
                     </Button>
                   </div>
                   {/* <div className="gap-col">
@@ -5948,7 +5988,7 @@ function StakeHolderRegister() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal5}>
-                    {t("cancel")}
+                      {t("cancel")}
                     </Button>
                   </div>
                 </div>
