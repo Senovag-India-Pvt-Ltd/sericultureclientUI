@@ -1,0 +1,90 @@
+{
+  "en": {
+    "left": {
+      "name": "Shri Siddaramaiah",
+      "title": "Hon'ble Chief Minister, Government of Karnataka"
+    },
+    "right": {
+      "name": "Shri D.K. Shivakumar",
+      "title": "Hon'ble Deputy Chief Minister, Government of Karnataka"
+    },
+    "extra": {
+      "name": "Shri K. Venkatesh",
+      "title": "Hon'ble Minister for Sericulture, Government of Karnataka"
+    },
+    "center": [
+      "e-Reshme Portal",
+      "Department of Sericulture",
+      "Government of Karnataka"
+    ],
+    "langLabel": "Language",
+    "enButton": "English",
+    "knButton": "Kannada",
+    "actions": {
+      "login": "Login",
+      "applicationStatus": "Application Status",
+      "mobileApp": "Mobile App",
+      "helpline": "Helpline",
+      "statistics": "Statistics",
+      "website": "Department Website",
+      "photoFlash": "Photo Flash",
+      "statsPending": "Statistics API will be added soon"
+    },
+    "metrics": {
+      "totalRegisteredFarmers": "Total Registered Farmers",
+      "totalRegisteredReelers": "Total Registered Reelers",
+      "totalRegisteredTraders": "Total Registered Traders",
+      "totalRegisteredExternalStakeholders": "Total Registered RSP/CRC/NSSO",
+      "totalFarms": "Total Farms",
+      "totalGrainages": "Total Grainages",
+      "totalMarkets": "Total Markets",
+      "schemesOnlineServices": "Schemes Online Services",
+      "totalBeneficiaryApplications": "Total Beneficiaries",
+      "totalAmountDisbursed": "Total Amount Disbursed"
+    }
+  },
+  "kn": {
+    "left": {
+      "name": "ಶ್ರೀ ಸಿದ್ದರಾಮಯ್ಯ",
+      "title": "ಮಾನ್ಯ ಮುಖ್ಯಮಂತ್ರಿಗಳು, ಕರ್ನಾಟಕ ಸರ್ಕಾರ"
+    },
+    "right": {
+      "name": "ಶ್ರೀ ಡಿ.ಕೆ. ಶಿವಕುಮಾರ್",
+      "title": "ಮಾನ್ಯ ಉಪ ಮುಖ್ಯಮಂತ್ರಿಗಳು, ಕರ್ನಾಟಕ ಸರ್ಕಾರ"
+    },
+    "extra": {
+      "name": "ಶ್ರೀ ಕೆ. ವೆಂಕಟೇಶ್",
+      "title": "ಮಾನ್ಯ ರೇಷ್ಮೆ ಸಚಿವರು, ಕರ್ನಾಟಕ ಸರ್ಕಾರ"
+    },
+    "center": [
+      "ಇ-ರೇಷ್ಮೆ ಪೋರ್ಟಲ್",
+      "ರೇಷ್ಮೆ ಇಲಾಖೆ",
+      "ಕರ್ನಾಟಕ ಸರ್ಕಾರ"
+    ],
+    "langLabel": "ಭಾಷೆ",
+    "enButton": "ಇಂಗ್ಲಿಷ್",
+    "knButton": "ಕನ್ನಡ",
+    "actions": {
+      "login": "ಲಾಗಿನ್",
+      "applicationStatus": "ಅರ್ಜಿಯ ಸ್ಥಿತಿ",
+      "mobileApp": "ಮೊಬೈಲ್ ಆಪ್",
+      "helpline": "ಸಹಾಯವಾಣಿ",
+      "statistics": "ಅಂಕಿಅಂಶಗಳು",
+      "website": "ಇಲಾಖೆ ವೆಬ್‌ಸೈಟ್",
+      "photoFlash": "ಫೋಟೋ ಫ್ಲ್ಯಾಶ್",
+      "statsPending": "ಅಂಕಿಅಂಶ API ಭಾಗ ಶೀಘ್ರದಲ್ಲೇ ಸೇರಿಸಲಾಗುತ್ತದೆ"
+    },
+    "metrics": {
+      "totalRegisteredFarmers": "ಒಟ್ಟು ನೋಂದಾಯಿತ ರೈತರು",
+      "totalRegisteredReelers": "ಒಟ್ಟು ನೋಂದಾಯಿತ ರೀಲರ್‌ಗಳು",
+      "totalRegisteredTraders": "ಒಟ್ಟು ನೋಂದಾಯಿತ ವ್ಯಾಪಾರಿಗಳು",
+      "totalRegisteredExternalStakeholders": "ಒಟ್ಟು ನೋಂದಾಯಿತ RSP/CRC/NSSO",
+      "totalFarms": "ಒಟ್ಟು ಫಾರ್ಮ್‌ಗಳು",
+      "totalGrainages": "ಒಟ್ಟು ಗ್ರೈನೇಜ್‌ಗಳು",
+      "totalMarkets": "ಒಟ್ಟು ಮಾರ್ಕೆಟ್‌ಗಳು",
+      "schemesOnlineServices": "ಯೋಜನೆಗಳ ಆನ್‌ಲೈನ್ ಸೇವೆಗಳು",
+      "totalBeneficiaryApplications": "ಒಟ್ಟು ಲಾಭಾನ್ವಿತರು",
+      "totalAmountDisbursed": "ಒಟ್ಟು ಬಿಡುಗಡೆ ಮಾಡಿದ ಮೊತ್ತ"
+    }
+  }
+}
