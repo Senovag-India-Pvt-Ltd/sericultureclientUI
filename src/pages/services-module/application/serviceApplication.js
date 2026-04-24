@@ -50,7 +50,10 @@ const generateFinalReport = async (selectedRows) => {
     Swal.fire({
       icon: "warning",
       title: "Invalid Selection",
-      text: "Sub Scheme not found",
+      html: `<div style="font-size:13.5px;color:#555;">Sub Scheme not found for the selected row.</div>`,
+      confirmButtonText: "OK",
+      confirmButtonColor: "#f0a500",
+      width: "360px",
     });
     return;
   }
@@ -63,7 +66,10 @@ const generateFinalReport = async (selectedRows) => {
     Swal.fire({
       icon: "warning",
       title: "Sanction Disabled",
-      text: "Sanction Order is disabled for this Component Type",
+      html: `<div style="font-size:13.5px;color:#555;">Sanction Order is disabled for this Component Type.</div>`,
+      confirmButtonText: "OK",
+      confirmButtonColor: "#f0a500",
+      width: "360px",
     });
     return;
   }
@@ -2622,27 +2628,25 @@ const handleCalculateUnitPrice = () => {
       icon: "success",
       title: "Subsidy Calculated!",
       html: `
-        <div style="text-align:center;">
-          <div style="font-size:48px;margin-bottom:8px;">🏠</div>
-          <table style="width:100%;font-size:14px;border-collapse:collapse;margin-top:8px;">
-            <tr style="background:#f0f4ff;">
-              <td style="padding:8px 12px;text-align:left;color:#555;border-radius:4px;">Entered Sqft</td>
-              <td style="padding:8px 12px;font-weight:bold;color:#222;">${sqft} Sqft</td>
-            </tr>
-            ${capped ? `<tr><td style="padding:8px 12px;text-align:left;color:#555;">Capped at Max</td><td style="padding:8px 12px;font-weight:bold;color:#e65100;">${maxAmount} Sqft</td></tr>` : ""}
-            <tr style="background:#f0f4ff;">
-              <td style="padding:8px 12px;text-align:left;color:#555;">Unit Price</td>
-              <td style="padding:8px 12px;font-weight:bold;color:#222;">₹ ${unitPrice}</td>
-            </tr>
-            <tr style="background:#e8f5e9;">
-              <td style="padding:8px 12px;text-align:left;color:#2d8a4e;font-weight:bold;">Total Subsidy</td>
-              <td style="padding:8px 12px;font-weight:bold;font-size:16px;color:#2d8a4e;">₹ ${totalSubsidy.toLocaleString("en-IN")}</td>
-            </tr>
-          </table>
-        </div>`,
-      confirmButtonText: "Great!",
+        <table style="width:100%;font-size:13px;border-collapse:collapse;">
+          <tr style="background:#f0f4ff;">
+            <td style="padding:6px 10px;color:#555;">Entered Sqft</td>
+            <td style="padding:6px 10px;font-weight:600;color:#222;">${sqft} Sqft</td>
+          </tr>
+          ${capped ? `<tr><td style="padding:6px 10px;color:#555;">Capped at Max</td><td style="padding:6px 10px;font-weight:600;color:#e65100;">${maxAmount} Sqft</td></tr>` : ""}
+          <tr style="background:#f0f4ff;">
+            <td style="padding:6px 10px;color:#555;">Unit Price</td>
+            <td style="padding:6px 10px;font-weight:600;color:#222;">₹ ${unitPrice}</td>
+          </tr>
+          <tr style="background:#e8f5e9;">
+            <td style="padding:6px 10px;color:#2d8a4e;font-weight:600;">Total Subsidy</td>
+            <td style="padding:6px 10px;font-weight:700;font-size:14px;color:#2d8a4e;">₹ ${totalSubsidy.toLocaleString("en-IN")}</td>
+          </tr>
+        </table>`,
+      confirmButtonText: "OK",
       confirmButtonColor: "#2d8a4e",
       background: "#f9fff9",
+      width: "340px",
       showCloseButton: true,
     });
 
@@ -4210,22 +4214,12 @@ const isUserValid = React.useMemo(() => {
     if (!unitPriceCalculated) {
       Swal.fire({
         icon: "warning",
-        title: "⚠️ Unit Price Not Calculated",
-        html: `
-          <div style="text-align:center; font-size:15px; color:#555; margin-bottom:8px;">
-            Please click the <strong style="color:#0F6CBE;">"Calculate Unit Price"</strong> button before submitting the form.
-          </div>
-          <div style="text-align:center; font-size:13px; color:#888;">
-            This step is required to compute the eligible subsidy amount.
-          </div>
-        `,
-        confirmButtonText: "OK, I'll calculate",
-        confirmButtonColor: "#0F6CBE",
+        title: "Calculate Unit Price First",
+        html: `<div style="font-size:13.5px;color:#555;">Click <strong style="color:#1a5fa8;">Calculate Unit Price</strong> before saving.</div>`,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#1a5fa8",
         background: "#f0f6ff",
-        customClass: {
-          title: "swal-title-style",
-          popup: "swal-popup-style",
-        },
+        width: "360px",
       });
       return;
     }
@@ -5680,22 +5674,31 @@ const isUserValid = React.useMemo(() => {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
-      // text: `Generated ARN Number is ${arnNumber}`,
+      title: "Saved Successfully!",
+      html: `<div style="font-size:13.5px;color:#444;margin-top:4px;">Application has been submitted successfully.</div>`,
+      confirmButtonText: "OK",
+      confirmButtonColor: "#0d7a4f",
+      background: "#f6fdf9",
+      width: "360px",
+      timer: 2500,
+      timerProgressBar: true,
     }).then(() => {
-    // Refresh entire page AFTER clicking OK
-    window.location.reload();
-  });
-    // clear();
+      window.location.reload();
+    });
   };
 
   const uploadFileConfirm = (post) => {
   Swal.fire({
-    title: "Do you want to Upload the Documents?",
-    icon: "warning",
+    title: "Upload Documents?",
+    html: `<div style="font-size:13.5px;color:#555;">Would you like to upload supporting documents now?</div>`,
+    icon: "question",
     showCancelButton: true,
-    confirmButtonText: "Yes",
+    confirmButtonText: "Yes, Upload",
     cancelButtonText: "Later",
+    confirmButtonColor: "#1a5fa8",
+    cancelButtonColor: "#64748b",
+    background: "#f0f6ff",
+    width: "380px",
   }).then((result) => {
 
     const apiEndpoint = isSanctionForReeling
@@ -5787,7 +5790,10 @@ const handleSubmitApplication = async () => {
     Swal.fire({
       icon: "warning",
       title: "Sanction Disabled",
-      text: "Sanction Order is disabled for this component type",
+      html: `<div style="font-size:13.5px;color:#555;">Sanction Order is disabled for this component type.</div>`,
+      confirmButtonText: "OK",
+      confirmButtonColor: "#f0a500",
+      width: "360px",
     });
     return; // ❌ STOP FLOW
   }
@@ -6164,8 +6170,12 @@ const callAcknowledgmentFunction = (
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
-      html: errorMessage,
+      title: "Save Failed",
+      html: `<div style="font-size:13.5px;color:#555;line-height:1.6;">${errorMessage}</div>`,
+      confirmButtonText: "OK",
+      confirmButtonColor: "#c0392b",
+      background: "#fff8f7",
+      width: "380px",
     });
   };
 
@@ -6888,18 +6898,22 @@ const fetchReelerDetails = () => {
   };
 
   const searchError = (message = "Something went wrong!") => {
-       let errorMessage;
-       if (typeof message === "object") {
-         errorMessage = Object.values(message).join("<br>");
-       } else {
-         errorMessage = message;
-       }
-       Swal.fire({
-         icon: "error",
-         title: "Details not Found",
-         html: errorMessage,
-       });
-     };
+    let errorMessage;
+    if (typeof message === "object") {
+      errorMessage = Object.values(message).join("<br>");
+    } else {
+      errorMessage = message;
+    }
+    Swal.fire({
+      icon: "error",
+      title: "Details Not Found",
+      html: `<div style="font-size:13.5px;color:#555;line-height:1.6;">${errorMessage}</div>`,
+      confirmButtonText: "OK",
+      confirmButtonColor: "#c0392b",
+      background: "#fff8f7",
+      width: "380px",
+    });
+  };
   
 
   return (
@@ -7218,7 +7232,7 @@ const fetchReelerDetails = () => {
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 // multiple
-                                // required
+                                required
                                 isInvalid={
                                   data.scComponentId === undefined ||
                                   data.scComponentId === "0"
@@ -7256,7 +7270,7 @@ const fetchReelerDetails = () => {
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 // multiple
-                                // required
+                                required
                                 isInvalid={
                                   data.scCategoryId === undefined ||
                                   data.scCategoryId === "0"
@@ -8833,8 +8847,8 @@ const fetchReelerDetails = () => {
     "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
 ) && (
 
-  <Card className="mt-2">
-    <Card.Header>Financial Details</Card.Header>
+  <Card className="mt-2" style={{ borderRadius: "10px", border: "1px solid #dce8f5", boxShadow: "0 2px 8px rgba(26,95,168,0.07)", overflow: "hidden" }}>
+    <Card.Header style={{ fontWeight: "600", fontSize: "13.5px", background: "#f0f6ff", color: "#1a3c6e", borderBottom: "1px solid #dce8f5", padding: "9px 16px", letterSpacing: "0.2px", display: "flex", alignItems: "center", gap: "8px" }}><span style={{ width: "4px", height: "16px", background: "#1a5fa8", borderRadius: "2px", display: "inline-block" }} />Financial Details</Card.Header>
     <Card.Body>
       <Row>
 
@@ -9170,7 +9184,7 @@ const fetchReelerDetails = () => {
                            
 
                            <Card>
-                            <Card.Header>Rearing Equipment Details</Card.Header>
+                            <Card.Header style={{ fontWeight: "600", fontSize: "13.5px", background: "#f0f6ff", color: "#1a3c6e", borderBottom: "1px solid #dce8f5", padding: "9px 16px", letterSpacing: "0.2px" }}>Rearing Equipment Details</Card.Header>
                             <Card.Body>
                               <table className="table table-bordered">
                                 <thead>
@@ -9255,7 +9269,7 @@ const fetchReelerDetails = () => {
                           </Card>
 
                               <Card className="mt-3">
-                                <Card.Header>Establishment Of Mulberry Garden</Card.Header>
+                                <Card.Header style={{ fontWeight: "600", fontSize: "13.5px", background: "#f0f6ff", color: "#1a3c6e", borderBottom: "1px solid #dce8f5", padding: "9px 16px", letterSpacing: "0.2px" }}>Establishment Of Mulberry Garden</Card.Header>
                                 <Card.Body>
                                   <div><strong>Eligible Amount:</strong> {chawkiData.mulberry.eligible}</div>
 
@@ -9294,7 +9308,7 @@ const fetchReelerDetails = () => {
                               </Card>
 
                               <Card className="mt-3">
-                                <Card.Header>Installation Of Drip Irrigation</Card.Header>
+                                <Card.Header style={{ fontWeight: "600", fontSize: "13.5px", background: "#f0f6ff", color: "#1a3c6e", borderBottom: "1px solid #dce8f5", padding: "9px 16px", letterSpacing: "0.2px" }}>Installation Of Drip Irrigation</Card.Header>
 
                                 <Card.Body>
                                   <div>
@@ -9336,7 +9350,7 @@ const fetchReelerDetails = () => {
                               </Card>
 
                               <Card className="mt-3">
-                                <Card.Header>Chawki Rearing Building</Card.Header>
+                                <Card.Header style={{ fontWeight: "600", fontSize: "13.5px", background: "#f0f6ff", color: "#1a3c6e", borderBottom: "1px solid #dce8f5", padding: "9px 16px", letterSpacing: "0.2px" }}>Chawki Rearing Building</Card.Header>
 
                                 <Card.Body>
                                   <div>
@@ -9405,7 +9419,7 @@ const fetchReelerDetails = () => {
 
                           
                           <Card className="p-0">
-                            <Card.Header>Rearing Equipment Details</Card.Header>
+                            <Card.Header style={{ fontWeight: "600", fontSize: "13.5px", background: "#f0f6ff", color: "#1a3c6e", borderBottom: "1px solid #dce8f5", padding: "9px 16px", letterSpacing: "0.2px" }}>Rearing Equipment Details</Card.Header>
                             <Card.Body>
                               <table className="table table-bordered">
                                 <thead>
@@ -9529,7 +9543,7 @@ const fetchReelerDetails = () => {
 
                          
                           <Card className="p-0">
-                            <Card.Header>Establishment Of Mulberry Garden</Card.Header>
+                            <Card.Header style={{ fontWeight: "600", fontSize: "13.5px", background: "#f0f6ff", color: "#1a3c6e", borderBottom: "1px solid #dce8f5", padding: "9px 16px", letterSpacing: "0.2px" }}>Establishment Of Mulberry Garden</Card.Header>
                             <Card.Body>
                               <div>
                                 <strong>Eligible Amount:</strong> {chawkiData.mulberry.eligible}
@@ -9683,7 +9697,7 @@ const fetchReelerDetails = () => {
 
                           
                           <Card className="p-0">
-                            <Card.Header>Installation Of Drip Irrigation</Card.Header>
+                            <Card.Header style={{ fontWeight: "600", fontSize: "13.5px", background: "#f0f6ff", color: "#1a3c6e", borderBottom: "1px solid #dce8f5", padding: "9px 16px", letterSpacing: "0.2px" }}>Installation Of Drip Irrigation</Card.Header>
                             <Card.Body>
                               <div>
                                 <strong>Eligible Amount:</strong> {chawkiData.drip.eligible}
@@ -9719,7 +9733,7 @@ const fetchReelerDetails = () => {
                           
 
                           <Card className="p-0">
-                            <Card.Header>Chawki Rearing Building</Card.Header>
+                            <Card.Header style={{ fontWeight: "600", fontSize: "13.5px", background: "#f0f6ff", color: "#1a3c6e", borderBottom: "1px solid #dce8f5", padding: "9px 16px", letterSpacing: "0.2px" }}>Chawki Rearing Building</Card.Header>
                             <Card.Body>
                               <div>
                                 <strong>Eligible Amount:</strong> {chawkiData.building.eligible}
@@ -9852,7 +9866,7 @@ const fetchReelerDetails = () => {
                           </Card>
 
                           <Card className="p-0">
-                          <Card.Header>Purchase of Equipment</Card.Header>
+                          <Card.Header style={{ fontWeight: "600", fontSize: "13.5px", background: "#f0f6ff", color: "#1a3c6e", borderBottom: "1px solid #dce8f5", padding: "9px 16px", letterSpacing: "0.2px" }}>Purchase of Equipment</Card.Header>
                           <Card.Body>
                             <Row>
                               <Col lg="3">
@@ -11952,10 +11966,10 @@ const fetchReelerDetails = () => {
             </Modal> */}
 
           <Modal show={showModalBreakUp} onHide={handleCloseModalBreakUp} size="xl">
-            <Modal.Header closeButton>
-              <Modal.Title>{t("Break Up")}</Modal.Title>
+            <Modal.Header closeButton style={{ background: "#f0f6ff", borderBottom: "1px solid #dce8f5" }}>
+              <Modal.Title style={{ fontWeight: "700", color: "#1a3c6e", fontSize: "16px" }}>{t("Break Up")}</Modal.Title>
             </Modal.Header>
-            <Modal.Body></Modal.Body>
+            <Modal.Body style={{ padding: "20px 24px" }}></Modal.Body>
           </Modal>
     </Layout>
   );

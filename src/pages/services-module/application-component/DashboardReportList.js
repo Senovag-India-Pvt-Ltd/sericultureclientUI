@@ -25,6 +25,11 @@ import ReactSelect from "react-select";
 import { useTranslation } from "react-i18next";
 import { reference } from "@popperjs/core";
 
+const SwalStyled = Swal.mixin({
+  confirmButtonColor: "#1e67a8",
+  cancelButtonColor: "#e74c3c",
+});
+
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -1154,7 +1159,7 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
               //     recordData?.sanctionOrder && !sanctionOrderNumber;
 
               //   if (fieldsShouldBeDisabled) {
-              //     Swal.fire({
+              //     SwalStyled.fire({
               //       title: "Action Required!",
               //       text: "After Generating Sanction Order, please verify and upload the Sanction Order before sending it to the next step.",
               //       icon: "warning",
@@ -1192,7 +1197,7 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
               )
               .then((response) => {
                 if (response.data.content.error) {
-                  Swal.fire({
+                  SwalStyled.fire({
                     title: "Action Required!",
                     text: "You Don't have any Reporting Officer, Please add Reporting Officer and proceed.",
                     icon: "warning",
@@ -1588,7 +1593,7 @@ const callWorkOrderAcknowledgment = async (
   const isEnabled = await isSanctionEnabledFromDB(subSchemeId);
 
   if (!isEnabled) {
-    Swal.fire({
+    SwalStyled.fire({
       icon: "warning",
       title: "Work Order Not Allowed",
       text: "Work Order generation is not enabled for this scheme.",
@@ -1766,7 +1771,7 @@ const handleDownloadWorkOrder = async (viewDetailsData) => {
     );
 
     if (!isEnabled) {
-      Swal.fire({
+      SwalStyled.fire({
         icon: "warning",
         title: "Work Order Not Allowed",
         text: "Work Order generation is not enabled for this scheme.",
@@ -1842,7 +1847,7 @@ const handleDownloadWorkOrder = async (viewDetailsData) => {
 
   } catch (error) {
     console.error("Error while downloading work order:", error);
-    Swal.fire({
+    SwalStyled.fire({
       icon: "error",
       title: "Error",
       text: "Failed to download work order. Please try again.",
@@ -2300,7 +2305,7 @@ const generateWorkOrderOrderIMCB= async (applicationFormId, schemeId,subSchemeId
 
 
   // const handleGenerateSanctionOrder = (applicationFormId) => {
-  //   Swal.fire({
+  //   SwalStyled.fire({
   //     title: "Generate Sanction Order",
   //     text: "Select the recipient:",
   //     showCancelButton: true,
@@ -2314,7 +2319,7 @@ const generateWorkOrderOrderIMCB= async (applicationFormId, schemeId,subSchemeId
   //   });
   // };
   // const handleGenerateSanctionOrder = (applicationFormId,schemeId) => {
-  //   Swal.fire({
+  //   SwalStyled.fire({
   //     title: "Generate Sanction Order",
   //     text: "Select the recipient:",
   //     showCancelButton: true,
@@ -2375,7 +2380,7 @@ const handleGenerateSanctionOrderClick = async () => {
   const isEnabled = await isSanctionEnabledFromDB(scSubSchemeDetailsId);
 
   if (!isEnabled) {
-    Swal.fire({
+    SwalStyled.fire({
       icon: "warning",
       title: "Sanction Not Allowed",
       text: "Sanction Order and Work Order are not enabled for this scheme.",
@@ -2407,7 +2412,7 @@ const handleGenerateSanctionOrderClick = async () => {
   const isEnabled = await isSanctionEnabledFromDB(scSubSchemeDetailsId);
 
   if (!isEnabled) {
-    Swal.fire({
+    SwalStyled.fire({
       icon: "warning",
       title: "Sanction Not Allowed",
       text: "Sanction Order and Work Order are not enabled for this scheme.",
@@ -2416,7 +2421,7 @@ const handleGenerateSanctionOrderClick = async () => {
   }
   const schemeType = actionFarmerData[0]?.sanctionOrderForScheme;
 
-    Swal.fire({
+    SwalStyled.fire({
       title: "Generate Sanction Order",
       text: "Select the recipient:",
       showCancelButton: true,
@@ -3308,7 +3313,7 @@ const allowedSchemes = [
       description: actionData.comment,
     };
 
-    Swal.fire({
+    SwalStyled.fire({
       title: "Do you want to Reject the Application?",
       icon: "warning",
       showCancelButton: true,
@@ -3416,7 +3421,7 @@ const allowedSchemes = [
     } else {
       event.preventDefault();
 
-      Swal.fire({
+      SwalStyled.fire({
         title: "Are you sure?",
         text: "Do you want to re-assign this application?",
         icon: "warning",
@@ -3997,7 +4002,7 @@ const allowedSchemes = [
   });
 
   if (missingOfficer) {
-    Swal.fire({
+    SwalStyled.fire({
       icon: "warning",
       title: "Drawing Officer Required",
       text: "Please select Drawing Officer for all selected schemes before submitting!"
@@ -4379,7 +4384,7 @@ const allowedSchemes = [
   //       reportingOfficerDdoCode
   //     );
   //   } else {
-  //     Swal.fire({
+  //     SwalStyled.fire({
   //       title: "Action Required!",
   //       text: `Please Save the Data from "Push to DBT" Block and then try to view the details.`,
   //       icon: "warning",
@@ -4400,7 +4405,7 @@ const allowedSchemes = [
         : null;
 
     if (!ddoCodeToSend) {
-      Swal.fire({
+      SwalStyled.fire({
         title: "Missing DDO Code",
         text: "Unable to determine the DDO Code based on Scheme Quota Payment Type.",
         icon: "warning",
@@ -4414,7 +4419,7 @@ const allowedSchemes = [
       ddoCodeToSend
     );
   } else {
-    Swal.fire({
+    SwalStyled.fire({
       title: "Action Required!",
       text: `Please Save the Data from "Push to DBT" Block and then try to view the details.`,
       icon: "warning",
@@ -4493,7 +4498,7 @@ const allowedSchemes = [
   };
 
   const saveRejectSuccess = (message) => {
-    Swal.fire({
+    SwalStyled.fire({
       icon: "success",
       title: "Rejected successfully",
       text: message,
@@ -4503,7 +4508,7 @@ const allowedSchemes = [
   });
   };
   const saveAssignSuccess = (message) => {
-    Swal.fire({
+    SwalStyled.fire({
       icon: "success",
       title: "Assigned successfully",
       text: message,
@@ -4514,7 +4519,7 @@ const allowedSchemes = [
   };
 
   const saveSuccess = (message) => {
-    Swal.fire({
+    SwalStyled.fire({
       icon: "success",
       title: "Saved successfully",
       text: message,
@@ -4530,7 +4535,7 @@ const allowedSchemes = [
     } else {
       errorMessage = message;
     }
-    Swal.fire({
+    SwalStyled.fire({
       icon: "error",
       // title: "Save attempt was not successful",
       html: errorMessage,
@@ -4538,7 +4543,7 @@ const allowedSchemes = [
   };
 
   // const pushedSuccess = (b, f) => {
-  //   Swal.fire({
+  //   SwalStyled.fire({
   //     icon: "success",
   //     title: "Pushed successfully",
   //     text: `Beneficiary Id is ${b} and Fruits Id is ${f}`,
@@ -4548,7 +4553,7 @@ const allowedSchemes = [
   //   window.location.reload(); 
   // };
   const pushedSuccess = (b, f) => {
-    Swal.fire({
+    SwalStyled.fire({
       icon: "success",
       title: "Pushed successfully",
       text: `Beneficiary Id is ${b} and Fruits Id is ${f}`,
@@ -4562,7 +4567,7 @@ const allowedSchemes = [
   };
 
   const warningAlert = (message, title) => {
-    Swal.fire({
+    SwalStyled.fire({
       icon: "warning",
       title: title,
       text: message,
@@ -4642,222 +4647,190 @@ const allowedSchemes = [
   //   getList();
   // }, []);
 
+  const _btnBase = { border: "none", borderRadius: "5px", padding: "5px 11px", fontWeight: "600", fontSize: "11.5px", cursor: "pointer", whiteSpace: "nowrap" };
+
   const ApplicationDataColumns = [
     {
       name: "Fruits Id",
       selector: (row) => row.fruitsId,
-      cell: (row) => <span>{row.fruitsId}</span>,
+      cell: (row) => <span style={{ fontSize: "12px", color: "#374151", fontFamily: "monospace" }}>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
+      width: "140px",
     },
     {
       name: "Name",
       selector: (row) => row.farmerFirstName,
-      cell: (row) => <span>{row.farmerFirstName}</span>,
+      cell: (row) => <span style={{ fontWeight: "600", color: "#1a3c6e" }}>{row.farmerFirstName}</span>,
       sortable: true,
       hide: "md",
+      wrap: true,
     },
     {
-      name: "Mobile Number",
+      name: "Mobile",
       selector: (row) => row.mobileNumber,
-      cell: (row) => <span>{row.mobileNumber}</span>,
+      cell: (row) => <span style={{ color: "#374151" }}>{row.mobileNumber}</span>,
       sortable: true,
       hide: "md",
+      width: "118px",
     },
     {
-      name: "Scheme Amount",
+      name: "Scheme Amt",
       selector: (row) => row.schemeAmount,
-      cell: (row) => <span>{row.schemeAmount}</span>,
+      cell: (row) => (
+        <span style={{ color: "#0d7a4f", fontWeight: "600" }}>
+          ₹ {row.schemeAmount ? Number(row.schemeAmount).toLocaleString("en-IN") : "—"}
+        </span>
+      ),
       sortable: true,
       hide: "md",
+      width: "110px",
     },
     {
-      name: "Eligible Amount",
+      name: "Eligible Amt",
       selector: (row) => row.eligibleAmount,
-      cell: (row) => <span>{row.eligibleAmount}</span>,
+      cell: (row) => (
+        <span style={{ color: "#1a5fa8", fontWeight: "600" }}>
+          ₹ {row.eligibleAmount ? Number(row.eligibleAmount).toLocaleString("en-IN") : "—"}
+        </span>
+      ),
       sortable: true,
       hide: "md",
+      width: "110px",
     },
     {
-      name: "Head of Account",
-      selector: (row) => row.headAccountName,
-      cell: (row) => <span>{row.headAccountName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Scheme Name",
+      name: "Scheme",
       selector: (row) => row.schemeName,
-      cell: (row) => <span>{row.schemeName}</span>,
+      cell: (row) => (
+        <span style={{
+          background: "#eef3fb", color: "#1a3c6e", borderRadius: "4px",
+          padding: "3px 7px", fontSize: "11.5px", fontWeight: "600",
+        }}>
+          {row.schemeName}
+        </span>
+      ),
       sortable: true,
       hide: "md",
+      wrap: true,
     },
     {
-      name: "Sub Scheme Name",
+      name: "Sub Scheme",
       selector: (row) => row.subSchemeName,
-      cell: (row) => <span>{row.subSchemeName}</span>,
+      cell: (row) => <span style={{ fontSize: "12px", color: "#374151" }}>{row.subSchemeName}</span>,
       sortable: true,
       hide: "md",
+      wrap: true,
     },
     {
-      name: "Component Name",
+      name: "Component",
       selector: (row) => row.componentName,
-      cell: (row) => <span>{row.componentName}</span>,
+      cell: (row) => <span style={{ fontSize: "12px", color: "#374151" }}>{row.componentName}</span>,
       sortable: true,
       hide: "md",
+      wrap: true,
     },
     {
       name: "Component Type",
       selector: (row) => row.componentTypeName,
-      cell: (row) => <span>{row.componentTypeName}</span>,
+      cell: (row) => <span style={{ fontSize: "12px", color: "#374151" }}>{row.componentTypeName}</span>,
       sortable: true,
       hide: "md",
+      wrap: true,
     },
-
     {
       name: "Action",
       cell: (row) => (
-        <div className="text-start w-100">
-          <div
-            style={{
-              display: "flex",
-              overflowX: "auto",
-              whiteSpace: "nowrap",
-              gap: "0.5rem", // Adds space between buttons
-            }}
+        <div style={{ display: "flex", gap: "5px", flexWrap: "wrap", padding: "4px 0" }}>
+          <button
+            style={{ ..._btnBase, background: "#6366f1", color: "#fff" }}
+            onClick={() => handleShowModal4(row)}
           >
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={() => handleShowModal4(row)}
-            >
-              Re-Assign
-            </Button>
-
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={() =>
-                checkToShowModal(
-                  row.fruitsId,
-                  row.schemeId,
-                  row.applicationFormId,
-                  row.componentType
-                )
-              }
-            >
-              Action
-            </Button>
-
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={() => handleView(row.applicationDocumentId)}
-            >
-              View
-            </Button>
-
-            {/* {row.workOrderNumber && (
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={() =>
-                  generateWorkOrderAcknowledgment(
-                    row.applicationDocumentId,
-                    row.schemeId
-                  )
-                }
-              >
-                Download Work Order
-              </Button>
-            )} */}
-            {/* {row.workOrderNumber && (
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={() => {
-                  if (
-                    row.workOrderForScheme === "PDMC" ||
-                    row.workOrderForScheme === "PMKSY"
-                  ) {
-                    generateWorkOrderAcknowledgment(
-                      row.applicationDocumentId,
-                      row.schemeId
-                    );
-                  } else if (
-                    row.workOrderForScheme === "Silk Samagra State" ||
-                    row.workOrderForScheme === "Silk Samagra Central"
-                  ) {
-                    generateWorkOrderAcknowledgmentRH(
-                      row.applicationDocumentId,
-                      row.schemeId
-                    );
-                  }
-                }}
-              >
-                Download Work Order
-              </Button>
-            )}
-
-            {row.sanctionOrderNumber && row.applicationFormId && (
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={() =>
-                  handleDownloadSanctionOrder(
-                    row.applicationFormId,
-                    row.schemeId,
-                    row.sanctionOrderForScheme
-                  )
-                }
-              >
-                Download Sanction Order
-              </Button>
-            )} */}
-          </div>
+            Re-Assign
+          </button>
+          <button
+            style={{ ..._btnBase, background: "#1a5fa8", color: "#fff" }}
+            onClick={() => checkToShowModal(row.fruitsId, row.schemeId, row.applicationFormId, row.componentType)}
+          >
+            Action
+          </button>
+          <button
+            style={{ ..._btnBase, background: "#0d7a4f", color: "#fff" }}
+            onClick={() => handleView(row.applicationDocumentId)}
+          >
+            View
+          </button>
         </div>
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
+      width: "210px",
     },
   ];
 
   const customStyles = {
+    table: {
+      style: {
+        borderRadius: "0 0 10px 10px",
+        overflow: "hidden",
+      },
+    },
     rows: {
       style: {
-        minHeight: "45px", // override the row height
+        minHeight: "48px",
+        fontSize: "13px",
+        color: "#374151",
+        borderBottomColor: "#e5eef8",
+        "&:nth-of-type(odd)": { backgroundColor: "#f7faff" },
+        "&:hover": { backgroundColor: "#e8f2ff !important", transition: "background 0.15s" },
       },
     },
     headCells: {
       style: {
-        backgroundColor: "#1e67a8",
+        background: "linear-gradient(135deg, #1a5fa8 0%, #0d4f8a 100%)",
         color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
+        fontSize: "12.5px",
+        fontWeight: "700",
+        letterSpacing: "0.4px",
+        textTransform: "uppercase",
+        paddingLeft: "12px",
         paddingRight: "8px",
+        paddingTop: "12px",
+        paddingBottom: "12px",
+        whiteSpace: "nowrap",
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px", // override the cell padding for data cells
+        paddingLeft: "12px",
         paddingRight: "8px",
+        fontSize: "13px",
+      },
+    },
+    pagination: {
+      style: {
+        borderTop: "1px solid #dce8f5",
+        fontSize: "13px",
+        color: "#374151",
       },
     },
   };
 
   const styles = {
     ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
+      backgroundColor: "#eef3fc",
+      color: "#1a2a4a",
       width: "50%",
+      fontWeight: 600,
+      fontSize: "0.85rem",
+      borderLeft: "3px solid #1e67a8",
+      paddingLeft: "10px",
     },
     headerStyle: {
-      // backgroundColor: "#0f6cbe",
-      backgroundColor: "#0a2463",
+      background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)",
       color: "white",
-      borderTopLeftRadius: "8px",
-      borderTopRightRadius: "8px",
+      borderTopLeftRadius: "10px",
+      borderTopRightRadius: "10px",
+      fontWeight: 700,
     },
   };
 
@@ -4888,36 +4861,43 @@ const allowedSchemes = [
 
   const modalStyles = {
     modalHeader: {
-      backgroundColor: "#0a2463", // Dark blue background
+      background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)",
       color: "white",
-      padding: "8px 15px", // Adjusted padding to reduce header size
-      fontSize: "18px",
-      fontWeight: "bold",
-      borderTopLeftRadius: "8px",
-      borderTopRightRadius: "8px",
-      lineHeight: "1.2", // Adjust line-height to reduce height
+      padding: "14px 22px",
+      border: "none",
     },
     modalBody: {
-      backgroundColor: "rgb(248, 248, 249)",
-      color: "black",
+      backgroundColor: "#f8faff",
+      color: "#222",
       padding: "20px",
     },
     formGroupLabel: {
-      fontWeight: "bold", // Bold form label
-      fontSize: "16px",
+      fontWeight: "600",
+      fontSize: "13px",
+      color: "#374151",
     },
     selectInput: {
-      fontWeight: "bold", // Bold text inside select
-      padding: "10px",
+      fontSize: "13px",
+      padding: "8px 12px",
     },
     formControl: {
-      fontWeight: "bold", // Bold text for inputs
-      padding: "10px",
+      fontSize: "13px",
+      padding: "8px 12px",
     },
     modalTitle: {
-      fontSize: "18px", // Reduced font size for the title
-      fontWeight: "bold", // Keep the title bold
+      fontSize: "1.05rem",
+      fontWeight: "700",
+      color: "white",
     },
+  };
+
+  const _accordionHeaderStyle = {
+    background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)",
+    color: "white",
+    fontWeight: "700",
+    fontSize: "13.5px",
+    padding: "10px 16px",
+    borderRadius: "6px",
   };
 
   const [currentDocumentPath, setCurrentDocumentPath] = useState(null);
@@ -5008,7 +4988,7 @@ const allowedSchemes = [
           },
         }
       );
-      Swal.fire({
+      SwalStyled.fire({
         icon: "success",
         title: "File Uploaded successfully",
       });
@@ -5032,7 +5012,7 @@ const allowedSchemes = [
       ]);
     } catch (error) {
       console.error("Error uploading file:", error);
-      Swal.fire({
+      SwalStyled.fire({
         icon: "error",
         title: "Error",
         text: "Error uploading file. Please try again.",
@@ -5100,7 +5080,7 @@ const allowedSchemes = [
           },
         }
       );
-      Swal.fire({
+      SwalStyled.fire({
         icon: "success",
         title: "File uploaded successfully",
       });
@@ -5123,7 +5103,7 @@ const allowedSchemes = [
       ]);
     } catch (error) {
       console.error("Error uploading file:", error);
-      Swal.fire({
+      SwalStyled.fire({
         icon: "error",
         title: "Error",
         text: "Error uploading file. Please try again.",
@@ -5133,60 +5113,56 @@ const allowedSchemes = [
 
   return (
     <Layout title="List Of Application">
+      {/* ── Hero Banner ── */}
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">List Of Application</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/application-dashboard"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="plus" />
-                  <span>Dashboard</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/application-dashboard"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="plus" />
-                  <span>Dashboard</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div style={{
+          background: "linear-gradient(120deg, #0f4c8a 0%, #1a6cbf 60%, #1e7fc2 100%)",
+          padding: "12px 20px",
+          borderRadius: "10px",
+          marginBottom: "4px",
+          position: "relative",
+          overflow: "hidden",
+        }}>
+          <div style={{ position: "absolute", top: "-30px", right: "80px", width: "120px", height: "120px", borderRadius: "50%", background: "rgba(255,255,255,0.06)", pointerEvents: "none" }} />
+          <div style={{ position: "absolute", bottom: "-20px", right: "220px", width: "80px", height: "80px", borderRadius: "50%", background: "rgba(255,255,255,0.05)", pointerEvents: "none" }} />
+          <div style={{ position: "relative", zIndex: 1, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <h2 style={{ color: "#fff", fontWeight: "700", fontSize: "20px", margin: 0, letterSpacing: "0.3px" }}>
+              Application List
+            </h2>
+            <Link
+              to="/seriui/application-dashboard"
+              style={{
+                display: "inline-flex", alignItems: "center", gap: "6px",
+                background: "rgba(255,255,255,0.18)", color: "#fff", borderRadius: "7px",
+                padding: "8px 18px", fontWeight: "500", fontSize: "13px",
+                textDecoration: "none", border: "1px solid rgba(255,255,255,0.3)",
+              }}
+            >
+              <Icon name="arrow-long-left" />
+              <span>Dashboard</span>
+            </Link>
+          </div>
+        </div>
       </Block.Head>
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
-        <Modal.Body>
+        <Modal.Header closeButton style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", padding: "14px 22px" }}>
+          <Modal.Title style={{ color: "white", fontWeight: 700, fontSize: "1.1rem", letterSpacing: "0.3px" }}>
+            &#128203; Application Action Details
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ background: "#f8faff" }}>
           {loading ? (
-            <h1 className="d-flex justify-content-center align-items-center">
-              Loading...
-            </h1>
+            <div className="d-flex justify-content-center align-items-center py-5">
+              <div className="spinner-border text-primary me-2" role="status" style={{ width: "2rem", height: "2rem" }} />
+              <span style={{ fontSize: "1.1rem", color: "#1e67a8", fontWeight: 600 }}>Loading...</span>
+            </div>
           ) : (
             <>
               <Form noValidate validated={validated} onSubmit={postActionData}>
                 <Accordion defaultActiveKey="0">
                   <Accordion.Item eventKey="0">
-                    <Accordion.Header
-                      style={{
-                        backgroundColor: "#0F6CBE",
-                        color: "white",
-                        fontWeight: "bold",
-                        fontSize: "3rem",
-                        padding: "3px",
-                        borderRadius: "5px",
-                        position: "relative",
-                        overflow: "hidden",
-                      }}
-                      className="mb-3"
-                    >
+                    <Accordion.Header style={_accordionHeaderStyle} className="mb-3">
                       Application Details
                     </Accordion.Header>
                     <Accordion.Body>
@@ -5243,32 +5219,15 @@ const allowedSchemes = [
                 </Card.Header> */}
                           <Card.Header
                             style={{
-                              // backgroundColor: "#0a2463",
-                              backgroundColor: "#0F6CBE",
-                              fontWeight: "bold",
-                              fontSize: "1.2rem",
-                              padding: "7px 12px",
-                              position: "relative",
+                              background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)",
+                              fontWeight: 700,
+                              fontSize: "1rem",
+                              padding: "10px 16px",
                               color: "white",
-                              overflow: "hidden",
+                              letterSpacing: "0.3px",
                             }}
                           >
-                            <span>Beneficiary Details</span>
-                            <div
-                              style={{
-                                position: "absolute",
-                                top: "50%",
-                                left: "50%",
-                                transform: "translate(-50%, -50%)",
-                                fontSize: "3rem",
-                                color: "rgba(255, 255, 255, 0.1)", // Light watermark color
-                                zIndex: 0,
-                                pointerEvents: "none", // Allow interactions to pass through
-                                whiteSpace: "nowrap",
-                              }}
-                            >
-                              {/* Farmers Details */}
-                            </div>
+                            &#128100; Beneficiary Details
                           </Card.Header>
 
                           <Card.Body>
@@ -5277,7 +5236,7 @@ const allowedSchemes = [
                                 className="table small table-bordered table-hover"
                                 style={{ tableLayout: "fixed" }}
                               >
-                                <thead style={{ backgroundColor: "#27488A" }}>
+                                <thead style={{ background: "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)" }}>
                                   <tr>
                                     {[
                                       "Fruits Id",
@@ -5289,7 +5248,7 @@ const allowedSchemes = [
                                     ].map((header) => (
                                       <th
                                         key={header}
-                                        style={{ width: "10%", color: "white" }}
+                                        style={{ width: "10%", color: "white", fontWeight: 600, fontSize: "0.82rem" }}
                                       >
                                         {header}
                                       </th>
@@ -5353,12 +5312,11 @@ const allowedSchemes = [
                           <Card.Body>
                             <div className="d-flex justify-content-between align-items-center mb-3">
                               <Button
-                                variant="secondary"
                                 size="sm"
                                 onClick={handleShowModal1}
-                                style={{ padding: "10px 20px", fontSize: "16px" }}
+                                style={{ padding: "9px 20px", fontSize: "14px", fontWeight: 600, background: "linear-gradient(135deg, #1e67a8, #0d4f8a)", border: "none", borderRadius: "8px", boxShadow: "0 3px 10px rgba(30,103,168,0.3)", color: "white" }}
                               >
-                                Upload Documents
+                                &#128196; Upload Documents
                               </Button>
                             </div>
 
@@ -6088,16 +6046,7 @@ const allowedSchemes = [
     (actionFarmerData[0].financialDelegation && isSanctionOrderAllowed)
   ) && (
                       <Accordion.Item eventKey="transaction">
-                        <Accordion.Header
-                          style={{
-                            backgroundColor: "#0F6CBE",
-                            color: "white",
-                            fontWeight: "bold",
-                            padding: "3px",
-                            borderRadius: "5px",
-                          }}
-                          className="mb-3"
-                        >
+                        <Accordion.Header style={_accordionHeaderStyle} className="mb-3">
                           Generate Work Order/Selection Letter
                         </Accordion.Header>
                         <Accordion.Body>
@@ -6136,16 +6085,7 @@ const allowedSchemes = [
                       : // When financialDelegation is false, check only sanctionOrder
                         actionFarmerData[0].sanctionOrder) && (
                       <Accordion.Item eventKey="sanction">
-                        <Accordion.Header
-                          style={{
-                            backgroundColor: "#0F6CBE",
-                            color: "white",
-                            fontWeight: "bold",
-                            padding: "3px",
-                            borderRadius: "5px",
-                          }}
-                          className="mb-3"
-                        >
+                        <Accordion.Header style={_accordionHeaderStyle} className="mb-3">
                           Sanction Order Details
                         </Accordion.Header>
                         <Accordion.Body style={{ background: "#f8fbff", padding: "20px" }}>
@@ -6362,16 +6302,7 @@ const allowedSchemes = [
                   {actionFarmerData.length > 0 &&
                     actionFarmerData[0].pushToDbt && (
                       <Accordion.Item eventKey="transaction">
-                        <Accordion.Header
-                          style={{
-                            backgroundColor: "#0F6CBE",
-                            color: "white",
-                            fontWeight: "bold",
-                            padding: "3px",
-                            borderRadius: "5px",
-                          }}
-                          className="mb-3"
-                        >
+                        <Accordion.Header style={_accordionHeaderStyle} className="mb-3">
                           Push To DBT
                         </Accordion.Header>
                         <Accordion.Body>
@@ -6449,57 +6380,60 @@ const allowedSchemes = [
                 </Accordion>
 
                 <Col lg="12">
-                  <div className="d-flex justify-content-center gap-2 mt-3">
+                  <div style={{
+                    display: "flex", justifyContent: "center", gap: "10px",
+                    marginTop: "20px", padding: "14px 0 4px",
+                    borderTop: "1px solid #dce8f5", flexWrap: "wrap",
+                  }}>
                     <Button
                       variant="primary"
                       size="sm"
                       onClick={() => viewModal()}
                       hidden={!directlyToFruits}
                       disabled={actionData.rejectType === "Permanent"}
+                      style={{ borderRadius: "6px", padding: "8px 20px", fontWeight: "500", fontSize: "13px" }}
                     >
                       View
                     </Button>
-                    
-                    {directlyToFruits ? (
-                      <Button
-                        type="submit"
-                        variant="success"
-                        disabled={displaySubmit}
-                      >
-                        Submit
-                      </Button>
-                    ) : (
-                      <Button type="submit" variant="success" disabled={displaySubmit}>
-                        Submit
-                      </Button>
-                    )}
-                    <Button variant="secondary" onClick={handleCloseModal}>
+
+                    <Button
+                      type="submit"
+                      disabled={displaySubmit}
+                      style={{
+                        background: "linear-gradient(135deg, #0d7a4f 0%, #0a6040 100%)",
+                        border: "none", borderRadius: "7px",
+                        padding: "9px 28px", fontWeight: "600", fontSize: "13.5px",
+                        color: "#fff", boxShadow: "0 2px 8px rgba(13,122,79,0.25)",
+                        opacity: displaySubmit ? 0.6 : 1,
+                      }}
+                    >
+                      Submit
+                    </Button>
+
+                    <Button
+                      type="button"
+                      onClick={handleCloseModal}
+                      style={{
+                        background: "#f1f5f9", border: "1px solid #dce8f5",
+                        borderRadius: "7px", padding: "9px 22px",
+                        fontWeight: "500", fontSize: "13px", color: "#374151",
+                      }}
+                    >
                       Cancel
                     </Button>
 
-                    {/* <Button
-                      type="button"
-                        variant="primary"
-                        onClick={() => handleGenerateSanctionOrder(applicationFormId)}
-                      >
-                        Generate Sanction Order
-                      </Button> */}
-                    {/* {actionFarmerData.length > 0 && actionFarmerData[0].sanctionOrder && (
-                        <Button
-                          type="button"
-                          variant="primary"
-                          onClick={() => handleGenerateSanctionOrder(applicationId,schemeId)}
-                        >
-                          Generate Sanction Order
-                        </Button>
-                      )} */}
                     {actionFarmerData.length > 0 &&
                       actionFarmerData[0].sanctionOrder &&
                       applicationId && (
                         <Button
                           type="button"
-                          variant="primary"
                           onClick={handleGenerateSanctionOrderClick}
+                          style={{
+                            background: "linear-gradient(135deg, #1a5fa8 0%, #0d4f8a 100%)",
+                            border: "none", borderRadius: "7px",
+                            padding: "9px 20px", fontWeight: "600", fontSize: "13px",
+                            color: "#fff", boxShadow: "0 2px 8px rgba(26,95,168,0.25)",
+                          }}
                         >
                           Generate Sanction Order
                         </Button>
@@ -6514,21 +6448,23 @@ const allowedSchemes = [
       </Modal>
 
       <Block className="mt-n4">
-        <Card>
+        <Card style={{ border: "1px solid #dce8f5", borderRadius: "12px", boxShadow: "0 2px 12px rgba(26,95,168,0.08)", overflow: "hidden" }}>
+          <div style={{ background: "#fff", borderBottom: "1px solid #e5eef8", padding: "10px 18px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <span style={{ width: "4px", height: "18px", background: "#1a5fa8", borderRadius: "2px", display: "inline-block" }} />
+              <span style={{ color: "#1a3c6e", fontWeight: "700", fontSize: "14px", letterSpacing: "0.2px" }}>Application List</span>
+            </div>
+            {Array.isArray(listData) && listData.length > 0 && (
+              <span style={{ background: "#eef3fb", color: "#1a5fa8", fontSize: "12px", fontWeight: "600", borderRadius: "20px", padding: "3px 12px", border: "1px solid #c9d8ec" }}>
+                {listData.length} Records
+              </span>
+            )}
+          </div>
           <DataTable
-            //  title="Market List"
             tableClassName="data-table-head-light table-responsive"
             columns={ApplicationDataColumns}
-            data={listData}
+            data={Array.isArray(listData) ? listData : []}
             highlightOnHover
-            // pagination
-            // paginationServer
-            // paginationTotalRows={totalRows}
-            // paginationPerPage={countPerPage}
-            // paginationComponentOptions={{
-            //   noRowsPerPage: true,
-            // }}
-            // onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}
             theme="solarized"
             customStyles={customStyles}
@@ -6537,10 +6473,10 @@ const allowedSchemes = [
       </Block>
 
       <Modal show={showModal1} onHide={handleCloseModal1} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>Upload Documents</Modal.Title>
+        <Modal.Header closeButton style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", padding: "14px 22px" }}>
+          <Modal.Title style={{ color: "white", fontWeight: 700, fontSize: "1.05rem" }}>&#128196; Upload Documents</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={modalStyles.modalBody}>
           {/* {docListData.map(({ documentMasterId, documentMasterName }) => ( */}
           <div>
             <Row>
@@ -6598,49 +6534,33 @@ const allowedSchemes = [
 
             {uploadedDocuments.length > 0 && (
               <div className="mt-3">
-                <h5>Uploaded Documents</h5>
-                <ul>
+                <div style={{ fontWeight: "600", color: "#1a3c6e", fontSize: "13px", marginBottom: "8px" }}>Uploaded Documents</div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
                   {uploadedDocuments.map((doc, index) => (
-                    <li key={index} className="d-flex align-items-center">
-                      {/* Show the image if it's available */}
+                    <div key={index} style={{ display: "flex", flexDirection: "column", alignItems: "center", background: "#fff", border: "1px solid #b8d4f0", borderRadius: "8px", padding: "8px", minWidth: "100px", boxShadow: "0 1px 4px rgba(15,108,190,0.08)" }}>
                       {doc.documentFile && (
-                        <img
-                          src={URL.createObjectURL(doc.documentFile)}
-                          alt={doc.documentName}
-                          style={{
-                            height: "100px",
-                            width: "100px",
-                            marginRight: "10px",
-                          }}
-                        />
+                        <img src={URL.createObjectURL(doc.documentFile)} alt={doc.documentName} style={{ height: "70px", width: "70px", borderRadius: "5px", objectFit: "cover" }} />
                       )}
-                      {/* Show the document master name */}
-                      {/* <span>Document Type: {doc.documentMasterName }</span> */}
-                    </li>
+                      <span style={{ marginTop: "5px", fontSize: "11px", color: "#1e67a8", fontWeight: "600" }}>Doc {index + 1}</span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
-            <div className="gap-col mt-1">
-              <ul className="d-flex align-items-center justify-content-center gap g-3">
-                <li>
-                  {/* <Button type="submit" variant="success">
-                  Upload Documents
-                </Button> */}
-                  <Button
-                    type="button"
-                    variant="primary"
-                    onClick={() =>
-                      handleAttachFileUpload(uploadDocuments.documentTypeId)
-                    }
-                    disabled={uploadStatus[uploadDocuments.documentTypeId]} // Disable button if this document is uploaded
-                  >
-                    {uploadStatus[uploadDocuments.documentTypeId]
-                      ? "Uploaded"
-                      : "Upload"}
-                  </Button>
-                </li>
-              </ul>
+            <div className="mt-3 d-flex justify-content-center">
+              <Button
+                type="button"
+                onClick={() => handleAttachFileUpload(uploadDocuments.documentTypeId)}
+                disabled={uploadStatus[uploadDocuments.documentTypeId]}
+                style={{
+                  background: uploadStatus[uploadDocuments.documentTypeId] ? "linear-gradient(135deg, #0d7a4f, #0a6040)" : "linear-gradient(135deg, #1e67a8, #0d4f8a)",
+                  border: "none", borderRadius: "7px", padding: "9px 28px",
+                  fontWeight: "600", fontSize: "13px", color: "#fff",
+                  boxShadow: "0 2px 8px rgba(30,103,168,0.25)",
+                }}
+              >
+                {uploadStatus[uploadDocuments.documentTypeId] ? "✔ Uploaded" : "⬆ Upload"}
+              </Button>
             </div>
           </div>
           {/* ))} */}
@@ -6804,11 +6724,18 @@ const allowedSchemes = [
               </>
             )}
             <Col lg="12">
-              <div className="d-flex justify-content-center gap-2 mt-3">
-                <Button variant="secondary" onClick={handleCloseModal3}>
+              <div className="d-flex justify-content-center gap-3 mt-3 pt-3" style={{ borderTop: "1px solid #dce8f5" }}>
+                <Button
+                  onClick={handleCloseModal3}
+                  style={{ background: "#f1f5f9", border: "1px solid #dce8f5", borderRadius: "7px", padding: "9px 24px", fontWeight: "500", fontSize: "13px", color: "#374151" }}
+                >
                   Cancel
                 </Button>
-                <Button type="submit" onClick={addToList} variant="primary">
+                <Button
+                  type="submit"
+                  onClick={addToList}
+                  style={{ background: "linear-gradient(135deg, #0d7a4f, #0a6040)", border: "none", borderRadius: "7px", padding: "9px 28px", fontWeight: "600", fontSize: "13px", color: "#fff", boxShadow: "0 2px 8px rgba(13,122,79,0.25)" }}
+                >
                   Submit
                 </Button>
               </div>
@@ -6987,24 +6914,21 @@ const allowedSchemes = [
       </Modal>
 
       <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>View Details</Modal.Title>
+        <Modal.Header closeButton style={modalStyles.modalHeader}>
+          <Modal.Title style={modalStyles.modalTitle}>&#128196; Application View Details</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={modalStyles.modalBody}>
           {loading ? (
-            <h1 className="d-flex justify-content-center align-items-center">
-              Loading...
-            </h1>
+            <div className="d-flex justify-content-center align-items-center py-5">
+              <div className="spinner-border text-primary me-2" role="status" style={{ width: "2rem", height: "2rem" }} />
+              <span style={{ fontSize: "1.05rem", color: "#1e67a8", fontWeight: 600 }}>Loading...</span>
+            </div>
           ) : (
             <Accordion defaultActiveKey="0">
               {/* Application Details Accordion */}
               <Accordion.Item eventKey="0">
                 <Accordion.Header
-                  style={{
-                    backgroundColor: "#0F6CBE",
-                    color: "white",
-                    fontWeight: "bold",
-                  }}
+                  style={_accordionHeaderStyle}
                   className="mb-2"
                 >
                   Application Details
@@ -7188,8 +7112,7 @@ const allowedSchemes = [
 
                   <Card className="shadow-sm border-0 rounded-3 mt-4">
                 <Card.Header 
-                  className="fw-bold text-white" 
-                  style={{ backgroundColor: "#0F6CBE" }}
+                  style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", color: "#fff", fontWeight: "700", fontSize: "13.5px", padding: "10px 16px", letterSpacing: "0.3px" }}
                 >
                   Kanesh Land Details
                 </Card.Header>
@@ -7377,7 +7300,7 @@ const allowedSchemes = [
           {viewDetailsData?.landDetails?.length > 0 ? (
           <Accordion.Item eventKey="landDetails">
             <Accordion.Header
-              style={{ backgroundColor: "#0F6CBE", color: "white", fontWeight: "bold" }}
+              style={_accordionHeaderStyle}
               className="mb-2"
             >
               Land Details
@@ -7450,7 +7373,7 @@ const allowedSchemes = [
         ) : (
           <Accordion.Item eventKey="land">
             <Accordion.Header
-              style={{ backgroundColor: "#0F6CBE", color: "white", fontWeight: "bold" }}
+              style={_accordionHeaderStyle}
               className="mb-2"
             >
               Land Details
@@ -7461,11 +7384,7 @@ const allowedSchemes = [
 
               <Accordion.Item eventKey="documents">
                 <Accordion.Header
-                  style={{
-                    backgroundColor: "#0F6CBE",
-                    color: "white",
-                    fontWeight: "bold",
-                  }}
+                  style={_accordionHeaderStyle}
                   className="mb-2"
                 >
                   Documents
@@ -7685,11 +7604,7 @@ const allowedSchemes = [
 
               <Accordion.Item eventKey="transaction">
                 <Accordion.Header
-                  style={{
-                    backgroundColor: "#0F6CBE",
-                    color: "white",
-                    fontWeight: "bold",
-                  }}
+                  style={_accordionHeaderStyle}
                   className="mb-2"
                 >
                   Application Transaction Details
@@ -7768,8 +7683,11 @@ const allowedSchemes = [
             </Accordion>
           )}
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal2}>
+        <Modal.Footer style={{ background: "#f4f7fb", borderTop: "1px solid #e3eaf4", padding: "14px 22px" }}>
+          <Button
+            onClick={handleCloseModal2}
+            style={{ background: "#f1f5f9", border: "1px solid #dce8f5", borderRadius: "7px", padding: "8px 22px", fontWeight: "500", fontSize: "13px", color: "#374151" }}
+          >
             Close
           </Button>
         </Modal.Footer>

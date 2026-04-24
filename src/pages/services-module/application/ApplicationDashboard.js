@@ -46,14 +46,14 @@ function ApplicationDashboard() {
   };
 // Translation
 const { t } = useTranslation();
-  const rainbowColors = [
-    "#b82424",
-    "#ca8b17",
-    "#acac22",
-    "#287728",
-    "#575797",
-    "#88699f",
-    "#bf45bf",
+  const cardGradients = [
+    { bg: "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)", shadow: "0 8px 24px rgba(30,60,114,0.35)" },
+    { bg: "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)", shadow: "0 8px 24px rgba(17,153,142,0.35)" },
+    { bg: "linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)", shadow: "0 8px 24px rgba(192,57,43,0.35)" },
+    { bg: "linear-gradient(135deg, #f7971e 0%, #ffd200 100%)", shadow: "0 8px 24px rgba(247,151,30,0.35)" },
+    { bg: "linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%)", shadow: "0 8px 24px rgba(142,45,226,0.35)" },
+    { bg: "linear-gradient(135deg, #ee0979 0%, #ff6a00 100%)", shadow: "0 8px 24px rgba(238,9,121,0.35)" },
+    { bg: "linear-gradient(135deg, #134e5e 0%, #71b280 100%)", shadow: "0 8px 24px rgba(19,78,94,0.35)" },
   ];
 
   const [data, setData] = useState({
@@ -192,88 +192,107 @@ const { t } = useTranslation();
 
       <Block className="mt-n4">
       
-  <Card className="shadow-sm" style={{ maxWidth: "1800px", margin: "auto" }}>
-  <Card.Body className="p-3">
-    <div className="mx-auto" style={{ maxWidth: "1500px" }}>
-      <Row className="g-3 align-items-end">
-        {/* Scheme Selection */}
-        <Col lg="8" md="7" sm="12">
-          <Form.Group className="form-group">
-            <Form.Label htmlFor="scheme" className="fw-bold">
-              {t("Scheme")}
-            </Form.Label>
-            <div className="form-control-wrap">
-              <Form.Select
-                name="schemeId"
-                value={schemeId}
-                onChange={(e) => setSchemeId(e.target.value)}
-                className="form-control shadow-sm"
-              >
-                <option value="">{t("Select Scheme Names")}</option>
-                {scSchemeDetailsListData &&
-                  scSchemeDetailsListData.map((list) => (
-                    <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
-                      {list.schemeName}
-                    </option>
-                  ))}
-              </Form.Select>
-            </div>
-          </Form.Group>
-        </Col>
-
-        {/* Search Button */}
-        <Col lg="4" md="5" sm="12">
-          <Button
-            type="button"
-            variant="primary"
-            onClick={getUserDashboardCountBySchemeId}
-            className="w-100 shadow-sm"
-          >
-            {t("Search")}
-          </Button>
-        </Col>
-      </Row>
-    </div>
-  </Card.Body>
-</Card>
-
-
-
-      <Row className="g-gs d-flex justify-content-center">
-        {dashboardList.map((dashboard, i) => (
-          <Col xxl="3" key={i}>
-           
-            <Card
-              className="h-100"
-              style={{
-                ...styles,
-                backgroundColor: rainbowColors[i % rainbowColors.length],
-              }}
-              onClick={() => goto(dashboard.approvalStageId)}
-            >
-              <Card.Body>
-                <div className="d-flex justify-content-center text-center">
-                  <div>
-                    <div className="card-title">
-                      <h4 className="title mb-1" style={{ color: "white" }}>
-                        {dashboard.stepName}
-                      </h4>
-                    </div>
-                    <div className="my-3">
-                      <div
-                        className="amount h2 fw-bold"
-                        style={{ color: "white" }}
-                      >
-                        {dashboard.count}
-                      </div>
-                    </div>
-                    
-                  </div>
-                </div>
-              </Card.Body>
-            </Card>
+  <Card style={{ maxWidth: "1800px", margin: "auto", border: "none", borderRadius: "14px", boxShadow: "0 4px 20px rgba(30,103,168,0.13)", overflow: "hidden" }}>
+    <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", border: "none", padding: "14px 22px" }}>
+      <h6 style={{ color: "white", margin: 0, fontWeight: 700, letterSpacing: "0.4px" }}>&#128269; Filter Applications by Scheme</h6>
+    </Card.Header>
+    <Card.Body className="p-4" style={{ background: "linear-gradient(135deg, #f8f9ff 0%, #eef3fc 100%)" }}>
+      <div className="mx-auto" style={{ maxWidth: "1500px" }}>
+        <Row className="g-3 align-items-end">
+          <Col lg="8" md="7" sm="12">
+            <Form.Group className="form-group">
+              <Form.Label htmlFor="scheme" style={{ fontWeight: 600, color: "#2c3e50", marginBottom: "6px", fontSize: "0.9rem" }}>
+                {t("Scheme")}
+              </Form.Label>
+              <div className="form-control-wrap">
+                <Form.Select
+                  name="schemeId"
+                  value={schemeId}
+                  onChange={(e) => setSchemeId(e.target.value)}
+                  style={{ borderRadius: "8px", border: "1.5px solid #b0c4de", padding: "9px 14px", fontSize: "14px", boxShadow: "0 2px 6px rgba(0,0,0,0.05)", backgroundColor: "white" }}
+                >
+                  <option value="">{t("Select Scheme Names")}</option>
+                  {scSchemeDetailsListData &&
+                    scSchemeDetailsListData.map((list) => (
+                      <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
+                        {list.schemeName}
+                      </option>
+                    ))}
+                </Form.Select>
+              </div>
+            </Form.Group>
           </Col>
-        ))}
+          <Col lg="4" md="5" sm="12">
+            <Button
+              type="button"
+              onClick={getUserDashboardCountBySchemeId}
+              style={{ width: "100%", borderRadius: "8px", padding: "10px 20px", fontWeight: 700, background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", border: "none", boxShadow: "0 4px 14px rgba(30,103,168,0.35)", color: "white", fontSize: "0.95rem" }}
+            >
+              &#128269; {t("Search")}
+            </Button>
+          </Col>
+        </Row>
+      </div>
+    </Card.Body>
+  </Card>
+
+
+
+      <style>{`
+        .dash-card-hover {
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .dash-card-hover:hover {
+          transform: translateY(-7px) scale(1.03);
+        }
+        .count-circle {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 76px;
+          height: 76px;
+          border-radius: 50%;
+          background: rgba(255,255,255,0.22);
+          font-size: 1.9rem;
+          font-weight: 700;
+          color: white;
+          margin: 8px auto 12px;
+          border: 2.5px solid rgba(255,255,255,0.4);
+          backdrop-filter: blur(4px);
+        }
+      `}</style>
+      <Row className="g-4 mt-2 d-flex justify-content-center">
+        {dashboardList.map((dashboard, i) => {
+          const grad = cardGradients[i % cardGradients.length];
+          return (
+            <Col xxl="3" lg="4" md="6" key={i}>
+              <Card
+                className="h-100 dash-card-hover"
+                style={{
+                  borderRadius: "18px",
+                  cursor: "pointer",
+                  background: grad.bg,
+                  boxShadow: grad.shadow,
+                  border: "none",
+                  overflow: "hidden",
+                }}
+                onClick={() => goto(dashboard.approvalStageId)}
+              >
+                <Card.Body className="p-4">
+                  <div className="d-flex flex-column align-items-center text-center">
+                    <div className="count-circle">{dashboard.count}</div>
+                    <h5 className="mb-1 fw-bold" style={{ color: "white", fontSize: "1rem", lineHeight: 1.4 }}>
+                      {dashboard.stepName}
+                    </h5>
+                    <small style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.76rem", marginTop: "4px" }}>
+                      Tap to view list &#8594;
+                    </small>
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          );
+        })}
       </Row>
       </Block>
     </Layout>
