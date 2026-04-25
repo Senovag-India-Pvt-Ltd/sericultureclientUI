@@ -806,38 +806,54 @@ function NewReelerLicense() {
     }
   }, [data.hobliId]);
 
-  // Display Image
-  const [mahajar, setMahajar] = useState("");
-  // const [photoFile,setPhotoFile] = useState("")
+  // Multi-document upload state
+  const [documents, setDocuments] = useState([
+    { id: 1, label: "Mahajar Details", file: null, fileName: "", uploaded: false },
+  ]);
 
-  const handleMahajarChange = (e) => {
-    const file = e.target.files[0];
-    setMahajar(file);
-    setData((prev) => ({ ...prev, mahajarDetails: file.name }));
-    // setPhotoFile(file);
+  const handleDocLabelChange = (id, value) => {
+    setDocuments((prev) => prev.map((d) => d.id === id ? { ...d, label: value } : d));
   };
 
-  // Upload Image to S3 Bucket
-  const handleMahajarUpload = async (reelerid) => {
-    const parameters = `reelerId=${reelerid}`;
-    try {
-      const formData = new FormData();
-      formData.append("multipartFile", mahajar);
+  const handleDocFileChange = (id, e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setDocuments((prev) => prev.map((d) => d.id === id ? { ...d, file, fileName: file.name, uploaded: false } : d));
+  };
 
-      const response = await api.post(
-        baseURL + `reeler/upload-document?${parameters}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
-      );
-      console.log("File upload response:", response.data);
-    } catch (error) {
-      console.error("Error uploading file:", error);
+  const addDocumentRow = () => {
+    setDocuments((prev) => [...prev, { id: Date.now(), label: "", file: null, fileName: "", uploaded: false }]);
+  };
+
+  const removeDocumentRow = (id) => {
+    setDocuments((prev) => prev.filter((d) => d.id !== id));
+  };
+
+  // Upload all selected documents to S3
+  const handleMahajarUpload = async (reelerid) => {
+    for (const doc of documents) {
+      if (!doc.file) continue;
+      const parameters = `reelerId=${reelerid}`;
+      try {
+        const formData = new FormData();
+        formData.append("multipartFile", doc.file);
+        await api.post(baseURL + `reeler/upload-document?${parameters}`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        setDocuments((prev) => prev.map((d) => d.id === doc.id ? { ...d, uploaded: true } : d));
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
     }
   };
+
+  // Keep mahajarDetails in sync with first doc filename for save payload
+  useEffect(() => {
+    const first = documents[0];
+    if (first?.fileName) {
+      setData((prev) => ({ ...prev, mahajarDetails: first.fileName }));
+    }
+  }, [documents]);
 
   const navigate = useNavigate();
   // const saveSuccess = (arn) => {
@@ -1660,72 +1676,95 @@ function NewReelerLicense() {
                       </Form.Group> */}
 
                       {/* <Col lg="4"> */}
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="trUploadPath">
-                          {t("Upload Mahajar Details(Pdf/jpg/png)(Max:5MB)")}
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            type="file"
-                            id="mahajarDetails"
-                            name="mahajarDetails"
-                            // value={data.photoPath}
-                            onChange={handleMahajarChange}
-                          />
-                        </div>
-                      </Form.Group>
+                      {/* Multi-document upload + Loan Details + Inspection Date in one row */}
+                      <Row className="g-3 mt-1">
+                        <Col lg="8">
+                          <Form.Group className="form-group">
+                            <Form.Label style={{ fontWeight: "600", color: "#1a3c6e", fontSize: "13px" }}>
+                              {t("Upload Documents")} <small style={{ color: "#6b7280", fontWeight: "400" }}>(PDF / JPG / PNG / MP4 — Max 5MB each)</small>
+                            </Form.Label>
+                            <div style={{ border: "1px solid #dce8f5", borderRadius: "10px", overflow: "hidden", background: "#f8faff" }}>
+                              <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr auto", background: "#e8f0fb", padding: "8px 12px", fontSize: "11.5px", fontWeight: "700", color: "#1a3c6e", textTransform: "uppercase", letterSpacing: "0.4px" }}>
+                                <span>Document Type</span>
+                                <span>File</span>
+                                <span></span>
+                              </div>
+                              {documents.map((doc, idx) => (
+                                <div key={doc.id} style={{ display: "grid", gridTemplateColumns: "1fr 2fr auto", gap: "8px", alignItems: "center", padding: "10px 12px", borderTop: idx > 0 ? "1px solid #dce8f5" : "none", background: "#fff" }}>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="e.g. Mahajar, Aadhaar…"
+                                    value={doc.label}
+                                    onChange={(e) => handleDocLabelChange(doc.id, e.target.value)}
+                                    style={{ fontSize: "12.5px", padding: "6px 10px", borderRadius: "6px", border: "1.5px solid #c9d8ec" }}
+                                  />
+                                  <div>
+                                    <Form.Control
+                                      type="file"
+                                      accept=".pdf,.jpg,.jpeg,.png,.gif,.mp4,.mov,.avi"
+                                      onChange={(e) => handleDocFileChange(doc.id, e)}
+                                      style={{ fontSize: "12px", padding: "4px 8px", borderRadius: "6px", border: "1.5px solid #c9d8ec" }}
+                                    />
+                                    {doc.fileName && (
+                                      <div style={{ fontSize: "11px", color: doc.uploaded ? "#0d7a4f" : "#1a5fa8", marginTop: "3px", display: "flex", alignItems: "center", gap: "4px" }}>
+                                        {doc.uploaded ? "✔" : "📎"} {doc.fileName}
+                                      </div>
+                                    )}
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => removeDocumentRow(doc.id)}
+                                    disabled={documents.length === 1}
+                                    style={{ background: "none", border: "none", color: documents.length === 1 ? "#ccc" : "#dc2626", fontSize: "16px", cursor: documents.length === 1 ? "default" : "pointer", padding: "2px 6px", lineHeight: 1 }}
+                                    title="Remove"
+                                  >✕</button>
+                                </div>
+                              ))}
+                              <div style={{ padding: "8px 12px", borderTop: "1px solid #dce8f5", background: "#f8faff" }}>
+                                <button
+                                  type="button"
+                                  onClick={addDocumentRow}
+                                  style={{ background: "none", border: "1.5px dashed #1a5fa8", color: "#1a5fa8", borderRadius: "6px", padding: "5px 14px", fontSize: "12px", fontWeight: "600", cursor: "pointer" }}
+                                >
+                                  + Add Another Document
+                                </button>
+                              </div>
+                            </div>
+                          </Form.Group>
+                        </Col>
 
-                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                        {mahajar ? (
-                          <img
-                            style={{ height: "100px", width: "100px" }}
-                            src={URL.createObjectURL(mahajar)}
-                          />
-                        ) : (
-                          ""
-                        )}
-                      </Form.Group>
-                      {/* </Col> */}
+                        <Col lg="4">
+                          <Form.Group className="form-group">
+                            <Form.Label htmlFor="loanDetails">{t("loan_details")}</Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="loanDetails"
+                                name="loanDetails"
+                                value={data.loanDetails}
+                                onChange={handleInputs}
+                                type="text"
+                                placeholder={t("enter_loan_details")}
+                              />
+                            </div>
+                          </Form.Group>
 
-                      <Form.Group className="form-group">
-                        <Form.Label htmlFor="loanDetails">
-                          {t("loan_details")}
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="loanDetails"
-                            name="loanDetails"
-                            value={data.loanDetails}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder={t("enter_loan_details")}
-                          />
-                        </div>
-                      </Form.Group>
-
-                      <Form.Group className="form-group mt-3">
-                        <Form.Label>{t("Mahajar/Inspection Date")}</Form.Label>
-                        <div className="form-control-wrap">
-                          {/* <DatePicker
-                            selected={data.inspectionDate}
-                            onChange={(date) =>
-                              handleDateChange(date, "inspectionDate")
-                            }
-                          /> */}
-                          <DatePicker
-                            selected={data.inspectionDate}
-                            onChange={(date) =>
-                              handleDateChange(date, "inspectionDate")
-                            }
-                            peekNextMonth
-                            showMonthDropdown
-                            showYearDropdown
-                            dropdownMode="select"
-                            dateFormat="dd/MM/yyyy"
-                            className="form-control"
-                          />
-                        </div>
-                      </Form.Group>
+                          <Form.Group className="form-group mt-3">
+                            <Form.Label>{t("Mahajar/Inspection Date")}</Form.Label>
+                            <div className="form-control-wrap">
+                              <DatePicker
+                                selected={data.inspectionDate}
+                                onChange={(date) => handleDateChange(date, "inspectionDate")}
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                                className="form-control"
+                              />
+                            </div>
+                          </Form.Group>
+                        </Col>
+                      </Row>
                     </Col>
                   </Row>
                 </Card.Body>

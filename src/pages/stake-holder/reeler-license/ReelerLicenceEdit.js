@@ -627,54 +627,75 @@ function ReelerLicenceEdit() {
   });
 }; 
 
-  // Display Image
-  const [mahajar, setMahajar] = useState("");
-  // const [photoFile,setPhotoFile] = useState("")
+  // Multi-document upload state
+  const [documents, setDocuments] = useState([
+    { id: 1, label: "Mahajar Details", file: null, fileName: "", uploaded: false },
+  ]);
 
-  const handleMahajarChange = (e) => {
-    const file = e.target.files[0];
-    setMahajar(file);
-    setData((prev) => ({ ...prev, mahajarDetails: file.name }));
-    // setPhotoFile(file);
+  const handleDocLabelChange = (id, value) => {
+    setDocuments((prev) => prev.map((d) => d.id === id ? { ...d, label: value } : d));
   };
 
-  // Upload Image to S3 Bucket
-  const handleMahajarUpload = async (reelerid) => {
-    const parameters = `reelerId=${reelerid}`;
-    try {
-      const formData = new FormData();
-      formData.append("multipartFile", mahajar);
+  const handleDocFileChange = (id, e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setDocuments((prev) => prev.map((d) => d.id === id ? { ...d, file, fileName: file.name, uploaded: false } : d));
+  };
 
-      const response = await api.post(
-        baseURL + `reeler/upload-document?${parameters}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log("File upload response:", response.data);
-    } catch (error) {
-      console.error("Error uploading file:", error);
+  const addDocumentRow = () => {
+    setDocuments((prev) => [...prev, { id: Date.now(), label: "", file: null, fileName: "", uploaded: false }]);
+  };
+
+  const removeDocumentRow = (id) => {
+    setDocuments((prev) => prev.filter((d) => d.id !== id));
+  };
+
+  // Upload all selected documents to S3
+  const handleMahajarUpload = async (reelerid) => {
+    for (const doc of documents) {
+      if (!doc.file) continue;
+      const parameters = `reelerId=${reelerid}`;
+      try {
+        const formData = new FormData();
+        formData.append("multipartFile", doc.file);
+        await api.post(baseURL + `reeler/upload-document?${parameters}`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        setDocuments((prev) => prev.map((d) => d.id === doc.id ? { ...d, uploaded: true } : d));
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
     }
   };
 
-  // To get Photo from S3 Bucket
+  useEffect(() => {
+    const first = documents[0];
+    if (first?.fileName) {
+      setData((prev) => ({ ...prev, mahajarDetails: first.fileName }));
+    }
+  }, [documents]);
+
+  // To get existing Photo from S3 Bucket
   const [selectedMahajarFile, setMahajarFile] = useState(null);
+
+  const getFileType = (fileName) => {
+    if (!fileName) return "unknown";
+    const ext = fileName.split(".").pop().toLowerCase();
+    if (["jpg", "jpeg", "png", "gif", "bmp", "webp"].includes(ext)) return "image";
+    if (ext === "pdf") return "pdf";
+    if (["mp4", "avi", "mov", "wmv", "mkv", "webm"].includes(ext)) return "video";
+    return "other";
+  };
 
   const getMahajarFile = async (file) => {
     const parameters = `fileName=${file}`;
     try {
-      const response = await api.get(
-        baseURL + `api/s3/download?${parameters}`,
-        {
-          responseType: "arraybuffer",
-        }
-      );
-      const blob = new Blob([response.data]);
-      const url = URL.createObjectURL(blob);
-      setMahajarFile(url);
+      const ext = file.split(".").pop().toLowerCase();
+      const mimeMap = { pdf: "application/pdf", mp4: "video/mp4", mov: "video/quicktime", avi: "video/x-msvideo", png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg" };
+      const mime = mimeMap[ext] || "application/octet-stream";
+      const response = await api.get(baseURL + `api/s3/download?${parameters}`, { responseType: "arraybuffer" });
+      const blob = new Blob([response.data], { type: mime });
+      setMahajarFile(URL.createObjectURL(blob));
     } catch (error) {
       console.error("Error fetching file:", error);
     }
@@ -707,14 +728,6 @@ function ReelerLicenceEdit() {
       title: message,
       text: "Something went wrong!",
     }).then(() => navigate("/seriui/reeler-license-list"));
-  };
-
-  // Display Document
-  const [document, setDocument] = useState("");
-
-  const handleDocumentChange = (e) => {
-    const file = e.target.files[0];
-    setDocument(file);
   };
 
   return (
@@ -1485,36 +1498,75 @@ function ReelerLicenceEdit() {
                         </div>
                       </Form.Group>
 
+                      {/* Multi-document upload section */}
                       <Form.Group className="form-group mt-3">
-                        <Form.Label htmlFor="photoPath">
-                        {t("Upload Mahajar Details(Pdf/jpg/png)(Max:5MB)")}
+                        <Form.Label style={{ fontWeight: "600", color: "#1a3c6e", fontSize: "13px" }}>
+                          {t("Upload Documents")} <small style={{ color: "#6b7280", fontWeight: "400" }}>(PDF / JPG / PNG / MP4 — Max 5MB each)</small>
                         </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            type="file"
-                            id="mahajarDetails"
-                            name="mahajarDetails"
-                            // value={data.trUploadPath}
-                            onChange={handleMahajarChange}
-                          />
-                        </div>
-                      </Form.Group>
 
-                      <Form.Group className="form-group mt-3 d-flex justify-content-center">
-                        {mahajar ? (
-                          <img
-                            style={{ height: "100px", width: "100px" }}
-                            src={URL.createObjectURL(mahajar)}
-                          />
-                        ) : (
-                          selectedMahajarFile && (
-                            <img
-                              style={{ height: "100px", width: "100px" }}
-                              src={selectedMahajarFile}
-                              alt="Selected File"
-                            />
-                          )
+                        {/* Show existing uploaded file */}
+                        {selectedMahajarFile && data.mahajarDetails && (
+                          <div style={{ marginBottom: "10px", background: "#f0f6ff", border: "1px solid #b8d4f0", borderRadius: "8px", padding: "10px 14px", display: "flex", alignItems: "center", gap: "12px" }}>
+                            <span style={{ fontSize: "20px" }}>
+                              {getFileType(data.mahajarDetails) === "image" ? "🖼️" : getFileType(data.mahajarDetails) === "pdf" ? "📄" : getFileType(data.mahajarDetails) === "video" ? "🎬" : "📎"}
+                            </span>
+                            <div style={{ flex: 1 }}>
+                              <div style={{ fontSize: "12px", fontWeight: "600", color: "#1a3c6e" }}>Current Document</div>
+                              <div style={{ fontSize: "11.5px", color: "#374151" }}>{data.mahajarDetails.replace(/_([^_]*)$/, ".$1")}</div>
+                            </div>
+                            {getFileType(data.mahajarDetails) === "image" && (
+                              <img src={selectedMahajarFile} alt="current" style={{ height: "50px", width: "50px", borderRadius: "5px", objectFit: "cover" }} />
+                            )}
+                          </div>
                         )}
+
+                        <div style={{ border: "1px solid #dce8f5", borderRadius: "10px", overflow: "hidden", background: "#f8faff" }}>
+                          <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr auto", gap: "0", background: "#e8f0fb", padding: "8px 12px", fontSize: "11.5px", fontWeight: "700", color: "#1a3c6e", textTransform: "uppercase", letterSpacing: "0.4px" }}>
+                            <span>Document Type</span>
+                            <span>File</span>
+                            <span></span>
+                          </div>
+                          {documents.map((doc, idx) => (
+                            <div key={doc.id} style={{ display: "grid", gridTemplateColumns: "1fr 2fr auto", gap: "8px", alignItems: "center", padding: "10px 12px", borderTop: idx > 0 ? "1px solid #dce8f5" : "none", background: "#fff" }}>
+                              <Form.Control
+                                type="text"
+                                placeholder="e.g. Mahajar, Aadhaar…"
+                                value={doc.label}
+                                onChange={(e) => handleDocLabelChange(doc.id, e.target.value)}
+                                style={{ fontSize: "12.5px", padding: "6px 10px", borderRadius: "6px", border: "1.5px solid #c9d8ec" }}
+                              />
+                              <div>
+                                <Form.Control
+                                  type="file"
+                                  accept=".pdf,.jpg,.jpeg,.png,.gif,.mp4,.mov,.avi"
+                                  onChange={(e) => handleDocFileChange(doc.id, e)}
+                                  style={{ fontSize: "12px", padding: "4px 8px", borderRadius: "6px", border: "1.5px solid #c9d8ec" }}
+                                />
+                                {doc.fileName && (
+                                  <div style={{ fontSize: "11px", color: doc.uploaded ? "#0d7a4f" : "#1a5fa8", marginTop: "3px", display: "flex", alignItems: "center", gap: "4px" }}>
+                                    {doc.uploaded ? "✔" : "📎"} {doc.fileName}
+                                  </div>
+                                )}
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => removeDocumentRow(doc.id)}
+                                disabled={documents.length === 1}
+                                style={{ background: "none", border: "none", color: documents.length === 1 ? "#ccc" : "#dc2626", fontSize: "16px", cursor: documents.length === 1 ? "default" : "pointer", padding: "2px 6px", lineHeight: 1 }}
+                                title="Remove"
+                              >✕</button>
+                            </div>
+                          ))}
+                          <div style={{ padding: "8px 12px", borderTop: "1px solid #dce8f5", background: "#f8faff" }}>
+                            <button
+                              type="button"
+                              onClick={addDocumentRow}
+                              style={{ background: "none", border: "1.5px dashed #1a5fa8", color: "#1a5fa8", borderRadius: "6px", padding: "5px 14px", fontSize: "12px", fontWeight: "600", cursor: "pointer" }}
+                            >
+                              + Add Another Document
+                            </button>
+                          </div>
+                        </div>
                       </Form.Group>
                     </Col>
                   </Row>

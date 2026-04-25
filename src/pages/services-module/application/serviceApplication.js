@@ -157,6 +157,7 @@ const generateFinalReport = async (selectedRows) => {
     alreadyPaidAmount: 0,
     stateAmount: "",
     newFinancialYear: "",
+    year: "",
   });
   const formatAuctionDate = (auctionDate) => {
     const distributionDate = new Date(auctionDate);
@@ -4210,16 +4211,33 @@ const isUserValid = React.useMemo(() => {
       return; // Exit if the form is not valid
     }
 
-    // All schemes: Calculate Unit Price must be clicked
-    if (!unitPriceCalculated) {
+    // All schemes: Calculate Unit Price must be clicked and amount must not be 0/empty
+    const _unitPrice = Number(amountValue.unitPrice);
+    if (!unitPriceCalculated || !amountValue.unitPrice || _unitPrice === 0) {
       Swal.fire({
         icon: "warning",
-        title: "Calculate Unit Price First",
-        html: `<div style="font-size:13.5px;color:#555;">Click <strong style="color:#1a5fa8;">Calculate Unit Price</strong> before saving.</div>`,
-        confirmButtonText: "OK",
+        title: `<span style="font-size:16px;font-weight:700;color:#b45309;">⚠ Cannot Save Application</span>`,
+        html: `
+          <div style="text-align:center;padding:4px 0 8px;">
+            <div style="display:inline-flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:50%;background:#fef3c7;margin-bottom:12px;">
+              <span style="font-size:26px;">🧮</span>
+            </div>
+            <div style="font-size:13.5px;color:#374151;line-height:1.7;margin-bottom:8px;">
+              ${!unitPriceCalculated
+                ? `Please click <strong style="color:#1a5fa8;">⚙ Calculate Unit Price</strong> before saving.`
+                : `The calculated subsidy amount is <strong style="color:#dc2626;">₹ 0</strong> or empty.<br/>Please verify your inputs and recalculate.`
+              }
+            </div>
+            <div style="background:#fef9ee;border:1px solid #fde68a;border-radius:7px;padding:8px 14px;font-size:12px;color:#92400e;display:inline-block;">
+              Application cannot be saved without a valid subsidy amount.
+            </div>
+          </div>
+        `,
+        confirmButtonText: "OK, Got it",
         confirmButtonColor: "#1a5fa8",
-        background: "#f0f6ff",
-        width: "360px",
+        background: "#fffbf0",
+        width: "400px",
+        customClass: { popup: "swal2-border-radius" },
       });
       return;
     }
@@ -4831,6 +4849,7 @@ const isUserValid = React.useMemo(() => {
     alreadyPaidAmount: data.alreadyPaidAmount,
     stateAmount: data.stateAmount,
     newFinancialYear: data.newFinancialYear,
+    year: data.year,
       chawkiSanctionOrderList: chawkiSanctionOrderList
     };
 
@@ -5673,17 +5692,31 @@ const isUserValid = React.useMemo(() => {
 
   const saveSuccess = () => {
     Swal.fire({
-      icon: "success",
-      title: "Saved Successfully!",
-      html: `<div style="font-size:13.5px;color:#444;margin-top:4px;">Application has been submitted successfully.</div>`,
-      confirmButtonText: "OK",
+      title: `<span style="font-size:17px;font-weight:700;color:#065f46;">Application Saved!</span>`,
+      html: `
+        <div style="text-align:center;padding:6px 0 4px;">
+          <div style="display:inline-flex;align-items:center;justify-content:center;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#d1fae5,#a7f3d0);margin-bottom:12px;box-shadow:0 4px 14px rgba(13,122,79,0.18);">
+            <span style="font-size:28px;">✅</span>
+          </div>
+          <div style="font-size:14px;color:#374151;font-weight:500;margin-bottom:6px;">
+            Application submitted successfully.
+          </div>
+          <div style="background:#ecfdf5;border:1px solid #6ee7b7;border-radius:7px;padding:7px 14px;font-size:12px;color:#065f46;display:inline-block;">
+            Your application has been recorded in the system.
+          </div>
+        </div>
+      `,
+      confirmButtonText: "✔ OK",
       confirmButtonColor: "#0d7a4f",
       background: "#f6fdf9",
-      width: "360px",
-      timer: 2500,
-      timerProgressBar: true,
-    }).then(() => {
-      window.location.reload();
+      width: "390px",
+      showClass: { popup: "animate__animated animate__fadeInDown animate__faster" },
+      hideClass: { popup: "animate__animated animate__fadeOutUp animate__faster" },
+      customClass: { confirmButton: "px-4" },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.reload();
+      }
     });
   };
 
@@ -7475,6 +7508,30 @@ const fetchReelerDetails = () => {
                                   </div>
                                 </Form.Group>
                               </Col>
+
+                              <Col lg="6">
+                                  <Form.Group className="form-group mt-n4">
+                                <Form.Label htmlFor="icbBasinEnds">
+                                  {t("Year")} 
+                                  {/* <span className="text-danger">*</span> */}
+                                </Form.Label>
+                                <div className="form-control-wrap">
+                                   <Form.Control
+                                      id="year"
+                                      type="text"
+                                      name="year"
+                                      value={data.year}
+                                      onChange={handleInputs}
+                                      placeholder="Enter Year"
+                                      // required
+                                      // readOnly
+                                    />
+                                  {/* <Form.Control.Feedback type="invalid">
+                                    {t("Boiler In Kg is required")}
+                                  </Form.Control.Feedback> */}
+                                </div>
+                              </Form.Group>
+                            </Col>
 
                               <Col lg="6">
                                 <Form.Group className="form-group mt-n3">

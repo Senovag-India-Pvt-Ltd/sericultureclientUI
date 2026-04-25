@@ -69,21 +69,40 @@ function ReelerLicenseView() {
       });
   };
 
-  // To get Photo from S3 Bucket
+  // Detect file type from extension
+  const getFileType = (fileName) => {
+    if (!fileName) return "unknown";
+    const ext = fileName.split(".").pop().toLowerCase();
+    if (["jpg", "jpeg", "png", "gif", "bmp", "webp"].includes(ext)) return "image";
+    if (ext === "pdf") return "pdf";
+    if (["mp4", "avi", "mov", "wmv", "mkv", "webm"].includes(ext)) return "video";
+    return "other";
+  };
+
+  // Get clean display filename (strip timestamp prefix if any)
+  const getDisplayName = (fileName) => {
+    if (!fileName) return "";
+    return fileName.replace(/_([^_]*)$/, ".$1");
+  };
+
+  // To get Photo/Doc from S3 Bucket
   const [selectedMahajarFile, setMahajarFile] = useState(null);
+  const [mahajarFileType, setMahajarFileType] = useState("unknown");
 
   const getMahajarFile = async (file) => {
     const parameters = `fileName=${file}`;
     try {
       const response = await api.get(
         baseURL2 + `api/s3/download?${parameters}`,
-        {
-          responseType: "arraybuffer",
-        }
+        { responseType: "arraybuffer" }
       );
-      const blob = new Blob([response.data]);
+      const ext = file.split(".").pop().toLowerCase();
+      const mimeMap = { pdf: "application/pdf", mp4: "video/mp4", mov: "video/quicktime", avi: "video/x-msvideo", png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg" };
+      const mime = mimeMap[ext] || "application/octet-stream";
+      const blob = new Blob([response.data], { type: mime });
       const url = URL.createObjectURL(blob);
       setMahajarFile(url);
+      setMahajarFileType(getFileType(file));
     } catch (error) {
       console.error("Error fetching file:", error);
     }
@@ -347,30 +366,33 @@ function ReelerLicenseView() {
                       <td>{dateFormatter(Reeler.inspectionDate)}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> {t("Uploaded Mahajar Details(Pdf/jpg/png)(Max:5MB)")}</td>
+                      <td style={styles.ctstyle}>{t("Uploaded Document")}</td>
                       <td>
-                        {" "}
-                        {selectedMahajarFile && (
-                          <>
-                            <img
-                              style={{
-                                height: "100px",
-                                width: "100px",
-                              }}
-                              src={selectedMahajarFile}
-                              alt="Selected File"
-                            />
+                        {Reeler.mahajarDetails ? (
+                          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                            <span style={{ fontSize: "12px", color: "#374151", fontWeight: "600", display: "flex", alignItems: "center", gap: "5px" }}>
+                              {mahajarFileType === "image" ? "🖼" : mahajarFileType === "pdf" ? "📄" : mahajarFileType === "video" ? "🎬" : "📎"}
+                              {getDisplayName(Reeler.mahajarDetails)}
+                            </span>
+                            {selectedMahajarFile && mahajarFileType === "image" && (
+                              <img src={selectedMahajarFile} alt="Document" style={{ height: "90px", width: "90px", borderRadius: "6px", objectFit: "cover", border: "1px solid #dce8f5" }} />
+                            )}
+                            {selectedMahajarFile && mahajarFileType === "video" && (
+                              <video src={selectedMahajarFile} controls style={{ height: "120px", borderRadius: "6px", border: "1px solid #dce8f5" }} />
+                            )}
+                            {selectedMahajarFile && mahajarFileType === "pdf" && (
+                              <a href={selectedMahajarFile} target="_blank" rel="noreferrer" style={{ fontSize: "12px", color: "#1a5fa8" }}>Open PDF ↗</a>
+                            )}
                             <Button
-                              variant="primary"
                               size="sm"
-                              className="ms-2"
-                              onClick={() =>
-                                downloadFile(Reeler.mahajarDetails)
-                              }
+                              onClick={() => downloadFile(Reeler.mahajarDetails)}
+                              style={{ background: "linear-gradient(135deg, #1a5fa8, #0d4f8a)", border: "none", borderRadius: "6px", fontSize: "11.5px", padding: "4px 12px", color: "#fff", alignSelf: "flex-start" }}
                             >
-                              Download File
+                              ⬇ Download
                             </Button>
-                          </>
+                          </div>
+                        ) : (
+                          <span style={{ color: "#9ca3af", fontSize: "12px" }}>No document uploaded</span>
                         )}
                       </td>
                     </tr>
@@ -524,6 +546,49 @@ function ReelerLicenseView() {
             </Row>
           </Card.Body>
         </Card>
+        {/* Documents Card */}
+        {Reeler.mahajarDetails && (
+          <Card className="mt-3" style={{ border: "1px solid #dce8f5", borderRadius: "10px", overflow: "hidden" }}>
+            <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8, #0d4f8a)", color: "#fff", fontWeight: "700", fontSize: "13.5px", padding: "10px 18px" }}>
+              📁 {t("Uploaded Documents")}
+            </Card.Header>
+            <Card.Body style={{ background: "#f8faff", padding: "16px" }}>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+                {[Reeler.mahajarDetails].filter(Boolean).map((fileName, idx) => {
+                  const fileType = getFileType(fileName);
+                  const displayName = getDisplayName(fileName);
+                  return (
+                    <div key={idx} style={{ background: "#fff", border: "1px solid #dce8f5", borderRadius: "10px", padding: "14px 16px", minWidth: "200px", maxWidth: "260px", boxShadow: "0 2px 8px rgba(26,95,168,0.07)" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
+                        <span style={{ fontSize: "22px" }}>
+                          {fileType === "image" ? "🖼️" : fileType === "pdf" ? "📄" : fileType === "video" ? "🎬" : "📎"}
+                        </span>
+                        <span style={{ fontSize: "12px", color: "#374151", fontWeight: "600", wordBreak: "break-all" }}>{displayName}</span>
+                      </div>
+                      {selectedMahajarFile && fileType === "image" && (
+                        <img src={selectedMahajarFile} alt={displayName} style={{ width: "100%", height: "120px", objectFit: "cover", borderRadius: "6px", marginBottom: "10px", border: "1px solid #e5eef8" }} />
+                      )}
+                      {selectedMahajarFile && fileType === "video" && (
+                        <video src={selectedMahajarFile} controls style={{ width: "100%", borderRadius: "6px", marginBottom: "10px" }} />
+                      )}
+                      {selectedMahajarFile && fileType === "pdf" && (
+                        <a href={selectedMahajarFile} target="_blank" rel="noreferrer" style={{ display: "block", fontSize: "12px", color: "#1a5fa8", marginBottom: "10px" }}>👁 Open PDF in browser ↗</a>
+                      )}
+                      <Button
+                        size="sm"
+                        onClick={() => downloadFile(fileName)}
+                        style={{ width: "100%", background: "linear-gradient(135deg, #1a5fa8, #0d4f8a)", border: "none", borderRadius: "6px", fontSize: "12px", fontWeight: "600", color: "#fff", padding: "6px 0" }}
+                      >
+                        ⬇ Download {fileType === "pdf" ? "PDF" : fileType === "video" ? "Video" : fileType === "image" ? "Photo" : "File"}
+                      </Button>
+                    </div>
+                  );
+                })}
+              </div>
+            </Card.Body>
+          </Card>
+        )}
+
         <Card className="mt-3">
           <Card.Header>{t("Virtual Bank Account")}</Card.Header>
           <Card.Body>
