@@ -238,10 +238,10 @@ function StakeHolderViewPage() {
                       <td style={styles.ctstyle}>{t("FRUITS ID")}:</td>
                       <td>{StakeHolder.fruitsId}</td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <td style={styles.ctstyle}> {t("Farmer Id")}</td>
                       <td>{StakeHolder.farmerId}</td>
-                    </tr>
+                    </tr> */}
                     <tr>
                       <td style={styles.ctstyle}>{t("farmer_name")}:</td>
                       <td>{StakeHolder.firstName}</td>
@@ -254,7 +254,7 @@ function StakeHolderViewPage() {
                       <td>{StakeHolder.nameKan}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Tsc:</td>
+                      <td style={styles.ctstyle}> TSC:</td>
                       <td>{StakeHolder.tscName}</td>
                     </tr>
                     <tr>
@@ -414,10 +414,10 @@ function StakeHolderViewPage() {
                             </td>
                             <td>{familyMembers.farmerFamilyId}</td>
                           </tr>
-                          <tr>
+                          {/* <tr>
                             <td style={styles.ctstyle}> {t("Farmer Id")}</td>
                             <td>{familyMembers.farmerId}</td>
-                          </tr>
+                          </tr> */}
                           <tr>
                             <td style={styles.ctstyle}> {t("Name")}</td>
                             <td>{familyMembers.farmerFamilyName}</td>
@@ -454,10 +454,10 @@ function StakeHolderViewPage() {
                             </td>
                             <td>{farmerAddressDetails.farmerAddressId}</td>
                           </tr>
-                          <tr>
+                          {/* <tr>
                             <td style={styles.ctstyle}>{t("Farmer Id")}</td>
                             <td>{farmerAddressDetails.farmerId}</td>
-                          </tr>
+                          </tr> */}
                           <tr>
                             <td style={styles.ctstyle}> {t("address")}</td>
                             <td>{farmerAddressDetails.addressText}</td>
@@ -526,10 +526,10 @@ function StakeHolderViewPage() {
                             </td>
                             <td>{farmerLand.farmerLandDetailsId}</td>
                           </tr>
-                          <tr>
+                          {/* <tr>
                             <td style={styles.ctstyle}> {t("Farmer Id")}</td>
                             <td>{farmerLand.farmerId}</td>
-                          </tr>
+                          </tr> */}
                           <tr>
                             <td style={styles.ctstyle}>
                               {" "}
@@ -759,10 +759,10 @@ function StakeHolderViewPage() {
                       </td>
                       <td>{bank.farmerBankAccountId}</td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <td style={styles.ctstyle}>{t("Farmer Id")}</td>
                       <td>{bank.farmerId}</td>
-                    </tr>
+                    </tr> */}
                     <tr>
                       <td style={styles.ctstyle}> {t("Bank Name")}</td>
                       <td>{bank.farmerBankName}</td>

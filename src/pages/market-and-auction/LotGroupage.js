@@ -1430,7 +1430,7 @@ const handlePurchaseModeChange = (e) => {
                               { label: t("Buyer Type"), align: "left" },
                               { label: t("License Number/Address/Grainage/Name"), align: "left" },
                               { label: t("Quantity of Cocoons(In Kgs)"), align: "right" },
-                              { label: t("Price(In Rs.)"), align: "right" },
+                              { label: t("Rate per Kg"), align: "right" },
                               { label: t("Total Amount"), align: "right" },
                               { label: t("Invoice Number"), align: "left" },
                             ].map((h) => (
