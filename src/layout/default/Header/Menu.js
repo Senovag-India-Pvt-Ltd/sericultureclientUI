@@ -2393,7 +2393,7 @@ function Menu() {
                         <MenuSub>
                          <MenuItem sub>
                          <MenuItemLink
-                         text="HDFC(Reeler,RSP)"
+                         text="HDFC (Reeler,RSP)"
                           onClick={menuToggle}
                            onMouseEnter={menuHover}
                            sub
@@ -2427,30 +2427,20 @@ function Menu() {
                                      </MenuItem>
                                       <MenuItem>
                                        <MenuItemLink
-                                        text="DBT/K2(Govt Grainage)"
+                                        text="DBT/K2 (Govt Grainage)"
                                         // to="/seriui/dbt-dashboard"
                                          />
                                          </MenuItem>
                                          <MenuItem>
                                          <MenuItemLink
-                                         text="NSSO(Digital Transaction)"
+                                         text="NSSO (Digital Transaction)"
                                         //  to="/seriui/nsso-dashboard"
                                           />
                                           </MenuItem>
                                           </MenuSub>
                                           </MenuItem>
                                           ) : null}
-                      
-
-                    {showMenu.Market_SeedMarket_Delete_Lot ? (
-                      <MenuItem>
-                        <MenuItemLink
-                          text={t("Delete Lot")}
-                          to="/seriui/delete-lot"
-                        />
-                      </MenuItem>
-                    ) : null}
-
+                    
                     {showMenu.Market_SeedCocoonMarket_Inward ? (
                       <MenuItem>
                         <MenuItemLink
@@ -2458,6 +2448,15 @@ function Menu() {
                             "Invoice, Permit, Cash Receipt, Market Receipt"
                           )}
                           to="/seriui/invoice-permit-market-receipt"
+                        />
+                      </MenuItem>
+                    ) : null}
+
+                       {showMenu.Market_SeedMarket_Delete_Lot ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t("Delete Lot")}
+                          to="/seriui/delete-lot"
                         />
                       </MenuItem>
                     ) : null}
