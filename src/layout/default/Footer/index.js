@@ -7,7 +7,7 @@ function Footer() {
         <div className="nk-footer-wrap d-flex justify-content-center">
           <div className="nk-footer-copyright">
             {/* &copy; 2023 - Department of Sericulture, Government of Karnataka <span className="mx-1"></span> {" "} */}
-            &copy; Department of Sericulture , Government of Karnataka  
+            &copy; Designed and Developed by Senovag India Pvt Ltd  
             {/* <span className="mx-1"></span> |<span className="mx-1"></span>   Designed and Developed by 
             <a href="https://senovag.com/" target="_blank" rel="noreferrer" className="text-reset ms-1">
               Senovag India Pvt Ltd

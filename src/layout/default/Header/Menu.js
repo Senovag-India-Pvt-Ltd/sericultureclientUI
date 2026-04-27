@@ -2391,6 +2391,14 @@ function Menu() {
                           sub
                         />
                         <MenuSub>
+                         <MenuItem sub>
+                         <MenuItemLink
+                         text="HDFC(Reeler,RSP)"
+                          onClick={menuToggle}
+                           onMouseEnter={menuHover}
+                           sub
+                             />
+                             <MenuSub>
                           {showMenu.Market_SeedMarket_Ready_For_Payment ? (
                             <MenuItem>
                               <MenuItemLink
@@ -2402,7 +2410,7 @@ function Menu() {
                           {showMenu.Market_SeedMarket_Bulk_Send_To_Payment ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Bulk Send to Payment")}
+                                text={t("Bulk Payment")}
                                 to="/seriui/bulk-send-to-payment-for-seed-market"
                               />
                             </MenuItem>
@@ -2410,14 +2418,29 @@ function Menu() {
                           {showMenu.Market_SeedMarket_Payment_Statement ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Payment Statement")}
+                                text={t("Payment Settlement")}
                                 to="/seriui/payment-statement-for-seed-market"
                               />
                             </MenuItem>
-                          ) : null}
-                        </MenuSub>
-                      </MenuItem>
-                    ) : null}
+                                     ):null}
+                                     </MenuSub>
+                                     </MenuItem>
+                                      <MenuItem>
+                                       <MenuItemLink
+                                        text="DBT/K2(Govt Grainage)"
+                                        // to="/seriui/dbt-dashboard"
+                                         />
+                                         </MenuItem>
+                                         <MenuItem>
+                                         <MenuItemLink
+                                         text="NSSO(Digital Transaction)"
+                                        //  to="/seriui/nsso-dashboard"
+                                          />
+                                          </MenuItem>
+                                          </MenuSub>
+                                          </MenuItem>
+                                          ) : null}
+                      
 
                     {showMenu.Market_SeedMarket_Delete_Lot ? (
                       <MenuItem>

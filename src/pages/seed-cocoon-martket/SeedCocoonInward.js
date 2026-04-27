@@ -1288,7 +1288,7 @@ const getIdList = (farmerId) => {
                     <Form.Select name="select" value={farmer.select} onChange={handleFarmerIdInputs} style={{ borderRadius: "8px", border: "1.5px solid #d0d9e8", fontSize: "13px" }}>
                       <option value="mobileNumber">{t("Mobile Number")}</option>
                       <option value="fruitsId">{t("Fruits Id")}</option>
-                      <option value="farmerNumber">{t("CSB Number")}</option>
+                      <option value="farmerNumber">{t("RSCP Number")}</option>
                     </Form.Select>
                   </Col>
                   <Col sm={2} lg={2}>
@@ -1399,7 +1399,7 @@ const getIdList = (farmerId) => {
         <Modal.Body style={{ padding: "20px 24px", background: "#f8fafd" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
             {[
-              { label: t("Farmer Number"), value: farmerDetails?.farmerNumber },
+        
               { label: t("Farmer Name"), value: farmerDetails?.firstName },
               { label: t("Father's/Husband's Name"), value: farmerDetails?.fatherName },
               { label: t("Phone Number"), value: farmerDetails?.mobileNumber },

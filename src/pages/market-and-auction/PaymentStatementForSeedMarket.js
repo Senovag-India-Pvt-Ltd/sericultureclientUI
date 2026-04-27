@@ -529,11 +529,11 @@ function PaymentStatementForSeedMarket() {
   // };
 
   return (
-    <Layout title={t("Payment Statement")} show="true">
+    <Layout title={t("Payment Settlement")} show="true">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Payment Statement")}</Block.Title>
+            <Block.Title tag="h2">{t("Payment Settlement")}</Block.Title>
           </Block.HeadContent>
           
         </Block.HeadBetween>
