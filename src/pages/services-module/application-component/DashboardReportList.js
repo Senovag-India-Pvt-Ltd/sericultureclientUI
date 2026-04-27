@@ -3114,8 +3114,7 @@ else if (
             schemeType === "Silk Samagra Central" ||
             schemeType === "Rearing Equipment SS" ||                        // ✅ was missing
             schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||
-            schemeType === "SS Construction Of Low Cost Shed to Permanent Rearing House"||
-            schemeType === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+            schemeType === "SS Construction Of Low Cost Shed to Permanent Rearing House"
 
           ) {
             payload = {
@@ -3137,7 +3136,8 @@ else if (
             schemeType === "Adopting Solar Water Heater" ||
             schemeType === "MERM-PSF" ||
             schemeType === "SDP RH 225" ||
-            schemeType === "SDP Low Cost Shed"
+            schemeType === "SDP Low Cost Shed"||
+            schemeType === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
           ) {
             payload = {
               applicationFormId: applicationId,
