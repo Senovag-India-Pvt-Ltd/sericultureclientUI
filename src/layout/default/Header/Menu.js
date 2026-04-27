@@ -3404,7 +3404,14 @@ function Menu() {
                   <MenuItem>
                     <MenuItemLink
                       text={t("Adopting Silent Generator-PSF")}
-                      to="https://drive.google.com/open?id=1Vngj8MYf-gKAyIGRD_noNyWDJea5_Te-&usp=drive_copy"
+                      to="https://drive.google.com/file/d/1_nnRq0CQIhGaggjPBfInQafh-WsrBt87/view?usp=sharing"
+                      blank
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Multi End Reeling Machinery MERM-PSF")}
+                      to="https://drive.google.com/file/d/1XZA54w47Z9pfrlTGrbSqeMf3pHrJtYg8/view?usp=sharing"
                       blank
                     />
                   </MenuItem>
