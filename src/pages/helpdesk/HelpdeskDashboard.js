@@ -34,7 +34,7 @@ function HelpdeskDashboard() {
   const countPerPage = 5;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage } };
+  // const _params = { params: { pageNumber: page, size: countPerPage } };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const [data, setData] = useState({
@@ -53,12 +53,12 @@ function HelpdeskDashboard() {
     let { name, value } = e.target;
     const updatedRow = { ...row, [name]: value };
     const updatedDataList = hdTicketDataList.map((rowData) =>
-      rowData.hdTicketId === row.hdTicketId ? updatedRow : rowData
+      rowData.hdTicketId === row.hdTicketId ? updatedRow : rowData,
     );
     setHdTicketDataList(updatedDataList);
   };
-// Translation
-const { t } = useTranslation();
+  // Translation
+  const { t } = useTranslation();
   // console.log(hdTicketDataList);
 
   const styles = {
@@ -75,6 +75,9 @@ const { t } = useTranslation();
     if (data.searchBy === "hdSeverityName") {
       joinColumn = "hdSeverityMaster.hdSeverityName";
     }
+    if (data.searchBy === "username") {
+  joinColumn = "userMaster.username";
+}
 
     // console.log(joinColumn);
     api
@@ -86,7 +89,7 @@ const { t } = useTranslation();
         },
         {
           headers: _header,
-        }
+        },
       )
       .then((response) => {
         setHdTicketDataList(response.data.content.hdTicket);
@@ -125,11 +128,17 @@ const { t } = useTranslation();
 
   // get list of ticket
   const [hdTicketDataList, setHdTicketDataList] = useState([]);
+  const [selectedType, setSelectedType] = useState("");
 
   const getTicketDataList = () => {
     // setLoading(true);
     api
-      .get(baseURL2 + `hdTicket/list-with-join`, _params)
+      .get(baseURL2 + `hdTicket/list-with-join`,  {
+    params: {
+      pageNumber: page,
+      size: countPerPage,
+    },
+  })
       .then((response) => {
         setHdTicketDataList(response.data.content.hdTicket);
         setTotalRows(response.data.content.totalItems);
@@ -163,8 +172,12 @@ const { t } = useTranslation();
   // };
 
   useEffect(() => {
-    getTicketDataList();
-  }, [page]);
+     if (!selectedType) {
+    getTicketDataList(page); // ✅ first load
+  } else {
+    getOtherTicketDataList(selectedType, page); // ✅ after clicking view
+  }
+}, [page, selectedType]);
   // console.log(hdTicketData);
 
   // to get Status
@@ -204,16 +217,27 @@ const { t } = useTranslation();
   }, []);
 
   // get list of other ticket
-  const getOtherTicketDataList = (text) => {
+  const getOtherTicketDataList = (text, page = 0) => {
+    if (selectedType !== text) {
+      setSelectedType(text);
+    }
     // setLoading(true);
     const newParams = {
-      params: { pageNumber: page, size: countPerPage, ticketType: text },
+      params: {
+        pageNumber: page,
+        size: text === "Closed Tickets" ? countPerPage : 1000,
+        ticketType: text,
+      },
     };
     api
       .get(baseURL2 + `hdTicket/list-with-join`, newParams)
       .then((response) => {
         setHdTicketDataList(response.data.content.hdTicket);
-        setTotalRows(response.data.content.totalItems);
+        if (text === "Closed Tickets") {
+          api.get(baseURL2 + `hdTicket/ticket-counts`).then((res) => {
+            setTotalRows(res.data.closedTickets);
+          });
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -285,7 +309,7 @@ const { t } = useTranslation();
       hide: "md",
     },
     {
-      name:t("User Profile"),
+      name: t("User Profile"),
       selector: (row) => row.username,
       cell: (row) => <span>{row.username}</span>,
       sortable: true,
@@ -299,7 +323,7 @@ const { t } = useTranslation();
     //   hide: "md",
     // },
     {
-      name:t("Contact Number"),
+      name: t("Contact Number"),
       selector: (row) => row.contactNumber,
       cell: (row) => <span>{row.contactNumber}</span>,
       sortable: true,
@@ -326,13 +350,13 @@ const { t } = useTranslation();
       sortable: true,
       hide: "md",
     },
-    {
-      name: t("Category"),
-      selector: (row) => row.hdCategoryName,
-      cell: (row) => <span>{row.hdCategoryName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: t("Category"),
+    //   selector: (row) => row.hdCategoryName,
+    //   cell: (row) => <span>{row.hdCategoryName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: t("User Affected"),
       selector: (row) => row.hdUsersAffected,
@@ -340,13 +364,13 @@ const { t } = useTranslation();
       sortable: true,
       hide: "md",
     },
-    {
-      name: t("Module"),
-      selector: (row) => row.hdModuleName,
-      cell: (row) => <span>{row.hdModuleName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    // {
+    //   name: t("Module"),
+    //   selector: (row) => row.hdModuleName,
+    //   cell: (row) => <span>{row.hdModuleName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
       name: t("Feature"),
       selector: (row) => row.hdFeatureName,
@@ -520,7 +544,7 @@ const { t } = useTranslation();
                     variant="primary"
                     onClick={() => getOtherTicketDataList("New Tickets")}
                   >
-                     {t("View")}
+                    {t("View")}
                   </Button>
                 </div>
                 {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
@@ -584,7 +608,7 @@ const { t } = useTranslation();
                     variant="primary"
                     onClick={() => getOtherTicketDataList("Closed Tickets")}
                   >
-                     {t("View")}
+                    {t("View")}
                   </Button>
                 </div>
                 {/* <div className="d-none d-sm-block d-xl-none d-xxl-block me-md-5 me-xxl-0">
@@ -698,8 +722,12 @@ const { t } = useTranslation();
                           value={data.searchBy}
                           onChange={handleInputs}
                         >
-                          <option value="ticketArn">{t("Ticket Number")}</option>
-                          <option value="hdSeverityName">{t("Severity")}</option>
+                          <option value="ticketArn">
+                            {t("Ticket Number")}
+                          </option>
+                          <option value="hdSeverityName">
+                            {t("Severity")}
+                          </option>
                         </Form.Select>
                       </div>
                     </Col>
@@ -716,7 +744,7 @@ const { t } = useTranslation();
                     </Col>
                     <Col sm={3}>
                       <Button type="button" variant="primary" onClick={search}>
-                      {t("search")}
+                        {t("search")}
                       </Button>
                     </Col>
                     <Col sm={2}>
@@ -736,14 +764,16 @@ const { t } = useTranslation();
                 columns={HelpdeskDataColumns}
                 data={hdTicketDataList}
                 highlightOnHover
-                pagination
-                paginationServer
+                pagination={!selectedType || selectedType === "Closed Tickets"}
+                paginationServer={!selectedType || selectedType === "Closed Tickets"}
                 paginationTotalRows={totalRows}
                 paginationPerPage={countPerPage}
                 paginationComponentOptions={{
                   noRowsPerPage: true,
                 }}
-                onChangePage={(page) => setPage(page - 1)}
+                onChangePage={(page) => {
+    getOtherTicketDataList(selectedType || "Closed Tickets", page - 1);
+                }}
                 progressPending={loading}
                 theme="solarized"
                 customStyles={customStyles}
