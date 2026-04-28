@@ -5782,12 +5782,37 @@ function Menu() {
                       </MenuItem>
                     ) : null}
 
-                    <MenuItem>
+                    <MenuItem sub>
                       <MenuItemLink
                         text={t("Other Format Reports")}
-                        to="https://e-reshme.karnataka.gov.in/ssrsreport/ssrsreport/BVM5_Format.aspx"
-                        blank={true}
+                        onClick={menuToggle}
+                        onMouseEnter={menuHover}
+                        sub
                       />
+                      <MenuSub>
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("Set P4 Grainage Report")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P4 Grainage Monthly Progress Report")}
+                                to="/seriui/grainage-progress-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P4 Monthly Lot Wise Details Report")}
+                                to="/seriui/grainage-lotwise-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+                      </MenuSub>
                     </MenuItem>
 
                  </MenuSub>

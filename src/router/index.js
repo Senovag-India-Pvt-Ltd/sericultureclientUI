@@ -973,6 +973,8 @@ import RemittanceForFarm from "../pages/seed-and-dfl-managment/RemittanceForFarm
 import RemittanceForFarmList from "../pages/seed-and-dfl-managment/RemittanceForFarmList";
 import RemittanceForFarmEdit from "../pages/seed-and-dfl-managment/RemittanceForFarmEdit";
 import RemittanceForFarmView from "../pages/seed-and-dfl-managment/RemittanceForFarmView";
+import GrainageProgressReport from "../pages/seed-and-dfl-managment/GrainageProgressReport";
+import GrainageLotWiseReport from "../pages/seed-and-dfl-managment/GrainageLotWiseReport";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
 import SeedMarketInvoiceReport from "../pages/market-and-auction/SeedMarketInvoiceReport";
 import SeedMarketBiddingSlipReport from "../pages/market-and-auction/SeedMarketBiddingSlipReport";
@@ -2057,6 +2059,9 @@ function Router() {
 
             <Route path="remittance-for-farm-edit/:id" element={<RemittanceForFarmEdit />} />
             <Route path="remittance-for-farm-view/:id" element={<RemittanceForFarmView />} />
+
+            <Route path="grainage-progress-report" element={<GrainageProgressReport />} />
+            <Route path="grainage-lotwise-report" element={<GrainageLotWiseReport />} />
 
             <Route path="testing-of-moth" element={<TestingOfMoth />} />
             <Route
