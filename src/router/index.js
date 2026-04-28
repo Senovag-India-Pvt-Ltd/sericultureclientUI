@@ -975,6 +975,10 @@ import RemittanceForFarmEdit from "../pages/seed-and-dfl-managment/RemittanceFor
 import RemittanceForFarmView from "../pages/seed-and-dfl-managment/RemittanceForFarmView";
 import GrainageProgressReport from "../pages/seed-and-dfl-managment/GrainageProgressReport";
 import GrainageLotWiseReport from "../pages/seed-and-dfl-managment/GrainageLotWiseReport";
+import GrainageCocoonSupplyReport from "../pages/seed-and-dfl-managment/GrainageCocoonSupplyReport";
+import GrainageCocoonButterflyReport from "../pages/seed-and-dfl-managment/GrainageCocoonButterflyReport";
+import GrainageEggDistributionReport from "../pages/seed-and-dfl-managment/GrainageEggDistributionReport";
+import GrainageEggProductionReport from "../pages/seed-and-dfl-managment/GrainageEggProductionReport";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
 import SeedMarketInvoiceReport from "../pages/market-and-auction/SeedMarketInvoiceReport";
 import SeedMarketBiddingSlipReport from "../pages/market-and-auction/SeedMarketBiddingSlipReport";
@@ -2062,6 +2066,10 @@ function Router() {
 
             <Route path="grainage-progress-report" element={<GrainageProgressReport />} />
             <Route path="grainage-lotwise-report" element={<GrainageLotWiseReport />} />
+            <Route path="grainage-cocoon-supply-report" element={<GrainageCocoonSupplyReport />} />
+            <Route path="grainage-cocoon-butterfly-report" element={<GrainageCocoonButterflyReport />} />
+            <Route path="grainage-egg-distribution-report" element={<GrainageEggDistributionReport />} />
+            <Route path="grainage-egg-production-report" element={<GrainageEggProductionReport />} />
 
             <Route path="testing-of-moth" element={<TestingOfMoth />} />
             <Route

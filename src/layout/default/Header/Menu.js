@@ -5792,7 +5792,7 @@ function Menu() {
                       <MenuSub>
                         <MenuItem sub>
                           <MenuItemLink
-                            text={t("Set P4 Grainage Report")}
+                            text={t("P4 Grainage Report")}
                             onClick={menuToggle}
                             onMouseEnter={menuHover}
                             sub
@@ -5808,6 +5808,30 @@ function Menu() {
                               <MenuItemLink
                                 text={t("P4 Monthly Lot Wise Details Report")}
                                 to="/seriui/grainage-lotwise-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P4 Grainage Cocoon Supply Report")}
+                                to="/seriui/grainage-cocoon-supply-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P4 Cocoon Butterfly Examination Report")}
+                                to="/seriui/grainage-cocoon-butterfly-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P4 Egg Distribution Report")}
+                                to="/seriui/grainage-egg-distribution-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P4 Egg Production Report")}
+                                to="/seriui/grainage-egg-production-report"
                               />
                             </MenuItem>
                           </MenuSub>
