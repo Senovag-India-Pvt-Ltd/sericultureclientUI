@@ -643,7 +643,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                       <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">
-                                {t("Date")}
+                                {t("Brushing Date")}
                                 {/* <span className="text-danger">*</span> */}
                                 </Form.Label>
                                 <div className="form-control-wrap">
