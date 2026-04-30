@@ -509,7 +509,8 @@
 
 .photo-stage {
   width: 100%;
-  height: 490px;
+  flex: 1;
+  min-height: 400px;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -571,7 +572,7 @@
 
 /* ---------- RIGHT: Statistics Panel ---------- */
 .stats-col {
-  padding: 20px 16px 16px 12px;
+  padding: 20px 16px 60px 12px;
   display: flex;
   flex-direction: column;
 }
@@ -582,7 +583,8 @@
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 6px 28px var(--surface-shadow);
-  height: 490px;
+  flex: 1;
+  min-height: 400px;
   display: flex;
   flex-direction: column;
 }
@@ -754,8 +756,8 @@
 
   .slideshow-col { padding: 16px; }
   .stats-col { padding: 0 16px 16px; }
-  .photo-stage { height: 360px; }
-  .stats-panel { height: 360px; }
+  .photo-stage { min-height: 360px; }
+  .stats-panel { min-height: 360px; }
 }
 
 @media (max-width: 800px) {
@@ -777,8 +779,8 @@
 
   .portal-nav   { overflow-x: auto; padding: 0 8px; }
   .nav-item     { padding: 0 10px; font-size: calc(0.72rem * var(--text-scale)); }
-  .photo-stage  { height: 280px; }
-  .stats-panel  { height: 280px; }
+  .photo-stage  { min-height: 280px; }
+  .stats-panel  { min-height: 280px; }
 }
 
 @media (max-width: 640px) {
