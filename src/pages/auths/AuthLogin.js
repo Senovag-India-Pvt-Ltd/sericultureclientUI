@@ -27,6 +27,7 @@ const AuthLoginPage = () => {
   const [timer, setTimer] = useState(600);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isGeneratingOTP, setIsGeneratingOTP] = useState(false);
+  const [isVerifyingOTP, setIsVerifyingOTP] = useState(false);
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
@@ -65,6 +66,8 @@ const AuthLoginPage = () => {
   };
 
   const verifyotp = () => {
+    if (isVerifyingOTP) return;
+    setIsVerifyingOTP(true);
     axios
       .post(baseURL + "userMaster/verify-otp-by-user-name", { username: data.username, enteredOtpByUser: otp }, { headers: _header })
       .then((res) => {
@@ -73,7 +76,12 @@ const AuthLoginPage = () => {
         } else {
           setOtp("");
           setDisplay(true);
+          setIsVerifyingOTP(false);
         }
+      })
+      .catch(() => {
+        Swal.fire("Error", "Could not verify OTP. Please try again.", "error");
+        setIsVerifyingOTP(false);
       });
   };
 
@@ -84,9 +92,11 @@ const AuthLoginPage = () => {
         navigate(APP_ROUTES.homepage);
       } else {
         Swal.fire("Login failed", "Invalid credentials", "error");
+        setIsVerifyingOTP(false);
       }
     } catch {
       Swal.fire("Error", "Login failed", "error");
+      setIsVerifyingOTP(false);
     }
   };
 
@@ -701,8 +711,14 @@ const AuthLoginPage = () => {
                   className="auth-btn-primary"
                   style={{ marginTop: 22 }}
                   onClick={verifyotp}
+                  disabled={isVerifyingOTP}
+                  aria-busy={isVerifyingOTP}
                 >
-                  Verify OTP <span>→</span>
+                  {isVerifyingOTP ? (
+                    <>Verifying… <span>⏳</span></>
+                  ) : (
+                    <>Verify OTP <span>→</span></>
+                  )}
                 </button>
               </>
             )}

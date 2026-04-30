@@ -33,16 +33,16 @@
     "metrics": {
       "totalRegisteredFarmers": "Registered Farmers",
       "totalRegisteredReelers": "Registered Reelers",
-      "totalRegisteredTraders": "Registered Traders",
+      "totalRegisteredTraders": "Registered Silk Traders",
       "totalRegisteredRSP": "Registered RSP",
-      "totalRegisteredNSSO": "Registered NSSO",
+      "totalRegisteredNSSO": "NSSO",
       "totalRegisteredCRC": "Registered CRC",
-      "totalFarms": "Farms",
-      "totalGrainages": "Grainages",
-      "totalMarkets": "Markets",
-      "schemesOnlineServices": "Incentive & Subsidy Services",
+      "totalFarms": "Government Silk Farms",
+      "totalGrainages": "Government Grainages",
+      "totalMarkets": "Government Cocoon Markets",
+      "schemesOnlineServices": "Schemes",
       "totalBeneficiaryApplications": "Beneficiaries",
-      "totalAmountDisbursed": "Amount Disbursed"
+      "totalAmountDisbursed": "Amount Disbursed (In Rs.)"
     }
   },
   "kn": {
@@ -77,18 +77,18 @@
       "statsPending": "ಅಂಕಿಅಂಶ API ಭಾಗ ಶೀಘ್ರದಲ್ಲೇ ಸೇರಿಸಲಾಗುತ್ತದೆ"
     },
     "metrics": {
-      "totalRegisteredFarmers": "ನೋಂದಾಯಿತ ರೈತರು",
-      "totalRegisteredReelers": "ನೋಂದಾಯಿತ ರೀಲರ್‌ಗಳು",
-      "totalRegisteredTraders": "ನೋಂದಾಯಿತ ವ್ಯಾಪಾರಿಗಳು",
-      "totalRegisteredRSP": "ನೋಂದಾಯಿತ RSP",
-      "totalRegisteredNSSO": "ನೋಂದಾಯಿತ NSSO",
-      "totalRegisteredCRC": "ನೋಂದಾಯಿತ CRC",
-      "totalFarms": "ಫಾರ್ಮ್‌ಗಳು",
-      "totalGrainages": "ಗ್ರೈನೇಜ್‌ಗಳು",
-      "totalMarkets": "ಮಾರ್ಕೆಟ್‌ಗಳು",
+      "totalRegisteredFarmers": "ನೋಂದಾಯಿತ ರೇಷ್ಮೆ ಬೆಳೆಗಾರರು",
+      "totalRegisteredReelers": "ನೋಂದಾಯಿತ ರೇಷ್ಮೆ ನೂಲು ಬಿಚ್ಚಾಣಿಕೆದಾರರು",
+      "totalRegisteredTraders": "ನೋಂದಾಯಿತ ರೇಷ್ಮೆ ವರ್ತಕರು",
+      "totalRegisteredRSP": "ನೋಂದಾಯಿತ ರೇಷ್ಮೆ ಮೊಟ್ಟೆ ಉತ್ತ್ಪಾದಕರು",
+      "totalRegisteredNSSO": "ರಾಷ್ಟ್ರೀಯ ರೇಷ್ಮೆ ಹುಳು ಬೀಜೋತ್ಪಾದನಾ ಸಂಸ್ಥೆ",
+      "totalRegisteredCRC": "ನೋಂದಾಯಿತ ಚಾಕಿ ಸಾಕಾಣಿಕಾ ಕೇಂದ್ರಗಳು",
+      "totalFarms": "ಸರ್ಕಾರಿ ರೇಷ್ಮೆ ಕೃಷಿ ಕ್ಷೇತ್ರಗಳು",
+      "totalGrainages": "ಸರ್ಕಾರಿ ರೇಷ್ಮೆ ಬಿತ್ತನೆ ಕೋಠಿಗಳು",
+      "totalMarkets": "ಸರ್ಕಾರಿ ರೇಷ್ಮೆ ಗೂಡಿನ ಮಾರುಕಟ್ಟೆಗಳು",
       "schemesOnlineServices": "ಯೋಜನೆಗಳು",
       "totalBeneficiaryApplications": "ಫಲಾನುಭವಿಗಳು",
-      "totalAmountDisbursed": "ಬಿಡುಗಡೆ ಮಾಡಿದ ಮೊತ್ತ"
+      "totalAmountDisbursed": "ಪಾವತಿ ಮಾಡಿದ ಮೊತ್ತ (ರೂ. ಗಳಲ್ಲಿ)"
     }
   }
 }

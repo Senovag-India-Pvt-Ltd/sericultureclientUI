@@ -103,17 +103,19 @@ const dummyMetrics = {
   totalGrainages: "29",
   totalMarkets: "40",
   schemesOnlineServices: "27",
-  totalBeneficiaryApplications: "3279",
-  totalAmountDisbursed: "687676250",
+  totalBeneficiaryApplications: "3,279",
+  totalAmountDisbursed: "68,76,76,250",
 };
 
 const photoFlashImages = [
-  withBasePath("/images/cocoon-garlands.jpeg"),
+  withBasePath("/images/mulberry-field.jpeg"),
   withBasePath("/images/mulberry-tractor.jpeg"),
   withBasePath("/images/grainage-building.jpeg"),
+  withBasePath("/images/cocoon-trays.jpeg"),
   withBasePath("/images/cocoon-market.jpeg"),
+  withBasePath("/images/8.jpeg"),
+  withBasePath("/images/cocoon-garlands.jpeg"),
   withBasePath("/images/cocoon-decoration.jpeg"),
-  withBasePath("/images/mulberry-field.jpeg"),
 ];
 
 const fallbackPhotoFlashImages = [
