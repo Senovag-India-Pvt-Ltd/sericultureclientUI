@@ -509,8 +509,7 @@
 
 .photo-stage {
   width: 100%;
-  flex: 1;
-  min-height: 490px;
+  height: 490px;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -583,7 +582,7 @@
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 6px 28px var(--surface-shadow);
-  flex: 1;
+  height: 490px;
   display: flex;
   flex-direction: column;
 }
@@ -755,7 +754,8 @@
 
   .slideshow-col { padding: 16px; }
   .stats-col { padding: 0 16px 16px; }
-  .photo-stage { min-height: 360px; }
+  .photo-stage { height: 360px; }
+  .stats-panel { height: 360px; }
 }
 
 @media (max-width: 800px) {
@@ -777,7 +777,8 @@
 
   .portal-nav   { overflow-x: auto; padding: 0 8px; }
   .nav-item     { padding: 0 10px; font-size: calc(0.72rem * var(--text-scale)); }
-  .photo-stage  { min-height: 280px; }
+  .photo-stage  { height: 280px; }
+  .stats-panel  { height: 280px; }
 }
 
 @media (max-width: 640px) {
