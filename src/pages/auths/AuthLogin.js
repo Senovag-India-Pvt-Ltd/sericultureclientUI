@@ -26,6 +26,7 @@ const AuthLoginPage = () => {
   const [display, setDisplay] = useState(false);
   const [timer, setTimer] = useState(600);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [isGeneratingOTP, setIsGeneratingOTP] = useState(false);
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
@@ -40,6 +41,8 @@ const AuthLoginPage = () => {
       setValidated(true);
       return;
     }
+    if (isGeneratingOTP) return;
+    setIsGeneratingOTP(true);
     axios
       .post(baseURL + "userMaster/generate-otp-by-user-name-and-password", data, { headers: _header })
       .then((res) => {
@@ -51,6 +54,12 @@ const AuthLoginPage = () => {
         } else {
           Swal.fire("Invalid Username or Password", "Please enter valid credentials", "error");
         }
+      })
+      .catch(() => {
+        Swal.fire("Error", "Could not generate OTP. Please try again.", "error");
+      })
+      .finally(() => {
+        setIsGeneratingOTP(false);
       });
     setValidated(true);
   };
@@ -427,6 +436,18 @@ const AuthLoginPage = () => {
           box-shadow: 0 10px 28px rgba(15,108,190,0.45);
         }
         .auth-btn-primary:active { transform: scale(0.99) translateY(0); box-shadow: 0 4px 14px rgba(15,108,190,0.3); }
+        .auth-btn-primary:disabled,
+        .auth-btn-primary[aria-busy="true"] {
+          opacity: 0.7;
+          cursor: not-allowed;
+          transform: none;
+          box-shadow: 0 4px 14px rgba(15,108,190,0.25);
+        }
+        .auth-btn-primary:disabled:hover {
+          opacity: 0.7;
+          transform: none;
+          box-shadow: 0 4px 14px rgba(15,108,190,0.25);
+        }
 
         /* OTP */
         .auth-otp-info {
@@ -608,8 +629,17 @@ const AuthLoginPage = () => {
                     </div>
                   </div>
 
-                  <button type="submit" className="auth-btn-primary">
-                    Login to Account <span>→</span>
+                  <button
+                    type="submit"
+                    className="auth-btn-primary"
+                    disabled={isGeneratingOTP}
+                    aria-busy={isGeneratingOTP}
+                  >
+                    {isGeneratingOTP ? (
+                      <>Generating OTP… <span>⏳</span></>
+                    ) : (
+                      <>Login to Account <span>→</span></>
+                    )}
                   </button>
                 </form>
               </>

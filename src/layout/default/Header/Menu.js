@@ -1803,7 +1803,7 @@ function Menu() {
             {showMenu.Services_Service_Application ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Service Application")}
+                  text={t("Scheme Application")}
                   to="/seriui/service-application"
                 />
               </MenuItem>
@@ -1819,7 +1819,7 @@ function Menu() {
             {showMenu.Services_Service_Dashboard ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Service Dashboard")}
+                  text={t("Scheme Dashboard")}
                   to="/seriui/application-dashboard"
                 />
               </MenuItem>
@@ -1828,7 +1828,7 @@ function Menu() {
             {showMenu.Services_Service_Applications_For_Incentive_Bonus_Seed_Cocoon ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Applications For Incentive,Bonus,Seed Cocoon")}
+                  text={t("Incentive & Bonus Dashboard")}
                   to="/seriui/multiple-sanction-order-list"
                 />
               </MenuItem>
@@ -1985,7 +1985,7 @@ function Menu() {
             {showMenu.DBT_Drawing_Officer_List_For_K2_Push ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Drawing Officer List – K2 Push")}
+                  text={t("K2 Application Push")}
                   to="/seriui/drawing-officer-list-for-k2-push"
                 />
               </MenuItem>
@@ -1993,27 +1993,46 @@ function Menu() {
             {showMenu.DBT_Drawing_Officer_List_For_DBT_Push ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Drawing Officer List – DBT Push")}
+                  text={t("DBT Application Push")}
                   to="/seriui/drawing-officer-list-for-dbt-push"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.DBT_Drawing_Officer_List_For_Vendor_DBT_Push ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Drawing Officer List – Vendor DBT Push")}
-                  to="/seriui/drawing-officer-list-for-vendor-dbt-push"
                 />
               </MenuItem>
             ) : null}
             {showMenu.DBT_Drawing_Officer_List_For_Vendor_K2_Push ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Drawing Officer List – Vendor K2 Push")}
+                  text={t("K2 Application Push - Vendor")}
                   to="/seriui/drawing-officer-list-for-vendor-k2-push"
                 />
               </MenuItem>
             ) : null}
+            {showMenu.DBT_Drawing_Officer_List_For_Vendor_DBT_Push ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("DBT Application Push - Vendor")}
+                  to="/seriui/drawing-officer-list-for-vendor-dbt-push"
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.DBT_DBT_Pushed_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("DBT Pushed Applications")}
+                  to="/seriui/dbt-pushed-list"
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.DBT_Success_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Successful Applications")}
+                  to="/seriui/report-success-list"
+                />
+              </MenuItem>
+            ) : null}
+            
             {/* {showMenu.DBT_Reject_List ? (
               <MenuItem>
                 <MenuItemLink
@@ -2025,35 +2044,22 @@ function Menu() {
             {showMenu.DBT_Rejection_List_For_DBT ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Rejection List-K2")}
+                  text={t("K2 Rejected Applications")}
                   to="/seriui/report-reject-list-k2"
                 />
               </MenuItem>
             ) : null}
+            
             {showMenu.DBT_Rejection_List_For_K2? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Rejection List-DBT")}
+                  text={t("DBT Rejected Applications")}
                   to="/seriui/report-reject-list-dbt"
                 />
               </MenuItem>
             ) : null}
-            {showMenu.DBT_Success_List ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Report Success List")}
-                  to="/seriui/report-success-list"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.DBT_DBT_Pushed_List ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("DBT Pushed List")}
-                  to="/seriui/dbt-pushed-list"
-                />
-              </MenuItem>
-            ) : null}
+            
+            
             {/* {showMenu.DBT_Drawing_Officer_List ? (
               <MenuItem>
                 <MenuItemLink
