@@ -1,15 +1,15 @@
 {
   "en": {
     "left": {
-      "name": "Shri Siddaramaiah",
+      "name": "Sri. Siddaramaiah",
       "title": "Hon'ble Chief Minister, Government of Karnataka"
     },
     "right": {
-      "name": "Shri D.K. Shivakumar",
+      "name": "Sri. D.K. Shivakumar",
       "title": "Hon'ble Deputy Chief Minister, Government of Karnataka"
     },
     "extra": {
-      "name": "Shri K. Venkatesh",
+      "name": "Sri. K. Venkatesh",
       "title": "Hon'ble Minister for Sericulture, Government of Karnataka"
     },
     "center": [
@@ -31,16 +31,16 @@
       "statsPending": "Statistics API will be added soon"
     },
     "metrics": {
-      "totalRegisteredFarmers": "Total Registered Farmers",
-      "totalRegisteredReelers": "Total Registered Reelers",
-      "totalRegisteredTraders": "Total Registered Traders",
-      "totalRegisteredExternalStakeholders": "Total Registered RSP/CRC/NSSO",
-      "totalFarms": "Total Farms",
-      "totalGrainages": "Total Grainages",
-      "totalMarkets": "Total Markets",
-      "schemesOnlineServices": "Schemes Online Services",
-      "totalBeneficiaryApplications": "Total Beneficiaries",
-      "totalAmountDisbursed": "Total Amount Disbursed"
+      "totalRegisteredFarmers": "Registered Farmers",
+      "totalRegisteredReelers": "Registered Reelers",
+      "totalRegisteredTraders": "Registered Traders",
+      "totalRegisteredExternalStakeholders": "Registered RSP/CRC/NSSO",
+      "totalFarms": "Farms",
+      "totalGrainages": "Grainages",
+      "totalMarkets": "Markets",
+      "schemesOnlineServices": "Incentive & Subsidy Services",
+      "totalBeneficiaryApplications": "Beneficiaries",
+      "totalAmountDisbursed": "Amount Disbursed"
     }
   },
   "kn": {
@@ -75,16 +75,16 @@
       "statsPending": "ಅಂಕಿಅಂಶ API ಭಾಗ ಶೀಘ್ರದಲ್ಲೇ ಸೇರಿಸಲಾಗುತ್ತದೆ"
     },
     "metrics": {
-      "totalRegisteredFarmers": "ಒಟ್ಟು ನೋಂದಾಯಿತ ರೈತರು",
-      "totalRegisteredReelers": "ಒಟ್ಟು ನೋಂದಾಯಿತ ರೀಲರ್‌ಗಳು",
-      "totalRegisteredTraders": "ಒಟ್ಟು ನೋಂದಾಯಿತ ವ್ಯಾಪಾರಿಗಳು",
-      "totalRegisteredExternalStakeholders": "ಒಟ್ಟು ನೋಂದಾಯಿತ RSP/CRC/NSSO",
-      "totalFarms": "ಒಟ್ಟು ಫಾರ್ಮ್‌ಗಳು",
-      "totalGrainages": "ಒಟ್ಟು ಗ್ರೈನೇಜ್‌ಗಳು",
-      "totalMarkets": "ಒಟ್ಟು ಮಾರ್ಕೆಟ್‌ಗಳು",
+      "totalRegisteredFarmers": "ನೋಂದಾಯಿತ ರೈತರು",
+      "totalRegisteredReelers": "ನೋಂದಾಯಿತ ರೀಲರ್‌ಗಳು",
+      "totalRegisteredTraders": "ನೋಂದಾಯಿತ ವ್ಯಾಪಾರಿಗಳು",
+      "totalRegisteredExternalStakeholders": "ನೋಂದಾಯಿತ RSP/CRC/NSSO",
+      "totalFarms": "ಫಾರ್ಮ್‌ಗಳು",
+      "totalGrainages": "ಗ್ರೈನೇಜ್‌ಗಳು",
+      "totalMarkets": "ಮಾರ್ಕೆಟ್‌ಗಳು",
       "schemesOnlineServices": "ಯೋಜನೆಗಳ ಆನ್‌ಲೈನ್ ಸೇವೆಗಳು",
-      "totalBeneficiaryApplications": "ಒಟ್ಟು ಲಾಭಾನ್ವಿತರು",
-      "totalAmountDisbursed": "ಒಟ್ಟು ಬಿಡುಗಡೆ ಮಾಡಿದ ಮೊತ್ತ"
+      "totalBeneficiaryApplications": "ಫಲಾನುಭವಿಗಳು",
+      "totalAmountDisbursed": "ಬಿಡುಗಡೆ ಮಾಡಿದ ಮೊತ್ತ"
     }
   }
 }

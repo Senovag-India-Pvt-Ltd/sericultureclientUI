@@ -382,7 +382,7 @@ const AuthLoginPage = () => {
             <h1>e-Reshme Portal</h1>
             <p>Department of Sericulture</p>
             <p>Government of Karnataka</p>
-            <div className="auth-brand-badge">Official Government Portal</div>
+            {/* <div className="auth-brand-badge">Official Government Portal</div> */}
           </div>
 
           {/* ===== FORM PANEL (RIGHT) ===== */}
@@ -390,11 +390,11 @@ const AuthLoginPage = () => {
 
             {!toggle ? (
               <>
-                <div className="auth-form-header">
-                  <h2>Welcome Back</h2>
-                  <p>Sign in to your government account</p>
-                  <div className="auth-divider" />
-                </div>
+                {/* <div className="auth-form-header"> */}
+                  {/* <h2>Sign In</h2> */}
+                  {/* <p>Sign in to your government account</p> */}
+                  {/* <div className="auth-divider" /> */}
+                {/* </div> */}
 
                 <form noValidate onSubmit={generateOTP}>
                   <div className={`auth-field-wrap ${validated && !data.username ? "was-validated" : ""}`}>
@@ -428,14 +428,14 @@ const AuthLoginPage = () => {
                     Login to Account
                   </button>
 
-                  <a
+                  {/* <a
                     href="https://e-reshme.karnataka.gov.in/seriui/sericulture.apk"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="auth-btn-secondary"
                   >
                     Download Mobile App
-                  </a>
+                  </a> */}
                 </form>
               </>
             ) : (
