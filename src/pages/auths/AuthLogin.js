@@ -117,7 +117,7 @@ const AuthLoginPage = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 24px 16px;
+          padding: 24px 16px 70px;
           box-sizing: border-box;
           font-family: 'Poppins', 'Segoe UI', sans-serif;
           position: relative;
@@ -257,29 +257,35 @@ const AuthLoginPage = () => {
           margin: 0 !important;
         }
 
-        /* Brand text */
+        /* Brand text — unified color, size, font-weight */
         .auth-brand-name {
           color: #ffffff;
-          font-size: 1.75rem;
+          font-size: 1.25rem;
           font-weight: 900;
+          font-family: "Poppins", "Segoe UI", Tahoma, sans-serif;
           margin: 0 0 6px;
-          line-height: 1.15;
+          line-height: 1.2;
           position: relative; z-index: 1;
-          letter-spacing: -0.02em;
+          letter-spacing: 0.01em;
           text-shadow: 0 2px 12px rgba(0,0,0,0.25);
         }
         .auth-brand-dept {
-          color: rgba(255,255,255,0.78);
-          font-size: 0.9rem;
-          font-weight: 500;
+          color: #ffffff;
+          font-size: 1.25rem;
+          font-weight: 900;
+          font-family: "Poppins", "Segoe UI", Tahoma, sans-serif;
           margin: 0 0 4px;
+          line-height: 1.2;
           position: relative; z-index: 1;
+          letter-spacing: 0.01em;
         }
         .auth-brand-gov {
           color: #ffffff;
-          font-size: 1.05rem;
+          font-size: 1.25rem;
           font-weight: 900;
+          font-family: "Poppins", "Segoe UI", Tahoma, sans-serif;
           margin: 0;
+          line-height: 1.2;
           position: relative; z-index: 1;
           letter-spacing: 0.01em;
         }
@@ -481,6 +487,38 @@ const AuthLoginPage = () => {
           .auth-brand { padding: 28px 18px; }
         }
 
+        /* Footer */
+        .auth-site-footer {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: linear-gradient(90deg, #083d6e 0%, #0f6cbe 50%, #1e85d8 100%);
+          color: #d8eaff;
+          padding: 12px 24px;
+          font-size: 0.82rem;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 14px;
+          text-align: center;
+          border-top: 2px solid rgba(255,255,255,0.08);
+          letter-spacing: 0.01em;
+          z-index: 2;
+        }
+        .auth-footer-sep { opacity: 0.45; }
+
+        @media (max-width: 640px) {
+          .auth-site-footer {
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 10px 12px;
+            font-size: 0.72rem;
+          }
+          .auth-footer-sep { display: none; }
+        }
+
         /* Animations */
         @keyframes orbFloat {
           0%, 100% { transform: translate(0, 0) scale(1); }
@@ -641,6 +679,13 @@ const AuthLoginPage = () => {
           </div>
 
         </div>
+
+        {/* ===== FOOTER ===== */}
+        <footer className="auth-site-footer">
+          <span>© Department of Sericulture, Government of Karnataka</span>
+          <span className="auth-footer-sep">|</span>
+          <span>Designed and Developed by Senovag India Pvt. Ltd.</span>
+        </footer>
       </div>
     </Layout>
   );

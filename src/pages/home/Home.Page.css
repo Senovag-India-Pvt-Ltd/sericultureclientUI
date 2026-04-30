@@ -99,20 +99,20 @@
 
 .date-full {
   font-size: calc(0.78rem * var(--text-scale));
-  font-weight: 600;
-  color: var(--text-muted);
+  font-weight: 700;
+  color: var(--primary-dark);
 }
 
 .time-live {
   font-size: calc(0.78rem * var(--text-scale));
   font-weight: 700;
-  color: var(--primary);
+  color: var(--primary-dark);
   animation: timePulse 1.8s ease-in-out infinite;
 }
 
 .home-page.theme-night .date-day  { color: #d0e8ff; }
-.home-page.theme-night .time-live { color: #64b4f0; }
-.home-page.theme-night .date-full { color: #7aaad4; }
+.home-page.theme-night .time-live { color: #d0e8ff; }
+.home-page.theme-night .date-full { color: #d0e8ff; }
 
 /* Right Controls */
 .right-controls {
@@ -204,11 +204,20 @@
    =================================================== */
 .portal-header {
   display: grid;
-  grid-template-columns: 1.8fr 1fr 1fr 1fr;
+  grid-template-columns: auto 1fr;
   align-items: center;
   gap: 0;
   background: #ffffff;
   border-bottom: 3px solid var(--primary);
+}
+
+.officials-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 22px;
+  padding: 0 24px 0 0;
+  height: 100%;
 }
 
 .home-page.theme-night .portal-header {
@@ -216,16 +225,16 @@
   border-bottom-color: var(--primary);
 }
 
-/* ---- e-Reshme Portal brand column (full left, corner-aligned) ---- */
+/* ---- e-Reshme Portal brand column (logo left, text right) ---- */
 .header-brand-col {
-  background: linear-gradient(160deg, #e8f3fd 0%, #f8fbff 60%, #eef6ff 100%);
-  border-right: 2px solid var(--line);
+  background: #ffffff;
   align-self: stretch;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 16px 20px 16px 16px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  padding: 10px 20px 10px 24px;
   position: relative;
   overflow: hidden;
 }
@@ -233,7 +242,6 @@
 
 .home-page.theme-night .header-brand-col {
   background: linear-gradient(160deg, #0d1e38 0%, #132340 100%);
-  border-right-color: #1e3a60;
 }
 
 /* ---- Center block (shared between brand col and legacy use) ---- */
@@ -244,18 +252,18 @@
   text-align: center;
 }
 
-/* Emblem */
+/* Emblem — height matches the 2-line text block beside it */
 .emblem-img {
-  width: 80px;
-  height: 80px;
+  width: 56px;
+  height: 56px;
   object-fit: contain;
-  border-radius: 50%;
-  border: 3px solid var(--primary-light);
-  padding: 6px;
-  box-sizing: border-box;
-  background: #fff;
-  box-shadow: 0 4px 20px rgba(15, 108, 190, 0.18), 0 1px 4px rgba(10,40,90,0.08);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
 }
 
 .emblem-img:hover {
@@ -268,37 +276,43 @@
   border-color: #1e3a60;
 }
 
-/* Title group */
+/* Title group — sits to the right of the logo */
 .header-title-group {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  text-align: left;
   gap: 2px;
-  margin-top: 8px;
+  margin-top: 0;
 }
 
 .header-title-group h1 {
   margin: 0 0 2px;
-  font-size: calc(1.22rem * var(--text-scale));
-  font-weight: 900;
+  font-size: calc(1.1rem * var(--text-scale));
+  font-weight: 800;
   color: var(--primary-dark);
-  line-height: 1.15;
+  line-height: 1.25;
   font-family: "Poppins", "Segoe UI", sans-serif;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
+  text-align: left;
 }
 
 .header-subtitle {
   margin: 0 0 1px !important;
-  font-size: calc(1.0rem * var(--text-scale)) !important;
+  font-size: calc(1.1rem * var(--text-scale)) !important;
   font-weight: 800 !important;
   color: var(--primary-dark) !important;
+  line-height: 1.25 !important;
+  text-align: left;
 }
 
 .header-dept {
   margin: 0 !important;
-  font-size: calc(0.9rem * var(--text-scale)) !important;
+  font-size: calc(1.1rem * var(--text-scale)) !important;
   font-weight: 800 !important;
   color: var(--primary-dark) !important;
+  line-height: 1.25 !important;
+  text-align: left;
 }
 
 .home-page.theme-night .header-title-group h1 { color: #d0e8ff; }
@@ -309,8 +323,8 @@
 .header-official {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 10px;
+  gap: 6px;
+  padding: 4px 4px;
 }
 
 /* Stacked: photo on top, name/title below — centered */
@@ -319,8 +333,12 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 10px;
+  gap: 4px;
   border-left: none;
+}
+
+.officials-row .header-official:last-child {
+  padding-right: 0;
 }
 
 .header-official--stacked .official-info {
@@ -344,11 +362,11 @@
 
 /* Official circle photo */
 .official-img {
-  width: 82px;
-  height: 82px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid var(--primary-light);
+  border: 2px solid var(--primary-light);
   box-shadow: 0 4px 16px rgba(15, 108, 190, 0.15), 0 1px 4px rgba(10,40,90,0.08);
   flex-shrink: 0;
   transition: transform 0.22s ease, box-shadow 0.22s ease;
@@ -360,37 +378,37 @@
 }
 
 .official-info h3 {
-  margin: 0 0 3px;
-  font-size: calc(0.8rem * var(--text-scale));
+  margin: 0 0 2px;
+  font-size: calc(0.72rem * var(--text-scale));
   font-weight: 800;
   color: var(--primary-dark);
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
 .official-info p {
   margin: 0;
-  font-size: calc(0.72rem * var(--text-scale));
+  font-size: calc(0.65rem * var(--text-scale));
   font-weight: 500;
   color: var(--text-muted);
-  line-height: 1.35;
+  line-height: 1.3;
 }
 
 /* Minister role line (e.g. "ಮಾನ್ಯ ಮುಖ್ಯಮಂತ್ರಿಗಳು") */
 .official-role {
   margin: 0 !important;
-  font-size: calc(0.72rem * var(--text-scale)) !important;
+  font-size: calc(0.65rem * var(--text-scale)) !important;
   font-weight: 500 !important;
   color: var(--text-muted) !important;
-  line-height: 1.35 !important;
+  line-height: 1.3 !important;
 }
 
 /* "ಕರ್ನಾಟಕ ಸರ್ಕಾರ" under ministers — same style as role line */
 .official-org {
   margin: 1px 0 0 !important;
-  font-size: calc(0.72rem * var(--text-scale)) !important;
+  font-size: calc(0.65rem * var(--text-scale)) !important;
   font-weight: 500 !important;
   color: var(--text-muted) !important;
-  line-height: 1.35 !important;
+  line-height: 1.3 !important;
 }
 
 .home-page.theme-night .official-role { color: #7aaad4 !important; }
@@ -727,7 +745,7 @@
    =================================================== */
 @media (max-width: 1100px) {
   .portal-header {
-    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    grid-template-columns: auto 1fr;
     gap: 0;
   }
 
@@ -742,16 +760,19 @@
 
 @media (max-width: 800px) {
   .portal-header {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     grid-template-rows: auto auto;
   }
 
   .header-brand-col {
     grid-column: 1 / -1;
-    border-right: none;
     border-bottom: 2px solid var(--line);
-    padding: 18px 20px;
+    padding: 12px;
     align-self: auto;
+  }
+
+  .officials-row {
+    padding: 0 8px;
   }
 
   .portal-nav   { overflow-x: auto; padding: 0 8px; }
@@ -765,13 +786,13 @@
   .right-controls  { flex-wrap: wrap; gap: 6px; }
 
   .portal-header {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     padding: 0;
   }
 
   .header-brand-col {
     grid-column: 1 / -1;
-    padding: 14px 12px;
+    padding: 10px 12px;
   }
 
   .site-footer {
