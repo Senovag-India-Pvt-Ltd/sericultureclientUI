@@ -1290,7 +1290,7 @@ function HomePage() {
             <div className="d-section-hd-line" />
           </div>
           <div className="d-modules">
-            <a className="d-mod" href="/seriui/stake-holder-register">
+            <a className="d-mod" href="/seriui/stake-holder-registration">
               <div className="d-mod-header">
                 <div className="d-mod-icon">&#128100;</div>
                 <div className="d-mod-hd">
