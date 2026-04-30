@@ -5,6 +5,12 @@ import { APP_ROUTES } from "../../config/appRoutes";
 import "./Home.Page.css";
 
 
+const splitTitle = (title = "") => {
+  const idx = title.lastIndexOf(", ");
+  if (idx === -1) return [title, ""];
+  return [title.substring(0, idx), title.substring(idx + 2)];
+};
+
 const getActionIcon = (key) => {
   switch (key) {
     case "login":
@@ -295,15 +301,8 @@ const HomePage = () => {
 
         {/* ===== PORTAL HEADER ===== */}
         <header className="portal-header">
-          <div className="header-official header-official--left">
-            <img className="official-img" src={withBasePath("/images/left-profile.png")} alt={t.left.name} />
-            <div className="official-info">
-              <h3>{t.left.name}</h3>
-              <p>{t.left.title}</p>
-            </div>
-          </div>
-
-          <div className="header-center">
+          {/* 1. e-Reshme Portal — featured full left column */}
+          <div className="header-center header-brand-col">
             <img className="emblem-img" src={withBasePath("/images/center-emblem.png")} alt="Portal emblem" />
             <div className="header-title-group">
               <h1>{t.center[0]}</h1>
@@ -312,11 +311,33 @@ const HomePage = () => {
             </div>
           </div>
 
-          <div className="header-official header-official--right">
+          {/* 2. CM Siddaramaiah — photo + name below */}
+          <div className="header-official header-official--stacked">
+            <img className="official-img" src={withBasePath("/images/left-profile.png")} alt={t.left.name} />
+            <div className="official-info">
+              <h3>{t.left.name}</h3>
+              <p className="official-role">{splitTitle(t.left.title)[0]}</p>
+              <p className="official-org">{splitTitle(t.left.title)[1]}</p>
+            </div>
+          </div>
+
+          {/* 3. Deputy CM D.K. Shivakumar — photo + name below */}
+          <div className="header-official header-official--stacked">
+            <img className="official-img" src={withBasePath("/images/right-profile.jpeg")} alt={t.right.name} />
+            <div className="official-info">
+              <h3>{t.right.name}</h3>
+              <p className="official-role">{splitTitle(t.right.title)[0]}</p>
+              <p className="official-org">{splitTitle(t.right.title)[1]}</p>
+            </div>
+          </div>
+
+          {/* 4. Minister Venkatesh — photo + name below */}
+          <div className="header-official header-official--stacked">
             <img className="official-img" src={withBasePath("/images/pic.png")} alt={t.extra.name} />
             <div className="official-info">
               <h3>{t.extra.name}</h3>
-              <p>{t.extra.title}</p>
+              <p className="official-role">{splitTitle(t.extra.title)[0]}</p>
+              <p className="official-org">{splitTitle(t.extra.title)[1]}</p>
             </div>
           </div>
         </header>
@@ -384,18 +405,17 @@ const HomePage = () => {
                 <span className="stats-panel-badge">LIVE</span>
               </div>
               <div className="metrics-list">
-                {metricDefinitions.map((metric) => (
-                  <div
-                    key={metric.key}
-                    className={`metric-row${metric.key === "totalAmountDisbursed" || metric.key === "schemesOnlineServices" ? " metric-row--accent" : ""}`}
-                  >
-                    <div className="metric-row-left">
-                      <span className="metric-row-icon" aria-hidden="true">{getMetricIcon(metric.key)}</span>
-                      <span className="metric-row-label">{metric.label}</span>
+                <div className="metrics-scroll-inner">
+                  {metricDefinitions.map((metric) => (
+                    <div key={metric.key} className="metric-row">
+                      <div className="metric-row-left">
+                        <span className="metric-row-icon" aria-hidden="true">{getMetricIcon(metric.key)}</span>
+                        <span className="metric-row-label">{metric.label}</span>
+                      </div>
+                      <strong className="metric-row-value">{metrics[metric.key] ?? "--"}</strong>
                     </div>
-                    <strong className="metric-row-value">{metrics[metric.key] ?? "--"}</strong>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
