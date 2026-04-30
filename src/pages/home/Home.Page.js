@@ -103,7 +103,7 @@ const photoFlashImages = [
 const fallbackPhotoFlashImages = photoFlashImages;
 
 const HomePage = () => {
-  const [language, setLanguage] = useState("en");
+  const [language, setLanguage] = useState("kn");
   const [theme, setTheme] = useState("day");
   const [textScale, setTextScale] = useState(1);
   const [activePhoto, setActivePhoto] = useState(0);
