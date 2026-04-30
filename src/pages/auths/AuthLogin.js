@@ -380,8 +380,10 @@ const AuthLoginPage = () => {
               <LoginLogo />
             </div>
             <h1>e-Reshme Portal</h1>
-            <p>Department of Sericulture</p>
-            <p>Government of Karnataka</p>
+            {/* <p>Department of Sericulture</p>
+            <p>Government of Karnataka</p> */}
+            <p style={{ color: "white" }}>Department of Sericulture</p>
+            <p style={{ color: "white" }}>Government of Karnataka</p>
             {/* <div className="auth-brand-badge">Official Government Portal</div> */}
           </div>
 
