@@ -17,7 +17,7 @@ const AuthLoginPage = () => {
   const navigate = useNavigate();
 
   /* ========= UI STATES ========= */
-  const [showLoginForm, setShowLoginForm] = useState(false); // step 1 → step 2
+  const [showLoginForm, setShowLoginForm] = useState(true); // skip tile selection, go directly to login form
   const [toggle, setToggle] = useState(false); // step 2 → step 3
 
   /* ========= FORM ========= */
@@ -153,297 +153,356 @@ const AuthLoginPage = () => {
 
   /* ========= UI ========= */
 
-return (
+  return (
     <Layout title="Login" centered>
       <style>{`
+        .auth-page-wrap {
+          width: 100%;
+          min-height: 100vh;
+          background: linear-gradient(135deg, #0a4d8a 0%, #0f6cbe 50%, #1e85d8 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 24px 16px;
+          box-sizing: border-box;
+          font-family: 'Poppins', 'Segoe UI', sans-serif;
+        }
+        .auth-card {
+          width: min(960px, 96vw);
+          background: #fff;
+          border-radius: 16px;
+          overflow: hidden;
+          box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+          display: flex;
+          min-height: 580px;
+        }
+        .auth-brand {
+          flex: 1.1;
+          background: linear-gradient(160deg, #0a4d8a 0%, #0f6cbe 60%, #1e85d8 100%);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 40px 28px;
+          text-align: center;
+          position: relative;
+          overflow: hidden;
+        }
+        .auth-brand::before {
+          content: '';
+          position: absolute;
+          top: -60px; right: -60px;
+          width: 220px; height: 220px;
+          background: rgba(255,255,255,0.05);
+          border-radius: 50%;
+        }
+        .auth-brand::after {
+          content: '';
+          position: absolute;
+          bottom: -80px; left: -40px;
+          width: 280px; height: 280px;
+          background: rgba(255,255,255,0.04);
+          border-radius: 50%;
+        }
+        .auth-brand-logo {
+          margin-bottom: 20px;
+          position: relative;
+          z-index: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .auth-brand-logo .logo-wrap {
+          height: auto !important;
+          position: static !important;
+          display: flex !important;
+          align-items: center;
+          justify-content: center;
+        }
+        .auth-brand-logo .logo-link {
+          display: flex !important;
+          align-items: center;
+          justify-content: center;
+        }
+        .auth-brand-logo img {
+          width: 150px !important;
+          height: 150px !important;
+          border-radius: 50% !important;
+          border: 4px solid rgba(255,255,255,0.4) !important;
+          background: rgba(255,255,255,0.1) !important;
+          object-fit: contain !important;
+          padding: 10px !important;
+          box-sizing: border-box !important;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important;
+        }
+        .auth-brand h1 {
+          color: #fff;
+          font-size: 1.6rem;
+          font-weight: 800;
+          margin: 0 0 8px;
+          line-height: 1.3;
+          position: relative; z-index: 1;
+        }
+        .auth-brand p {
+          color: rgba(255,255,255,0.8);
+          font-size: 0.92rem;
+          margin: 0 0 4px;
+          position: relative; z-index: 1;
+        }
+        .auth-brand-badge {
+          margin-top: 28px;
+          background: rgba(255,255,255,0.12);
+          border: 1px solid rgba(255,255,255,0.2);
+          border-radius: 30px;
+          padding: 8px 20px;
+          color: #c8e0ff;
+          font-size: 0.8rem;
+          font-weight: 600;
+          letter-spacing: 0.04em;
+          position: relative; z-index: 1;
+        }
+        .auth-form-panel {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          padding: 48px 40px;
+          background: #fff;
+        }
+        .auth-form-header {
+          margin-bottom: 32px;
+        }
+        .auth-form-header h2 {
+          font-size: 1.6rem;
+          font-weight: 800;
+          color: #0a4d8a;
+          margin: 0 0 6px;
+        }
+        .auth-form-header p {
+          color: #5a7a9a;
+          font-size: 0.88rem;
+          margin: 0;
+        }
+        .auth-divider {
+          width: 48px; height: 4px;
+          background: linear-gradient(90deg, #0f6cbe, #1e85d8);
+          border-radius: 4px;
+          margin: 10px 0 0;
+        }
+        .auth-field-label {
+          display: block;
+          font-size: 0.82rem;
+          font-weight: 700;
+          color: #0a4d8a;
+          margin-bottom: 6px;
+          letter-spacing: 0.02em;
+        }
+        .auth-input {
+          width: 100%;
+          padding: 11px 16px;
+          border: 1.5px solid #bfd4ec;
+          border-radius: 8px;
+          font-size: 0.92rem;
+          color: #0d1a2e;
+          background: #f0f6ff;
+          transition: border-color 0.2s, box-shadow 0.2s;
+          outline: none;
+          box-sizing: border-box;
+        }
+        .auth-input:focus {
+          border-color: #0f6cbe;
+          box-shadow: 0 0 0 3px rgba(15,108,190,0.12);
+          background: #fff;
+        }
+        .auth-input.is-invalid {
+          border-color: #dc3545;
+        }
+        .auth-btn-primary {
+          width: 100%;
+          padding: 12px;
+          background: linear-gradient(135deg, #0a4d8a 0%, #0f6cbe 100%);
+          color: #fff;
+          border: none;
+          border-radius: 8px;
+          font-size: 0.95rem;
+          font-weight: 700;
+          cursor: pointer;
+          letter-spacing: 0.03em;
+          transition: opacity 0.2s, transform 0.1s;
+          margin-bottom: 10px;
+        }
+        .auth-btn-primary:hover { opacity: 0.92; }
+        .auth-btn-primary:active { transform: scale(0.99); }
+        .auth-btn-secondary {
+          width: 100%;
+          padding: 11px;
+          background: #f0f6ff;
+          color: #0f6cbe;
+          border: 1.5px solid #a8c8e8;
+          border-radius: 8px;
+          font-size: 0.92rem;
+          font-weight: 700;
+          cursor: pointer;
+          text-align: center;
+          text-decoration: none;
+          display: block;
+          transition: background 0.2s;
+        }
+        .auth-btn-secondary:hover { background: #e3f0fb; color: #0f6cbe; }
+        .auth-field-wrap { margin-bottom: 18px; }
+        .auth-otp-wrap { display: flex; justify-content: center; gap: 10px; margin: 12px 0; }
+        .auth-otp-input {
+          width: 44px !important; height: 48px;
+          font-size: 1.3rem; font-weight: 700;
+          border-radius: 8px; border: 1.5px solid #bfd4ec;
+          text-align: center; background: #f0f6ff;
+          color: #0a4d8a;
+        }
+        .auth-otp-input:focus { border-color: #0f6cbe; outline: none; }
+        .auth-timer-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.84rem; color: #5a7a9a; margin-top: 6px; }
+        .auth-resend-btn { background: none; border: none; color: #0f6cbe; font-weight: 700; cursor: pointer; font-size: 0.84rem; padding: 0; }
+        .auth-resend-btn:disabled { color: #aac; cursor: default; }
+        .auth-error-msg { color: #c0392b; font-size: 0.82rem; font-weight: 600; text-align: center; margin-top: 8px; }
+        .auth-otp-info { color: #3a5878; font-size: 0.85rem; text-align: center; margin-bottom: 4px; }
+        @media (max-width: 700px) {
+          .auth-card { flex-direction: column; }
+          .auth-brand { padding: 32px 20px; }
+          .auth-form-panel { padding: 32px 20px; }
+        }
+      `}</style>
 
-.service-tile {
-  display: flex;
-  align-items: center;
-  padding: 24px 32px;
-  border-radius: 8px;
-  cursor: pointer;
-  min-height: 180px;
+      <div className="auth-page-wrap">
+        <div className="auth-card">
 
-  background: #ffffff;              /* WHITE CARD */
-  border-top: 6px solid transparent;/* TOP BORDER ONLY */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-
-.tile-blue {
-  border-top-color: #1976d2; /* BLUE BORDER */
-  color: #1f2933;
-}
-
-.tile-blue .tile-icon {
-  background: #1976d2;       /* BLUE ICON */
-  color: #ffffff;
-}
-
-
-.tile-yellow {
-  border-top-color: #f9a825; /* YELLOW BORDER */
-  color: #1f2933;
-}
-
-.tile-yellow .tile-icon {
-  background: #f9a825;       /* YELLOW ICON */
-  color: #ffffff;
-}
-
-
-.tile-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;        /* ROUND ICON */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  margin-right: 20px;
-  flex-shrink: 0;
-}
-
-.tile-text {
-  flex-grow: 1;
-  font-size: 20px;
-  font-weight: 600;
-}
-
-.tile-arrow {
-  font-size: 20px;
-}
-
-.tile-spacing {
-  margin-bottom: 40px;
-}
-`}</style>
-
-      {/* <div className="container-fluid p-2 p-sm-4">
-        <Card className="overflow-hidden card-gutter-lg rounded-4 card-auth card-auth-mh">
-          <Row className="g-0 flex-column-reverse flex-lg-row-reverse"> */}
-
-           <div className="container-lg p-2 p-sm-4">
-          {/* <Card className="overflow-hidden card-gutter-lg rounded-4 card-auth card-auth-mh"> */}
-<Card
-  className="overflow-hidden card-gutter-lg rounded-4 card-auth card-auth-mh"
-  style={{ transform: "scale(1.13)" }}
->
-
-            <Row className="g-0 flex-column-reverse flex-lg-row-reverse">
-
-            {/* ===== LEFT PANEL ===== */}
-            <Col lg="5">
-                  <Card.Body className="h-100 d-flex flex-column justify-content-center">
-
-                {/* STEP 1: TWO BUTTONS */}
-                {/* {!showLoginForm ? (
-                  <div className="d-grid gap-3">
-                    <Button size="lg" onClick={() => setShowLoginForm(true)}>
-                      Department Login
-                    </Button>
-
-                    <Button
-                      size="lg"
-                      onClick={() => window.location.assign(APP_ROUTES.applicationStatus)}
-                    >
-                      View Application Status
-                    </Button>
-                  </div>
-)  */}
-{!showLoginForm ? (
-  <Row className="g-5">
-    {/* 🔶 Department Login – ORANGE TOP BORDER */}
-<Col sm={14} className="tile-spacing">
-  <div
-    className="service-tile tile-blue"
-    onClick={() => setShowLoginForm(true)}
-  >
-    {/* ICON IN FRONT */}
-    <div className="tile-icon">🏛️</div>
-
-    {/* TEXT */}
-    <div className="tile-text">
-      Government User
-    </div>
-
-    {/* ARROW */}
-    <div className="tile-arrow">➜</div>
-  </div>
-</Col>
-
-
-{/* ================= Citizen Access – YELLOW TILE ================= */}
-<Col sm={14}>
-  <div
-    className="service-tile tile-yellow"
-    onClick={() =>
-      (window.location.href =
-        window.location.hostname === "localhost"
-          ? "http://localhost:3000/seriui/application-status"
-          : "https://e-reshme.karnataka.gov.in/seriui/application-status")
-    }
-    // onClick={() => window.location.assign(APP_ROUTES.applicationStatus)}
-  >
-    {/* ICON IN FRONT */}
-    <div className="tile-icon">👤</div>
-
-    {/* TEXT */}
-    <div className="tile-text">
-      Citizen Access
-    </div>
-
-    {/* ARROW */}
-    <div className="tile-arrow">➜</div>
-  </div>
-</Col>
-  </Row>
-) 
-
-: !toggle ? (
-                  /* STEP 2: LOGIN FORM */
-                  <>
-                    <div className="nk-block-head text-center">
-                      <h3 style={{ color: "#000" }}>Login</h3>
-                      <p className="small">Please sign-in to your account.</p>
-                    </div>
-
-                    <Form noValidate validated={validated} onSubmit={generateOTP}>
-                      <Form.Group className="mb-3">
-                        <Form.Label>User Name</Form.Label>
-                        <Form.Control
-                          name="username"
-                          value={data.username}
-                          onChange={handleInputs}
-                          required
-                        />
-                      </Form.Group>
-
-                      <Form.Group className="mb-3">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                          type="password"
-                          name="password"
-                          value={data.password}
-                          onChange={handleInputs}
-                          required
-                        />
-                      </Form.Group>
-
-                      <div className="d-grid gap-2">
-                        <Button type="submit">Login to account</Button>
-                        <Link
-                            to="https://e-reshme.karnataka.gov.in/seriui/sericulture.apk"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="btn btn-primary"
-                          >
-                            Download Mobile App
-                          </Link>
-{/* <Link
-  to={APP_ROUTES.mobileAppDownload}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="btn btn-primary"
->
-  Download Mobile App
-</Link> */}
-
-                      {/* </div> */}
-
-                      </div>
-                    </Form>
-                  </>
-
-                ) : (
-                  /* STEP 3: OTP SCREEN */
-                  <>
-                    <div className="nk-block-head text-center">
-                      {/* <h3>Verification</h3> */}
-                      <p className="small">
-                        Enter the one time password received to: +91 {mobileNumber}
-                      </p>
-                    </div>
-
-                    <div className="d-flex justify-content-center mt-2">
-                      <OtpInput
-                        value={otp}
-                        onChange={setOtp}
-                        numInputs={6}
-                        renderSeparator={<span> </span>}
-                        inputType="password"
-                        renderInput={(props, i) => (
-                          <input {...props} autoFocus={i === 0} />
-                        )}
-                        inputStyle={{
-                          width: "2rem",
-                          height: "2rem",
-                          fontSize: "1.5rem",
-                          margin: "0 0.5rem",
-                          padding: "0.5rem",
-                          borderRadius: "5px",
-                          border: "1px solid #ccc",
-                        }}
-                      />
-                    </div>
-
-                    <p
-                      className={`small text-center mt-2 ${
-                        display ? "" : "d-none"
-                      }`}
-                      style={{ color: "red", fontWeight: "bold" }}
-                    >
-                      Either OTP is not Valid or has Expired
-                    </p>
-
-                    <div className="d-flex justify-content-between mt-2">
-                      <p className="small">Wait for {formattedTime} mins</p>
-                      <Link
-                        onClick={handleResendOTP}
-                        style={{
-                          pointerEvents: isTimerRunning ? "none" : "auto",
-                          color: isTimerRunning ? "gray" : "blue",
-                        }}
-                      >
-                        Resend OTP
-                      </Link>
-                    </div>
-
-                    <div className="d-grid mt-3">
-                      <Button onClick={verifyotp}>Verify OTP</Button>
-                    </div>
-                  </>
-                )}
-              </Card.Body>
-            </Col>
-
-            {/* ===== RIGHT PANEL ===== */}
-           {/* ===== RIGHT PANEL ===== */}
-<Col lg="7">
-  <Card.Body className="bg-primary bg-darker1 is-theme has-mask has-mask-1 h-100 d-flex align-items-start justify-content-center">
-    <div className="mask mask-1"></div>
-
-    {/* 🔹 SAME WRAPPER AS OLD CODE */}
-    <div className="d-flex flex-column justify-content-center align-items-center mt-n5">
-      <div className="brand-logo">
-        <LoginLogo />
-      </div>
-
-      <div className="row">
-        <div className="col-sm-12">
-          <div className="mt-2 ms-3 d-flex flex-column align-items-center justify-content-center">
-            <h2 style={{ color: "#fff" }}>Department of Sericulture</h2>
-            <h2 style={{ color: "#fff" }}>Government of Karnataka</h2>
+          {/* ===== BRAND PANEL (LEFT) ===== */}
+          <div className="auth-brand">
+            <div className="auth-brand-logo">
+              <LoginLogo />
+            </div>
+            <h1>e-Reshme Portal</h1>
+            <p>Department of Sericulture</p>
+            <p>Government of Karnataka</p>
+            <div className="auth-brand-badge">Official Government Portal</div>
           </div>
-        </div>
-      </div>
-    </div>
-  </Card.Body>
-</Col>
 
-          </Row>
-        </Card>
+          {/* ===== FORM PANEL (RIGHT) ===== */}
+          <div className="auth-form-panel">
+
+            {!toggle ? (
+              <>
+                <div className="auth-form-header">
+                  <h2>Welcome Back</h2>
+                  <p>Sign in to your government account</p>
+                  <div className="auth-divider" />
+                </div>
+
+                <form noValidate onSubmit={generateOTP}>
+                  <div className={`auth-field-wrap ${validated && !data.username ? "was-validated" : ""}`}>
+                    <label className="auth-field-label">User Name</label>
+                    <input
+                      className={`auth-input ${validated && !data.username ? "is-invalid" : ""}`}
+                      name="username"
+                      value={data.username}
+                      onChange={handleInputs}
+                      required
+                      autoComplete="username"
+                      placeholder="Enter your username"
+                    />
+                  </div>
+
+                  <div className={`auth-field-wrap ${validated && !data.password ? "was-validated" : ""}`}>
+                    <label className="auth-field-label">Password</label>
+                    <input
+                      className={`auth-input ${validated && !data.password ? "is-invalid" : ""}`}
+                      type="password"
+                      name="password"
+                      value={data.password}
+                      onChange={handleInputs}
+                      required
+                      autoComplete="current-password"
+                      placeholder="Enter your password"
+                    />
+                  </div>
+
+                  <button type="submit" className="auth-btn-primary">
+                    Login to Account
+                  </button>
+
+                  <a
+                    href="https://e-reshme.karnataka.gov.in/seriui/sericulture.apk"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="auth-btn-secondary"
+                  >
+                    Download Mobile App
+                  </a>
+                </form>
+              </>
+            ) : (
+              <>
+                <div className="auth-form-header">
+                  <h2>OTP Verification</h2>
+                  <p>Enter the one-time password sent to your registered mobile</p>
+                  <div className="auth-divider" />
+                </div>
+
+                <p className="auth-otp-info">
+                  OTP sent to: <strong>+91 {mobileNumber}</strong>
+                </p>
+
+                <div className="auth-otp-wrap">
+                  <OtpInput
+                    value={otp}
+                    onChange={setOtp}
+                    numInputs={6}
+                    renderSeparator={<span style={{ width: 6 }} />}
+                    inputType="password"
+                    renderInput={(props, i) => (
+                      <input {...props} autoFocus={i === 0} className="auth-otp-input" />
+                    )}
+                    inputStyle={{
+                      width: "44px",
+                      height: "48px",
+                      fontSize: "1.3rem",
+                      fontWeight: 700,
+                      borderRadius: "8px",
+                      border: "1.5px solid #bfd4ec",
+                      textAlign: "center",
+                      background: "#f0f6ff",
+                      color: "#0a4d8a",
+                    }}
+                  />
+                </div>
+
+                {display && (
+                  <p className="auth-error-msg">OTP is invalid or has expired. Please try again.</p>
+                )}
+
+                <div className="auth-timer-row">
+                  <span>Resend in {formattedTime}</span>
+                  <button
+                    type="button"
+                    className="auth-resend-btn"
+                    onClick={handleResendOTP}
+                    disabled={isTimerRunning}
+                  >
+                    Resend OTP
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  className="auth-btn-primary"
+                  style={{ marginTop: 20 }}
+                  onClick={verifyotp}
+                >
+                  Verify OTP
+                </button>
+              </>
+            )}
+          </div>
+
+        </div>
       </div>
     </Layout>
   );

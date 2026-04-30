@@ -979,6 +979,8 @@ import GrainageCocoonSupplyReport from "../pages/seed-and-dfl-managment/Grainage
 import GrainageCocoonButterflyReport from "../pages/seed-and-dfl-managment/GrainageCocoonButterflyReport";
 import GrainageEggDistributionReport from "../pages/seed-and-dfl-managment/GrainageEggDistributionReport";
 import GrainageEggProductionReport from "../pages/seed-and-dfl-managment/GrainageEggProductionReport";
+import GrainageFarmReport from "../pages/seed-and-dfl-managment/GrainageFarmReport";
+import GrainageMulberryWeeklyReport from "../pages/seed-and-dfl-managment/GrainageMulberryWeeklyReport";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
 import SeedMarketInvoiceReport from "../pages/market-and-auction/SeedMarketInvoiceReport";
 import SeedMarketBiddingSlipReport from "../pages/market-and-auction/SeedMarketBiddingSlipReport";
@@ -2070,6 +2072,8 @@ function Router() {
             <Route path="grainage-cocoon-butterfly-report" element={<GrainageCocoonButterflyReport />} />
             <Route path="grainage-egg-distribution-report" element={<GrainageEggDistributionReport />} />
             <Route path="grainage-egg-production-report" element={<GrainageEggProductionReport />} />
+            <Route path="grainage-farm-report" element={<GrainageFarmReport />} />
+            <Route path="grainage-mulberry-weekly-report" element={<GrainageMulberryWeeklyReport />} />
 
             <Route path="testing-of-moth" element={<TestingOfMoth />} />
             <Route

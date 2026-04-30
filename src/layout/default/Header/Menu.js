@@ -5836,6 +5836,28 @@ function Menu() {
                             </MenuItem>
                           </MenuSub>
                         </MenuItem>
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("P4 BSF Kunigal Report")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Farm Report")}
+                                to="/seriui/grainage-farm-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Mulberry Weekly Report")}
+                                to="/seriui/grainage-mulberry-weekly-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
                       </MenuSub>
                     </MenuItem>
 

@@ -81,16 +81,16 @@ const metricKeys = [
 ];
 
 const dummyMetrics = {
-  totalRegisteredFarmers: "--",
-  totalRegisteredReelers: "--",
-  totalRegisteredTraders: "--",
-  totalRegisteredExternalStakeholders: "--",
-  totalFarms: "--",
-  totalGrainages: "--",
-  totalMarkets: "--",
-  schemesOnlineServices: "--",
-  totalBeneficiaryApplications: "--",
-  totalAmountDisbursed: "--",
+  totalRegisteredFarmers: "1,27,760",
+  totalRegisteredReelers: "4,017",
+  totalRegisteredTraders: "63",
+  totalRegisteredExternalStakeholders: "567",
+  totalFarms: "89",
+  totalGrainages: "29",
+  totalMarkets: "40",
+  schemesOnlineServices: "27",
+  totalBeneficiaryApplications: "3279",
+  totalAmountDisbursed: "687676250",
 };
 
 const photoFlashImages = [
@@ -233,7 +233,6 @@ const HomePage = () => {
   const loginLink = actionLinks.find((action) => action.key === "login");
   const applicationStatusLink = actionLinks.find((action) => action.key === "applicationStatus");
   const otherLinks = actionLinks.filter((action) => action.key !== "login" && action.key !== "applicationStatus");
-  const formatGovTitle = (title) => title.replace(", Government of Karnataka", ",\nGovernment of Karnataka");
 
   return (
     <div
@@ -241,7 +240,9 @@ const HomePage = () => {
       style={{ "--text-scale": textScale }}
     >
       <div className="content-shell">
-        <div className="top-controls">
+
+        {/* ===== UTILITY BAR ===== */}
+        <div className="utility-bar">
           <div className="date-time-panel" aria-live="polite">
             <span className="date-day">{dayText}</span>
             <span className="date-full">{dateText}</span>
@@ -249,40 +250,36 @@ const HomePage = () => {
           </div>
 
           <div className="right-controls">
-            <div className="lang-toggle-wrap">
-              <div className="toggle-control language-toggle-control" role="group" aria-label="Language Toggle">
-                <span className="toggle-thumb" style={{ left: languageLeft }} />
-                <button type="button" className={language === "kn" ? "active" : ""} onClick={() => setLanguage("kn")}>
-                  Kannada
-                </button>
-                <button type="button" className={language === "en" ? "active" : ""} onClick={() => setLanguage("en")}>
-                  English
-                </button>
-              </div>
+            <div className="toggle-control language-toggle-control" role="group" aria-label="Language Toggle">
+              <span className="toggle-thumb" style={{ left: languageLeft }} />
+              <button type="button" className={language === "kn" ? "active" : ""} onClick={() => setLanguage("kn")}>
+                Kannada
+              </button>
+              <button type="button" className={language === "en" ? "active" : ""} onClick={() => setLanguage("en")}>
+                English
+              </button>
             </div>
 
-            <div className="theme-toggle-wrap">
-              <div className="toggle-control" role="group" aria-label="Theme Toggle">
-                <span className="toggle-thumb" style={{ left: themeLeft }} />
-                <button
-                  type="button"
-                  className={theme === "day" ? "active" : ""}
-                  onClick={() => setTheme("day")}
-                  aria-label="Day Mode"
-                  title="Day Mode"
-                >
-                  {"\u2600"}
-                </button>
-                <button
-                  type="button"
-                  className={theme === "night" ? "active" : ""}
-                  onClick={() => setTheme("night")}
-                  aria-label="Night Mode"
-                  title="Night Mode"
-                >
-                  {"\uD83C\uDF19"}
-                </button>
-              </div>
+            <div className="toggle-control" role="group" aria-label="Theme Toggle">
+              <span className="toggle-thumb" style={{ left: themeLeft }} />
+              <button
+                type="button"
+                className={theme === "day" ? "active" : ""}
+                onClick={() => setTheme("day")}
+                aria-label="Day Mode"
+                title="Day Mode"
+              >
+                {"☀"}
+              </button>
+              <button
+                type="button"
+                className={theme === "night" ? "active" : ""}
+                onClick={() => setTheme("night")}
+                aria-label="Night Mode"
+                title="Night Mode"
+              >
+                {"🌙"}
+              </button>
             </div>
 
             <div className="text-size-control" role="group" aria-label="Text Size">
@@ -296,153 +293,125 @@ const HomePage = () => {
           </div>
         </div>
 
-        <section className="hero-card">
-          <article className="profile-block left-corner-block">
-            <img className="circle-image" src={withBasePath("/images/left-profile.png")} alt={t.left.name} />
-            <h1 style={{ margin: '8px 0 2px', fontSize: 'calc(0.79rem * var(--text-scale))', fontWeight: 900, color: 'var(--blue-dark)', lineHeight: '1.28', fontFamily: 'Arial Black, Impact, Segoe UI, Arial, sans-serif' }}>{t.left.name}</h1>
-            <p style={{ margin: 0, fontSize: 'calc(0.79rem * var(--text-scale))', fontWeight: 900, color: 'var(--text-muted)', lineHeight: '1.28', whiteSpace: 'pre-line' ,fontFamily: 'Arial Black, Impact, Segoe UI, Arial, sans-serif' }}>{formatGovTitle(t.left.title)}</p>
-          </article>
-
-          <article className="center-block">
-            <img className="circle-image center-logo" src={withBasePath("/images/center-emblem.png")} alt="Portal emblem" />
-            <h1
-              style={{
-                margin: '8px 0 2px',
-                fontSize: 'calc(1.12rem * var(--text-scale))',
-                fontWeight: 900,
-                color: 'var(--blue-dark)',
-                lineHeight: '1.28',
-                // fontFamily: 'Arial Black, Impact, Segoe UI, Arial, sans-serif'
-                fontFamily: 'Poppins, Segoe UI, Tahoma, Arial, sans-serif'
-              }}
-            >
-              {t.center[0]}
-            </h1>
-            <p className="subtitle" style={{ margin: 0, fontSize: 'calc(0.92rem * var(--text-scale))', fontWeight: 900, color: '#174c7d', lineHeight: '1.28',fontFamily: 'Poppins, Segoe UI, Tahoma, Arial, sans-serif' }}>{t.center[1]}</p>
-            <p style={{ margin: 0, fontSize: 'calc(0.92rem * var(--text-scale))', fontWeight: 900, color: 'var(--text-muted)', lineHeight: '1.28',fontFamily: 'Poppins, Segoe UI, Tahoma, Arial, sans-serif' }}>{t.center[2]}</p>
-          </article>
-
-          <article className="profile-block right-corner-block">
-            <img className="circle-image" src={withBasePath("/images/pic.png")} alt={t.extra.name} />
-            <h2 style={{ margin: '8px 0 2px', fontSize: 'calc(0.79rem * var(--text-scale))', fontWeight: 900, color: 'var(--blue-dark)', lineHeight: '1.28', fontFamily: 'Poppins, Segoe UI, Tahoma, Arial, sans-serif' }}>{t.extra.name}</h2>
-            <p style={{ margin: 0, fontSize: 'calc(0.79rem * var(--text-scale))', fontWeight: 900, color: 'var(--text-muted)', lineHeight: '1.28', whiteSpace: 'pre-line',fontFamily: 'Poppins, Segoe UI, Tahoma, Arial, sans-serif' }}>{formatGovTitle(t.extra.title)}</p>
-          </article>
-        </section>
-
-        <section className="photo-flash-card">
-          <div className="photo-stage">
-            <img
-              src={photoSrc}
-              alt={`${t.actions.photoFlash} ${activePhoto + 1}`}
-              onError={() => setUseFallbackPhotos(true)}
-            />
+        {/* ===== PORTAL HEADER ===== */}
+        <header className="portal-header">
+          <div className="header-official header-official--left">
+            <img className="official-img" src={withBasePath("/images/left-profile.png")} alt={t.left.name} />
+            <div className="official-info">
+              <h3>{t.left.name}</h3>
+              <p>{t.left.title}</p>
+            </div>
           </div>
-          <div className="photo-dots">
-            {visiblePhotos.map((_, index) => (
-              <button
-                key={index}
-                type="button"
-                className={`dot ${index === activePhoto ? "active" : ""}`}
-                onClick={() => setActivePhoto(index)}
-                aria-label={`photo ${index + 1}`}
-              />
-            ))}
-          </div>
-        </section>
 
-        <section className="actions-grid">
+          <div className="header-center">
+            <img className="emblem-img" src={withBasePath("/images/center-emblem.png")} alt="Portal emblem" />
+            <div className="header-title-group">
+              <h1>{t.center[0]}</h1>
+              <p className="header-subtitle">{t.center[1]}</p>
+              <p className="header-dept">{t.center[2]}</p>
+            </div>
+          </div>
+
+          <div className="header-official header-official--right">
+            <img className="official-img" src={withBasePath("/images/pic.png")} alt={t.extra.name} />
+            <div className="official-info">
+              <h3>{t.extra.name}</h3>
+              <p>{t.extra.title}</p>
+            </div>
+          </div>
+        </header>
+
+        {/* ===== PORTAL NAV BAR ===== */}
+        <nav className="portal-nav" role="navigation" aria-label="Main navigation">
           {loginLink && (
-            <Link className="action-item action-link" to={loginLink.href}>
-              <span className="action-head">
-                <span className="action-icon" aria-hidden="true">
-                  {getActionIcon("login")}
-                </span>
-                <span>{t.actions.login}</span>
-              </span>
+            <Link className="nav-item nav-item--login" to={loginLink.href}>
+              <span className="nav-item-icon" aria-hidden="true">{getActionIcon("login")}</span>
+              {t.actions.login}
             </Link>
           )}
 
           {applicationStatusLink && (
-            <Link className="action-item action-link" to={applicationStatusLink.href}>
-              <span className="action-head">
-                <span className="action-icon" aria-hidden="true">
-                  {getActionIcon("applicationStatus")}
-                </span>
-                <span>{t.actions.applicationStatus}</span>
-              </span>
+            <Link className="nav-item" to={applicationStatusLink.href}>
+              <span className="nav-item-icon" aria-hidden="true">{getActionIcon("applicationStatus")}</span>
+              {t.actions.applicationStatus}
             </Link>
           )}
 
           {otherLinks.map((action) => (
-            <a key={action.key} className="action-item action-link" href={action.href} target="_blank" rel="noreferrer">
-              <span className="action-head">
-                <span className="action-icon" aria-hidden="true">
-                  {getActionIcon(action.key)}
-                </span>
-                <span>{t.actions[action.key]}</span>
-              </span>
+            <a key={action.key} className="nav-item" href={action.href} target="_blank" rel="noreferrer">
+              <span className="nav-item-icon" aria-hidden="true">{getActionIcon(action.key)}</span>
+              {t.actions[action.key]}
             </a>
           ))}
 
-          <a className="action-item action-link helpline-link" href="tel:08024413900">
-            <span className="action-head">
-              <span className="action-icon" aria-hidden="true">
-                {getActionIcon("helpline")}
-              </span>
-              <span>
-                {t.actions.helpline}: <span className="helpline-number">080 2441 3900</span>
-              </span>
-            </span>
+          <a className="nav-item" href="tel:08024413900">
+            <span className="nav-item-icon" aria-hidden="true">{getActionIcon("helpline")}</span>
+            {t.actions.helpline}: <span className="helpline-num">080 2441 3900</span>
           </a>
+        </nav>
 
-          {/*
-          {metricDefinitions.slice(0, 4).map((metric) => (
-            <div key={metric.key} className="action-item metric-item">
-              <div className="metric-head">
-                <span className="metric-icon" aria-hidden="true">
-                  {getMetricIcon(metric.key)}
-                </span>
-                <span className="metric-label">{metric.label}</span>
-              </div>
-              <strong className="metric-value">{metrics[metric.key] ?? "--"}</strong>
+        {/* ===== MAIN BODY: two-column ===== */}
+        <div className="portal-body">
+
+          {/* LEFT: Photo Slideshow */}
+          <div className="slideshow-col">
+            <div className="photo-stage">
+              <img
+                src={photoSrc}
+                alt={`${t.actions.photoFlash} ${activePhoto + 1}`}
+                onError={() => setUseFallbackPhotos(true)}
+              />
             </div>
-          ))}
-
-          {metricDefinitions.slice(4, 7).map((metric) => (
-            <div key={metric.key} className="action-item metric-item">
-              <div className="metric-head">
-                <span className="metric-icon" aria-hidden="true">
-                  {getMetricIcon(metric.key)}
-                </span>
-                <span className="metric-label">{metric.label}</span>
-              </div>
-              <strong className="metric-value">{metrics[metric.key] ?? "--"}</strong>
+            <p className="photo-caption">{t.center[1]} — {t.center[2]}</p>
+            <div className="photo-dots">
+              {visiblePhotos.map((_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  className={`dot ${index === activePhoto ? "active" : ""}`}
+                  onClick={() => setActivePhoto(index)}
+                  aria-label={`photo ${index + 1}`}
+                />
+              ))}
             </div>
-          ))}
+          </div>
 
-          {metricDefinitions.slice(7).map((metric) => (
-            <div key={metric.key} className="action-item metric-item">
-              <div className="metric-head">
-                <span className="metric-icon" aria-hidden="true">
-                  {getMetricIcon(metric.key)}
-                </span>
-                <span className="metric-label">{metric.label}</span>
+          {/* RIGHT: Statistics Panel */}
+          <div className="stats-col">
+            <div className="stats-panel">
+              <div className="stats-panel-header">
+                <span className="stats-panel-title">Portal Statistics</span>
+                <span className="stats-panel-badge">LIVE</span>
               </div>
-              <strong className="metric-value">{metrics[metric.key] ?? "--"}</strong>
+              <div className="metrics-list">
+                {metricDefinitions.map((metric) => (
+                  <div
+                    key={metric.key}
+                    className={`metric-row${metric.key === "totalAmountDisbursed" || metric.key === "schemesOnlineServices" ? " metric-row--accent" : ""}`}
+                  >
+                    <div className="metric-row-left">
+                      <span className="metric-row-icon" aria-hidden="true">{getMetricIcon(metric.key)}</span>
+                      <span className="metric-row-label">{metric.label}</span>
+                    </div>
+                    <strong className="metric-row-value">{metrics[metric.key] ?? "--"}</strong>
+                  </div>
+                ))}
+              </div>
             </div>
-          ))}
-          */}
-        </section>
+          </div>
 
+        </div>
+
+        {/* ===== FOOTER ===== */}
         <footer className="site-footer">
           <span>© Department of Sericulture, Government of Karnataka</span>
           <span className="footer-sep">|</span>
           <span>Designed and Developed by Senovag India Pvt. Ltd.</span>
         </footer>
+
       </div>
     </div>
   );
 };
 
 export default HomePage;
-
