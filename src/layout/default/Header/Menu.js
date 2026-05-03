@@ -5852,14 +5852,70 @@ function Menu() {
                           <MenuSub>
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Farm Report")}
-                                to="/seriui/grainage-farm-report"
+                                text={t("Mulberry Weekly Maintenance Report")}
+                                to="/seriui/grainage-mulberry-weekly-report"
                               />
                             </MenuItem>
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Mulberry Weekly Report")}
-                                to="/seriui/grainage-mulberry-weekly-report"
+                                text={t("Monthly Farm Report")}
+                                to="/seriui/grainage-monthly-farm-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Monthly Hatching Report (Form-27)")}
+                                to="/seriui/grainage-monthly-hatching-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Crop Harvest Details Report")}
+                                to="/seriui/grainage-crop-harvest-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("P4 Bilidevalaya Farm Report")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P4 Form-27 B Monthly Summary")}
+                                to="/seriui/grainage-p4-form-summary-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P4 Weekly Programme")}
+                                to="/seriui/grainage-p4-weekly-programme-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P4 Crop Harvest & Hatching Details")}
+                                to="/seriui/grainage-p4-crop-details-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("P3 Bilidevalaya Farm Report")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 Weekly Programme")}
+                                to="/seriui/grainage-p3-weekly-programme-report"
                               />
                             </MenuItem>
                           </MenuSub>
