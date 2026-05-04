@@ -989,6 +989,11 @@ import GrainageP4WeeklyProgrammeReport from "../pages/seed-and-dfl-managment/Gra
 import GrainageP4CropDetailsReport from "../pages/seed-and-dfl-managment/GrainageP4CropDetailsReport";
 import GrainageP3WeeklyProgrammeReport from "../pages/seed-and-dfl-managment/GrainageP3WeeklyProgrammeReport";
 import GrainageMarketWeeklyReport from "../pages/seed-and-dfl-managment/GrainageMarketWeeklyReport";
+import GrainageP3GrainageMonthlyReport from "../pages/seed-and-dfl-managment/GrainageP3GrainageMonthlyReport";
+import GrainageP3LotwiseMonthlyReport from "../pages/seed-and-dfl-managment/GrainageP3LotwiseMonthlyReport";
+import GrainageP3DflDistributionReport from "../pages/seed-and-dfl-managment/GrainageP3DflDistributionReport";
+import GrainageP3CocoonSupplyReport from "../pages/seed-and-dfl-managment/GrainageP3CocoonSupplyReport";
+import GrainageP3DflDistributionDetailsReport from "../pages/seed-and-dfl-managment/GrainageP3DflDistributionDetailsReport";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
 import SeedMarketInvoiceReport from "../pages/market-and-auction/SeedMarketInvoiceReport";
 import SeedMarketBiddingSlipReport from "../pages/market-and-auction/SeedMarketBiddingSlipReport";
@@ -2090,6 +2095,11 @@ function Router() {
             <Route path="grainage-p4-crop-details-report" element={<GrainageP4CropDetailsReport />} />
             <Route path="grainage-p3-weekly-programme-report" element={<GrainageP3WeeklyProgrammeReport />} />
             <Route path="market-weekly-report" element={<GrainageMarketWeeklyReport />} />
+            <Route path="grainage-p3-grainage-monthly-report" element={<GrainageP3GrainageMonthlyReport />} />
+            <Route path="grainage-p3-lotwise-monthly-report" element={<GrainageP3LotwiseMonthlyReport />} />
+            <Route path="grainage-p3-dfl-distribution-report" element={<GrainageP3DflDistributionReport />} />
+            <Route path="grainage-p3-cocoon-supply-report" element={<GrainageP3CocoonSupplyReport />} />
+            <Route path="grainage-p3-dfl-distribution-details-report" element={<GrainageP3DflDistributionDetailsReport />} />
 
             <Route path="testing-of-moth" element={<TestingOfMoth />} />
             <Route

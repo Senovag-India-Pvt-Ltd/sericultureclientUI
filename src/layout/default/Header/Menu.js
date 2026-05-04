@@ -5794,6 +5794,14 @@ function Menu() {
                       </MenuItem>
                     ) : null}
 
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Format Reports")}
+                        to="https://e-reshme.karnataka.gov.in/ssrsreport/ssrsreport/BVM5_Format.aspx"
+                        blank={true}
+                      />
+                    </MenuItem>
+
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("Other Format Reports")}
@@ -5908,20 +5916,56 @@ function Menu() {
                                 to="/seriui/grainage-p4-crop-details-report"
                               />
                             </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 Weekly Programme")}
+                                to="/seriui/grainage-p3-weekly-programme-report"
+                              />
+                            </MenuItem>
                           </MenuSub>
                         </MenuItem>
                         <MenuItem sub>
                           <MenuItemLink
-                            text={t("P3 Bilidevalaya Farm Report")}
+                            text={t("P3 Grainage Report")}
                             onClick={menuToggle}
                             onMouseEnter={menuHover}
                             sub
                           />
                           <MenuSub>
+
                             <MenuItem>
                               <MenuItemLink
-                                text={t("P3 Weekly Programme")}
-                                to="/seriui/grainage-p3-weekly-programme-report"
+                                text={t("P3 Grainage Monthly Progress Report")}
+                                to="/seriui/grainage-p3-grainage-monthly-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 Lotwise Monthly Report")}
+                                to="/seriui/grainage-p3-lotwise-monthly-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 DFL Distribution Report")}
+                                to="/seriui/grainage-p3-dfl-distribution-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 Cocoon Supply Report")}
+                                to="/seriui/grainage-p3-cocoon-supply-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 DFL Distribution Details Report")}
+                                to="/seriui/grainage-p3-dfl-distribution-details-report"
                               />
                             </MenuItem>
                           </MenuSub>
