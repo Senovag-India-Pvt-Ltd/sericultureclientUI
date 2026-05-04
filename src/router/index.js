@@ -988,6 +988,7 @@ import GrainageP4FormSummaryReport from "../pages/seed-and-dfl-managment/Grainag
 import GrainageP4WeeklyProgrammeReport from "../pages/seed-and-dfl-managment/GrainageP4WeeklyProgrammeReport";
 import GrainageP4CropDetailsReport from "../pages/seed-and-dfl-managment/GrainageP4CropDetailsReport";
 import GrainageP3WeeklyProgrammeReport from "../pages/seed-and-dfl-managment/GrainageP3WeeklyProgrammeReport";
+import GrainageMarketWeeklyReport from "../pages/seed-and-dfl-managment/GrainageMarketWeeklyReport";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
 import SeedMarketInvoiceReport from "../pages/market-and-auction/SeedMarketInvoiceReport";
 import SeedMarketBiddingSlipReport from "../pages/market-and-auction/SeedMarketBiddingSlipReport";
@@ -2088,6 +2089,7 @@ function Router() {
             <Route path="grainage-p4-weekly-programme-report" element={<GrainageP4WeeklyProgrammeReport />} />
             <Route path="grainage-p4-crop-details-report" element={<GrainageP4CropDetailsReport />} />
             <Route path="grainage-p3-weekly-programme-report" element={<GrainageP3WeeklyProgrammeReport />} />
+            <Route path="market-weekly-report" element={<GrainageMarketWeeklyReport />} />
 
             <Route path="testing-of-moth" element={<TestingOfMoth />} />
             <Route
