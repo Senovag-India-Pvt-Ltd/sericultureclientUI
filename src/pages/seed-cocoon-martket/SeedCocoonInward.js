@@ -1624,11 +1624,16 @@ const getIdList = (farmerId) => {
         )}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "12px" }}>
           {[
-            { label: t("Parental Lot Number"), value: data.lotNumberRsp },
-            { label: t("DFL Lot Number"), value: data.numbersOfDfls },
-            { label: t("Lot Variety"), value: data.raceOfDfls },
-            { label: t("Spun From Date"), value: data.spunFromDate },
-            { label: t("Spun To Date"), value: data.spunToDate },
+            { label: t("No of DFL's"), value: data.numbersOfDfls },
+            { label: t("Lot Number"), value: data.lotNumberRsp },
+            { label: t("Race"), value: data.raceName }, 
+            { label: t("Source of Dfls"), value: data.grainageName },
+            { label: t("Date of Brushing"), value: data.dateOfBrushing }, 
+            { label: t("No of Chandies"), value: data.noOfChandies },
+            { label: t("Estimated Qty of Cocoons (Kg's)"), value: data.expectedCocoon },
+            { label: t("Spun on Date (From)"), value: data.spunFromDate },
+            { label: t("Spun on Date (To)"), value: data.spunToDate },
+            
           ].map((item) => (
             <div key={item.label} style={{ background: "#f8fafd", border: "1.5px solid #e2e8f0", borderRadius: "8px", padding: "8px 12px" }}>
               <div style={{ fontSize: "11px", fontWeight: 700, color: "#1e67a8", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "2px" }}>{item.label}</div>
@@ -1716,10 +1721,12 @@ const getIdList = (farmerId) => {
                   {[
                     { label: t("No of DFL's"), value: item.numbersOfDfls },
                     { label: t("Lot No"), value: item.lotNumberRsp },
-                    { label: t("Rate Per 100 Dfls"), value: item.dflsSource },
-                    { label: t("Variety"), value: item.raceName },
-                    { label: t("Spun From Date"), value: item.spunFromDate },
-                    { label: t("Spun To Date"), value: item.spunToDate },
+                    { label: t("Rate per 100 Dfls"), value: item.dflsSource },
+                    { label: t("Race"), value: item.raceName },
+                     { label: t("Source of Dfls"), value: item.grainageName },
+                   { label: t("Date of Brushing"), value: item.dateOfBrushing  }, 
+                    { label: t("Spun on Date (From)"), value: item.spunFromDate },
+                    { label: t("Spun on Date (To)"), value: item.spunToDate },
                   ].map((f) => (
                     <div key={f.label} style={{ background: "#f8fafd", border: "1.5px solid #e2e8f0", borderRadius: "8px", padding: "8px 12px" }}>
                       <div style={{ fontSize: "11px", fontWeight: 700, color: "#1e67a8", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "2px" }}>{f.label}</div>
