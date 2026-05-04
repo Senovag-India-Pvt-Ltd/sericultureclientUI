@@ -5968,6 +5968,20 @@ function Menu() {
                                 to="/seriui/grainage-p3-dfl-distribution-details-report"
                               />
                             </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 DFL Preparation Programme Report")}
+                                to="/seriui/grainage-p3-dfl-preparation-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 Pupa & Moth Examination Report")}
+                                to="/seriui/grainage-p3-pupa-moth-exam-report"
+                              />
+                            </MenuItem>
                           </MenuSub>
                         </MenuItem>
                       </MenuSub>

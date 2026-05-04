@@ -994,6 +994,8 @@ import GrainageP3LotwiseMonthlyReport from "../pages/seed-and-dfl-managment/Grai
 import GrainageP3DflDistributionReport from "../pages/seed-and-dfl-managment/GrainageP3DflDistributionReport";
 import GrainageP3CocoonSupplyReport from "../pages/seed-and-dfl-managment/GrainageP3CocoonSupplyReport";
 import GrainageP3DflDistributionDetailsReport from "../pages/seed-and-dfl-managment/GrainageP3DflDistributionDetailsReport";
+import GrainageP3DflPreparationReport from "../pages/seed-and-dfl-managment/GrainageP3DflPreparationReport";
+import GrainageP3PupaMothExamReport from "../pages/seed-and-dfl-managment/GrainageP3PupaMothExamReport";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
 import SeedMarketInvoiceReport from "../pages/market-and-auction/SeedMarketInvoiceReport";
 import SeedMarketBiddingSlipReport from "../pages/market-and-auction/SeedMarketBiddingSlipReport";
@@ -2100,6 +2102,8 @@ function Router() {
             <Route path="grainage-p3-dfl-distribution-report" element={<GrainageP3DflDistributionReport />} />
             <Route path="grainage-p3-cocoon-supply-report" element={<GrainageP3CocoonSupplyReport />} />
             <Route path="grainage-p3-dfl-distribution-details-report" element={<GrainageP3DflDistributionDetailsReport />} />
+            <Route path="grainage-p3-dfl-preparation-report" element={<GrainageP3DflPreparationReport />} />
+            <Route path="grainage-p3-pupa-moth-exam-report" element={<GrainageP3PupaMothExamReport />} />
 
             <Route path="testing-of-moth" element={<TestingOfMoth />} />
             <Route
