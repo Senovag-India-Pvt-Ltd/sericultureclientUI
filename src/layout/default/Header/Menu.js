@@ -5503,6 +5503,12 @@ function Menu() {
                               />
                             </MenuItem>
                           ) : null}
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Market Weekly Report")}
+                              to="/seriui/market-weekly-report"
+                            />
+                          </MenuItem>
                         </MenuSub>
                       </MenuItem>
                     ) : null}
