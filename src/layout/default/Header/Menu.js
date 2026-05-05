@@ -5984,6 +5984,50 @@ function Menu() {
                             </MenuItem>
                           </MenuSub>
                         </MenuItem>
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("P3 Farms MSC Seed Area Reports")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Farm Form-27 B Report")}
+                                to="/seriui/farm-form27b-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Farm Mulberry Garden Report")}
+                                to="/seriui/farm-mulberry-garden-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Farm Chaki Center Monthly Report")}
+                                to="/seriui/farm-chaki-center-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Farm Weather Conditions Report")}
+                                to="/seriui/farm-weather-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Farm Future Chawki Plan Report")}
+                                to="/seriui/farm-future-chawki-plan-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
                       </MenuSub>
                     </MenuItem>
 

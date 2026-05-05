@@ -996,6 +996,11 @@ import GrainageP3CocoonSupplyReport from "../pages/seed-and-dfl-managment/Graina
 import GrainageP3DflDistributionDetailsReport from "../pages/seed-and-dfl-managment/GrainageP3DflDistributionDetailsReport";
 import GrainageP3DflPreparationReport from "../pages/seed-and-dfl-managment/GrainageP3DflPreparationReport";
 import GrainageP3PupaMothExamReport from "../pages/seed-and-dfl-managment/GrainageP3PupaMothExamReport";
+import GrainageFarmForm27BReport from "../pages/seed-and-dfl-managment/GrainageFarmForm27BReport";
+import GrainageFarmMulberryGardenReport from "../pages/seed-and-dfl-managment/GrainageFarmMulberryGardenReport";
+import GrainageFarmChakiCenterReport from "../pages/seed-and-dfl-managment/GrainageFarmChakiCenterReport";
+import GrainageFarmWeatherReport from "../pages/seed-and-dfl-managment/GrainageFarmWeatherReport";
+import GrainageFarmFutureChawkiPlanReport from "../pages/seed-and-dfl-managment/GrainageFarmFutureChawkiPlanReport";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
 import SeedMarketInvoiceReport from "../pages/market-and-auction/SeedMarketInvoiceReport";
 import SeedMarketBiddingSlipReport from "../pages/market-and-auction/SeedMarketBiddingSlipReport";
@@ -2104,6 +2109,11 @@ function Router() {
             <Route path="grainage-p3-dfl-distribution-details-report" element={<GrainageP3DflDistributionDetailsReport />} />
             <Route path="grainage-p3-dfl-preparation-report" element={<GrainageP3DflPreparationReport />} />
             <Route path="grainage-p3-pupa-moth-exam-report" element={<GrainageP3PupaMothExamReport />} />
+            <Route path="farm-form27b-report" element={<GrainageFarmForm27BReport />} />
+            <Route path="farm-mulberry-garden-report" element={<GrainageFarmMulberryGardenReport />} />
+            <Route path="farm-chaki-center-report" element={<GrainageFarmChakiCenterReport />} />
+            <Route path="farm-weather-report" element={<GrainageFarmWeatherReport />} />
+            <Route path="farm-future-chawki-plan-report" element={<GrainageFarmFutureChawkiPlanReport />} />
 
             <Route path="testing-of-moth" element={<TestingOfMoth />} />
             <Route
