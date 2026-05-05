@@ -6103,6 +6103,30 @@ function Menu() {
                                 to="/seriui/tsc-seed-cocoon-report"
                               />
                             </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Chawki & Cocoon Weekly Report")}
+                                to="/seriui/tsc-chawki-cocoon-weekly-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC New Mulberry Plantings Report")}
+                                to="/seriui/tsc-new-mulberry-plantings-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC P2 Brushed DFLs Report")}
+                                to="/seriui/tsc-p2-brushed-dfls-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Daily Chawki Weekly Report")}
+                                to="/seriui/tsc-daily-chawki-week-report"
+                              />
+                            </MenuItem>
                           </MenuSub>
                         </MenuItem>
                       </MenuSub>

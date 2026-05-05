@@ -1005,6 +1005,10 @@ import TscFarmerStatisticsReport from "../pages/seed-and-dfl-managment/TscFarmer
 import TscMulberryAreaReport from "../pages/seed-and-dfl-managment/TscMulberryAreaReport";
 import TscChawkiHarvestReport from "../pages/seed-and-dfl-managment/TscChawkiHarvestReport";
 import TscSeedCocoonReport from "../pages/seed-and-dfl-managment/TscSeedCocoonReport";
+import TscChawkiCocoonWeeklyReport from "../pages/seed-and-dfl-managment/TscChawkiCocoonWeeklyReport";
+import TscNewMulberryPlantingsReport from "../pages/seed-and-dfl-managment/TscNewMulberryPlantingsReport";
+import TscP2BrushedDflsReport from "../pages/seed-and-dfl-managment/TscP2BrushedDflsReport";
+import TscDailyChawkiWeekReport from "../pages/seed-and-dfl-managment/TscDailyChawkiWeekReport";
 import GrainageFarmForm27BReport from "../pages/seed-and-dfl-managment/GrainageFarmForm27BReport";
 import GrainageFarmMulberryGardenReport from "../pages/seed-and-dfl-managment/GrainageFarmMulberryGardenReport";
 import GrainageFarmChakiCenterReport from "../pages/seed-and-dfl-managment/GrainageFarmChakiCenterReport";
@@ -2127,6 +2131,10 @@ function Router() {
             <Route path="tsc-mulberry-area-report" element={<TscMulberryAreaReport />} />
             <Route path="tsc-chawki-harvest-report" element={<TscChawkiHarvestReport />} />
             <Route path="tsc-seed-cocoon-report" element={<TscSeedCocoonReport />} />
+            <Route path="tsc-chawki-cocoon-weekly-report" element={<TscChawkiCocoonWeeklyReport />} />
+            <Route path="tsc-new-mulberry-plantings-report" element={<TscNewMulberryPlantingsReport />} />
+            <Route path="tsc-p2-brushed-dfls-report" element={<TscP2BrushedDflsReport />} />
+            <Route path="tsc-daily-chawki-week-report" element={<TscDailyChawkiWeekReport />} />
             <Route path="farm-form27b-report" element={<GrainageFarmForm27BReport />} />
             <Route path="farm-mulberry-garden-report" element={<GrainageFarmMulberryGardenReport />} />
             <Route path="farm-chaki-center-report" element={<GrainageFarmChakiCenterReport />} />
