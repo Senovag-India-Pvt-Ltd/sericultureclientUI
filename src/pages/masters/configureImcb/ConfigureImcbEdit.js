@@ -255,11 +255,11 @@ function ConfigureImcbEdit() {
                           required
                         >
                          <option value="">{t("Select Imcb Table")}</option>
-                          <option value="1-Table(2 Basin)">1-Table(2 Basin)</option>
-                          <option value="2-Table(4 Basin)">2-Table(4 Basin)</option>
-                          <option value="3-Table(6 Basin)">3-Table(6 Basin)</option>
-                          <option value="6 Basin">6 Basin</option>
-                          <option value="10 Basin">10 Basin</option>
+                          <option value="1-Table(2 ಬೇಸಿನ್‌)">1-Table(2 ಬೇಸಿನ್‌)</option>
+                          <option value="2-Table(4 ಬೇಸಿನ್‌)">2-Table(4 ಬೇಸಿನ್‌)</option>
+                          <option value="3-Table(6 ಬೇಸಿನ್‌)">3-Table(6 ಬೇಸಿನ್‌)</option>
+                          <option value="6 ಬೇಸಿನ್‌">6 ಬೇಸಿನ್‌</option>
+                          <option value="10 ಬೇಸಿನ್‌">10 ಬೇಸಿನ್‌</option>
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
                           {t("Imcb Table is required")}
