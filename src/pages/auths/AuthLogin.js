@@ -26,6 +26,8 @@ const AuthLoginPage = () => {
   const [display, setDisplay] = useState(false);
   const [timer, setTimer] = useState(600);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [isGeneratingOTP, setIsGeneratingOTP] = useState(false);
+  const [isVerifyingOTP, setIsVerifyingOTP] = useState(false);
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
@@ -40,6 +42,8 @@ const AuthLoginPage = () => {
       setValidated(true);
       return;
     }
+    if (isGeneratingOTP) return;
+    setIsGeneratingOTP(true);
     axios
       .post(baseURL + "userMaster/generate-otp-by-user-name-and-password", data, { headers: _header })
       .then((res) => {
@@ -51,11 +55,19 @@ const AuthLoginPage = () => {
         } else {
           Swal.fire("Invalid Username or Password", "Please enter valid credentials", "error");
         }
+      })
+      .catch(() => {
+        Swal.fire("Error", "Could not generate OTP. Please try again.", "error");
+      })
+      .finally(() => {
+        setIsGeneratingOTP(false);
       });
     setValidated(true);
   };
 
   const verifyotp = () => {
+    if (isVerifyingOTP) return;
+    setIsVerifyingOTP(true);
     axios
       .post(baseURL + "userMaster/verify-otp-by-user-name", { username: data.username, enteredOtpByUser: otp }, { headers: _header })
       .then((res) => {
@@ -64,7 +76,12 @@ const AuthLoginPage = () => {
         } else {
           setOtp("");
           setDisplay(true);
+          setIsVerifyingOTP(false);
         }
+      })
+      .catch(() => {
+        Swal.fire("Error", "Could not verify OTP. Please try again.", "error");
+        setIsVerifyingOTP(false);
       });
   };
 
@@ -75,9 +92,11 @@ const AuthLoginPage = () => {
         navigate(APP_ROUTES.homepage);
       } else {
         Swal.fire("Login failed", "Invalid credentials", "error");
+        setIsVerifyingOTP(false);
       }
     } catch {
       Swal.fire("Error", "Login failed", "error");
+      setIsVerifyingOTP(false);
     }
   };
 
@@ -117,7 +136,7 @@ const AuthLoginPage = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 24px 16px;
+          padding: 24px 16px 70px;
           box-sizing: border-box;
           font-family: 'Poppins', 'Segoe UI', sans-serif;
           position: relative;
@@ -257,29 +276,35 @@ const AuthLoginPage = () => {
           margin: 0 !important;
         }
 
-        /* Brand text */
+        /* Brand text — unified color, size, font-weight */
         .auth-brand-name {
           color: #ffffff;
-          font-size: 1.75rem;
+          font-size: 1.25rem;
           font-weight: 900;
+          font-family: "Poppins", "Segoe UI", Tahoma, sans-serif;
           margin: 0 0 6px;
-          line-height: 1.15;
+          line-height: 1.2;
           position: relative; z-index: 1;
-          letter-spacing: -0.02em;
+          letter-spacing: 0.01em;
           text-shadow: 0 2px 12px rgba(0,0,0,0.25);
         }
         .auth-brand-dept {
-          color: rgba(255,255,255,0.78);
-          font-size: 0.9rem;
-          font-weight: 500;
+          color: #ffffff;
+          font-size: 1.25rem;
+          font-weight: 900;
+          font-family: "Poppins", "Segoe UI", Tahoma, sans-serif;
           margin: 0 0 4px;
+          line-height: 1.2;
           position: relative; z-index: 1;
+          letter-spacing: 0.01em;
         }
         .auth-brand-gov {
           color: #ffffff;
-          font-size: 1.05rem;
+          font-size: 1.25rem;
           font-weight: 900;
+          font-family: "Poppins", "Segoe UI", Tahoma, sans-serif;
           margin: 0;
+          line-height: 1.2;
           position: relative; z-index: 1;
           letter-spacing: 0.01em;
         }
@@ -421,6 +446,18 @@ const AuthLoginPage = () => {
           box-shadow: 0 10px 28px rgba(15,108,190,0.45);
         }
         .auth-btn-primary:active { transform: scale(0.99) translateY(0); box-shadow: 0 4px 14px rgba(15,108,190,0.3); }
+        .auth-btn-primary:disabled,
+        .auth-btn-primary[aria-busy="true"] {
+          opacity: 0.7;
+          cursor: not-allowed;
+          transform: none;
+          box-shadow: 0 4px 14px rgba(15,108,190,0.25);
+        }
+        .auth-btn-primary:disabled:hover {
+          opacity: 0.7;
+          transform: none;
+          box-shadow: 0 4px 14px rgba(15,108,190,0.25);
+        }
 
         /* OTP */
         .auth-otp-info {
@@ -479,6 +516,38 @@ const AuthLoginPage = () => {
         @media (max-width: 480px) {
           .auth-form-panel { padding: 28px 18px; }
           .auth-brand { padding: 28px 18px; }
+        }
+
+        /* Footer */
+        .auth-site-footer {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: linear-gradient(90deg, #083d6e 0%, #0f6cbe 50%, #1e85d8 100%);
+          color: #d8eaff;
+          padding: 12px 24px;
+          font-size: 0.82rem;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 14px;
+          text-align: center;
+          border-top: 2px solid rgba(255,255,255,0.08);
+          letter-spacing: 0.01em;
+          z-index: 2;
+        }
+        .auth-footer-sep { opacity: 0.45; }
+
+        @media (max-width: 640px) {
+          .auth-site-footer {
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 10px 12px;
+            font-size: 0.72rem;
+          }
+          .auth-footer-sep { display: none; }
         }
 
         /* Animations */
@@ -570,8 +639,17 @@ const AuthLoginPage = () => {
                     </div>
                   </div>
 
-                  <button type="submit" className="auth-btn-primary">
-                    Login to Account <span>→</span>
+                  <button
+                    type="submit"
+                    className="auth-btn-primary"
+                    disabled={isGeneratingOTP}
+                    aria-busy={isGeneratingOTP}
+                  >
+                    {isGeneratingOTP ? (
+                      <>Generating OTP… <span>⏳</span></>
+                    ) : (
+                      <>Login to Account <span>→</span></>
+                    )}
                   </button>
                 </form>
               </>
@@ -633,14 +711,27 @@ const AuthLoginPage = () => {
                   className="auth-btn-primary"
                   style={{ marginTop: 22 }}
                   onClick={verifyotp}
+                  disabled={isVerifyingOTP}
+                  aria-busy={isVerifyingOTP}
                 >
-                  Verify OTP <span>→</span>
+                  {isVerifyingOTP ? (
+                    <>Verifying… <span>⏳</span></>
+                  ) : (
+                    <>Verify OTP <span>→</span></>
+                  )}
                 </button>
               </>
             )}
           </div>
 
         </div>
+
+        {/* ===== FOOTER ===== */}
+        <footer className="auth-site-footer">
+          <span>© Department of Sericulture, Government of Karnataka</span>
+          <span className="auth-footer-sep">|</span>
+          <span>Designed and Developed by Senovag India Pvt. Ltd.</span>
+        </footer>
       </div>
     </Layout>
   );

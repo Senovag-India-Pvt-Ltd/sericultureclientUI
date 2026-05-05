@@ -162,17 +162,23 @@ function DbtApplicationStatusCheck() {
           box-shadow: 0 4px 16px rgba(0,0,0,0.2) !important;
         }
         .appstatus-header h2 {
-          color: #fff;
-          font-size: 1.2rem;
-          font-weight: 800;
+          color: #ffffff;
+          font-size: 1.25rem;
+          font-weight: 900;
+          font-family: "Poppins", "Segoe UI", Tahoma, sans-serif;
+          line-height: 1.2;
+          letter-spacing: 0.01em;
           margin: 0 0 4px;
           position: relative; z-index: 1;
         }
         .appstatus-header p {
-          color: rgba(255,255,255,0.82);
-          font-size: 0.88rem;
+          color: #ffffff;
+          font-size: 1.25rem;
+          font-weight: 900;
+          font-family: "Poppins", "Segoe UI", Tahoma, sans-serif;
+          line-height: 1.2;
+          letter-spacing: 0.01em;
           margin: 0;
-          font-weight: 500;
           position: relative; z-index: 1;
         }
 

@@ -1803,7 +1803,7 @@ function Menu() {
             {showMenu.Services_Service_Application ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Service Application")}
+                  text={t("Scheme Application")}
                   to="/seriui/service-application"
                 />
               </MenuItem>
@@ -1819,7 +1819,7 @@ function Menu() {
             {showMenu.Services_Service_Dashboard ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Service Dashboard")}
+                  text={t("Scheme Dashboard")}
                   to="/seriui/application-dashboard"
                 />
               </MenuItem>
@@ -1828,7 +1828,7 @@ function Menu() {
             {showMenu.Services_Service_Applications_For_Incentive_Bonus_Seed_Cocoon ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Applications For Incentive,Bonus,Seed Cocoon")}
+                  text={t("Incentive & Bonus Dashboard")}
                   to="/seriui/multiple-sanction-order-list"
                 />
               </MenuItem>
@@ -1985,7 +1985,7 @@ function Menu() {
             {showMenu.DBT_Drawing_Officer_List_For_K2_Push ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Drawing Officer List – K2 Push")}
+                  text={t("K2 Application Push")}
                   to="/seriui/drawing-officer-list-for-k2-push"
                 />
               </MenuItem>
@@ -1993,27 +1993,46 @@ function Menu() {
             {showMenu.DBT_Drawing_Officer_List_For_DBT_Push ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Drawing Officer List – DBT Push")}
+                  text={t("DBT Application Push")}
                   to="/seriui/drawing-officer-list-for-dbt-push"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.DBT_Drawing_Officer_List_For_Vendor_DBT_Push ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Drawing Officer List – Vendor DBT Push")}
-                  to="/seriui/drawing-officer-list-for-vendor-dbt-push"
                 />
               </MenuItem>
             ) : null}
             {showMenu.DBT_Drawing_Officer_List_For_Vendor_K2_Push ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Drawing Officer List – Vendor K2 Push")}
+                  text={t("K2 Application Push - Vendor")}
                   to="/seriui/drawing-officer-list-for-vendor-k2-push"
                 />
               </MenuItem>
             ) : null}
+            {showMenu.DBT_Drawing_Officer_List_For_Vendor_DBT_Push ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("DBT Application Push - Vendor")}
+                  to="/seriui/drawing-officer-list-for-vendor-dbt-push"
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.DBT_DBT_Pushed_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("DBT Pushed Applications")}
+                  to="/seriui/dbt-pushed-list"
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.DBT_Success_List ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Successful Applications")}
+                  to="/seriui/report-success-list"
+                />
+              </MenuItem>
+            ) : null}
+            
             {/* {showMenu.DBT_Reject_List ? (
               <MenuItem>
                 <MenuItemLink
@@ -2025,35 +2044,22 @@ function Menu() {
             {showMenu.DBT_Rejection_List_For_DBT ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Rejection List-K2")}
+                  text={t("K2 Rejected Applications")}
                   to="/seriui/report-reject-list-k2"
                 />
               </MenuItem>
             ) : null}
+            
             {showMenu.DBT_Rejection_List_For_K2? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Rejection List-DBT")}
+                  text={t("DBT Rejected Applications")}
                   to="/seriui/report-reject-list-dbt"
                 />
               </MenuItem>
             ) : null}
-            {showMenu.DBT_Success_List ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Report Success List")}
-                  to="/seriui/report-success-list"
-                />
-              </MenuItem>
-            ) : null}
-            {showMenu.DBT_DBT_Pushed_List ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("DBT Pushed List")}
-                  to="/seriui/dbt-pushed-list"
-                />
-              </MenuItem>
-            ) : null}
+            
+            
             {/* {showMenu.DBT_Drawing_Officer_List ? (
               <MenuItem>
                 <MenuItemLink
@@ -5497,6 +5503,12 @@ function Menu() {
                               />
                             </MenuItem>
                           ) : null}
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Market Weekly Report")}
+                              to="/seriui/market-weekly-report"
+                            />
+                          </MenuItem>
                         </MenuSub>
                       </MenuItem>
                     ) : null}
@@ -5782,6 +5794,14 @@ function Menu() {
                       </MenuItem>
                     ) : null}
 
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Format Reports")}
+                        to="https://e-reshme.karnataka.gov.in/ssrsreport/ssrsreport/BVM5_Format.aspx"
+                        blank={true}
+                      />
+                    </MenuItem>
+
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("Other Format Reports")}
@@ -5846,14 +5866,164 @@ function Menu() {
                           <MenuSub>
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Farm Report")}
-                                to="/seriui/grainage-farm-report"
+                                text={t("Mulberry Weekly Maintenance Report")}
+                                to="/seriui/grainage-mulberry-weekly-report"
                               />
                             </MenuItem>
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Mulberry Weekly Report")}
-                                to="/seriui/grainage-mulberry-weekly-report"
+                                text={t("Monthly Farm Report")}
+                                to="/seriui/grainage-monthly-farm-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Monthly Hatching Report (Form-27)")}
+                                to="/seriui/grainage-monthly-hatching-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Crop Harvest Details Report")}
+                                to="/seriui/grainage-crop-harvest-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("P4 Bilidevalaya Farm Report")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P4 Form-27 B Monthly Summary")}
+                                to="/seriui/grainage-p4-form-summary-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P4 Weekly Programme")}
+                                to="/seriui/grainage-p4-weekly-programme-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P4 Crop Harvest & Hatching Details")}
+                                to="/seriui/grainage-p4-crop-details-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 Weekly Programme")}
+                                to="/seriui/grainage-p3-weekly-programme-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("P3 Grainage Report")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 Grainage Monthly Progress Report")}
+                                to="/seriui/grainage-p3-grainage-monthly-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 Lotwise Monthly Report")}
+                                to="/seriui/grainage-p3-lotwise-monthly-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 DFL Distribution Report")}
+                                to="/seriui/grainage-p3-dfl-distribution-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 Cocoon Supply Report")}
+                                to="/seriui/grainage-p3-cocoon-supply-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 DFL Distribution Details Report")}
+                                to="/seriui/grainage-p3-dfl-distribution-details-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 DFL Preparation Programme Report")}
+                                to="/seriui/grainage-p3-dfl-preparation-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 Pupa & Moth Examination Report")}
+                                to="/seriui/grainage-p3-pupa-moth-exam-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("P3 Farms MSC Seed Area Reports")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Farm Form-27 B Report")}
+                                to="/seriui/farm-form27b-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Farm Mulberry Garden Report")}
+                                to="/seriui/farm-mulberry-garden-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Farm Chaki Center Monthly Report")}
+                                to="/seriui/farm-chaki-center-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Farm Weather Conditions Report")}
+                                to="/seriui/farm-weather-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Farm Future Chawki Plan Report")}
+                                to="/seriui/farm-future-chawki-plan-report"
                               />
                             </MenuItem>
                           </MenuSub>

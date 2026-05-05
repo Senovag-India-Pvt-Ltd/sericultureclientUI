@@ -36,8 +36,12 @@ const getMetricIcon = (key) => {
       return "🧵";
     case "totalRegisteredTraders":
       return "🏪";
-    case "totalRegisteredExternalStakeholders":
+    case "totalRegisteredRSP":
       return "🤝";
+    case "totalRegisteredNSSO":
+      return "🏛️";
+    case "totalRegisteredCRC":
+      return "🏢";
     case "totalFarms":
       return "🏡";
     case "totalGrainages":
@@ -77,7 +81,9 @@ const metricKeys = [
   "totalRegisteredFarmers",
   "totalRegisteredReelers",
   "totalRegisteredTraders",
-  "totalRegisteredExternalStakeholders",
+  "totalRegisteredRSP",
+  "totalRegisteredNSSO",
+  "totalRegisteredCRC",
   "totalFarms",
   "totalGrainages",
   "totalMarkets",
@@ -90,23 +96,34 @@ const dummyMetrics = {
   totalRegisteredFarmers: "1,27,760",
   totalRegisteredReelers: "4,017",
   totalRegisteredTraders: "63",
-  totalRegisteredExternalStakeholders: "567",
+  totalRegisteredRSP: "119",
+  totalRegisteredNSSO: "06",
+  totalRegisteredCRC: "411",
   totalFarms: "89",
   totalGrainages: "29",
   totalMarkets: "40",
   schemesOnlineServices: "27",
-  totalBeneficiaryApplications: "3279",
-  totalAmountDisbursed: "687676250",
+  totalBeneficiaryApplications: "3,279",
+  totalAmountDisbursed: "68,76,76,250",
 };
 
 const photoFlashImages = [
+  withBasePath("/images/mulberry-field.jpeg"),
+  withBasePath("/images/mulberry-tractor.jpeg"),
+  withBasePath("/images/grainage-building.jpeg"),
+  withBasePath("/images/cocoon-trays.jpeg"),
+  withBasePath("/images/cocoon-market.jpeg"),
+  withBasePath("/images/8.jpeg"),
+  withBasePath("/images/cocoon-garlands.jpeg"),
+  withBasePath("/images/cocoon-decoration.jpeg"),
+];
+
+const fallbackPhotoFlashImages = [
   withBasePath("/images/7.jpeg"),
   withBasePath("/images/8.jpeg"),
   withBasePath("/images/12.jpeg"),
   withBasePath("/images/17.jpeg"),
 ];
-
-const fallbackPhotoFlashImages = photoFlashImages;
 
 const HomePage = () => {
   const [language, setLanguage] = useState("kn");
@@ -301,43 +318,45 @@ const HomePage = () => {
 
         {/* ===== PORTAL HEADER ===== */}
         <header className="portal-header">
-          {/* 1. e-Reshme Portal — featured full left column */}
-          <div className="header-center header-brand-col">
+          {/* 1. e-Reshme Portal — logo left, text right */}
+          <div className="header-brand-col">
             <img className="emblem-img" src={withBasePath("/images/center-emblem.png")} alt="Portal emblem" />
             <div className="header-title-group">
               <h1>{t.center[0]}</h1>
-              <p className="header-subtitle">{t.center[1]}</p>
-              <p className="header-dept">{t.center[2]}</p>
+              <p className="header-subtitle">{t.center[1]}, {t.center[2]}</p>
             </div>
           </div>
 
-          {/* 2. CM Siddaramaiah — photo + name below */}
-          <div className="header-official header-official--stacked">
-            <img className="official-img" src={withBasePath("/images/left-profile.png")} alt={t.left.name} />
-            <div className="official-info">
-              <h3>{t.left.name}</h3>
-              <p className="official-role">{splitTitle(t.left.title)[0]}</p>
-              <p className="official-org">{splitTitle(t.left.title)[1]}</p>
+          {/* Ministers row — evenly spaced, last hugs extreme right */}
+          <div className="officials-row">
+            {/* 2. CM Siddaramaiah — photo + name below */}
+            <div className="header-official header-official--stacked">
+              <img className="official-img" src={withBasePath("/images/left-profile.png")} alt={t.left.name} />
+              <div className="official-info">
+                <h3>{t.left.name}</h3>
+                <p className="official-role">{splitTitle(t.left.title)[0]}</p>
+                <p className="official-org">{splitTitle(t.left.title)[1]}</p>
+              </div>
             </div>
-          </div>
 
-          {/* 3. Deputy CM D.K. Shivakumar — photo + name below */}
-          <div className="header-official header-official--stacked">
-            <img className="official-img" src={withBasePath("/images/right-profile.jpeg")} alt={t.right.name} />
-            <div className="official-info">
-              <h3>{t.right.name}</h3>
-              <p className="official-role">{splitTitle(t.right.title)[0]}</p>
-              <p className="official-org">{splitTitle(t.right.title)[1]}</p>
+            {/* 3. Deputy CM D.K. Shivakumar — photo + name below */}
+            <div className="header-official header-official--stacked">
+              <img className="official-img" src={withBasePath("/images/right-profile.jpeg")} alt={t.right.name} />
+              <div className="official-info">
+                <h3>{t.right.name}</h3>
+                <p className="official-role">{splitTitle(t.right.title)[0]}</p>
+                <p className="official-org">{splitTitle(t.right.title)[1]}</p>
+              </div>
             </div>
-          </div>
 
-          {/* 4. Minister Venkatesh — photo + name below */}
-          <div className="header-official header-official--stacked">
-            <img className="official-img" src={withBasePath("/images/pic.png")} alt={t.extra.name} />
-            <div className="official-info">
-              <h3>{t.extra.name}</h3>
-              <p className="official-role">{splitTitle(t.extra.title)[0]}</p>
-              <p className="official-org">{splitTitle(t.extra.title)[1]}</p>
+            {/* 4. Minister Venkatesh — photo + name below */}
+            <div className="header-official header-official--stacked">
+              <img className="official-img" src={withBasePath("/images/pic.png")} alt={t.extra.name} />
+              <div className="official-info">
+                <h3>{t.extra.name}</h3>
+                <p className="official-role">{splitTitle(t.extra.title)[0]}</p>
+                <p className="official-org">{splitTitle(t.extra.title)[1]}</p>
+              </div>
             </div>
           </div>
         </header>
@@ -401,7 +420,7 @@ const HomePage = () => {
           <div className="stats-col">
             <div className="stats-panel">
               <div className="stats-panel-header">
-                <span className="stats-panel-title">Portal Statistics</span>
+                <span className="stats-panel-title">Statistics</span>
                 <span className="stats-panel-badge">LIVE</span>
               </div>
               <div className="metrics-list">

@@ -981,6 +981,26 @@ import GrainageEggDistributionReport from "../pages/seed-and-dfl-managment/Grain
 import GrainageEggProductionReport from "../pages/seed-and-dfl-managment/GrainageEggProductionReport";
 import GrainageFarmReport from "../pages/seed-and-dfl-managment/GrainageFarmReport";
 import GrainageMulberryWeeklyReport from "../pages/seed-and-dfl-managment/GrainageMulberryWeeklyReport";
+import GrainageMonthlyFarmReport from "../pages/seed-and-dfl-managment/GrainageMonthlyFarmReport";
+import GrainageMonthlyHatchingReport from "../pages/seed-and-dfl-managment/GrainageMonthlyHatchingReport";
+import GrainageCropHarvestReport from "../pages/seed-and-dfl-managment/GrainageCropHarvestReport";
+import GrainageP4FormSummaryReport from "../pages/seed-and-dfl-managment/GrainageP4FormSummaryReport";
+import GrainageP4WeeklyProgrammeReport from "../pages/seed-and-dfl-managment/GrainageP4WeeklyProgrammeReport";
+import GrainageP4CropDetailsReport from "../pages/seed-and-dfl-managment/GrainageP4CropDetailsReport";
+import GrainageP3WeeklyProgrammeReport from "../pages/seed-and-dfl-managment/GrainageP3WeeklyProgrammeReport";
+import GrainageMarketWeeklyReport from "../pages/seed-and-dfl-managment/GrainageMarketWeeklyReport";
+import GrainageP3GrainageMonthlyReport from "../pages/seed-and-dfl-managment/GrainageP3GrainageMonthlyReport";
+import GrainageP3LotwiseMonthlyReport from "../pages/seed-and-dfl-managment/GrainageP3LotwiseMonthlyReport";
+import GrainageP3DflDistributionReport from "../pages/seed-and-dfl-managment/GrainageP3DflDistributionReport";
+import GrainageP3CocoonSupplyReport from "../pages/seed-and-dfl-managment/GrainageP3CocoonSupplyReport";
+import GrainageP3DflDistributionDetailsReport from "../pages/seed-and-dfl-managment/GrainageP3DflDistributionDetailsReport";
+import GrainageP3DflPreparationReport from "../pages/seed-and-dfl-managment/GrainageP3DflPreparationReport";
+import GrainageP3PupaMothExamReport from "../pages/seed-and-dfl-managment/GrainageP3PupaMothExamReport";
+import GrainageFarmForm27BReport from "../pages/seed-and-dfl-managment/GrainageFarmForm27BReport";
+import GrainageFarmMulberryGardenReport from "../pages/seed-and-dfl-managment/GrainageFarmMulberryGardenReport";
+import GrainageFarmChakiCenterReport from "../pages/seed-and-dfl-managment/GrainageFarmChakiCenterReport";
+import GrainageFarmWeatherReport from "../pages/seed-and-dfl-managment/GrainageFarmWeatherReport";
+import GrainageFarmFutureChawkiPlanReport from "../pages/seed-and-dfl-managment/GrainageFarmFutureChawkiPlanReport";
 import InvoicePermitAndMarketReceipt from "../pages/market-and-auction/InvoicePermitAndMarketReceipt";
 import SeedMarketInvoiceReport from "../pages/market-and-auction/SeedMarketInvoiceReport";
 import SeedMarketBiddingSlipReport from "../pages/market-and-auction/SeedMarketBiddingSlipReport";
@@ -2074,6 +2094,26 @@ function Router() {
             <Route path="grainage-egg-production-report" element={<GrainageEggProductionReport />} />
             <Route path="grainage-farm-report" element={<GrainageFarmReport />} />
             <Route path="grainage-mulberry-weekly-report" element={<GrainageMulberryWeeklyReport />} />
+            <Route path="grainage-monthly-farm-report" element={<GrainageMonthlyFarmReport />} />
+            <Route path="grainage-monthly-hatching-report" element={<GrainageMonthlyHatchingReport />} />
+            <Route path="grainage-crop-harvest-report" element={<GrainageCropHarvestReport />} />
+            <Route path="grainage-p4-form-summary-report" element={<GrainageP4FormSummaryReport />} />
+            <Route path="grainage-p4-weekly-programme-report" element={<GrainageP4WeeklyProgrammeReport />} />
+            <Route path="grainage-p4-crop-details-report" element={<GrainageP4CropDetailsReport />} />
+            <Route path="grainage-p3-weekly-programme-report" element={<GrainageP3WeeklyProgrammeReport />} />
+            <Route path="market-weekly-report" element={<GrainageMarketWeeklyReport />} />
+            <Route path="grainage-p3-grainage-monthly-report" element={<GrainageP3GrainageMonthlyReport />} />
+            <Route path="grainage-p3-lotwise-monthly-report" element={<GrainageP3LotwiseMonthlyReport />} />
+            <Route path="grainage-p3-dfl-distribution-report" element={<GrainageP3DflDistributionReport />} />
+            <Route path="grainage-p3-cocoon-supply-report" element={<GrainageP3CocoonSupplyReport />} />
+            <Route path="grainage-p3-dfl-distribution-details-report" element={<GrainageP3DflDistributionDetailsReport />} />
+            <Route path="grainage-p3-dfl-preparation-report" element={<GrainageP3DflPreparationReport />} />
+            <Route path="grainage-p3-pupa-moth-exam-report" element={<GrainageP3PupaMothExamReport />} />
+            <Route path="farm-form27b-report" element={<GrainageFarmForm27BReport />} />
+            <Route path="farm-mulberry-garden-report" element={<GrainageFarmMulberryGardenReport />} />
+            <Route path="farm-chaki-center-report" element={<GrainageFarmChakiCenterReport />} />
+            <Route path="farm-weather-report" element={<GrainageFarmWeatherReport />} />
+            <Route path="farm-future-chawki-plan-report" element={<GrainageFarmFutureChawkiPlanReport />} />
 
             <Route path="testing-of-moth" element={<TestingOfMoth />} />
             <Route

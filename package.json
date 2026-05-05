@@ -88,6 +88,5 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "/seriui/",
-  "proxy": "http://localhost:3000"
+  "homepage": "/seriui/"
 }
