@@ -1002,6 +1002,9 @@ import GrainageP2WeeklyProductionReport from "../pages/seed-and-dfl-managment/Gr
 import GrainageP2WeeklyTscSupplyReport from "../pages/seed-and-dfl-managment/GrainageP2WeeklyTscSupplyReport";
 import GrainageP2PebrineCasesReport from "../pages/seed-and-dfl-managment/GrainageP2PebrineCasesReport";
 import TscFarmerStatisticsReport from "../pages/seed-and-dfl-managment/TscFarmerStatisticsReport";
+import TscMulberryAreaReport from "../pages/seed-and-dfl-managment/TscMulberryAreaReport";
+import TscChawkiHarvestReport from "../pages/seed-and-dfl-managment/TscChawkiHarvestReport";
+import TscSeedCocoonReport from "../pages/seed-and-dfl-managment/TscSeedCocoonReport";
 import GrainageFarmForm27BReport from "../pages/seed-and-dfl-managment/GrainageFarmForm27BReport";
 import GrainageFarmMulberryGardenReport from "../pages/seed-and-dfl-managment/GrainageFarmMulberryGardenReport";
 import GrainageFarmChakiCenterReport from "../pages/seed-and-dfl-managment/GrainageFarmChakiCenterReport";
@@ -2121,6 +2124,9 @@ function Router() {
             <Route path="grainage-p2-weekly-tsc-supply-report" element={<GrainageP2WeeklyTscSupplyReport />} />
             <Route path="grainage-p2-pebrine-cases-report" element={<GrainageP2PebrineCasesReport />} />
             <Route path="tsc-farmer-stats-report" element={<TscFarmerStatisticsReport />} />
+            <Route path="tsc-mulberry-area-report" element={<TscMulberryAreaReport />} />
+            <Route path="tsc-chawki-harvest-report" element={<TscChawkiHarvestReport />} />
+            <Route path="tsc-seed-cocoon-report" element={<TscSeedCocoonReport />} />
             <Route path="farm-form27b-report" element={<GrainageFarmForm27BReport />} />
             <Route path="farm-mulberry-garden-report" element={<GrainageFarmMulberryGardenReport />} />
             <Route path="farm-chaki-center-report" element={<GrainageFarmChakiCenterReport />} />

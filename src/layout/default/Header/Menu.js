@@ -6029,10 +6029,8 @@ function Menu() {
                             </MenuItem>
                           </MenuSub>
                         </MenuItem>
-                      </MenuSub>
-                    </MenuItem>
 
-                    <MenuItem sub>
+                        <MenuItem sub>
                           <MenuItemLink
                             text={t("P2 Grainage Bilidevalaya")}
                             onClick={menuToggle}
@@ -6087,9 +6085,28 @@ function Menu() {
                                 to="/seriui/tsc-farmer-stats-report"
                               />
                             </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Mulberry Area Report")}
+                                to="/seriui/tsc-mulberry-area-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Chawki & Harvest Report")}
+                                to="/seriui/tsc-chawki-harvest-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Seed Cocoon Production Report")}
+                                to="/seriui/tsc-seed-cocoon-report"
+                              />
+                            </MenuItem>
                           </MenuSub>
                         </MenuItem>
-
+                      </MenuSub>
+                    </MenuItem>
                  </MenuSub>
                 </MenuItem>
               ) : null}
