@@ -996,6 +996,12 @@ import GrainageP3CocoonSupplyReport from "../pages/seed-and-dfl-managment/Graina
 import GrainageP3DflDistributionDetailsReport from "../pages/seed-and-dfl-managment/GrainageP3DflDistributionDetailsReport";
 import GrainageP3DflPreparationReport from "../pages/seed-and-dfl-managment/GrainageP3DflPreparationReport";
 import GrainageP3PupaMothExamReport from "../pages/seed-and-dfl-managment/GrainageP3PupaMothExamReport";
+import GrainageP2ProductionIncomeReport from "../pages/seed-and-dfl-managment/GrainageP2ProductionIncomeReport";
+import GrainageP2LotwiseMonthlyReport from "../pages/seed-and-dfl-managment/GrainageP2LotwiseMonthlyReport";
+import GrainageP2WeeklyProductionReport from "../pages/seed-and-dfl-managment/GrainageP2WeeklyProductionReport";
+import GrainageP2WeeklyTscSupplyReport from "../pages/seed-and-dfl-managment/GrainageP2WeeklyTscSupplyReport";
+import GrainageP2PebrineCasesReport from "../pages/seed-and-dfl-managment/GrainageP2PebrineCasesReport";
+import TscFarmerStatisticsReport from "../pages/seed-and-dfl-managment/TscFarmerStatisticsReport";
 import GrainageFarmForm27BReport from "../pages/seed-and-dfl-managment/GrainageFarmForm27BReport";
 import GrainageFarmMulberryGardenReport from "../pages/seed-and-dfl-managment/GrainageFarmMulberryGardenReport";
 import GrainageFarmChakiCenterReport from "../pages/seed-and-dfl-managment/GrainageFarmChakiCenterReport";
@@ -2109,6 +2115,12 @@ function Router() {
             <Route path="grainage-p3-dfl-distribution-details-report" element={<GrainageP3DflDistributionDetailsReport />} />
             <Route path="grainage-p3-dfl-preparation-report" element={<GrainageP3DflPreparationReport />} />
             <Route path="grainage-p3-pupa-moth-exam-report" element={<GrainageP3PupaMothExamReport />} />
+            <Route path="grainage-p2-production-income-report" element={<GrainageP2ProductionIncomeReport />} />
+            <Route path="grainage-p2-lotwise-monthly-report" element={<GrainageP2LotwiseMonthlyReport />} />
+            <Route path="grainage-p2-weekly-production-report" element={<GrainageP2WeeklyProductionReport />} />
+            <Route path="grainage-p2-weekly-tsc-supply-report" element={<GrainageP2WeeklyTscSupplyReport />} />
+            <Route path="grainage-p2-pebrine-cases-report" element={<GrainageP2PebrineCasesReport />} />
+            <Route path="tsc-farmer-stats-report" element={<TscFarmerStatisticsReport />} />
             <Route path="farm-form27b-report" element={<GrainageFarmForm27BReport />} />
             <Route path="farm-mulberry-garden-report" element={<GrainageFarmMulberryGardenReport />} />
             <Route path="farm-chaki-center-report" element={<GrainageFarmChakiCenterReport />} />

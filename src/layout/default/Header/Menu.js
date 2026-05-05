@@ -5925,6 +5925,7 @@ function Menu() {
                             </MenuItem>
                           </MenuSub>
                         </MenuItem>
+                        
                         <MenuItem sub>
                           <MenuItemLink
                             text={t("P3 Grainage Report")}
@@ -6030,6 +6031,64 @@ function Menu() {
                         </MenuItem>
                       </MenuSub>
                     </MenuItem>
+
+                    <MenuItem sub>
+                          <MenuItemLink
+                            text={t("P2 Grainage Bilidevalaya")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Production & Income Report")}
+                                to="/seriui/grainage-p2-production-income-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Lotwise Monthly Report")}
+                                to="/seriui/grainage-p2-lotwise-monthly-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Weekly Production Report")}
+                                to="/seriui/grainage-p2-weekly-production-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Weekly TSC Supply Report")}
+                                to="/seriui/grainage-p2-weekly-tsc-supply-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Pebrine Cases Report")}
+                                to="/seriui/grainage-p2-pebrine-cases-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("TSC Reports")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Farmer Statistics Report")}
+                                to="/seriui/tsc-farmer-stats-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
 
                  </MenuSub>
                 </MenuItem>
