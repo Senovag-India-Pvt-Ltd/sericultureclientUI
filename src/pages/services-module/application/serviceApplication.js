@@ -2775,45 +2775,19 @@ const handleCalculateUnitPrice = () => {
 
   // 1️⃣ FIRST: Chawki – Registered Private Bivoltine...
   if (isChawki) {
-    if (!data.taxAmount || Number(data.taxAmount) <= 0) {
-      Swal.fire({
-        icon: "warning",
-        title: "Validation Error",
-        text: "Please enter a valid Tax Invoice Amount.",
-      });
-      return;
-    }
-
     const totals = calculateTotals(chawkiData);
     const { totalEligible, totalClaimed } = totals;
 
-    // finalAmount = min(totalEligible, totalClaimed)
-    const subsidyAmount =
+    const finalAmount =
       Number(totalEligible || 0) > Number(totalClaimed || 0)
         ? Number(totalClaimed || 0)
         : Number(totalEligible || 0);
 
-    const taxInvoiceAmount = Number(data.taxAmount);
-    const finalAmount = taxInvoiceAmount < subsidyAmount ? taxInvoiceAmount : subsidyAmount;
+    setAmountValue((prev) => ({ ...prev, unitPrice: finalAmount }));
+    setData((prev) => ({ ...prev, expectedAmount: finalAmount }));
 
-    // Set Unit Cost (original subsidy before tax cap, same as other 8 schemes)
-    setAmountValue((prev) => ({
-      ...prev,
-      unitPrice: subsidyAmount,
-    }));
-
-    // Set Total Subsidy/Bonus/Incentive Amount (tax-capped final amount)
-    setData((prev) => ({
-      ...prev,
-      expectedAmount: finalAmount,
-    }));
-
-    // If you also want to store in subsidyAmount when sanctionForReeling is true:
     if (getIncentiveAndBonusData[0]?.sanctionForReeling) {
-      setData((prev) => ({
-        ...prev,
-        subsidyAmount: finalAmount,
-      }));
+      setData((prev) => ({ ...prev, subsidyAmount: finalAmount }));
     }
 
     Swal.fire({
@@ -2822,7 +2796,7 @@ const handleCalculateUnitPrice = () => {
       text: `Total Subsidy/Bonus/Incentive Amount = ${finalAmount}`,
     });
 
-    return; // ✅ stop further checks
+    return;
   }
 
 
@@ -7899,6 +7873,11 @@ const fetchReelerDetails = () => {
                               </Form.Group>
                             </Col>
 
+                            {!["IMCB-PSF", "MERM-PSF", "Adopting Heat Recovery Unit-PSF",
+                               "Adopting Solar Water Heater", "Adopting Solar power Generator",
+                               "Adopting Silent Generator", "Adopting Boiler-PSF", "ICB-PSF"
+                              ].includes(getIncentiveAndBonusData?.[0]?.calculationBasedOn) &&
+                              getIncentiveAndBonusData?.[0]?.unitForScheme !== "Rearing Equipment SS" && (
                             <Col lg="6">
                               <Form.Group className="form-group mt-n4">
                                 <Form.Label>
@@ -7919,6 +7898,7 @@ const fetchReelerDetails = () => {
                                 Tax Invoice Amount (in Rs) is required
                               </Form.Control.Feedback>
                             </Col>
+                            )}
                           </>
                         )}
 
@@ -11351,7 +11331,9 @@ const fetchReelerDetails = () => {
 
                     {(getIncentiveAndBonusData[0]?.sanctionForReeling ||
                         getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
-                          "Registered Private Bivoltine Chawki Rearing Center Subsidy") && (
+                          "Registered Private Bivoltine Chawki Rearing Center Subsidy") &&
+                        getIncentiveAndBonusData?.[0]?.calculationBasedOn !==
+                          "SS Construction Of Low Cost Shed to Permanent Rearing House" && (
                         <Col lg="4">
                           <Form.Group className="form-group mt-n5">
                             <Form.Label>
