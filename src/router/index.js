@@ -1009,6 +1009,14 @@ import TscChawkiCocoonWeeklyReport from "../pages/seed-and-dfl-managment/TscChaw
 import TscNewMulberryPlantingsReport from "../pages/seed-and-dfl-managment/TscNewMulberryPlantingsReport";
 import TscP2BrushedDflsReport from "../pages/seed-and-dfl-managment/TscP2BrushedDflsReport";
 import TscDailyChawkiWeekReport from "../pages/seed-and-dfl-managment/TscDailyChawkiWeekReport";
+import AdsGg1Report from "../pages/seed-and-dfl-managment/AdsGg1Report";
+import AdsGg2Report from "../pages/seed-and-dfl-managment/AdsGg2Report";
+import AdsGg3Report from "../pages/seed-and-dfl-managment/AdsGg3Report";
+import AdsPebrineReport from "../pages/seed-and-dfl-managment/AdsPebrineReport";
+import AdsPlantationReport from "../pages/seed-and-dfl-managment/AdsPlantationReport";
+import AdsRearerDetailsReport from "../pages/seed-and-dfl-managment/AdsRearerDetailsReport";
+import AdsChawkiReport from "../pages/seed-and-dfl-managment/AdsChawkiReport";
+import DdsWeeklyChawkiReport from "../pages/seed-and-dfl-managment/DdsWeeklyChawkiReport";
 import GrainageFarmForm27BReport from "../pages/seed-and-dfl-managment/GrainageFarmForm27BReport";
 import GrainageFarmMulberryGardenReport from "../pages/seed-and-dfl-managment/GrainageFarmMulberryGardenReport";
 import GrainageFarmChakiCenterReport from "../pages/seed-and-dfl-managment/GrainageFarmChakiCenterReport";
@@ -2135,6 +2143,14 @@ function Router() {
             <Route path="tsc-new-mulberry-plantings-report" element={<TscNewMulberryPlantingsReport />} />
             <Route path="tsc-p2-brushed-dfls-report" element={<TscP2BrushedDflsReport />} />
             <Route path="tsc-daily-chawki-week-report" element={<TscDailyChawkiWeekReport />} />
+            <Route path="ads-gg1-report" element={<AdsGg1Report />} />
+            <Route path="ads-gg2-report" element={<AdsGg2Report />} />
+            <Route path="ads-gg3-report" element={<AdsGg3Report />} />
+            <Route path="ads-pebrine-report" element={<AdsPebrineReport />} />
+            <Route path="ads-plantation-report" element={<AdsPlantationReport />} />
+            <Route path="ads-rearer-details-report" element={<AdsRearerDetailsReport />} />
+            <Route path="ads-chawki-report" element={<AdsChawkiReport />} />
+            <Route path="dds-weekly-chawki-report" element={<DdsWeeklyChawkiReport />} />
             <Route path="farm-form27b-report" element={<GrainageFarmForm27BReport />} />
             <Route path="farm-mulberry-garden-report" element={<GrainageFarmMulberryGardenReport />} />
             <Route path="farm-chaki-center-report" element={<GrainageFarmChakiCenterReport />} />

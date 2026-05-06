@@ -6129,6 +6129,65 @@ function Menu() {
                             </MenuItem>
                           </MenuSub>
                         </MenuItem>
+
+                        <MenuItem sub>
+                              <MenuItemLink
+                                text={t("ADS Reports")}
+                                onClick={menuToggle}
+                                onMouseEnter={menuHover}
+                                sub
+                              />
+                              <MenuSub>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · P1 Grainage Monthly Progress (GG-1)")}
+                                    to="/seriui/ads-gg1-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · Weekly DFL Production Progress (GG-2)")}
+                                    to="/seriui/ads-gg2-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · Production Cost & Income (GG-3)")}
+                                    to="/seriui/ads-gg3-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · Pebrine Cases Detail")}
+                                    to="/seriui/ads-pebrine-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · TSC Mulberry Plantation Statistics")}
+                                    to="/seriui/ads-plantation-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · TSC Farmer Demographics")}
+                                    to="/seriui/ads-rearer-details-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · TSC Chawki Programme & Achievement")}
+                                    to="/seriui/ads-chawki-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("DDS · Weekly Chawki Report")}
+                                    to="/seriui/dds-weekly-chawki-report"
+                                  />
+                                </MenuItem>
+                              </MenuSub>
+                            </MenuItem>
                       </MenuSub>
                     </MenuItem>
                  </MenuSub>
