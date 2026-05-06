@@ -6032,6 +6032,41 @@ function Menu() {
 
                         <MenuItem sub>
                           <MenuItemLink
+                            text={t("P3 Farms (Bivoltine)")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form-1 · Monthly Chawki Achievement")}
+                                to="/seriui/farm-form1-chawki-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form F-2 · Monthly Progress (per-lot)")}
+                                to="/seriui/farm-form2-progress-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form-3 · Farm Performance (CY vs PY)")}
+                                to="/seriui/farm-form3-performance-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form-4 · Crop Progress (CY vs PY)")}
+                                to="/seriui/farm-form4-crop-progress-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+
+                        <MenuItem sub>
+                          <MenuItemLink
                             text={t("P2 Grainage Bilidevalaya")}
                             onClick={menuToggle}
                             onMouseEnter={menuHover}

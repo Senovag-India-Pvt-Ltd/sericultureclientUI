@@ -1017,6 +1017,10 @@ import AdsPlantationReport from "../pages/seed-and-dfl-managment/AdsPlantationRe
 import AdsRearerDetailsReport from "../pages/seed-and-dfl-managment/AdsRearerDetailsReport";
 import AdsChawkiReport from "../pages/seed-and-dfl-managment/AdsChawkiReport";
 import DdsWeeklyChawkiReport from "../pages/seed-and-dfl-managment/DdsWeeklyChawkiReport";
+import FarmForm1ChawkiReport from "../pages/seed-and-dfl-managment/FarmForm1ChawkiReport";
+import FarmForm2ProgressReport from "../pages/seed-and-dfl-managment/FarmForm2ProgressReport";
+import FarmForm3PerformanceReport from "../pages/seed-and-dfl-managment/FarmForm3PerformanceReport";
+import FarmForm4CropProgressReport from "../pages/seed-and-dfl-managment/FarmForm4CropProgressReport";
 import GrainageFarmForm27BReport from "../pages/seed-and-dfl-managment/GrainageFarmForm27BReport";
 import GrainageFarmMulberryGardenReport from "../pages/seed-and-dfl-managment/GrainageFarmMulberryGardenReport";
 import GrainageFarmChakiCenterReport from "../pages/seed-and-dfl-managment/GrainageFarmChakiCenterReport";
@@ -2151,6 +2155,10 @@ function Router() {
             <Route path="ads-rearer-details-report" element={<AdsRearerDetailsReport />} />
             <Route path="ads-chawki-report" element={<AdsChawkiReport />} />
             <Route path="dds-weekly-chawki-report" element={<DdsWeeklyChawkiReport />} />
+            <Route path="farm-form1-chawki-report" element={<FarmForm1ChawkiReport />} />
+            <Route path="farm-form2-progress-report" element={<FarmForm2ProgressReport />} />
+            <Route path="farm-form3-performance-report" element={<FarmForm3PerformanceReport />} />
+            <Route path="farm-form4-crop-progress-report" element={<FarmForm4CropProgressReport />} />
             <Route path="farm-form27b-report" element={<GrainageFarmForm27BReport />} />
             <Route path="farm-mulberry-garden-report" element={<GrainageFarmMulberryGardenReport />} />
             <Route path="farm-chaki-center-report" element={<GrainageFarmChakiCenterReport />} />
