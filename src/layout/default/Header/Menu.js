@@ -5925,6 +5925,7 @@ function Menu() {
                             </MenuItem>
                           </MenuSub>
                         </MenuItem>
+                        
                         <MenuItem sub>
                           <MenuItemLink
                             text={t("P3 Grainage Report")}
@@ -6028,9 +6029,202 @@ function Menu() {
                             </MenuItem>
                           </MenuSub>
                         </MenuItem>
+
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("P3 Farms (Bivoltine)")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form-1 · Monthly Chawki Achievement")}
+                                to="/seriui/farm-form1-chawki-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form F-2 · Monthly Progress (per-lot)")}
+                                to="/seriui/farm-form2-progress-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form-3 · Farm Performance (CY vs PY)")}
+                                to="/seriui/farm-form3-performance-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form-4 · Crop Progress (CY vs PY)")}
+                                to="/seriui/farm-form4-crop-progress-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("P2 Grainage Bilidevalaya")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Production & Income Report")}
+                                to="/seriui/grainage-p2-production-income-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Lotwise Monthly Report")}
+                                to="/seriui/grainage-p2-lotwise-monthly-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Weekly Production Report")}
+                                to="/seriui/grainage-p2-weekly-production-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Weekly TSC Supply Report")}
+                                to="/seriui/grainage-p2-weekly-tsc-supply-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Pebrine Cases Report")}
+                                to="/seriui/grainage-p2-pebrine-cases-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("TSC Reports")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Farmer Statistics Report")}
+                                to="/seriui/tsc-farmer-stats-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Mulberry Area Report")}
+                                to="/seriui/tsc-mulberry-area-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Chawki & Harvest Report")}
+                                to="/seriui/tsc-chawki-harvest-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Seed Cocoon Production Report")}
+                                to="/seriui/tsc-seed-cocoon-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Chawki & Cocoon Weekly Report")}
+                                to="/seriui/tsc-chawki-cocoon-weekly-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC New Mulberry Plantings Report")}
+                                to="/seriui/tsc-new-mulberry-plantings-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC P2 Brushed DFLs Report")}
+                                to="/seriui/tsc-p2-brushed-dfls-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Daily Chawki Weekly Report")}
+                                to="/seriui/tsc-daily-chawki-week-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+
+                        <MenuItem sub>
+                              <MenuItemLink
+                                text={t("ADS Reports")}
+                                onClick={menuToggle}
+                                onMouseEnter={menuHover}
+                                sub
+                              />
+                              <MenuSub>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · P1 Grainage Monthly Progress (GG-1)")}
+                                    to="/seriui/ads-gg1-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · Weekly DFL Production Progress (GG-2)")}
+                                    to="/seriui/ads-gg2-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · Production Cost & Income (GG-3)")}
+                                    to="/seriui/ads-gg3-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · Pebrine Cases Detail")}
+                                    to="/seriui/ads-pebrine-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · TSC Mulberry Plantation Statistics")}
+                                    to="/seriui/ads-plantation-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · TSC Farmer Demographics")}
+                                    to="/seriui/ads-rearer-details-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · TSC Chawki Programme & Achievement")}
+                                    to="/seriui/ads-chawki-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("DDS · Weekly Chawki Report")}
+                                    to="/seriui/dds-weekly-chawki-report"
+                                  />
+                                </MenuItem>
+                              </MenuSub>
+                            </MenuItem>
                       </MenuSub>
                     </MenuItem>
-
                  </MenuSub>
                 </MenuItem>
               ) : null}
