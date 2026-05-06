@@ -487,7 +487,7 @@ const { t } = useTranslation();
                 <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          {t("Grainage")}<span className="text-danger">*</span>
+                          {t("Name Of The Grainage")}<span className="text-danger">*</span>
                         </Form.Label>
                         <Col>
                           <div className="form-control-wrap">
