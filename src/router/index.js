@@ -1168,6 +1168,7 @@ import { APP_BASE_PATH, APP_BASE_SEGMENT, APP_ROUTES } from "../config/appRoutes
 import SeedMarketTransactionReport from "../pages/reports-admin/market-auction/SeedMarketTransactionReport.js";
 import SeedMarketCreditReport from "../pages/reports-admin/market-auction/SeedMarketCreditReport.js";
 import SeedMFReports from "../pages/reports-admin/market-auction/SeedMFReports.js";
+import SeedMarketBiddingReport from "../pages/reports-admin/market-auction/SeedMarketBiddingReport.js";
 
 // Admin and Reports
 
@@ -1521,8 +1522,9 @@ function Router() {
 
             <Route
               path="seed-market-bidding-report"
-              element={<SeedMarketBiddingSlipReport />}
+              element={<SeedMarketBiddingReport />}
             />
+
             <Route
               path="seed-market-transaction-report"
               element={<SeedMarketTransactionReport />}

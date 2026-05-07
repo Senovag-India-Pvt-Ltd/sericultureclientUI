@@ -4685,7 +4685,7 @@ function Menu() {
                         {showMenu.Reports_Export_Report_Registration_Farmer_Registration_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Farmer Wise Report")}
+                              text={t("Farmer Registration Report")}
                               to="/seriui/farmer-wise-report"
                             />
                           </MenuItem>
@@ -4693,7 +4693,7 @@ function Menu() {
                         {showMenu.Reports_Export_Report_Registration_Reeler_Registration_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Reeler Wise Report")}
+                              text={t("Reeler Registration Report")}
                               to="/seriui/reeler-wise-report"
                             />
                           </MenuItem>
@@ -5477,7 +5477,7 @@ function Menu() {
                           <MenuItem>
                             <MenuItemLink
                               text={t("Bidding Slip")}
-                              to="/seriui/seed-market-bidding-report"
+                              to="/seriui/seed-market-bidding-slip-report"
                             />
                           </MenuItem>
                           <MenuItem>
@@ -5525,6 +5525,13 @@ function Menu() {
                             <MenuItemLink
                               text={t("Seed Market Credit Report")}
                               to="/seriui/seed-market-credit-report"
+                            />
+                          </MenuItem>
+
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Seed Market Bidding Report")}
+                              to="/seriui/seed-market-bidding-report"
                             />
                           </MenuItem>
                         </MenuSub>
@@ -5812,17 +5819,9 @@ function Menu() {
                       </MenuItem>
                     ) : null}
 
-                    <MenuItem>
-                      <MenuItemLink
-                        text={t("Format Reports")}
-                        to="https://e-reshme.karnataka.gov.in/ssrsreport/ssrsreport/BVM5_Format.aspx"
-                        blank={true}
-                      />
-                    </MenuItem>
-
                     <MenuItem sub>
                       <MenuItemLink
-                        text={t("Other Format Reports")}
+                        text={t("Format Reports-New")}
                         onClick={menuToggle}
                         onMouseEnter={menuHover}
                         sub
@@ -6341,6 +6340,14 @@ function Menu() {
                               </MenuSub>
                             </MenuItem>
                       </MenuSub>
+                    </MenuItem>
+
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Format Reports-Old")}
+                        to="https://e-reshme.karnataka.gov.in/ssrsreport/ssrsreport/BVM5_Format.aspx"
+                        blank={true}
+                      />
                     </MenuItem>
                  </MenuSub>
                 </MenuItem>
