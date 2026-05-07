@@ -1021,6 +1021,10 @@ import FarmForm1ChawkiReport from "../pages/seed-and-dfl-managment/FarmForm1Chaw
 import FarmForm2ProgressReport from "../pages/seed-and-dfl-managment/FarmForm2ProgressReport";
 import FarmForm3PerformanceReport from "../pages/seed-and-dfl-managment/FarmForm3PerformanceReport";
 import FarmForm4CropProgressReport from "../pages/seed-and-dfl-managment/FarmForm4CropProgressReport";
+import GrainageBriefMonthlyReport from "../pages/seed-and-dfl-managment/GrainageBriefMonthlyReport";
+import GrainageForm1DetailedReport from "../pages/seed-and-dfl-managment/GrainageForm1DetailedReport";
+import GrainageForm2SourceReport from "../pages/seed-and-dfl-managment/GrainageForm2SourceReport";
+import GrainageForm10ProductionReport from "../pages/seed-and-dfl-managment/GrainageForm10ProductionReport";
 import GrainageFarmForm27BReport from "../pages/seed-and-dfl-managment/GrainageFarmForm27BReport";
 import GrainageFarmMulberryGardenReport from "../pages/seed-and-dfl-managment/GrainageFarmMulberryGardenReport";
 import GrainageFarmChakiCenterReport from "../pages/seed-and-dfl-managment/GrainageFarmChakiCenterReport";
@@ -2159,6 +2163,10 @@ function Router() {
             <Route path="farm-form2-progress-report" element={<FarmForm2ProgressReport />} />
             <Route path="farm-form3-performance-report" element={<FarmForm3PerformanceReport />} />
             <Route path="farm-form4-crop-progress-report" element={<FarmForm4CropProgressReport />} />
+            <Route path="grainage-brief-monthly-report" element={<GrainageBriefMonthlyReport />} />
+            <Route path="grainage-form1-detailed-report" element={<GrainageForm1DetailedReport />} />
+            <Route path="grainage-form2-source-report" element={<GrainageForm2SourceReport />} />
+            <Route path="grainage-form10-report" element={<GrainageForm10ProductionReport />} />
             <Route path="farm-form27b-report" element={<GrainageFarmForm27BReport />} />
             <Route path="farm-mulberry-garden-report" element={<GrainageFarmMulberryGardenReport />} />
             <Route path="farm-chaki-center-report" element={<GrainageFarmChakiCenterReport />} />

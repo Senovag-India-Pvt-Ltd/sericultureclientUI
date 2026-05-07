@@ -6067,6 +6067,41 @@ function Menu() {
 
                         <MenuItem sub>
                           <MenuItemLink
+                            text={t("P1 and P2 Grainage Reports (Bivoltine)")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Grainage Monthly Brief Progress (CY + PY)")}
+                                to="/seriui/grainage-brief-monthly-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form-1 · Detailed Monthly Progress (race-split)")}
+                                to="/seriui/grainage-form1-detailed-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form-2 · Source-split Monthly Progress")}
+                                to="/seriui/grainage-form2-source-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form-10 · DFL Production Progress (in lakhs)")}
+                                to="/seriui/grainage-form10-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+
+                        <MenuItem sub>
+                          <MenuItemLink
                             text={t("P2 Grainage Bilidevalaya")}
                             onClick={menuToggle}
                             onMouseEnter={menuHover}

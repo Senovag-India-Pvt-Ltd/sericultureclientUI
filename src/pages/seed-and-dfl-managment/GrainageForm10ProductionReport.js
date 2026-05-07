@@ -1,0 +1,657 @@
+import React, { useEffect, useMemo, useState } from "react";
+import { Card, Form, Row, Col } from "react-bootstrap";
+import ReactSelect from "react-select";
+import Layout from "../../layout/default";
+import Block from "../../components/Block/Block";
+import api from "../../services/auth/api";
+import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
+
+const baseURL        = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLSeedDFL = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
+
+const MONTHS = [
+  { value: 1,  label: "January"   }, { value: 2,  label: "February"  },
+  { value: 3,  label: "March"     }, { value: 4,  label: "April"     },
+  { value: 5,  label: "May"       }, { value: 6,  label: "June"      },
+  { value: 7,  label: "July"      }, { value: 8,  label: "August"    },
+  { value: 9,  label: "September" }, { value: 10, label: "October"   },
+  { value: 11, label: "November"  }, { value: 12, label: "December"  },
+];
+
+const MONTH_KN = [
+  "", "ಜನವರಿ", "ಫೆಬ್ರವರಿ", "ಮಾರ್ಚ್", "ಏಪ್ರಿಲ್", "ಮೇ", "ಜೂನ್",
+  "ಜುಲೈ", "ಆಗಸ್ಟ್", "ಸೆಪ್ಟೆಂಬರ್", "ಅಕ್ಟೋಬರ್", "ನವೆಂಬರ್", "ಡಿಸೆಂಬರ್",
+];
+
+if (!document.getElementById("gf10-styles")) {
+  const s = document.createElement("style");
+  s.id = "gf10-styles";
+  s.innerHTML = `
+    .gf10-swal { border-radius:22px !important; padding:8px !important; box-shadow:0 30px 90px rgba(0,0,0,.22) !important; }
+    .gf10-swal .swal2-title { font-size:21px !important; font-weight:800 !important; color:#1a202c !important; }
+    .gf10-swal .swal2-icon { margin:20px auto 4px !important; }
+    .gf10-swal .swal2-html-container { margin:0 !important; padding:0 !important; }
+    .gf10-swal .swal2-confirm { border-radius:11px !important; padding:12px 30px !important; font-weight:700 !important; }
+    @keyframes gf10-in { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+    .gf10-wrap { animation: gf10-in .35s ease; }
+    .gf10-tr:hover td { filter:brightness(.97); transition:filter .12s; }
+    .gf10-table th { letter-spacing:.02em; }
+    .gf10-num { font-feature-settings:"tnum"; font-variant-numeric: tabular-nums; }
+    .gf10-scroll::-webkit-scrollbar { height:9px; }
+    .gf10-scroll::-webkit-scrollbar-track { background:#f0fdfa; border-radius:6px; }
+    .gf10-scroll::-webkit-scrollbar-thumb { background:linear-gradient(135deg,#0f766e,#3730a3); border-radius:6px; }
+  `;
+  document.head.appendChild(s);
+}
+
+const sel = { borderRadius: "8px", border: "1.5px solid #d0d9e8", padding: "7px 11px", fontSize: "13px", background: "#f8fafd", color: "#333", width: "100%" };
+const lbl = { fontSize: "11px", fontWeight: 700, color: "#5a6a7e", marginBottom: "4px", display: "block", textTransform: "uppercase", letterSpacing: "0.06em" };
+const btn = (bg, shadow, disabled) => ({
+  background: disabled ? "#c8d6e5" : bg,
+  border: "none", borderRadius: "9px", padding: "8px 18px",
+  fontWeight: 700, fontSize: "13px", color: "#fff",
+  cursor: disabled ? "not-allowed" : "pointer",
+  boxShadow: disabled ? "none" : shadow,
+  display: "flex", alignItems: "center", gap: "7px", whiteSpace: "nowrap",
+  transition: "transform .12s ease, box-shadow .12s ease",
+});
+
+const grainageSelectStyles = {
+  control: (base, state) => ({
+    ...base, borderRadius: "8px",
+    border: state.isFocused ? "1.5px solid #0f766e" : "1.5px solid #d0d9e8",
+    background: "#f0fdfa",
+    minHeight: "38px", fontSize: "13px", color: "#333",
+    boxShadow: state.isFocused ? "0 0 0 2px rgba(15,118,110,.18)" : "none",
+    "&:hover": { border: "1.5px solid #0f766e" },
+  }),
+  valueContainer: (base) => ({ ...base, padding: "2px 9px" }),
+  input: (base) => ({ ...base, margin: 0, padding: 0, color: "#333" }),
+  placeholder: (base) => ({ ...base, color: "#94a3b8", fontSize: "13px" }),
+  singleValue: (base) => ({ ...base, color: "#0f172a", fontWeight: 600 }),
+  indicatorSeparator: () => ({ display: "none" }),
+  dropdownIndicator: (base) => ({ ...base, padding: "4px 8px", color: "#0f766e" }),
+  menu: (base) => ({ ...base, borderRadius: "10px", overflow: "hidden", boxShadow: "0 10px 30px rgba(15,118,110,.18)" }),
+  menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+  menuList: (base) => ({ ...base, padding: 0, maxHeight: "260px" }),
+  option: (base, state) => ({
+    ...base, fontSize: "13px", padding: "8px 12px",
+    background: state.isSelected ? "linear-gradient(135deg,#0f766e,#14b8a6)" : state.isFocused ? "#ecfdf5" : "#fff",
+    color: state.isSelected ? "#fff" : "#0f172a",
+    cursor: "pointer",
+  }),
+};
+
+const numOrZero = (v) => {
+  const n = parseFloat(String(v ?? "").replace(/[^\d.\-]/g, ""));
+  return isNaN(n) ? 0 : n;
+};
+const fmt = (v) => {
+  const s = String(v ?? "").trim();
+  if (!s) return "—";
+  const n = parseFloat(s);
+  if (isNaN(n)) return s;
+  if (n === 0) return "0";
+  if (Number.isInteger(n)) return n.toLocaleString();
+  return n.toLocaleString(undefined, { maximumFractionDigits: 2 });
+};
+
+// Achievement % bg picker
+const pctBand = (p) => {
+  if (p >= 100) return { bg: "linear-gradient(135deg,#bbf7d0,#86efac)", color: "#14532d", border: "#4ade80" };
+  if (p >= 75)  return { bg: "linear-gradient(135deg,#a7f3d0,#6ee7b7)", color: "#065f46", border: "#34d399" };
+  if (p >= 50)  return { bg: "linear-gradient(135deg,#fde68a,#fcd34d)", color: "#92400e", border: "#fbbf24" };
+  return         { bg: "linear-gradient(135deg,#fecaca,#fca5a5)", color: "#7f1d1d", border: "#f87171" };
+};
+
+function GrainageForm10ProductionReport() {
+  const { t } = useTranslation();
+
+  const [filter, setFilter] = useState({ grainageId: "", financialYearMasterId: "", month: "" });
+  const [fyStartYear, setFyStartYear] = useState(null);
+
+  const [grainageList,      setGrainageList]      = useState([]);
+  const [financialYearList, setFinancialYearList] = useState([]);
+
+  const [dataRows,           setDataRows]           = useState([]);
+  const [hasReport,          setHasReport]          = useState(false);
+  const [isLoading,          setIsLoading]          = useState(false);
+  const [isDownloadingPdf,   setIsDownloadingPdf]   = useState(false);
+  const [isDownloadingExcel, setIsDownloadingExcel] = useState(false);
+
+  useEffect(() => {
+    api.get(baseURL + "grainageMaster/get-all").then((r) => setGrainageList(r.data.content.grainageMaster || [])).catch(() => setGrainageList([]));
+    api.get(baseURL + "financialYearMaster/get-all").then((r) => setFinancialYearList(r.data.content.financialYearMaster || [])).catch(() => setFinancialYearList([]));
+    api.get(baseURL + "financialYearMaster/get-is-default").then((r) => {
+      const fy = r.data.content;
+      if (fy) {
+        setFilter((p) => ({ ...p, financialYearMasterId: fy.financialYearMasterId }));
+        setFyStartYear(extractYear(fy.financialYear));
+      }
+    }).catch(() => {});
+  }, []);
+
+  const extractYear = (str) => {
+    if (!str) return null;
+    const yr = parseInt(String(str).trim().split("-")[0], 10);
+    return isNaN(yr) ? null : yr;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFilter((p) => ({ ...p, [name]: value }));
+    setHasReport(false); setDataRows([]);
+    if (name === "financialYearMasterId") {
+      const sel2 = financialYearList.find((f) => String(f.financialYearMasterId) === String(value));
+      setFyStartYear(sel2 ? extractYear(sel2.financialYear) : null);
+    }
+  };
+
+  const validate = () => {
+    if (!filter.grainageId)            return "Please select a Grainage.";
+    if (!filter.financialYearMasterId) return "Please select a Financial Year.";
+    if (!filter.month)                 return "Please select a Month.";
+    if (!fyStartYear)                  return "Could not determine the financial year start year.";
+    return null;
+  };
+
+  const showWarn = (msg) =>
+    Swal.fire({
+      icon: "warning", title: "Required Fields",
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Missing Selection</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: "Got it", confirmButtonColor: "#d97706",
+      background: "#fff", customClass: { popup: "gf10-swal" },
+    });
+  const showErr = (title, msg) =>
+    Swal.fire({
+      icon: "error", title,
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Failed</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: "Close", confirmButtonColor: "#e53e3e",
+      background: "#fff", customClass: { popup: "gf10-swal" },
+    });
+
+  const params = () => {
+    const m = Number(filter.month);
+    const year = m >= 4 ? fyStartYear : fyStartYear + 1;
+    return { grainageId: filter.grainageId, year, month: m };
+  };
+
+  const handleView = async (e) => {
+    e.preventDefault();
+    const err = validate(); if (err) { showWarn(err); return; }
+    setIsLoading(true); setHasReport(false); setDataRows([]);
+    try {
+      const res = await api.get(baseURLSeedDFL + "grainage-progress-report/grainage-form10", { params: params() });
+      setDataRows(Array.isArray(res.data) ? res.data : []);
+      setHasReport(true);
+    } catch {
+      showErr("Fetch Failed", "Failed to load the Grainage Form-10 Production report.");
+    } finally { setIsLoading(false); }
+  };
+
+  const handlePdf = async () => {
+    const err = validate(); if (err) { showWarn(err); return; }
+    setIsDownloadingPdf(true);
+    try {
+      const res = await api.get(baseURLSeedDFL + "grainage-progress-report/grainage-form10/pdf", { params: params(), responseType: "blob" });
+      window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
+    } catch { showErr("PDF Failed", "Could not generate the PDF report."); }
+    finally { setIsDownloadingPdf(false); }
+  };
+
+  const handleExcel = async () => {
+    const err = validate(); if (err) { showWarn(err); return; }
+    setIsDownloadingExcel(true);
+    try {
+      const res = await api.get(baseURLSeedDFL + "grainage-progress-report/grainage-form10/excel", { params: params(), responseType: "blob" });
+      const url = URL.createObjectURL(new Blob([res.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
+      const a = document.createElement("a"); a.href = url;
+      const m = Number(filter.month);
+      const year = m >= 4 ? fyStartYear : fyStartYear + 1;
+      a.download = `grainage_form10_${filter.grainageId}_${year}_${m}.xlsx`;
+      a.click(); URL.revokeObjectURL(url);
+    } catch { showErr("Excel Failed", "Could not generate the Excel report."); }
+    finally { setIsDownloadingExcel(false); }
+  };
+
+  const selectedGrainage = grainageList.find((g) => String(g.grainageMasterId) === String(filter.grainageId));
+  const monthNum   = Number(filter.month);
+  const monthKn    = MONTH_KN[monthNum] || "";
+  const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
+  const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
+  const grainageName = selectedGrainage?.grainageMasterName || "—";
+
+  // KPI extraction — Row 1 is "Month" (sl_no=1), Row 2 is "Month-end / FY-cum" (sl_no=2)
+  const kpis = useMemo(() => {
+    const monthRow = dataRows.find((r) => String(r.sl_no) === "1") || {};
+    const cumRow   = dataRows.find((r) => String(r.sl_no) === "2") || {};
+    const annualTot   = numOrZero(monthRow.ann_tot);
+    const tgtZoneM    = numOrZero(monthRow.tgt_zone_total);
+    const tgtBVM      = numOrZero(monthRow.tgt_bv_total);
+    const achZoneM    = numOrZero(monthRow.ach_zone_total);
+    const achZoneCum  = numOrZero(cumRow.ach_zone_total);
+    const achBVM      = numOrZero(monthRow.ach_bv_total);
+    const achBVCum    = numOrZero(cumRow.ach_bv_total);
+    const achCBM      = numOrZero(monthRow.ach_cb);
+    const achHYM      = numOrZero(monthRow.ach_hy);
+    return {
+      annualTot, tgtZoneM, tgtBVM,
+      achZoneM, achZoneCum, achBVM, achBVCum, achCBM, achHYM,
+      pctZoneM:   tgtZoneM === 0 ? 0 : (achZoneM / tgtZoneM) * 100,
+      pctBVM:     tgtBVM === 0   ? 0 : (achBVM / tgtBVM) * 100,
+      pctAnnual:  annualTot === 0 ? 0 : (achZoneCum / annualTot) * 100,
+    };
+  }, [dataRows]);
+
+  const zoneBand = pctBand(kpis.pctZoneM);
+  const annualBand = pctBand(kpis.pctAnnual);
+
+  return (
+    <Layout title={t("Grainage Form-10 · DFL Production Progress (in lakhs)")}>
+      <Block.Head><Block.HeadBetween><Block.HeadContent>
+        <Block.Title tag="h2">
+          {t("ಪಾತ ಸಂಖ್ಯೆ-10 · ಬಿತ್ತನೆ ಕೋಠಿ ಮೊಟ್ಟೆಗಳ ಉತ್ಪಾದನಾ ಪ್ರಗತಿ (ಲಕ್ಷಗಳಲ್ಲಿ)")}
+          <span style={{
+            display: "inline-flex", alignItems: "center", gap: "4px",
+            background: "linear-gradient(135deg,#ccfbf1,#a7f3d0)",
+            color: "#0f766e", padding: "2px 10px", borderRadius: "20px",
+            fontSize: "10.5px", fontWeight: 800, marginLeft: "8px",
+            border: "1px solid #5eead4", verticalAlign: "middle",
+          }}>P1 & P2 · Bivoltine · Form-10 · Production (in lakhs)</span>
+        </Block.Title>
+      </Block.HeadContent></Block.HeadBetween></Block.Head>
+
+      <Block className="mt-n4">
+        <Card className="mt-1" style={{ borderRadius: "14px", border: "none", boxShadow: "0 4px 20px rgba(15,118,110,.10)", overflow: "hidden" }}>
+          <div style={{
+            background: "linear-gradient(135deg,#0f766e 0%,#14b8a6 50%,#3730a3 100%)",
+            padding: "12px 20px", display: "flex", alignItems: "center", gap: "12px",
+          }}>
+            <div style={{ width: "42px", height: "42px", borderRadius: "12px", background: "rgba(255,255,255,.18)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px", backdropFilter: "blur(6px)" }}>📈</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "15px", lineHeight: 1.2 }}>
+                ಪಾತ ಸಂಖ್ಯೆ-10 · ಬಿತ್ತನೆ ಕೋಠಿ — ಮೊಟ್ಟೆಗಳ ಉತ್ಪಾದನಾ ಪ್ರಗತಿ (ಲಕ್ಷಗಳಲ್ಲಿ)
+                <span style={{ background: "rgba(255,255,255,.22)", padding: "2px 9px", borderRadius: "12px", marginLeft: "8px", fontSize: "10.5px", fontWeight: 800 }}>Form-10</span>
+              </div>
+              <div style={{ color: "rgba(255,255,255,.85)", fontSize: "11px", marginTop: "2px" }}>P1 &amp; P2 Grainage (Bivoltine) — DFL Production Progress (in lakhs): Annual Target / Programme / Achievement, race-split (CB / P2 / P1 / HY / BV-Total / Zone)</div>
+            </div>
+            {hasReport && (
+              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                <span style={{ background: "rgba(255,255,255,.22)", borderRadius: "20px", padding: "4px 12px", color: "#fff", fontSize: "11px", fontWeight: 700, backdropFilter: "blur(6px)" }}>{grainageName}</span>
+                <span style={{ background: "rgba(255,255,255,.22)", borderRadius: "20px", padding: "4px 12px", color: "#fff", fontSize: "11px", fontWeight: 700, backdropFilter: "blur(6px)" }}>{monthLabel}{monthKn ? ` · ${monthKn}` : ""} {monthYear || ""}</span>
+              </div>
+            )}
+          </div>
+
+          <Card.Body style={{ padding: "16px 20px 18px", background: "linear-gradient(180deg,#ffffff,#f0fdfa)" }}>
+            <Form onSubmit={handleView}>
+              <Row className="g-2 align-items-end">
+                <Col md={4}>
+                  <label style={lbl}>Grainage <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <ReactSelect
+                    options={grainageList.map((g) => ({
+                      value: String(g.grainageMasterId),
+                      label: g.grainageMasterName + (g.grainageType ? ` · ${g.grainageType}` : ""),
+                    }))}
+                    placeholder="— Search Grainage —"
+                    isSearchable isClearable
+                    menuPlacement="auto"
+                    menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                    menuPosition="fixed"
+                    styles={grainageSelectStyles}
+                    value={
+                      grainageList
+                        .map((g) => ({
+                          value: String(g.grainageMasterId),
+                          label: g.grainageMasterName + (g.grainageType ? ` · ${g.grainageType}` : ""),
+                        }))
+                        .find((o) => o.value === String(filter.grainageId)) || null
+                    }
+                    onChange={(opt) => {
+                      setFilter((p) => ({ ...p, grainageId: opt?.value || "" }));
+                      setHasReport(false); setDataRows([]);
+                    }}
+                    noOptionsMessage={() => "No grainage found"}
+                  />
+                </Col>
+                <Col md={2}>
+                  <label style={lbl}>Financial Year <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <Form.Select name="financialYearMasterId" value={filter.financialYearMasterId} onChange={handleChange} style={sel}>
+                    <option value="">— Select Year —</option>
+                    {financialYearList.map((f) => (<option key={f.financialYearMasterId} value={f.financialYearMasterId}>{f.financialYear}</option>))}
+                  </Form.Select>
+                </Col>
+                <Col md={2}>
+                  <label style={lbl}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <Form.Select name="month" value={filter.month} onChange={handleChange} style={sel}>
+                    <option value="">— Month —</option>
+                    {MONTHS.map((m) => (<option key={m.value} value={m.value}>{m.label}</option>))}
+                  </Form.Select>
+                </Col>
+                <Col md={4}>
+                  <div className="d-flex gap-2 flex-wrap">
+                    <button type="submit" disabled={isLoading} style={btn("linear-gradient(135deg,#0f766e,#14b8a6)", "0 4px 12px rgba(15,118,110,.32)", isLoading)}>
+                      {isLoading ? <><span className="spinner-border spinner-border-sm" /> Loading…</> : <>📋 View</>}
+                    </button>
+                    <button type="button" disabled={isDownloadingPdf} onClick={handlePdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 4px 12px rgba(185,28,28,.30)", isDownloadingPdf)}>
+                      {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📄 PDF</>}
+                    </button>
+                    <button type="button" disabled={isDownloadingExcel} onClick={handleExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 4px 12px rgba(21,128,61,.30)", isDownloadingExcel)}>
+                      {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📊 Excel</>}
+                    </button>
+                  </div>
+                </Col>
+              </Row>
+            </Form>
+          </Card.Body>
+        </Card>
+
+        {hasReport && (
+          <div className="gf10-wrap mt-4">
+            {/* Unit & legend strip */}
+            <div className="d-flex flex-wrap gap-2 mb-3">
+              <div style={legendChip("linear-gradient(135deg,#fde68a,#fcd34d)", "#78350f", "#fbbf24")}>
+                <span style={{ fontSize: "11px", fontWeight: 800 }}>📏 Unit</span>
+                <span style={{ fontSize: "11.5px", fontWeight: 700 }}>ಲಕ್ಷಗಳಲ್ಲಿ · in lakhs</span>
+              </div>
+              <div style={legendChip("linear-gradient(135deg,#fed7aa,#fdba74)", "#7c2d12", "#fb923c")}>
+                <span style={{ fontSize: "11px", fontWeight: 800 }}>CB</span>
+                <span style={{ fontSize: "11.5px", fontWeight: 700 }}>ಮಿಶ್ರತಳಿ · Cross-Breed</span>
+              </div>
+              <div style={legendChip("linear-gradient(135deg,#bfdbfe,#93c5fd)", "#1e3a8a", "#60a5fa")}>
+                <span style={{ fontSize: "11px", fontWeight: 800 }}>P2</span>
+                <span style={{ fontSize: "11.5px", fontWeight: 700 }}>ದ್ವಿತಳಿ ಪಿ2 · Bivoltine P2</span>
+              </div>
+              <div style={legendChip("linear-gradient(135deg,#c7d2fe,#a5b4fc)", "#3730a3", "#818cf8")}>
+                <span style={{ fontSize: "11px", fontWeight: 800 }}>P1</span>
+                <span style={{ fontSize: "11.5px", fontWeight: 700 }}>ದ್ವಿತಳಿ ಪಿ1 · Bivoltine P1</span>
+              </div>
+              <div style={legendChip("linear-gradient(135deg,#a7f3d0,#6ee7b7)", "#064e3b", "#34d399")}>
+                <span style={{ fontSize: "11px", fontWeight: 800 }}>HY</span>
+                <span style={{ fontSize: "11.5px", fontWeight: 700 }}>ದ್ವಿತಳಿ ಹೈ · Hybrid CSR</span>
+              </div>
+              <div style={legendChip("linear-gradient(135deg,#ddd6fe,#c4b5fd)", "#4c1d95", "#a78bfa")}>
+                <span style={{ fontSize: "11px", fontWeight: 800 }}>BV</span>
+                <span style={{ fontSize: "11.5px", fontWeight: 700 }}>ಒಟ್ಟು ದ್ವಿತಳಿ · BV Total</span>
+              </div>
+              <div style={legendChip("linear-gradient(135deg,#fcd34d,#fbbf24)", "#78350f", "#f59e0b")}>
+                <span style={{ fontSize: "11px", fontWeight: 800 }}>Σ</span>
+                <span style={{ fontSize: "11.5px", fontWeight: 700 }}>ವಲಯ · Zone Grand Total</span>
+              </div>
+            </div>
+
+            <div className="d-flex flex-wrap gap-3 mb-3 align-items-center">
+              <div style={kpi("#ccfbf1", "#5eead4", "#0f766e")}>
+                <span style={kpiLbl("#0f766e")}>Grainage</span>
+                <span style={{ ...kpiVal("#134e4a", 14), fontWeight: 800 }}>{grainageName}</span>
+              </div>
+              <div style={kpi("#fef3c7", "#fcd34d", "#92400e")}>
+                <span style={kpiLbl("#92400e")}>Period</span>
+                <span style={{ ...kpiVal("#78350f", 13.5), fontWeight: 700 }}>{monthLabel} {monthYear}</span>
+              </div>
+              <div style={kpi("#fed7aa", "#fb923c", "#7c2d12")}>
+                <span style={kpiLbl("#7c2d12")}>🎯 ವಾರ್ಷಿಕ ಗುರಿ Annual Tgt</span>
+                <span className="gf10-num" style={kpiVal("#7c2d12", 16)}>{kpis.annualTot.toLocaleString()}</span>
+                <span style={{ fontSize: "10.5px", color: "#9a3412", fontWeight: 700, marginTop: "1px" }}>Zone Total</span>
+              </div>
+              <div style={kpi("#fde68a", "#fcd34d", "#78350f")}>
+                <span style={kpiLbl("#78350f")}>📅 ಮಾಸ ಗುರಿ Monthly Zone</span>
+                <span className="gf10-num" style={kpiVal("#78350f", 16)}>{kpis.tgtZoneM.toLocaleString()}</span>
+              </div>
+              <div style={kpi("#a7f3d0", "#6ee7b7", "#065f46")}>
+                <span style={kpiLbl("#065f46")}>✅ ಸಾಧನೆ Zone (Month)</span>
+                <span className="gf10-num" style={kpiVal("#064e3b", 16)}>{kpis.achZoneM.toLocaleString()}</span>
+                <span style={{ fontSize: "10.5px", color: "#065f46", fontWeight: 700, marginTop: "1px" }}>FY Cum: {kpis.achZoneCum.toLocaleString()}</span>
+              </div>
+              <div style={kpi("#ddd6fe", "#a78bfa", "#5b21b6")}>
+                <span style={kpiLbl("#5b21b6")}>🥚 ದ್ವಿತಳಿ BV (Month)</span>
+                <span className="gf10-num" style={kpiVal("#4c1d95", 16)}>{kpis.achBVM.toLocaleString()}</span>
+                <span style={{ fontSize: "10.5px", color: "#5b21b6", fontWeight: 700, marginTop: "1px" }}>FY Cum: {kpis.achBVCum.toLocaleString()}</span>
+              </div>
+              <div style={{
+                ...kpi(zoneBand.bg.replace(/\(.*\)/, "(135deg,#ffffff,#ffffff)"), zoneBand.border, zoneBand.color),
+                background: zoneBand.bg.replace("135deg,", "135deg,") + ", #ffffff",
+              }}>
+                <span style={kpiLbl(zoneBand.color)}>
+                  {kpis.pctZoneM >= 100 ? "🎉" : "📊"} ಶೇ. ಸಾಧನೆ Zone Ach %
+                </span>
+                <span className="gf10-num" style={kpiVal(zoneBand.color, 18)}>{kpis.pctZoneM.toFixed(2)}%</span>
+                <span style={{ fontSize: "10.5px", color: zoneBand.color, fontWeight: 700, marginTop: "1px", opacity: .85 }}>vs Monthly Tgt</span>
+              </div>
+              <div style={{
+                ...kpi(annualBand.bg.replace(/\(.*\)/, "(135deg,#ffffff,#ffffff)"), annualBand.border, annualBand.color),
+                background: annualBand.bg + ", #ffffff",
+              }}>
+                <span style={kpiLbl(annualBand.color)}>
+                  📅 Annual Progress %
+                </span>
+                <span className="gf10-num" style={kpiVal(annualBand.color, 16)}>{kpis.pctAnnual.toFixed(2)}%</span>
+                <span style={{ fontSize: "10.5px", color: annualBand.color, fontWeight: 700, marginTop: "1px", opacity: .85 }}>FY-Cum / Annual</span>
+              </div>
+            </div>
+
+            <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 6px 28px rgba(15,118,110,.12)", overflow: "hidden" }}>
+              <div style={{
+                background: "linear-gradient(135deg,#0c4a6e,#0f766e 50%,#312e81)",
+                color: "#fff", padding: "16px 22px",
+                fontWeight: 800, fontSize: "15px", textAlign: "center",
+              }}>
+                ಪಾತ ಸಂಖ್ಯೆ-10 · ಬಿತ್ತನೆ ಕೋಠಿ {grainageName} &nbsp;·&nbsp; {monthKn} {monthYear || ""}
+                <div style={{ fontSize: "12px", fontWeight: 600, opacity: .9, marginTop: "4px" }}>
+                  Form-10 · DFL Production Progress (in lakhs) &nbsp;·&nbsp; {monthLabel} {monthYear || ""}
+                </div>
+              </div>
+
+              <div className="gf10-scroll" style={{ overflowX: "auto" }}>
+                <table className="gf10-table" style={{ width: "100%", borderCollapse: "collapse", fontSize: "11.5px", minWidth: "1700px" }}>
+                  <thead>
+                    {/* Row 1 — top groups */}
+                    <tr>
+                      <th rowSpan={2} style={hdr("linear-gradient(135deg,#1e293b,#36506b)", "55px", true)}>
+                        <div style={{ fontSize: "11.5px" }}>ಕ್ರ.ಸಂ.</div><div style={hdrEn}>Sl</div>
+                      </th>
+                      <th rowSpan={2} style={hdr("linear-gradient(135deg,#334155,#475569)", "120px", true, "left")}>
+                        <div style={{ fontSize: "12px" }}>ಸಾಲು</div><div style={hdrEn}>Row</div>
+                      </th>
+                      <th colSpan={3} style={hdr("linear-gradient(135deg,#b45309,#d97706)")}>
+                        <div style={{ fontSize: "12px" }}>🎯 ಸಾಲಿನ ವಾರ್ಷಿಕ ಗುರಿ</div>
+                        <div style={hdrEn}>Annual Target</div>
+                      </th>
+                      <th colSpan={5} style={hdr("linear-gradient(135deg,#9a3412,#ea580c)")}>
+                        <div style={{ fontSize: "12px" }}>📅 ಗುರಿ Programme</div>
+                        <div style={hdrEn}>Monthly Target / Programme</div>
+                      </th>
+                      <th colSpan={6} style={hdr("linear-gradient(135deg,#0f766e,#14b8a6)")}>
+                        <div style={{ fontSize: "12px" }}>✅ ಸಾಧನೆ Achievement</div>
+                        <div style={hdrEn}>Achievement</div>
+                      </th>
+                    </tr>
+                    {/* Row 2 — leaves */}
+                    <tr>
+                      <th style={subhdr("linear-gradient(135deg,#fed7aa,#fdba74)", "#7c2d12")}>
+                        <div style={{ fontSize: "10px" }}>ಮಿಶ್ರ</div><div style={subhdrEn}>CB</div>
+                      </th>
+                      <th style={subhdr("linear-gradient(135deg,#ddd6fe,#c4b5fd)", "#4c1d95")}>
+                        <div style={{ fontSize: "10px" }}>ದ್ವಿತಳಿ</div><div style={subhdrEn}>BV</div>
+                      </th>
+                      <th style={subhdr("linear-gradient(135deg,#fcd34d,#fbbf24)", "#78350f")}>
+                        <div style={{ fontSize: "10px" }}>ಒಟ್ಟು</div><div style={subhdrEn}>Total</div>
+                      </th>
+                      <th style={subhdr("linear-gradient(135deg,#bfdbfe,#93c5fd)", "#1e3a8a")}>
+                        <div style={{ fontSize: "10px" }}>ಪಿ2</div><div style={subhdrEn}>P2</div>
+                      </th>
+                      <th style={subhdr("linear-gradient(135deg,#c7d2fe,#a5b4fc)", "#3730a3")}>
+                        <div style={{ fontSize: "10px" }}>ಪಿ1</div><div style={subhdrEn}>P1</div>
+                      </th>
+                      <th style={subhdr("linear-gradient(135deg,#a7f3d0,#6ee7b7)", "#064e3b")}>
+                        <div style={{ fontSize: "10px" }}>ಹೈ</div><div style={subhdrEn}>HY</div>
+                      </th>
+                      <th style={subhdr("linear-gradient(135deg,#ddd6fe,#c4b5fd)", "#4c1d95")}>
+                        <div style={{ fontSize: "10px" }}>ದ್ವಿ ಒಟ್ಟು</div><div style={subhdrEn}>BV Tot</div>
+                      </th>
+                      <th style={subhdr("linear-gradient(135deg,#fcd34d,#fbbf24)", "#78350f")}>
+                        <div style={{ fontSize: "10px" }}>ವಲಯ</div><div style={subhdrEn}>Zone</div>
+                      </th>
+                      <th style={subhdr("linear-gradient(135deg,#fed7aa,#fdba74)", "#7c2d12")}>
+                        <div style={{ fontSize: "10px" }}>ಮಿಶ್ರ</div><div style={subhdrEn}>CB</div>
+                      </th>
+                      <th style={subhdr("linear-gradient(135deg,#bfdbfe,#93c5fd)", "#1e3a8a")}>
+                        <div style={{ fontSize: "10px" }}>ಪಿ2</div><div style={subhdrEn}>P2</div>
+                      </th>
+                      <th style={subhdr("linear-gradient(135deg,#c7d2fe,#a5b4fc)", "#3730a3")}>
+                        <div style={{ fontSize: "10px" }}>ಪಿ1</div><div style={subhdrEn}>P1</div>
+                      </th>
+                      <th style={subhdr("linear-gradient(135deg,#a7f3d0,#6ee7b7)", "#064e3b")}>
+                        <div style={{ fontSize: "10px" }}>ಹೈ</div><div style={subhdrEn}>HY</div>
+                      </th>
+                      <th style={subhdr("linear-gradient(135deg,#ddd6fe,#c4b5fd)", "#4c1d95")}>
+                        <div style={{ fontSize: "10px" }}>ದ್ವಿ ಒಟ್ಟು</div><div style={subhdrEn}>BV Tot</div>
+                      </th>
+                      <th style={subhdr("linear-gradient(135deg,#fcd34d,#fbbf24)", "#78350f")}>
+                        <div style={{ fontSize: "10px" }}>ವಲಯ</div><div style={subhdrEn}>Zone</div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {dataRows.length === 0 && (
+                      <tr><td colSpan={16} style={{ padding: "60px 20px", textAlign: "center", background: "linear-gradient(180deg,#f0fdfa,#fff)" }}>
+                        <div style={{ fontSize: "40px", marginBottom: "8px" }}>📈</div>
+                        <div style={{ fontSize: "15px", fontWeight: 800, color: "#0f766e", marginBottom: "4px" }}>ಯಾವುದೇ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ</div>
+                        <div style={{ fontSize: "13px", color: "#475569", fontWeight: 600 }}>No Form-10 production data found for this grainage in {monthLabel} {monthYear}.</div>
+                      </td></tr>
+                    )}
+                    {dataRows.map((row, ri) => {
+                      const isCum = String(row.sl_no) === "2";
+                      const rowBg = isCum
+                        ? "linear-gradient(135deg,#fef3c7,#fde68a)"
+                        : "#ffffff";
+                      const rowMeta = isCum
+                        ? { icon: "Σ", label: "ಮಾಸಾಂತ್ಯ", labelEn: "Month-end / FY Cum", text: "#78350f", chipBg: "linear-gradient(135deg,#fcd34d,#fbbf24)" }
+                        : { icon: "📅", label: "ತಿಂಗಳ", labelEn: "Month", text: "#134e4a", chipBg: "linear-gradient(135deg,#a7f3d0,#6ee7b7)" };
+                      return (
+                        <tr key={ri} className="gf10-tr" style={{ background: rowBg }}>
+                          <td style={{
+                            padding: "12px 6px", textAlign: "center",
+                            borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0",
+                            background: rowMeta.chipBg,
+                            fontWeight: 800,
+                          }}>
+                            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+                              <span style={{ fontSize: "16px" }}>{rowMeta.icon}</span>
+                              <span style={{
+                                display: "inline-flex", alignItems: "center", justifyContent: "center",
+                                minWidth: "24px", height: "24px", borderRadius: "50%",
+                                background: "rgba(255,255,255,.92)",
+                                color: rowMeta.text, fontWeight: 800, fontSize: "11.5px",
+                              }}>{row.sl_no}</span>
+                            </div>
+                          </td>
+                          <td style={{
+                            padding: "12px 14px", textAlign: "left",
+                            borderBottom: "1px solid #e2e8f0", borderRight: "2px solid #e2e8f0",
+                            color: rowMeta.text, fontWeight: 800, fontSize: "13px",
+                          }}>
+                            <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.2 }}>
+                              <span>{row.row_label || rowMeta.label}</span>
+                              <span style={{ fontSize: "10.5px", fontWeight: 700, opacity: .8 }}>{rowMeta.labelEn}</span>
+                            </div>
+                          </td>
+                          {/* Annual targets */}
+                          <ValCell v={row.ann_cb}    color="#7c2d12" bg="#fff7ed" muted="#fbcfb1" />
+                          <ValCell v={row.ann_bv}    color="#4c1d95" bg="#f5f3ff" muted="#cbd5e0" />
+                          <ValCell v={row.ann_tot}   color="#78350f" bg="linear-gradient(135deg,#fef3c7,#fde68a)" muted="#cbd5e0" weight={800} right="2px solid #e2e8f0" />
+                          {/* Monthly targets */}
+                          <ValCell v={row.tgt_p2}    color="#1e3a8a" bg="#eff6ff" muted="#cbd5e0" />
+                          <ValCell v={row.tgt_p1}    color="#3730a3" bg="#eef2ff" muted="#cbd5e0" />
+                          <ValCell v={row.tgt_hy}    color="#064e3b" bg="#ecfdf5" muted="#cbd5e0" />
+                          <ValCell v={row.tgt_bv_total}   color="#4c1d95" bg="linear-gradient(135deg,#ddd6fe,#c4b5fd)" muted="#cbd5e0" weight={800} />
+                          <ValCell v={row.tgt_zone_total} color="#78350f" bg="linear-gradient(135deg,#fcd34d,#fbbf24)" muted="#cbd5e0" weight={800} right="2px solid #e2e8f0" />
+                          {/* Achievements */}
+                          <ValCell v={row.ach_cb}    color="#7c2d12" bg="linear-gradient(135deg,#fed7aa,#fdba74)" muted="#cbd5e0" />
+                          <ValCell v={row.ach_p2}    color="#1e3a8a" bg="linear-gradient(135deg,#bfdbfe,#93c5fd)" muted="#cbd5e0" />
+                          <ValCell v={row.ach_p1}    color="#3730a3" bg="linear-gradient(135deg,#c7d2fe,#a5b4fc)" muted="#cbd5e0" />
+                          <ValCell v={row.ach_hy}    color="#064e3b" bg="linear-gradient(135deg,#a7f3d0,#6ee7b7)" muted="#cbd5e0" />
+                          <ValCell v={row.ach_bv_total}   color="#4c1d95" bg="linear-gradient(135deg,#ddd6fe,#c4b5fd)" muted="#cbd5e0" weight={800} />
+                          <ValCell v={row.ach_zone_total} color="#78350f" bg="linear-gradient(135deg,#fcd34d,#fbbf24)" muted="#cbd5e0" weight={800} />
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              <div style={{ background: "linear-gradient(135deg,#f0fdfa,#eef2ff)", padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "8px", borderTop: "1.5px solid #a7f3d0" }}>
+                <span style={{ fontSize: "12px", color: "#0f766e", fontWeight: 600 }}>
+                  Form-10 · {grainageName} — {monthLabel} {monthKn} {monthYear} &nbsp;·&nbsp; All values in <strong>lakhs</strong> &nbsp;·&nbsp; Zone Ach (Month) {kpis.achZoneM.toLocaleString()} ({kpis.pctZoneM.toFixed(1)}%) &nbsp;·&nbsp; Annual Progress {kpis.pctAnnual.toFixed(1)}%
+                </span>
+                <div className="d-flex gap-2 flex-wrap">
+                  <button type="button" onClick={handlePdf} disabled={isDownloadingPdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 2px 8px rgba(185,28,28,.25)", isDownloadingPdf)}>
+                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Generating…</> : <>📄 Download PDF</>}
+                  </button>
+                  <button type="button" onClick={handleExcel} disabled={isDownloadingExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 2px 8px rgba(21,128,61,.25)", isDownloadingExcel)}>
+                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Exporting…</> : <>📊 Download Excel</>}
+                  </button>
+                </div>
+              </div>
+            </Card>
+          </div>
+        )}
+      </Block>
+    </Layout>
+  );
+}
+
+function ValCell({ v, color, bg, muted, weight, right }) {
+  const s = String(v ?? "").trim();
+  const empty = s === "";
+  const n = numOrZero(v);
+  const isZero = !empty && n === 0;
+  const display = empty ? "—" : fmt(v);
+  return (
+    <td className="gf10-num" style={{
+      padding: "12px 10px", textAlign: "right",
+      borderBottom: "1px solid #f1f5f9",
+      borderRight: right || "1px solid #f8fafc",
+      background: empty || isZero ? "transparent" : bg,
+      color: empty || isZero ? muted : color,
+      fontWeight: weight || 700,
+      fontSize: "12.5px",
+    }}>{display}</td>
+  );
+}
+
+const legendChip = (bg, color, border) => ({
+  display: "inline-flex", alignItems: "center", gap: "8px",
+  padding: "5px 12px", borderRadius: "999px",
+  background: bg, color, border: `1px solid ${border}`,
+});
+
+const kpi = (bgFrom, border, _t) => ({
+  background: `linear-gradient(135deg,${bgFrom},#ffffff)`,
+  border: `1.5px solid ${border}`,
+  borderRadius: "12px",
+  padding: "10px 18px",
+  display: "flex", flexDirection: "column", minWidth: "180px",
+});
+const kpiLbl = (color) => ({ fontSize: "11px", color, fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" });
+const kpiVal = (color, sz) => ({ fontSize: `${sz}px`, color, fontWeight: 800, marginTop: "2px" });
+
+const hdrEn = { fontSize: "9.5px", fontWeight: 600, opacity: .85, marginTop: "2px" };
+const subhdrEn = { fontSize: "8.5px", opacity: .8, marginTop: "1px", fontWeight: 700 };
+const hdr = (bg, minW, single, align) => ({
+  background: bg, color: "#fff",
+  padding: "10px 8px", textAlign: align || "center",
+  border: "1px solid rgba(255,255,255,.18)",
+  fontWeight: 800,
+  minWidth: minW || "100px",
+  verticalAlign: single ? "middle" : "top",
+});
+const subhdr = (bg, color) => ({
+  background: bg, color,
+  padding: "7px 5px", textAlign: "center",
+  border: "1px solid rgba(255,255,255,.18)", fontWeight: 800,
+  minWidth: "85px",
+});
+
+export default GrainageForm10ProductionReport;
