@@ -1026,6 +1026,14 @@ import GrainageForm1DetailedReport from "../pages/seed-and-dfl-managment/Grainag
 import GrainageForm2SourceReport from "../pages/seed-and-dfl-managment/GrainageForm2SourceReport";
 import GrainageForm10ProductionReport from "../pages/seed-and-dfl-managment/GrainageForm10ProductionReport";
 import GrainageLotwiseDetailReport from "../pages/seed-and-dfl-managment/GrainageLotwiseDetailReport";
+import GrainageRaceProgressReport from "../pages/seed-and-dfl-managment/GrainageRaceProgressReport";
+import GrainageP1LotwiseDetailReport from "../pages/seed-and-dfl-managment/GrainageP1LotwiseDetailReport";
+import GrainageCocoonPurchaseReport from "../pages/seed-and-dfl-managment/GrainageCocoonPurchaseReport";
+import GrainageDflDistributionLocationReport from "../pages/seed-and-dfl-managment/GrainageDflDistributionLocationReport";
+import GrainageDiapauseAvailabilityReport from "../pages/seed-and-dfl-managment/GrainageDiapauseAvailabilityReport";
+import GrainageDaywiseChawkiReport from "../pages/seed-and-dfl-managment/GrainageDaywiseChawkiReport";
+import FarmP2MonthlyProgressReport from "../pages/seed-and-dfl-managment/FarmP2MonthlyProgressReport";
+import FarmP2CropDetailReport from "../pages/seed-and-dfl-managment/FarmP2CropDetailReport";
 import GrainageFarmForm27BReport from "../pages/seed-and-dfl-managment/GrainageFarmForm27BReport";
 import GrainageFarmMulberryGardenReport from "../pages/seed-and-dfl-managment/GrainageFarmMulberryGardenReport";
 import GrainageFarmChakiCenterReport from "../pages/seed-and-dfl-managment/GrainageFarmChakiCenterReport";
@@ -2169,6 +2177,14 @@ function Router() {
             <Route path="grainage-form2-source-report" element={<GrainageForm2SourceReport />} />
             <Route path="grainage-form10-report" element={<GrainageForm10ProductionReport />} />
             <Route path="grainage-lotwise-detail-report" element={<GrainageLotwiseDetailReport />} />
+            <Route path="grainage-race-progress-report" element={<GrainageRaceProgressReport />} />
+            <Route path="grainage-p1-lotwise-detail-report" element={<GrainageP1LotwiseDetailReport />} />
+            <Route path="grainage-cocoon-purchase-report" element={<GrainageCocoonPurchaseReport />} />
+            <Route path="grainage-dfl-distribution-location-report" element={<GrainageDflDistributionLocationReport />} />
+            <Route path="grainage-diapause-availability-report" element={<GrainageDiapauseAvailabilityReport />} />
+            <Route path="grainage-daywise-chawki-report" element={<GrainageDaywiseChawkiReport />} />
+            <Route path="farm-p2-monthly-progress-report" element={<FarmP2MonthlyProgressReport />} />
+            <Route path="farm-p2-crop-detail-report" element={<FarmP2CropDetailReport />} />
             <Route path="farm-form27b-report" element={<GrainageFarmForm27BReport />} />
             <Route path="farm-mulberry-garden-report" element={<GrainageFarmMulberryGardenReport />} />
             <Route path="farm-chaki-center-report" element={<GrainageFarmChakiCenterReport />} />

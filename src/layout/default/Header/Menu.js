@@ -5987,6 +5987,28 @@ function Menu() {
                         </MenuItem>
                         <MenuItem sub>
                           <MenuItemLink
+                            text={t("P2 Farms Reports")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Farm Monthly Progress (Sheet-1)")}
+                                to="/seriui/farm-p2-monthly-progress-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Farm Crop Detail — Form-1 (Sheet-2)")}
+                                to="/seriui/farm-p2-crop-detail-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+                        <MenuItem sub>
+                          <MenuItemLink
                             text={t("P3 Farms MSC Seed Area Reports")}
                             onClick={menuToggle}
                             onMouseEnter={menuHover}
@@ -6101,6 +6123,42 @@ function Menu() {
                               <MenuItemLink
                                 text={t("Lot-wise Detail (top 4 lots)")}
                                 to="/seriui/grainage-lotwise-detail-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Race-wise Progress (CSR-2 / CSR-4)")}
+                                to="/seriui/grainage-race-progress-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P1 Lot-wise DFL Production Detail")}
+                                to="/seriui/grainage-p1-lotwise-detail-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Cocoon Purchase Report (Farm + Purchased)")}
+                                to="/seriui/grainage-cocoon-purchase-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("DFL Distribution by Taluk / District")}
+                                to="/seriui/grainage-dfl-distribution-location-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Diapause / Refrigerated DFL Availability (5-mo)")}
+                                to="/seriui/grainage-diapause-availability-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Day-wise Chawki Distribution (race × week)")}
+                                to="/seriui/grainage-daywise-chawki-report"
                               />
                             </MenuItem>
                           </MenuSub>
