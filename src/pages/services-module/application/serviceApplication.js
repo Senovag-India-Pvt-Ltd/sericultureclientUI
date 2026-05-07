@@ -1,4 +1,4 @@
-import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
+﻿import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
@@ -126,6 +126,8 @@ const generateFinalReport = async (selectedRows) => {
     addKaneshLand:"no",
     kaneshHobliId: "",
     month: "",
+    fromMonth: "",
+    toMonth: "",
     machineQuantity: "",
     machineTypeId: "",
     imcbTable: "",
@@ -158,6 +160,12 @@ const generateFinalReport = async (selectedRows) => {
     stateAmount: "",
     newFinancialYear: "",
     year: "",
+    taxAmount: "0",
+    eligibleForBonus: "",
+    eligibleForIncentive: "",
+    eligibleForIncentive: "",
+    quantityOfSeedCocoons: "",
+
   });
   const formatAuctionDate = (auctionDate) => {
     const distributionDate = new Date(auctionDate);
@@ -494,6 +502,40 @@ useEffect(() => {
     vendorId: "",
     payToVendor: false,
   });
+
+  const emptySilkIncentiveRow = { equipmentDate: new Date(), noOfRawSilkProduced: "", form17JNo: "", silkExchangeId: "" };
+  const [silkIncentiveList, setSilkIncentiveList] = useState([{ ...emptySilkIncentiveRow }]);
+
+  const handleSilkIncentiveChange = (index, field, value) => {
+    setSilkIncentiveList((prev) => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
+  };
+
+  const addSilkIncentiveRow = () => setSilkIncentiveList((prev) => [...prev, { ...emptySilkIncentiveRow }]);
+  const removeSilkIncentiveRow = (index) => setSilkIncentiveList((prev) => prev.filter((_, i) => i !== index));
+
+  const emptyRearingEquipmentRow = { vendorId: "", description: "", machineTypeId: "", l1Rate: "", machineQuantity: "", taxInvoiceNo: "" };
+  const [rearingEquipmentPurchaseList, setRearingEquipmentPurchaseList] = useState([{ ...emptyRearingEquipmentRow }]);
+
+  const handleRearingEquipmentChange = (index, e) => {
+    const { name, value } = e.target;
+    setRearingEquipmentPurchaseList((prev) => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [name]: value };
+      return updated;
+    });
+  };
+
+  const addRearingEquipmentRow = () => {
+    setRearingEquipmentPurchaseList((prev) => [...prev, { ...emptyRearingEquipmentRow }]);
+  };
+
+  const removeRearingEquipmentRow = (index) => {
+    setRearingEquipmentPurchaseList((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const [developedArea, setDevelopedArea] = useState([]);
 
@@ -1100,6 +1142,73 @@ const getCropDetailsSeedMarketByLotNo = (biddingSlipNo, schemeType) => {
     });
 };
 
+const getCropDetailsSeedMarketByMarketAndDate = () => {
+  if (!data.transactionDate || !data.marketId || !data.fruitsId) return;
+
+  const formattedAuctionDate = formatAuctionDate(data.transactionDate);
+
+  console.log("Fetching Seed Market by Market & Date →", {
+    transactionDate: formattedAuctionDate,
+    marketId: data.marketId,
+    fruitsId: data.fruitsId,
+  });
+
+  api.post(
+    baseURLDBT + `cropDetailsSeedMarket/getCropDetailsSeedMarketByLotNoWithoutBiddingSlip`,
+    {
+      transactionDate: formattedAuctionDate,
+      marketId: data.marketId,
+      fruitsId: data.fruitsId,
+    }
+  )
+  .then((response) => {
+    console.log("Seed Market response →", response.data);
+    const respData = response.data.content || [];
+    
+    const lotData = respData[0] || {};
+
+    setData((prev) => ({
+      ...prev,
+      quantityOfSeedCocoons: lotData.quantityOfSeedCocoons || 0,
+      cocoonsWeight: lotData.quantityOfSeedCocoons || 0,
+      averageYield: lotData.averageYield || 0,
+      lotWeight: lotData.noOfDfls || 0,
+      noOfCocoonPerKg: lotData.noOfCocoonsPerKg || 0,
+      eligibleForBonus: lotData.eligibleForBonus || "",
+      eligibleForIncentive: lotData.eligibleForIncentive || "",
+      cocoonTransactedForReelingInKg: lotData.cocoonTransactedForReelingInKg || "",
+      cocoonTransactedForSeedInKg: lotData.cocoonTransactedForSeedInKg || "",
+      cocoonRatePerKg: lotData.cocoonRatePerKg || "",
+      noOfRawSilkProduced: lotData.cocoonTransactedForReelingInKg || 0,
+      noOfCocoonsNeedToProduce: lotData.quantityOfSeedCocoons || 0,
+    }));
+  })
+  .catch((err) => {
+    console.error("Seed Market fetch error →", err?.response?.data || err.message);
+    setData((prev) => ({
+      ...prev,
+      quantityOfSeedCocoons: 0,
+      cocoonsWeight: 0,
+      averageYield: 0,
+      lotWeight: 0,
+      noOfCocoonPerKg: 0,
+      eligibleForBonus: "",
+      eligibleForIncentive: "",
+      cocoonTransactedForReelingInKg: "",
+      cocoonTransactedForSeedInKg: "",
+      cocoonRatePerKg: "",
+      noOfRawSilkProduced: 0,
+      noOfCocoonsNeedToProduce: 0,
+    }));
+  });
+};
+
+useEffect(() => {
+  if (selectedBonusMode === "Manual" && data.transactionDate && data.marketId && data.fruitsId) {
+    getCropDetailsSeedMarketByMarketAndDate();
+  }
+}, [data.transactionDate, data.marketId, data.fruitsId, selectedBonusMode]);
+
 // Call when scheme or sub-scheme changes
 useEffect(() => {
   if (data.scSchemeDetailsId && data.scSubSchemeDetailsId) {
@@ -1398,7 +1507,12 @@ if (
       )
       .then((response) => {
         if (response.data.content.unitCost) {
-          setScHeadAccountListData(response.data.content.unitCost);
+          const unitCost = response.data.content.unitCost;
+          setScHeadAccountListData(unitCost);
+          setAmountValue((prev) => ({
+            ...prev,
+            unitPrice: unitCost,
+          }));
         }
       })
       .catch((err) => {
@@ -2048,6 +2162,11 @@ const getCalculateAmountForRH = () => {
           schemeDetails.calculationBasedOn === "Silk Samagra Central"
       ) {
           calculatedAmount = amount || "";
+          setData((prev) => ({
+              ...prev,
+              centralAmount: centralAmount,
+              stateAmount: stateAmounts,
+          }));
       }
 
       if (calculatedAmount) {
@@ -2259,27 +2378,18 @@ const calculateAmountFor30Kg = () => {
 
 const calculateAmountForBivoltineBonus = () => {
   const amountPerKg = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
-  const cocoonsWeight = parseFloat(data.cocoonsWeight || 0);
-
-  const schemeType = data.schemeType; // 2 = incentive, 3 = Bivoltine Bonus
+  const schemeType = data.schemeType;
 
   let calculatedAmount = 0;
 
-  // ⭐ CASE 1: Bivoltine Bonus (subSchemeType = 3)
-  if (schemeType === 3) {
+  if (schemeType === 3 || schemeType === "3") {
     const rawSilk = parseFloat(data.noOfRawSilkProduced || 0);
-
-    calculatedAmount = rawSilk * amountPerKg; // <-- Your new rule
-
-  } 
-  // ⭐ CASE 2: Other Incentive Schemes (subSchemeType = 2)
-  else if (schemeType === 2) {
+    calculatedAmount = rawSilk * amountPerKg;
+  } else {
     const baseQuantity = parseFloat(data.cocoonsWeight || 0);
     calculatedAmount = baseQuantity * amountPerKg;
   }
 
-  // Round to 2 decimals
-  // const roundedAmount = Math.round(calculatedAmount * 100) / 100;
   const roundedAmount = Math.round(calculatedAmount);
 
   setAmountValue((prev) => ({
@@ -2668,30 +2778,16 @@ const handleCalculateUnitPrice = () => {
     const totals = calculateTotals(chawkiData);
     const { totalEligible, totalClaimed } = totals;
 
-    // finalAmount = min(totalEligible, totalClaimed)
     const finalAmount =
       Number(totalEligible || 0) > Number(totalClaimed || 0)
         ? Number(totalClaimed || 0)
         : Number(totalEligible || 0);
 
-    // Set Unit Cost
-    setAmountValue((prev) => ({
-      ...prev,
-      unitPrice: finalAmount,
-    }));
+    setAmountValue((prev) => ({ ...prev, unitPrice: finalAmount }));
+    setData((prev) => ({ ...prev, expectedAmount: finalAmount }));
 
-    // Set Total Subsidy/Bonus/Incentive Amount (expectedAmount)
-    setData((prev) => ({
-      ...prev,
-      expectedAmount: finalAmount,
-    }));
-
-    // (Optional) If you also want to store in subsidyAmount when sanctionForReeling is true:
     if (getIncentiveAndBonusData[0]?.sanctionForReeling) {
-      setData((prev) => ({
-        ...prev,
-        subsidyAmount: finalAmount,
-      }));
+      setData((prev) => ({ ...prev, subsidyAmount: finalAmount }));
     }
 
     Swal.fire({
@@ -2700,7 +2796,7 @@ const handleCalculateUnitPrice = () => {
       text: `Total Subsidy/Bonus/Incentive Amount = ${finalAmount}`,
     });
 
-    return; // ✅ stop further checks
+    return;
   }
 
 
@@ -2730,7 +2826,8 @@ const handleCalculateUnitPrice = () => {
       return;
     }
     // 2. Check for required bonus-specific fields
-    if (!data.averageYield || !data.noOfCocoonPerKg) {
+    if ((data.averageYield === "" || data.averageYield === null || data.averageYield === undefined) ||
+        (data.noOfCocoonPerKg === "" || data.noOfCocoonPerKg === null || data.noOfCocoonPerKg === undefined)) {
       Swal.fire({ icon: "warning", title: "Validation Error", text: "Please provide Average Yield and No. of Cocoons/Kg." });
       return;
     }
@@ -2778,7 +2875,8 @@ const handleCalculateUnitPrice = () => {
       return;
     }
     // 2. Check for required bonus-specific fields
-    if (!data.averageYield || !data.noOfCocoonPerKg) {
+    if ((data.averageYield === "" || data.averageYield === null || data.averageYield === undefined) ||
+        (data.noOfCocoonPerKg === "" || data.noOfCocoonPerKg === null || data.noOfCocoonPerKg === undefined)) {
       Swal.fire({ icon: "warning", title: "Validation Error", text: "Please provide Average Yield and No. of Cocoons/Kg." });
       return;
     }
@@ -3152,6 +3250,15 @@ if (
       return;
     }
 
+    if (!data.taxAmount || Number(data.taxAmount) <= 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please enter a valid Tax Invoice Amount.",
+      });
+      return;
+    }
+
     // ✅ Validate that API data is available
     if (!imcbAndMermAmountData || imcbAndMermAmountData.length === 0) {
       Swal.fire({
@@ -3165,23 +3272,31 @@ if (
     // ✅ Use first record (or modify if multiple expected)
     const imcbRecord = imcbAndMermAmountData[0];
 
-    // ✅ Set Unit Price (unitCost) and Scheme Amount (amount)
+    const subsidyAmount = Math.round(imcbRecord.unitCost || 0);
+    const taxInvoiceAmount = Number(data.taxAmount);
+
     setAmountValue((prev) => ({
       ...prev,
-      unitPrice: Math.round(imcbRecord.unitCost || 0),
+      unitPrice: subsidyAmount,
     }));
 
+    // If Tax Invoice Amount < Subsidy Amount → use Tax Invoice Amount
+    // If Tax Invoice Amount >= Subsidy Amount → no change, use Subsidy Amount
+    const finalAmount = taxInvoiceAmount < subsidyAmount ? taxInvoiceAmount : subsidyAmount;
+
+    setEquipment((prev) => ({ ...prev, l1Rate: finalAmount }));
     setData((prev) => ({
       ...prev,
-      expectedAmount: Math.round(imcbRecord.unitCost || 0),
+      expectedAmount: finalAmount,
     }));
 
+    setUnitPriceCalculated(true);
     return;
   }
 
 
   if (
-    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Boiler-PSF" 
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Boiler-PSF"
   ) {
     if (
       !data.boilerInKg ||
@@ -3193,6 +3308,15 @@ if (
         icon: "warning",
         title: "Validation Error",
         text: "Please fill all required fields.",
+      });
+      return;
+    }
+
+    if (!data.taxAmount || Number(data.taxAmount) <= 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please enter a valid Tax Invoice Amount.",
       });
       return;
     }
@@ -3210,17 +3334,25 @@ if (
     // ✅ Use first record (or modify if multiple expected)
     const adoptingBoilerRecord = adoptingBoilerAmountData[0];
 
-    // ✅ Set Unit Price (unitCost) and Scheme Amount (amount)
+    const subsidyAmount = Math.round(adoptingBoilerRecord.unitCost || 0);
+    const taxInvoiceAmount = Number(data.taxAmount);
+
     setAmountValue((prev) => ({
       ...prev,
-      unitPrice: Math.round(adoptingBoilerRecord.unitCost || 0),
+      unitPrice: subsidyAmount,
     }));
 
+    // If Tax Invoice Amount < Subsidy Amount → use Tax Invoice Amount
+    // If Tax Invoice Amount >= Subsidy Amount → no change, use Subsidy Amount
+    const finalAmount = taxInvoiceAmount < subsidyAmount ? taxInvoiceAmount : subsidyAmount;
+
+    setEquipment((prev) => ({ ...prev, l1Rate: finalAmount }));
     setData((prev) => ({
       ...prev,
-      expectedAmount: Math.round(adoptingBoilerRecord.unitCost || 0),
+      expectedAmount: finalAmount,
     }));
 
+    setUnitPriceCalculated(true);
     return;
   }
 
@@ -3241,8 +3373,16 @@ if (
       return;
     }
 
+    if (!data.taxAmount || Number(data.taxAmount) <= 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please enter a valid Tax Invoice Amount.",
+      });
+      return;
+    }
 
-  // ✅ Validate that API data is available
+    // ✅ Validate that API data is available
     if (!icbAndArmAmountData || icbAndArmAmountData.length === 0) {
       Swal.fire({
         icon: "warning",
@@ -3255,21 +3395,76 @@ if (
     // ✅ Use first record (or modify if multiple expected)
     const icbRecord = icbAndArmAmountData[0];
 
-    // ✅ Set Unit Price (unitCost) and Scheme Amount (amount)
+    const subsidyAmount = Math.round(icbRecord.unitCost || 0);
+    const taxInvoiceAmount = Number(data.taxAmount);
+
     setAmountValue((prev) => ({
       ...prev,
-      unitPrice: Math.round(icbRecord.unitCost || 0),
+      unitPrice: subsidyAmount,
     }));
 
+    // If Tax Invoice Amount < Subsidy Amount → use Tax Invoice Amount
+    // If Tax Invoice Amount >= Subsidy Amount → no change, use Subsidy Amount
+    const finalAmount = taxInvoiceAmount < subsidyAmount ? taxInvoiceAmount : subsidyAmount;
+
+    setEquipment((prev) => ({ ...prev, l1Rate: finalAmount }));
     setData((prev) => ({
       ...prev,
-      expectedAmount: Math.round(icbRecord.unitCost || 0),
+      expectedAmount: finalAmount,
     }));
 
+    setUnitPriceCalculated(true);
     return;
   }
 
-  
+  if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS") {
+    if (!data.scSchemeDetailsId || !data.scComponentId || !data.scCategoryId) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please fill all required fields.",
+      });
+      return;
+    }
+
+    if (!data.taxAmount || Number(data.taxAmount) <= 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please enter a valid Tax Invoice Amount.",
+      });
+      return;
+    }
+
+    if (!rearingEquipmentSSAmountData || rearingEquipmentSSAmountData.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "No Data Found",
+        text: "No Rearing Equipment SS data available for selected parameters.",
+      });
+      return;
+    }
+
+    const unitCost = Math.round(rearingEquipmentSSAmountData[0]?.amount || 0);
+    const taxInvoiceAmount = Number(data.taxAmount);
+
+    setAmountValue((prev) => ({ ...prev, unitPrice: unitCost }));
+
+    // If Tax Invoice Amount < Unit Cost → use Tax Invoice Amount
+    // If Tax Invoice Amount >= Unit Cost → no change, use Unit Cost
+    const finalAmount = taxInvoiceAmount < unitCost ? taxInvoiceAmount : unitCost;
+
+    setEquipment((prev) => ({ ...prev, l1Rate: finalAmount }));
+    setRearingEquipmentPurchaseList((prev) => prev.map((row) => ({ ...row, l1Rate: finalAmount })));
+    setData((prev) => ({
+      ...prev,
+      expectedAmount: finalAmount,
+    }));
+
+    setUnitPriceCalculated(true);
+    return;
+  }
+
 if (
     getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Reeling Shed-PSF"
   ) {
@@ -3335,8 +3530,16 @@ if (
       return;
     }
 
+    if (!data.taxAmount || Number(data.taxAmount) <= 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please enter a valid Tax Invoice Amount.",
+      });
+      return;
+    }
 
-  // ✅ Validate that API data is available
+    // ✅ Validate that API data is available
     if (!reelinShedAmountData || reelinShedAmountData.length === 0) {
       Swal.fire({
         icon: "warning",
@@ -3349,19 +3552,28 @@ if (
     // ✅ Use first record (or modify if multiple expected)
     const icbRecord = reelinShedAmountData[0];
 
-    // ✅ Set Unit Price (unitCost) and Scheme Amount (amount)
+    const subsidyAmount = Math.round(icbRecord.unitCost || 0);
+    const taxInvoiceAmount = Number(data.taxAmount);
+
+    // ✅ Set Unit Price (always the DB subsidy rate)
     setAmountValue((prev) => ({
       ...prev,
-      unitPrice: Math.round(icbRecord.unitCost || 0),
+      unitPrice: subsidyAmount,
     }));
 
+    // If Tax Invoice Amount < Subsidy Amount → use Tax Invoice Amount
+    // If Tax Invoice Amount >= Subsidy Amount → no change, use Subsidy Amount
+    const finalAmount = taxInvoiceAmount < subsidyAmount ? taxInvoiceAmount : subsidyAmount;
+
+    setEquipment((prev) => ({ ...prev, l1Rate: finalAmount }));
     setData((prev) => ({
       ...prev,
-      expectedAmount: Math.round(icbRecord.unitCost || 0),
+      expectedAmount: finalAmount,
     }));
 
+    setUnitPriceCalculated(true);
     return;
-  } 
+  }
 
   if (
     getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar power Generator"
@@ -3381,8 +3593,15 @@ if (
       return;
     }
 
+    if (!data.taxAmount || Number(data.taxAmount) <= 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please enter a valid Tax Invoice Amount.",
+      });
+      return;
+    }
 
-  // ✅ Validate that API data is available
     if (!reelinShedAmountData || reelinShedAmountData.length === 0) {
       Swal.fire({
         icon: "warning",
@@ -3392,71 +3611,98 @@ if (
       return;
     }
 
-    // ✅ Use first record (or modify if multiple expected)
     const icbRecord = reelinShedAmountData[0];
+    const subsidyAmount = Math.round(icbRecord.unitCost || 0);
+    const taxInvoiceAmount = Number(data.taxAmount);
 
-    // ✅ Set Unit Price (unitCost) and Scheme Amount (amount)
+    // ✅ Set Unit Price (always the DB subsidy rate)
     setAmountValue((prev) => ({
       ...prev,
-      unitPrice: Math.round(icbRecord.unitCost || 0),
+      unitPrice: subsidyAmount,
     }));
 
+    // If Tax Invoice Amount < Subsidy Amount → base calculation on Tax Invoice Amount
+    // If Tax Invoice Amount >= Subsidy Amount → no change, use Subsidy Amount
+    const finalAmount = taxInvoiceAmount < subsidyAmount ? taxInvoiceAmount : subsidyAmount;
+
+    setEquipment((prev) => ({ ...prev, l1Rate: finalAmount }));
     setData((prev) => ({
       ...prev,
-      expectedAmount: Math.round(icbRecord.unitCost || 0),
+      expectedAmount: finalAmount,
     }));
 
+    setUnitPriceCalculated(true);
     return;
-  } 
+  }
 
 
   if (
-    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar Water Heater"
+  getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar Water Heater"
+) {
+  if (
+    !data.machineTypeId ||
+    !data.reelingSqft ||
+    !data.reelingUnit ||
+    !data.scSubSchemeDetailsId ||
+    !data.scComponentId ||
+    !data.scCategoryId
   ) {
-    if (
-      !data.machineTypeId ||
-      !data.reelingSqft ||
-      !data.reelingUnit ||
-      !data.scSubSchemeDetailsId ||
-      !data.scComponentId ||
-      !data.scCategoryId
-    ) {
-      Swal.fire({
-        icon: "warning",
-        title: "Validation Error",
-        text: "Please fill all required fields.",
-      });
-      return;
-    }
-
-
-  // ✅ Validate that API data is available
-    if (!reelingShedSolarWaterHeaterAmountData || reelingShedSolarWaterHeaterAmountData.length === 0) {
-      Swal.fire({
-        icon: "warning",
-        title: "No Data Found",
-        text: "No Adopting Solar Water Heater data available for selected parameters.",
-      });
-      return;
-    }
-
-    // ✅ Use first record (or modify if multiple expected)
-    const icbRecord = reelingShedSolarWaterHeaterAmountData[0];
-
-    // ✅ Set Unit Price (unitCost) and Scheme Amount (amount)
-    setAmountValue((prev) => ({
-      ...prev,
-      unitPrice: Math.round(icbRecord.unitCost || 0),
-    }));
-
-    setData((prev) => ({
-      ...prev,
-      expectedAmount: Math.round(icbRecord.unitCost || 0),
-    }));
-
+    Swal.fire({
+      icon: "warning",
+      title: "Validation Error",
+      text: "Please fill all required fields.",
+    });
     return;
-  } 
-  
+  }
+
+  if (!data.taxAmount || Number(data.taxAmount) <= 0) {
+    Swal.fire({
+      icon: "warning",
+      title: "Validation Error",
+      text: "Please enter a valid Tax Invoice Amount.",
+    });
+    return;
+  }
+
+  // ✅ Validate API data
+  if (
+    !reelingShedSolarWaterHeaterAmountData ||
+    reelingShedSolarWaterHeaterAmountData.length === 0
+  ) {
+    Swal.fire({
+      icon: "warning",
+      title: "No Data Found",
+      text: "No Adopting Solar Water Heater data available for selected parameters.",
+    });
+    return;
+  }
+
+  // ✅ Get first record
+  const icbRecord = reelingShedSolarWaterHeaterAmountData[0];
+
+  const subsidyAmount = Math.round(icbRecord.unitCost || 0);
+  const taxInvoiceAmount = Number(data.taxAmount);
+
+  // ✅ Set Unit Price (always the DB subsidy rate)
+  setAmountValue((prev) => ({
+    ...prev,
+    unitPrice: subsidyAmount,
+  }));
+
+  // If Tax Invoice Amount < Subsidy Amount → base calculation on Tax Invoice Amount
+  // If Tax Invoice Amount >= Subsidy Amount → no change, use Subsidy Amount
+  const finalAmount = taxInvoiceAmount < subsidyAmount ? taxInvoiceAmount : subsidyAmount;
+
+  setEquipment((prev) => ({ ...prev, l1Rate: finalAmount }));
+  setData((prev) => ({
+    ...prev,
+    expectedAmount: subsidyAmount,
+  }));
+
+  setUnitPriceCalculated(true);
+  return;
+}
+
 
   // ✅ Adopting Heat Recovery Unit - PSF
   if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Heat Recovery Unit-PSF") {
@@ -3469,12 +3715,31 @@ if (
       return;
     }
 
-    // ✅ Directly assign unitPrice → expectedAmount
+    if (!data.taxAmount || Number(data.taxAmount) <= 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please enter a valid Tax Invoice Amount.",
+      });
+      return;
+    }
+
+    // unitPrice is set by getHeadAccountList when scheme/subscheme/component are selected
+    const subsidyAmount = Number(amountValue.unitPrice) || Number(scHeadAccountListData) || 0;
+    const taxInvoiceAmount = Number(data.taxAmount);
+
+    // If Tax Invoice Amount < Subsidy Amount → base calculation on Tax Invoice Amount
+    // If Tax Invoice Amount >= Subsidy Amount → no change, use Subsidy Amount
+    const finalAmount = taxInvoiceAmount < subsidyAmount ? taxInvoiceAmount : subsidyAmount;
+
+    setAmountValue((prev) => ({ ...prev, unitPrice: subsidyAmount }));
+    setEquipment((prev) => ({ ...prev, l1Rate: finalAmount }));
     setData((prev) => ({
       ...prev,
-      expectedAmount: amountValue.unitPrice || 0,
+      expectedAmount: finalAmount,
     }));
 
+    setUnitPriceCalculated(true);
     return;
   }
 
@@ -4011,6 +4276,44 @@ useEffect(() => {
   }
 }, [data.icbBasinEnds,data.scSubSchemeDetailsId, data.scComponentId, data.scCategoryId]);
 
+const [rearingEquipmentSSAmountData, setRearingEquipmentSSAmountData] = useState([]);
+
+const getRearingEquipmentSSAmountList = (scSchemeDetailsId, componentId, categoryId) => {
+  api
+    .get(`${baseURLDBT}configureRHAmount/get-amount-by-scheme-category-and-component`, {
+      params: { scSchemeDetailsId, componentId, categoryId }
+    })
+    .then((response) => {
+      const list = response.data.content.configureRHAmount || [];
+      setRearingEquipmentSSAmountData(list);
+      if (list.length > 0) {
+        const unitCost = Math.round(list[0]?.amount || 0);
+        setAmountValue((prev) => ({ ...prev, unitPrice: unitCost }));
+      }
+    })
+    .catch(() => {
+      setRearingEquipmentSSAmountData([]);
+    });
+};
+
+useEffect(() => {
+  if (
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS" &&
+    data.scSchemeDetailsId &&
+    data.scComponentId &&
+    data.scCategoryId
+  ) {
+    const timer = setTimeout(() => {
+      getRearingEquipmentSSAmountList(
+        data.scSchemeDetailsId,
+        data.scComponentId,
+        data.scCategoryId
+      );
+    }, 500);
+    return () => clearTimeout(timer);
+  }
+}, [data.scSchemeDetailsId, data.scComponentId, data.scCategoryId, getIncentiveAndBonusData]);
+
   const handleEquipmentInputs = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -4335,6 +4638,9 @@ const isUserValid = React.useMemo(() => {
       // }
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      } else {
+        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
+        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
       }
       if (missingFields.length > 0) {
         Swal.fire({
@@ -4379,6 +4685,9 @@ const isUserValid = React.useMemo(() => {
       }
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      } else {
+        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
+        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
       }
       if (missingFields.length > 0) {
         Swal.fire({
@@ -4417,6 +4726,9 @@ const isUserValid = React.useMemo(() => {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      } else {
+        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
+        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
       }
       if (missingFields.length > 0) {
         Swal.fire({
@@ -4455,6 +4767,9 @@ const isUserValid = React.useMemo(() => {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      } else {
+        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
+        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
       }
       if (missingFields.length > 0) {
         Swal.fire({
@@ -4493,6 +4808,9 @@ const isUserValid = React.useMemo(() => {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      } else {
+        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
+        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
       }
       if (missingFields.length > 0) {
         Swal.fire({
@@ -4531,6 +4849,9 @@ const isUserValid = React.useMemo(() => {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      } else {
+        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
+        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
       }
       if (missingFields.length > 0) {
         Swal.fire({
@@ -4569,6 +4890,9 @@ const isUserValid = React.useMemo(() => {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      } else {
+        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
+        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
       }
       if (missingFields.length > 0) {
         Swal.fire({
@@ -4607,6 +4931,9 @@ const isUserValid = React.useMemo(() => {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      } else {
+        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
+        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
       }
       if (missingFields.length > 0) {
         Swal.fire({
@@ -4651,6 +4978,9 @@ const isUserValid = React.useMemo(() => {
       }
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+      } else {
+        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
+        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
       }
       if (missingFields.length > 0) {
         Swal.fire({
@@ -4804,7 +5134,9 @@ const isUserValid = React.useMemo(() => {
       description: equipment.description,
       l1Rate: equipment.l1Rate,
       loggedInUserId: localStorage.getItem("userMasterId"),
-      month: data.month,
+      month: getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF" && data.fromMonth && data.toMonth
+        ? `${data.fromMonth}-${data.toMonth}`
+        : data.month,
       machineQuantity: data.machineQuantity,
       machineTypeId: data.machineTypeId,
       imcbTable: data.imcbTable,
@@ -4824,9 +5156,22 @@ const isUserValid = React.useMemo(() => {
       renditta:data.renditta,
       silkTable: data.silkTable,
       noOfCocoonsNeedToProduce:data.noOfCocoonsNeedToProduce,
-      noOfRawSilkProduced:data.noOfRawSilkProduced,
-      silkExchangeId: data.silkExchangeId,
-      form17JNo: data.form17JNo,
+      noOfRawSilkProduced: getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF"
+        ? silkIncentiveList.map((r) => r.noOfRawSilkProduced).join(",")
+        : data.noOfRawSilkProduced,
+      silkExchangeId: getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF"
+        ? (Number(silkIncentiveList[0]?.silkExchangeId) || null)
+        : data.silkExchangeId,
+      form17JNo: getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF"
+        ? silkIncentiveList.map((r) => r.form17JNo).join(",")
+        : data.form17JNo,
+      equipmentDate: getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF"
+        ? silkIncentiveList.map((r) => {
+            if (!r.equipmentDate) return "";
+            const d = new Date(r.equipmentDate);
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+          }).join(",")
+        : "",
       dailyLimit: data.dailyLimit,
        monthlyLimit:data.monthlyLimit,
       boilerInKg: data.boilerInKg,
@@ -4838,7 +5183,14 @@ const isUserValid = React.useMemo(() => {
       beneficiaryShareAmount: data.beneficiaryShareAmount,
       subsidyAmount: data.subsidyAmount,
       shareInPercentage: sharePercentage,
-      unitPrice:amountValue.unitPrice,
+      unitPrice: [
+        "IMCB-PSF", "MERM-PSF", "Adopting Heat Recovery Unit-PSF",
+        "Adopting Solar Water Heater", "Adopting Solar power Generator",
+        "Adopting Silent Generator", "Adopting Boiler-PSF", "ICB-PSF",
+        "Rearing Equipment SS", "Registered Private Bivoltine Chawki Rearing Center Subsidy"
+      ].includes(getIncentiveAndBonusData?.[0]?.calculationBasedOn)
+        ? data.expectedAmount
+        : amountValue.unitPrice,
       equipmentEligibleTotal: totals.equipmentEligibleTotal,
       equipmentMaxSubsidyTotal: totals.equipmentMaxSubsidyTotal,
     equipmentPurchasedTotal: totals.equipmentPurchasedTotal,
@@ -4850,6 +5202,7 @@ const isUserValid = React.useMemo(() => {
     stateAmount: data.stateAmount,
     newFinancialYear: data.newFinancialYear,
     year: data.year,
+    taxAmount: data.taxAmount,
       chawkiSanctionOrderList: chawkiSanctionOrderList
     };
 
@@ -4858,13 +5211,24 @@ const isUserValid = React.useMemo(() => {
       sendPost.dbtFarmerLandDetailsRequestList = transformedData; // Include land details
     }
     if (data.equordev.includes("equipment")) {
-      sendPost.applicationFormLineItemRequestList = [
-        {
-          lineItemComment: equipment.description,
-          cost: equipment.price,
-          vendorId: equipment.vendorId,
-        },
-      ];
+      if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS") {
+        sendPost.applicationFormLineItemRequestList = rearingEquipmentPurchaseList.map((item) => ({
+          lineItemComment: item.description,
+          cost: item.l1Rate,
+          vendorId: item.vendorId,
+          machineTypeId: item.machineTypeId,
+          machineQuantity: item.machineQuantity,
+          taxInvoiceNo: item.taxInvoiceNo,
+        }));
+      } else {
+        sendPost.applicationFormLineItemRequestList = [
+          {
+            lineItemComment: equipment.description,
+            cost: equipment.price,
+            vendorId: equipment.vendorId,
+          },
+        ];
+      }
     }
     // if (data.equordev.includes("constructedArea")) {
     //     // Handle constructedArea data if needed
@@ -5659,6 +6023,7 @@ const isUserValid = React.useMemo(() => {
       alreadyPaidAmount:"",
       stateAmount: "",
     newFinancialYear: "",
+    taxAmount: "0",
     });
     setDevelopedLand({
       landDeveloped: "",
@@ -7425,13 +7790,34 @@ const fetchReelerDetails = () => {
                                 // readOnly={schemeDetails.calculationBasedOn === "Silk Samagra Central" || 
                                 //   schemeDetails.calculationBasedOn === "Silk Samagra State" || 
                                 //   !schemeDetails.calculationBasedOn}
-                                // readOnly 
+                                // readOnly
                                 // required
                               />
                             </div>
                           </Form.Group>
                         </Col>
-                              
+
+                            <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                <strong>Tax Invoice Amount (in Rs)</strong>
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <Form.Control
+                                id="taxAmount"
+                                type="text"
+                                name="taxAmount"
+                                value={data.taxAmount}
+                                onChange={handleInputs}
+                                placeholder="Enter Tax Invoice Amount (in Rs)"
+                                required
+                              />
+                            </Form.Group>
+                            <Form.Control.Feedback type="invalid">
+                              Tax Invoice Amount (in Rs) is required
+                            </Form.Control.Feedback>
+                          </Col>
+
                             </>
                           )}
 
@@ -7439,7 +7825,8 @@ const fetchReelerDetails = () => {
                           getIncentiveAndBonusData[0]?.unitForScheme ===
                             "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||
                           (getIncentiveAndBonusData[0]?.sanctionForReeling &&
-                            getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Silk Incentive-PSF")
+                            getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Silk Incentive-PSF" &&
+                            getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Reeling Shed-PSF")
                         ) && (
                           <>
                             <Col lg="6">
@@ -7485,6 +7872,33 @@ const fetchReelerDetails = () => {
                                 </div>
                               </Form.Group>
                             </Col>
+
+                            {!["IMCB-PSF", "MERM-PSF", "Adopting Heat Recovery Unit-PSF",
+                               "Adopting Solar Water Heater", "Adopting Solar power Generator",
+                               "Adopting Silent Generator", "Adopting Boiler-PSF", "ICB-PSF"
+                              ].includes(getIncentiveAndBonusData?.[0]?.calculationBasedOn) &&
+                              getIncentiveAndBonusData?.[0]?.unitForScheme !== "Rearing Equipment SS" && (
+                            <Col lg="6">
+                              <Form.Group className="form-group mt-n4">
+                                <Form.Label>
+                                  <strong>Tax Invoice Amount (in Rs)</strong>
+                                  <span className="text-danger">*</span>
+                                </Form.Label>
+                                <Form.Control
+                                  id="taxAmount"
+                                  type="text"
+                                  name="taxAmount"
+                                  value={data.taxAmount}
+                                  onChange={handleInputs}
+                                  placeholder="Enter Tax Invoice Amount (in Rs)"
+                                  required
+                                />
+                              </Form.Group>
+                              <Form.Control.Feedback type="invalid">
+                                Tax Invoice Amount (in Rs) is required
+                              </Form.Control.Feedback>
+                            </Col>
+                            )}
                           </>
                         )}
 
@@ -7536,21 +7950,16 @@ const fetchReelerDetails = () => {
                               <Col lg="6">
                                 <Form.Group className="form-group mt-n3">
                                   <Form.Label>
-                                    {t('Month')}<span className="text-danger">*</span>
+                                    {t('From Month')}<span className="text-danger">*</span>
                                   </Form.Label>
                                   <div className="form-control-wrap">
                                     <Form.Select
-                                      name="month"
-                                      value={data.month}
+                                      name="fromMonth"
+                                      value={data.fromMonth}
                                       onChange={handleInputs}
-                                      onBlur={() => handleInputs}
                                       required
-                                      // isInvalid={
-                                      //   data.month === undefined ||
-                                      //   data.month === "0"
-                                      // }
                                     >
-                                      <option value="">{t('Select Month')}</option>
+                                      <option value="">{t('Select From Month')}</option>
                                       <option value="JANUARY">{t('January')}</option>
                                       <option value="FEBRUARY">{t('February')}</option>
                                       <option value="MARCH">{t('March')}</option>
@@ -7564,9 +7973,36 @@ const fetchReelerDetails = () => {
                                       <option value="NOVEMBER">{t('November')}</option>
                                       <option value="DECEMBER">{t('December')}</option>
                                     </Form.Select>
-                                    <Form.Control.Feedback type="invalid">
-                                      {t('Month is required')}
-                                    </Form.Control.Feedback>
+                                  </div>
+                                </Form.Group>
+                              </Col>
+
+                              <Col lg="6">
+                                <Form.Group className="form-group mt-n3">
+                                  <Form.Label>
+                                    {t('To Month')}<span className="text-danger">*</span>
+                                  </Form.Label>
+                                  <div className="form-control-wrap">
+                                    <Form.Select
+                                      name="toMonth"
+                                      value={data.toMonth}
+                                      onChange={handleInputs}
+                                      required
+                                    >
+                                      <option value="">{t('Select To Month')}</option>
+                                      <option value="JANUARY">{t('January')}</option>
+                                      <option value="FEBRUARY">{t('February')}</option>
+                                      <option value="MARCH">{t('March')}</option>
+                                      <option value="APRIL">{t('April')}</option>
+                                      <option value="MAY">{t('May')}</option>
+                                      <option value="JUNE">{t('June')}</option>
+                                      <option value="JULY">{t('July')}</option>
+                                      <option value="AUGUST">{t('August')}</option>
+                                      <option value="SEPTEMBER">{t('September')}</option>
+                                      <option value="OCTOBER">{t('October')}</option>
+                                      <option value="NOVEMBER">{t('November')}</option>
+                                      <option value="DECEMBER">{t('December')}</option>
+                                    </Form.Select>
                                   </div>
                                 </Form.Group>
                               </Col>
@@ -7623,13 +8059,13 @@ const fetchReelerDetails = () => {
                                         <option value="2 Charaka">2 Charaka</option>
                                         <option value="3 Charaka">3 Charaka</option>
                                         <option value="4 Charaka">4 Charaka</option>
-                                        <option value="1-Table(2 Basin)">1-Table(2 Basin)</option>
-                                        <option value="2-Table(4 Basin)">2-Table(4 Basin)</option>
-                                        <option value="3-Table(6 Basin)">3-Table(6 Basin)</option>
-                                        <option value="3 Basin">3 Basin</option>
-                                        <option value="5 Basin">5 Basin</option>
-                                        <option value="6 Basin">6 Basin</option>
-                                        <option value="10 Basin">10 Basin</option>
+                                        <option value="1-Table(2 ಬೇಸಿನ್‌)">1-Table(2 ಬೇಸಿನ್‌)</option>
+                                        <option value="2-Table(4 ಬೇಸಿನ್‌)">2-Table(4 ಬೇಸಿನ್‌)</option>
+                                        <option value="3-Table(6 ಬೇಸಿನ್‌)">3-Table(6 ಬೇಸಿನ್‌)</option>
+                                        <option value="3 ಬೇಸಿನ್‌">3 ಬೇಸಿನ್‌</option>
+                                        <option value="5 ಬೇಸಿನ್‌">5 ಬೇಸಿನ್‌</option>
+                                        <option value="6 ಬೇಸಿನ್‌">6 ಬೇಸಿನ್‌</option>
+                                        <option value="10 ಬೇಸಿನ್‌">10 ಬೇಸಿನ್‌</option>
                                         <option value="36 ends">36 ends</option>
                                         <option value="48 ends">48 ends</option>
                                         <option value="400 ends">400 ends</option>
@@ -7672,7 +8108,7 @@ const fetchReelerDetails = () => {
                           )}
 
                           {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "ICB-PSF" && (
-                           
+                            <>
                             <Col lg="6">
                                   <Form.Group className="form-group mt-n4">
                                 <Form.Label htmlFor="icbBasinEnds">
@@ -7696,10 +8132,31 @@ const fetchReelerDetails = () => {
                                 </div>
                               </Form.Group>
                             </Col>
+                            <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                <strong>Tax Invoice Amount (in Rs)</strong>
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <Form.Control
+                                id="taxAmount"
+                                type="text"
+                                name="taxAmount"
+                                value={data.taxAmount}
+                                onChange={handleInputs}
+                                placeholder="Enter Tax Invoice Amount (in Rs)"
+                                required
+                              />
+                            </Form.Group>
+                             <Form.Control.Feedback type="invalid">
+                                Tax Invoice Amount (in Rs) is required
+                              </Form.Control.Feedback>
+                          </Col>
+                            </>
                                )}
 
                                {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Boiler-PSF" && (
-                           
+                            <>
                             <Col lg="6">
                                   <Form.Group className="form-group mt-n4">
                                 <Form.Label htmlFor="icbBasinEnds">
@@ -7722,6 +8179,27 @@ const fetchReelerDetails = () => {
                                 </div>
                               </Form.Group>
                             </Col>
+                            <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                <strong>Tax Invoice Amount (in Rs)</strong>
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <Form.Control
+                                id="taxAmount"
+                                type="text"
+                                name="taxAmount"
+                                value={data.taxAmount}
+                                onChange={handleInputs}
+                                placeholder="Enter Tax Invoice Amount (in Rs)"
+                                required
+                              />
+                            </Form.Group>
+                             <Form.Control.Feedback type="invalid">
+                                Tax Invoice Amount (in Rs) is required
+                              </Form.Control.Feedback>
+                          </Col>
+                            </>
                                )}
 
 
@@ -7942,6 +8420,27 @@ const fetchReelerDetails = () => {
                                   </div>
                                 </Form.Group>
                               </Col>
+                              
+                              <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                <strong>Tax Invoice Amount (in Rs)</strong>
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <Form.Control
+                                id="taxAmount"
+                                type="text"
+                                name="taxAmount"
+                                value={data.taxAmount}
+                                onChange={handleInputs}
+                                placeholder="Enter Tax Invoice Amount (in Rs)"
+                                required
+                              />
+                            </Form.Group>
+                             <Form.Control.Feedback type="invalid">
+                                Tax Invoice Amount (in Rs) is required
+                              </Form.Control.Feedback>
+                          </Col>
                             </>
                                )}
 
@@ -8062,6 +8561,27 @@ const fetchReelerDetails = () => {
                                   </div>
                                 </Form.Group>
                               </Col>
+
+                            <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                <strong>Tax Invoice Amount (in Rs)</strong>
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <Form.Control
+                                id="taxAmount"
+                                type="text"
+                                name="taxAmount"
+                                value={data.taxAmount}
+                                onChange={handleInputs}
+                                placeholder="Enter Tax Invoice Amount (in Rs)"
+                                required
+                              />
+                            </Form.Group>
+                             <Form.Control.Feedback type="invalid">
+                                Tax Invoice Amount (in Rs) is required
+                              </Form.Control.Feedback>
+                          </Col>
                             </>
                                )}
 
@@ -8291,6 +8811,29 @@ const fetchReelerDetails = () => {
                               </Form.Group>
                             </Col>
 
+
+                            <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                <strong>Tax Invoice Amount (in Rs)</strong>
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <Form.Control
+                                id="taxAmount"
+                                type="text"
+                                name="taxAmount"
+                                value={data.taxAmount}
+                                onChange={handleInputs}
+                                placeholder="Enter Tax Invoice Amount (in Rs)"
+                                required
+                                // disabled={actionData.rejectType === "Permanent"}
+                              />
+                            </Form.Group>
+                             <Form.Control.Feedback type="invalid">
+                                Tax Invoice Amount (in Rs)  is required
+                              </Form.Control.Feedback>
+                          </Col>
+
                             <Col lg="6">
                                   <Form.Group className="form-group mt-n4">
                                 <Form.Label htmlFor="icbBasinEnds">
@@ -8319,9 +8862,34 @@ const fetchReelerDetails = () => {
                             </>
                                )}
 
+                               {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Heat Recovery Unit-PSF" && (
+                            <>
+                            <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                <strong>Tax Invoice Amount (in Rs)</strong>
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <Form.Control
+                                id="taxAmount"
+                                type="text"
+                                name="taxAmount"
+                                value={data.taxAmount}
+                                onChange={handleInputs}
+                                placeholder="Enter Tax Invoice Amount (in Rs)"
+                                required
+                              />
+                            </Form.Group>
+                             <Form.Control.Feedback type="invalid">
+                                Tax Invoice Amount (in Rs) is required
+                              </Form.Control.Feedback>
+                          </Col>
+                            </>
+                               )}
 
                           {(getIncentiveAndBonusData?.[0]?.calculationBasedOn === "IMCB-PSF" ||
                             getIncentiveAndBonusData?.[0]?.calculationBasedOn === "MERM-PSF") && (
+                            <>
                             <Col lg="6">
                                 <Form.Group className="form-group mt-n4">
                                   <Form.Label htmlFor="imcbTable">
@@ -8336,11 +8904,11 @@ const fetchReelerDetails = () => {
                                       required
                                     >
                                       <option value="">{t("Select Imcb Table")}</option>
-                                      <option value="1-Table(2 Basin)">1-Table(2 Basin)</option>
-                                      <option value="2-Table(4 Basin)">2-Table(4 Basin)</option>
-                                      <option value="3-Table(6 Basin)">3-Table(6 Basin)</option>
-                                      <option value="6 Basin">6 Basin</option>
-                                      <option value="10 Basin">10 Basin</option>
+                                      <option value="1-Table(2 ಬೇಸಿನ್‌)">1-Table(2 ಬೇಸಿನ್‌)</option>
+                                      <option value="2-Table(4 ಬೇಸಿನ್‌)">2-Table(4 ಬೇಸಿನ್‌)</option>
+                                      <option value="3-Table(6 ಬೇಸಿನ್‌)">3-Table(6 ಬೇಸಿನ್‌)</option>
+                                      <option value="6 ಬೇಸಿನ್‌">6 ಬೇಸಿನ್‌</option>
+                                      <option value="10 ಬೇಸಿನ್‌">10 ಬೇಸಿನ್‌</option>
                                     </Form.Select>
                                     <Form.Control.Feedback type="invalid">
                                       {t("Imcb Table is required")}
@@ -8348,6 +8916,27 @@ const fetchReelerDetails = () => {
                                   </div>
                                 </Form.Group>
                               </Col>
+                            <Col lg="6">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label>
+                                <strong>Tax Invoice Amount (in Rs)</strong>
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <Form.Control
+                                id="taxAmount"
+                                type="text"
+                                name="taxAmount"
+                                value={data.taxAmount}
+                                onChange={handleInputs}
+                                placeholder="Enter Tax Invoice Amount (in Rs)"
+                                required
+                              />
+                            </Form.Group>
+                             <Form.Control.Feedback type="invalid">
+                                Tax Invoice Amount (in Rs) is required
+                              </Form.Control.Feedback>
+                          </Col>
+                            </>
                           )}
 
 
@@ -8747,7 +9336,7 @@ const fetchReelerDetails = () => {
                         <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
-                                {t("Daily Limit")} 
+                                {t("Daily Limit In Kgs")} 
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -8770,7 +9359,7 @@ const fetchReelerDetails = () => {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
-                                {t("Monthly Limit")} 
+                                {t("Monthly Limit In Kgs ")} 
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -8794,7 +9383,7 @@ const fetchReelerDetails = () => {
                           <Col lg="4">
                             <Form.Group className="form-group">
                               <Form.Label>
-                                {t("Quantity Of Cocoons in Kgs used to Produce Raw Silk")} 
+                                {t("Quantity Of Cocoons  used to Produce Raw Silk(In Kgs)")} 
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -8814,83 +9403,78 @@ const fetchReelerDetails = () => {
                             </Form.Group>
                           </Col>
 
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label>
-                                {t("Raw Silk Produced in Kgs")} 
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  type="text"
-                                  name="noOfRawSilkProduced"
-                                  value={data.noOfRawSilkProduced}
-                                  onChange={handleInputs}
-                                  // required
-                                  placeholder={t("Enter No Of Raw Silk Produced")}
-                                  required
-                                />
-                                 <Form.Control.Feedback type="invalid">
-                                  {t("No Of Raw Silk Produced is required")}
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label>
-                                {t("Form 17J No")} 
-                                <span className="text-danger">*</span>
-                              </Form.Label>
-                              <div className="form-control-wrap">
-                                <Form.Control
-                                  type="text"
-                                  name="form17JNo"
-                                  value={data.form17JNo}
-                                  onChange={handleInputs}
-                                  // required
-                                  placeholder={t("Enter Form 17J No")}
-                                  required
-                                />
-                                 <Form.Control.Feedback type="invalid">
-                                  {t("Form 17J No is required")}
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                          </Col>
-
-                          <Col lg="4">
-                          <Form.Group className="form-group">
-                            <Form.Label>
-                              {t("Silk Exchange Place")}<span className="text-danger">*</span>
-                            </Form.Label>
-                            <Col>
-                              <div className="form-control-wrap">
-                                <Form.Select
-                                  name="silkExchangeId"
-                                  value={data.silkExchangeId}
-                                  onChange={handleInputs}
-                                  required
-                                >
-                                  <option value="">{t("Select Silk Exchange Place")}</option>
-                                  {silkListData.map((list) => (
-                                    <option
-                                      key={list.silkExchangeId}
-                                      value={list.silkExchangeId}
-                                    >
-                                      {list.silkExchangeName}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                                <Form.Control.Feedback type="invalid">
-                                  {t("Silk Exchange is required")}
-                                </Form.Control.Feedback>
-                              </div>
-                            </Col>
-                          </Form.Group>
-                        </Col>
                         </Row>
+
+                        {/* Multiple rows: Equipment Date + Raw Silk + Form17J + Silk Exchange */}
+                        {silkIncentiveList.map((row, index) => (
+                          <div key={index} className="border rounded p-3 mb-3 mt-3">
+                            <Row className="g-gs">
+                              <Col lg="3">
+                                <Form.Group className="form-group">
+                                  <Form.Label>{t("Equipment Date")}<span className="text-danger">*</span></Form.Label>
+                                  <div className="form-control-wrap">
+                                    <DatePicker
+                                      selected={row.equipmentDate}
+                                      onChange={(date) => handleSilkIncentiveChange(index, "equipmentDate", date)}
+                                      peekNextMonth
+                                      showMonthDropdown
+                                      showYearDropdown
+                                      dropdownMode="select"
+                                      dateFormat="dd/MM/yyyy"
+                                      className="form-control"
+                                      maxDate={new Date()}
+                                    />
+                                  </div>
+                                </Form.Group>
+                              </Col>
+                              <Col lg="3">
+                                <Form.Group className="form-group">
+                                  <Form.Label>{t("Quantity Of Raw Silk Produced in Kgs")}<span className="text-danger">*</span></Form.Label>
+                                  <Form.Control
+                                    type="text"
+                                    value={row.noOfRawSilkProduced}
+                                    onChange={(e) => handleSilkIncentiveChange(index, "noOfRawSilkProduced", e.target.value)}
+                                    placeholder={t("Enter No Of Raw Silk Produced")}
+                                  />
+                                </Form.Group>
+                              </Col>
+                              <Col lg="3">
+                                <Form.Group className="form-group">
+                                  <Form.Label>{t("Form 17J No")}<span className="text-danger">*</span></Form.Label>
+                                  <Form.Control
+                                    type="text"
+                                    value={row.form17JNo}
+                                    onChange={(e) => handleSilkIncentiveChange(index, "form17JNo", e.target.value)}
+                                    placeholder={t("Enter Form 17J No")}
+                                  />
+                                </Form.Group>
+                              </Col>
+                              <Col lg="3">
+                                <Form.Group className="form-group">
+                                  <Form.Label>{t("Silk Exchange Place")}<span className="text-danger">*</span></Form.Label>
+                                  <Form.Select
+                                    value={row.silkExchangeId}
+                                    onChange={(e) => handleSilkIncentiveChange(index, "silkExchangeId", e.target.value)}
+                                  >
+                                    <option value="">{t("Select Silk Exchange Place")}</option>
+                                    {silkListData.map((list) => (
+                                      <option key={list.silkExchangeId} value={list.silkExchangeId}>{list.silkExchangeName}</option>
+                                    ))}
+                                  </Form.Select>
+                                </Form.Group>
+                              </Col>
+                              <Col lg="12" className="text-end">
+                                {silkIncentiveList.length > 1 && (
+                                  <Button variant="danger" size="sm" onClick={() => removeSilkIncentiveRow(index)}>{t("Remove")}</Button>
+                                )}
+                              </Col>
+                            </Row>
+                          </div>
+                        ))}
+                        <div className="mt-2 mb-2">
+                          <Button variant="secondary" size="sm" onClick={addSilkIncentiveRow}>+ {t("Add Row")}</Button>
+                        </div>
+
                   </Card.Body>
                 </Card>
                 </Block>
@@ -10299,49 +10883,10 @@ const fetchReelerDetails = () => {
                               </Form.Group>
                             </Col>
 
-                            <Col lg="2">
-                            <Form.Group className="form-group">
-                              <Form.Label>Bidding Slip Lot No</Form.Label>
-                              <Form.Control
-                                as="select"
-                                name="lotNo"
-                                value={data.lotNo || ""}
-                                disabled={!data.transactionDate || !data.fruitsId} 
-                               onChange={(e) => {
-                                const selectedLotId = e.target.value;
-                                setData((prev) => ({
-                                  ...prev,
-                                  lotNo: selectedLotId, // 🔥 only update lotNo (it is allottedLotId)
-                                }));
-
-
-                                  // Fetch additional details for this lot if needed
-                                  fetchLotOptionsForSeedMarket(e);
-                                  const selectedSubScheme = getIncentiveAndBonusData[0];
-                                  const schemeType = selectedSubScheme?.subSchemeType;
-
-                                  // ✅ Call only when we have auctionDate + fruitsId + allottedLotId
-                                  if (selectedLotId && data.transactionDate && data.fruitsId && schemeType) {
-                                    getCropDetailsSeedMarketByLotNo(selectedLotId, schemeType);
-                                  }
-                                }}
-                                className="form-control"
-                              >
-                                <option value="">-- Select Lot --</option>
-                                {lotOptionsForSeedMarket.map((lot) => (
-                                  <option key={lot.biddingSlipNo} value={lot.biddingSlipNo}>
-                                    {lot.biddingSlipNo}
-                                  </option>
-                                ))}
-                              </Form.Control>
-                            </Form.Group>
-                          </Col>
-
                           <Col lg="2">
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="schemeAmount">
                               Total Cocoons Transacted
-                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -10351,22 +10896,15 @@ const fetchReelerDetails = () => {
                                 value={data.cocoonsWeight}
                                 onChange={handleInputs}
                                 placeholder="Enter Cocoons Transacted"
-                                // readOnly
-                                // required
                               />
-                              {/* <Form.Control.Feedback type="invalid">
-                              Total Cocoons Weight is required
-                              </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
                         </Col>
 
-
-                         <Col lg="2">
+                        <Col lg="2">
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="schemeAmount">
-                             No Of DFLs
-                              {/* <span className="text-danger">*</span> */}
+                              No Of DFLs
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -10375,13 +10913,8 @@ const fetchReelerDetails = () => {
                                 name="lotWeight"
                                 value={data.lotWeight}
                                 onChange={handleInputs}
-                                placeholder="Enter  No Of DFLs"
-                                // readOnly
-                                // required
+                                placeholder="Enter No Of DFLs"
                               />
-                              {/* <Form.Control.Feedback type="invalid">
-                              Total Cocoons Weight is required
-                              </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
                         </Col>
@@ -10389,8 +10922,7 @@ const fetchReelerDetails = () => {
                         <Col lg="2">
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="schemeAmount">
-                             No Of Cocoons Per Kg
-                              {/* <span className="text-danger">*</span> */}
+                              No Of Cocoons Per Kg
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -10399,13 +10931,8 @@ const fetchReelerDetails = () => {
                                 name="noOfCocoonPerKg"
                                 value={data.noOfCocoonPerKg}
                                 onChange={handleInputs}
-                                placeholder="Enter  No Of Cocoons Per Kg"
-                                // readOnly
-                                // required
+                                placeholder="Enter No Of Cocoons Per Kg"
                               />
-                              {/* <Form.Control.Feedback type="invalid">
-                              Total Cocoons Weight is required
-                              </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
                         </Col>
@@ -10414,7 +10941,6 @@ const fetchReelerDetails = () => {
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="schemeAmount">
                               Average Yield
-                              {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -10424,66 +10950,42 @@ const fetchReelerDetails = () => {
                                 value={data.averageYield}
                                 onChange={handleInputs}
                                 placeholder="Enter Average Yield"
-                                // readOnly
-                                // required
                               />
-                              {/* <Form.Control.Feedback type="invalid">
-                              Total Cocoons Weight is required
-                              </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
                         </Col>
 
+                         <Col lg="2">
+                           <Form.Group className="form-group">
+                             <Form.Label>Eligible For Bonus</Form.Label>
+                             <div className="form-control-wrap">
+                               <Form.Control
+                                 type="text"
+                                 name="noOfRawSilkProduced"
+                                 value={data.noOfRawSilkProduced}
+                                 readOnly
+                                 placeholder="Eligible For Bonus"
+                               />
+                             </div>
+                           </Form.Group>
+                         </Col>
 
-                        <Col lg="2">
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="schemeAmount">
-                              Eligible For Bonus
-                              {/* <span className="text-danger">*</span> */}
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="noOfRawSilkProduced"
-                                type="text"
-                                name="noOfRawSilkProduced"
-                                value={data.noOfRawSilkProduced}
-                                onChange={handleInputs}
-                                placeholder="Eligible For Bonus"
-                                // readOnly
-                                // required
-                              />
-                              {/* <Form.Control.Feedback type="invalid">
-                              Total Cocoons Weight is required
-                              </Form.Control.Feedback> */}
-                            </div>
-                          </Form.Group>
-                        </Col>
+                         <Col lg="2">
+                           <Form.Group className="form-group">
+                             <Form.Label>Eligible For Incentive</Form.Label>
+                             <div className="form-control-wrap">
+                               <Form.Control
+                                 type="text"
+                                 name="noOfCocoonsNeedToProduce"
+                                 value={data.noOfCocoonsNeedToProduce}
+                                 readOnly
+                                 placeholder="Eligible For Incentive"
+                               />
+                             </div>
+                           </Form.Group>
+                         </Col>
 
-
-                        <Col lg="2">
-                          <Form.Group className="form-group">
-                            <Form.Label htmlFor="schemeAmount">
-                              Eligible For Incentive
-                              {/* <span className="text-danger">*</span> */}
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="noOfCocoonsNeedToProduce"
-                                type="text"
-                                name="noOfCocoonsNeedToProduce"
-                                value={data.noOfCocoonsNeedToProduce}
-                                onChange={handleInputs}
-                                placeholder="Eligible For Incentive"
-                                // readOnly
-                                // required
-                              />
-                              {/* <Form.Control.Feedback type="invalid">
-                              Total Cocoons Weight is required
-                              </Form.Control.Feedback> */}
-                            </div>
-                          </Form.Group>
-                        </Col>
-
+                        
 
                             {/* <Col lg="3">
                               <Form.Group className="form-group">
@@ -10666,6 +11168,28 @@ const fetchReelerDetails = () => {
                         </Col>
                         )}  
 
+                        {/* Subsidy Amount for Silk Samagra State: centralAmount + stateAmount */}
+                        {schemeDetails.calculationBasedOn === "Silk Samagra State" &&
+                          getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Rearing Equipment SS" && (
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n5">
+                              <Form.Label htmlFor="silkSamagraSubsidyAmount">
+                                {t("Subsidy Amount")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="silkSamagraSubsidyAmount"
+                                  type="text"
+                                  value={(Number(data.centralAmount) || 0) + (Number(data.stateAmount) || 0)}
+                                  readOnly
+                                  disabled
+                                  placeholder="Auto Calculated"
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        )}
+
                         {/* ✅ KEEP ONLY THIS */}
 <Row className="mt-2">
   <Col lg="12" className="text-end">
@@ -10807,7 +11331,9 @@ const fetchReelerDetails = () => {
 
                     {(getIncentiveAndBonusData[0]?.sanctionForReeling ||
                         getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
-                          "Registered Private Bivoltine Chawki Rearing Center Subsidy") && (
+                          "Registered Private Bivoltine Chawki Rearing Center Subsidy") &&
+                        getIncentiveAndBonusData?.[0]?.calculationBasedOn !==
+                          "SS Construction Of Low Cost Shed to Permanent Rearing House" && (
                         <Col lg="4">
                           <Form.Group className="form-group mt-n5">
                             <Form.Label>
@@ -11049,190 +11575,148 @@ const fetchReelerDetails = () => {
                       {t("Equipment Purchase")}
                     </Card.Header>
                     <Card.Body>
-                      <Row className="g-gs">
-                        <Col lg="4">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label>
-                              {t("Vendor Name")}
-                              {/* <span className="text-danger">*</span> */}
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Select
-                                name="vendorId"
-                                value={equipment.vendorId}
-                                onChange={handleEquipmentInputs}
-                                // required
-                                // isInvalid={
-                                //   equipment.vendorId === undefined ||
-                                //   equipment.vendorId === "0"
-                                // }
-                              >
-                                <option value="">{t("Select Vendor Name")}</option>
-                                {scVendorListData.map((list) => (
-                                  <option
-                                    key={list.scVendorId}
-                                    value={list.scVendorId}
-                                  >
-                                    {list.name}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                              {/* <Form.Control.Feedback type="invalid">
-                                {t("Vendor Name is required")}
-                              </Form.Control.Feedback> */}
-                            </div>
-                          </Form.Group>
-                        </Col>
-                        <Col lg="4">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="description">
-                              {t("Description")}
-                              {/* <span className="text-danger">*</span> */}
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="description"
-                                type="text"
-                                name="description"
-                                value={equipment.description}
-                                onChange={handleEquipmentInputs}
-                                placeholder={t("Enter Description")}
-                                // required
-                              />
-                              {/* <Form.Control.Feedback type="invalid">
-                                {t("Description is required")}
-                              </Form.Control.Feedback> */}
-                            </div>
-                          </Form.Group>
-                        </Col>
 
-                        <Col lg="4">
-                                <Form.Group className="form-group mt-n3">
-                                  <Form.Label htmlFor="schemeAmount">
-                                    {t("Machine Type")}
-                                    {/* <span className="text-danger">*</span> */}
-                                  </Form.Label>
-                                  <div className="form-control-wrap">
-                                    <Form.Select
-                                      name="machineTypeId"
-                                      value={data.machineTypeId}
-                                      onChange={handleInputs}
-                                      // onBlur={() => handleInputs}
-                                      // required
-                                      // isInvalid={
-                                      //   data.machineTypeId === undefined ||
-                                      //   data.machineTypeId === "0"
-                                      // }
-                                    >
-                                      <option value="">{t("Select Machine Type")}</option>
-                                      {machineTypeListData.map((list) => (
-                                        <option
-                                          key={list.machineTypeId}
-                                          value={list.machineTypeId}
-                                        >
-                                          {list.machineTypeName}
-                                        </option>
+                      {/* ── Rearing Equipment SS: multiple rows ── */}
+                      {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS" ? (
+                        <>
+                          {rearingEquipmentPurchaseList.map((row, index) => (
+                            <div key={index} className="border rounded p-3 mb-3">
+                              <Row className="g-gs">
+                                <Col lg="4">
+                                  <Form.Group className="form-group mt-n3">
+                                    <Form.Label>{t("Vendor Name")}</Form.Label>
+                                    <Form.Select name="vendorId" value={row.vendorId} onChange={(e) => handleRearingEquipmentChange(index, e)}>
+                                      <option value="">{t("Select Vendor Name")}</option>
+                                      {scVendorListData.map((list) => (
+                                        <option key={list.scVendorId} value={list.scVendorId}>{list.name}</option>
                                       ))}
                                     </Form.Select>
-                                    {/* <Form.Control.Feedback type="invalid">
-                                      {t("Machine Type is required")}
-                                    </Form.Control.Feedback> */}
-                                  </div>
-                                </Form.Group>
-                              </Col>
-
-                              <Col lg="4">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="description">
-                              {t("L1 Rate")}
-                              {/* <span className="text-danger">*</span> */}
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <Form.Control
-                                id="l1Rate"
-                                type="text"
-                                name="l1Rate"
-                                value={equipment.l1Rate}
-                                onChange={handleEquipmentInputs}
-                                placeholder={t("Enter L1 Rate")}
-                                // required
-                              />
-                              {/* <Form.Control.Feedback type="invalid">
-                                {t("Description is required")}
-                              </Form.Control.Feedback> */}
+                                  </Form.Group>
+                                </Col>
+                                <Col lg="4">
+                                  <Form.Group className="form-group mt-n3">
+                                    <Form.Label>{t("Equipment Details")}</Form.Label>
+                                    <Form.Control type="text" name="description" value={row.description} onChange={(e) => handleRearingEquipmentChange(index, e)} placeholder={t("Enter Equipment Details")} />
+                                  </Form.Group>
+                                </Col>
+                                <Col lg="4">
+                                  <Form.Group className="form-group mt-n3">
+                                    <Form.Label>{t("Machine Type")}</Form.Label>
+                                    <Form.Select name="machineTypeId" value={row.machineTypeId} onChange={(e) => handleRearingEquipmentChange(index, e)}>
+                                      <option value="">{t("Select Machine Type")}</option>
+                                      {machineTypeListData.map((list) => (
+                                        <option key={list.machineTypeId} value={list.machineTypeId}>{list.machineTypeName}</option>
+                                      ))}
+                                    </Form.Select>
+                                  </Form.Group>
+                                </Col>
+                                <Col lg="4">
+                                  <Form.Group className="form-group mt-n3">
+                                    <Form.Label>{t("L1 Rate")}</Form.Label>
+                                    <Form.Control type="text" name="l1Rate" value={row.l1Rate} onChange={(e) => handleRearingEquipmentChange(index, e)} placeholder={t("Enter L1 Rate")} />
+                                  </Form.Group>
+                                </Col>
+                                <Col lg="4">
+                                  <Form.Group className="form-group mt-n3">
+                                    <Form.Label>Quantity (In No's)</Form.Label>
+                                    <Form.Control type="text" name="machineQuantity" value={row.machineQuantity} onChange={(e) => handleRearingEquipmentChange(index, e)} placeholder="Enter Quantity (In No's)" />
+                                  </Form.Group>
+                                </Col>
+                                <Col lg="4">
+                                  <Form.Group className="form-group mt-n3">
+                                    <Form.Label>Tax Invoice No</Form.Label>
+                                    <Form.Control type="text" name="taxInvoiceNo" value={row.taxInvoiceNo} onChange={(e) => handleRearingEquipmentChange(index, e)} placeholder="Enter Tax Invoice No" />
+                                  </Form.Group>
+                                </Col>
+                                <Col lg="12" className="text-end">
+                                  {rearingEquipmentPurchaseList.length > 1 && (
+                                    <Button variant="danger" size="sm" onClick={() => removeRearingEquipmentRow(index)}>
+                                      {t("Remove")}
+                                    </Button>
+                                  )}
+                                </Col>
+                              </Row>
                             </div>
-                          </Form.Group>
-                        </Col>
+                          ))}
+                        </>
+                      ) : (
+                        /* ── All other schemes: single form ── */
+                        <Row className="g-gs">
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label>
+                                {t("Vendor Name")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  name="vendorId"
+                                  value={equipment.vendorId}
+                                  onChange={handleEquipmentInputs}
+                                >
+                                  <option value="">{t("Select Vendor Name")}</option>
+                                  {scVendorListData.map((list) => (
+                                    <option key={list.scVendorId} value={list.scVendorId}>{list.name}</option>
+                                  ))}
+                                </Form.Select>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="description">{t("Equipment Details")}</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control id="description" type="text" name="description" value={equipment.description} onChange={handleEquipmentInputs} placeholder={t("Enter Equipment Details")} />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="schemeAmount">{t("Machine Type")}</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select name="machineTypeId" value={data.machineTypeId} onChange={handleInputs}>
+                                  <option value="">{t("Select Machine Type")}</option>
+                                  {machineTypeListData.map((list) => (
+                                    <option key={list.machineTypeId} value={list.machineTypeId}>{list.machineTypeName}</option>
+                                  ))}
+                                </Form.Select>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="description">{t("L1 Rate")}</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control id="l1Rate" type="text" name="l1Rate" value={equipment.l1Rate} onChange={handleEquipmentInputs} placeholder={t("Enter L1 Rate")} />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="schemeAmount">Quantity (In No's)</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control id="machineQuantity" type="text" name="machineQuantity" value={data.machineQuantity} onChange={handleInputs} placeholder="Enter Quantity (In No's)" />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="schemeAmount">Tax Invoice No</Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control id="taxInvoiceNo" type="text" name="taxInvoiceNo" value={data.taxInvoiceNo} onChange={handleInputs} placeholder="Enter Tax Invoice No" />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="sordfl">{t("Tax Invoice Date")}</Form.Label>
+                              <div className="form-control-wrap">
+                                <DatePicker selected={data.taxInvoiceDate} onChange={(date) => handleDateChange(date, "taxInvoiceDate")} peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select" dateFormat="dd/MM/yyyy" className="form-control" maxDate={new Date()} />
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                      )}
 
-                        <Col lg="4">
-                                <Form.Group className="form-group mt-n3">
-                                  <Form.Label htmlFor="schemeAmount">Quantity in kg
-                                  {/* <span className="text-danger">*</span> */}
-                                  </Form.Label>
-                                  <div className="form-control-wrap">
-                                    <Form.Control
-                                      id="machineQuantity"
-                                      type="text"
-                                      name="machineQuantity"
-                                      value={data.machineQuantity}
-                                      onChange={handleInputs}
-                                      placeholder="Enter Quantity in kg"
-                                      // required
-                                      // readOnly
-                                    />
-                                  </div>
-                                </Form.Group>
-                              </Col>
-
-                        <Col lg="4">
-                                <Form.Group className="form-group mt-n3">
-                                  <Form.Label htmlFor="schemeAmount">Tax Invoice No</Form.Label>
-                                  <div className="form-control-wrap">
-                                    <Form.Control
-                                      id="taxInvoiceNo"
-                                      type="text"
-                                      name="taxInvoiceNo"
-                                      value={data.taxInvoiceNo}
-                                      onChange={handleInputs}
-                                      placeholder="Enter Tax Invoice No"
-                                      // required
-                                      // readOnly
-                                    />
-                                  </div>
-                                </Form.Group>
-                              </Col>
-
-                              <Col lg="4">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="sordfl">
-                              {t("Tax Invoice Date")}
-                              {/* <span className="text-danger">*</span> */}
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <DatePicker
-                                selected={data.taxInvoiceDate}
-                                onChange={(date) =>
-                                  handleDateChange(date, "taxInvoiceDate")
-                                }
-                                // minDate={new Date("01/04/2023")}
-                                // maxDate={new Date("31/03/2024")}
-                                peekNextMonth
-                                showMonthDropdown
-                                showYearDropdown
-                                dropdownMode="select"
-                                dateFormat="dd/MM/yyyy"
-                                className="form-control"
-                                maxDate={new Date()}
-                                // readOnly={schemeDetails.calculationBasedOn === "Silk Samagra Central" || 
-                                //   schemeDetails.calculationBasedOn === "Silk Samagra State" || 
-                                //   !schemeDetails.calculationBasedOn}
-                                // readOnly 
-                                // required
-                              />
-                            </div>
-                          </Form.Group>
-                        </Col>
-                      </Row>
                     </Card.Body>
                   </Card>
                 </Block>

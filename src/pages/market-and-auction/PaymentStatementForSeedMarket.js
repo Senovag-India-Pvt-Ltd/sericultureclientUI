@@ -164,7 +164,7 @@ function PaymentStatementForSeedMarket() {
                 localStorage.getItem("marketId"),
                 data.godownId,
                 row.auctionDate,
-                row.allottedLotId
+                row.lotGroupageId
               )
             }}
           >

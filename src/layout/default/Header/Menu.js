@@ -5503,6 +5503,12 @@ function Menu() {
                               />
                             </MenuItem>
                           ) : null}
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Market Weekly Report")}
+                              to="/seriui/market-weekly-report"
+                            />
+                          </MenuItem>
                         </MenuSub>
                       </MenuItem>
                     ) : null}
@@ -5788,6 +5794,14 @@ function Menu() {
                       </MenuItem>
                     ) : null}
 
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Format Reports")}
+                        to="https://e-reshme.karnataka.gov.in/ssrsreport/ssrsreport/BVM5_Format.aspx"
+                        blank={true}
+                      />
+                    </MenuItem>
+
                     <MenuItem sub>
                       <MenuItemLink
                         text={t("Other Format Reports")}
@@ -5852,21 +5866,464 @@ function Menu() {
                           <MenuSub>
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Farm Report")}
-                                to="/seriui/grainage-farm-report"
+                                text={t("Mulberry Weekly Maintenance Report")}
+                                to="/seriui/grainage-mulberry-weekly-report"
                               />
                             </MenuItem>
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Mulberry Weekly Report")}
-                                to="/seriui/grainage-mulberry-weekly-report"
+                                text={t("Monthly Farm Report")}
+                                to="/seriui/grainage-monthly-farm-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Monthly Hatching Report (Form-27)")}
+                                to="/seriui/grainage-monthly-hatching-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Crop Harvest Details Report")}
+                                to="/seriui/grainage-crop-harvest-report"
                               />
                             </MenuItem>
                           </MenuSub>
                         </MenuItem>
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("P4 Bilidevalaya Farm Report")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P4 Form-27 B Monthly Summary")}
+                                to="/seriui/grainage-p4-form-summary-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P4 Weekly Programme")}
+                                to="/seriui/grainage-p4-weekly-programme-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P4 Crop Harvest & Hatching Details")}
+                                to="/seriui/grainage-p4-crop-details-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 Weekly Programme")}
+                                to="/seriui/grainage-p3-weekly-programme-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+                        
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("P3 Grainage Report")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 Grainage Monthly Progress Report")}
+                                to="/seriui/grainage-p3-grainage-monthly-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 Lotwise Monthly Report")}
+                                to="/seriui/grainage-p3-lotwise-monthly-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 DFL Distribution Report")}
+                                to="/seriui/grainage-p3-dfl-distribution-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 Cocoon Supply Report")}
+                                to="/seriui/grainage-p3-cocoon-supply-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 DFL Distribution Details Report")}
+                                to="/seriui/grainage-p3-dfl-distribution-details-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 DFL Preparation Programme Report")}
+                                to="/seriui/grainage-p3-dfl-preparation-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P3 Pupa & Moth Examination Report")}
+                                to="/seriui/grainage-p3-pupa-moth-exam-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("P2 Farms Reports")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Farm Monthly Progress (Sheet-1)")}
+                                to="/seriui/farm-p2-monthly-progress-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Farm Crop Detail — Form-1 (Sheet-2)")}
+                                to="/seriui/farm-p2-crop-detail-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("P3 Farms MSC Seed Area Reports")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Farm Form-27 B Report")}
+                                to="/seriui/farm-form27b-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Farm Mulberry Garden Report")}
+                                to="/seriui/farm-mulberry-garden-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Farm Chaki Center Monthly Report")}
+                                to="/seriui/farm-chaki-center-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Farm Weather Conditions Report")}
+                                to="/seriui/farm-weather-report"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Farm Future Chawki Plan Report")}
+                                to="/seriui/farm-future-chawki-plan-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("P3 Farms (Bivoltine)")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form-1 · Monthly Chawki Achievement")}
+                                to="/seriui/farm-form1-chawki-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form F-2 · Monthly Progress (per-lot)")}
+                                to="/seriui/farm-form2-progress-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form-3 · Farm Performance (CY vs PY)")}
+                                to="/seriui/farm-form3-performance-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form-4 · Crop Progress (CY vs PY)")}
+                                to="/seriui/farm-form4-crop-progress-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("P1 and P2 Grainage Reports (Bivoltine)")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Grainage Monthly Brief Progress (CY + PY)")}
+                                to="/seriui/grainage-brief-monthly-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form-1 · Detailed Monthly Progress (race-split)")}
+                                to="/seriui/grainage-form1-detailed-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form-2 · Source-split Monthly Progress")}
+                                to="/seriui/grainage-form2-source-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form-10 · Production · PY · Cost · Income")}
+                                to="/seriui/grainage-form10-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Lot-wise Detail (top 4 lots)")}
+                                to="/seriui/grainage-lotwise-detail-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Race-wise Progress (CSR-2 / CSR-4)")}
+                                to="/seriui/grainage-race-progress-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P1 Lot-wise DFL Production Detail")}
+                                to="/seriui/grainage-p1-lotwise-detail-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Cocoon Purchase Report (Farm + Purchased)")}
+                                to="/seriui/grainage-cocoon-purchase-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("DFL Distribution by Taluk / District")}
+                                to="/seriui/grainage-dfl-distribution-location-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Diapause / Refrigerated DFL Availability (5-mo)")}
+                                to="/seriui/grainage-diapause-availability-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Day-wise Chawki Distribution (race × week)")}
+                                to="/seriui/grainage-daywise-chawki-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("P2 Grainage Bilidevalaya")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Production & Income Report")}
+                                to="/seriui/grainage-p2-production-income-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Lotwise Monthly Report")}
+                                to="/seriui/grainage-p2-lotwise-monthly-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Weekly Production Report")}
+                                to="/seriui/grainage-p2-weekly-production-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Weekly TSC Supply Report")}
+                                to="/seriui/grainage-p2-weekly-tsc-supply-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("P2 Pebrine Cases Report")}
+                                to="/seriui/grainage-p2-pebrine-cases-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("TSC Reports")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Farmer Statistics Report")}
+                                to="/seriui/tsc-farmer-stats-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Mulberry Area Report")}
+                                to="/seriui/tsc-mulberry-area-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Chawki & Harvest Report")}
+                                to="/seriui/tsc-chawki-harvest-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Seed Cocoon Production Report")}
+                                to="/seriui/tsc-seed-cocoon-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Chawki & Cocoon Weekly Report")}
+                                to="/seriui/tsc-chawki-cocoon-weekly-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC New Mulberry Plantings Report")}
+                                to="/seriui/tsc-new-mulberry-plantings-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC P2 Brushed DFLs Report")}
+                                to="/seriui/tsc-p2-brushed-dfls-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("TSC Daily Chawki Weekly Report")}
+                                to="/seriui/tsc-daily-chawki-week-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
+
+                        <MenuItem sub>
+                              <MenuItemLink
+                                text={t("ADS Reports")}
+                                onClick={menuToggle}
+                                onMouseEnter={menuHover}
+                                sub
+                              />
+                              <MenuSub>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · P1 Grainage Monthly Progress (GG-1)")}
+                                    to="/seriui/ads-gg1-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · Weekly DFL Production Progress (GG-2)")}
+                                    to="/seriui/ads-gg2-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · Production Cost & Income (GG-3)")}
+                                    to="/seriui/ads-gg3-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · Pebrine Cases Detail")}
+                                    to="/seriui/ads-pebrine-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · TSC Mulberry Plantation Statistics")}
+                                    to="/seriui/ads-plantation-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · TSC Farmer Demographics")}
+                                    to="/seriui/ads-rearer-details-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("ADS · TSC Chawki Programme & Achievement")}
+                                    to="/seriui/ads-chawki-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("DDS · Weekly Chawki Report")}
+                                    to="/seriui/dds-weekly-chawki-report"
+                                  />
+                                </MenuItem>
+                              </MenuSub>
+                            </MenuItem>
                       </MenuSub>
                     </MenuItem>
-
                  </MenuSub>
                 </MenuItem>
               ) : null}

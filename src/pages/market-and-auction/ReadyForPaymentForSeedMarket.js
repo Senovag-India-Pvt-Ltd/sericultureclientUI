@@ -197,7 +197,7 @@ function ReadyForPaymentForSeedMarket() {
               handleAddToBank(
                 localStorage.getItem("marketId"),
                 row.auctionDate,
-                row.allottedLotId
+                row.lotGroupageId
               )
             }
           >
