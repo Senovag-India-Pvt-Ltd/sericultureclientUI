@@ -5477,7 +5477,7 @@ function Menu() {
                           <MenuItem>
                             <MenuItemLink
                               text={t("Bidding Slip")}
-                              to="/seriui/seed-market-bidding-slip-report"
+                              to="/seriui/seed-market-bidding-report"
                             />
                           </MenuItem>
                           <MenuItem>
@@ -5507,6 +5507,24 @@ function Menu() {
                             <MenuItemLink
                               text={t("Market Weekly Report")}
                               to="/seriui/market-weekly-report"
+                            />
+                          </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Seed MF Report")}
+                              to="/seriui/seed-mf-report"
+                            />
+                          </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Seed Market Transaction Report")}
+                              to="/seriui/seed-market-transaction-report"
+                            />
+                          </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Seed Market Credit Report")}
+                              to="/seriui/seed-market-credit-report"
                             />
                           </MenuItem>
                         </MenuSub>
