@@ -379,11 +379,37 @@ function StakeHolderViewPage() {
                           src="../images/user/user.png"
                         /> */}
                         {selectedFile && (
-                          <img
-                            style={{ height: "100px", width: "100px" }}
-                            src={selectedFile}
-                            alt="Selected File"
-                          />
+                          <>
+                            {/* Image Preview */}
+                            {StakeHolder.photoPath?.match(
+                              /\.(jpg|jpeg|png)$/i,
+                            ) ? (
+                              <img
+                                style={{ height: "100px", width: "100px" }}
+                                src={selectedFile}
+                                alt="Selected File"
+                              />
+                            ) : StakeHolder.photoPath?.match(/\.pdf$/i) ? (
+                              <iframe
+                                src={selectedFile}
+                                title="PDF Preview"
+                                width="100px"
+                                height="100px"
+                              />
+                            ) : null}
+
+                            {/* Download Button */}
+                            <Button
+                              variant="primary"
+                              size="sm"
+                              className="ms-2 mt-2"
+                              onClick={() =>
+                                downloadFile(StakeHolder.photoPath)
+                              }
+                            >
+                              Download File
+                            </Button>
+                          </>
                         )}
                       </td>
                     </tr>
