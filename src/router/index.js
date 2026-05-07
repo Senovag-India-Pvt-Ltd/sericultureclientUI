@@ -1025,6 +1025,7 @@ import GrainageBriefMonthlyReport from "../pages/seed-and-dfl-managment/Grainage
 import GrainageForm1DetailedReport from "../pages/seed-and-dfl-managment/GrainageForm1DetailedReport";
 import GrainageForm2SourceReport from "../pages/seed-and-dfl-managment/GrainageForm2SourceReport";
 import GrainageForm10ProductionReport from "../pages/seed-and-dfl-managment/GrainageForm10ProductionReport";
+import GrainageLotwiseDetailReport from "../pages/seed-and-dfl-managment/GrainageLotwiseDetailReport";
 import GrainageFarmForm27BReport from "../pages/seed-and-dfl-managment/GrainageFarmForm27BReport";
 import GrainageFarmMulberryGardenReport from "../pages/seed-and-dfl-managment/GrainageFarmMulberryGardenReport";
 import GrainageFarmChakiCenterReport from "../pages/seed-and-dfl-managment/GrainageFarmChakiCenterReport";
@@ -2167,6 +2168,7 @@ function Router() {
             <Route path="grainage-form1-detailed-report" element={<GrainageForm1DetailedReport />} />
             <Route path="grainage-form2-source-report" element={<GrainageForm2SourceReport />} />
             <Route path="grainage-form10-report" element={<GrainageForm10ProductionReport />} />
+            <Route path="grainage-lotwise-detail-report" element={<GrainageLotwiseDetailReport />} />
             <Route path="farm-form27b-report" element={<GrainageFarmForm27BReport />} />
             <Route path="farm-mulberry-garden-report" element={<GrainageFarmMulberryGardenReport />} />
             <Route path="farm-chaki-center-report" element={<GrainageFarmChakiCenterReport />} />

@@ -6093,8 +6093,14 @@ function Menu() {
                             </MenuItem>
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Form-10 · DFL Production Progress (in lakhs)")}
+                                text={t("Form-10 · Production · PY · Cost · Income")}
                                 to="/seriui/grainage-form10-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Lot-wise Detail (top 4 lots)")}
+                                to="/seriui/grainage-lotwise-detail-report"
                               />
                             </MenuItem>
                           </MenuSub>
