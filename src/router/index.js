@@ -1003,6 +1003,18 @@ import GrainageP2WeeklyTscSupplyReport from "../pages/seed-and-dfl-managment/Gra
 import GrainageP2PebrineCasesReport from "../pages/seed-and-dfl-managment/GrainageP2PebrineCasesReport";
 import TscFarmerStatisticsReport from "../pages/seed-and-dfl-managment/TscFarmerStatisticsReport";
 import TscMulberryAreaReport from "../pages/seed-and-dfl-managment/TscMulberryAreaReport";
+import TscMonthlyMulberryAreaReport from "../pages/seed-and-dfl-managment/TscMonthlyMulberryAreaReport";
+import TscMonthlyFarmerCategorizationReport from "../pages/seed-and-dfl-managment/TscMonthlyFarmerCategorizationReport";
+import TscMonthlyDemographicsReport from "../pages/seed-and-dfl-managment/TscMonthlyDemographicsReport";
+import TscMonthlyMulberryByVarietyReport from "../pages/seed-and-dfl-managment/TscMonthlyMulberryByVarietyReport";
+import TscMonthlyPlantationDetailReport from "../pages/seed-and-dfl-managment/TscMonthlyPlantationDetailReport";
+import {
+  TscMonthlyPureBrushingReport,
+  TscMonthlyCrossBrushingReport,
+  TscMonthlyPureCocoonProductionReport,
+} from "../pages/seed-and-dfl-managment/TscMonthlyCYPYReports";
+import TscMonthlyRaceWiseBrushingReport from "../pages/seed-and-dfl-managment/TscMonthlyRaceWiseBrushingReport";
+import TscMonthlyCropYieldReport from "../pages/seed-and-dfl-managment/TscMonthlyCropYieldReport";
 import TscChawkiHarvestReport from "../pages/seed-and-dfl-managment/TscChawkiHarvestReport";
 import TscSeedCocoonReport from "../pages/seed-and-dfl-managment/TscSeedCocoonReport";
 import TscChawkiCocoonWeeklyReport from "../pages/seed-and-dfl-managment/TscChawkiCocoonWeeklyReport";
@@ -2178,6 +2190,16 @@ function Router() {
             <Route path="grainage-p2-pebrine-cases-report" element={<GrainageP2PebrineCasesReport />} />
             <Route path="tsc-farmer-stats-report" element={<TscFarmerStatisticsReport />} />
             <Route path="tsc-mulberry-area-report" element={<TscMulberryAreaReport />} />
+            <Route path="tsc-monthly-mulberry-area-report" element={<TscMonthlyMulberryAreaReport />} />
+            <Route path="tsc-monthly-farmer-categorization-report" element={<TscMonthlyFarmerCategorizationReport />} />
+            <Route path="tsc-monthly-demographics-report" element={<TscMonthlyDemographicsReport />} />
+            <Route path="tsc-monthly-mulberry-by-variety-report" element={<TscMonthlyMulberryByVarietyReport />} />
+            <Route path="tsc-monthly-plantation-detail-report" element={<TscMonthlyPlantationDetailReport />} />
+            <Route path="tsc-monthly-pure-brushing-report" element={<TscMonthlyPureBrushingReport />} />
+            <Route path="tsc-monthly-cross-brushing-report" element={<TscMonthlyCrossBrushingReport />} />
+            <Route path="tsc-monthly-race-wise-brushing-report" element={<TscMonthlyRaceWiseBrushingReport />} />
+            <Route path="tsc-monthly-pure-cocoon-production-report" element={<TscMonthlyPureCocoonProductionReport />} />
+            <Route path="tsc-monthly-crop-yield-report" element={<TscMonthlyCropYieldReport />} />
             <Route path="tsc-chawki-harvest-report" element={<TscChawkiHarvestReport />} />
             <Route path="tsc-seed-cocoon-report" element={<TscSeedCocoonReport />} />
             <Route path="tsc-chawki-cocoon-weekly-report" element={<TscChawkiCocoonWeeklyReport />} />
