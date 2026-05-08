@@ -6430,6 +6430,66 @@ function Menu() {
                                     to="/seriui/tsc-monthly-crop-yield-report"
                                   />
                                 </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Monthly Market-wise Cocoon (Sheet 7)")}
+                                    to="/seriui/tsc-monthly-market-cocoon-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Monthly CRC Brushing — Govt + Private (Sheet 8)")}
+                                    to="/seriui/tsc-monthly-crc-brushing-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Monthly Weekly Brushing (Sheet 10a · Form S-2)")}
+                                    to="/seriui/tsc-monthly-weekly-brushing-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Monthly Weekly Cocoon Production (Sheet 10b · Form S-3)")}
+                                    to="/seriui/tsc-monthly-weekly-cocoon-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Monthly NS-1 Chawki Target & Achievement (Sheet 11a)")}
+                                    to="/seriui/tsc-monthly-ns1-chawki-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Monthly NS-2 Weekly Cocoon Production (Sheet 11b)")}
+                                    to="/seriui/tsc-monthly-ns2-cocoon-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Monthly S-1 Chawki Plan (Sheet 12a · Form S-1)")}
+                                    to="/seriui/tsc-monthly-s1-chawki-plan-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Monthly Ripe Eggs & Next-Month (Sheet 12b · Form S-1b)")}
+                                    to="/seriui/tsc-monthly-s1-ripe-eggs-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Monthly Seed Cocoon Weekly (Sheet 13a · Form S-4)")}
+                                    to="/seriui/tsc-monthly-s4-weekly-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Monthly S-4 Per-Race Summary (Sheet 13b · Form S-4)")}
+                                    to="/seriui/tsc-monthly-s4-summary-report"
+                                  />
+                                </MenuItem>
                               </MenuSub>
                             </MenuItem>
                           </MenuSub>

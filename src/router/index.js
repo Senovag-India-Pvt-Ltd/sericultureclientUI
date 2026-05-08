@@ -1015,6 +1015,20 @@ import {
 } from "../pages/seed-and-dfl-managment/TscMonthlyCYPYReports";
 import TscMonthlyRaceWiseBrushingReport from "../pages/seed-and-dfl-managment/TscMonthlyRaceWiseBrushingReport";
 import TscMonthlyCropYieldReport from "../pages/seed-and-dfl-managment/TscMonthlyCropYieldReport";
+import TscMonthlyMarketCocoonReport from "../pages/seed-and-dfl-managment/TscMonthlyMarketCocoonReport";
+import TscMonthlyCrcBrushingReport from "../pages/seed-and-dfl-managment/TscMonthlyCrcBrushingReport";
+import {
+  TscMonthlyWeeklyBrushingReport,
+  TscMonthlyWeeklyCocoonReport,
+  TscMonthlyNs1ChawkiReport,
+  TscMonthlyNs2CocoonReport,
+  TscMonthlyS4SeedCocoonWeeklyReport,
+} from "../pages/seed-and-dfl-managment/TscMonthlyWeeklyReports";
+import {
+  TscMonthlyS1ChawkiPlanReport,
+  TscMonthlyS1RipeEggsReport,
+} from "../pages/seed-and-dfl-managment/TscMonthlyWeeklyTriReports";
+import TscMonthlyS4SummaryReport from "../pages/seed-and-dfl-managment/TscMonthlyS4SummaryReport";
 import TscChawkiHarvestReport from "../pages/seed-and-dfl-managment/TscChawkiHarvestReport";
 import TscSeedCocoonReport from "../pages/seed-and-dfl-managment/TscSeedCocoonReport";
 import TscChawkiCocoonWeeklyReport from "../pages/seed-and-dfl-managment/TscChawkiCocoonWeeklyReport";
@@ -2200,6 +2214,16 @@ function Router() {
             <Route path="tsc-monthly-race-wise-brushing-report" element={<TscMonthlyRaceWiseBrushingReport />} />
             <Route path="tsc-monthly-pure-cocoon-production-report" element={<TscMonthlyPureCocoonProductionReport />} />
             <Route path="tsc-monthly-crop-yield-report" element={<TscMonthlyCropYieldReport />} />
+            <Route path="tsc-monthly-market-cocoon-report" element={<TscMonthlyMarketCocoonReport />} />
+            <Route path="tsc-monthly-crc-brushing-report" element={<TscMonthlyCrcBrushingReport />} />
+            <Route path="tsc-monthly-weekly-brushing-report" element={<TscMonthlyWeeklyBrushingReport />} />
+            <Route path="tsc-monthly-weekly-cocoon-report" element={<TscMonthlyWeeklyCocoonReport />} />
+            <Route path="tsc-monthly-ns1-chawki-report" element={<TscMonthlyNs1ChawkiReport />} />
+            <Route path="tsc-monthly-ns2-cocoon-report" element={<TscMonthlyNs2CocoonReport />} />
+            <Route path="tsc-monthly-s1-chawki-plan-report" element={<TscMonthlyS1ChawkiPlanReport />} />
+            <Route path="tsc-monthly-s1-ripe-eggs-report" element={<TscMonthlyS1RipeEggsReport />} />
+            <Route path="tsc-monthly-s4-weekly-report" element={<TscMonthlyS4SeedCocoonWeeklyReport />} />
+            <Route path="tsc-monthly-s4-summary-report" element={<TscMonthlyS4SummaryReport />} />
             <Route path="tsc-chawki-harvest-report" element={<TscChawkiHarvestReport />} />
             <Route path="tsc-seed-cocoon-report" element={<TscSeedCocoonReport />} />
             <Route path="tsc-chawki-cocoon-weekly-report" element={<TscChawkiCocoonWeeklyReport />} />
