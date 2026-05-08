@@ -1029,6 +1029,9 @@ import {
   TscMonthlyS1RipeEggsReport,
 } from "../pages/seed-and-dfl-managment/TscMonthlyWeeklyTriReports";
 import TscMonthlyS4SummaryReport from "../pages/seed-and-dfl-managment/TscMonthlyS4SummaryReport";
+import TscMonthlyP1ChawkiLotwiseReport from "../pages/seed-and-dfl-managment/TscMonthlyP1ChawkiLotwiseReport";
+import TscMonthlyP1CocoonLotwiseReport from "../pages/seed-and-dfl-managment/TscMonthlyP1CocoonLotwiseReport";
+import TscMonthlySourceGrainageChawkiReport from "../pages/seed-and-dfl-managment/TscMonthlySourceGrainageChawkiReport";
 import TscChawkiHarvestReport from "../pages/seed-and-dfl-managment/TscChawkiHarvestReport";
 import TscSeedCocoonReport from "../pages/seed-and-dfl-managment/TscSeedCocoonReport";
 import TscChawkiCocoonWeeklyReport from "../pages/seed-and-dfl-managment/TscChawkiCocoonWeeklyReport";
@@ -2224,6 +2227,9 @@ function Router() {
             <Route path="tsc-monthly-s1-ripe-eggs-report" element={<TscMonthlyS1RipeEggsReport />} />
             <Route path="tsc-monthly-s4-weekly-report" element={<TscMonthlyS4SeedCocoonWeeklyReport />} />
             <Route path="tsc-monthly-s4-summary-report" element={<TscMonthlyS4SummaryReport />} />
+            <Route path="tsc-monthly-p1-chawki-lotwise-report" element={<TscMonthlyP1ChawkiLotwiseReport />} />
+            <Route path="tsc-monthly-p1-cocoon-lotwise-report" element={<TscMonthlyP1CocoonLotwiseReport />} />
+            <Route path="tsc-monthly-source-grainage-chawki-report" element={<TscMonthlySourceGrainageChawkiReport />} />
             <Route path="tsc-chawki-harvest-report" element={<TscChawkiHarvestReport />} />
             <Route path="tsc-seed-cocoon-report" element={<TscSeedCocoonReport />} />
             <Route path="tsc-chawki-cocoon-weekly-report" element={<TscChawkiCocoonWeeklyReport />} />

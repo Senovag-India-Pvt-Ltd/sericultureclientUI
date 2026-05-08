@@ -6490,6 +6490,24 @@ function Menu() {
                                     to="/seriui/tsc-monthly-s4-summary-report"
                                   />
                                 </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Monthly P1 Chawki Lot-wise (Sheet 14)")}
+                                    to="/seriui/tsc-monthly-p1-chawki-lotwise-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Monthly P1 Cocoon Lot-wise (Sheet 15)")}
+                                    to="/seriui/tsc-monthly-p1-cocoon-lotwise-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Monthly Source-Grainage Chawki (Sheet 16)")}
+                                    to="/seriui/tsc-monthly-source-grainage-chawki-report"
+                                  />
+                                </MenuItem>
                               </MenuSub>
                             </MenuItem>
                           </MenuSub>
