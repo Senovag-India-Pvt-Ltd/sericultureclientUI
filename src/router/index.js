@@ -1032,6 +1032,25 @@ import TscMonthlyS4SummaryReport from "../pages/seed-and-dfl-managment/TscMonthl
 import TscMonthlyP1ChawkiLotwiseReport from "../pages/seed-and-dfl-managment/TscMonthlyP1ChawkiLotwiseReport";
 import TscMonthlyP1CocoonLotwiseReport from "../pages/seed-and-dfl-managment/TscMonthlyP1CocoonLotwiseReport";
 import TscMonthlySourceGrainageChawkiReport from "../pages/seed-and-dfl-managment/TscMonthlySourceGrainageChawkiReport";
+import TscMonthlySubdivisionProgressReport from "../pages/seed-and-dfl-managment/TscMonthlySubdivisionProgressReport";
+import TscMonthlyFarmerCategoryDetailReport from "../pages/seed-and-dfl-managment/TscMonthlyFarmerCategoryDetailReport";
+import TscMonthlyNregaProgressReport from "../pages/seed-and-dfl-managment/TscMonthlyNregaProgressReport";
+import {
+  SeedMarketMonthlyProgressReport,
+  SeedMarketMonthlyPricingReport,
+  SeedMarketDistrictWiseReport,
+} from "../pages/seed-and-dfl-managment/SeedMarketMonthlyReports";
+import {
+  DdMulberryAreaReport,
+  DdCropYieldReport,
+  DdChawkiProgressReport,
+  DdCocoonProgressReport,
+} from "../pages/seed-and-dfl-managment/DdReports";
+import {
+  TrainingPhysicalProgressReport,
+  TrainingFinancialProgressReport,
+  TrainingMaintenanceExpenseReport,
+} from "../pages/seed-and-dfl-managment/TrainingReports";
 import TscChawkiHarvestReport from "../pages/seed-and-dfl-managment/TscChawkiHarvestReport";
 import TscSeedCocoonReport from "../pages/seed-and-dfl-managment/TscSeedCocoonReport";
 import TscChawkiCocoonWeeklyReport from "../pages/seed-and-dfl-managment/TscChawkiCocoonWeeklyReport";
@@ -2230,6 +2249,19 @@ function Router() {
             <Route path="tsc-monthly-p1-chawki-lotwise-report" element={<TscMonthlyP1ChawkiLotwiseReport />} />
             <Route path="tsc-monthly-p1-cocoon-lotwise-report" element={<TscMonthlyP1CocoonLotwiseReport />} />
             <Route path="tsc-monthly-source-grainage-chawki-report" element={<TscMonthlySourceGrainageChawkiReport />} />
+            <Route path="tsc-monthly-subdivision-progress-report" element={<TscMonthlySubdivisionProgressReport />} />
+            <Route path="tsc-monthly-farmer-category-detail-report" element={<TscMonthlyFarmerCategoryDetailReport />} />
+            <Route path="tsc-monthly-nrega-progress-report" element={<TscMonthlyNregaProgressReport />} />
+            <Route path="seed-market-monthly-progress-report" element={<SeedMarketMonthlyProgressReport />} />
+            <Route path="seed-market-monthly-pricing-report" element={<SeedMarketMonthlyPricingReport />} />
+            <Route path="seed-market-district-wise-report" element={<SeedMarketDistrictWiseReport />} />
+            <Route path="dd-mulberry-area-report" element={<DdMulberryAreaReport />} />
+            <Route path="dd-crop-yield-report" element={<DdCropYieldReport />} />
+            <Route path="dd-chawki-progress-report" element={<DdChawkiProgressReport />} />
+            <Route path="dd-cocoon-progress-report" element={<DdCocoonProgressReport />} />
+            <Route path="training-physical-progress-report" element={<TrainingPhysicalProgressReport />} />
+            <Route path="training-financial-progress-report" element={<TrainingFinancialProgressReport />} />
+            <Route path="training-maintenance-expense-report" element={<TrainingMaintenanceExpenseReport />} />
             <Route path="tsc-chawki-harvest-report" element={<TscChawkiHarvestReport />} />
             <Route path="tsc-seed-cocoon-report" element={<TscSeedCocoonReport />} />
             <Route path="tsc-chawki-cocoon-weekly-report" element={<TscChawkiCocoonWeeklyReport />} />

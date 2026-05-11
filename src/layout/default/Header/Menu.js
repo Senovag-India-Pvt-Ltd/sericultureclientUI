@@ -5527,6 +5527,24 @@ function Menu() {
                               to="/seriui/seed-market-credit-report"
                             />
                           </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Seed Market Monthly Progress (Sheet 1)")}
+                              to="/seriui/seed-market-monthly-progress-report"
+                            />
+                          </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Seed Market Pricing Summary (Sheet 2 · ₹/kg)")}
+                              to="/seriui/seed-market-monthly-pricing-report"
+                            />
+                          </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Seed Market District-wise Sales (Sheet 3)")}
+                              to="/seriui/seed-market-district-wise-report"
+                            />
+                          </MenuItem>
 
                           <MenuItem>
                             <MenuItemLink
@@ -6506,6 +6524,102 @@ function Menu() {
                                   <MenuItemLink
                                     text={t("TSC Monthly Source-Grainage Chawki (Sheet 16)")}
                                     to="/seriui/tsc-monthly-source-grainage-chawki-report"
+                                  />
+                                </MenuItem>
+                              </MenuSub>
+                            </MenuItem>
+
+                            {/* ─── ADS Reports (under Bivoltine Seed Area) ─── */}
+                            <MenuItem sub>
+                              <MenuItemLink
+                                text={t("ADS Reports")}
+                                onClick={menuToggle}
+                                onMouseEnter={menuHover}
+                                sub
+                              />
+                              <MenuSub>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Monthly Subdivision Progress (5 Programmes)")}
+                                    to="/seriui/tsc-monthly-subdivision-progress-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Monthly Farmer Category Detail")}
+                                    to="/seriui/tsc-monthly-farmer-category-detail-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("NREGA Progress — Line Department (Block-wise)")}
+                                    to="/seriui/tsc-monthly-nrega-progress-report"
+                                  />
+                                </MenuItem>
+                              </MenuSub>
+                            </MenuItem>
+
+                            {/* ─── DD Reports (under Bivoltine Seed Area) ─── */}
+                            <MenuItem sub>
+                              <MenuItemLink
+                                text={t("DD Reports")}
+                                onClick={menuToggle}
+                                onMouseEnter={menuHover}
+                                sub
+                              />
+                              <MenuSub>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("DD · Form 27A · Mulberry Area")}
+                                    to="/seriui/dd-mulberry-area-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("DD · Form 27B · Crop Yield Detail")}
+                                    to="/seriui/dd-crop-yield-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("DD · Form 28 · Chawki Progress (Bivoltine)")}
+                                    to="/seriui/dd-chawki-progress-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("DD · Form 32 · Cocoon Production (Bivoltine)")}
+                                    to="/seriui/dd-cocoon-progress-report"
+                                  />
+                                </MenuItem>
+                              </MenuSub>
+                            </MenuItem>
+
+                            {/* ─── Training (under Bivoltine Seed Area) ─── */}
+                            <MenuItem sub>
+                              <MenuItemLink
+                                text={t("Training")}
+                                onClick={menuToggle}
+                                onMouseEnter={menuHover}
+                                sub
+                              />
+                              <MenuSub>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Training · Form 1 · Physical Progress")}
+                                    to="/seriui/training-physical-progress-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Training · Form 2 · Financial Progress")}
+                                    to="/seriui/training-financial-progress-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Training · Form 3 · Maintenance Expense (Item-wise)")}
+                                    to="/seriui/training-maintenance-expense-report"
                                   />
                                 </MenuItem>
                               </MenuSub>
