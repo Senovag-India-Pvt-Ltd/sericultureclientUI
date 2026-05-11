@@ -55,6 +55,7 @@ const [dataLotList, setDataLotList] = useState([]);
      fruitsId: "",
   });
   setBalanceError(false);
+  setPurposeForRejection(false);
  }
 
  const [id, setId] = useState(localStorage.getItem("userMasterId"));
@@ -83,13 +84,17 @@ const [dataLotList, setDataLotList] = useState([]);
 
    const [requiredBasePrice, setRequiredBasePrice] = useState(false);
    const [isTriplet, setIsTriplet] = useState("");
+   const [rejectionPercentage, setRejectionPercentage] = useState(0);
+   const [purposeForRejection, setPurposeForRejection] = useState(false);
 
 // Example API call (adjust to your actual API)
 useEffect(() => {
   api.get(`${baseURL}marketMaster/get/${localStorage.getItem("marketId")}`)
     .then(response => {
       setRequiredBasePrice(response.data.content.requiredBasePrice);
-      setIsTriplet(response.data.content.weighmentTripletGeneration); 
+      setIsTriplet(response.data.content.weighmentTripletGeneration);
+      const pct = response.data.content.rejectionPercentage;
+      setRejectionPercentage(pct != null ? Number(pct) : 0);
     });
 }, []);
 
@@ -382,7 +387,7 @@ const handleUpdateLotDetails = (e, i, changes) => {
         }));
 
   
-          if (lotGroupageId) {
+          if (lotGroupageId) { 
             // navigate(`/seriui/lot-groupage-edit/${lotGroupageId}`);
             setFarmerDetails((prev) => ({
               ...prev,
@@ -437,8 +442,30 @@ const handleUpdateLotDetails = (e, i, changes) => {
             }
           } else {
             Swal.fire({
-              icon: "warning",
-              title: "Details Not Found for This Lot and Auction Date",
+              title: "No Records Found",
+              html: `
+                <div style="padding:6px 4px 8px">
+                  <div style="background:linear-gradient(135deg,#fffaf0,#fff);border:1.5px solid #fbd38d;border-radius:14px;padding:18px 20px;display:flex;align-items:flex-start;gap:14px;text-align:left">
+                    <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#ed8936,#f6ad55);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 4px 12px rgba(237,137,54,0.30)">🔍</div>
+                    <div>
+                      <p style="color:#7b341e;font-size:14px;font-weight:700;margin:0 0 6px">We couldn't find any details</p>
+                      <p style="color:#9c4221;font-size:13px;margin:0 0 8px;line-height:1.6">
+                        No lot information is available for the selected
+                        <b>Bidding Slip Lot Number</b> and <b>Auction Date</b>.
+                      </p>
+                      <p style="color:#9c4221;font-size:12px;margin:0;line-height:1.55">
+                        Please verify the lot number and date, then try again.
+                      </p>
+                    </div>
+                  </div>
+                </div>`,
+              showCloseButton: true,
+              confirmButtonText: "OK",
+              confirmButtonColor: "#ed8936",
+              background: "#fff",
+              showClass: { popup: "animate__animated animate__fadeInDown animate__faster" },
+              hideClass: { popup: "animate__animated animate__fadeOutUp animate__faster" },
+              customClass: { popup: "swal-pop" },
             });
           }
           setFarmerDetails({});
@@ -466,6 +493,30 @@ const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight
 // When editing, add back the original lot's weight so its own weight doesn't count against remaining
 const editRemainingCocoonWeight = remainingCocoonWeight + Number(dataLotList[lotId]?.lotWeight || 0);
 const isEditDisabled = Number(data.lotWeight || 0) > Number(editRemainingCocoonWeight);
+
+// === Rejection-related derived values ===
+// Total weighed-in quantity for this lot
+const lotWeightAfterWeighmentVal = Number(farmerdetails?.lotWeightAfterWeighment || 0);
+
+// Sum of distributed quantity across all rows added to the buyers list
+const distributedQuantity = useMemo(
+  () => (dataLotList || []).reduce((sum, item) => sum + Number(item.lotWeight || 0), 0),
+  [dataLotList]
+);
+
+// Remaining qty = lotWeightAfterWeighment - distributedQuantity (validated >= 0 below)
+const remainingQty = Number((lotWeightAfterWeighmentVal - distributedQuantity).toFixed(2));
+
+// remainingPercentage = (remainingQty / lotWeightAfterWeighment) * 100  (guard divide-by-zero)
+const remainingPercentage = lotWeightAfterWeighmentVal > 0
+  ? Number(((remainingQty / lotWeightAfterWeighmentVal) * 100).toFixed(2))
+  : 0;
+
+// Negative remaining qty is a validation error
+const isRemainingNegative = remainingQty < 0;
+
+// Indicates the checkbox is meaningfully applicable (only when there IS leftover)
+const hasRemaining = remainingQty > 0;
 
 
  
@@ -651,9 +702,22 @@ const isEditDisabled = Number(data.lotWeight || 0) > Number(editRemainingCocoonW
     } else {
       event.preventDefault();
 
+      // === Front-end validation: distributed quantity cannot exceed final weighment ===
+      if (lotWeightAfterWeighmentVal > 0 && distributedQuantity > lotWeightAfterWeighmentVal) {
+        saveError(`Distributed Quantity (${distributedQuantity} Kg) cannot exceed Final Weighment (${lotWeightAfterWeighmentVal} Kg).`);
+        return;
+      }
+      if (isRemainingNegative) {
+        saveError("Remaining Quantity cannot be negative. Please review the distributed quantities.");
+        return;
+      }
+
       const formattedAuctionDate = formatAuctionDate(auctionDate);
       const hasLotGroupageId = dataLotList.some(item => item.lotGroupageId);
       setIsSaving(true);
+
+      // Only the checkbox flag is persisted; the threshold comparison is UI-only.
+      const purposeForRejectionFlag = !!purposeForRejection;
 
       if (hasLotGroupageId) {
         const requestData = {
@@ -677,6 +741,7 @@ const isEditDisabled = Number(data.lotWeight || 0) > Number(editRemainingCocoonW
             fruitsId: fruitsId,
             marketId: localStorage.getItem("marketId"),
             godownId: localStorage.getItem("godownId"),
+            purposeForRejection: purposeForRejectionFlag,
           }))
         };
 
@@ -720,7 +785,8 @@ const isEditDisabled = Number(data.lotWeight || 0) > Number(editRemainingCocoonW
             averageYield: calculatedAverageYield,
             dflLotNumber: noOfDFLs,
             remainingCocoonWeight: remainingCocoonWeight,
-            auctionDate: formatAuctionDate(item.auctionDate)
+            auctionDate: formatAuctionDate(item.auctionDate),
+            purposeForRejection: purposeForRejectionFlag,
           })),
         };
 
@@ -1144,6 +1210,18 @@ setAllottedLotId("");
   //   },
   // };
 
+  // Reusable pill style for stat chips in the Rejection Details card
+  const pillStyle = (bg, color) => ({
+    background: bg,
+    color: color,
+    borderRadius: "999px",
+    padding: "5px 12px",
+    fontSize: "12px",
+    fontWeight: 600,
+    border: `1px solid ${color}22`,
+    whiteSpace: "nowrap",
+  });
+
   const styles = {
     cardHeader: {
       backgroundColor: "rgb(15, 108, 190, 1)",
@@ -1395,6 +1473,164 @@ const handlePurchaseModeChange = (e) => {
 
 
         <Form noValidate validated={validated} onSubmit={postData}>
+          {showFarmerDetails && (
+            <Row className="g-1">
+              <Col lg="12">
+                <Card
+                  style={{
+                    borderRadius: "14px",
+                    border: "none",
+                    boxShadow: "0 4px 20px rgba(229,62,62,0.10)",
+                    marginTop: "16px",
+                  }}
+                >
+                  <div
+                    style={{
+                      background: "linear-gradient(135deg, #e53e3e 0%, #fc5c7d 100%)",
+                      padding: "12px 24px",
+                      borderRadius: "14px 14px 0 0",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                    }}
+                  >
+                    <span style={{ fontSize: "18px" }}>⚠️</span>
+                    <span style={{ color: "#fff", fontWeight: 700, fontSize: "15px" }}>
+                      {t("Rejection Details")}
+                    </span>
+                  </div>
+                  <Card.Body style={{ padding: "16px 20px", background: "#fffafa" }}>
+                    <Row className="g-3 align-items-center">
+                      <Col lg="6" md="6" sm="12">
+                        <label
+                          htmlFor="purposeForRejection"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            padding: "10px 14px",
+                            background: purposeForRejection
+                              ? "linear-gradient(135deg,#fff5f5,#fff)"
+                              : "#fff",
+                            border: purposeForRejection
+                              ? "1.5px solid #fc8181"
+                              : "1.5px solid #e2e8f0",
+                            borderRadius: "10px",
+                            cursor: "pointer",
+                            fontWeight: 600,
+                            fontSize: "13px",
+                            color: "#2d3748",
+                            boxShadow: purposeForRejection
+                              ? "0 2px 8px rgba(229,62,62,0.15)"
+                              : "none",
+                            transition: "all 0.2s ease",
+                          }}
+                        >
+                          <input
+                            id="purposeForRejection"
+                            name="purposeForRejection"
+                            type="checkbox"
+                            checked={!!purposeForRejection}
+                            onChange={(e) => setPurposeForRejection(e.target.checked)}
+                            style={{
+                              width: "18px",
+                              height: "18px",
+                              accentColor: "#e53e3e",
+                              cursor: "pointer",
+                            }}
+                          />
+                          <span>{t("Rejected Cocoons")}</span>
+                        </label>
+                      </Col>
+                      <Col lg="6" md="6" sm="12">
+                        <div
+                          style={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            gap: "8px",
+                            justifyContent: "flex-end",
+                          }}
+                        >
+                          <span style={pillStyle("#ebf4ff", "#1e67a8")}>
+                            {t("Weighment")}: <b>{lotWeightAfterWeighmentVal || 0} Kg</b>
+                          </span>
+                          <span style={pillStyle("#e6fffa", "#276749")}>
+                            {t("Distributed")}: <b>{distributedQuantity || 0} Kg</b>
+                          </span>
+                          <span
+                            style={pillStyle(
+                              isRemainingNegative ? "#fff5f5" : "#fffaf0",
+                              isRemainingNegative ? "#c53030" : "#b7791f"
+                            )}
+                          >
+                            {t("Remaining")}: <b>{remainingQty} Kg</b>
+                          </span>
+                          {rejectionPercentage > 0 && (
+                            <span style={pillStyle("#faf5ff", "#6b46c1")}>
+                              {t("Threshold")}: <b>{rejectionPercentage}%</b>
+                            </span>
+                          )}
+                        </div>
+                      </Col>
+                      {isRemainingNegative && (
+                        <Col lg="12">
+                          <div
+                            style={{
+                              background: "#fff5f5",
+                              border: "1.5px solid #feb2b2",
+                              borderRadius: "8px",
+                              padding: "8px 12px",
+                              color: "#c53030",
+                              fontSize: "12px",
+                              fontWeight: 600,
+                            }}
+                          >
+                            ⚠ {t("Distributed quantity cannot exceed Final Weighment. Please review the buyers list.")}
+                          </div>
+                        </Col>
+                      )}
+                      {purposeForRejection && hasRemaining && lotWeightAfterWeighmentVal > 0 && (
+                        <Col lg="12">
+                          <div
+                            style={{
+                              background:
+                                remainingPercentage > rejectionPercentage
+                                  ? "#fff5f5"
+                                  : "#fffaf0",
+                              border:
+                                remainingPercentage > rejectionPercentage
+                                  ? "1.5px solid #feb2b2"
+                                  : "1.5px solid #fbd38d",
+                              borderRadius: "8px",
+                              padding: "8px 12px",
+                              color:
+                                remainingPercentage > rejectionPercentage
+                                  ? "#c53030"
+                                  : "#975a16",
+                              fontSize: "12px",
+                              fontWeight: 600,
+                            }}
+                          >
+                            {remainingPercentage > rejectionPercentage ? (
+                              <>
+                                ⚠ {t("Remaining")} ({remainingPercentage}%) {t("exceeds threshold")} ({rejectionPercentage}%).
+                                &nbsp;{t("Remaining quantity")} ({remainingQty} Kg) {t("will be recorded as rejection.")}
+                              </>
+                            ) : (
+                              <>
+                                ℹ {t("Remaining")} ({remainingPercentage}%) {t("is within threshold")} ({rejectionPercentage}%).
+                                &nbsp;{t("No rejection quantity will be saved.")}
+                              </>
+                            )}
+                          </div>
+                        </Col>
+                      )}
+                    </Row>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          )}
           <Row className="g-1 ">
             <Block className="mt-3">
               <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 4px 20px rgba(30,103,168,0.10)", marginTop: "16px" }}>
