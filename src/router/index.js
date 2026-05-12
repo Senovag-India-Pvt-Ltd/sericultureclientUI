@@ -974,6 +974,10 @@ import RemittanceForFarmList from "../pages/seed-and-dfl-managment/RemittanceFor
 import RemittanceForFarmEdit from "../pages/seed-and-dfl-managment/RemittanceForFarmEdit";
 import RemittanceForFarmView from "../pages/seed-and-dfl-managment/RemittanceForFarmView";
 import GrainageProgressReport from "../pages/seed-and-dfl-managment/GrainageProgressReport";
+import GgLotWiseProgressReport from "../pages/seed-and-dfl-managment/GgLotWiseProgressReport";
+import GgSheet4CombinedReport from "../pages/seed-and-dfl-managment/GgSheet4CombinedReport";
+import GgProductionCumulativeReport from "../pages/seed-and-dfl-managment/GgProductionCumulativeReport";
+import GgPiercedCocoonsReport from "../pages/seed-and-dfl-managment/GgPiercedCocoonsReport";
 import GrainageLotWiseReport from "../pages/seed-and-dfl-managment/GrainageLotWiseReport";
 import GrainageCocoonSupplyReport from "../pages/seed-and-dfl-managment/GrainageCocoonSupplyReport";
 import GrainageCocoonButterflyReport from "../pages/seed-and-dfl-managment/GrainageCocoonButterflyReport";
@@ -2197,6 +2201,10 @@ function Router() {
             <Route path="remittance-for-farm-view/:id" element={<RemittanceForFarmView />} />
 
             <Route path="grainage-progress-report" element={<GrainageProgressReport />} />
+            <Route path="gg-lotwise-progress-report" element={<GgLotWiseProgressReport />} />
+            <Route path="gg-sheet4-combined-report" element={<GgSheet4CombinedReport />} />
+            <Route path="gg-production-cumulative-report" element={<GgProductionCumulativeReport />} />
+            <Route path="gg-pierced-cocoons-report" element={<GgPiercedCocoonsReport />} />
             <Route path="grainage-lotwise-report" element={<GrainageLotWiseReport />} />
             <Route path="grainage-cocoon-supply-report" element={<GrainageCocoonSupplyReport />} />
             <Route path="grainage-cocoon-butterfly-report" element={<GrainageCocoonButterflyReport />} />

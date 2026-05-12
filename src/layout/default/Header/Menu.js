@@ -5854,6 +5854,41 @@ function Menu() {
                             sub
                           />
                           <MenuSub>
+                        {/* ─── GG Monthly Report — its own submenu directly under Mysore Seed Area ─── */}
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("GG Monthly Report")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Sheet 2 — Lot-wise Progress")}
+                                to="/seriui/gg-lotwise-progress-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Sheet 4 — DCB · Disease · DFL Distribution")}
+                                to="/seriui/gg-sheet4-combined-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form 7 — DFL Production Cumulative")}
+                                to="/seriui/gg-production-cumulative-report"
+                              />
+                            </MenuItem>
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Form 8 — Pierced Cocoon Details")}
+                                to="/seriui/gg-pierced-cocoons-report"
+                              />
+                            </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
                         <MenuItem sub>
                           <MenuItemLink
                             text={t("P4 Grainage Report")}
