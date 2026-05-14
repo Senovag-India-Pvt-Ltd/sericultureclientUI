@@ -431,6 +431,7 @@ function Menu() {
     Admin_Master_Service_User_Hierarchy_Mapping: false,
     Admin_Master_Service_Program_Account_Mapping: false,
     Admin_Master_Service_Program_Approval_Mapping: false,
+    Admin_Master_Service_Scheme_Document: false,
     Admin_Master_Service_Reason_for_Lot_Cancellation: false,
     Admin_Master_Service_Reason_for_Bid_Rejection: false,
     Admin_Master_Service_Financial_Year: false,
@@ -4122,11 +4123,21 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+
+                        {showMenu.Admin_Master_Service_Scheme_Document ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Scheme Wise Document")}
+                              to="/seriui/scheme-document"
+                            />
+                          </MenuItem>
+                        ) : null}
+
                         {showMenu.Admin_Master_Service_Reject_Reason_WorkFlow ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Reject Reason For Work Flow")}
-                              to="/seriui/reject-reason-workflow"
+                              to="/seriui/scheme-document"
                             />
                           </MenuItem>
                         ) : null}
