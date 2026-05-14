@@ -14,12 +14,27 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 function StakeHolderViewPage() {
   // Translation
   const { t } = useTranslation();
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-      width: "50%",
-    },
+
+  const DetailGrid = ({ items }) => {
+    const visible = items.filter((it) => it && it.show !== false);
+    return (
+      <div className="sh-detail-grid">
+        {visible.map((it, i) => (
+          <div className="sh-detail-cell" key={`${it.label}-${i}`}>
+            <div className="sh-detail-label">{it.label}</div>
+            <div className="sh-detail-value">
+              {it.value !== undefined &&
+              it.value !== null &&
+              it.value !== "" ? (
+                it.value
+              ) : (
+                <span className="sh-detail-empty">—</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   };
 
   const { id } = useParams();
@@ -196,658 +211,755 @@ function StakeHolderViewPage() {
 
   return (
     <Layout title="Stake Holder View">
+      <style>{stakeHolderViewStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("Farmer View")}</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/stake-holder-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go To List")}</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/stake-holder-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go To List")}</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">
+                {t("View Details")}
+              </Block.Title>
+              <p className="sh-page-subtitle mb-0">
+                {t("Detailed profile of the selected farmer")}
+              </p>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex gap-2">
+                <li>
+                  <Link
+                    to={`/seriui/stake-holder-edit/${id}`}
+                    className="btn d-inline-flex align-items-center sh-edit-btn"
+                  >
+                    <Icon name="edit" />
+                    <span className="ms-1">{t("Edit")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seriui/stake-holder-list"
+                    className="btn d-inline-flex align-items-center sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span className="ms-1">{t("Go To List")}</span>
+                  </Link>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
-        <Card>
-          <Card.Header>{t("Farmer Personal Info")}</Card.Header>
+      <Block className="mt-n4 sh-view-wrap">
+        <Card className="sh-hero-card">
           <Card.Body>
-            <Row className="g-gs">
-              <Col lg="4">
-                <table className="table small table-bordered">
-                  <tbody>
-                    <tr>
-                      <td style={styles.ctstyle}>{t("FRUITS ID")}:</td>
-                      <td>{StakeHolder.fruitsId}</td>
-                    </tr>
-                    {/* <tr>
-                      <td style={styles.ctstyle}> {t("Farmer Id")}</td>
-                      <td>{StakeHolder.farmerId}</td>
-                    </tr> */}
-                    <tr>
-                      <td style={styles.ctstyle}>{t("farmer_name")}:</td>
-                      <td>{StakeHolder.firstName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>
-                        {" "}
-                        {t("farmer_name_kannada")}:
-                      </td>
-                      <td>{StakeHolder.nameKan}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> TSC:</td>
-                      <td>{StakeHolder.tscName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>
-                        {" "}
-                        {t("fathers_husbands_name")}:
-                      </td>
-                      <td>{StakeHolder.fatherName}</td>
-                    </tr>
-                    {/* <tr>
-                      <td style={styles.ctstyle}>{t("farmer_dob")}:</td>
-                      <td>{formatDate(StakeHolder.dob)}</td>
-                    </tr> */}
-                    <tr>
-                      <td style={styles.ctstyle}> {t("Gender")}:</td>
-                      <td>
-                        {StakeHolder.genderId === 1
-                          ? "Male"
-                          : StakeHolder.genderId === 2
-                            ? "Female"
-                            : StakeHolder.genderId === 3
-                              ? "Third Gender"
-                              : "Other"}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> {t("Caste")}:</td>
-                      <td>{StakeHolder.title}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> {t("differently_abled")}:</td>
-                      <td>
-                        {StakeHolder.differentlyAbled === true
-                          ? "Yes"
-                          : StakeHolder.differentlyAbled === false
-                            ? "No"
-                            : null}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>{t("passbook_number")}:</td>
-                      <td>{StakeHolder.passbookNumber}</td>
-                    </tr>
-                  </tbody>
-                </table>
+            <Row className="g-3 align-items-center">
+              <Col xs="auto">
+                <div className="sh-avatar">
+                  {selectedFile &&
+                  StakeHolder.photoPath?.match(/\.(jpg|jpeg|png)$/i) ? (
+                    <img src={selectedFile} alt="Farmer" />
+                  ) : (
+                    <Icon name="user-alt" />
+                  )}
+                </div>
               </Col>
-              <Col lg="4">
-                <table className="table small table-bordered">
-                  <tbody>
-                    <tr>
-                      <td style={styles.ctstyle}> {t("email_id")}:</td>
-                      <td>{StakeHolder.email}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> {t("mobile_number")}:</td>
-                      <td>{StakeHolder.mobileNumber}</td>
-                    </tr>
-                    {/* <tr>
-                      <td style={styles.ctstyle}>Aadhar Number:</td>
-                      <td>{StakeHolder.aadhaarNumber}</td>
-                    </tr> */}
-                    {/* <tr>
-                      <td style={styles.ctstyle}>  {t("epic_number")}:</td>
-                      <td>{StakeHolder.epicNumber}</td>
-                    </tr> */}
-                    {/* <tr>
-                      <td style={styles.ctstyle}> {t("ration_number")}:</td>
-                      <td>{StakeHolder.rationCardNumber}</td>
-                    </tr> */}
-
-                    {/* <tr>
-                      <td style={styles.ctstyle}> {t("Aadhaar Number")}:</td>
-                      <td>{StakeHolder.aadhaarNumber}</td>
-                    </tr> */}
-                    <tr>
-                      <td style={styles.ctstyle}>
-                        {" "}
-                        {t("extent_of_total_land_holding_in_acres")}:
-                      </td>
-                      <td>{StakeHolder.totalLandHolding}</td>
-                    </tr>
-                  </tbody>
-                </table>
+              <Col>
+                <h3 className="sh-hero-name mb-1">
+                  {StakeHolder.firstName || "—"}
+                  {StakeHolder.nameKan ? (
+                    <span className="sh-hero-name-kan ms-2">
+                      ({StakeHolder.nameKan})
+                    </span>
+                  ) : null}
+                </h3>
+                <div className="sh-chip-row">
+                  {StakeHolder.fruitsId ? (
+                    <span className="sh-chip sh-chip-primary">
+                      <Icon name="hash" />
+                      <span className="ms-1">FRUITS: {StakeHolder.fruitsId}</span>
+                    </span>
+                  ) : null}
+                  {StakeHolder.farmerNumber ? (
+                    <span className="sh-chip sh-chip-info">
+                      <Icon name="user-list" />
+                      <span className="ms-1">
+                        {t("farmer_number")}: {StakeHolder.farmerNumber}
+                      </span>
+                    </span>
+                  ) : null}
+                  {StakeHolder.mobileNumber ? (
+                    <span className="sh-chip sh-chip-success">
+                      <Icon name="call" />
+                      <span className="ms-1">{StakeHolder.mobileNumber}</span>
+                    </span>
+                  ) : null}
+                  {StakeHolder.tscName ? (
+                    <span className="sh-chip sh-chip-warning">
+                      <Icon name="building" />
+                      <span className="ms-1">TSC: {StakeHolder.tscName}</span>
+                    </span>
+                  ) : null}
+                </div>
               </Col>
-              <Col lg="4">
-                <table className="table small table-bordered">
-                  <tbody>
-                    {/* <tr>
-                      <td style={styles.ctstyle}> Landholding Category:</td>
-                      <td>{StakeHolder.landCategoryName}</td>
-                    </tr> */}
-                    <tr>
-                      <td style={styles.ctstyle}> {t("farmer_number")}:</td>
-                      <td>{StakeHolder.farmerNumber}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> {t("farmer_type")}:</td>
-                      <td>{StakeHolder.farmerTypeName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> {t("education")}:</td>
-                      <td>{StakeHolder.name}</td>
-                    </tr>
-                    {/* <tr>
-                      <td style={styles.ctstyle}>Representatives/Agent:</td>
-                      <td>{StakeHolder.representativeId}</td>
-                    </tr> */}
-                    <tr>
-                      <td style={styles.ctstyle}> {t("recipient_id")}:</td>
-                      <td>{StakeHolder.khazaneRecipientId}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>
-                        {" "}
-                        {t("Farmer_Photo_(PDF/jpg/png)_(Max: 5MB)")}:
-                      </td>
-                      {/* <td>{StakeHolder.taluk}</td> */}
-                      <td>
-                        {" "}
-                        {/* <img
-                          style={{ height: "100px", width: "100px" }}
-                          src="../images/user/user.png"
-                        /> */}
-                        {selectedFile && (
-                          <>
-                            {/* Image Preview */}
-                            {StakeHolder.photoPath?.match(
-                              /\.(jpg|jpeg|png)$/i,
-                            ) ? (
-                              <img
-                                style={{ height: "100px", width: "100px" }}
-                                src={selectedFile}
-                                alt="Selected File"
-                              />
-                            ) : StakeHolder.photoPath?.match(/\.pdf$/i) ? (
-                              <iframe
-                                src={selectedFile}
-                                title="PDF Preview"
-                                width="100px"
-                                height="100px"
-                              />
-                            ) : null}
-
-                            {/* Download Button */}
-                            <Button
-                              variant="primary"
-                              size="sm"
-                              className="ms-2 mt-2"
-                              onClick={() =>
-                                downloadFile(StakeHolder.photoPath)
-                              }
-                            >
-                              Download File
-                            </Button>
-                          </>
-                        )}
-                      </td>
-                    </tr>
-                    {/* <tr>
-                    {selectedFile && <img style={{ height: "100px", width: "100px" }} src={selectedFile} alt="Selected File" />}
-                    </tr> */}
-                  </tbody>
-                </table>
-              </Col>
+              {selectedFile && StakeHolder.photoPath && (
+                <Col xs="auto">
+                  <Button
+                    variant="outline-primary"
+                    size="sm"
+                    className="sh-download-btn"
+                    onClick={() => downloadFile(StakeHolder.photoPath)}
+                  >
+                    <Icon name="download" />
+                    <span className="ms-1">{t("Download Photo")}</span>
+                  </Button>
+                </Col>
+              )}
             </Row>
           </Card.Body>
         </Card>
-        <Card className="mt-3">
-          <Card.Header>{t("Family Members")}</Card.Header>
+
+        <Card className="sh-section-card">
+          <Card.Header className="sh-section-header">
+            <span className="sh-section-accent" />
+            <Icon name="user" className="me-2" />
+            {t("Farmer Personal Info")}
+          </Card.Header>
           <Card.Body>
-            {/* <Row className="g-gs"> */}
-            {familyMembersList && familyMembersList.length > 0
-              ? familyMembersList.map((familyMembers) => (
-                  <Row className="g-gs">
-                    {console.log(familyMembers.farmerFamilyId)}
-                    <Col lg="4">
-                      <table className="table small table-bordered">
-                        <tbody>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              {t("Farmer Family Id")}
-                            </td>
-                            <td>{familyMembers.farmerFamilyId}</td>
-                          </tr>
-                          {/* <tr>
-                            <td style={styles.ctstyle}> {t("Farmer Id")}</td>
-                            <td>{familyMembers.farmerId}</td>
-                          </tr> */}
-                          <tr>
-                            <td style={styles.ctstyle}> {t("Name")}</td>
-                            <td>{familyMembers.farmerFamilyName}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              {t("relationship")}:
-                            </td>
-                            <td>{familyMembers.relationshipName}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </Col>
-                  </Row>
-                ))
-              : ""}
+            <DetailGrid
+              items={[
+                { label: t("FRUITS ID"), value: StakeHolder.fruitsId },
+                { label: t("farmer_name"), value: StakeHolder.firstName },
+                { label: t("farmer_name_kannada"), value: StakeHolder.nameKan },
+                { label: "TSC", value: StakeHolder.tscName },
+                { label: t("fathers_husbands_name"), value: StakeHolder.fatherName },
+                {
+                  label: t("Gender"),
+                  value:
+                    StakeHolder.genderId === 1
+                      ? "Male"
+                      : StakeHolder.genderId === 2
+                        ? "Female"
+                        : StakeHolder.genderId === 3
+                          ? "Third Gender"
+                          : StakeHolder.genderId
+                            ? "Other"
+                            : "",
+                },
+                { label: t("Caste"), value: StakeHolder.title },
+                {
+                  label: t("differently_abled"),
+                  value:
+                    StakeHolder.differentlyAbled === true
+                      ? "Yes"
+                      : StakeHolder.differentlyAbled === false
+                        ? "No"
+                        : "",
+                },
+                { label: t("passbook_number"), value: StakeHolder.passbookNumber },
+                { label: t("email_id"), value: StakeHolder.email },
+                { label: t("mobile_number"), value: StakeHolder.mobileNumber },
+                {
+                  label: t("extent_of_total_land_holding_in_acres"),
+                  value: StakeHolder.totalLandHolding,
+                },
+                { label: t("farmer_number"), value: StakeHolder.farmerNumber },
+                { label: t("farmer_type"), value: StakeHolder.farmerTypeName },
+                { label: t("education"), value: StakeHolder.name },
+                { label: t("recipient_id"), value: StakeHolder.khazaneRecipientId },
+              ]}
+            />
+            {selectedFile && StakeHolder.photoPath && (
+              <div className="sh-file-block mt-3">
+                <div className="sh-file-block-label">
+                  {t("Farmer_Photo_(PDF/jpg/png)_(Max: 5MB)")}
+                </div>
+                <div className="sh-file-block-body">
+                  {StakeHolder.photoPath.match(/\.(jpg|jpeg|png)$/i) ? (
+                    <img
+                      className="sh-file-thumb"
+                      src={selectedFile}
+                      alt="Farmer Photo"
+                    />
+                  ) : StakeHolder.photoPath.match(/\.pdf$/i) ? (
+                    <iframe
+                      className="sh-file-thumb"
+                      src={selectedFile}
+                      title="PDF Preview"
+                    />
+                  ) : null}
+                  <Button
+                    variant="outline-primary"
+                    size="sm"
+                    className="sh-download-btn ms-3"
+                    onClick={() => downloadFile(StakeHolder.photoPath)}
+                  >
+                    <Icon name="download" />
+                    <span className="ms-1">{t("Download File")}</span>
+                  </Button>
+                </div>
+              </div>
+            )}
+          </Card.Body>
+        </Card>
+        <Card className="sh-section-card mt-3">
+          <Card.Header className="sh-section-header">
+            <span className="sh-section-accent" />
+            <Icon name="users" className="me-2" />
+            {t("Family Members")}
+            {familyMembersList && familyMembersList.length > 0 ? (
+              <span className="sh-count-badge ms-2">
+                {familyMembersList.length}
+              </span>
+            ) : null}
+          </Card.Header>
+          <Card.Body>
+            {familyMembersList && familyMembersList.length > 0 ? (
+              <div className="sh-subgroup-stack">
+                {familyMembersList.map((familyMembers, idx) => (
+                  <div
+                    className="sh-subgroup"
+                    key={familyMembers.farmerFamilyId}
+                  >
+                    <div className="sh-subgroup-title">
+                      {t("Family Member")} #{idx + 1}
+                    </div>
+                    <DetailGrid
+                      items={[
+                        // {
+                        //   label: t("Farmer Family Id"),
+                        //   value: familyMembers.farmerFamilyId,
+                        // },
+                        { label: t("Name"), value: familyMembers.farmerFamilyName },
+                        {
+                          label: t("relationship"),
+                          value: familyMembers.relationshipName,
+                        },
+                      ]}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="sh-empty-section">
+                <Icon name="users" />
+                <p className="mt-2 mb-0">{t("No family members recorded")}</p>
+              </div>
+            )}
           </Card.Body>
         </Card>
 
-        <Card className="mt-3">
-          <Card.Header>{t("address")}</Card.Header>
+        <Card className="sh-section-card mt-3">
+          <Card.Header className="sh-section-header">
+            <span className="sh-section-accent" />
+            <Icon name="map-pin" className="me-2" />
+            {t("address")}
+            {farmerAddressDetailsList && farmerAddressDetailsList.length > 0 ? (
+              <span className="sh-count-badge ms-2">
+                {farmerAddressDetailsList.length}
+              </span>
+            ) : null}
+          </Card.Header>
           <Card.Body>
-            {farmerAddressDetailsList && farmerAddressDetailsList.length > 0
-              ? farmerAddressDetailsList.map((farmerAddressDetails) => (
-                  <Row className="g-gs">
-                    {console.log(farmerAddressDetails.farmerAddressId)}
-                    <Col lg="4">
-                      <table className="table small table-bordered">
-                        <tbody>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {t("Farmer Address Id")}
-                            </td>
-                            <td>{farmerAddressDetails.farmerAddressId}</td>
-                          </tr>
-                          {/* <tr>
-                            <td style={styles.ctstyle}>{t("Farmer Id")}</td>
-                            <td>{farmerAddressDetails.farmerId}</td>
-                          </tr> */}
-                          <tr>
-                            <td style={styles.ctstyle}> {t("address")}</td>
-                            <td>{farmerAddressDetails.addressText}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>{t("district")}</td>
-                            <td>{farmerAddressDetails.district}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>{t("taluk")}</td>
-                            <td>{farmerAddressDetails.taluk}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>{t("village")}</td>
-                            <td>{farmerAddressDetails.village}</td>
-                          </tr>
-                          {/* <tr>
-                            <td style={styles.ctstyle}> Village:</td>
-                            <td>{farmerAddressDetails.villageName}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}> Taluk:</td>
-                            <td>{farmerAddressDetails.talukName}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}> District:</td>
-                            <td>{farmerAddressDetails.districtName}</td>
-                          </tr> */}
-                          <tr>
-                            <td style={styles.ctstyle}>{t("state")}</td>
-                            <td>{farmerAddressDetails.stateName}</td>
-                          </tr>
-                          {farmerAddressDetails.defaultAddress && (
-                            <tr>
-                              <td style={styles.ctstyle}>
-                                {t("Default Address")}{" "}
-                              </td>
-                              <td>
-                                {farmerAddressDetails.defaultAddress.toString()}
-                              </td>
-                            </tr>
-                          )}
-                        </tbody>
-                      </table>
-                    </Col>
-                  </Row>
-                ))
-              : ""}
+            {farmerAddressDetailsList && farmerAddressDetailsList.length > 0 ? (
+              <div className="sh-subgroup-stack">
+                {farmerAddressDetailsList.map((farmerAddressDetails, idx) => (
+                  <div
+                    className="sh-subgroup"
+                    key={farmerAddressDetails.farmerAddressId}
+                  >
+                    <div className="sh-subgroup-title">
+                      {t("Address")} #{idx + 1}
+                      {farmerAddressDetails.defaultAddress ? (
+                        <span className="sh-default-pill ms-2">
+                          {t("Default")}
+                        </span>
+                      ) : null}
+                    </div>
+                    <DetailGrid
+                      items={[
+                        // {
+                        //   label: t("Farmer Address Id"),
+                        //   value: farmerAddressDetails.farmerAddressId,
+                        // },
+                        { label: t("address"), value: farmerAddressDetails.addressText },
+                        { label: t("district"), value: farmerAddressDetails.district },
+                        { label: t("taluk"), value: farmerAddressDetails.taluk },
+                        { label: t("village"), value: farmerAddressDetails.village },
+                        { label: t("state"), value: farmerAddressDetails.stateName },
+                      ]}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="sh-empty-section">
+                <Icon name="map-pin" />
+                <p className="mt-2 mb-0">{t("No address records found")}</p>
+              </div>
+            )}
           </Card.Body>
         </Card>
 
-        <Card className="mt-3">
-          <Card.Header>{t("Farmers Land Details")}</Card.Header>
+        <Card className="sh-section-card mt-3">
+          <Card.Header className="sh-section-header">
+            <span className="sh-section-accent" />
+            <Icon name="map" className="me-2" />
+            {t("Farmers Land Details")}
+            {farmerLandList && farmerLandList.length > 0 ? (
+              <span className="sh-count-badge ms-2">
+                {farmerLandList.length}
+              </span>
+            ) : null}
+          </Card.Header>
           <Card.Body>
-            {farmerLandList && farmerLandList.length > 0
-              ? farmerLandList.map((farmerLand) => (
-                  <Row className="g-gs">
-                    {console.log(farmerLand.farmerLandDetailsId)}
-                    <Col lg="4">
-                      <table className="table small table-bordered">
-                        <tbody>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              {t("Farmer Land Details Id")}
-                            </td>
-                            <td>{farmerLand.farmerLandDetailsId}</td>
-                          </tr>
-                          {/* <tr>
-                            <td style={styles.ctstyle}> {t("Farmer Id")}</td>
-                            <td>{farmerLand.farmerId}</td>
-                          </tr> */}
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              {t("land_ownership")}
-                            </td>
-                            <td>{farmerLand.landOwnershipName}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>{t("survey_number")}</td>
-                            <td>{farmerLand.surveyNumber}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {t("plantation_type")}
-                            </td>
-                            <td>{farmerLand.plantationTypeName}</td>
-                          </tr>
-                          {/* <tr>
-                      <td style={styles.ctstyle}> Category Number:</td>
-                      <td>{farmerLand.categoryNumber}</td>
-                    </tr> */}
-                        </tbody>
-                      </table>
-                    </Col>
-
-                    <Col lg="4">
-                      <table className="table small table-bordered">
-                        <tbody>
-                          <tr>
-                            <td style={styles.ctstyle}> {t("soil_type")}</td>
-                            <td>{farmerLand.soilTypeName}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>{t("hissa")}</td>
-                            <td>{farmerLand.hissa}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {t("source_of_Mulberry")}
-                            </td>
-                            <td>{farmerLand.mulberrySourceName}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {t("Mulberry Area(in Acres)")}
-                            </td>
-                            <td>{farmerLand.mulberryArea}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              {t("Mulberry_Variety")}
-                            </td>
-                            <td>{farmerLand.mulberryVarietyName}</td>
-                          </tr>
-                          {/* <tr>
-                      <td style={styles.ctstyle}> Plantation Date:</td>
-                      <td>{farmerLand.plantationDate}</td>
-                    </tr> */}
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              {t("Plantation Spacing")}
-                            </td>
-                            <td>{farmerLand.spacing}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </Col>
-                    <Col lg="4">
-                      <table className="table small table-bordered">
-                        <tbody>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              {t("irrigation_source")}
-                            </td>
-                            <td>{farmerLand.irrigationSourceName}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              {t("irrigation_type")}
-                            </td>
-                            <td>{farmerLand.irrigationTypeName}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {t("Rearing House (In Sq ft)")}
-                            </td>
-                            <td>{farmerLand.rearingHouseDetails}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              {t("rearing_house_roof_type")}
-                            </td>
-                            <td>{farmerLand.roofTypeName}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}> {t("silk_worm")}</td>
-                            <td>{farmerLand.silkWormVarietyName}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {t("rearing_capacity_crops_per_Annum")}
-                            </td>
-                            <td>{farmerLand.rearingCapacityCrops}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </Col>
-                    <Col lg="4">
-                      <table className="table small table-bordered">
-                        <tbody>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              {t("rearing_capacity_dlf_per_crop")}
-                            </td>
-                            <td>{farmerLand.rearingCapacityDlf}</td>
-                          </tr>
-                          {/* <tr>
-                      <td style={styles.ctstyle}> Subsidy Availed:</td>
-                      <td>{farmerLand.subsidyAvailed}</td>
-                    </tr> */}
-                          {/* <tr>
-                      <td style={styles.ctstyle}>Subsidy:</td>
-                      <td>{farmerLand.subsidyName}</td>
-                    </tr> */}
-                          <tr>
-                            <td style={styles.ctstyle}>{t("loan_details")}</td>
-                            <td>{farmerLand.loanDetails}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              {t("equipment_details")}
-                            </td>
-                            <td>{farmerLand.equipmentDetails}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}> {t("owner_name")}</td>
-                            <td>{farmerLand.ownerName}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}> {t("Owner Number")}</td>
-                            <td>{farmerLand.ownerNo}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>
-                              {" "}
-                              {t("Main Owner Number")}
-                            </td>
-                            <td>{farmerLand.mainOwnerNo}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}> {t("survey_noc")}</td>
-                            <td>{farmerLand.surNoc}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </Col>
-                    <Col lg="4">
-                      <table className="table small table-bordered">
-                        <tbody>
-                          <tr>
-                            <td style={styles.ctstyle}> {t("Acre")}</td>
-                            <td>{farmerLand.acre}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}> {t("Gunta")}</td>
-                            <td>{farmerLand.gunta}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>{t("state")}</td>
-                            <td>{farmerLand.stateName}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>{t("FGunta")}</td>
-                            <td>{farmerLand.fgunta}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}> {t("district")}</td>
-                            <td>{farmerLand.districtName}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>{t("taluk")}</td>
-                            <td>{farmerLand.talukName}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>{t("hobli")}</td>
-                            <td>{farmerLand.hobliName}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}> {t("village")}</td>
-                            <td>{farmerLand.villageName}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}>{t("address")}</td>
-                            <td>{farmerLand.address}</td>
-                          </tr>
-                          <tr>
-                            <td style={styles.ctstyle}> {t("pin_code")}</td>
-                            <td>{farmerLand.pincode}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </Col>
-                  </Row>
-                ))
-              : ""}
+            {farmerLandList && farmerLandList.length > 0 ? (
+              <div className="sh-subgroup-stack">
+                {farmerLandList.map((farmerLand, idx) => (
+                  <div
+                    className="sh-subgroup"
+                    key={farmerLand.farmerLandDetailsId}
+                  >
+                    <div className="sh-subgroup-title">
+                      {t("Land Record")} #{idx + 1}
+                      {farmerLand.surveyNumber ? (
+                        <span className="sh-default-pill sh-default-pill-info ms-2">
+                          {t("survey_number")}: {farmerLand.surveyNumber}
+                        </span>
+                      ) : null}
+                    </div>
+                    <DetailGrid
+                      items={[
+                        // { label: t("Farmer Land Details Id"), value: farmerLand.farmerLandDetailsId },
+                        { label: t("land_ownership"), value: farmerLand.landOwnershipName },
+                        { label: t("survey_number"), value: farmerLand.surveyNumber },
+                        { label: t("plantation_type"), value: farmerLand.plantationTypeName },
+                        { label: t("soil_type"), value: farmerLand.soilTypeName },
+                        { label: t("hissa"), value: farmerLand.hissa },
+                        { label: t("source_of_Mulberry"), value: farmerLand.mulberrySourceName },
+                        { label: t("Mulberry Area(in Acres)"), value: farmerLand.mulberryArea },
+                        { label: t("Mulberry_Variety"), value: farmerLand.mulberryVarietyName },
+                        { label: t("Plantation Spacing"), value: farmerLand.spacing },
+                        { label: t("irrigation_source"), value: farmerLand.irrigationSourceName },
+                        { label: t("irrigation_type"), value: farmerLand.irrigationTypeName },
+                        { label: t("Rearing House (In Sq ft)"), value: farmerLand.rearingHouseDetails },
+                        { label: t("rearing_house_roof_type"), value: farmerLand.roofTypeName },
+                        { label: t("silk_worm"), value: farmerLand.silkWormVarietyName },
+                        { label: t("rearing_capacity_crops_per_Annum"), value: farmerLand.rearingCapacityCrops },
+                        { label: t("rearing_capacity_dlf_per_crop"), value: farmerLand.rearingCapacityDlf },
+                        { label: t("loan_details"), value: farmerLand.loanDetails },
+                        { label: t("equipment_details"), value: farmerLand.equipmentDetails },
+                        { label: t("owner_name"), value: farmerLand.ownerName },
+                        { label: t("Owner Number"), value: farmerLand.ownerNo },
+                        { label: t("Main Owner Number"), value: farmerLand.mainOwnerNo },
+                        { label: t("survey_noc"), value: farmerLand.surNoc },
+                        { label: t("Acre"), value: farmerLand.acre },
+                        { label: t("Gunta"), value: farmerLand.gunta },
+                        { label: t("FGunta"), value: farmerLand.fgunta },
+                        { label: t("state"), value: farmerLand.stateName },
+                        { label: t("district"), value: farmerLand.districtName },
+                        { label: t("taluk"), value: farmerLand.talukName },
+                        { label: t("hobli"), value: farmerLand.hobliName },
+                        { label: t("village"), value: farmerLand.villageName },
+                        { label: t("address"), value: farmerLand.address },
+                        { label: t("pin_code"), value: farmerLand.pincode },
+                      ]}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="sh-empty-section">
+                <Icon name="map" />
+                <p className="mt-2 mb-0">{t("No land details recorded")}</p>
+              </div>
+            )}
           </Card.Body>
         </Card>
 
-        <Card className="mt-3">
-          <Card.Header>{t("Bank Account Details")}</Card.Header>
+        <Card className="sh-section-card mt-3">
+          <Card.Header className="sh-section-header">
+            <span className="sh-section-accent" />
+            <Icon name="cc" className="me-2" />
+            {t("Bank Account Details")}
+          </Card.Header>
           <Card.Body>
-            <Row className="g-gs">
-              <Col lg="4">
-                <table className="table small table-bordered">
-                  <tbody>
-                    <tr>
-                      <td style={styles.ctstyle}>
-                        {" "}
-                        {t("Farmer Bank Account Id")}
-                      </td>
-                      <td>{bank.farmerBankAccountId}</td>
-                    </tr>
-                    {/* <tr>
-                      <td style={styles.ctstyle}>{t("Farmer Id")}</td>
-                      <td>{bank.farmerId}</td>
-                    </tr> */}
-                    <tr>
-                      <td style={styles.ctstyle}> {t("Bank Name")}</td>
-                      <td>{bank.farmerBankName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}>
-                        {" "}
-                        {t("Bank Account Number")}
-                      </td>
-                      <td>{bank.farmerBankAccountNumber}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> {t("Branch Name")}</td>
-                      <td>{bank.farmerBankBranchName}</td>
-                    </tr>
-                    <tr>
-                      <td style={styles.ctstyle}> {t("IFSC Code")}</td>
-                      <td>{bank.farmerBankIfscCode}</td>
-                    </tr>
-
-                    <tr>
-                      <td style={styles.ctstyle}> {t("Bank Passbook")}</td>
-                      {/* <td>{StakeHolder.taluk}</td> */}
-                      <td>
-                        {" "}
-                        {/* <img
-                          style={{ height: "100px", width: "100px" }}
-                          src="../images/user/user.png"
-                        /> */}
-                        {selectedDocumentFile && (
-                          <>
-                            <img
-                              style={{ height: "100px", width: "100px" }}
-                              src={selectedDocumentFile}
-                              alt="Selected File"
-                            />
-                            <Button
-                              variant="primary"
-                              size="sm"
-                              className="ms-2"
-                              onClick={() =>
-                                downloadFile(bank.accountImagePath)
-                              }
-                            >
-                              Download File
-                            </Button>
-                          </>
-                        )}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </Col>
-            </Row>
+            <DetailGrid
+              items={[
+                // { label: t("Farmer Bank Account Id"), value: bank.farmerBankAccountId },
+                { label: t("Bank Name"), value: bank.farmerBankName },
+                { label: t("Bank Account Number"), value: bank.farmerBankAccountNumber },
+                { label: t("Branch Name"), value: bank.farmerBankBranchName },
+                { label: t("IFSC Code"), value: bank.farmerBankIfscCode },
+              ]}
+            />
+            {selectedDocumentFile && (
+              <div className="sh-file-block mt-3">
+                <div className="sh-file-block-label">{t("Bank Passbook")}</div>
+                <div className="sh-file-block-body">
+                  <img
+                    className="sh-file-thumb"
+                    src={selectedDocumentFile}
+                    alt="Bank Passbook"
+                  />
+                  <Button
+                    variant="outline-primary"
+                    size="sm"
+                    className="sh-download-btn ms-3"
+                    onClick={() => downloadFile(bank.accountImagePath)}
+                  >
+                    <Icon name="download" />
+                    <span className="ms-1">{t("Download File")}</span>
+                  </Button>
+                </div>
+              </div>
+            )}
           </Card.Body>
         </Card>
       </Block>
     </Layout>
   );
 }
+
+const stakeHolderViewStyles = `
+  .sh-page-header {
+    padding: 18px 22px;
+    background: linear-gradient(135deg, #ffffff 0%, #eef4fc 100%);
+    border-radius: 12px;
+    border: 1px solid #e3ebf6;
+    box-shadow: 0 2px 8px rgba(30, 103, 168, 0.05);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #1e2a44;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-page-subtitle {
+    color: #6b7a90;
+    font-size: 13.5px;
+  }
+  .sh-cta-btn,
+  .sh-edit-btn {
+    background: linear-gradient(135deg, #4361ee 0%, #1e67a8 100%);
+    border: none;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(30, 103, 168, 0.25);
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-edit-btn {
+    background: linear-gradient(135deg, #2dc7a3 0%, #1ea482 100%);
+    box-shadow: 0 4px 12px rgba(30, 164, 130, 0.25);
+  }
+  .sh-cta-btn:hover,
+  .sh-edit-btn:hover {
+    transform: translateY(-1px);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(30, 103, 168, 0.35);
+  }
+  .sh-edit-btn:hover {
+    box-shadow: 0 6px 16px rgba(30, 164, 130, 0.35);
+  }
+  .sh-view-wrap .card {
+    border: 1px solid #e3ebf6;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(30, 103, 168, 0.05);
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+  .sh-hero-card {
+    background: linear-gradient(135deg, #f5f9ff 0%, #eaf2fc 100%) !important;
+    border: 1px solid #d6e3f3 !important;
+    margin-bottom: 18px !important;
+  }
+  .sh-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #fff;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sh-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .sh-avatar svg {
+    width: 40px;
+    height: 40px;
+    color: #8a96a8;
+  }
+  .sh-hero-name {
+    color: #1e2a44;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-hero-name-kan {
+    color: #5a6577;
+    font-weight: 500;
+    font-size: 16px;
+  }
+  .sh-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .sh-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 600;
+    border: 1px solid transparent;
+  }
+  .sh-chip-primary {
+    background: rgba(67, 97, 238, 0.1);
+    color: #2c4dca;
+    border-color: rgba(67, 97, 238, 0.18);
+  }
+  .sh-chip-info {
+    background: rgba(38, 162, 210, 0.1);
+    color: #1c7ba0;
+    border-color: rgba(38, 162, 210, 0.18);
+  }
+  .sh-chip-success {
+    background: rgba(45, 199, 163, 0.12);
+    color: #14826a;
+    border-color: rgba(45, 199, 163, 0.2);
+  }
+  .sh-chip-warning {
+    background: rgba(238, 167, 67, 0.14);
+    color: #a3681c;
+    border-color: rgba(238, 167, 67, 0.22);
+  }
+  .sh-download-btn {
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 7px 14px;
+  }
+  .sh-section-card {
+    margin-bottom: 18px !important;
+  }
+  .sh-section-header {
+    background: linear-gradient(90deg, #f5f9ff 0%, #ffffff 100%) !important;
+    border-bottom: 1px solid #e9eef6 !important;
+    padding: 14px 18px !important;
+    font-weight: 700 !important;
+    color: #1e2a44 !important;
+    font-size: 15px !important;
+    letter-spacing: 0.2px;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  .sh-section-accent {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #4361ee 0%, #1e67a8 100%);
+  }
+  .sh-section-header svg {
+    color: #4361ee;
+  }
+  .sh-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: #4361ee;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .sh-view-wrap .card-body {
+    padding: 20px !important;
+  }
+  .sh-view-wrap table.table-bordered {
+    border: 1px solid #e6ecf4 !important;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+  .sh-view-wrap table.table-bordered td {
+    border: 1px solid #eef2f8 !important;
+    padding: 8px 12px !important;
+    font-size: 13px;
+    vertical-align: middle;
+    color: #2b3a55;
+  }
+  .sh-view-wrap table.table-bordered tr td:first-child {
+    background-color: #f7faff !important;
+    color: #4a5568 !important;
+    font-weight: 600;
+    letter-spacing: 0.1px;
+  }
+  .sh-view-wrap table.table-bordered tr:hover td:not(:first-child) {
+    background-color: #fbfdff;
+  }
+  .sh-empty-section {
+    padding: 28px 12px;
+    text-align: center;
+    color: #8a96a8;
+    font-size: 14px;
+  }
+  .sh-empty-section svg {
+    width: 36px;
+    height: 36px;
+    opacity: 0.45;
+  }
+  .sh-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid #e6ecf4;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .sh-detail-cell {
+    display: grid;
+    grid-template-columns: 42% 1fr;
+    border-right: 1px solid #eef2f8;
+    border-bottom: 1px solid #eef2f8;
+    min-height: 40px;
+  }
+  .sh-detail-cell:nth-child(3n) {
+    border-right: none;
+  }
+  .sh-detail-label {
+    background-color: #f7faff;
+    color: #4a5568;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.1px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid #eef2f8;
+    line-height: 1.35;
+  }
+  .sh-detail-value {
+    padding: 8px 12px;
+    color: #2b3a55;
+    font-size: 13.5px;
+    display: flex;
+    align-items: center;
+    word-break: break-word;
+    line-height: 1.4;
+    transition: background-color 0.15s ease;
+  }
+  .sh-detail-cell:hover .sh-detail-value {
+    background-color: #fbfdff;
+  }
+  .sh-detail-empty {
+    color: #b0bac9;
+    font-style: italic;
+  }
+  @media (max-width: 991px) {
+    .sh-detail-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .sh-detail-cell:nth-child(3n) {
+      border-right: 1px solid #eef2f8;
+    }
+    .sh-detail-cell:nth-child(2n) {
+      border-right: none;
+    }
+  }
+  @media (max-width: 575px) {
+    .sh-detail-grid {
+      grid-template-columns: 1fr;
+    }
+    .sh-detail-cell {
+      grid-template-columns: 45% 1fr;
+      border-right: none !important;
+    }
+  }
+  .sh-subgroup-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .sh-subgroup {
+    border: 1px solid #eef2f8;
+    border-radius: 10px;
+    padding: 14px 16px;
+    background: #fcfdff;
+  }
+  .sh-subgroup-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #1e2a44;
+    letter-spacing: 0.2px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+  .sh-default-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 700;
+    background: rgba(45, 199, 163, 0.14);
+    color: #14826a;
+    border: 1px solid rgba(45, 199, 163, 0.22);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .sh-default-pill-info {
+    background: rgba(67, 97, 238, 0.1);
+    color: #2c4dca;
+    border-color: rgba(67, 97, 238, 0.18);
+    text-transform: none;
+  }
+  .sh-file-block {
+    border: 1px solid #eef2f8;
+    border-radius: 10px;
+    padding: 12px 16px;
+    background: #fcfdff;
+  }
+  .sh-file-block-label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #4a5568;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .sh-file-block-body {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .sh-file-thumb {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e3ebf6;
+    box-shadow: 0 2px 6px rgba(30, 103, 168, 0.08);
+    background: #fff;
+  }
+  iframe.sh-file-thumb {
+    object-fit: contain;
+  }
+`;
 
 export default StakeHolderViewPage;

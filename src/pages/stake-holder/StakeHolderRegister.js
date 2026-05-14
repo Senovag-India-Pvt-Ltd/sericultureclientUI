@@ -113,6 +113,13 @@ function StakeHolderRegister() {
     setSearchValidated(false);
   };
 
+  const resetForm = () => {
+    clear();
+    setValidated(false);
+    setImage("");
+    setDocumentFile("");
+  };
+
   //  console.log("data",data.photoPath);
   // const [disable, setDisable] = useState(false);
 
@@ -1104,57 +1111,91 @@ function StakeHolderRegister() {
   // };
   // Old Postdata Commented Close
 
-  const postData =async (event) => {
+  const postData = async (event) => {
+    event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault();
       event.stopPropagation();
       setValidated(true);
-    } else {
-      event.preventDefault();
-if (data.fruitsId.length !== 16) return;
-    if (data.mobileNumber.length !== 10) return;
-    if (bank.farmerBankIfscCode.length !== 11) return;
-    if (bank.farmerBankAccountNumber !== bank.reenterFarmerBankAccountNumber) return;
+      return;
+    }
 
-      if (farmerAddressList && farmerAddressList.length > 0) {
-        if (
-          !farmerAddressList[0].stateId &&
-          !farmerAddressList[0].districtId &&
-          !farmerAddressList[0].talukId &&
-          !farmerAddressList[0].hobliId &&
-          !farmerAddressList[0].villageId
-        ) {
-          Swal.fire({
-            icon: "warning",
-            title: "Edit or Add Farmer First Record!!!",
-          });
-          return;
-        }
-      }
+    if (!data.fruitsId || data.fruitsId.length !== 16) {
+      setValidated(true);
+      Swal.fire({
+        icon: "warning",
+        title: "Invalid FRUITS ID",
+        text: "FRUITS ID must be exactly 16 digits.",
+      });
+      return;
+    }
+    if (!data.mobileNumber || data.mobileNumber.length !== 10) {
+      setValidated(true);
+      Swal.fire({
+        icon: "warning",
+        title: "Invalid Mobile Number",
+        text: "Mobile Number must be exactly 10 digits.",
+      });
+      return;
+    }
+    if (!bank.farmerBankIfscCode || bank.farmerBankIfscCode.length !== 11) {
+      setValidated(true);
+      Swal.fire({
+        icon: "warning",
+        title: "Invalid IFSC Code",
+        text: "Bank IFSC Code must be exactly 11 characters.",
+      });
+      return;
+    }
+    if (bank.farmerBankAccountNumber !== bank.reenterFarmerBankAccountNumber) {
+      setValidated(true);
+      Swal.fire({
+        icon: "warning",
+        title: "Bank Account Number Mismatch",
+        text: "Account Number and Re-enter Account Number do not match.",
+      });
+      return;
+    }
 
-      if (farmerLandList && farmerLandList.length <= 0) {
+    if (farmerAddressList && farmerAddressList.length > 0) {
+      if (
+        !farmerAddressList[0].stateId &&
+        !farmerAddressList[0].districtId &&
+        !farmerAddressList[0].talukId &&
+        !farmerAddressList[0].hobliId &&
+        !farmerAddressList[0].villageId
+      ) {
         Swal.fire({
           icon: "warning",
-          title: "Land Details is Mandatory!!!",
+          title: "Edit or Add Farmer First Record!!!",
         });
         return;
       }
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, "0");
-      const hours = String(now.getHours()).padStart(2, "0");
-      const minutes = String(now.getMinutes()).padStart(2, "0");
-      const seconds = String(now.getSeconds()).padStart(2, "0");
-      const date = String(now.getDate()).padStart(2, "0");
-      const timeString = hours + minutes + seconds + date + month + year;
-      // setData((prev) => ({ ...prev, farmerNumber: timeString }));
-            const updatedFarmerData = {
-        ...data,
-        farmerNumber: timeString,
-      };
-      setIsSaving(true);
-      try{
+    }
+
+    if (farmerLandList && farmerLandList.length <= 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "Land Details is Mandatory!!!",
+      });
+      return;
+    }
+
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
+    const date = String(now.getDate()).padStart(2, "0");
+    const timeString = hours + minutes + seconds + date + month + year;
+    const updatedFarmerData = {
+      ...data,
+      farmerNumber: timeString,
+    };
+
+    setIsSaving(true);
+    try {
       const sendData = {
         farmerRequest: updatedFarmerData,
         farmerBankAccountRequest: bank,
@@ -1162,47 +1203,46 @@ if (data.fruitsId.length !== 16) return;
         farmerFamilyRequestList: familyMembersList,
         farmerLandDetailsRequests: farmerLandList,
       };
-     
+
       const response = await api.post(
         baseURL2 + `farmer/save-complete-farmer-details`,
         sendData
       );
-          // console.log(response.data)
-          const farmerId = response.data.content.farmerId;
-          const farmerBankAccountId = response.data.content.farmerBankAccountId;
-          const farmerNumber = response.data.content.farmerNumber;
-          if (response.data.content.error) {
-            saveFarmerError(response.data.content.error_description);
-          } else {
-            if (data.photoPath) {
-              handleFileUpload(farmerId);
-            }
-            if (bank.accountImagePath) {
-              handleFileDocumentUpload(farmerBankAccountId);
-            }
-            saveSuccess(farmerNumber);
-          }
-          // postDataBankAccount
-        }
-       catch (err) {
-      if (
-        err.response &&
-        err.response.data &&
-        err.response.data.validationErrors
-      ) {
-        if (Object.keys(err.response.data.validationErrors).length > 0) {
-          saveError(err.response.data.validationErrors);
-        }
+      const farmerId = response.data.content.farmerId;
+      const farmerBankAccountId = response.data.content.farmerBankAccountId;
+      const farmerNumber = response.data.content.farmerNumber;
+      if (response.data.content.error) {
+        saveFarmerError(response.data.content.error_description);
       } else {
-        console.error(err);
+        if (data.photoPath && image) {
+          await handleFileUpload(farmerId);
+        }
+        if (bank.accountImagePath && documentFile) {
+          await handleFileDocumentUpload(farmerBankAccountId);
+        }
+        saveSuccess(farmerNumber);
+      }
+    } catch (err) {
+      const validationErrors =
+        err && err.response && err.response.data && err.response.data.validationErrors;
+      if (validationErrors && Object.keys(validationErrors).length > 0) {
+        saveError(validationErrors);
+      } else {
+        const serverMessage =
+          (err && err.response && err.response.data && err.response.data.message) ||
+          (err && err.message) ||
+          "Something went wrong while saving. Please try again.";
+        Swal.fire({
+          icon: "error",
+          title: "Save attempt was not successful",
+          text: serverMessage,
+        });
       }
     } finally {
-      setIsSaving(false); // 🟢 enable button
+      setIsSaving(false);
+      setValidated(true);
     }
-
-    setValidated(true);
-  }
-};
+  };
   // to get tsc
   const [tscListData, setTscListData] = useState([]);
 
@@ -2140,45 +2180,52 @@ if (data.fruitsId.length !== 16) return;
 
   return (
     <Layout title="Farmer Registration">
+      <style>{stakeHolderFormStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("farmer_registration")}</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/stake-holder-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go To List")}</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/stake-holder-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go To List")}</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">
+                {t("farmer_registration")}
+              </Block.Title>
+              <p className="sh-page-subtitle mb-0">
+                {t("Register a new farmer with personal, land, address and bank details")}
+              </p>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Link
+                    to="/seriui/stake-holder-list"
+                    className="btn btn-primary btn-md d-md-none sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seriui/stake-holder-list"
+                    className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
-        {/* <Form action="#"> */}
+      <Block className="mt-n4 sh-form-wrap">
         <Form noValidate validated={searchValidated} onSubmit={search}>
-          <Card>
+          <Card className="sh-search-card">
             <Card.Body>
               <Row className="g-gs">
                 <Col lg="12">
                   <Form.Group as={Row} className="form-group">
-                    <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                    <Form.Label column sm={1} className="sh-fruits-label">
                       {t("FRUITS ID")}
                       <span className="text-danger">*</span>
                     </Form.Label>
@@ -2230,7 +2277,17 @@ if (data.fruitsId.length !== 16) return;
           <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
-                <Card.Header style={{ fontWeight: "bold" }}>
+                <Card.Header
+                  style={{
+                    fontWeight: 700,
+                    fontSize: "1rem",
+                    letterSpacing: "0.3px",
+                    background:
+                      "linear-gradient(90deg, rgba(67, 97, 238, 0.08) 0%, rgba(67, 97, 238, 0.02) 100%)",
+                    borderLeft: "4px solid #4361ee",
+                    color: "#2b2d42",
+                  }}
+                >
                   {t("farmer_personal_information")}
                 </Card.Header>
                 <Card.Body>
@@ -2801,7 +2858,17 @@ if (data.fruitsId.length !== 16) return;
 
             <Block className="mt-3">
               <Card>
-                <Card.Header style={{ fontWeight: "bold" }}>
+                <Card.Header
+                  style={{
+                    fontWeight: 700,
+                    fontSize: "1rem",
+                    letterSpacing: "0.3px",
+                    background:
+                      "linear-gradient(90deg, rgba(67, 97, 238, 0.08) 0%, rgba(67, 97, 238, 0.02) 100%)",
+                    borderLeft: "4px solid #4361ee",
+                    color: "#2b2d42",
+                  }}
+                >
                   {t("family_members")}
                 </Card.Header>
                 <Card.Body>
@@ -2904,7 +2971,17 @@ if (data.fruitsId.length !== 16) return;
 
             <Block className="mt-3">
               <Card>
-                <Card.Header style={{ fontWeight: "bold" }}>
+                <Card.Header
+                  style={{
+                    fontWeight: 700,
+                    fontSize: "1rem",
+                    letterSpacing: "0.3px",
+                    background:
+                      "linear-gradient(90deg, rgba(67, 97, 238, 0.08) 0%, rgba(67, 97, 238, 0.02) 100%)",
+                    borderLeft: "4px solid #4361ee",
+                    color: "#2b2d42",
+                  }}
+                >
                   {t("address")}
                 </Card.Header>
                 <Card.Body>
@@ -3017,7 +3094,17 @@ if (data.fruitsId.length !== 16) return;
 
             <Block className="mt-3">
               <Card>
-                <Card.Header style={{ fontWeight: "bold" }}>
+                <Card.Header
+                  style={{
+                    fontWeight: 700,
+                    fontSize: "1rem",
+                    letterSpacing: "0.3px",
+                    background:
+                      "linear-gradient(90deg, rgba(67, 97, 238, 0.08) 0%, rgba(67, 97, 238, 0.02) 100%)",
+                    borderLeft: "4px solid #4361ee",
+                    color: "#2b2d42",
+                  }}
+                >
                   {t("farmer_land_details")}
                 </Card.Header>
                 <Card.Body>
@@ -3122,7 +3209,17 @@ if (data.fruitsId.length !== 16) return;
 
             <Block className="mt-3">
               <Card>
-                <Card.Header style={{ fontWeight: "bold" }}>
+                <Card.Header
+                  style={{
+                    fontWeight: 700,
+                    fontSize: "1rem",
+                    letterSpacing: "0.3px",
+                    background:
+                      "linear-gradient(90deg, rgba(67, 97, 238, 0.08) 0%, rgba(67, 97, 238, 0.02) 100%)",
+                    borderLeft: "4px solid #4361ee",
+                    color: "#2b2d42",
+                  }}
+                >
                   {t("bank_account_details")}
                 </Card.Header>
                 <Card.Body>
@@ -3339,21 +3436,48 @@ if (data.fruitsId.length !== 16) return;
               </Card>
             </Block>
 
-            <div className="gap-col">
+            <div className="gap-col mt-4">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
-                  {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary" disabled={isSaving}>
-                   {isSaving  ? "Saving..." : t("save")}
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    disabled={isSaving}
+                    className="shadow-sm px-4 py-2"
+                    style={{
+                      minWidth: "140px",
+                      fontWeight: 600,
+                      letterSpacing: "0.3px",
+                    }}
+                  >
+                    {isSaving ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        {t("Saving...")}
+                      </>
+                    ) : (
+                      t("save")
+                    )}
                   </Button>
                 </li>
                 <li>
-                  <Link
-                    to="/seriui/stake-holder-list"
-                    className="btn btn-secondary border-0"
+                  <Button
+                    type="button"
+                    onClick={resetForm}
+                    disabled={isSaving}
+                    className="sh-cancel-btn shadow-sm px-4 py-2"
+                    style={{
+                      minWidth: "140px",
+                      fontWeight: 600,
+                      letterSpacing: "0.3px",
+                    }}
                   >
                     {t("cancel")}
-                  </Link>
+                  </Button>
                 </li>
               </ul>
             </div>
@@ -6000,5 +6124,151 @@ if (data.fruitsId.length !== 16) return;
     </Layout>
   );
 }
+
+const stakeHolderFormStyles = `
+  .sh-page-header {
+    padding: 18px 22px;
+    background: linear-gradient(135deg, #ffffff 0%, #eef4fc 100%);
+    border-radius: 12px;
+    border: 1px solid #e3ebf6;
+    box-shadow: 0 2px 8px rgba(30, 103, 168, 0.05);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #1e2a44;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-page-subtitle {
+    color: #6b7a90;
+    font-size: 13.5px;
+  }
+  .sh-cta-btn {
+    background: linear-gradient(135deg, #4361ee 0%, #1e67a8 100%);
+    border: none;
+    box-shadow: 0 4px 12px rgba(30, 103, 168, 0.25);
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(30, 103, 168, 0.35);
+  }
+  .sh-form-wrap .card {
+    border: 1px solid #e3ebf6;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(30, 103, 168, 0.05);
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .sh-form-wrap .card-header {
+    border-bottom: 1px solid #e9eef6 !important;
+    padding: 14px 18px !important;
+  }
+  .sh-form-wrap .card-body {
+    padding: 20px !important;
+  }
+  .sh-form-wrap .form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+  .sh-form-wrap .form-control,
+  .sh-form-wrap .form-select {
+    border-radius: 8px !important;
+    border: 1px solid #d8e0ec !important;
+    background-color: #fbfcfe !important;
+    padding: 0.5rem 0.75rem !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-form-wrap .form-control:focus,
+  .sh-form-wrap .form-select:focus {
+    border-color: #4361ee !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.12) !important;
+    outline: none;
+  }
+  .sh-form-wrap .form-control[readonly],
+  .sh-form-wrap .form-control:read-only {
+    background-color: #f1f5fa !important;
+    color: #5a6577;
+    cursor: not-allowed;
+  }
+  .sh-form-wrap .form-control.is-invalid,
+  .sh-form-wrap .form-select.is-invalid {
+    border-color: #e3496a !important;
+    box-shadow: 0 0 0 3px rgba(227, 73, 106, 0.12) !important;
+  }
+  .sh-form-wrap .text-danger {
+    font-weight: 700;
+    margin-left: 3px;
+  }
+  .sh-search-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f5f9ff 100%) !important;
+    border: 1px solid #d6e3f3 !important;
+  }
+  .sh-fruits-label {
+    font-weight: 700 !important;
+    color: #1e67a8 !important;
+    font-size: 14px !important;
+    letter-spacing: 0.3px;
+  }
+  .sh-form-wrap .btn-primary {
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-form-wrap .btn-primary:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(30, 103, 168, 0.25);
+  }
+  .sh-form-wrap .btn-success {
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  .sh-cancel-btn {
+    background: #ffffff;
+    color: #e3496a;
+    border: 1.5px solid #e3496a;
+    border-radius: 8px;
+    transition: background-color 0.15s ease, color 0.15s ease,
+      transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-cancel-btn:hover:not(:disabled),
+  .sh-cancel-btn:focus:not(:disabled) {
+    background: linear-gradient(135deg, #e3496a 0%, #c43257 100%);
+    color: #ffffff;
+    border-color: transparent;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(227, 73, 106, 0.32);
+  }
+  .sh-cancel-btn:disabled {
+    background: #f8f9fa;
+    color: #b8c0cc;
+    border-color: #d8dde6;
+    cursor: not-allowed;
+  }
+  .sh-form-wrap table {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .sh-form-wrap table thead th {
+    background-color: #eef4fc !important;
+    color: #2b3a55 !important;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+    border-bottom: 2px solid #d6e3f3 !important;
+  }
+  .sh-form-wrap table tbody tr:hover {
+    background-color: #f7faff !important;
+  }
+`;
 
 export default StakeHolderRegister;
