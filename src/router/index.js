@@ -1143,6 +1143,7 @@ import UserHierarchyMappingEdit from "../pages/masters/user-hierarchy-mapping/Us
 
 import CropInspectionList from "../pages/chawki-management/CropInspectionList";
 import SeedDtrReport from "../pages/reports-admin/market-auction/SeedDTRReport";
+import SeedMarketDashboardReport from "../pages/reports-admin/market-auction/SeedMarketDashboardReport";
 import DownloadSanctionOrder from "../pages/market-and-auction/DownloadSanctionOrder";
 import GenerateAcknowledgement from "../pages/direct-benefit-transfer/GenerateAcknowledgement";
 import GenerateWorkOrder from "../pages/direct-benefit-transfer/GenerateWorkOrder";
@@ -3437,6 +3438,10 @@ function Router() {
             <Route
               path="seed-dtr-report"
               element={<SeedDtrReport />}
+            />
+            <Route
+              path="seed-market-dashboard-report"
+              element={<SeedMarketDashboardReport />}
             />
             <Route
               path="sc-sub-scheme-details"

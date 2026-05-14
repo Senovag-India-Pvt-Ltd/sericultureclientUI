@@ -574,6 +574,7 @@ function Menu() {
     Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt: false,
      Reports_Export_Report_Seed_Market_External_Unit_Balance_Report: false,
     Reports_Export_Report_Seed_Market_Reeler_Balance_Report: false,
+    Reports_Export_Report_Seed_Market_Dashboard: false,
    
 
     Reports_Export_Report_Silk_Type_Market: false,
@@ -1467,6 +1468,20 @@ function Menu() {
         Reports: true,
         Reports_Export_Report: true,
         Reports_Export_Report_Seed_Market: true,
+        Reports_Format_Reports: true,
+      }));
+    }
+
+    const hasReportsExportReportSeedMarketDashboard = data.some((item) =>
+      item === "Reports_Export_Report_Seed_Market_Dashboard"
+    );
+    if (hasReportsExportReportSeedMarketDashboard) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Format_Reports: true,
+        Reports_Export_Report_Seed_Market: true,
+        Reports_Export_Report_Seed_Market_Dashboard: true,
       }));
     }
 
@@ -5509,6 +5524,14 @@ function Menu() {
                               to="/seriui/market-weekly-report"
                             />
                           </MenuItem>
+                          {showMenu.Reports_Export_Report_Seed_Market_Dashboard ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Dashboard")}
+                              to="/seriui/seed-market-dashboard-report"
+                            />
+                          </MenuItem>
+                          ) : null}
                         </MenuSub>
                       </MenuItem>
                     ) : null}
