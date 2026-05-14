@@ -1453,22 +1453,47 @@ useEffect(() => {
   // }, [data.scSubSchemeDetailsId]);
 
   // to get uploadable documents
-  const [docListData, setDocListData] = useState([]);
+  const [allDocList, setAllDocList] = useState([]);
+  const [filteredDocList, setFilteredDocList] = useState([]);
 
-  const getDocList = () => {
+  useEffect(() => {
     api
       .get(baseURLMasterData + `documentMaster/get-all`)
       .then((response) => {
-        setDocListData(response.data.content.documentMaster);
+        setAllDocList(response.data.content.documentMaster || []);
       })
-      .catch((err) => {
-        setDocListData([]);
+      .catch(() => {
+        setAllDocList([]);
       });
-  };
+  }, []);
 
   useEffect(() => {
-    getDocList();
-  }, []);
+    const schemeId = actionFarmerData[0]?.schemeId;
+    const subSchemeId = actionFarmerData[0]?.subSchemeId;
+    if (schemeId && subSchemeId) {
+      api
+        .get(baseURLMasterData + `schemeDocumentMaster/get-by-scheme-and-sub-scheme`, {
+          params: {
+            scSchemeDetailsId: schemeId,
+            scSubSchemeDetailsId: subSchemeId,
+          },
+        })
+        .then((res) => {
+          const mappings = res.data.content.schemeDocumentMaster || [];
+          setFilteredDocList(
+            mappings.map((m) => ({
+              documentMasterId: m.documentId,
+              documentMasterName: m.documentMasterName,
+            }))
+          );
+        })
+        .catch(() => {
+          setFilteredDocList(allDocList);
+        });
+    } else {
+      setFilteredDocList(allDocList);
+    }
+  }, [actionFarmerData, allDocList]);
 
   const [applicationIds, setApplicationIds] = useState([]);
   const [unselectedApplicationIds, setUnselectedApplicationIds] = useState([]);
@@ -5001,7 +5026,7 @@ const allowedSchemes = [
           documentId,
           // documentName: document.name,
           documentName: documentDetails?.name || "Unknown Document",
-          documentMasterName: docListData.find(
+          documentMasterName: filteredDocList.find(
             (list) => list.documentMasterId === documentId
           )?.documentMasterName, // Find and store the documentMasterName
           documentFile: documentDetails, // Store the file itself for image preview
@@ -5092,7 +5117,7 @@ const allowedSchemes = [
         {
           documentId,
           documentName: sanctionOrderDocument.name,
-          documentMasterName: docListData.find(
+          documentMasterName: filteredDocList.find(
             (list) => list.documentMasterId === documentId
           )?.documentMasterName, // Find and store the documentMasterName
           documentFile: sanctionOrderDocument, // Store the file itself for image preview
@@ -6160,7 +6185,7 @@ const allowedSchemes = [
                                       <option value="">
                                         Select Document Type
                                       </option>
-                                      {docListData.map((list) => (
+                                      {filteredDocList.map((list) => (
                                         <option
                                           key={list.documentMasterId}
                                           value={list.documentMasterId}
@@ -6488,7 +6513,7 @@ const allowedSchemes = [
                     onChange={handleDocumentInputs}
                   >
                     <option value="">Select Document Type</option>
-                    {docListData.map((list) => (
+                    {filteredDocList.map((list) => (
                       <option
                         key={list.documentMasterId}
                         value={list.documentMasterId}

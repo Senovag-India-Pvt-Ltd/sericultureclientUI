@@ -375,6 +375,10 @@ import Document from "../pages/masters/document/Document";
 import DocumentList from "../pages/masters/document/DocumentList";
 import DocumentsEdit from "../pages/masters/document/DocumentEdit";
 import DocumentsView from "../pages/masters/document/DocumentView";
+import SchemeDocument from "../pages/masters/scheme-document/SchemeDocument";
+import SchemeDocumentList from "../pages/masters/scheme-document/SchemeDocumentList";
+import SchemeDocumentEdit from "../pages/masters/scheme-document/SchemeDocumentEdit";
+import SchemeDocumentView from "../pages/masters/scheme-document/SchemeDocumentView";
 import MarketType from "../pages/masters/market-type/MarketType";
 import MarketTypeList from "../pages/masters/market-type/MarketTypeList";
 import MarketTypeView from "../pages/masters/market-type/MarketTypeView";
@@ -1142,6 +1146,8 @@ import UserHierarchyMappingList from "../pages/masters/user-hierarchy-mapping/Us
 import UserHierarchyMappingEdit from "../pages/masters/user-hierarchy-mapping/UserHierarchyMappingEdit";
 
 import CropInspectionList from "../pages/chawki-management/CropInspectionList";
+import CropInspectionEdit from "../pages/chawki-management/CropInspectionEdit";
+import FitnessCertificateEdit from "../pages/chawki-management/FitnessCertificateEdit";
 import SeedDtrReport from "../pages/reports-admin/market-auction/SeedDTRReport";
 import DownloadSanctionOrder from "../pages/market-and-auction/DownloadSanctionOrder";
 import GenerateAcknowledgement from "../pages/direct-benefit-transfer/GenerateAcknowledgement";
@@ -2359,6 +2365,14 @@ function Router() {
             <Route
               path="crop-inspection-list"
               element={<CropInspectionList />}
+            />
+            <Route
+              path="fitness-certificate-edit"
+              element={<FitnessCertificateEdit />}
+            />
+            <Route
+              path="crop-inspection-edit"
+              element={<CropInspectionEdit />}
             />
             <Route
               path="supply-of-disinfectants"
@@ -3687,6 +3701,10 @@ function Router() {
             <Route path="documents-list" element={<DocumentList />} />
             <Route path="documents-edit/:id" element={<DocumentsEdit />} />
             <Route path="documents-view/:id" element={<DocumentsView />} />
+            <Route path="scheme-document" element={<SchemeDocument />} />
+            <Route path="scheme-document-list" element={<SchemeDocumentList />} />
+            <Route path="scheme-document-edit/:id" element={<SchemeDocumentEdit />} />
+            <Route path="scheme-document-view/:id" element={<SchemeDocumentView />} />
             <Route path="market-type" element={<MarketType />} />
             <Route path="market-type-list" element={<MarketTypeList />} />
             <Route path="market-type-view/:id" element={<MarketTypeView />} />
