@@ -11469,7 +11469,7 @@ const fetchReelerDetails = () => {
                         <Col lg="4">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="landDeveloped">
-                              {t("Estimated Cost")}
+                              {t("Estimated Cost (in lakhs)")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
