@@ -4152,7 +4152,7 @@ function Menu() {
                           <MenuItem>
                             <MenuItemLink
                               text={t("Reject Reason For Work Flow")}
-                              to="/seriui/scheme-document"
+                              to="/seriui/reject-reason-workflow"
                             />
                           </MenuItem>
                         ) : null}
