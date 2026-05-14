@@ -59,6 +59,7 @@ function Market() {
     cocoonAge: "",
     isTest: false,
     requiredBasePrice:false,
+    rejectionPercentage: "",
   });
 
   const handleTimeChange = (selectedTime) => {
@@ -167,6 +168,7 @@ function Market() {
               paymentMode: "",
               cocoonAge: "",
               requiredBasePrice:false,
+              rejectionPercentage: "",
             });
             setValidated(false);
           }
@@ -227,6 +229,7 @@ function Market() {
       divisionMasterId:"",
       paymentMode: "",
       cocoonAge: "",
+      rejectionPercentage: "",
     });
   };
 
@@ -1240,6 +1243,28 @@ function Market() {
                         />
                         <Form.Control.Feedback type="invalid">
                         {t("Cocoon Age is required")}
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="rejectionPercentage">
+                        {t("Rejection Percentage (%)")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="rejectionPercentage"
+                          name="rejectionPercentage"
+                          value={data.rejectionPercentage}
+                          onChange={handleInputs}
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          max="100"
+                          placeholder={t("Enter Rejection Percentage (e.g. 5)")}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {t("Rejection Percentage must be between 0 and 100")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

@@ -1429,16 +1429,10 @@ if (
       const unitCost = response.data.content.unitCost;
       if (unitCost) {
         setScHeadAccountListData(unitCost);
-
-        const first = unitCost[0];
-        if (first) {
-          setSharePercentage(first.shareInPercentage);  // ✅ correct field
-        }
       }
     })
     .catch(() => {
       setScHeadAccountListData([]);
-      setSharePercentage(0);
     });
 };
 
@@ -1473,6 +1467,7 @@ if (
 
   // to get head of account by sc-scheme-details
   const [scHeadAccountListData, setScHeadAccountListData] = useState([]);
+
   // const getHeadAccountList = (_id) => {
   //   api
   //     .get(
@@ -1537,6 +1532,7 @@ if (
 
   // to get category by head of account id
   const [scCategoryListData, setScCategoryListData] = useState([]);
+
   // const getCategoryList = (_id) => {
   //   api
   //     .get(
@@ -1791,36 +1787,52 @@ if (
     getApprovalList();
   }, []);
 
-  // to get uploadable documents
+  const [allDocList, setAllDocList] = useState([]);
   const [docListData, setDocListData] = useState([]);
+  const [modalDocList, setModalDocList] = useState([]);
 
-  const getDocList = () => {
+  useEffect(() => {
     api
       .get(baseURLMasterData + `documentMaster/get-all`)
       .then((response) => {
-        setDocListData(response.data.content.documentMaster);
+        setAllDocList(response.data.content.documentMaster || []);
       })
-      .catch((err) => {
-        setDocListData([]);
+      .catch(() => {
+        setAllDocList([]);
       });
-  };
-
-  console.log("where", docListData);
-
-  // const getDocList = () => {
-  //   api
-  //     .post(baseURLDBT + `service/getApplicableDocumentList?subSchemeId=${data.scSubSchemeDetailsId}`)
-  //     .then((response) => {
-  //       setDocListData(response.data.content);
-  //     })
-  //     .catch((err) => {
-  //       setDocListData([]);
-  //     });
-  // };
+  }, []);
 
   useEffect(() => {
-    getDocList();
-  }, []);
+    if (data.scSchemeDetailsId && data.scSubSchemeDetailsId) {
+      api
+        .get(baseURLMasterData + `schemeDocumentMaster/get-by-scheme-and-sub-scheme`, {
+          params: {
+            scSchemeDetailsId: data.scSchemeDetailsId,
+            scSubSchemeDetailsId: data.scSubSchemeDetailsId,
+          },
+        })
+        .then((res) => {
+          const mappings = res.data.content.schemeDocumentMaster || [];
+          if (mappings.length === 0) {
+            setDocListData(allDocList);
+            setModalDocList(allDocList);
+          } else {
+            const filtered = mappings.map((m) => ({
+              documentMasterId: m.documentId,
+              documentMasterName: m.documentMasterName,
+            }));
+            setDocListData(filtered);
+            setModalDocList(filtered);
+          }
+        })
+        .catch(() => {
+          setDocListData(allDocList);
+          setModalDocList(allDocList);
+        });
+    } else {
+      setDocListData(allDocList);
+    }
+  }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId, allDocList]);
 
   // console.log(applicationId[0]);
 
@@ -2767,14 +2779,7 @@ const handleCalculateUnitPrice = () => {
   // All non-SDP paths: mark unit price as calculated
   setUnitPriceCalculated(true);
 
-  const isChawki =
-    incentiveCalcBasedOn ===
-    "Registered Private Bivoltine Chawki Rearing Center Subsidy";
-
-  // const schemeCalcBasedOn = schemeDetails.calculationBasedOn;
-
-  // 1️⃣ FIRST: Chawki – Registered Private Bivoltine...
-  if (isChawki) {
+  if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
     if (!data.taxAmount || Number(data.taxAmount) <= 0) {
       Swal.fire({
         icon: "warning",
@@ -2787,34 +2792,28 @@ const handleCalculateUnitPrice = () => {
     const totals = calculateTotals(chawkiData);
     const { totalEligible, totalClaimed } = totals;
 
-    // finalAmount = min(totalEligible, totalClaimed)
-    const subsidyAmount =
-      Number(totalEligible || 0) > Number(totalClaimed || 0)
-        ? Number(totalClaimed || 0)
-        : Number(totalEligible || 0);
+    let baseAmount = 0;
+
+    if (totalEligible > totalClaimed) {
+      baseAmount = totalClaimed;
+    } else {
+      baseAmount = totalEligible;
+    }
 
     const taxInvoiceAmount = Number(data.taxAmount);
-    const finalAmount = taxInvoiceAmount < subsidyAmount ? taxInvoiceAmount : subsidyAmount;
+    const finalAmount = taxInvoiceAmount < baseAmount ? taxInvoiceAmount : baseAmount;
 
-    // Set Unit Cost (original subsidy before tax cap, same as other 8 schemes)
     setAmountValue((prev) => ({
       ...prev,
-      unitPrice: subsidyAmount,
+      unitPrice: baseAmount,
     }));
 
-    // Set Total Subsidy/Bonus/Incentive Amount (tax-capped final amount)
+    setEquipment((prev) => ({ ...prev, l1Rate: finalAmount }));
+
     setData((prev) => ({
       ...prev,
       expectedAmount: finalAmount,
     }));
-
-    // If you also want to store in subsidyAmount when sanctionForReeling is true:
-    if (getIncentiveAndBonusData[0]?.sanctionForReeling) {
-      setData((prev) => ({
-        ...prev,
-        subsidyAmount: finalAmount,
-      }));
-    }
 
     Swal.fire({
       icon: "success",
@@ -2822,7 +2821,7 @@ const handleCalculateUnitPrice = () => {
       text: `Total Subsidy/Bonus/Incentive Amount = ${finalAmount}`,
     });
 
-    return; // ✅ stop further checks
+    return;
   }
 
 
@@ -5005,7 +5004,6 @@ const isUserValid = React.useMemo(() => {
       if (!data.equordev.includes("equipment")) {
         missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
       } else {
-        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
         if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
       }
       if (missingFields.length > 0) {
@@ -5339,13 +5337,19 @@ const isUserValid = React.useMemo(() => {
             //   setScHeadAccountListData(response.data.content.unitCost);
             // }
             // console.log(response);
+            const unitCostMaster = response.data.content.unitCostMaster || [];
+            const totalSharePerc = unitCostMaster.reduce(
+              (sum, item) => sum + Number(item.shareInPercentage || 0), 0
+            );
+            if (totalSharePerc > 0) {
+              setSharePercentage(totalSharePerc);
+            }
             setAmountValue((prev) => ({
               ...prev,
-              maxAmount: response.data.content.unitCostMaster[0].maxAmount,
-              minAmount: response.data.content.unitCostMaster[0].minAmount,
-              unitPrice:
-                response.data.content.unitCostMaster[0].unitCostInRupees,
-              fullPrice: response.data.content.unitCostMaster[0].fullPrice,
+              maxAmount: unitCostMaster[0]?.maxAmount,
+              minAmount: unitCostMaster[0]?.minAmount,
+              unitPrice: unitCostMaster[0]?.unitCostInRupees,
+              fullPrice: unitCostMaster[0]?.fullPrice,
               // fullPrice: true,
             }));
           })
@@ -7899,6 +7903,11 @@ const fetchReelerDetails = () => {
                               </Form.Group>
                             </Col>
 
+                            {!["IMCB-PSF", "MERM-PSF", "Adopting Heat Recovery Unit-PSF",
+                               "Adopting Solar Water Heater", "Adopting Solar power Generator",
+                               "Adopting Silent Generator", "Adopting Boiler-PSF", "ICB-PSF"
+                              ].includes(getIncentiveAndBonusData?.[0]?.calculationBasedOn) &&
+                              getIncentiveAndBonusData?.[0]?.unitForScheme !== "Rearing Equipment SS" && (
                             <Col lg="6">
                               <Form.Group className="form-group mt-n4">
                                 <Form.Label>
@@ -7919,6 +7928,7 @@ const fetchReelerDetails = () => {
                                 Tax Invoice Amount (in Rs) is required
                               </Form.Control.Feedback>
                             </Col>
+                            )}
                           </>
                         )}
 
@@ -11351,7 +11361,9 @@ const fetchReelerDetails = () => {
 
                     {(getIncentiveAndBonusData[0]?.sanctionForReeling ||
                         getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
-                          "Registered Private Bivoltine Chawki Rearing Center Subsidy") && (
+                          "Registered Private Bivoltine Chawki Rearing Center Subsidy") &&
+                        getIncentiveAndBonusData?.[0]?.calculationBasedOn !==
+                          "SS Construction Of Low Cost Shed to Permanent Rearing House" && (
                         <Col lg="4">
                           <Form.Group className="form-group mt-n5">
                             <Form.Label>
@@ -11457,7 +11469,7 @@ const fetchReelerDetails = () => {
                         <Col lg="4">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label htmlFor="landDeveloped">
-                              {t("Estimated Cost")}
+                              {t("Estimated Cost (in lakhs)")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -12243,7 +12255,7 @@ const fetchReelerDetails = () => {
                     onChange={handleDocumentInputs}
                   >
                     <option value="">{t("Choose Document Type")}</option>
-                    {docListData.map((list) => (
+                    {modalDocList.map((list) => (
                       <option
                         key={list.documentMasterId}
                         value={list.documentMasterId}

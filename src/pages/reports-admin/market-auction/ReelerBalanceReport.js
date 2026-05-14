@@ -180,7 +180,7 @@ function ReelerBalanceReport() {
               {/* HEADER (LIKE DOWNLOAD CARD) */}
               <Row className="align-items-center mb-3">
                 <Col md={6}>
-                  <h5 className="fw-bold mb-0">External Unit Details</h5>
+                  <h5 className="fw-bold mb-0">Reeler Details</h5>
                 </Col>
               </Row>
 

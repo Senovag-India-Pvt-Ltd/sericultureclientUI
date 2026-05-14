@@ -375,6 +375,10 @@ import Document from "../pages/masters/document/Document";
 import DocumentList from "../pages/masters/document/DocumentList";
 import DocumentsEdit from "../pages/masters/document/DocumentEdit";
 import DocumentsView from "../pages/masters/document/DocumentView";
+import SchemeDocument from "../pages/masters/scheme-document/SchemeDocument";
+import SchemeDocumentList from "../pages/masters/scheme-document/SchemeDocumentList";
+import SchemeDocumentEdit from "../pages/masters/scheme-document/SchemeDocumentEdit";
+import SchemeDocumentView from "../pages/masters/scheme-document/SchemeDocumentView";
 import MarketType from "../pages/masters/market-type/MarketType";
 import MarketTypeList from "../pages/masters/market-type/MarketTypeList";
 import MarketTypeView from "../pages/masters/market-type/MarketTypeView";
@@ -974,6 +978,10 @@ import RemittanceForFarmList from "../pages/seed-and-dfl-managment/RemittanceFor
 import RemittanceForFarmEdit from "../pages/seed-and-dfl-managment/RemittanceForFarmEdit";
 import RemittanceForFarmView from "../pages/seed-and-dfl-managment/RemittanceForFarmView";
 import GrainageProgressReport from "../pages/seed-and-dfl-managment/GrainageProgressReport";
+import GgLotWiseProgressReport from "../pages/seed-and-dfl-managment/GgLotWiseProgressReport";
+import GgSheet4CombinedReport from "../pages/seed-and-dfl-managment/GgSheet4CombinedReport";
+import GgProductionCumulativeReport from "../pages/seed-and-dfl-managment/GgProductionCumulativeReport";
+import GgPiercedCocoonsReport from "../pages/seed-and-dfl-managment/GgPiercedCocoonsReport";
 import GrainageLotWiseReport from "../pages/seed-and-dfl-managment/GrainageLotWiseReport";
 import GrainageCocoonSupplyReport from "../pages/seed-and-dfl-managment/GrainageCocoonSupplyReport";
 import GrainageCocoonButterflyReport from "../pages/seed-and-dfl-managment/GrainageCocoonButterflyReport";
@@ -1003,6 +1011,54 @@ import GrainageP2WeeklyTscSupplyReport from "../pages/seed-and-dfl-managment/Gra
 import GrainageP2PebrineCasesReport from "../pages/seed-and-dfl-managment/GrainageP2PebrineCasesReport";
 import TscFarmerStatisticsReport from "../pages/seed-and-dfl-managment/TscFarmerStatisticsReport";
 import TscMulberryAreaReport from "../pages/seed-and-dfl-managment/TscMulberryAreaReport";
+import TscMonthlyMulberryAreaReport from "../pages/seed-and-dfl-managment/TscMonthlyMulberryAreaReport";
+import TscMonthlyFarmerCategorizationReport from "../pages/seed-and-dfl-managment/TscMonthlyFarmerCategorizationReport";
+import TscMonthlyDemographicsReport from "../pages/seed-and-dfl-managment/TscMonthlyDemographicsReport";
+import TscMonthlyMulberryByVarietyReport from "../pages/seed-and-dfl-managment/TscMonthlyMulberryByVarietyReport";
+import TscMonthlyPlantationDetailReport from "../pages/seed-and-dfl-managment/TscMonthlyPlantationDetailReport";
+import {
+  TscMonthlyPureBrushingReport,
+  TscMonthlyCrossBrushingReport,
+  TscMonthlyPureCocoonProductionReport,
+} from "../pages/seed-and-dfl-managment/TscMonthlyCYPYReports";
+import TscMonthlyRaceWiseBrushingReport from "../pages/seed-and-dfl-managment/TscMonthlyRaceWiseBrushingReport";
+import TscMonthlyCropYieldReport from "../pages/seed-and-dfl-managment/TscMonthlyCropYieldReport";
+import TscMonthlyMarketCocoonReport from "../pages/seed-and-dfl-managment/TscMonthlyMarketCocoonReport";
+import TscMonthlyCrcBrushingReport from "../pages/seed-and-dfl-managment/TscMonthlyCrcBrushingReport";
+import {
+  TscMonthlyWeeklyBrushingReport,
+  TscMonthlyWeeklyCocoonReport,
+  TscMonthlyNs1ChawkiReport,
+  TscMonthlyNs2CocoonReport,
+  TscMonthlyS4SeedCocoonWeeklyReport,
+} from "../pages/seed-and-dfl-managment/TscMonthlyWeeklyReports";
+import {
+  TscMonthlyS1ChawkiPlanReport,
+  TscMonthlyS1RipeEggsReport,
+} from "../pages/seed-and-dfl-managment/TscMonthlyWeeklyTriReports";
+import TscMonthlyS4SummaryReport from "../pages/seed-and-dfl-managment/TscMonthlyS4SummaryReport";
+import TscMonthlyP1ChawkiLotwiseReport from "../pages/seed-and-dfl-managment/TscMonthlyP1ChawkiLotwiseReport";
+import TscMonthlyP1CocoonLotwiseReport from "../pages/seed-and-dfl-managment/TscMonthlyP1CocoonLotwiseReport";
+import TscMonthlySourceGrainageChawkiReport from "../pages/seed-and-dfl-managment/TscMonthlySourceGrainageChawkiReport";
+import TscMonthlySubdivisionProgressReport from "../pages/seed-and-dfl-managment/TscMonthlySubdivisionProgressReport";
+import TscMonthlyFarmerCategoryDetailReport from "../pages/seed-and-dfl-managment/TscMonthlyFarmerCategoryDetailReport";
+import TscMonthlyNregaProgressReport from "../pages/seed-and-dfl-managment/TscMonthlyNregaProgressReport";
+import {
+  SeedMarketMonthlyProgressReport,
+  SeedMarketMonthlyPricingReport,
+  SeedMarketDistrictWiseReport,
+} from "../pages/seed-and-dfl-managment/SeedMarketMonthlyReports";
+import {
+  DdMulberryAreaReport,
+  DdCropYieldReport,
+  DdChawkiProgressReport,
+  DdCocoonProgressReport,
+} from "../pages/seed-and-dfl-managment/DdReports";
+import {
+  TrainingPhysicalProgressReport,
+  TrainingFinancialProgressReport,
+  TrainingMaintenanceExpenseReport,
+} from "../pages/seed-and-dfl-managment/TrainingReports";
 import TscChawkiHarvestReport from "../pages/seed-and-dfl-managment/TscChawkiHarvestReport";
 import TscSeedCocoonReport from "../pages/seed-and-dfl-managment/TscSeedCocoonReport";
 import TscChawkiCocoonWeeklyReport from "../pages/seed-and-dfl-managment/TscChawkiCocoonWeeklyReport";
@@ -1021,6 +1077,19 @@ import FarmForm1ChawkiReport from "../pages/seed-and-dfl-managment/FarmForm1Chaw
 import FarmForm2ProgressReport from "../pages/seed-and-dfl-managment/FarmForm2ProgressReport";
 import FarmForm3PerformanceReport from "../pages/seed-and-dfl-managment/FarmForm3PerformanceReport";
 import FarmForm4CropProgressReport from "../pages/seed-and-dfl-managment/FarmForm4CropProgressReport";
+import GrainageBriefMonthlyReport from "../pages/seed-and-dfl-managment/GrainageBriefMonthlyReport";
+import GrainageForm1DetailedReport from "../pages/seed-and-dfl-managment/GrainageForm1DetailedReport";
+import GrainageForm2SourceReport from "../pages/seed-and-dfl-managment/GrainageForm2SourceReport";
+import GrainageForm10ProductionReport from "../pages/seed-and-dfl-managment/GrainageForm10ProductionReport";
+import GrainageLotwiseDetailReport from "../pages/seed-and-dfl-managment/GrainageLotwiseDetailReport";
+import GrainageRaceProgressReport from "../pages/seed-and-dfl-managment/GrainageRaceProgressReport";
+import GrainageP1LotwiseDetailReport from "../pages/seed-and-dfl-managment/GrainageP1LotwiseDetailReport";
+import GrainageCocoonPurchaseReport from "../pages/seed-and-dfl-managment/GrainageCocoonPurchaseReport";
+import GrainageDflDistributionLocationReport from "../pages/seed-and-dfl-managment/GrainageDflDistributionLocationReport";
+import GrainageDiapauseAvailabilityReport from "../pages/seed-and-dfl-managment/GrainageDiapauseAvailabilityReport";
+import GrainageDaywiseChawkiReport from "../pages/seed-and-dfl-managment/GrainageDaywiseChawkiReport";
+import FarmP2MonthlyProgressReport from "../pages/seed-and-dfl-managment/FarmP2MonthlyProgressReport";
+import FarmP2CropDetailReport from "../pages/seed-and-dfl-managment/FarmP2CropDetailReport";
 import GrainageFarmForm27BReport from "../pages/seed-and-dfl-managment/GrainageFarmForm27BReport";
 import GrainageFarmMulberryGardenReport from "../pages/seed-and-dfl-managment/GrainageFarmMulberryGardenReport";
 import GrainageFarmChakiCenterReport from "../pages/seed-and-dfl-managment/GrainageFarmChakiCenterReport";
@@ -1142,6 +1211,8 @@ import UserHierarchyMappingList from "../pages/masters/user-hierarchy-mapping/Us
 import UserHierarchyMappingEdit from "../pages/masters/user-hierarchy-mapping/UserHierarchyMappingEdit";
 
 import CropInspectionList from "../pages/chawki-management/CropInspectionList";
+import CropInspectionEdit from "../pages/chawki-management/CropInspectionEdit";
+import FitnessCertificateEdit from "../pages/chawki-management/FitnessCertificateEdit";
 import SeedDtrReport from "../pages/reports-admin/market-auction/SeedDTRReport";
 import SeedMarketDashboardReport from "../pages/reports-admin/market-auction/SeedMarketDashboardReport";
 import DownloadSanctionOrder from "../pages/market-and-auction/DownloadSanctionOrder";
@@ -1153,6 +1224,10 @@ import FitnessCertificate from "../pages/market-and-auction/FitnessCertificateRe
 import ReelerBalanceReport from "../pages/reports-admin/market-auction/ReelerBalanceReport";
 import ExternalUnitBalanceReport from "../pages/reports-admin/market-auction/ExternalUnitBalanceReport";
 import { APP_BASE_PATH, APP_BASE_SEGMENT, APP_ROUTES } from "../config/appRoutes";
+import SeedMarketTransactionReport from "../pages/reports-admin/market-auction/SeedMarketTransactionReport.js";
+import SeedMarketCreditReport from "../pages/reports-admin/market-auction/SeedMarketCreditReport.js";
+import SeedMFReports from "../pages/reports-admin/market-auction/SeedMFReports.js";
+import SeedMarketBiddingReport from "../pages/reports-admin/market-auction/SeedMarketBiddingReport.js";
 
 // Admin and Reports
 
@@ -1503,6 +1578,26 @@ function Router() {
               path="seed-cutting-bank-report"
               element={<SeedCuttingBankReport />}
             />
+
+            <Route
+              path="seed-market-bidding-report"
+              element={<SeedMarketBiddingReport />}
+            />
+
+            <Route
+              path="seed-market-transaction-report"
+              element={<SeedMarketTransactionReport />}
+            />
+            <Route
+              path="seed-market-credit-report"
+              element={<SeedMarketCreditReport />}
+            />
+
+             <Route
+              path="seed-mf-report"
+              element={<SeedMFReports />}
+            />
+
             <Route
               path="maintenance-and-sale-of-nursery-report"
               element={<MaintenanceeAndSaleOfNurseryReport />}
@@ -2113,6 +2208,10 @@ function Router() {
             <Route path="remittance-for-farm-view/:id" element={<RemittanceForFarmView />} />
 
             <Route path="grainage-progress-report" element={<GrainageProgressReport />} />
+            <Route path="gg-lotwise-progress-report" element={<GgLotWiseProgressReport />} />
+            <Route path="gg-sheet4-combined-report" element={<GgSheet4CombinedReport />} />
+            <Route path="gg-production-cumulative-report" element={<GgProductionCumulativeReport />} />
+            <Route path="gg-pierced-cocoons-report" element={<GgPiercedCocoonsReport />} />
             <Route path="grainage-lotwise-report" element={<GrainageLotWiseReport />} />
             <Route path="grainage-cocoon-supply-report" element={<GrainageCocoonSupplyReport />} />
             <Route path="grainage-cocoon-butterfly-report" element={<GrainageCocoonButterflyReport />} />
@@ -2142,6 +2241,42 @@ function Router() {
             <Route path="grainage-p2-pebrine-cases-report" element={<GrainageP2PebrineCasesReport />} />
             <Route path="tsc-farmer-stats-report" element={<TscFarmerStatisticsReport />} />
             <Route path="tsc-mulberry-area-report" element={<TscMulberryAreaReport />} />
+            <Route path="tsc-monthly-mulberry-area-report" element={<TscMonthlyMulberryAreaReport />} />
+            <Route path="tsc-monthly-farmer-categorization-report" element={<TscMonthlyFarmerCategorizationReport />} />
+            <Route path="tsc-monthly-demographics-report" element={<TscMonthlyDemographicsReport />} />
+            <Route path="tsc-monthly-mulberry-by-variety-report" element={<TscMonthlyMulberryByVarietyReport />} />
+            <Route path="tsc-monthly-plantation-detail-report" element={<TscMonthlyPlantationDetailReport />} />
+            <Route path="tsc-monthly-pure-brushing-report" element={<TscMonthlyPureBrushingReport />} />
+            <Route path="tsc-monthly-cross-brushing-report" element={<TscMonthlyCrossBrushingReport />} />
+            <Route path="tsc-monthly-race-wise-brushing-report" element={<TscMonthlyRaceWiseBrushingReport />} />
+            <Route path="tsc-monthly-pure-cocoon-production-report" element={<TscMonthlyPureCocoonProductionReport />} />
+            <Route path="tsc-monthly-crop-yield-report" element={<TscMonthlyCropYieldReport />} />
+            <Route path="tsc-monthly-market-cocoon-report" element={<TscMonthlyMarketCocoonReport />} />
+            <Route path="tsc-monthly-crc-brushing-report" element={<TscMonthlyCrcBrushingReport />} />
+            <Route path="tsc-monthly-weekly-brushing-report" element={<TscMonthlyWeeklyBrushingReport />} />
+            <Route path="tsc-monthly-weekly-cocoon-report" element={<TscMonthlyWeeklyCocoonReport />} />
+            <Route path="tsc-monthly-ns1-chawki-report" element={<TscMonthlyNs1ChawkiReport />} />
+            <Route path="tsc-monthly-ns2-cocoon-report" element={<TscMonthlyNs2CocoonReport />} />
+            <Route path="tsc-monthly-s1-chawki-plan-report" element={<TscMonthlyS1ChawkiPlanReport />} />
+            <Route path="tsc-monthly-s1-ripe-eggs-report" element={<TscMonthlyS1RipeEggsReport />} />
+            <Route path="tsc-monthly-s4-weekly-report" element={<TscMonthlyS4SeedCocoonWeeklyReport />} />
+            <Route path="tsc-monthly-s4-summary-report" element={<TscMonthlyS4SummaryReport />} />
+            <Route path="tsc-monthly-p1-chawki-lotwise-report" element={<TscMonthlyP1ChawkiLotwiseReport />} />
+            <Route path="tsc-monthly-p1-cocoon-lotwise-report" element={<TscMonthlyP1CocoonLotwiseReport />} />
+            <Route path="tsc-monthly-source-grainage-chawki-report" element={<TscMonthlySourceGrainageChawkiReport />} />
+            <Route path="tsc-monthly-subdivision-progress-report" element={<TscMonthlySubdivisionProgressReport />} />
+            <Route path="tsc-monthly-farmer-category-detail-report" element={<TscMonthlyFarmerCategoryDetailReport />} />
+            <Route path="tsc-monthly-nrega-progress-report" element={<TscMonthlyNregaProgressReport />} />
+            <Route path="seed-market-monthly-progress-report" element={<SeedMarketMonthlyProgressReport />} />
+            <Route path="seed-market-monthly-pricing-report" element={<SeedMarketMonthlyPricingReport />} />
+            <Route path="seed-market-district-wise-report" element={<SeedMarketDistrictWiseReport />} />
+            <Route path="dd-mulberry-area-report" element={<DdMulberryAreaReport />} />
+            <Route path="dd-crop-yield-report" element={<DdCropYieldReport />} />
+            <Route path="dd-chawki-progress-report" element={<DdChawkiProgressReport />} />
+            <Route path="dd-cocoon-progress-report" element={<DdCocoonProgressReport />} />
+            <Route path="training-physical-progress-report" element={<TrainingPhysicalProgressReport />} />
+            <Route path="training-financial-progress-report" element={<TrainingFinancialProgressReport />} />
+            <Route path="training-maintenance-expense-report" element={<TrainingMaintenanceExpenseReport />} />
             <Route path="tsc-chawki-harvest-report" element={<TscChawkiHarvestReport />} />
             <Route path="tsc-seed-cocoon-report" element={<TscSeedCocoonReport />} />
             <Route path="tsc-chawki-cocoon-weekly-report" element={<TscChawkiCocoonWeeklyReport />} />
@@ -2160,6 +2295,19 @@ function Router() {
             <Route path="farm-form2-progress-report" element={<FarmForm2ProgressReport />} />
             <Route path="farm-form3-performance-report" element={<FarmForm3PerformanceReport />} />
             <Route path="farm-form4-crop-progress-report" element={<FarmForm4CropProgressReport />} />
+            <Route path="grainage-brief-monthly-report" element={<GrainageBriefMonthlyReport />} />
+            <Route path="grainage-form1-detailed-report" element={<GrainageForm1DetailedReport />} />
+            <Route path="grainage-form2-source-report" element={<GrainageForm2SourceReport />} />
+            <Route path="grainage-form10-report" element={<GrainageForm10ProductionReport />} />
+            <Route path="grainage-lotwise-detail-report" element={<GrainageLotwiseDetailReport />} />
+            <Route path="grainage-race-progress-report" element={<GrainageRaceProgressReport />} />
+            <Route path="grainage-p1-lotwise-detail-report" element={<GrainageP1LotwiseDetailReport />} />
+            <Route path="grainage-cocoon-purchase-report" element={<GrainageCocoonPurchaseReport />} />
+            <Route path="grainage-dfl-distribution-location-report" element={<GrainageDflDistributionLocationReport />} />
+            <Route path="grainage-diapause-availability-report" element={<GrainageDiapauseAvailabilityReport />} />
+            <Route path="grainage-daywise-chawki-report" element={<GrainageDaywiseChawkiReport />} />
+            <Route path="farm-p2-monthly-progress-report" element={<FarmP2MonthlyProgressReport />} />
+            <Route path="farm-p2-crop-detail-report" element={<FarmP2CropDetailReport />} />
             <Route path="farm-form27b-report" element={<GrainageFarmForm27BReport />} />
             <Route path="farm-mulberry-garden-report" element={<GrainageFarmMulberryGardenReport />} />
             <Route path="farm-chaki-center-report" element={<GrainageFarmChakiCenterReport />} />
@@ -2360,6 +2508,14 @@ function Router() {
             <Route
               path="crop-inspection-list"
               element={<CropInspectionList />}
+            />
+            <Route
+              path="fitness-certificate-edit"
+              element={<FitnessCertificateEdit />}
+            />
+            <Route
+              path="crop-inspection-edit"
+              element={<CropInspectionEdit />}
             />
             <Route
               path="supply-of-disinfectants"
@@ -3692,6 +3848,10 @@ function Router() {
             <Route path="documents-list" element={<DocumentList />} />
             <Route path="documents-edit/:id" element={<DocumentsEdit />} />
             <Route path="documents-view/:id" element={<DocumentsView />} />
+            <Route path="scheme-document" element={<SchemeDocument />} />
+            <Route path="scheme-document-list" element={<SchemeDocumentList />} />
+            <Route path="scheme-document-edit/:id" element={<SchemeDocumentEdit />} />
+            <Route path="scheme-document-view/:id" element={<SchemeDocumentView />} />
             <Route path="market-type" element={<MarketType />} />
             <Route path="market-type-list" element={<MarketTypeList />} />
             <Route path="market-type-view/:id" element={<MarketTypeView />} />

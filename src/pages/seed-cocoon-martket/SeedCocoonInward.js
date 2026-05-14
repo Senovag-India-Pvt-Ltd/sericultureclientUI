@@ -1,4 +1,4 @@
-import { Card, Form, Row, Col, Modal } from "react-bootstrap";
+import { Card, Form, Row, Col, Modal, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
@@ -58,6 +58,171 @@ function SeedCocoonInward() {
   const [showModalWeighment, setShowModalWeighment] = useState(false);
   const handleShowModalWeighment = () => setShowModalWeighment(true);
   const handleCloseModalWeighment = () => setShowModalWeighment(false);
+
+  // ────────────────────────────────────────────────────────────────────────
+  //  Update Bank Details — modal + state + lock check
+  //  Mirrors the UpdateBankDetails page so a user can edit the farmer's
+  //  bank info inline; blocks the action if the account is locked.
+  // ────────────────────────────────────────────────────────────────────────
+  const [showBankModal, setShowBankModal] = useState(false);
+  const [validatedBank, setValidatedBank] = useState(false);
+  const [bankSaving, setBankSaving] = useState(false);
+  const [farmerBankReasonList, setFarmerBankReasonList] = useState([]);
+  const [bank, setBank] = useState({
+    accountImagePath: "",
+    farmerId: "",
+    farmerBankName: "",
+    farmerBankAccountNumber: "",
+    farmerBankBranchName: "",
+    farmerBankIfscCode: "",
+    lock: "",
+    remark: "",
+    reasonMasterId: "",
+  });
+
+  // Pull bank account details for the currently searched farmer.
+  const fetchBankDetails = (farmerId) => {
+    if (!farmerId) return;
+    api
+      .get(baseURL2 + `farmer-bank-account/get-by-farmer-id/${farmerId}`)
+      .then((response) => {
+        if (response?.data?.content) {
+          setBank({
+            accountImagePath: "",
+            remark: "",
+            reasonMasterId: "",
+            ...response.data.content,
+          });
+        }
+      })
+      .catch((err) => {
+        // Silent — bank may not exist yet; the modal will still allow input.
+        console.error("Failed to fetch bank details:", err);
+      });
+  };
+
+  // Reason master list (same source as UpdateBankDetails).
+  useEffect(() => {
+    api
+      .get(baseURL1 + `farmerBankAccountReason/get-all`)
+      .then((response) => {
+        setFarmerBankReasonList(response?.data?.content?.farmerBankAccountReason || []);
+      })
+      .catch(() => setFarmerBankReasonList([]));
+  }, []);
+
+  const handleBankInputs = (e) => {
+    const { name, value } = e.target;
+    // Mirror UpdateBankDetails: keep IFSC / branch / bank name uppercase.
+    if (name === "farmerBankIfscCode" || name === "farmerBankBranchName" || name === "farmerBankName") {
+      setBank((prev) => ({ ...prev, [name]: (value || "").toUpperCase() }));
+    } else {
+      setBank((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  // Click handler for the "Update Bank Details" button.
+  // Refuses the action with a styled alert if the account is locked.
+  const handleOpenBankModal = () => {
+    if (!farmerDetails?.farmerId) {
+      Swal.fire({
+        icon: "info",
+        title: t("Please Search a Farmer First"),
+        text: t("Search and select a farmer before updating bank details."),
+        confirmButtonColor: "#1e67a8",
+      });
+      return;
+    }
+
+    // `lock` may come as boolean true/false or as 1/0 — handle both.
+    const isLocked =
+      bank?.lock === true || bank?.lock === 1 || bank?.lock === "1" || bank?.lock === "true";
+
+    if (isLocked) {
+      Swal.fire({
+        title: t("Action Not Permitted"),
+        html: `
+          <div style="padding:6px 4px 8px">
+            <div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:18px 20px;display:flex;align-items:flex-start;gap:14px;text-align:left">
+              <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#c53030);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 4px 12px rgba(229,62,62,0.35)">🔒</div>
+              <div>
+                <p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 6px">${t("You are not authorised to update these bank details")}</p>
+                <p style="color:#9b2c2c;font-size:13px;margin:0 0 8px;line-height:1.6">
+                  ${t("This farmer's bank account has been locked by the system.")}
+                </p>
+                <p style="color:#9b2c2c;font-size:12px;margin:0;line-height:1.55">
+                  ${t("Please contact a higher authority to unlock the account before attempting any modification.")}
+                </p>
+              </div>
+            </div>
+          </div>`,
+        showCloseButton: true,
+        confirmButtonText: t("OK"),
+        confirmButtonColor: "#e53e3e",
+        background: "#fff",
+        showClass: { popup: "animate__animated animate__fadeInDown animate__faster" },
+        hideClass: { popup: "animate__animated animate__fadeOutUp animate__faster" },
+        customClass: { popup: "swal-pop" },
+      });
+      return;
+    }
+
+    setValidatedBank(false);
+    setShowBankModal(true);
+  };
+
+  const handleCloseBankModal = () => {
+    setShowBankModal(false);
+    setValidatedBank(false);
+  };
+
+  const handleSaveBankDetails = (event) => {
+    const form = event.currentTarget;
+    event.preventDefault();
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+      setValidatedBank(true);
+      return;
+    }
+    setBankSaving(true);
+    api
+      .post(baseURL2 + `farmer-bank-account/edit`, bank)
+      .then((response) => {
+        setBankSaving(false);
+        if (response?.data?.content?.error) {
+          Swal.fire({
+            icon: "error",
+            title: t("Update Failed"),
+            html: response.data.content.error_description || t("Could not update bank details."),
+            confirmButtonColor: "#e53e3e",
+          });
+        } else {
+          setShowBankModal(false);
+          setValidatedBank(false);
+          Swal.fire({
+            icon: "success",
+            title: t("Bank Details Updated"),
+            text: t("The farmer's bank details have been updated successfully."),
+            confirmButtonColor: "#1e67a8",
+          });
+          // Refresh bank state so subsequent reads (incl. lock) are current.
+          if (farmerDetails?.farmerId) fetchBankDetails(farmerDetails.farmerId);
+        }
+      })
+      .catch((err) => {
+        setBankSaving(false);
+        const msg =
+          err?.response?.data?.validationErrors
+            ? Object.values(err.response.data.validationErrors).join("<br>")
+            : t("Could not update bank details. Please try again.");
+        Swal.fire({
+          icon: "error",
+          title: t("Update Failed"),
+          html: msg,
+          confirmButtonColor: "#e53e3e",
+        });
+      });
+  };
 
   // For handle Date
   const handleDateChange = (date, type) => {
@@ -245,6 +410,7 @@ function SeedCocoonInward() {
               farmerId: farmerResponse.farmerId,
             }));
             getIdList(farmerResponse.farmerId);
+            fetchBankDetails(farmerResponse.farmerId);
             setLoading(false);
             setIsActive(true);
           } else {
@@ -1353,6 +1519,40 @@ const getIdList = (farmerId) => {
                             {item.label}
                           </button>
                         ))}
+
+                        {/* Update Bank Details — separate styling so it stands out. */}
+                        <button
+                          type="button"
+                          onClick={handleOpenBankModal}
+                          style={{
+                            background: "linear-gradient(135deg,#f0fff4,#fff)",
+                            border: "1.5px solid #9ae6b4",
+                            borderRadius: "10px",
+                            padding: "10px 20px",
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                            fontWeight: 700,
+                            fontSize: "13px",
+                            color: "#276749",
+                            transition: "all 0.15s ease",
+                            marginLeft: "auto",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = "linear-gradient(135deg,#38a169,#48bb78)";
+                            e.currentTarget.style.color = "#fff";
+                            e.currentTarget.style.borderColor = "#38a169";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = "linear-gradient(135deg,#f0fff4,#fff)";
+                            e.currentTarget.style.color = "#276749";
+                            e.currentTarget.style.borderColor = "#9ae6b4";
+                          }}
+                        >
+                          <span style={{ fontSize: "16px" }}>🏦</span>
+                          {t("Update Bank Details")}
+                        </button>
                       </div>
                     </Card.Body>
                   </Card>
@@ -1389,6 +1589,232 @@ const getIdList = (farmerId) => {
           </Row>
         </Form>
       </Block>
+
+      {/* ─── Update Bank Details modal ─────────────────────────────────── */}
+      <Modal show={showBankModal} onHide={handleCloseBankModal} size="lg" backdrop="static">
+        <Modal.Header
+          closeButton
+          style={{
+            background: "linear-gradient(135deg,#38a169,#48bb78)",
+            border: "none",
+            padding: "14px 20px",
+          }}
+        >
+          <Modal.Title
+            style={{
+              color: "#fff",
+              fontWeight: 700,
+              fontSize: "15px",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <span
+              style={{
+                width: "32px",
+                height: "32px",
+                borderRadius: "50%",
+                background: "rgba(255,255,255,0.22)",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "16px",
+              }}
+            >
+              🏦
+            </span>
+            {t("Update Bank Details")}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ padding: "20px 24px", background: "#f8fafd" }}>
+          <Form noValidate validated={validatedBank} onSubmit={handleSaveBankDetails}>
+            <Row className="g-3">
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label htmlFor="farmerBankName">
+                    {t("Bank Name")}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <Form.Control
+                    id="farmerBankName"
+                    name="farmerBankName"
+                    value={bank.farmerBankName || ""}
+                    onChange={handleBankInputs}
+                    type="text"
+                    placeholder={t("Enter Bank Name")}
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {t("Bank Name is required")}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label htmlFor="farmerBankBranchName">
+                    {t("Branch Name")}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <Form.Control
+                    id="farmerBankBranchName"
+                    name="farmerBankBranchName"
+                    value={bank.farmerBankBranchName || ""}
+                    onChange={handleBankInputs}
+                    type="text"
+                    placeholder={t("Enter Branch Name")}
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {t("Branch Name is required")}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label htmlFor="farmerBankIfscCode">
+                    {t("IFSC Code")}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <Form.Control
+                    id="farmerBankIfscCode"
+                    name="farmerBankIfscCode"
+                    value={bank.farmerBankIfscCode || ""}
+                    onChange={handleBankInputs}
+                    type="text"
+                    maxLength="11"
+                    minLength="11"
+                    placeholder={t("Enter IFSC Code")}
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {t("IFSC Code is required and must be 11 characters")}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label htmlFor="farmerBankAccountNumber">
+                    {t("Bank Account Number")}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <Form.Control
+                    id="farmerBankAccountNumber"
+                    name="farmerBankAccountNumber"
+                    value={bank.farmerBankAccountNumber || ""}
+                    onChange={handleBankInputs}
+                    type="text"
+                    placeholder={t("Enter Bank Account Number")}
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {t("Bank Account Number is required")}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group">
+                  <Form.Label htmlFor="reasonMasterId">
+                    {t("Reason")}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <Form.Select
+                    id="reasonMasterId"
+                    name="reasonMasterId"
+                    value={bank.reasonMasterId || ""}
+                    onChange={handleBankInputs}
+                    required
+                  >
+                    <option value="">{t("Select Reason")}</option>
+                    {farmerBankReasonList.map((list) => (
+                      <option
+                        key={list.farmerBankAccountReasonId}
+                        value={list.farmerBankAccountReasonId}
+                      >
+                        {list.farmerBankAccountReason}
+                      </option>
+                    ))}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    {t("Reason is required")}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+
+              <Col lg="12">
+                <Form.Group className="form-group">
+                  <Form.Label htmlFor="remark">
+                    {t("Remarks")}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
+                  <Form.Control
+                    id="remark"
+                    name="remark"
+                    value={bank.remark || ""}
+                    onChange={handleBankInputs}
+                    as="textarea"
+                    rows={2}
+                    placeholder={t("Enter Remarks")}
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {t("Remarks is required")}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "12px",
+                marginTop: "10px",
+              }}
+            >
+              <Button
+                type="submit"
+                disabled={bankSaving}
+                style={{
+                  background: bankSaving
+                    ? "#c8d6e5"
+                    : "linear-gradient(135deg,#38a169,#48bb78)",
+                  border: "none",
+                  borderRadius: "10px",
+                  padding: "10px 28px",
+                  fontWeight: 700,
+                  fontSize: "14px",
+                  color: "#fff",
+                  cursor: bankSaving ? "not-allowed" : "pointer",
+                  boxShadow: bankSaving ? "none" : "0 4px 14px rgba(56,161,105,0.35)",
+                }}
+              >
+                {bankSaving ? t("Saving...") : `💾 ${t("Update")}`}
+              </Button>
+              <Button
+                type="button"
+                onClick={handleCloseBankModal}
+                style={{
+                  background: "#f1f5f9",
+                  border: "1.5px solid #d0d9e8",
+                  borderRadius: "10px",
+                  padding: "10px 24px",
+                  fontWeight: 600,
+                  fontSize: "14px",
+                  color: "#4a5568",
+                }}
+              >
+                {t("Cancel")}
+              </Button>
+            </div>
+          </Form>
+        </Modal.Body>
+      </Modal>
+
       <Modal show={showModal} onHide={handleCloseModal} size="lg">
         <Modal.Header closeButton style={{ background: "linear-gradient(135deg,#1e67a8,#2d9cdb)", border: "none", padding: "14px 20px" }}>
           <Modal.Title style={{ color: "#fff", fontWeight: 700, fontSize: "15px", display: "flex", alignItems: "center", gap: "8px" }}>
