@@ -1077,6 +1077,10 @@ import FarmForm1ChawkiReport from "../pages/seed-and-dfl-managment/FarmForm1Chaw
 import FarmForm2ProgressReport from "../pages/seed-and-dfl-managment/FarmForm2ProgressReport";
 import FarmForm3PerformanceReport from "../pages/seed-and-dfl-managment/FarmForm3PerformanceReport";
 import FarmForm4CropProgressReport from "../pages/seed-and-dfl-managment/FarmForm4CropProgressReport";
+import P3FarmSheet1MonthlyProgressReport from "../pages/seed-and-dfl-managment/P3FarmSheet1MonthlyProgressReport";
+import P3FarmSheet3AnnualCropsReport from "../pages/seed-and-dfl-managment/P3FarmSheet3AnnualCropsReport";
+import P3FarmSheet4ProductionTargetReport from "../pages/seed-and-dfl-managment/P3FarmSheet4ProductionTargetReport";
+import P3FarmAnnualSheet6Report from "../pages/seed-and-dfl-managment/P3FarmAnnualSheet6Report";
 import GrainageBriefMonthlyReport from "../pages/seed-and-dfl-managment/GrainageBriefMonthlyReport";
 import GrainageForm1DetailedReport from "../pages/seed-and-dfl-managment/GrainageForm1DetailedReport";
 import GrainageForm2SourceReport from "../pages/seed-and-dfl-managment/GrainageForm2SourceReport";
@@ -2295,6 +2299,10 @@ function Router() {
             <Route path="farm-form2-progress-report" element={<FarmForm2ProgressReport />} />
             <Route path="farm-form3-performance-report" element={<FarmForm3PerformanceReport />} />
             <Route path="farm-form4-crop-progress-report" element={<FarmForm4CropProgressReport />} />
+            <Route path="p3-farm-sheet1-monthly-progress-report" element={<P3FarmSheet1MonthlyProgressReport />} />
+            <Route path="p3-farm-sheet3-annual-crops-report" element={<P3FarmSheet3AnnualCropsReport />} />
+            <Route path="p3-farm-sheet4-production-target-report" element={<P3FarmSheet4ProductionTargetReport />} />
+            <Route path="p3-farm-annual-sheet6-report" element={<P3FarmAnnualSheet6Report />} />
             <Route path="grainage-brief-monthly-report" element={<GrainageBriefMonthlyReport />} />
             <Route path="grainage-form1-detailed-report" element={<GrainageForm1DetailedReport />} />
             <Route path="grainage-form2-source-report" element={<GrainageForm2SourceReport />} />
