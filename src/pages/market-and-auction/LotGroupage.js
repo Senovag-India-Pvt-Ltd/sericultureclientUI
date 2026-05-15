@@ -770,7 +770,12 @@ const hasRemaining = remainingQty > 0;
             lotParentLevel: lotParentLevel,
             averageYield: calculatedAverageYield,
             dflLotNumber: noOfDFLs,
-            remainingCocoonWeight: movingToAnotherMarketFlag ? 0 : remainingCocoonWeight,
+            // Per LotGroupage.rejection_quantity contract: (lotWeightAfterWeighment - distributedQuantity).
+            // That's exactly remainingQty — the value the user sees in the "Remaining/Rejected" pill —
+            // so send it (not the legacy netWeight-based remainingCocoonWeight) to keep UI and DB aligned.
+            remainingCocoonWeight: movingToAnotherMarketFlag
+              ? 0
+              : (purposeForRejectionFlag ? remainingQty : remainingCocoonWeight),
             fruitsId: fruitsId,
             marketId: localStorage.getItem("marketId"),
             godownId: localStorage.getItem("godownId"),
@@ -819,7 +824,12 @@ const hasRemaining = remainingQty > 0;
             fruitsId: fruitsId,
             averageYield: calculatedAverageYield,
             dflLotNumber: noOfDFLs,
-            remainingCocoonWeight: movingToAnotherMarketFlag ? 0 : remainingCocoonWeight,
+            // Per LotGroupage.rejection_quantity contract: (lotWeightAfterWeighment - distributedQuantity).
+            // That's exactly remainingQty — the value the user sees in the "Remaining/Rejected" pill —
+            // so send it (not the legacy netWeight-based remainingCocoonWeight) to keep UI and DB aligned.
+            remainingCocoonWeight: movingToAnotherMarketFlag
+              ? 0
+              : (purposeForRejectionFlag ? remainingQty : remainingCocoonWeight),
             auctionDate: formatAuctionDate(item.auctionDate),
             purposeForRejection: purposeForRejectionFlag,
             movingToAnotherMarket: movingToAnotherMarketFlag,
@@ -1665,14 +1675,12 @@ const handlePurchaseModeChange = (e) => {
                             const savedMovedQty = wasSavedMoved
                               ? Math.max(0, Number((lotWeightAfterWeighmentVal - savedDistributed).toFixed(2)))
                               : 0;
-                            // Moving to another market takes precedence over rejection: when
-                            // moved is active the remaining qty is recorded as moved (see
-                            // postData), so the rejected pill must NOT also claim it.
-                            const movedActive = movingToAnotherMarket || wasSavedMoved;
-                            const rejectedDisplay = wasSavedRejected
-                              ? savedRejectedQty
-                              : (movedActive ? 0 : remainingQty);
-                            const movedDisplay = wasSavedMoved ? savedMovedQty : remainingQty;
+                            // Pill amounts mirror the Farmer Details cell exactly: use the
+                            // saved value when the corresponding flag was persisted, else 0.
+                            // No remainingQty fallback — that double-counts when the same qty
+                            // is already in the other bucket (e.g. rejection saved → moved=0).
+                            const rejectedDisplay = wasSavedRejected ? savedRejectedQty : 0;
+                            const movedDisplay = wasSavedMoved ? savedMovedQty : 0;
 
                             // Show pills based on live flags OR saved state, so a reopened
                             // lot whose checkboxes default to unchecked still reflects its
