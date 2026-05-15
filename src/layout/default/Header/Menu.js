@@ -6389,8 +6389,38 @@ function Menu() {
                                 </MenuItem>
                                 <MenuItem>
                                   <MenuItemLink
+                                    text={t("Sheet-5 · Monthly Crop Report Part 1 (rows 1–14)")}
+                                    to="/seriui/p3-farm-sheet5-crop-report-part1"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-6 · Monthly Feeding & Moult (rows 15–22)")}
+                                    to="/seriui/p3-farm-sheet6-feeding-moulting-report"
+                                  />
+                                </MenuItem>
+                                {/* <MenuItem>
+                                  <MenuItemLink
                                     text={t("Sheet-6 · Annual Feeding & Moult (2nd–5th instar)")}
                                     to="/seriui/p3-farm-annual-sheet6-report"
+                                  />
+                                </MenuItem> */}
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-7 · Monthly Crop Report Part 3 (rows 23–33)")}
+                                    to="/seriui/p3-farm-sheet7-crop-report-part3"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-8 · Distribution / Sale (rows 34–37)")}
+                                    to="/seriui/p3-farm-sheet8-distribution-sale-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-9 · Weekly Cocoon Hatching Programme")}
+                                    to="/seriui/p3-farm-sheet9-weekly-hatching-report"
                                   />
                                 </MenuItem>
                               </MenuSub>
