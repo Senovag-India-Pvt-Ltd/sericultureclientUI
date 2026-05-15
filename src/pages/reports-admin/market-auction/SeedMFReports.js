@@ -126,7 +126,7 @@ function SeedMFReports() {
           <Row className="g-3">
             <Card>
               <Card.Body>
-                <Form >
+          
                   <Row className="align-items-end">
                     {/* LICENSE NUMBER */}
                     <Col md={4}>
@@ -137,7 +137,12 @@ function SeedMFReports() {
                         <Form.Control
                           name="licenseNumber"
                           value={data.licenseNumber}
-                          onChange={data.licenseNumber}
+                          onChange={(e) =>
+                            setData({
+                              ...data,
+                              licenseNumber: e.target.value,
+                            })
+                          }
                           type="text"
                           placeholder="Enter License Number"
                         />
@@ -195,7 +200,7 @@ function SeedMFReports() {
                       </Button>
                     </Col>
                   </Row>
-                </Form>
+          
               </Card.Body>
             </Card>
 
