@@ -60,7 +60,7 @@ const sumTotalQty = (list) =>
 function SeedMarketDashboardReport() {
   const { t } = useTranslation();
 
-  const [auctionDate, setAuctionDate] = useState(null);
+  const [auctionDate, setAuctionDate] = useState(new Date());
   const [dashboardList, setDashboardList] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -110,7 +110,7 @@ function SeedMarketDashboardReport() {
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => { fetchDashboard(auctionDate); }, []);
+  useEffect(() => { fetchDashboard(new Date()); }, []);
 
   const postData = (event) => {
     event.preventDefault();
@@ -337,10 +337,6 @@ function SeedMarketDashboardReport() {
               ))}
             </Row>
 
-            {/* ── Date label ── */}
-            <div style={{ marginBottom: "12px", color: "#5d6d7e", fontSize: "0.82rem", fontWeight: 600 }}>
-              📅 {t("Transactions for")}: <span style={{ color: "#1a5276" }}>{formattedDate}</span>
-            </div>
 
             {/* ── Single unified table with both sections ── */}
             <Card style={{ borderRadius: "14px", boxShadow: "0 4px 20px rgba(0,0,0,0.09)", border: "none", overflow: "hidden" }}>
