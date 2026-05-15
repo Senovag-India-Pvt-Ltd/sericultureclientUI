@@ -1,15 +1,17 @@
 import React from "react";
 import { P3FarmFormSummaryReport } from "./P3FarmFormSummaryShared";
 
-// Sheet 7 — Monthly Crop Report Part 3 (rows 23-33)
-// Disease detection by stage, cocoon weight, total leaf used, production & seed dispatch.
+// Sheet 7 — Monthly Crop Report Part 3 (rows 23-37)
+// Disease detection by stage, cocoon weight, leaf used, production, seed dispatch,
+// reeling dispatch, DFL-prep cocoons, market value, and copy-to-office acknowledgements.
+// (rows 34-37 were formerly Sheet 8 — Sl numbers are continuous so they're returned together.)
 const cfg = {
   sheet: "7",
   endpoint: "p3-farm/sheet7",
-  titleKn: "ಪ್ರಪತ್ರ 7 · ಮಾಸಿಕ ಬೆಳೆ ವರದಿ (ಭಾಗ 3) — ಸಾಲುಗಳು 23–33",
-  titleEn: "Monthly Crop Report (Part 3) · rows 23-33",
-  descEn:  "P3 Farms (Bivoltine) — disease detection, cocoon weight, total leaf used, dispatch · CY vs PY",
-  tagText: "P3 Farms · Bivoltine · Sheet-7 · Part 3",
+  titleKn: "ಪ್ರಪತ್ರ 7 · ಮಾಸಿಕ ಬೆಳೆ ವರದಿ (ಭಾಗ 3) — ಸಾಲುಗಳು 23–37",
+  titleEn: "Monthly Crop Report (Part 3) · rows 23-37",
+  descEn:  "P3 Farms (Bivoltine) — disease detection, cocoon weight, leaf used, production, reeling dispatch, DFL-prep cocoons · CY vs PY",
+  tagText: "P3 Farms · Bivoltine · Sheet-7 · Part 3 (rows 23–37)",
   icon: "🪺",
   palette: {
     primary: "#9f1239", deep: "#881337",

@@ -6407,20 +6407,38 @@ function Menu() {
                                 </MenuItem> */}
                                 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Sheet-7 · Monthly Crop Report Part 3 (rows 23–33)")}
+                                    text={t("Sheet-7 · Monthly Crop Report Part 3 (rows 23–37)")}
                                     to="/seriui/p3-farm-sheet7-crop-report-part3"
-                                  />
-                                </MenuItem>
-                                <MenuItem>
-                                  <MenuItemLink
-                                    text={t("Sheet-8 · Distribution / Sale (rows 34–37)")}
-                                    to="/seriui/p3-farm-sheet8-distribution-sale-report"
                                   />
                                 </MenuItem>
                                 <MenuItem>
                                   <MenuItemLink
                                     text={t("Sheet-9 · Weekly Cocoon Hatching Programme")}
                                     to="/seriui/p3-farm-sheet9-weekly-hatching-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-10 · Annual Target vs Achievement")}
+                                    to="/seriui/p3-farm-sheet10-annual-target-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-12 · Rearing Section Crop Progress")}
+                                    to="/seriui/p3-farm-sheet12-rearing-progress-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-13 · Garden / Mulberry Performance")}
+                                    to="/seriui/p3-farm-sheet13-mulberry-performance-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-15 · Chowki Target Achievement (Form F-1)")}
+                                    to="/seriui/p3-farm-sheet15-chowki-target-f1-report"
                                   />
                                 </MenuItem>
                               </MenuSub>

@@ -1084,8 +1084,11 @@ import P3FarmAnnualSheet6Report from "../pages/seed-and-dfl-managment/P3FarmAnnu
 import P3FarmSheet5CropReportPart1 from "../pages/seed-and-dfl-managment/P3FarmSheet5CropReportPart1";
 import P3FarmSheet6FeedingMoultingReport from "../pages/seed-and-dfl-managment/P3FarmSheet6FeedingMoultingReport";
 import P3FarmSheet7CropReportPart3 from "../pages/seed-and-dfl-managment/P3FarmSheet7CropReportPart3";
-import P3FarmSheet8DistributionSaleReport from "../pages/seed-and-dfl-managment/P3FarmSheet8DistributionSaleReport";
 import P3FarmSheet9WeeklyHatchingReport from "../pages/seed-and-dfl-managment/P3FarmSheet9WeeklyHatchingReport";
+import P3FarmSheet10AnnualTargetReport from "../pages/seed-and-dfl-managment/P3FarmSheet10AnnualTargetReport";
+import P3FarmSheet12RearingProgressReport from "../pages/seed-and-dfl-managment/P3FarmSheet12RearingProgressReport";
+import P3FarmSheet13MulberryPerformanceReport from "../pages/seed-and-dfl-managment/P3FarmSheet13MulberryPerformanceReport";
+import P3FarmSheet15ChowkiTargetF1Report from "../pages/seed-and-dfl-managment/P3FarmSheet15ChowkiTargetF1Report";
 import GrainageBriefMonthlyReport from "../pages/seed-and-dfl-managment/GrainageBriefMonthlyReport";
 import GrainageForm1DetailedReport from "../pages/seed-and-dfl-managment/GrainageForm1DetailedReport";
 import GrainageForm2SourceReport from "../pages/seed-and-dfl-managment/GrainageForm2SourceReport";
@@ -2311,8 +2314,11 @@ function Router() {
             <Route path="p3-farm-sheet5-crop-report-part1" element={<P3FarmSheet5CropReportPart1 />} />
             <Route path="p3-farm-sheet6-feeding-moulting-report" element={<P3FarmSheet6FeedingMoultingReport />} />
             <Route path="p3-farm-sheet7-crop-report-part3" element={<P3FarmSheet7CropReportPart3 />} />
-            <Route path="p3-farm-sheet8-distribution-sale-report" element={<P3FarmSheet8DistributionSaleReport />} />
             <Route path="p3-farm-sheet9-weekly-hatching-report" element={<P3FarmSheet9WeeklyHatchingReport />} />
+            <Route path="p3-farm-sheet10-annual-target-report" element={<P3FarmSheet10AnnualTargetReport />} />
+            <Route path="p3-farm-sheet12-rearing-progress-report" element={<P3FarmSheet12RearingProgressReport />} />
+            <Route path="p3-farm-sheet13-mulberry-performance-report" element={<P3FarmSheet13MulberryPerformanceReport />} />
+            <Route path="p3-farm-sheet15-chowki-target-f1-report" element={<P3FarmSheet15ChowkiTargetF1Report />} />
             <Route path="grainage-brief-monthly-report" element={<GrainageBriefMonthlyReport />} />
             <Route path="grainage-form1-detailed-report" element={<GrainageForm1DetailedReport />} />
             <Route path="grainage-form2-source-report" element={<GrainageForm2SourceReport />} />
