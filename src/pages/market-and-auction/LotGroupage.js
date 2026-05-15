@@ -56,6 +56,8 @@ const [dataLotList, setDataLotList] = useState([]);
   });
   setBalanceError(false);
   setPurposeForRejection(false);
+  setMovingToAnotherMarket(false);
+  setMovingMarketReason("");
  }
 
  const [id, setId] = useState(localStorage.getItem("userMasterId"));
@@ -86,6 +88,8 @@ const [dataLotList, setDataLotList] = useState([]);
    const [isTriplet, setIsTriplet] = useState("");
    const [rejectionPercentage, setRejectionPercentage] = useState(0);
    const [purposeForRejection, setPurposeForRejection] = useState(false);
+   const [movingToAnotherMarket, setMovingToAnotherMarket] = useState(false);
+   const [movingMarketReason, setMovingMarketReason] = useState("");
 
 // Example API call (adjust to your actual API)
 useEffect(() => {
@@ -387,7 +391,14 @@ const handleUpdateLotDetails = (e, i, changes) => {
         }));
 
   
-          if (lotGroupageId) { 
+          // Saved rejection / market-move flags come back per row; the lot is one logical
+          // unit so we read them off the first row (any row would have the same values).
+          const savedPurposeForRejection = !!response.data.content[0].purposeForRejection;
+          const savedMovingToAnotherMarket = !!response.data.content[0].movingToAnotherMarket;
+          const savedMovingMarketReason = response.data.content[0].movingMarketReason || "";
+          const savedRejectionQuantity = response.data.content[0].rejectionQuantity;
+
+          if (lotGroupageId) {
             // navigate(`/seriui/lot-groupage-edit/${lotGroupageId}`);
             setFarmerDetails((prev) => ({
               ...prev,
@@ -405,10 +416,19 @@ const handleUpdateLotDetails = (e, i, changes) => {
               soldCocoonInKgs : response.data.content[0].soldCocoonInKgs,
               remainingCocoonWeight : response.data.content[0].remainingCocoonWeight,
               lotWeightAfterWeighment : response.data.content[0].lotWeightAfterWeighment,
+              purposeForRejection: savedPurposeForRejection,
+              movingToAnotherMarket: savedMovingToAnotherMarket,
+              movingMarketReason: savedMovingMarketReason,
+              rejectionQuantity: savedRejectionQuantity,
             }));
             // setLotParentLevel(response.data.content[0].lotParentLevel,);
            // Automatically set the fetched price in the data state
-            
+
+            // Restore checkbox + reason state so the UI reflects what was saved.
+            setPurposeForRejection(savedPurposeForRejection);
+            setMovingToAnotherMarket(savedMovingToAnotherMarket);
+            setMovingMarketReason(savedMovingMarketReason);
+
             setDataLotList(response.data.content);
             setShowFarmerDetails(true);
           } else {
@@ -426,6 +446,10 @@ const handleUpdateLotDetails = (e, i, changes) => {
               soldCocoonInKgs : response.data.content[0].soldCocoonInKgs,
               remainingCocoonWeight : response.data.content[0].remainingCocoonWeight,
               lotWeightAfterWeighment : response.data.content[0].lotWeightAfterWeighment,
+              purposeForRejection: savedPurposeForRejection,
+              movingToAnotherMarket: savedMovingToAnotherMarket,
+              movingMarketReason: savedMovingMarketReason,
+              rejectionQuantity: savedRejectionQuantity,
             }));
             setShowFarmerDetails(true);
           }
@@ -718,6 +742,15 @@ const hasRemaining = remainingQty > 0;
 
       // Only the checkbox flag is persisted; the threshold comparison is UI-only.
       const purposeForRejectionFlag = !!purposeForRejection;
+      const movingToAnotherMarketFlag = !!movingToAnotherMarket;
+      const trimmedMovingMarketReason = (movingMarketReason || "").trim();
+
+      // Reason is required when "Moving to another market" is ticked.
+      if (movingToAnotherMarketFlag && !trimmedMovingMarketReason) {
+        setIsSaving(false);
+        saveError("Please enter a Reason for moving to another market.");
+        return;
+      }
 
       if (hasLotGroupageId) {
         const requestData = {
@@ -737,11 +770,18 @@ const hasRemaining = remainingQty > 0;
             lotParentLevel: lotParentLevel,
             averageYield: calculatedAverageYield,
             dflLotNumber: noOfDFLs,
-            remainingCocoonWeight: remainingCocoonWeight,
+            // Per LotGroupage.rejection_quantity contract: (lotWeightAfterWeighment - distributedQuantity).
+            // That's exactly remainingQty — the value the user sees in the "Remaining/Rejected" pill —
+            // so send it (not the legacy netWeight-based remainingCocoonWeight) to keep UI and DB aligned.
+            remainingCocoonWeight: movingToAnotherMarketFlag
+              ? 0
+              : (purposeForRejectionFlag ? remainingQty : remainingCocoonWeight),
             fruitsId: fruitsId,
             marketId: localStorage.getItem("marketId"),
             godownId: localStorage.getItem("godownId"),
             purposeForRejection: purposeForRejectionFlag,
+            movingToAnotherMarket: movingToAnotherMarketFlag,
+            movingMarketReason: movingToAnotherMarketFlag ? trimmedMovingMarketReason : null,
           }))
         };
 
@@ -784,9 +824,16 @@ const hasRemaining = remainingQty > 0;
             fruitsId: fruitsId,
             averageYield: calculatedAverageYield,
             dflLotNumber: noOfDFLs,
-            remainingCocoonWeight: remainingCocoonWeight,
+            // Per LotGroupage.rejection_quantity contract: (lotWeightAfterWeighment - distributedQuantity).
+            // That's exactly remainingQty — the value the user sees in the "Remaining/Rejected" pill —
+            // so send it (not the legacy netWeight-based remainingCocoonWeight) to keep UI and DB aligned.
+            remainingCocoonWeight: movingToAnotherMarketFlag
+              ? 0
+              : (purposeForRejectionFlag ? remainingQty : remainingCocoonWeight),
             auctionDate: formatAuctionDate(item.auctionDate),
             purposeForRejection: purposeForRejectionFlag,
+            movingToAnotherMarket: movingToAnotherMarketFlag,
+            movingMarketReason: movingToAnotherMarketFlag ? trimmedMovingMarketReason : null,
           })),
         };
 
@@ -1455,8 +1502,63 @@ const handlePurchaseModeChange = (e) => {
                               <tr style={styles.tableRow}>
                               <td style={styles.ctstyle}>{t("Sold Cocoon in Kgs:")}</td>
                                 <td style={styles.cell}>{farmerdetails.soldCocoonInKgs}</td>
-                                <td style={styles.ctstyle}>{t("Remaining Cocoon in Kgs:")}</td>
-                                <td style={styles.cell}>{formattedRemainingCocoonWeight}</td>
+                                {(() => {
+                                  // Label toggles with the LIVE checkbox state so the user can
+                                  // flip between views after the lot is saved. Values come from
+                                  // the SAVED data: the rejection / moved amounts are only known
+                                  // after a save, so if the user ticks a box that wasn't saved
+                                  // we show 0 for that stat rather than re-allocating remaining.
+                                  const liveRejection = !!purposeForRejection;
+                                  const liveMoved = !!movingToAnotherMarket;
+
+                                  const wasSavedRejected = !!farmerdetails?.purposeForRejection;
+                                  const wasSavedMoved = !!farmerdetails?.movingToAnotherMarket;
+                                  const rejectedValue = wasSavedRejected
+                                    ? Number(farmerdetails?.rejectionQuantity || 0)
+                                    : 0;
+                                  // Moved qty isn't persisted in its own column — compute it
+                                  // from the saved buyer rows: weighment - sum(lot_weight).
+                                  const savedDistributed = (dataLotList || []).reduce(
+                                    (sum, item) => sum + Number(item.lotWeight || 0), 0
+                                  );
+                                  const movedValue = wasSavedMoved
+                                    ? Math.max(0, Number((lotWeightAfterWeighmentVal - savedDistributed).toFixed(2)))
+                                    : 0;
+
+                                  if (liveRejection && liveMoved) {
+                                    return (
+                                      <>
+                                        <td style={styles.ctstyle}>{t("Rejected / Moved:")}</td>
+                                        <td style={styles.cell}>
+                                          <div>{t("Rejected Cocoons")}: {rejectedValue.toFixed(2)} Kg</div>
+                                          <div>{t("Moved to another market")}: {movedValue.toFixed(2)} Kg</div>
+                                        </td>
+                                      </>
+                                    );
+                                  }
+                                  if (liveRejection) {
+                                    return (
+                                      <>
+                                        <td style={styles.ctstyle}>{t("Rejected Cocoons:")}</td>
+                                        <td style={styles.cell}>{rejectedValue.toFixed(2)}</td>
+                                      </>
+                                    );
+                                  }
+                                  if (liveMoved) {
+                                    return (
+                                      <>
+                                        <td style={styles.ctstyle}>{t("Moved to another market:")}</td>
+                                        <td style={styles.cell}>{movedValue.toFixed(2)}</td>
+                                      </>
+                                    );
+                                  }
+                                  return (
+                                    <>
+                                      <td style={styles.ctstyle}>{t("Remaining Cocoon in Kgs:")}</td>
+                                      <td style={styles.cell}>{formattedRemainingCocoonWeight}</td>
+                                    </>
+                                  );
+                                })()}
                                 <td style={styles.ctstyle}>{t("Remaining Cocoon in Store:")}</td>
                                 <td style={styles.cell}>{farmerdetails.remainingCocoonWeight}</td>
                               </tr>
@@ -1539,7 +1641,7 @@ const handlePurchaseModeChange = (e) => {
                               cursor: "pointer",
                             }}
                           />
-                          <span>{t("Rejected Cocoons")}</span>
+                          <span>{t("Reject Cocoons")}</span>
                         </label>
                       </Col>
                       <Col lg="6" md="6" sm="12">
@@ -1557,14 +1659,65 @@ const handlePurchaseModeChange = (e) => {
                           <span style={pillStyle("#e6fffa", "#276749")}>
                             {t("Distributed")}: <b>{distributedQuantity || 0} Kg</b>
                           </span>
-                          <span
-                            style={pillStyle(
-                              isRemainingNegative ? "#fff5f5" : "#fffaf0",
-                              isRemainingNegative ? "#c53030" : "#b7791f"
-                            )}
-                          >
-                            {t("Remaining")}: <b>{remainingQty} Kg</b>
-                          </span>
+                          {(() => {
+                            // Mirror the Farmer Details cell: labels toggle with the live
+                            // checkboxes, but the displayed amount uses saved DB data when
+                            // available (so reopening a saved lot shows the actual rejected /
+                            // moved amounts, not a live re-allocation of remainingQty).
+                            const wasSavedRejected = !!farmerdetails?.purposeForRejection;
+                            const wasSavedMoved = !!farmerdetails?.movingToAnotherMarket;
+                            const savedDistributed = (dataLotList || []).reduce(
+                              (sum, item) => sum + Number(item.lotWeight || 0), 0
+                            );
+                            const savedRejectedQty = wasSavedRejected
+                              ? Number(farmerdetails?.rejectionQuantity || 0)
+                              : 0;
+                            const savedMovedQty = wasSavedMoved
+                              ? Math.max(0, Number((lotWeightAfterWeighmentVal - savedDistributed).toFixed(2)))
+                              : 0;
+                            // Pill amounts mirror the Farmer Details cell exactly: use the
+                            // saved value when the corresponding flag was persisted, else 0.
+                            // No remainingQty fallback — that double-counts when the same qty
+                            // is already in the other bucket (e.g. rejection saved → moved=0).
+                            const rejectedDisplay = wasSavedRejected ? savedRejectedQty : 0;
+                            const movedDisplay = wasSavedMoved ? savedMovedQty : 0;
+
+                            // Show pills based on live flags OR saved state, so a reopened
+                            // lot whose checkboxes default to unchecked still reflects its
+                            // saved categorization (don't fall back to "Remaining" then).
+                            const showMoved = movingToAnotherMarket || wasSavedMoved;
+                            const showRejected = purposeForRejection || wasSavedRejected;
+
+                            const pills = [];
+                            if (showMoved) {
+                              pills.push(
+                                <span key="moved" style={pillStyle("#fff7ed", "#9c4221")}>
+                                  {t("Moved to another market")}: <b>{Number(movedDisplay).toFixed(2)} Kg</b>
+                                </span>
+                              );
+                            }
+                            if (showRejected) {
+                              pills.push(
+                                <span key="rejected" style={pillStyle("#fff5f5", "#c53030")}>
+                                  {t("Rejected Cocoons")}: <b>{Number(rejectedDisplay).toFixed(2)} Kg</b>
+                                </span>
+                              );
+                            }
+                            if (pills.length === 0) {
+                              pills.push(
+                                <span
+                                  key="remaining"
+                                  style={pillStyle(
+                                    isRemainingNegative ? "#fff5f5" : "#fffaf0",
+                                    isRemainingNegative ? "#c53030" : "#b7791f"
+                                  )}
+                                >
+                                  {t("Remaining")}: <b>{remainingQty} Kg</b>
+                                </span>
+                              );
+                            }
+                            return pills;
+                          })()}
                           {rejectionPercentage > 0 && (
                             <span style={pillStyle("#faf5ff", "#6b46c1")}>
                               {t("Threshold")}: <b>{rejectionPercentage}%</b>
@@ -1572,6 +1725,109 @@ const handlePurchaseModeChange = (e) => {
                           )}
                         </div>
                       </Col>
+                      <Col lg="6" md="6" sm="12">
+                        <label
+                          htmlFor="movingToAnotherMarket"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            padding: "10px 14px",
+                            background: movingToAnotherMarket
+                              ? "linear-gradient(135deg,#fff7ed,#fff)"
+                              : "#fff",
+                            border: movingToAnotherMarket
+                              ? "1.5px solid #f6ad55"
+                              : "1.5px solid #e2e8f0",
+                            borderRadius: "10px",
+                            cursor: "pointer",
+                            fontWeight: 600,
+                            fontSize: "13px",
+                            color: "#2d3748",
+                            boxShadow: movingToAnotherMarket
+                              ? "0 2px 8px rgba(237,137,54,0.18)"
+                              : "none",
+                            transition: "all 0.2s ease",
+                          }}
+                        >
+                          <input
+                            id="movingToAnotherMarket"
+                            name="movingToAnotherMarket"
+                            type="checkbox"
+                            checked={!!movingToAnotherMarket}
+                            onChange={(e) => {
+                              const checked = e.target.checked;
+                              setMovingToAnotherMarket(checked);
+                              if (!checked) setMovingMarketReason("");
+                            }}
+                            style={{
+                              width: "18px",
+                              height: "18px",
+                              accentColor: "#dd6b20",
+                              cursor: "pointer",
+                            }}
+                          />
+                          <span>🚚 {t("Moving to another market")}</span>
+                        </label>
+                      </Col>
+                      {movingToAnotherMarket && (
+                        <Col lg="12">
+                          <div
+                            style={{
+                              background: "linear-gradient(135deg,#fff7ed,#fff)",
+                              border: "1.5px solid #fbd38d",
+                              borderRadius: "10px",
+                              padding: "12px 14px",
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "8px",
+                            }}
+                          >
+                            <label
+                              htmlFor="movingMarketReason"
+                              style={{
+                                fontSize: "12.5px",
+                                fontWeight: 700,
+                                color: "#9c4221",
+                                letterSpacing: "0.3px",
+                                textTransform: "uppercase",
+                                margin: 0,
+                              }}
+                            >
+                              {t("Reason")} <span style={{ color: "#e53e3e" }}>*</span>
+                            </label>
+                            <textarea
+                              id="movingMarketReason"
+                              name="movingMarketReason"
+                              value={movingMarketReason}
+                              onChange={(e) => setMovingMarketReason(e.target.value)}
+                              placeholder={t("Why is the remaining cocoon moving to another market?")}
+                              rows={2}
+                              required={movingToAnotherMarket}
+                              style={{
+                                width: "100%",
+                                border: "1.5px solid #fbd38d",
+                                borderRadius: "8px",
+                                padding: "8px 12px",
+                                fontSize: "13.5px",
+                                color: "#2d3748",
+                                background: "#ffffff",
+                                resize: "vertical",
+                                outline: "none",
+                              }}
+                            />
+                            <div
+                              style={{
+                                fontSize: "11.5px",
+                                color: "#9c4221",
+                                fontWeight: 600,
+                              }}
+                            >
+                              ℹ {t("Status will be saved as 'distributed' and remaining cocoon will be set to 0.")}
+                            </div>
+                          </div>
+                        </Col>
+                      )}
                       {isRemainingNegative && (
                         <Col lg="12">
                           <div

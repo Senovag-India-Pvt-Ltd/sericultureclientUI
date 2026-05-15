@@ -1138,23 +1138,25 @@ function StakeHolderRegister() {
       });
       return;
     }
-    if (!bank.farmerBankIfscCode || bank.farmerBankIfscCode.length !== 11) {
-      setValidated(true);
-      Swal.fire({
-        icon: "warning",
-        title: "Invalid IFSC Code",
-        text: "Bank IFSC Code must be exactly 11 characters.",
-      });
-      return;
-    }
-    if (bank.farmerBankAccountNumber !== bank.reenterFarmerBankAccountNumber) {
-      setValidated(true);
-      Swal.fire({
-        icon: "warning",
-        title: "Bank Account Number Mismatch",
-        text: "Account Number and Re-enter Account Number do not match.",
-      });
-      return;
+    if (!bank.lock) {
+      if (!bank.farmerBankIfscCode || bank.farmerBankIfscCode.length !== 11) {
+        setValidated(true);
+        Swal.fire({
+          icon: "warning",
+          title: "Invalid IFSC Code",
+          text: "Bank IFSC Code must be exactly 11 characters.",
+        });
+        return;
+      }
+      if (bank.farmerBankAccountNumber !== bank.reenterFarmerBankAccountNumber) {
+        setValidated(true);
+        Swal.fire({
+          icon: "warning",
+          title: "Bank Account Number Mismatch",
+          text: "Account Number and Re-enter Account Number do not match.",
+        });
+        return;
+      }
     }
 
     if (farmerAddressList && farmerAddressList.length > 0) {
