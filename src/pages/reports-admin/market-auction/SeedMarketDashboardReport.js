@@ -60,7 +60,7 @@ const sumTotalQty = (list) =>
 function SeedMarketDashboardReport() {
   const { t } = useTranslation();
 
-  const [auctionDate, setAuctionDate] = useState(null);
+  const [auctionDate, setAuctionDate] = useState(new Date());
   const [dashboardList, setDashboardList] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -110,7 +110,7 @@ function SeedMarketDashboardReport() {
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => { fetchDashboard(auctionDate); }, []);
+  useEffect(() => { fetchDashboard(new Date()); }, []);
 
   const postData = (event) => {
     event.preventDefault();
@@ -118,7 +118,7 @@ function SeedMarketDashboardReport() {
   };
 
   /* ── Split by seedAreaType from backend ── */
-  const pureSeedList  = dashboardList.filter((r) =>
+  const mysoreSeedList  = dashboardList.filter((r) =>
     (r.seedAreaType || "").toLowerCase().includes("mysore")
   );
   const bivoltineList = dashboardList.filter((r) =>
@@ -337,10 +337,6 @@ function SeedMarketDashboardReport() {
               ))}
             </Row>
 
-            {/* ── Date label ── */}
-            <div style={{ marginBottom: "12px", color: "#5d6d7e", fontSize: "0.82rem", fontWeight: 600 }}>
-              📅 {t("Transactions for")}: <span style={{ color: "#1a5276" }}>{formattedDate}</span>
-            </div>
 
             {/* ── Single unified table with both sections ── */}
             <Card style={{ borderRadius: "14px", boxShadow: "0 4px 20px rgba(0,0,0,0.09)", border: "none", overflow: "hidden" }}>
@@ -351,15 +347,15 @@ function SeedMarketDashboardReport() {
                     <tbody>
 
                       {/* Pure Seed Area section */}
-                      {pureSeedList.length > 0 && (
+                      {mysoreSeedList.length > 0 && (
                         <>
                           <tr>
                             <td colSpan={23} style={{ background: "linear-gradient(90deg, #1a5276, #2e86c1)", color: "#fff", fontWeight: 700, padding: "10px 16px", fontSize: "0.88rem" }}>
-                              📋 {t("Pure Seed Area")} &mdash; {pureSeedList.length} {t("Markets")}
+                              📋 {t("Mysore Seed Area")} &mdash; {mysoreSeedList.length} {t("Markets")}
                             </td>
                           </tr>
-                          {pureSeedList.map((row, i) => renderDataRow(row, i))}
-                          {renderSubTotalRow(pureSeedList)}
+                          {mysoreSeedList.map((row, i) => renderDataRow(row, i))}
+                          {renderSubTotalRow(mysoreSeedList)}
                         </>
                       )}
 
