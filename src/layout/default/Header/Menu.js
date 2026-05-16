@@ -6369,6 +6369,78 @@ function Menu() {
                                     to="/seriui/farm-form4-crop-progress-report"
                                   />
                                 </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-1 · Monthly Progress (Form F-2)")}
+                                    to="/seriui/p3-farm-sheet1-monthly-progress-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-3 · Annual Crops Grown")}
+                                    to="/seriui/p3-farm-sheet3-annual-crops-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-4 · Seed Cocoon Production Target (Form 27)")}
+                                    to="/seriui/p3-farm-sheet4-production-target-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-5 · Monthly Crop Report Part 1 (rows 1–14)")}
+                                    to="/seriui/p3-farm-sheet5-crop-report-part1"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-6 · Monthly Feeding & Moult (rows 15–22)")}
+                                    to="/seriui/p3-farm-sheet6-feeding-moulting-report"
+                                  />
+                                </MenuItem>
+                                {/* <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-6 · Annual Feeding & Moult (2nd–5th instar)")}
+                                    to="/seriui/p3-farm-annual-sheet6-report"
+                                  />
+                                </MenuItem> */}
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-7 · Monthly Crop Report Part 3 (rows 23–37)")}
+                                    to="/seriui/p3-farm-sheet7-crop-report-part3"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-9 · Weekly Cocoon Hatching Programme")}
+                                    to="/seriui/p3-farm-sheet9-weekly-hatching-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-10 · Annual Target vs Achievement")}
+                                    to="/seriui/p3-farm-sheet10-annual-target-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-12 · Rearing Section Crop Progress")}
+                                    to="/seriui/p3-farm-sheet12-rearing-progress-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-13 · Garden / Mulberry Performance")}
+                                    to="/seriui/p3-farm-sheet13-mulberry-performance-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Sheet-15 · Chowki Target Achievement (Form F-1)")}
+                                    to="/seriui/p3-farm-sheet15-chowki-target-f1-report"
+                                  />
+                                </MenuItem>
                               </MenuSub>
                             </MenuItem>
 
