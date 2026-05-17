@@ -6370,7 +6370,7 @@ function Menu() {
                                 sub
                               />
                               <MenuSub>
-                                <MenuItem>
+                                {/* <MenuItem>
                                   <MenuItemLink
                                     text={t("Form-1 · Monthly Chawki Achievement")}
                                     to="/seriui/farm-form1-chawki-report"
@@ -6393,7 +6393,7 @@ function Menu() {
                                     text={t("Form-4 · Crop Progress (CY vs PY)")}
                                     to="/seriui/farm-form4-crop-progress-report"
                                   />
-                                </MenuItem>
+                                </MenuItem> */}
                                 <MenuItem>
                                   <MenuItemLink
                                     text={t("Sheet-1 · Monthly Progress (Form F-2)")}
