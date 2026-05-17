@@ -30,6 +30,7 @@ function TraineeDetailsReport() {
   const [isActive, setIsActive] = useState(false);
 
   const [data, setData] = useState({
+    institutionId: "",
     groupId: "",
     programId: "",
     courseId: "",
@@ -45,6 +46,7 @@ function TraineeDetailsReport() {
         {},
         {
           params: {
+            institutionId: data.institutionId || 0,
             groupId: data.groupId || 0,
             programId: data.programId || 0,
             courseId: data.courseId || 0,
@@ -70,7 +72,8 @@ function TraineeDetailsReport() {
         {},
         {
           params: {
-           groupId: data.groupId || 0,
+            institutionId: data.institutionId || 0,
+            groupId: data.groupId || 0,
             programId: data.programId || 0,
             courseId: data.courseId || 0,
             modeId: data.modeId || 0,
@@ -107,6 +110,7 @@ function TraineeDetailsReport() {
         {},
         {
           params: {
+            institutionId: data.institutionId || 0,
             groupId: data.groupId || 0,
             programId: data.programId || 0,
             courseId: data.courseId || 0,
@@ -136,6 +140,24 @@ function TraineeDetailsReport() {
   };
 
   
+  // to get TrInstitution
+  const [trInstitutionListData, setTrInstitutionListData] = useState([]);
+
+  const getTrInstitutionList = () => {
+    api
+      .get(baseURL + `trInstitutionMaster/get-all`)
+      .then((response) => {
+        setTrInstitutionListData(response.data.content.trInstitutionMaster);
+      })
+      .catch((err) => {
+        setTrInstitutionListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getTrInstitutionList();
+  }, []);
+
     // to get TrGroup
   const [trGroupListData, setTrGroupListData] = useState([]);
 
@@ -390,8 +412,8 @@ function TraineeDetailsReport() {
     },
      {
       name: "District",
-      selector: (row) => row.place,
-      cell: (row) => <span>{row.place}</span>,
+      selector: (row) => row.districtName,
+      cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
@@ -463,6 +485,31 @@ function TraineeDetailsReport() {
             </Col> */}
 
             
+
+               <Col sm={2}>
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>
+                      {t("Training Institution")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="institutionId"
+                        value={data.institutionId}
+                        onChange={handleInputs}
+                      >
+                        <option value="">{t("Select Institution")}</option>
+                        {trInstitutionListData.map((list) => (
+                          <option
+                            key={list.trInstitutionMasterId}
+                            value={list.trInstitutionMasterId}
+                          >
+                            {list.trInstitutionMasterName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </div>
+                  </Form.Group>
+                </Col>
 
                <Col sm={2}>
                   <Form.Group className="form-group mt-n4">
