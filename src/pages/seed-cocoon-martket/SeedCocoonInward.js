@@ -544,6 +544,7 @@ const getIdList = (farmerId) => {
             spunFromDate: singleLot.spunFromDate,
             spunToDate: singleLot.spunToDate,
             fruitsId: singleLot.fruitsId,
+            saleAndDisposalId: singleLot.saleAndDisposalId || "",
           }));
         } else {
           // Multiple entries - wait for user to input
@@ -871,6 +872,12 @@ const getIdList = (farmerId) => {
               openWindows.push(promise);
             }
             await Promise.all(openWindows); // Wait for all bidding slips to be generated
+          }
+
+          // Lock the SaleAndDisposalOfDfls record so FitnessCertificateEdit and CropInspectionEdit show the E-Inward Done badge
+          if (data.saleAndDisposalId) {
+            api.post(`${baseURLChawki}cropInspection/markAsDisposed?saleAndDisposalId=${data.saleAndDisposalId}`)
+              .catch(() => {});
           }
 
           // Pass the alloted lot list, big bin list, and small bin list to saveSuccess
@@ -2270,6 +2277,7 @@ const getIdList = (farmerId) => {
                             lotVariety: matchedLot.raceOfDfls,
                             spunFromDate: matchedLot.spunFromDate,
                             spunToDate: matchedLot.spunToDate,
+                            saleAndDisposalId: matchedLot.saleAndDisposalId || "",
                           }));
                         } else {
                           setData((prev) => ({
@@ -2279,6 +2287,7 @@ const getIdList = (farmerId) => {
                             lotVariety: "",
                             spunFromDate: "",
                             spunToDate: "",
+                            saleAndDisposalId: "",
                           }));
                         }
                       }}

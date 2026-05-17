@@ -33,6 +33,7 @@ const [dataLotList, setDataLotList] = useState([]);
     lotParentLevel: "",
     externalUnitId: "",
     fruitsId: "",
+    qtyNos: "",
   });
 
   const [auctionDate,setAuctionDate] = useState(new Date());
@@ -53,6 +54,7 @@ const [dataLotList, setDataLotList] = useState([]);
     lotParentLevel: "",
     externalUnitId: "",
      fruitsId: "",
+    qtyNos: "",
   });
   setBalanceError(false);
   setPurposeForRejection(false);
@@ -184,6 +186,7 @@ const handleDateChange = (date) => {
       lotParentLevel: "",
       externalUnitId: "",
        fruitsId: "",
+      qtyNos: "",
       // Keep the amount (price) if it's already set
       amount: prevData.amount,
     }));
@@ -261,6 +264,7 @@ const handleUpdateLotDetails = (e, i, changes) => {
       lotParentLevel: "",
       externalUnitId: "",
        fruitsId: "",
+      qtyNos: "",
     });
   }
 };
@@ -788,6 +792,7 @@ const hasRemaining = remainingQty > 0;
             marketId: localStorage.getItem("marketId"),
             godownId: localStorage.getItem("godownId"),
             purposeForRejection: purposeForRejectionFlag,
+            qtyNos: item.qtyNos,
             movingToAnotherMarket: movingToAnotherMarketFlag,
             movingMarketReason: movingToAnotherMarketFlag ? trimmedMovingMarketReason : null,
           }))
@@ -867,6 +872,7 @@ const hasRemaining = remainingQty > 0;
                 averageYield: "",
                 externalUnitId: "",
                 fruitsId: "",
+                qtyNos: "",
               });
               clear();
               setValidated(false);
@@ -1127,6 +1133,7 @@ const hasRemaining = remainingQty > 0;
         averageYield: "",
         externalUnitId: "",
         fruitsId: "",
+        qtyNos: "",
     });
   setFarmerDetails({
     farmerFirstName:"",
@@ -1930,6 +1937,7 @@ const handlePurchaseModeChange = (e) => {
                               { label: t("Buyer Type"), align: "left" },
                               { label: t("License Number/Address/Grainage/Name"), align: "left" },
                               { label: t("Quantity of Cocoons(In Kgs)"), align: "right" },
+                              { label: t("Qty (Nos)"), align: "right" },
                               { label: t("Rate per Kg"), align: "right" },
                               { label: t("Total Amount"), align: "right" },
                               { label: t("Invoice Number"), align: "left" },
@@ -1962,6 +1970,7 @@ const handlePurchaseModeChange = (e) => {
                               </td>
                               <td style={{ padding: "10px 14px", color: "#4a5568" }}>{item.buyerName}</td>
                               <td style={{ padding: "10px 14px", color: "#2d3748", fontWeight: 600, textAlign: "right" }}>{item.lotWeight}</td>
+                              <td style={{ padding: "10px 14px", color: "#2d3748", textAlign: "right" }}>{item.qtyNos || "—"}</td>
                               <td style={{ padding: "10px 14px", color: "#2d3748", textAlign: "right" }}>{item.amount}</td>
                               <td style={{ padding: "10px 14px", color: "#276749", fontWeight: 700, textAlign: "right" }}>{item.soldAmount}</td>
                               <td style={{ padding: "10px 14px", color: item.invoiceNumber ? "#1e67a8" : "#a0aec0", fontWeight: item.invoiceNumber ? 600 : 400 }}>{item.invoiceNumber || "—"}</td>
@@ -2472,6 +2481,24 @@ const handlePurchaseModeChange = (e) => {
           {/* </>
         )} */}
 
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="qtyNos">
+                        {t("Qty (Nos)")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="qtyNos"
+                          name="qtyNos"
+                          value={data.qtyNos}
+                          onChange={handleInputs}
+                          type="number"
+                          placeholder={t("Enter Qty (Nos)")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
                 <Col lg="12">
                 <div className="d-flex gap g-2 justify-content-center">
                   <div className="gap-col">
@@ -2940,6 +2967,24 @@ const handlePurchaseModeChange = (e) => {
             </Col>
           {/* </>
         )} */}
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="qtyNos">
+                        {t("Qty (Nos)")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="qtyNos"
+                          name="qtyNos"
+                          value={data.qtyNos}
+                          onChange={handleInputs}
+                          type="number"
+                          placeholder={t("Enter Qty (Nos)")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
 
                 <Col lg="12">
                 <div className="d-flex gap g-2 justify-content-center">

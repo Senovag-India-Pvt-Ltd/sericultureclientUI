@@ -271,6 +271,9 @@ function Menu() {
     Market_SeedCocoonMarket_Base_Price_Fixation: false,
     Market_SeedCocoonMarket_Lot_Wise_Price_Fixation: false,
     Market_SeedCocoonMarket_Pupa_Test_Cocoon_Assessment_Page: false,
+        Market_Crop_Inspection_Edit: false,
+            Market_Fitness_Edit: false,
+
 
     Market_SeedCocoonMarket_Payment: false,
     Market_SeedCocoonMarket_Ready_For_Payment: false,
@@ -2470,6 +2473,28 @@ function Menu() {
                             "Invoice, Permit, Cash Receipt, Market Receipt"
                           )}
                           to="/seriui/invoice-permit-market-receipt"
+                        />
+                      </MenuItem>
+                    ) : null}
+
+                    {showMenu.Market_Fitness_Edit ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t(
+                            "Fitness Certificate Edit"
+                          )}
+                          to="/seriui/fitness-certificate-edit"
+                        />
+                      </MenuItem>
+                    ) : null}
+
+                    {showMenu.Market_Crop_Inspection_Edit ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t(
+                            "Crop Inspection Certificate Edit"
+                          )}
+                          to="/seriui/crop-inspection-edit"
                         />
                       </MenuItem>
                     ) : null}

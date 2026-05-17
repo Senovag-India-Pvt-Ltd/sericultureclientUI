@@ -30,6 +30,11 @@ function CropInspectionEdit() {
   // Edit form
   const [editData, setEditData] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [cropInspectionImageUrl, setCropInspectionImageUrl] = useState(null);
+  const [cropFileType, setCropFileType] = useState(null);
+  const [newImageFile, setNewImageFile] = useState(null);
+  const [newImagePreviewUrl, setNewImagePreviewUrl] = useState(null);
+  const [imageLoading, setImageLoading] = useState(false);
 
   // Dropdown lists
   const [raceList, setRaceList] = useState([]);
@@ -73,6 +78,7 @@ function CropInspectionEdit() {
     setFarmerDetails(null);
     setInspectionList([]);
     setEditData(null);
+    clearImageState();
     setSearchLoading(true);
 
     api
@@ -119,6 +125,56 @@ function CropInspectionEdit() {
       });
   };
 
+  const guessTypeFromPath = (path) => {
+    const ext = (path || "").split(".").pop().toLowerCase();
+    if (["jpg", "jpeg"].includes(ext)) return "image/jpeg";
+    if (ext === "png") return "image/png";
+    if (ext === "gif") return "image/gif";
+    if (ext === "pdf") return "application/pdf";
+    return "image/jpeg";
+  };
+
+  const fetchCropImage = async (path) => {
+    if (!path) { setCropInspectionImageUrl(null); setCropFileType(null); setImageLoading(false); return; }
+    setImageLoading(true);
+    const url = `${baseURL}v1/api/s3/download?fileName=${encodeURIComponent(path)}`;
+    console.log('[CropInspectionEdit] Fetching image from:', url);
+    try {
+      const response = await api.get(url, { responseType: "arraybuffer" });
+      const serverType = response.headers["content-type"] || "";
+      const resolvedType =
+        serverType && serverType !== "application/octet-stream"
+          ? serverType
+          : guessTypeFromPath(path);
+      const blob = new Blob([response.data], { type: resolvedType });
+      setCropInspectionImageUrl(URL.createObjectURL(blob));
+      setCropFileType(resolvedType);
+    } catch (err) {
+      console.error('[CropInspectionEdit] Image fetch failed:', err?.response?.status, err?.message);
+      setCropInspectionImageUrl(null);
+      setCropFileType(null);
+    } finally {
+      setImageLoading(false);
+    }
+  };
+
+  const getFileName = (path) => path ? path.split("/").pop().split("\\").pop() : "";
+
+  const clearImageState = () => {
+    setCropInspectionImageUrl(null);
+    setCropFileType(null);
+    setNewImageFile(null);
+    setNewImagePreviewUrl(null);
+    setImageLoading(false);
+  };
+
+  const handleNewImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setNewImageFile(file);
+    setNewImagePreviewUrl(URL.createObjectURL(file));
+  };
+
   const loadInspectionList = (farmerId) => {
     setListLoading(true);
     api
@@ -134,10 +190,13 @@ function CropInspectionEdit() {
   };
 
   const handleEditClick = (row) => {
+    console.log('[CropInspectionEdit] row data from API:', row);
+    console.log('[CropInspectionEdit] cropInspectionPath:', row.cropInspectionPath);
     const matchedGrainage = grainageList.find(g => g.grainageMasterName === row.grainageName);
     const matchedCropStatus = cropStatusList.find(c => c.name === row.cropStatusName);
     setEditData({
-      cropInspectionId: row.fitnessCertificateId,
+      cropInspectionId: row.cropInspectionId,
+      saleAndDisposalId: row.saleAndDisposalId ?? "",
       farmerId: row.farmerId ?? farmerDetails?.farmerId ?? "",
       fruitsId: row.fruitsId || "",
       cropInspectionPath: row.cropInspectionPath || "",
@@ -148,10 +207,9 @@ function CropInspectionEdit() {
       lotNumberRsp: row.lotNumberRsp || "",
       dflsSource: row.dflsSource || "",
       dateOfBrushing: row.dateOfBrushing ? row.dateOfBrushing.substring(0, 10) : "",
-      spunFromDate: row.spunFromDate ? row.spunFromDate.substring(0, 10) : "",
-      spunToDate: row.spunToDate ? row.spunToDate.substring(0, 10) : "",
       note: row.note || "",
     });
+    fetchCropImage(row.cropInspectionPath);
     setTimeout(() => editFormRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
   };
 
@@ -160,11 +218,12 @@ function CropInspectionEdit() {
     setEditData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const saveEdit = () => {
+  const saveEdit = async () => {
     setSaving(true);
-    api
-      .post(`${baseURL}cropInspection/editCropInspectionDetails`, {
+    try {
+      const response = await api.post(`${baseURL}cropInspection/editCropInspectionDetails`, {
         cropInspectionId: editData.cropInspectionId,
+        saleAndDisposalId: editData.saleAndDisposalId || null,
         farmerId: editData.farmerId,
         fruitsId: editData.fruitsId,
         cropInspectionPath: editData.cropInspectionPath,
@@ -176,24 +235,33 @@ function CropInspectionEdit() {
         lotNumberRsp: editData.lotNumberRsp,
         dflsSource: editData.dflsSource,
         dateOfBrushing: editData.dateOfBrushing,
-        spunFromDate: editData.spunFromDate,
-        spunToDate: editData.spunToDate,
-      })
-      .then((response) => {
-        setSaving(false);
-        if (response.data.content?.error) {
-          Swal.fire({ icon: "error", title: "Update failed", text: response.data.content.error_description || "Something went wrong!" });
-        } else {
-          Swal.fire({ icon: "success", title: "Updated successfully" }).then(() => {
-            setEditData(null);
-            if (farmerDetails?.farmerId) loadInspectionList(farmerDetails.farmerId);
-          });
-        }
-      })
-      .catch(() => {
-        setSaving(false);
-        Swal.fire({ icon: "error", title: "Update attempt was not successful", text: "Something went wrong!" });
       });
+
+      if (response.data.content?.error) {
+        Swal.fire({ icon: "error", title: "Update failed", text: response.data.content.error_description || "Something went wrong!" });
+        setSaving(false);
+        return;
+      }
+
+      if (newImageFile) {
+        const formData = new FormData();
+        formData.append("multipartFile", newImageFile);
+        formData.append("cropInspectionId", editData.cropInspectionId);
+        await api.post(`${baseURL}cropInspection/upload-crop-inspection`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      }
+
+      setSaving(false);
+      Swal.fire({ icon: "success", title: "Updated successfully" }).then(() => {
+        setEditData(null);
+        clearImageState();
+        if (farmerDetails?.farmerId) loadInspectionList(farmerDetails.farmerId);
+      });
+    } catch {
+      setSaving(false);
+      Swal.fire({ icon: "error", title: "Update attempt was not successful", text: "Something went wrong!" });
+    }
   };
 
   const labelStyle = { fontWeight: 600, color: "#444", fontSize: "0.875rem" };
@@ -338,17 +406,17 @@ function CropInspectionEdit() {
                         <th style={{ padding: "12px 16px", color: "#1e67a8", fontWeight: 700 }}>{t("Grainage")}</th>
                         <th style={{ padding: "12px 16px", color: "#1e67a8", fontWeight: 700 }}>{t("Spun From")}</th>
                         <th style={{ padding: "12px 16px", color: "#1e67a8", fontWeight: 700 }}>{t("Lot No")}</th>
-                        <th style={{ padding: "12px 16px", color: "#1e67a8", fontWeight: 700 }}>{t("Crop Inspection Path")}</th>
+                        <th style={{ padding: "12px 16px", color: "#1e67a8", fontWeight: 700 }}>{t("Photo")}</th>
                         <th style={{ padding: "12px 16px", color: "#1e67a8", fontWeight: 700, textAlign: "center" }}>{t("Action")}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {inspectionList.map((row, index) => (
                         <tr
-                          key={row.fitnessCertificateId}
+                          key={row.cropInspectionId}
                           style={{
                             borderBottom: "1px solid #f0f0f0",
-                            background: editData?.cropInspectionId === row.fitnessCertificateId ? "#e8f0fe" : "white",
+                            background: editData?.cropInspectionId === row.cropInspectionId ? "#e8f0fe" : "white",
                           }}
                         >
                           <td style={{ padding: "11px 16px", color: "#888" }}>{index + 1}</td>
@@ -357,15 +425,21 @@ function CropInspectionEdit() {
                           <td style={{ padding: "11px 16px" }}>{row.grainageName || "—"}</td>
                           <td style={{ padding: "11px 16px" }}>{row.spunFromDate ? row.spunFromDate.substring(0, 10) : "—"}</td>
                           <td style={{ padding: "11px 16px" }}>{row.lotNumberRsp || "—"}</td>
-                          <td style={{ padding: "11px 16px", maxWidth: "160px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{row.cropInspectionPath || "—"}</td>
+                          <td style={{ padding: "11px 16px", textAlign: "center" }}>{row.cropInspectionPath ? "📷" : "—"}</td>
                           <td style={{ padding: "10px 16px", textAlign: "center" }}>
-                            <Button
-                              size="sm"
-                              onClick={() => handleEditClick(row)}
-                              style={{ background: "linear-gradient(135deg, #f59e0b, #d97706)", border: "none", borderRadius: "6px", padding: "4px 14px", fontSize: "0.78rem", fontWeight: 600 }}
-                            >
-                              ✏️ {t("Edit")}
-                            </Button>
+                            {row.isDisposed === 1 ? (
+                              <span style={{ background: "#fee2e2", color: "#dc2626", borderRadius: "6px", padding: "4px 10px", fontSize: "0.75rem", fontWeight: 600 }}>
+                                🔒 {t("E-Inward Done")}
+                              </span>
+                            ) : (
+                              <Button
+                                size="sm"
+                                onClick={() => handleEditClick(row)}
+                                style={{ background: "linear-gradient(135deg, #f59e0b, #d97706)", border: "none", borderRadius: "6px", padding: "4px 14px", fontSize: "0.78rem", fontWeight: 600 }}
+                              >
+                                ✏️ {t("Edit")}
+                              </Button>
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -387,7 +461,7 @@ function CropInspectionEdit() {
               <span style={{ color: "white", fontWeight: 700, fontSize: "1rem" }}>✏️ {t("Edit Crop Inspection")}</span>
               <button
                 type="button"
-                onClick={() => setEditData(null)}
+                onClick={() => { setEditData(null); setCropInspectionImageUrl(null); }}
                 style={{ background: "rgba(255,255,255,0.2)", border: "none", borderRadius: "6px", color: "white", padding: "4px 12px", cursor: "pointer", fontSize: "0.8rem" }}
               >
                 ✕ {t("Close")}
@@ -448,7 +522,7 @@ function CropInspectionEdit() {
                 <Col lg={4} md={6}>
                   <Form.Group>
                     <Form.Label style={labelStyle}>{t("Lot No")}</Form.Label>
-                    <Form.Control name="lotNumberRsp" value={editData.lotNumberRsp} onChange={handleEditInput} type="text" placeholder={t("Enter Lot No")} style={inputStyle} />
+                    <Form.Control name="lotNumberRsp" value={editData.lotNumberRsp} readOnly disabled style={readOnlyStyle} />
                   </Form.Group>
                 </Col>
 
@@ -466,24 +540,110 @@ function CropInspectionEdit() {
                   </Form.Group>
                 </Col>
 
-                <Col lg={4} md={6}>
+                <Col lg={12}>
                   <Form.Group>
-                    <Form.Label style={labelStyle}>{t("Spun From Date")}</Form.Label>
-                    <Form.Control name="spunFromDate" value={editData.spunFromDate} onChange={handleEditInput} type="date" style={inputStyle} />
-                  </Form.Group>
-                </Col>
+                    <Form.Label style={labelStyle}>{t("Crop Inspection Photo")}</Form.Label>
+                    <div style={{ marginTop: "10px", display: "flex", gap: "20px", flexWrap: "wrap", alignItems: "flex-start" }}>
 
-                <Col lg={4} md={6}>
-                  <Form.Group>
-                    <Form.Label style={labelStyle}>{t("Spun To Date")}</Form.Label>
-                    <Form.Control name="spunToDate" value={editData.spunToDate} onChange={handleEditInput} type="date" style={inputStyle} />
-                  </Form.Group>
-                </Col>
+                      {/* ── Existing Photo Display (always visible) ── */}
+                      <div style={{ flex: "0 0 auto", width: "260px" }}>
+                        <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#1e67a8", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "8px" }}>
+                          {t("Existing Photo")}
+                        </div>
+                        <div style={{
+                          width: "260px", height: "200px", borderRadius: "12px",
+                          border: "2px dashed #b0c8e8", background: "#f0f6ff",
+                          overflow: "hidden", position: "relative",
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                        }}>
+                          {/* Loading */}
+                          {imageLoading && (
+                            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", color: "#94a3b8", fontSize: "0.8rem" }}>
+                              <span className="spinner-border spinner-border-sm text-primary" />
+                              <span>{t("Loading...")}</span>
+                            </div>
+                          )}
+                          {/* Existing image loaded */}
+                          {!imageLoading && cropInspectionImageUrl && cropFileType?.startsWith("image/") && (
+                            <img src={cropInspectionImageUrl} alt="Crop Inspection" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                          )}
+                          {/* Existing PDF */}
+                          {!imageLoading && cropInspectionImageUrl && cropFileType === "application/pdf" && (
+                            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", padding: "16px" }}>
+                              <span style={{ fontSize: "2.5rem" }}>📄</span>
+                              <span style={{ fontSize: "0.75rem", color: "#c2410c", fontWeight: 700, textAlign: "center", wordBreak: "break-all" }}>{getFileName(editData.cropInspectionPath)}</span>
+                              <a href={cropInspectionImageUrl} target="_blank" rel="noreferrer" style={{ fontSize: "0.78rem", color: "#1e67a8", fontWeight: 600 }}>View PDF →</a>
+                            </div>
+                          )}
+                          {/* No photo yet */}
+                          {!imageLoading && !cropInspectionImageUrl && (
+                            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", color: "#94a3b8" }}>
+                              <span style={{ fontSize: "2.5rem" }}>🖼️</span>
+                              <span style={{ fontSize: "0.78rem", textAlign: "center" }}>{t("No photo uploaded yet")}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
 
-                <Col lg={4} md={6}>
-                  <Form.Group>
-                    <Form.Label style={labelStyle}>{t("Crop Inspection Path")}</Form.Label>
-                    <Form.Control name="cropInspectionPath" value={editData.cropInspectionPath} readOnly disabled style={readOnlyStyle} />
+                      {/* ── Upload New Photo ── */}
+                      <div style={{ flex: "1 1 220px" }}>
+                        <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#1e67a8", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "8px" }}>
+                          {t("Upload New Photo")}
+                        </div>
+
+                        {/* New file preview */}
+                        {newImageFile && (
+                          <div style={{
+                            width: "260px", height: "200px", borderRadius: "12px",
+                            border: "2px solid #1e67a8", background: "#f0f6ff",
+                            overflow: "hidden", position: "relative",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            marginBottom: "10px",
+                          }}>
+                            <div style={{ position: "absolute", top: "8px", left: "8px", zIndex: 2, background: "#1e67a8", color: "#fff", borderRadius: "5px", padding: "2px 8px", fontSize: "0.68rem", fontWeight: 700 }}>NEW</div>
+                            {newImageFile.type.startsWith("image/") ? (
+                              <img src={newImagePreviewUrl} alt="New" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                            ) : (
+                              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", padding: "16px" }}>
+                                <span style={{ fontSize: "2.5rem" }}>📄</span>
+                                <span style={{ fontSize: "0.75rem", color: "#1e67a8", fontWeight: 700, textAlign: "center", wordBreak: "break-all" }}>{newImageFile.name}</span>
+                                <span style={{ fontSize: "0.7rem", color: "#64748b" }}>Ready to upload on Save</span>
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Upload button */}
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+                          <label
+                            htmlFor="cropFileInput"
+                            style={{
+                              display: "inline-flex", alignItems: "center", gap: "8px",
+                              background: "linear-gradient(135deg, #1e67a8, #2d9cdb)",
+                              color: "#fff", borderRadius: "8px", padding: "8px 20px",
+                              fontSize: "0.85rem", fontWeight: 700, cursor: "pointer",
+                              boxShadow: "0 2px 8px rgba(30,103,168,0.25)", userSelect: "none",
+                            }}
+                          >
+                            📷 {newImageFile ? t("Change Photo") : t("Upload Photo")}
+                          </label>
+                          <input id="cropFileInput" type="file" accept="image/*,application/pdf" onChange={handleNewImageChange} style={{ display: "none" }} />
+                          {newImageFile && (
+                            <button
+                              type="button"
+                              onClick={() => { setNewImageFile(null); setNewImagePreviewUrl(null); }}
+                              style={{ background: "#fee2e2", border: "none", borderRadius: "6px", color: "#dc2626", padding: "6px 14px", fontSize: "0.8rem", cursor: "pointer", fontWeight: 600 }}
+                            >
+                              ✕ {t("Remove")}
+                            </button>
+                          )}
+                        </div>
+                        {newImageFile && (
+                          <div style={{ marginTop: "6px", fontSize: "0.78rem", color: "#16a34a", fontWeight: 600 }}>✓ {newImageFile.name}</div>
+                        )}
+                      </div>
+
+                    </div>
                   </Form.Group>
                 </Col>
 
@@ -506,7 +666,7 @@ function CropInspectionEdit() {
               </Button>
               <Button
                 type="button"
-                onClick={() => setEditData(null)}
+                onClick={() => { setEditData(null); setCropInspectionImageUrl(null); }}
                 style={{ background: "#f1f3f5", border: "none", borderRadius: "8px", padding: "9px 28px", fontWeight: 600, fontSize: "0.9rem", color: "#555" }}
               >
                 {t("Cancel")}

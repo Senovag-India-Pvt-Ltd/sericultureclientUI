@@ -118,7 +118,7 @@ function SeedMarketDashboardReport() {
   };
 
   /* ── Split by seedAreaType from backend ── */
-  const pureSeedList  = dashboardList.filter((r) =>
+  const mysoreSeedList  = dashboardList.filter((r) =>
     (r.seedAreaType || "").toLowerCase().includes("mysore")
   );
   const bivoltineList = dashboardList.filter((r) =>
@@ -347,15 +347,15 @@ function SeedMarketDashboardReport() {
                     <tbody>
 
                       {/* Pure Seed Area section */}
-                      {pureSeedList.length > 0 && (
+                      {mysoreSeedList.length > 0 && (
                         <>
                           <tr>
                             <td colSpan={23} style={{ background: "linear-gradient(90deg, #1a5276, #2e86c1)", color: "#fff", fontWeight: 700, padding: "10px 16px", fontSize: "0.88rem" }}>
-                              📋 {t("Pure Seed Area")} &mdash; {pureSeedList.length} {t("Markets")}
+                              📋 {t("Mysore Seed Area")} &mdash; {mysoreSeedList.length} {t("Markets")}
                             </td>
                           </tr>
-                          {pureSeedList.map((row, i) => renderDataRow(row, i))}
-                          {renderSubTotalRow(pureSeedList)}
+                          {mysoreSeedList.map((row, i) => renderDataRow(row, i))}
+                          {renderSubTotalRow(mysoreSeedList)}
                         </>
                       )}
 
