@@ -519,12 +519,20 @@ const editRemainingCocoonWeight = remainingCocoonWeight + Number(dataLotList[lot
 const isEditDisabled = Number(data.lotWeight || 0) > Number(editRemainingCocoonWeight);
 
 // === Rejection-related derived values ===
-// Total weighed-in quantity for this lot
-const lotWeightAfterWeighmentVal = Number(farmerdetails?.lotWeightAfterWeighment || 0);
+// Total weighed-in quantity for this lot. Round to 2 decimals at the source so
+// display, pills, and the "distributed <= weighment" guard all use the same value.
+// (DB may store e.g. 9.39999 — UI shows 9.40 — without rounding here, distributing
+// exactly 9.40 would fail validation against the un-rounded 9.39999.)
+const lotWeightAfterWeighmentVal = Number(
+  Number(farmerdetails?.lotWeightAfterWeighment || 0).toFixed(2)
+);
 
-// Sum of distributed quantity across all rows added to the buyers list
+// Sum of distributed quantity across all rows added to the buyers list.
+// Round to 2 decimals to neutralise floating-point drift (0.1+0.1+0.1 = 0.30000000000000004).
 const distributedQuantity = useMemo(
-  () => (dataLotList || []).reduce((sum, item) => sum + Number(item.lotWeight || 0), 0),
+  () => Number(
+    (dataLotList || []).reduce((sum, item) => sum + Number(item.lotWeight || 0), 0).toFixed(2)
+  ),
   [dataLotList]
 );
 
