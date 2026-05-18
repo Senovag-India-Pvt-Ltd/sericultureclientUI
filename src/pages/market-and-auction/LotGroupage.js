@@ -504,13 +504,18 @@ const handleUpdateLotDetails = (e, i, changes) => {
 
   
   const [totalLotWeight, setTotalLotWeight] = useState(0);
-  // const remainingCocoonWeight = farmerdetails.netWeight - (data.lotWeight || 0);
-  // const remainingCocoonWeight = farmerdetails.netWeight - totalLotWeight;
-  // Conditionally update remainingCocoonWeight based on totalLotWeight
-const remainingCocoonWeight =
-  totalLotWeight > 0
-    ? Number(farmerdetails?.netWeight || 0) - Number(totalLotWeight || 0)
-    : Number(farmerdetails?.netWeight || 0);
+  // Round to 2 decimals at the source so the Add-button cap matches what the user sees.
+  // DB sometimes stores e.g. 19.39999 while UI displays 19.40 — without rounding here,
+  // typing 9.40 into the buyer field when 10 is already distributed gets blocked because
+  // 9.40 > (19.39999 - 10). Production hits this; local data is usually clean and didn't.
+  const netWeightRounded = Number(Number(farmerdetails?.netWeight || 0).toFixed(2));
+  const totalLotWeightRounded = Number(Number(totalLotWeight || 0).toFixed(2));
+  const remainingCocoonWeight = Number(
+    (totalLotWeightRounded > 0
+      ? netWeightRounded - totalLotWeightRounded
+      : netWeightRounded
+    ).toFixed(2)
+  );
 
 // Format only for display (ensure it's a number first)
 const formattedRemainingCocoonWeight = Number(remainingCocoonWeight).toFixed(2);
@@ -519,7 +524,9 @@ const formattedRemainingCocoonWeight = Number(remainingCocoonWeight).toFixed(2);
 const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight);
 
 // When editing, add back the original lot's weight so its own weight doesn't count against remaining
-const editRemainingCocoonWeight = remainingCocoonWeight + Number(dataLotList[lotId]?.lotWeight || 0);
+const editRemainingCocoonWeight = Number(
+  (remainingCocoonWeight + Number(Number(dataLotList[lotId]?.lotWeight || 0).toFixed(2))).toFixed(2)
+);
 const isEditDisabled = Number(data.lotWeight || 0) > Number(editRemainingCocoonWeight);
 
 // === Rejection-related derived values ===
