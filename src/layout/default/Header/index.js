@@ -244,27 +244,55 @@ function Header({ show, ...props }) {
   return (
     <>
       <div className={compClass}>
-        <div style={{ padding: "14px 10px 14px 20px" }}>
+        <div
+          style={{
+            padding: "16px 16px 16px 24px",
+            background: "linear-gradient(135deg, #ffffff 0%, #f4f8fd 100%)",
+            borderBottom: "1px solid #e3ecf7",
+            boxShadow: "0 2px 8px rgba(15, 76, 138, 0.05)",
+          }}
+        >
           <div className="d-flex align-items-center">
-            <img
-              // src="../images/logo/KG.png"
-              src={process.env.PUBLIC_URL + "/images/logo/KG.png"}
-              alt="Government of Karnataka"
-              style={{ height: 35, width: 35 }}
-            />
+            <div
+              style={{
+                background: "#ffffff",
+                padding: "4px",
+                borderRadius: "50%",
+                boxShadow: "0 2px 6px rgba(15, 76, 138, 0.15)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <img
+                src={process.env.PUBLIC_URL + "/images/logo/KG.png"}
+                alt="Government of Karnataka"
+                style={{ height: 38, width: 38 }}
+              />
+            </div>
             <div
               className="ms-3"
               style={{
-                paddingLeft: "10px",
-                fontWeight: "bold",
+                paddingLeft: "12px",
+                fontWeight: 700,
                 fontSize: "18px",
+                color: "#0f3060",
+                lineHeight: "1.2",
+                letterSpacing: "0.2px",
               }}
             >
-              <div>{t("logoTitle1")}</div>
-
-              {/* <div>Department of Sericulture</div> */}
-
-              <div style={{ marginTop: "-7px" }}>{t("logoTitle2")}</div>
+              <div style={{ fontSize: "19px", color: "#0f3060" }}>{t("logoTitle1")}</div>
+              <div
+                style={{
+                  marginTop: "2px",
+                  fontSize: "13.5px",
+                  fontWeight: 500,
+                  color: "#5a7299",
+                  letterSpacing: "0.3px",
+                }}
+              >
+                {t("logoTitle2")}
+              </div>
             </div>
 
             <div style={{ marginLeft: auto }}>
@@ -380,62 +408,168 @@ function Header({ show, ...props }) {
                   </div>
                 </QuickNavItem> */}
                 <QuickNavItem>
-                    <div
-                      className="d-flex align-items-center me-4"
-                      style={{ cursor: "pointer" }}
-                      onClick={handleBellClick}
-                    >
-                      <Icon
-                        name="bell-fill"
-                        // className={pendingActivities?.length > 0 ? "bell-alert" : ""}
-                        className={`bi bi-bell-fill ${
-                          pendingReelers.length > 0 || reelerLots.length > 0
-                            ? "bell-alert"
-                            : ""
-                        }`}
-                        style={{
-                          color: "#ffcc00",
-                          fontSize: "32px",
-                          marginRight: "6px",
-                        }}
-                      ></Icon>
-                      <span
-                        className="fw-bold"
-                        style={{
-                          color: "#333",
-                          fontSize: "16px",
-                        }}
-                      >
-                        Pending Activities
-                      </span>
-                    </div>
+                    {(() => {
+                      const pendingCount =
+                        (pendingReelers?.length || 0) + (reelerLots?.length || 0);
+                      const hasPending = pendingCount > 0;
+                      return (
+                        <div
+                          className="d-flex align-items-center me-3"
+                          style={{
+                            cursor: "pointer",
+                            background: hasPending
+                              ? "linear-gradient(135deg, #fff4cc 0%, #ffe089 60%, #ffd166 100%)"
+                              : "linear-gradient(135deg, #fffaf0 0%, #fff3d6 100%)",
+                            border: "1px solid",
+                            borderColor: hasPending ? "#f4b400" : "#ffe082",
+                            borderRadius: "999px",
+                            padding: "5px 16px 5px 5px",
+                            boxShadow: hasPending
+                              ? "0 4px 14px rgba(244, 180, 0, 0.32), inset 0 1px 0 rgba(255,255,255,0.55)"
+                              : "0 2px 8px rgba(255, 193, 7, 0.18), inset 0 1px 0 rgba(255,255,255,0.55)",
+                            transition: "transform 0.18s ease, box-shadow 0.18s ease",
+                            position: "relative",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = "translateY(-2px) scale(1.02)";
+                            e.currentTarget.style.boxShadow = hasPending
+                              ? "0 8px 20px rgba(244, 180, 0, 0.42), inset 0 1px 0 rgba(255,255,255,0.65)"
+                              : "0 6px 16px rgba(255, 193, 7, 0.28), inset 0 1px 0 rgba(255,255,255,0.65)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = "translateY(0) scale(1)";
+                            e.currentTarget.style.boxShadow = hasPending
+                              ? "0 4px 14px rgba(244, 180, 0, 0.32), inset 0 1px 0 rgba(255,255,255,0.55)"
+                              : "0 2px 8px rgba(255, 193, 7, 0.18), inset 0 1px 0 rgba(255,255,255,0.55)";
+                          }}
+                          onClick={handleBellClick}
+                        >
+                          <span
+                            style={{
+                              width: "32px",
+                              height: "32px",
+                              borderRadius: "50%",
+                              background:
+                                "linear-gradient(135deg, #ffffff 0%, #fff4cc 100%)",
+                              boxShadow:
+                                "0 2px 6px rgba(184, 122, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.8)",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              marginRight: "10px",
+                              position: "relative",
+                              flexShrink: 0,
+                            }}
+                          >
+                            <Icon
+                              name="bell-fill"
+                              className={`bi bi-bell-fill ${
+                                hasPending ? "bell-alert" : ""
+                              }`}
+                              style={{
+                                color: "#d18a00",
+                                fontSize: "16px",
+                                transformOrigin: "top center",
+                              }}
+                            ></Icon>
+                            {hasPending && (
+                              <span
+                                style={{
+                                  position: "absolute",
+                                  top: "-4px",
+                                  right: "-4px",
+                                  minWidth: "18px",
+                                  height: "18px",
+                                  padding: "0 5px",
+                                  borderRadius: "999px",
+                                  background:
+                                    "linear-gradient(135deg, #ff5252 0%, #c62828 100%)",
+                                  color: "#ffffff",
+                                  fontSize: "10px",
+                                  fontWeight: 700,
+                                  display: "inline-flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  border: "2px solid #ffffff",
+                                  boxShadow: "0 2px 4px rgba(198, 40, 40, 0.35)",
+                                  lineHeight: 1,
+                                }}
+                              >
+                                {pendingCount > 99 ? "99+" : pendingCount}
+                              </span>
+                            )}
+                          </span>
+                          <span
+                            style={{
+                              color: "#7a4f00",
+                              fontSize: "13.5px",
+                              fontWeight: 700,
+                              letterSpacing: "0.3px",
+                              textShadow: "0 1px 0 rgba(255,255,255,0.35)",
+                            }}
+                          >
+                            Pending Activities
+                          </span>
+                        </div>
+                      );
+                    })()}
                   </QuickNavItem>
 
 
                   <QuickNavItem>
-                    <span className="me-5 d-flex align-items-center">
+                    <span
+                      className="me-4 d-flex align-items-center"
+                      style={{
+                        background: "#f0f5fb",
+                        border: "1px solid #dce8f5",
+                        borderRadius: "999px",
+                        padding: "4px",
+                        gap: "2px",
+                      }}
+                    >
                       <a
                         href="#"
                         onClick={() => i18n.changeLanguage("kn")}
-                        style={
-                          i18n.resolvedLanguage === "kn"
-                            ? { fontWeight: "bold" }
-                            : {}
-                        }
-                        className="me-1"
+                        style={{
+                          textDecoration: "none",
+                          padding: "4px 12px",
+                          borderRadius: "999px",
+                          fontSize: "13.5px",
+                          fontWeight: i18n.resolvedLanguage === "kn" ? 700 : 500,
+                          background:
+                            i18n.resolvedLanguage === "kn"
+                              ? "linear-gradient(135deg, #1e67a8 0%, #0f4a85 100%)"
+                              : "transparent",
+                          color: i18n.resolvedLanguage === "kn" ? "#ffffff" : "#1a3c6e",
+                          boxShadow:
+                            i18n.resolvedLanguage === "kn"
+                              ? "0 2px 6px rgba(15, 76, 138, 0.25)"
+                              : "none",
+                          transition: "all 0.15s ease",
+                        }}
                       >
                         ಕನ್ನಡ
-                      </a>{" "}
-                      |{" "}
+                      </a>
                       <a
                         href="#"
                         onClick={() => i18n.changeLanguage("en")}
-                        style={
-                          i18n.resolvedLanguage === "en"
-                            ? { fontWeight: "bold" }
-                            : {}
-                        }
-                        className="ms-1"
+                        style={{
+                          textDecoration: "none",
+                          padding: "4px 12px",
+                          borderRadius: "999px",
+                          fontSize: "13.5px",
+                          fontWeight: i18n.resolvedLanguage === "en" ? 700 : 500,
+                          background:
+                            i18n.resolvedLanguage === "en"
+                              ? "linear-gradient(135deg, #1e67a8 0%, #0f4a85 100%)"
+                              : "transparent",
+                          color: i18n.resolvedLanguage === "en" ? "#ffffff" : "#1a3c6e",
+                          boxShadow:
+                            i18n.resolvedLanguage === "en"
+                              ? "0 2px 6px rgba(15, 76, 138, 0.25)"
+                              : "none",
+                          transition: "all 0.15s ease",
+                        }}
                       >
                         English
                       </a>
@@ -455,70 +589,237 @@ function Header({ show, ...props }) {
                   </QuickNavItem>
                   <Dropdown as={QuickNavItem}>
                     <Dropdown.Toggle bsPrefix as={CustomDropdownToggle}>
-                      <div className="d-inline-flex d-sm-none">
-                        <Media shape="circle" size="md">
-                          <Image
-                            src="/images/avatar/profile-img.png"
-                            staticImage
-                            thumbnail
-                          />
-                        </Media>
-                      </div>
-                      <div className="d-none d-sm-flex">
-                        <Media shape="circle">
-                          <Image
-                            src="/images/avatar/profile-img.png"
-                            staticImage
-                            thumbnail
-                          />
-                        </Media>
-                      </div>
+                      {(() => {
+                        const username = localStorage.getItem("username") || "U";
+                        const initials = username
+                          .split(/[\s_-]+/)
+                          .filter(Boolean)
+                          .map((p) => p[0])
+                          .join("")
+                          .slice(0, 2)
+                          .toUpperCase();
+                        return (
+                          <div
+                            style={{
+                              width: "42px",
+                              height: "42px",
+                              borderRadius: "50%",
+                              background:
+                                "linear-gradient(135deg, #1e67a8 0%, #0f3060 100%)",
+                              color: "#ffffff",
+                              fontWeight: 700,
+                              fontSize: "15px",
+                              letterSpacing: "0.5px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              boxShadow:
+                                "0 2px 8px rgba(15, 76, 138, 0.30), inset 0 1px 0 rgba(255,255,255,0.18)",
+                              border: "2px solid #ffffff",
+                              cursor: "pointer",
+                              transition: "transform 0.15s ease",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.transform = "scale(1.05)";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.transform = "scale(1)";
+                            }}
+                          >
+                            {initials}
+                          </div>
+                        );
+                      })()}
                     </Dropdown.Toggle>
                     <Dropdown.Menu
                       className="dropdown-menu-md"
                       as={CustomDropdownMenu}
+                      style={{
+                        borderRadius: "14px",
+                        border: "1px solid #e3ecf7",
+                        boxShadow: "0 10px 30px rgba(15, 76, 138, 0.18)",
+                        overflow: "hidden",
+                        padding: 0,
+                      }}
                     >
-                      <div className="dropdown-content dropdown-content-x-lg py-3 border-bottom border-light">
-                        <MediaGroup>
-                          <Media size="xl" shape="circle">
-                            <Image
-                              src="/images/avatar/profile-img.png"
-                              staticImage
-                              thumbnail
-                            />
-                          </Media>
-                          <MediaText>
-                            <div className="lead-text">
+                      <div
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #1e67a8 0%, #0f3060 100%)",
+                          padding: "18px 18px 16px 18px",
+                          color: "#ffffff",
+                          position: "relative",
+                        }}
+                      >
+                        <div className="d-flex align-items-center" style={{ gap: "12px" }}>
+                          {(() => {
+                            const username = localStorage.getItem("username") || "U";
+                            const initials = username
+                              .split(/[\s_-]+/)
+                              .filter(Boolean)
+                              .map((p) => p[0])
+                              .join("")
+                              .slice(0, 2)
+                              .toUpperCase();
+                            return (
+                              <div
+                                style={{
+                                  width: "52px",
+                                  height: "52px",
+                                  borderRadius: "50%",
+                                  background:
+                                    "linear-gradient(135deg, #ffffff 0%, #e3ecf7 100%)",
+                                  color: "#0f3060",
+                                  fontWeight: 800,
+                                  fontSize: "20px",
+                                  letterSpacing: "0.5px",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  boxShadow:
+                                    "0 4px 12px rgba(0,0,0,0.20), inset 0 1px 0 rgba(255,255,255,0.4)",
+                                  border: "2px solid rgba(255,255,255,0.85)",
+                                  flexShrink: 0,
+                                }}
+                              >
+                                {initials}
+                              </div>
+                            );
+                          })()}
+                          <div style={{ minWidth: 0 }}>
+                            <div
+                              style={{
+                                fontSize: "16px",
+                                fontWeight: 700,
+                                letterSpacing: "0.3px",
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                              }}
+                            >
                               {localStorage.getItem("username")}
                             </div>
-                            <span className="sub-text">Admin</span>
-                          </MediaText>
-                        </MediaGroup>
+                            <span
+                              style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: "5px",
+                                marginTop: "4px",
+                                padding: "2px 10px",
+                                borderRadius: "999px",
+                                background: "rgba(255,255,255,0.18)",
+                                border: "1px solid rgba(255,255,255,0.25)",
+                                color: "#ffffff",
+                                fontSize: "11.5px",
+                                fontWeight: 600,
+                                letterSpacing: "0.5px",
+                                textTransform: "uppercase",
+                              }}
+                            >
+                              <Icon name="shield-star" style={{ fontSize: "12px" }}></Icon>
+                              Admin
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                      <div className="dropdown-content dropdown-content-x-lg py-3 border-bottom border-light">
-                        <LinkList>
-                          {/* <LinkListItem to="/seriui/admin/profile">
-                            <Icon name="user"></Icon>
-                            <span>My Profile</span>
-                          </LinkListItem> */}
-                          {/* <LinkListItem to="/seriui/admin/profile"><Icon name="contact"></Icon><span>My Contacts</span></LinkListItem> */}
-                          {/* <LinkListItem to="/seriui/admin/profile-settings">
-                            <Icon name="setting-alt"></Icon>
-                            <span>Account Settings</span>
-                          </LinkListItem> */}
-                          <LinkListItem to="/seriui/change-password">
-                            <Icon name="lock-alt"></Icon>
-                            <span>Change Password</span>
-                          </LinkListItem>
-                          <LinkListItem to="/seriui/help-desk">
-                            <Icon name="question-alt"></Icon>
-                            <span>Raise a ticket</span>
-                          </LinkListItem>
-                        </LinkList>
+
+                      <div style={{ padding: "10px 8px" }}>
+                        <LinkListItem
+                          to="/seriui/change-password"
+                          className="d-flex align-items-center"
+                          style={{
+                            padding: "10px 12px",
+                            borderRadius: "10px",
+                            textDecoration: "none",
+                            color: "#1a3c6e",
+                            fontWeight: 500,
+                            transition: "background 0.15s ease",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = "#f0f6ff";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = "transparent";
+                          }}
+                        >
+                          <span
+                            style={{
+                              width: "34px",
+                              height: "34px",
+                              borderRadius: "10px",
+                              background: "linear-gradient(135deg, #e8f1ff 0%, #d4e6ff 100%)",
+                              color: "#1e67a8",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              marginRight: "12px",
+                            }}
+                          >
+                            <Icon name="lock-alt" style={{ fontSize: "16px" }}></Icon>
+                          </span>
+                          <span>Change Password</span>
+                        </LinkListItem>
+                        <LinkListItem
+                          to="/seriui/help-desk"
+                          className="d-flex align-items-center"
+                          style={{
+                            padding: "10px 12px",
+                            borderRadius: "10px",
+                            textDecoration: "none",
+                            color: "#1a3c6e",
+                            fontWeight: 500,
+                            transition: "background 0.15s ease",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = "#fff7eb";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = "transparent";
+                          }}
+                        >
+                          <span
+                            style={{
+                              width: "34px",
+                              height: "34px",
+                              borderRadius: "10px",
+                              background: "linear-gradient(135deg, #fff3d6 0%, #ffe6a8 100%)",
+                              color: "#b87a00",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              marginRight: "12px",
+                            }}
+                          >
+                            <Icon name="question-alt" style={{ fontSize: "16px" }}></Icon>
+                          </span>
+                          <span>Raise a ticket</span>
+                        </LinkListItem>
                       </div>
-                      <div className="dropdown-content dropdown-content-x-lg py-3">
-                        <Button variant="link" onClick={handleLogout}>
-                          <Icon name="signout"></Icon>
+
+                      <div
+                        style={{
+                          padding: "10px 12px 14px 12px",
+                          borderTop: "1px solid #eef3fa",
+                          background: "#fafcff",
+                        }}
+                      >
+                        <Button
+                          onClick={handleLogout}
+                          className="w-100 d-flex align-items-center justify-content-center"
+                          style={{
+                            background:
+                              "linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)",
+                            border: "none",
+                            color: "#ffffff",
+                            fontWeight: 600,
+                            padding: "9px 14px",
+                            borderRadius: "10px",
+                            gap: "8px",
+                            boxShadow: "0 4px 10px rgba(239, 68, 68, 0.25)",
+                            letterSpacing: "0.3px",
+                          }}
+                        >
+                          <Icon name="signout" style={{ fontSize: "16px" }}></Icon>
                           <span>Log Out</span>
                         </Button>
                       </div>
@@ -530,52 +831,50 @@ function Header({ show, ...props }) {
           </div>
         </div>
         <div
-          className="d-flex justify-content-between"
+          className="d-flex justify-content-between align-items-center"
           style={{
-            backgroundColor: "#0f6cbe",
+            background: "linear-gradient(90deg, #0f4a85 0%, #1e67a8 50%, #0f4a85 100%)",
             color: "#fff",
-            fontSize: "14px",
-            padding: "3px 10px 4px 20px",
+            fontSize: "13.5px",
+            padding: "6px 20px 6px 24px",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08), 0 1px 4px rgba(0,0,0,0.08)",
+            letterSpacing: "0.2px",
           }}
         >
-          {/* <div style={{ paddingLeft: "10px" }}>
-            Saturday, September 23, 2023 12:02:33 PM GMT+05:30 33
-          </div> */}
-
-          <div>
-            {/* <p className="clock">{date.toLocaleTimeString()}</p> */}
-            {/* <p className="clock">{date.getDate()}, {date.toLocaleTimeString([],{weekday:'long',month:'long'})}</p> */}
-            {/* <p className="clock">{date.getDate()} {date.toLocaleTimeString([],{weekday:'long',month:'long'})} {date.getFullYear()}</p> */}
-            {/* <p className="clock"> {date.toUTCString()}</p> */}
-            {/* <p className="clock"> {date.toString()}</p> */}
-            {/* <p className="clock">
-              {" "}
-              {date.toLocaleDateString([], { weekday: "long" })},{" "}
-              {date.toLocaleDateString([], { month: "long" })} {date.getDate()},{" "}
-              {date.getFullYear()} {date.toLocaleTimeString()}
-            </p> */}
+          <div className="d-flex align-items-center" style={{ gap: "8px" }}>
+            <Icon
+              name="clock"
+              style={{ fontSize: "16px", opacity: 0.85 }}
+            ></Icon>
             <TimeTicker />
-            {/* <p className="clock">{date.getDate()}</p> */}
           </div>
-          <div className="bold">Welcome : <span style={{color:"#00ffff"}}>{localStorage.getItem("username")}</span></div>
-
-          {/* <div style={{ marginLeft: auto }}>
-            Helpdesk<em className="icon ni ni-caret-right-fill"></em>{" "}
-            <em className="icon ni ni-call"></em>{" "}
-            <span className="me-1">+91-8022253856</span>{" "}
-            <em className="icon ni ni-mail"></em> support@senovag.com
-          </div> */}
+          <div
+            className="d-flex align-items-center"
+            style={{
+              background: "rgba(255,255,255,0.12)",
+              border: "1px solid rgba(255,255,255,0.18)",
+              borderRadius: "999px",
+              padding: "3px 14px",
+              gap: "6px",
+              backdropFilter: "blur(6px)",
+            }}
+          >
+            <Icon name="user-circle" style={{ fontSize: "16px", opacity: 0.9 }}></Icon>
+            <span style={{ fontWeight: 500 }}>Welcome</span>
+            <span style={{ opacity: 0.6 }}>:</span>
+            <span style={{ color: "#7ff0ff", fontWeight: 700, letterSpacing: "0.3px" }}>
+              {localStorage.getItem("username")}
+            </span>
+          </div>
         </div>
 
         <div
           className="container-fluid"
-          // style={{
-          //   // display: "flex",
-          //   // overflowX: "auto",
-          //   // overflowY: "hidden",
-          //   // msOverflowStyle: "none",
-          //   // scrollbarWidth: "none",
-          // }}
+          style={{
+            background: "linear-gradient(180deg, #ffffff 0%, #f7faff 100%)",
+            borderBottom: "1px solid #e3ecf7",
+            boxShadow: "0 2px 6px rgba(15, 76, 138, 0.04)",
+          }}
         >
           <div className="nk-header-wrap">
             <div className="nk-header-logo">
@@ -590,8 +889,7 @@ function Header({ show, ...props }) {
               ></div>
             )}
 
-            <nav className={navClass} style={{ padding: "15px 0px 15px 0px" }}>
-              {/* {console.log("test")} */}
+            <nav className={navClass} style={{ padding: "12px 0px 12px 0px" }}>
               <Menu />
             </nav>
             {/* <div className="nk-header-tools">

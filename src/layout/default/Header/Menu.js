@@ -4702,7 +4702,7 @@ function Menu() {
             {showMenu.Reports_Export_Report ? (
               <MenuItem sub>
                 <MenuItemLink
-                  text={t("Export Report")}
+                  text={t("Export Reports")}
                   onClick={menuToggle}
                   onMouseEnter={menuHover}
                   sub
@@ -5451,16 +5451,6 @@ function Menu() {
               </MenuItem>
             ) : null}
 
-            {showMenu.Reports_Dashboard ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Dashboards")}
-                  to="https://app.powerbi.com/view?r=eyJrIjoiYTJjNGEzYjktMzFkZS00NjBjLTg4NjUtMTViZTVjNDMzZjEyIiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9&pageName=7a11927e5e64dcc23c23"
-                  blank={true}
-                />
-              </MenuItem>
-            ) : null}
-
              {showMenu.Reports_Format_Reports ? (
                 <MenuItem sub>
                   <MenuItemLink
@@ -5896,14 +5886,6 @@ function Menu() {
                       </MenuItem>
                     ) : null}
 
-                    <MenuItem sub>
-                      <MenuItemLink
-                        text={t("Format Reports-New")}
-                        onClick={menuToggle}
-                        onMouseEnter={menuHover}
-                        sub
-                      />
-                      <MenuSub>
                         {/* ─── Mysore Seed Area ─── */}
                         <MenuItem sub>
                           <MenuItemLink
@@ -6793,19 +6775,27 @@ function Menu() {
                           </MenuSub>
                         </MenuItem>
                         {/* ─── End Bivoltine Seed Area ─── */}
-                      </MenuSub>
-                    </MenuItem>
 
-                    <MenuItem>
+                    {/* <MenuItem>
                       <MenuItemLink
                         text={t("Format Reports-Old")}
                         to="https://e-reshme.karnataka.gov.in/ssrsreport/ssrsreport/BVM5_Format.aspx"
                         blank={true}
                       />
-                    </MenuItem>
+                    </MenuItem> */}
                  </MenuSub>
                 </MenuItem>
               ) : null}
+
+            {showMenu.Reports_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Dashboards")}
+                  to="https://app.powerbi.com/view?r=eyJrIjoiYTJjNGEzYjktMzFkZS00NjBjLTg4NjUtMTViZTVjNDMzZjEyIiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9&pageName=7a11927e5e64dcc23c23"
+                  blank={true}
+                />
+              </MenuItem>
+            ) : null}
 
               {/* {showMenu.Reports_Admin ? (
                 <MenuItem sub>
@@ -6866,6 +6856,29 @@ function Menu() {
           </MenuSub>
         </MenuItem>
       ) : null}
+
+      <MenuItem sub>
+        <MenuItemLink
+          text={t("Manual Entry")}
+          onClick={menuToggle}
+          onMouseEnter={menuHover}
+          sub
+        />
+        <MenuSub>
+          <MenuItem>
+            <MenuItemLink
+              text={t("Crop Details-Seed Market")}
+              to="/seriui/crop-details-seed-market"
+            />
+          </MenuItem>
+          <MenuItem>
+            <MenuItemLink
+              text={t("Crop Details-Commercial Market")}
+              to="/seriui/crop-details-commercial-market"
+            />
+          </MenuItem>
+        </MenuSub>
+      </MenuItem>
 
       {/* Hard Code Menu with mapcode End */}
     </MenuList>

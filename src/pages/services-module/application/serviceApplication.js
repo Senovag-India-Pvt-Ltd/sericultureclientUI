@@ -5125,7 +5125,7 @@ const isUserValid = React.useMemo(() => {
       talukId: landData.talukId,
       newFarmer: true,
       componentId: data.scComponentId,
-      financialYearMasterId: defaultFinancialYearId,
+      financialYearMasterId: data.financialYearMasterId,
       devAcre: 0,
       devGunta: 0,
       devFGunta: 0,
@@ -7416,6 +7416,58 @@ const fetchReelerDetails = () => {
                       </Button>
                     </Col> */}
                   </Form.Group>
+                </Col>
+              </Row>
+              <Row className="g-gs mt-3">
+                <Col lg="6">
+                  <div
+                    style={{
+                      background: "#ffffff",
+                      border: "1px solid #dce8f5",
+                      borderRadius: "10px",
+                      padding: "12px 16px",
+                      boxShadow: "0 1px 4px rgba(26,95,168,0.06)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "12px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: "4px",
+                        height: "28px",
+                        background: "#1a5fa8",
+                        borderRadius: "2px",
+                        display: "inline-block",
+                      }}
+                    />
+                    <Form.Label
+                      htmlFor="financialYearMasterId"
+                      className="mb-0"
+                      style={{ fontWeight: "bold", color: "#1a3c6e", whiteSpace: "nowrap" }}
+                    >
+                      {t("Financial Year")}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Form.Select
+                      id="financialYearMasterId"
+                      name="financialYearMasterId"
+                      value={data.financialYearMasterId}
+                      onChange={handleInputs}
+                      required
+                      style={{ maxWidth: "240px" }}
+                    >
+                      <option value="">{t("Select Year")}</option>
+                      {financialyearListData.map((list) => (
+                        <option
+                          key={list.financialYearMasterId}
+                          value={list.financialYearMasterId}
+                        >
+                          {list.financialYear}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
                 </Col>
               </Row>
               {showFarmerDetails && (
