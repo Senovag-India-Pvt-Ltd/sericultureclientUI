@@ -427,7 +427,73 @@ function Query() {
     const okMsg = content.message || `${content.affectedRows} row(s) affected.`;
     setStatusMsg(okMsg);
     setStatusType("success");
+
+    // For UPDATE / DELETE: force logout after one successful execution so the
+    // same JWT can't be reused for further destructive operations across the
+    // 30-day token lifetime. localStorage.clear() also fires a storage event
+    // in other browser tabs (App.js listener redirects them to login).
+    if (type === "UPDATE" || type === "DELETE") {
+      await forceLogoutAfterDestructive(type, okMsg);
+      return;
+    }
+
     showInfo(`<b>${type}</b> executed successfully.<br/><small>${okMsg}</small>`);
+  };
+
+  // Logout the current session (and all sibling tabs) after one successful
+  // destructive query. Shows a short countdown so the user sees what happened.
+  const forceLogoutAfterDestructive = async (type, okMsg) => {
+    // Set a sentinel BEFORE clear so other tabs receive a storage event with a value.
+    try { localStorage.setItem("forced-logout", String(Date.now())); } catch (e) {}
+
+    await Swal.fire({
+      icon: "success",
+      title: `${type} executed — logging you out`,
+      html: `
+        <div style="text-align:left; font-size:13px; color:#475569; margin-bottom:8px;">
+          <b>${type}</b> completed successfully.<br/>
+          <small>${escapeHtml(okMsg)}</small>
+        </div>
+        <div class="sqlr-countdown">
+          <span>For security, you will be logged out in</span>
+          <span class="num" id="sqlr-logout-cd">5</span>
+          <span>second(s)…</span>
+        </div>
+        <div style="text-align:left; font-size:12px; color:#64748b; margin-top:8px;">
+          The same login cannot run further UPDATE/DELETE queries.
+          Please sign in again if you need to continue.
+        </div>
+      `,
+      confirmButtonText: "Log out now",
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      timer: 5000,
+      timerProgressBar: true,
+      showClass: { popup: "sqlr-pop-show" },
+      hideClass: { popup: "sqlr-pop-hide" },
+      customClass: {
+        container: "sqlr-swal-container",
+        popup: "sqlr-swal sqlr-swal-success",
+      },
+      didOpen: () => {
+        const popup = Swal.getPopup();
+        const cdEl = popup.querySelector("#sqlr-logout-cd");
+        let n = 5;
+        const t = setInterval(() => {
+          n -= 1;
+          if (cdEl) cdEl.textContent = String(Math.max(0, n));
+          if (n <= 0) clearInterval(t);
+        }, 1000);
+        popup.addEventListener("swal-cleanup", () => clearInterval(t));
+      },
+      willClose: (popup) => {
+        popup.dispatchEvent(new Event("swal-cleanup"));
+      },
+    });
+
+    try { localStorage.clear(); } catch (e) {}
+    try { sessionStorage.clear(); } catch (e) {}
+    window.location.href = "/seriui/";
   };
 
   const executeRequest = async (q, confirmed) => {
