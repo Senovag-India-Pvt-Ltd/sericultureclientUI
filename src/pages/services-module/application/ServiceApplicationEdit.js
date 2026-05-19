@@ -20,16 +20,25 @@ const baseURLFarmerServer =
   process.env.REACT_APP_API_BASE_URL_REGISTRATION_FROM_FRUITS;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
-const getCurrentFinancialYearPeriod = () => {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth();
-  const startYear = month >= 3 ? year : year - 1;
+const getFinancialYearPeriod = (financialYearStr) => {
+  let startYear;
+  if (financialYearStr) {
+    const match = String(financialYearStr).match(/(\d{4})/);
+    if (match) startYear = parseInt(match[1], 10);
+  }
+  if (!startYear) {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    startYear = month >= 3 ? year : year - 1;
+  }
   return {
     periodFrom: new Date(startYear, 3, 1),
     periodTo: new Date(startYear + 1, 2, 31),
   };
 };
+
+const getCurrentFinancialYearPeriod = () => getFinancialYearPeriod();
 
 function ServiceApplicationEdit() {
   const { id } = useParams();
@@ -241,8 +250,6 @@ useEffect(() => {
         description: datas.description,
         hectareId: datas.hectareId,
         spacingId: datas.spacingId,
-        periodFrom: getCurrentFinancialYearPeriod().periodFrom,
-        periodTo: getCurrentFinancialYearPeriod().periodTo,
       }));
 
       setFarmerId(datas.farmerId);
@@ -837,6 +844,16 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     getFinancialList();
   }, []);
 
+  useEffect(() => {
+    if (!data.financialYearMasterId || financialyearListData.length === 0) return;
+    const selectedFY = financialyearListData.find(
+      (f) => String(f.financialYearMasterId) === String(data.financialYearMasterId)
+    );
+    if (!selectedFY) return;
+    const { periodFrom, periodTo } = getFinancialYearPeriod(selectedFY.financialYear);
+    setData((prev) => ({ ...prev, periodFrom, periodTo }));
+  }, [data.financialYearMasterId, financialyearListData]);
+
   // to get sc-sub-scheme-details by sc-scheme-details
   const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
     []
@@ -1164,7 +1181,17 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
   const handleInputs = (e) => {
     name = e.target.name;
     value = e.target.value;
-    setData({ ...data, [name]: value });
+    if (name === "financialYearMasterId") {
+      const selectedFY = financialyearListData.find(
+        (f) => String(f.financialYearMasterId) === String(value)
+      );
+      const { periodFrom, periodTo } = getFinancialYearPeriod(
+        selectedFY?.financialYear
+      );
+      setData({ ...data, [name]: value, periodFrom, periodTo });
+    } else {
+      setData({ ...data, [name]: value });
+    }
 
     if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
       e.target.classList.add("is-invalid");

@@ -734,7 +734,7 @@ function HelpdeskDashboard() {
                   {t("Helpdesk Dashboard")}
                 </h2>
                 <span style={{ color: "#3b5278", fontSize: "13px", fontWeight: 500 }}>
-                  {t("Manage and track all support tickets at a glance")}
+                  {/* {t("Manage and track all support tickets at a glance")} */}
                 </span>
               </div>
             </div>

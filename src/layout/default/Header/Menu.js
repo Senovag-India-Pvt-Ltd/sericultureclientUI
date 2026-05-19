@@ -1862,7 +1862,7 @@ function Menu() {
               </MenuItem>
             ) : null} */}
 
-             {showMenu.Services_Service_Crop_Details_Commercial_Market ? (
+             {/* {showMenu.Services_Service_Crop_Details_Commercial_Market ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Crop Details-Commercial Market")}
@@ -1878,7 +1878,7 @@ function Menu() {
                   to="/seriui/crop-details-seed-market"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
 
             {/* {showMenu.Services_Dbt_Application ? (
               <MenuItem>
@@ -5614,22 +5614,6 @@ function Menu() {
                           sub
                         />
                         <MenuSub>
-                          {showMenu.Reports_Export_Report_Commercial_Market_Dashboard ? (
-                            <MenuItem>
-                              <MenuItemLink
-                                text={t("Dashboard")}
-                                to="/seriui/dashboard-report"
-                              />
-                            </MenuItem>
-                          ) : null}
-                          {showMenu.Reports_Export_Report_Commercial_Market_Dashboard ? (
-                            <MenuItem>
-                              <MenuItemLink
-                                text={t("All Market Dashboard")}
-                                to="/seriui/dashboard-report-all-market"
-                              />
-                            </MenuItem>
-                          ) : null}
                           {showMenu.Reports_Export_Report_Commercial_Market_Abstract ? (
                             <MenuItem>
                               <MenuItemLink
@@ -5843,6 +5827,22 @@ function Menu() {
                               <MenuItemLink
                                 text={t("Average Cocoon Report")}
                                 to="/seriui/average-cocoon-report"
+                              />
+                            </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Commercial_Market_Dashboard ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Daily Dashboard")}
+                                to="/seriui/dashboard-report"
+                              />
+                            </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Commercial_Market_Dashboard ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("All Market Dashboard")}
+                                to="/seriui/dashboard-report-all-market"
                               />
                             </MenuItem>
                           ) : null}

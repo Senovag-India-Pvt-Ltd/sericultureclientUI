@@ -534,7 +534,7 @@ function UserDashboard() {
                   {t("User Dashboard")}
                 </h2>
                 <span style={{ color: "#3b5278", fontSize: "13px", fontWeight: 500 }}>
-                  {t("Track the status of tickets you have raised")}
+                  {/* {t("Track the status of tickets you have raised")} */}
                 </span>
               </div>
             </div>

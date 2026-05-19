@@ -759,41 +759,6 @@ function Header({ show, ...props }) {
                           </span>
                           <span>Change Password</span>
                         </LinkListItem>
-                        <LinkListItem
-                          to="/seriui/help-desk"
-                          className="d-flex align-items-center"
-                          style={{
-                            padding: "10px 12px",
-                            borderRadius: "10px",
-                            textDecoration: "none",
-                            color: "#1a3c6e",
-                            fontWeight: 500,
-                            transition: "background 0.15s ease",
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = "#fff7eb";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = "transparent";
-                          }}
-                        >
-                          <span
-                            style={{
-                              width: "34px",
-                              height: "34px",
-                              borderRadius: "10px",
-                              background: "linear-gradient(135deg, #fff3d6 0%, #ffe6a8 100%)",
-                              color: "#b87a00",
-                              display: "inline-flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              marginRight: "12px",
-                            }}
-                          >
-                            <Icon name="question-alt" style={{ fontSize: "16px" }}></Icon>
-                          </span>
-                          <span>Raise a ticket</span>
-                        </LinkListItem>
                       </div>
 
                       <div

@@ -24,16 +24,25 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
-const getCurrentFinancialYearPeriod = () => {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth();
-  const startYear = month >= 3 ? year : year - 1;
+const getFinancialYearPeriod = (financialYearStr) => {
+  let startYear;
+  if (financialYearStr) {
+    const match = String(financialYearStr).match(/(\d{4})/);
+    if (match) startYear = parseInt(match[1], 10);
+  }
+  if (!startYear) {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    startYear = month >= 3 ? year : year - 1;
+  }
   return {
     periodFrom: new Date(startYear, 3, 1),
     periodTo: new Date(startYear + 1, 2, 31),
   };
 };
+
+const getCurrentFinancialYearPeriod = () => getFinancialYearPeriod();
 
 function ServiceApplication() {
 
@@ -1387,12 +1396,16 @@ if (
     .get(baseURLMasterData + `financialYearMaster/get-is-default`)
     .then((response) => {
       const id = response.data.content.financialYearMasterId;
+      const fyStr = response.data.content.financialYear;
+      const { periodFrom, periodTo } = getFinancialYearPeriod(fyStr);
 
       setDefaultFinancialYearId(id);  // separate state
 
       setData((prev) => ({
         ...prev,
         financialYearMasterId: id,
+        periodFrom,
+        periodTo,
       }));
     })
     .catch(() => {
@@ -1955,7 +1968,17 @@ const isSDP =
   return;
 }
 
-    setData({ ...data, [name]: value });
+    if (name === "financialYearMasterId") {
+      const selectedFY = financialyearListData.find(
+        (f) => String(f.financialYearMasterId) === String(value)
+      );
+      const { periodFrom, periodTo } = getFinancialYearPeriod(
+        selectedFY?.financialYear
+      );
+      setData({ ...data, [name]: value, periodFrom, periodTo });
+    } else {
+      setData({ ...data, [name]: value });
+    }
 
     if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
       e.target.classList.add("is-invalid");

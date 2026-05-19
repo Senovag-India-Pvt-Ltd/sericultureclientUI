@@ -739,7 +739,7 @@ const handleAttachFileUpload = async (hdTicketId) => {
                   {t("Create Ticket")}
                 </h2>
                 <span style={{ color: "#3b5278", fontSize: "13px", fontWeight: 500 }}>
-                  {t("Raise a support request — we'll get back to you shortly")}
+                  {/* {t("Raise a support request — we'll get back to you shortly")} */}
                 </span>
               </div>
             </div>
