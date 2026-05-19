@@ -20,6 +20,17 @@ const baseURLFarmerServer =
   process.env.REACT_APP_API_BASE_URL_REGISTRATION_FROM_FRUITS;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
+const getCurrentFinancialYearPeriod = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  const startYear = month >= 3 ? year : year - 1;
+  return {
+    periodFrom: new Date(startYear, 3, 1),
+    periodTo: new Date(startYear + 1, 2, 31),
+  };
+};
+
 function ServiceApplicationEdit() {
   const { id } = useParams();
   // Translation
@@ -230,8 +241,8 @@ useEffect(() => {
         description: datas.description,
         hectareId: datas.hectareId,
         spacingId: datas.spacingId,
-        periodFrom: new Date("2025-04-01"),
-        periodTo: new Date("2026-03-31"),
+        periodFrom: getCurrentFinancialYearPeriod().periodFrom,
+        periodTo: getCurrentFinancialYearPeriod().periodTo,
       }));
 
       setFarmerId(datas.farmerId);

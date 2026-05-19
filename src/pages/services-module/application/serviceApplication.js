@@ -24,6 +24,17 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
+const getCurrentFinancialYearPeriod = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  const startYear = month >= 3 ? year : year - 1;
+  return {
+    periodFrom: new Date(startYear, 3, 1),
+    periodTo: new Date(startYear + 1, 2, 31),
+  };
+};
+
 function ServiceApplication() {
 
   const isSanctionEnabledFromDB = async (scSubSchemeDetailsId) => {
@@ -105,8 +116,8 @@ const generateFinalReport = async (selectedRows) => {
     userId: "",
     spacingId: "",
     hectareId: "",
-    periodFrom: new Date("2025-04-01"),
-    periodTo: new Date("2026-03-31"),
+    periodFrom: getCurrentFinancialYearPeriod().periodFrom,
+    periodTo: getCurrentFinancialYearPeriod().periodTo,
     cocoonsWeight:"",
     availBonus:"",
     // availBonus: true,
@@ -6012,8 +6023,8 @@ const isUserValid = React.useMemo(() => {
       hectareId: "",
       expectedAmount: "",
       financialYearMasterId: "",
-      periodFrom: new Date("2025-04-01"),
-      periodTo: new Date("2026-03-31"),
+      periodFrom: getCurrentFinancialYearPeriod().periodFrom,
+      periodTo: getCurrentFinancialYearPeriod().periodTo,
       cocoonsWeight:"",
       availBonus:"",
       // availBonus: true,
