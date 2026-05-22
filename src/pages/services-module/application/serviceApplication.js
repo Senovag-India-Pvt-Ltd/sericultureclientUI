@@ -517,7 +517,7 @@ useEffect(() => {
   const addSilkIncentiveRow = () => setSilkIncentiveList((prev) => [...prev, { ...emptySilkIncentiveRow }]);
   const removeSilkIncentiveRow = (index) => setSilkIncentiveList((prev) => prev.filter((_, i) => i !== index));
 
-  const emptyRearingEquipmentRow = { vendorId: "", description: "", machineTypeId: "", l1Rate: "", machineQuantity: "", taxInvoiceNo: "" };
+  const emptyRearingEquipmentRow = { vendorId: "", description: "", machineTypeId: "", l1Rate: "", machineQuantity: "", taxInvoiceNo: "", taxInvoiceDate: null };
   const [rearingEquipmentPurchaseList, setRearingEquipmentPurchaseList] = useState([{ ...emptyRearingEquipmentRow }]);
 
   const handleRearingEquipmentChange = (index, e) => {
@@ -525,6 +525,14 @@ useEffect(() => {
     setRearingEquipmentPurchaseList((prev) => {
       const updated = [...prev];
       updated[index] = { ...updated[index], [name]: value };
+      return updated;
+    });
+  };
+
+  const handleRearingEquipmentDateChange = (index, date) => {
+    setRearingEquipmentPurchaseList((prev) => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], taxInvoiceDate: date };
       return updated;
     });
   };
@@ -4527,8 +4535,24 @@ const isUserValid = React.useMemo(() => {
     event.preventDefault(); // Prevent the default form submission
     const form = event.currentTarget;
 
-      if (!isUserValid) {
-      setValidated(true);
+    const localStorageUserId = localStorage.getItem("userMasterId");
+    if (!localStorageUserId || localStorageUserId === "null") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please Select User Master",
+        text: "Please Select User Master and Save",
+        confirmButtonColor: "#1e67a8",
+      });
+      return;
+    }
+
+    if (!isUserValid) {
+      Swal.fire({
+        icon: "warning",
+        title: "Please Select User Master",
+        text: "Please Select User Master and Save",
+        confirmButtonColor: "#1e67a8",
+      });
       return;
     }
 
@@ -5001,10 +5025,8 @@ const isUserValid = React.useMemo(() => {
       if (!data.equordev.includes("constructedArea")) {
         missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
       }
-      if (!data.equordev.includes("equipment")) {
-        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
-      } else {
-        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
+      if (rearingEquipmentPurchaseList.some((item) => !item.l1Rate)) {
+        missingFields.push("L1 Rate in Equipment Purchase (required for all rows)");
       }
       if (missingFields.length > 0) {
         Swal.fire({
@@ -5234,25 +5256,24 @@ const isUserValid = React.useMemo(() => {
     if (data.equordev.includes("land")) {
       sendPost.dbtFarmerLandDetailsRequestList = transformedData; // Include land details
     }
-    if (data.equordev.includes("equipment")) {
-      if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS") {
-        sendPost.applicationFormLineItemRequestList = rearingEquipmentPurchaseList.map((item) => ({
-          lineItemComment: item.description,
-          cost: item.l1Rate,
-          vendorId: item.vendorId,
-          machineTypeId: item.machineTypeId,
-          machineQuantity: item.machineQuantity,
-          taxInvoiceNo: item.taxInvoiceNo,
-        }));
-      } else {
-        sendPost.applicationFormLineItemRequestList = [
-          {
-            lineItemComment: equipment.description,
-            cost: equipment.price,
-            vendorId: equipment.vendorId,
-          },
-        ];
-      }
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS") {
+      sendPost.equipmentTableRequestList = rearingEquipmentPurchaseList.map((item) => ({
+        eDescription: item.description,
+        eL1Rate: item.l1Rate,
+        eVendorId: item.vendorId,
+        eMachineTypeId: item.machineTypeId,
+        eMachineQuantity: item.machineQuantity,
+        eTaxInvoiceNo: item.taxInvoiceNo,
+        eTaxInvoiceDate: item.taxInvoiceDate ? formatDate(item.taxInvoiceDate) : null,
+      }));
+    } else if (data.equordev.includes("equipment")) {
+      sendPost.applicationFormLineItemRequestList = [
+        {
+          lineItemComment: equipment.description,
+          cost: equipment.price,
+          vendorId: equipment.vendorId,
+        },
+      ];
     }
     // if (data.equordev.includes("constructedArea")) {
     //     // Handle constructedArea data if needed
@@ -6128,6 +6149,18 @@ const isUserValid = React.useMemo(() => {
     background: "#f0f6ff",
     width: "380px",
   }).then((result) => {
+
+    const localStorageUserId2 = localStorage.getItem("userMasterId");
+    if (!localStorageUserId2 || localStorageUserId2 === "null" || !post.userMasterId) {
+      Swal.fire({
+        icon: "warning",
+        title: "Please Select User Master",
+        text: "Please Select User Master and Save it once again",
+        confirmButtonColor: "#1e67a8",
+      });
+      setSaveDisabled(false);
+      return;
+    }
 
     const apiEndpoint = isSanctionForReeling
       ? `${baseURLDBT}service/saveApplicationFormForReeler`
@@ -9282,6 +9315,7 @@ const fetchReelerDetails = () => {
                       </Form.Label>
                     </Form.Group>
                   </Col>
+                  {getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Rearing Equipment SS" && (
                   <Col lg="2">
                     <Form.Group
                       as={Row}
@@ -9302,6 +9336,7 @@ const fetchReelerDetails = () => {
                       </Form.Label>
                     </Form.Group>
                   </Col>
+                  )}
                   <Col lg="2">
                     <Form.Group
                       as={Row}
@@ -11598,7 +11633,7 @@ const fetchReelerDetails = () => {
                 </Block>
               )}
 
-              {data.equordev.includes("equipment") && (
+              {(data.equordev.includes("equipment") || getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS") && (
                 <Block className="mt-3">
                   <Card>
                     <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", fontWeight: 700, color: "white", padding: "10px 16px", letterSpacing: "0.3px" }}>
@@ -11658,10 +11693,21 @@ const fetchReelerDetails = () => {
                                     <Form.Control type="text" name="taxInvoiceNo" value={row.taxInvoiceNo} onChange={(e) => handleRearingEquipmentChange(index, e)} placeholder="Enter Tax Invoice No" />
                                   </Form.Group>
                                 </Col>
+                                <Col lg="4">
+                                  <Form.Group className="form-group mt-n3">
+                                    <Form.Label>{t("Tax Invoice Date")}</Form.Label>
+                                    <DatePicker selected={row.taxInvoiceDate} onChange={(date) => handleRearingEquipmentDateChange(index, date)} peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select" dateFormat="dd/MM/yyyy" className="form-control" maxDate={new Date()} />
+                                  </Form.Group>
+                                </Col>
                                 <Col lg="12" className="text-end">
                                   {rearingEquipmentPurchaseList.length > 1 && (
-                                    <Button variant="danger" size="sm" onClick={() => removeRearingEquipmentRow(index)}>
+                                    <Button variant="danger" size="sm" onClick={() => removeRearingEquipmentRow(index)} className="me-2">
                                       {t("Remove")}
+                                    </Button>
+                                  )}
+                                  {index === rearingEquipmentPurchaseList.length - 1 && (
+                                    <Button variant="primary" size="sm" onClick={addRearingEquipmentRow}>
+                                      + {t("Add Row")}
                                     </Button>
                                   )}
                                 </Col>

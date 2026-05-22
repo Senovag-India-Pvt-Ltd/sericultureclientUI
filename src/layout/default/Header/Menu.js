@@ -2492,7 +2492,7 @@ function Menu() {
                       <MenuItem>
                         <MenuItemLink
                           text={t(
-                            "Crop Inspection Certificate Edit"
+                            "Crop Inspection Edit"
                           )}
                           to="/seriui/crop-inspection-edit"
                         />
