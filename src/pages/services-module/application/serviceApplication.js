@@ -24,6 +24,26 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
+const getFinancialYearPeriod = (financialYearStr) => {
+  let startYear;
+  if (financialYearStr) {
+    const match = String(financialYearStr).match(/(\d{4})/);
+    if (match) startYear = parseInt(match[1], 10);
+  }
+  if (!startYear) {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    startYear = month >= 3 ? year : year - 1;
+  }
+  return {
+    periodFrom: new Date(startYear, 3, 1),
+    periodTo: new Date(startYear + 1, 2, 31),
+  };
+};
+
+const getCurrentFinancialYearPeriod = () => getFinancialYearPeriod();
+
 function ServiceApplication() {
 
   const isSanctionEnabledFromDB = async (scSubSchemeDetailsId) => {
@@ -105,8 +125,8 @@ const generateFinalReport = async (selectedRows) => {
     userId: "",
     spacingId: "",
     hectareId: "",
-    periodFrom: new Date("2025-04-01"),
-    periodTo: new Date("2026-03-31"),
+    periodFrom: getCurrentFinancialYearPeriod().periodFrom,
+    periodTo: getCurrentFinancialYearPeriod().periodTo,
     cocoonsWeight:"",
     availBonus:"",
     // availBonus: true,
@@ -1384,12 +1404,16 @@ if (
     .get(baseURLMasterData + `financialYearMaster/get-is-default`)
     .then((response) => {
       const id = response.data.content.financialYearMasterId;
+      const fyStr = response.data.content.financialYear;
+      const { periodFrom, periodTo } = getFinancialYearPeriod(fyStr);
 
       setDefaultFinancialYearId(id);  // separate state
 
       setData((prev) => ({
         ...prev,
         financialYearMasterId: id,
+        periodFrom,
+        periodTo,
       }));
     })
     .catch(() => {
@@ -1952,7 +1976,17 @@ const isSDP =
   return;
 }
 
-    setData({ ...data, [name]: value });
+    if (name === "financialYearMasterId") {
+      const selectedFY = financialyearListData.find(
+        (f) => String(f.financialYearMasterId) === String(value)
+      );
+      const { periodFrom, periodTo } = getFinancialYearPeriod(
+        selectedFY?.financialYear
+      );
+      setData({ ...data, [name]: value, periodFrom, periodTo });
+    } else {
+      setData({ ...data, [name]: value });
+    }
 
     if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
       e.target.classList.add("is-invalid");
@@ -5147,7 +5181,7 @@ const isUserValid = React.useMemo(() => {
       talukId: landData.talukId,
       newFarmer: true,
       componentId: data.scComponentId,
-      financialYearMasterId: defaultFinancialYearId,
+      financialYearMasterId: data.financialYearMasterId,
       devAcre: 0,
       devGunta: 0,
       devFGunta: 0,
@@ -6033,8 +6067,8 @@ const isUserValid = React.useMemo(() => {
       hectareId: "",
       expectedAmount: "",
       financialYearMasterId: "",
-      periodFrom: new Date("2025-04-01"),
-      periodTo: new Date("2026-03-31"),
+      periodFrom: getCurrentFinancialYearPeriod().periodFrom,
+      periodTo: getCurrentFinancialYearPeriod().periodTo,
       cocoonsWeight:"",
       availBonus:"",
       // availBonus: true,
@@ -7449,6 +7483,58 @@ const fetchReelerDetails = () => {
                       </Button>
                     </Col> */}
                   </Form.Group>
+                </Col>
+              </Row>
+              <Row className="g-gs mt-3">
+                <Col lg="6">
+                  <div
+                    style={{
+                      background: "#ffffff",
+                      border: "1px solid #dce8f5",
+                      borderRadius: "10px",
+                      padding: "12px 16px",
+                      boxShadow: "0 1px 4px rgba(26,95,168,0.06)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "12px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: "4px",
+                        height: "28px",
+                        background: "#1a5fa8",
+                        borderRadius: "2px",
+                        display: "inline-block",
+                      }}
+                    />
+                    <Form.Label
+                      htmlFor="financialYearMasterId"
+                      className="mb-0"
+                      style={{ fontWeight: "bold", color: "#1a3c6e", whiteSpace: "nowrap" }}
+                    >
+                      {t("Financial Year")}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Form.Select
+                      id="financialYearMasterId"
+                      name="financialYearMasterId"
+                      value={data.financialYearMasterId}
+                      onChange={handleInputs}
+                      required
+                      style={{ maxWidth: "240px" }}
+                    >
+                      <option value="">{t("Select Year")}</option>
+                      {financialyearListData.map((list) => (
+                        <option
+                          key={list.financialYearMasterId}
+                          value={list.financialYearMasterId}
+                        >
+                          {list.financialYear}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
                 </Col>
               </Row>
               {showFarmerDetails && (

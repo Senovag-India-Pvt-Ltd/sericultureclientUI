@@ -1949,18 +1949,18 @@ function StakeHolderEdit() {
   const { t } = useTranslation();
 
   return (
-    <Layout title="Farmer Registration">
+    <Layout title="Edit Farmer Details">
       <style>{stakeHolderFormStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
               <Block.Title tag="h2" className="sh-page-title">
-                {t("farmer_registration")}
+                {t("Edit Farmer Details")}
               </Block.Title>
-              <p className="sh-page-subtitle mb-0">
+              {/* <p className="sh-page-subtitle mb-0">
                 {t("Edit personal, land, address and bank details for this farmer")}
-              </p>
+              </p> */}
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">

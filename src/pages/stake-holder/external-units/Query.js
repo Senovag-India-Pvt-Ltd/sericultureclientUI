@@ -218,6 +218,9 @@ if (typeof document !== "undefined" && !document.getElementById("sql-runner-styl
   document.head.appendChild(s);
 }
 
+// Only this user is allowed to run UPDATE / DELETE in production.
+const ALLOWED_UPDATE_DELETE_USERNAME = "SIPLTEST2";
+
 // ---------- Helpers ----------
 const detectQueryType = (raw) => {
   const q = String(raw || "").trim().replace(/^\(\s*/, "");
@@ -374,7 +377,11 @@ function Query() {
 
   // ---------- Backend call ----------
   const callBackend = (q, confirmed) =>
-    api.post(baseURL + "query/execute", { query: q, confirmed: !!confirmed });
+    api.post(baseURL + "query/execute", {
+      query: q,
+      confirmed: !!confirmed,
+      username: localStorage.getItem("username") || "",
+    });
 
   const handleContent = async (q, content) => {
     const type = content?.queryType || detectQueryType(q);
@@ -420,7 +427,73 @@ function Query() {
     const okMsg = content.message || `${content.affectedRows} row(s) affected.`;
     setStatusMsg(okMsg);
     setStatusType("success");
+
+    // For UPDATE / DELETE: force logout after one successful execution so the
+    // same JWT can't be reused for further destructive operations across the
+    // 30-day token lifetime. localStorage.clear() also fires a storage event
+    // in other browser tabs (App.js listener redirects them to login).
+    if (type === "UPDATE" || type === "DELETE") {
+      await forceLogoutAfterDestructive(type, okMsg);
+      return;
+    }
+
     showInfo(`<b>${type}</b> executed successfully.<br/><small>${okMsg}</small>`);
+  };
+
+  // Logout the current session (and all sibling tabs) after one successful
+  // destructive query. Shows a short countdown so the user sees what happened.
+  const forceLogoutAfterDestructive = async (type, okMsg) => {
+    // Set a sentinel BEFORE clear so other tabs receive a storage event with a value.
+    try { localStorage.setItem("forced-logout", String(Date.now())); } catch (e) {}
+
+    await Swal.fire({
+      icon: "success",
+      title: `${type} executed — logging you out`,
+      html: `
+        <div style="text-align:left; font-size:13px; color:#475569; margin-bottom:8px;">
+          <b>${type}</b> completed successfully.<br/>
+          <small>${escapeHtml(okMsg)}</small>
+        </div>
+        <div class="sqlr-countdown">
+          <span>For security, you will be logged out in</span>
+          <span class="num" id="sqlr-logout-cd">5</span>
+          <span>second(s)…</span>
+        </div>
+        <div style="text-align:left; font-size:12px; color:#64748b; margin-top:8px;">
+          The same login cannot run further UPDATE/DELETE queries.
+          Please sign in again if you need to continue.
+        </div>
+      `,
+      confirmButtonText: "Log out now",
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      timer: 5000,
+      timerProgressBar: true,
+      showClass: { popup: "sqlr-pop-show" },
+      hideClass: { popup: "sqlr-pop-hide" },
+      customClass: {
+        container: "sqlr-swal-container",
+        popup: "sqlr-swal sqlr-swal-success",
+      },
+      didOpen: () => {
+        const popup = Swal.getPopup();
+        const cdEl = popup.querySelector("#sqlr-logout-cd");
+        let n = 5;
+        const t = setInterval(() => {
+          n -= 1;
+          if (cdEl) cdEl.textContent = String(Math.max(0, n));
+          if (n <= 0) clearInterval(t);
+        }, 1000);
+        popup.addEventListener("swal-cleanup", () => clearInterval(t));
+      },
+      willClose: (popup) => {
+        popup.dispatchEvent(new Event("swal-cleanup"));
+      },
+    });
+
+    try { localStorage.clear(); } catch (e) {}
+    try { sessionStorage.clear(); } catch (e) {}
+    window.location.href = "/seriui/";
   };
 
   const executeRequest = async (q, confirmed) => {
@@ -446,6 +519,79 @@ function Query() {
     }
   };
 
+  // Strip line/block comments and string literals before checking for WHERE,
+  // so we don't get fooled by the word appearing inside a comment or a string.
+  const queryHasWhereClause = (raw) => {
+    const stripped = String(raw || "")
+      .replace(/--[^\n\r]*/g, " ")           // -- line comments
+      .replace(/\/\*[\s\S]*?\*\//g, " ")     // /* block comments */
+      .replace(/'(?:''|[^'])*'/g, " ")       // 'single-quoted' strings
+      .replace(/"(?:""|[^"])*"/g, " ");      // "double-quoted" identifiers/strings
+    return /\bWHERE\b/i.test(stripped);
+  };
+
+  const showUnauthorizedAlert = (type) =>
+    Swal.fire({
+      icon: "warning",
+      title: `Not allowed to run ${type}`,
+      html: `
+        <div style="text-align:left; font-size:13px; color:#475569; margin-bottom:10px;">
+          You don't have permission to execute <b style="color:#b91c1c;">${type}</b> queries in production.
+          Only the authorised user can run <b>UPDATE</b> / <b>DELETE</b> statements here.
+        </div>
+        <div style="
+          background: linear-gradient(135deg,#fef9c3,#fde68a);
+          border:1px dashed #f59e0b; border-radius:12px;
+          padding:12px 14px; text-align:left;
+          font-size:13px; color:#7c2d12;
+        ">
+          <div style="font-weight:800; letter-spacing:.02em; margin-bottom:6px;">
+            Authorised user
+          </div>
+          <div><b>Username:</b> SIPLTEST2</div>
+          <div><b>Name:</b> Satish</div>
+          <div><b>Phone:</b> 9986710284</div>
+        </div>
+        <div style="text-align:left; font-size:12px; color:#64748b; margin-top:10px;">
+          If you need this change, please contact the authorised user above.
+        </div>
+      `,
+      confirmButtonText: "OK, understood",
+      showClass: { popup: "sqlr-pop-show" },
+      hideClass: { popup: "sqlr-pop-hide" },
+      customClass: {
+        container: "sqlr-swal-container",
+        popup: "sqlr-swal sqlr-swal-warning",
+      },
+    });
+
+  const showMissingWhereAlert = (type) =>
+    Swal.fire({
+      icon: "warning",
+      title: `${type} without WHERE is not allowed`,
+      html: `
+        <div style="text-align:left; font-size:13px; color:#475569; margin-bottom:8px;">
+          For your safety, every <b style="color:#b91c1c;">${type}</b> query must include a
+          <b>WHERE</b> clause so it cannot affect every row in the table.
+        </div>
+        <pre class="sqlr-query-preview">${escapeHtml(
+          type === "DELETE"
+            ? "DELETE FROM your_table WHERE id = 1;"
+            : "UPDATE your_table SET column = value WHERE id = 1;"
+        )}</pre>
+        <div style="text-align:left; font-size:12px; color:#64748b; margin-top:6px;">
+          Add a <b>WHERE</b> condition that targets the specific row(s) you want to change, then try again.
+        </div>
+      `,
+      confirmButtonText: "OK, I'll add WHERE",
+      showClass: { popup: "sqlr-pop-show" },
+      hideClass: { popup: "sqlr-pop-hide" },
+      customClass: {
+        container: "sqlr-swal-container",
+        popup: "sqlr-swal sqlr-swal-warning",
+      },
+    });
+
   // ---------- Submit ----------
   const runQuery = async (event) => {
     event?.preventDefault?.();
@@ -455,6 +601,41 @@ function Query() {
       showError("Please enter a SQL query to execute.");
       return;
     }
+
+    const type = detectQueryType(q);
+
+    if (type === "UPDATE" || type === "DELETE") {
+      lastTypeRef.current = type;
+
+      // Only the authorised user (SIPLTEST2 / Satish) may run UPDATE / DELETE.
+      const currentUser = (localStorage.getItem("username") || "").trim();
+      if (currentUser !== ALLOWED_UPDATE_DELETE_USERNAME) {
+        setStatusMsg(`${type} is restricted to the authorised user.`);
+        setStatusType("error");
+        showUnauthorizedAlert(type);
+        return;
+      }
+
+      // Block UPDATE / DELETE without a WHERE clause before hitting the backend.
+      if (!queryHasWhereClause(q)) {
+        setStatusMsg(`${type} without WHERE is not allowed.`);
+        setStatusType("error");
+        showMissingWhereAlert(type);
+        return;
+      }
+
+      // With WHERE → always show the 30-second confirmation on the frontend,
+      // independent of the backend's requiresConfirmation flag.
+      const res = await confirmDestructive(q, type, 30);
+      if (!res.isConfirmed) {
+        setStatusMsg("Execution cancelled.");
+        setStatusType("info");
+        return;
+      }
+      await executeRequest(q, true);
+      return;
+    }
+
     await executeRequest(q, false);
   };
 
