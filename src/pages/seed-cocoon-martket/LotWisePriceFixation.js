@@ -199,6 +199,7 @@ function LotWisePriceFixation() {
       setValidated(true);
     } else {
       event.preventDefault();
+      if (isSaving) return;
       setIsSaving(true);
       api
         .post(baseURL1 + `cocoon/saveLotWiseBasePriceKGLot`, { ...data })
@@ -220,11 +221,12 @@ function LotWisePriceFixation() {
             } else {
               acceptError();
             }
-            setIsSaving(false);
           }
         })
         .catch(() => {
           acceptError();
+        })
+        .finally(() => {
           setIsSaving(false);
         });
     }

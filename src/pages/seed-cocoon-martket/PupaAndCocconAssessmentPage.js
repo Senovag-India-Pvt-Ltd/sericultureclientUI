@@ -96,6 +96,8 @@ useEffect(() => {
         setValidated(true);
     } else {
         event.preventDefault();
+        if (isSubmitting) return;
+        setIsSubmitting(true);
 
         api
             .post(baseURL1 + `cocoon/savePupaTestAndCocoonAssessmentResult`, {
@@ -144,6 +146,9 @@ useEffect(() => {
             .catch((err) => {
                 console.error(err);
                 saveError(); // Handle the error if the API call fails
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     }
 };
@@ -186,14 +191,21 @@ useEffect(() => {
 
   // Below for modal window for Initial Weighment
   const [showModalAssesment, setShowModalAssesment] = useState(false);
-  // const handleShowModalAssesment = () => setShowModalAssesment(true);
+  // Keeps the row the user clicked "Assess Now" on so the modal header can
+  // surface their FRUITS ID + name without re-querying the list.
+  const [selectedAssessmentItem, setSelectedAssessmentItem] = useState(null);
   const handleCloseModalAssesment = () => setShowModalAssesment(false);
 
   const handleShowModalAssesment = (item) => {
     setMarketAuctionId(item.marketAuctionId); // Set marketAuctionId from the selected item
     setData(prevData => ({ ...prevData, marketAuctionId: item.marketAuctionId })); // Ensure data is set correctly
+    setSelectedAssessmentItem(item);
     setShowModalAssesment(true);
   };
+
+  // Double-click guard for "Proceed To Weighment" so a flapping click won't
+  // submit the same row twice.
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Function to open modals with specific farmer details
 const openModalWithDetails = (item) => {
@@ -296,35 +308,71 @@ if (form.checkValidity() === false) {
   // };
   const styles = {
     ctstyle: {
-      fontWeight: 'bold',
-      color: '#2e314a',
-      backgroundColor: '#f8f9fa',
-      padding: '10px 15px', // Keep some padding for cells
-      fontSize: '1rem', // Font size for better readability
+      fontWeight: 700,
+      color: '#0f766e',
+      backgroundColor: '#f0fdfa',
+      padding: '10px 14px',
+      fontSize: '13px',
+      width: '40%',
+      borderLeft: '3px solid #14b8a6',
+      letterSpacing: '0.02em',
+    },
+    valStyle: {
+      padding: '10px 14px',
+      fontSize: '13px',
+      color: '#1a202c',
+      fontWeight: 600,
+      backgroundColor: '#ffffff',
     },
     table: {
-      borderRadius: '5px',
-      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-      width: '100%', // Full width for the table
-      tableLayout: 'fixed', // Use fixed layout for better control over column widths
+      borderRadius: '10px',
+      boxShadow: '0 2px 8px rgba(15,118,110,.08)',
+      width: '100%',
+      tableLayout: 'fixed',
+      overflow: 'hidden',
+      border: '1px solid #e2e8f0',
     },
+    // Shared modal-header gradient — all detail modals use this so they read as one family.
     modalHeader: {
-      backgroundColor: '#0f6cbe',
+      background: 'linear-gradient(135deg,#0f766e 0%,#14b8a6 50%,#5b57ac 100%)',
       color: '#fff',
-      textAlign: 'center',
-      padding: '10px', // Reduced padding for a smaller header
-      fontSize: '1.2rem', // Reduced font size for the header
+      padding: '16px 24px',
+      border: 'none',
+      borderRadius: '8px 8px 0 0',
     },
     modalTitle: {
-      fontWeight: '600',
-      fontSize: '1.2rem', // Reduced title font size
+      color: '#fff',
+      fontWeight: 800,
+      fontSize: '16px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      flexWrap: 'wrap',
     },
     modalBody: {
-      padding: '20px', // Padding around the body
-      height: '100%', // Expand the body to full height
-      overflowY: 'auto', // Allow scrolling if content overflows
+      padding: '22px 24px',
+      background: 'linear-gradient(180deg,#ffffff,#f8fffe)',
+    },
+    headerPill: {
+      background: 'rgba(255,255,255,.22)',
+      borderRadius: '20px',
+      padding: '4px 14px',
+      fontSize: '12px',
+      fontWeight: 700,
     },
   };
+
+  // Renders the two farmer-identity pills (name + FRUITS ID) the detail modals all show.
+  const FarmerHeaderBadges = ({ item }) => (
+    <>
+      {item?.firstName && (
+        <span style={styles.headerPill}>👤 {item.firstName}</span>
+      )}
+      {item?.fruitsId && (
+        <span style={styles.headerPill}>🆔 {item.fruitsId}</span>
+      )}
+    </>
+  );
 
   const [isDiseaseFree, setIsDiseaseFree] = useState("no"); // Initial state is "no"
 
@@ -395,17 +443,23 @@ if (form.checkValidity() === false) {
   //   }
   // };
 
+  // Tracks which certificate IDs have an in-flight download so a flapping double-click
+  // can't open two PDFs for the same certificate. Keyed by fitnessCertificateId, with
+  // a synthetic "__nokey__" bucket for callers that don't pass an id.
+  const [downloadingFcIds, setDownloadingFcIds] = useState(new Set());
+  const isFcDownloading = (id) => downloadingFcIds.has(id ?? "__nokey__");
+
    const downloadFile = async (fitnessCertificateId, fruitsId) => {
+    const key = fitnessCertificateId ?? "__nokey__";
+    if (downloadingFcIds.has(key)) return;
+    setDownloadingFcIds((prev) => {
+      const next = new Set(prev);
+      next.add(key);
+      return next;
+    });
     try {
       const response = await api.post(
         baseURLReport + `getFitenessCertificate`,
-        // {
-        //   params: {
-        //     fitnessCertificateId: fitnessCertificateId,
-        //     fruitsId: fruitsId,
-        //   },
-        //   responseType: "blob",
-        // }
         {
             fitnessCertificateId: fitnessCertificateId,
              fruitsId: fruitsId,
@@ -413,16 +467,22 @@ if (form.checkValidity() === false) {
           {
             responseType: "blob", //Force to receive data in a Blob Format
           }
-  
+
       );
-  
+
       const file = new Blob([response.data], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
-  
+
       window.open(fileURL);
-  
+
     } catch (error) {
       console.error("Error downloading file:", error);
+    } finally {
+      setDownloadingFcIds((prev) => {
+        const next = new Set(prev);
+        next.delete(key);
+        return next;
+      });
     }
   };
 
@@ -460,7 +520,14 @@ const saveError = (message = "Something went wrong!") => {
           <li>
                 <Link
                   to="/seriui/final-weighment-page"
-                  className="btn btn-primary d-none d-md-inline-flex"
+                  style={{
+                    background: "linear-gradient(135deg,#1e67a8,#2d9cdb)",
+                    color: "#fff", border: "none", borderRadius: "10px",
+                    padding: "9px 22px", fontWeight: 700, fontSize: "13px",
+                    boxShadow: "0 4px 12px rgba(30,103,168,.30)",
+                    textDecoration: "none", display: "inline-flex",
+                    alignItems: "center", gap: "8px", whiteSpace: "nowrap",
+                  }}
                 >
                   <Icon name="arrow-long-left" />
                   <span>{t("Final Weighment List")}</span>
@@ -469,132 +536,150 @@ const saveError = (message = "Something went wrong!") => {
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className= "mt-n5">
+      <Block className="mt-n4">
       <Form
           noValidate
           validated={validated}
           onSubmit={postData}
           className="mt-2"
         >
-        <Row className="g-3">
-          <Card>
-            <Card.Body>
-              <Row className="g-gs">
-                <Col lg="12">
-                  <Table striped bordered hover>
-                    <thead>
-                      <tr style={{ backgroundColor: '#0f6cbe', color: 'white', fontWeight: 'bold' }}>
-                        <th>{t("Action")}</th>
-                        <th>{t("Sl.No")}</th>
-                        <th>{t("Date Of Issuance Of Bidding Slip")}</th>
-                        <th>{t("Bidding Slip Lot No")}</th>
-                        <th>{t("FID")}</th>
-                        <th>{t("Farmer Name")}</th>
-                        <th>{t("Phone Number")}</th>
-                        <th>{t("Address Details")}</th>
-                        <th>{t("Crop Details")}</th>
-                        <th>{t("FC Details")}</th>
-                        <th>{t("Weighment Details")}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {listData.map((item, index) => (
-                        <tr key={index}>
-                        <td>
-                      <Button variant="primary" onClick={() => handleShowModalAssesment(item)}>{t("Assess Now")}</Button>
-                        </td>
-                        <td>{item.serialNumber}</td>
-                        <td>{item.marketAuctionDate}</td>
-                        <td>{item.allottedLotId}</td>
-                        <td>{item.fruitsId}</td>
-                        <td>{item.firstName}</td>
-                        <td>{item.mobileNumber}</td>
-                        <td>
-                          <div className="d-flex align-items-center" onClick={() => openModalWithDetails(item)}>
-                            <Icon name="info-fill" size="lg"></Icon>
-                            <span>{t("Personal Details")}</span>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="d-flex align-items-center" onClick={() => openModalWithCropDetails(item)}>
-                            <Icon name="info-fill" size="lg"></Icon>
-                            <span>{t("Crop Details")}</span>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="d-flex align-items-center" onClick={() => openModalWithFCDetails(item)}>
-                            <Icon name="info-fill" size="lg"></Icon>
-                            <span>{t("FC Details")}</span>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="d-flex align-items-center" onClick={() => openModalWithWeighmentDetails(item)}>
-                            <Icon name="info-fill" size="lg"></Icon>
-                            <span>{t("Weighment Details")}</span>
-                          </div>
-                        </td>
-                      </tr>
+        <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 4px 20px rgba(30,103,168,.10)", overflow: "hidden" }}>
+          {/* Gradient header strip — matches the rest of the cocoon-market screens. */}
+          <div style={{
+            background: "linear-gradient(135deg,#0f766e 0%,#14b8a6 50%,#5b57ac 100%)",
+            padding: "12px 20px", display: "flex", alignItems: "center", gap: "12px",
+          }}>
+            <div style={{ width: "42px", height: "42px", borderRadius: "12px", background: "rgba(255,255,255,.18)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px" }}>🔬</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "15px", lineHeight: 1.2 }}>{t("Pupa Testing & Cocoon Assessment")}</div>
+              <div style={{ color: "rgba(255,255,255,.85)", fontSize: "11px", marginTop: "2px" }}>{t("Lots ready for pupa examination after final weighment")}</div>
+            </div>
+            <span style={{ background: "rgba(255,255,255,.22)", borderRadius: "20px", padding: "5px 14px", color: "#fff", fontSize: "12px", fontWeight: 700 }}>
+              {listData.length} {listData.length === 1 ? t("lot") : t("lots")}
+            </span>
+          </div>
+          <Card.Body style={{ padding: "16px 18px", background: "linear-gradient(180deg,#ffffff,#f8fffe)" }}>
+            <div style={{ overflowX: "auto", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", minWidth: "1200px" }}>
+                <thead>
+                  <tr style={{
+                    background: "linear-gradient(135deg,#0f766e,#14b8a6)",
+                    color: "#fff", fontWeight: 700,
+                  }}>
+                    {[t("Action"), t("Sl.No"), t("Date Of Issuance Of Bidding Slip"), t("Bidding Slip Lot No"), t("FID"), t("Farmer Name"), t("Phone Number"), t("Address Details"), t("Crop Details"), t("FC Details"), t("Weighment Details")].map((h, i) => (
+                      <th key={i} style={{ padding: "12px 10px", textAlign: "left", borderRight: "1px solid rgba(255,255,255,.18)", whiteSpace: "nowrap" }}>{h}</th>
                     ))}
-                  </tbody>
-                </Table>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        </Row>
-        <Modal show={showModal} onHide={handleCloseModal} size="lg">
-      <Modal.Header closeButton style={styles.modalHeader}>
-        <Modal.Title style={styles.modalTitle}>{t("Personal Details")}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body style={styles.modalBody}>
-        <div className="d-flex justify-content-center">
-          <Row className="g-5">
-            <Col lg="12">
-              <Table striped bordered hover responsive className="table-sm" style={styles.table}>
+                  </tr>
+                </thead>
                 <tbody>
-                  <tr>
-                    <td style={styles.ctstyle}>{t("Farmer Number")}:</td>
-                    <td>{farmerDetails?.farmerNumber || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>{t("Farmer Name")}:</td>
-                    <td>{farmerDetails?.firstName || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>{t("Father's/Husband's Name")}:</td>
-                    <td>{farmerDetails?.fatherName || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>{t("Phone Number")}:</td>
-                    <td>{farmerDetails?.mobileNumber || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>{t("TSC")}:</td>
-                    <td>{farmerDetails?.tscName || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>{t("State")}:</td>
-                    <td>{farmerDetails?.stateName || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>{t("District")}:</td>
-                    <td>{farmerDetails?.districtName || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>{t("Taluk")}:</td>
-                    <td>{farmerDetails?.talukName || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>{t("Village")}:</td>
-                    <td>{farmerDetails?.villageName || 'N/A'}</td>
-                  </tr>
+                  {listData.length === 0 ? (
+                    <tr>
+                      <td colSpan={11} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>
+                        {t("No records found")}
+                      </td>
+                    </tr>
+                  ) : listData.map((item, index) => {
+                    const alt = index % 2 === 1;
+                    const cellSt = { padding: "10px 12px", borderBottom: "1px solid #e2e8f0", color: "#1a202c", whiteSpace: "nowrap", background: alt ? "#f8fafc" : "#ffffff" };
+                    const linkSt = { display: "inline-flex", alignItems: "center", gap: "6px", color: "#1e67a8", fontWeight: 600, cursor: "pointer" };
+                    return (
+                      <tr key={index} style={{ transition: "background .12s" }}
+                          onMouseEnter={(e) => { e.currentTarget.style.filter = "brightness(.98)"; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.filter = "none"; }}>
+                        <td style={cellSt}>
+                          <button
+                            type="button"
+                            onClick={() => handleShowModalAssesment(item)}
+                            style={{
+                              background: "linear-gradient(135deg,#1e67a8,#2d9cdb)",
+                              border: "none", borderRadius: "8px", padding: "7px 16px",
+                              fontWeight: 700, fontSize: "12px", color: "#fff",
+                              cursor: "pointer", boxShadow: "0 3px 10px rgba(30,103,168,.30)",
+                              display: "inline-flex", alignItems: "center", gap: "6px",
+                            }}
+                          >
+                            🧪 {t("Assess Now")}
+                          </button>
+                        </td>
+                        <td style={cellSt}>
+                          <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: "26px", height: "26px", borderRadius: "50%", background: "linear-gradient(135deg,#475569,#1e293b)", color: "#fff", fontWeight: 700, fontSize: "11px" }}>{item.serialNumber}</span>
+                        </td>
+                        <td style={cellSt}>{item.marketAuctionDate}</td>
+                        <td style={cellSt}>{item.allottedLotId}</td>
+                        <td style={cellSt}><span style={{ fontFamily: "ui-monospace,monospace", color: "#0f766e", fontWeight: 700 }}>{item.fruitsId}</span></td>
+                        <td style={cellSt}><span style={{ fontWeight: 700 }}>{item.firstName}</span></td>
+                        <td style={cellSt}>{item.mobileNumber}</td>
+                        <td style={cellSt}>
+                          <span style={linkSt} onClick={() => openModalWithDetails(item)}>
+                            <Icon name="info-fill" size="lg" /> {t("Personal Details")}
+                          </span>
+                        </td>
+                        <td style={cellSt}>
+                          <span style={linkSt} onClick={() => openModalWithCropDetails(item)}>
+                            <Icon name="info-fill" size="lg" /> {t("Crop Details")}
+                          </span>
+                        </td>
+                        <td style={cellSt}>
+                          <span style={linkSt} onClick={() => openModalWithFCDetails(item)}>
+                            <Icon name="info-fill" size="lg" /> {t("FC Details")}
+                          </span>
+                        </td>
+                        <td style={cellSt}>
+                          <span style={linkSt} onClick={() => openModalWithWeighmentDetails(item)}>
+                            <Icon name="info-fill" size="lg" /> {t("Weighment Details")}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
-              </Table>
-            </Col>
-          </Row>
-        </div>
-      </Modal.Body>
-    </Modal>
+              </table>
+            </div>
+          </Card.Body>
+        </Card>
+        <Modal show={showModal} onHide={handleCloseModal} size="lg" centered>
+          <Modal.Header closeButton closeVariant="white" style={styles.modalHeader}>
+            <Modal.Title style={styles.modalTitle}>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>👤 {t("Address & Personal Details")}</span>
+              <FarmerHeaderBadges item={farmerDetails} />
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body style={styles.modalBody}>
+            <Row className="g-4">
+              <Col lg="6">
+                <div style={{ background: "#fff", borderRadius: "10px", overflow: "hidden", border: "1px solid #e2e8f0", boxShadow: "0 2px 8px rgba(15,118,110,.06)" }}>
+                  <div style={{ background: "linear-gradient(135deg,#0f766e,#14b8a6)", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: "12px", letterSpacing: "0.04em", textTransform: "uppercase" }}>
+                    🧾 {t("Identity")}
+                  </div>
+                  <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                    <tbody>
+                      <tr><td style={styles.ctstyle}>{t("Farmer Number")}</td><td style={styles.valStyle}>{farmerDetails?.farmerNumber || '—'}</td></tr>
+                      <tr><td style={styles.ctstyle}>{t("Farmer Name")}</td><td style={styles.valStyle}>{farmerDetails?.firstName || '—'}</td></tr>
+                      <tr><td style={styles.ctstyle}>{t("Father's/Husband's Name")}</td><td style={styles.valStyle}>{farmerDetails?.fatherName || '—'}</td></tr>
+                      <tr><td style={styles.ctstyle}>{t("Phone Number")}</td><td style={styles.valStyle}>{farmerDetails?.mobileNumber || '—'}</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </Col>
+              <Col lg="6">
+                <div style={{ background: "#fff", borderRadius: "10px", overflow: "hidden", border: "1px solid #e2e8f0", boxShadow: "0 2px 8px rgba(91,87,172,.06)" }}>
+                  <div style={{ background: "linear-gradient(135deg,#4338ca,#6366f1)", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: "12px", letterSpacing: "0.04em", textTransform: "uppercase" }}>
+                    📍 {t("Address")}
+                  </div>
+                  <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                    <tbody>
+                      <tr><td style={styles.ctstyle}>{t("TSC")}</td><td style={styles.valStyle}>{farmerDetails?.tscName || '—'}</td></tr>
+                      <tr><td style={styles.ctstyle}>{t("State")}</td><td style={styles.valStyle}>{farmerDetails?.stateName || '—'}</td></tr>
+                      <tr><td style={styles.ctstyle}>{t("District")}</td><td style={styles.valStyle}>{farmerDetails?.districtName || '—'}</td></tr>
+                      <tr><td style={styles.ctstyle}>{t("Taluk")}</td><td style={styles.valStyle}>{farmerDetails?.talukName || '—'}</td></tr>
+                      <tr><td style={styles.ctstyle}>{t("Village")}</td><td style={styles.valStyle}>{farmerDetails?.villageName || '—'}</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </Col>
+            </Row>
+          </Modal.Body>
+        </Modal>
 
       {/* <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
         <Modal.Header closeButton>
@@ -637,168 +722,221 @@ const saveError = (message = "Something went wrong!") => {
         </Modal.Body>
       </Modal> */}
 
-      <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>{t("FC Details")}</Modal.Title>
+      <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg" centered>
+        <Modal.Header closeButton closeVariant="white" style={styles.modalHeader}>
+          <Modal.Title style={styles.modalTitle}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>📄 {t("Fitness Certificate Details")}</span>
+            <FarmerHeaderBadges item={farmerDetails} />
+          </Modal.Title>
         </Modal.Header>
-      
-        <Modal.Body>
-          <div className="d-flex flex-column justify-content-center">
-            <table className="table table-bordered">
-              <tbody>
-                {prepareEggs?.length > 0 &&
-                  prepareEggs.map((data, index) => (
-                    <React.Fragment key={index}>
-      
-                      {/* Fitness Certificate Image */}
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Fitness Certificate")}:</td>
-                        <td>
-                          <img
-                            style={{ height: "100px", width: "100px" }}
-                            src={data.previewUrl}
-                            alt={`Fitness Certificate ${index + 1}`}
-                          />
-                          <Button
-                            variant="primary"
-                            size="sm"
-                            className="ms-2"
-                            // onClick={() => downloadFile(data.fitnessCertificatePath)}
-                            onClick={() =>
-                            downloadFile(data.fitnessCertificateId, data.fruitsId)
-                          }
-                                            >
-                            {t("Download File")}
-                          </Button>
-                        </td>
-                      </tr>
-      
-                      {/* Parental Lot Number */}
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Parental Lot Number")}:</td>
-                        <td>{data.lotNumberRsp}</td>
-                      </tr>
-      
-                      {/* DFL Lot Number */}
-                      <tr>
-                        <td style={styles.ctstyle}>{t("DFL Lot Number")}:</td>
-                        <td>{data.numbersOfDfls}</td>
-                      </tr>
-      
-                      {/* Lot Variety */}
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Lot Variety")}:</td>
-                        <td>{data.raceOfDfls}</td>
-                      </tr>
-      
-                      {/* Spun From Date */}
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Spun From Date")}:</td>
-                        <td>{data.spunFromDate}</td>
-                      </tr>
-      
-                      {/* Spun To Date */}
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Spun To Date")}:</td>
-                        <td>{data.spunToDate}</td>
-                      </tr>
-      
-                      {/* Separator */}
-                      <tr>
-                        <td colSpan="2">
-                          <hr />
-                        </td>
-                      </tr>
-      
-                    </React.Fragment>
-                  ))}
-              </tbody>
-            </table>
-          </div>
+
+        <Modal.Body style={styles.modalBody}>
+          {(!prepareEggs || prepareEggs.length === 0) ? (
+            <div style={{ padding: "30px 10px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>
+              {t("No Fitness Certificate data available")}
+            </div>
+          ) : (
+            <Row className="g-3">
+              {prepareEggs.map((data, index) => (
+                <Col lg="12" key={index}>
+                  {/* Each FC certificate gets its own bordered card with a small label strip,
+                      the certificate thumbnail on the left, and a 2-column key/value grid
+                      for the metadata on the right. */}
+                  <div style={{ background: "#fff", borderRadius: "12px", border: "1px solid #e2e8f0", overflow: "hidden", boxShadow: "0 2px 10px rgba(15,118,110,.06)" }}>
+                    <div style={{ background: "linear-gradient(135deg,#0f766e,#14b8a6)", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: "12px", letterSpacing: "0.04em", textTransform: "uppercase", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <span>📜 {t("Certificate")} #{index + 1}</span>
+                      {data.lotNumberRsp && <span style={{ background: "rgba(255,255,255,.22)", borderRadius: "20px", padding: "2px 10px", fontSize: "11px" }}>{t("Lot")} {data.lotNumberRsp}</span>}
+                    </div>
+                    <div style={{ padding: "16px", display: "flex", gap: "18px", flexWrap: "wrap" }}>
+                      <div style={{ flex: "0 0 auto", display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
+                        <div style={{ width: "140px", height: "140px", borderRadius: "10px", border: "1.5px solid #cbd5e0", background: "#f8fafd", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+                          {data.previewUrl ? (
+                            <img
+                              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                              src={data.previewUrl}
+                              alt={`Fitness Certificate ${index + 1}`}
+                            />
+                          ) : (
+                            <span style={{ color: "#a0aec0", fontSize: "12px" }}>{t("No image")}</span>
+                          )}
+                        </div>
+                        {(() => {
+                          const dl = isFcDownloading(data.fitnessCertificateId);
+                          return (
+                            <button
+                              type="button"
+                              disabled={dl}
+                              onClick={() => downloadFile(data.fitnessCertificateId, data.fruitsId)}
+                              style={{
+                                background: dl ? "#94a3b8" : "linear-gradient(135deg,#1e67a8,#2d9cdb)",
+                                border: "none", borderRadius: "8px", padding: "7px 16px",
+                                fontWeight: 700, fontSize: "12px", color: "#fff",
+                                cursor: dl ? "not-allowed" : "pointer",
+                                boxShadow: dl ? "none" : "0 3px 10px rgba(30,103,168,.30)",
+                                display: "inline-flex", alignItems: "center", gap: "6px",
+                              }}
+                            >
+                              {dl ? (
+                                <><span className="spinner-border spinner-border-sm" style={{ width: "12px", height: "12px", borderWidth: "2px" }} /> {t("Downloading…")}</>
+                              ) : (
+                                <>⬇️ {t("Download File")}</>
+                              )}
+                            </button>
+                          );
+                        })()}
+                      </div>
+                      <div style={{ flex: "1 1 280px" }}>
+                        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                          <tbody>
+                            <tr><td style={styles.ctstyle}>{t("Parental Lot Number")}</td><td style={styles.valStyle}>{data.lotNumberRsp || '—'}</td></tr>
+                            <tr><td style={styles.ctstyle}>{t("DFL Lot Number")}</td><td style={styles.valStyle}>{data.numbersOfDfls || '—'}</td></tr>
+                            <tr><td style={styles.ctstyle}>{t("Lot Variety")}</td><td style={styles.valStyle}>{data.raceOfDfls || '—'}</td></tr>
+                            <tr><td style={styles.ctstyle}>{t("Spun From Date")}</td><td style={styles.valStyle}>{data.spunFromDate || '—'}</td></tr>
+                            <tr><td style={styles.ctstyle}>{t("Spun To Date")}</td><td style={styles.valStyle}>{data.spunToDate || '—'}</td></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </Col>
+              ))}
+            </Row>
+          )}
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg">
-      <Modal.Header closeButton style={styles.modalHeader}>
-        <Modal.Title style={styles.modalTitle}>{t("Crop Details")}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body style={styles.modalBody}>
-        <div className="d-flex justify-content-center">
-          <Row className="g-5 d-flex justify-content-center" style={{ width: "100%" }}>
-            <Col lg="12"> {/* Use full width for the table */}
-              <table className="table small table-bordered" style={styles.table}>
-                {/* <thead>
-                  <tr>
-                    <th style={{ width: '40%', textAlign: 'left' }}>Field</th>
-                    <th style={{ width: '60%', textAlign: 'left' }}>Details</th>
-                  </tr>
-                </thead> */}
-                <tbody>
-                  <tr>
-                    <td style={styles.ctstyle}>{t("No of DFL's")}:</td>
-                    <td>{farmerDetails?.numbersOfDfls || 'N/A'}</td>
-                  </tr>
-                  <tr>
-                    <td style={styles.ctstyle}>{t("Lot No.")}:</td>
-                    <td>{farmerDetails?.lotNumberRsp || 'N/A'}</td>
-                  </tr>
-                  {/* <tr>
-                    <td style={styles.ctstyle}>Rate Per 100 Dfls:</td>
-                    <td>{farmerDetails?.dflsSource || 'N/A'}</td>
-                  </tr> */}
-                  <tr>
-                    <td style={styles.ctstyle}>{t("Variety")}:</td>
-                    <td>{farmerDetails?.raceName || 'N/A'}</td>
-                  </tr>
-                </tbody>
-              </table>
+      <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg" centered>
+        <Modal.Header closeButton closeVariant="white" style={styles.modalHeader}>
+          <Modal.Title style={styles.modalTitle}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>🌿 {t("Crop Details")}</span>
+            <FarmerHeaderBadges item={farmerDetails} />
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={styles.modalBody}>
+          <Row className="g-3">
+            {/* KPI strip — three coloured cards summarising the crop at a glance, then a key/value table below. */}
+            <Col md="4">
+              <div style={{ background: "linear-gradient(135deg,#f0fdfa,#ccfbf1)", border: "1.5px solid #5eead4", borderRadius: "12px", padding: "14px 16px" }}>
+                <div style={{ fontSize: "11px", color: "#0f766e", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("No of DFL's")}</div>
+                <div style={{ fontSize: "20px", color: "#134e4a", fontWeight: 800, marginTop: "4px" }}>{farmerDetails?.numbersOfDfls || '—'}</div>
+              </div>
+            </Col>
+            <Col md="4">
+              <div style={{ background: "linear-gradient(135deg,#eef2ff,#e0e7ff)", border: "1.5px solid #a5b4fc", borderRadius: "12px", padding: "14px 16px" }}>
+                <div style={{ fontSize: "11px", color: "#4338ca", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("Lot No.")}</div>
+                <div style={{ fontSize: "20px", color: "#312e81", fontWeight: 800, marginTop: "4px" }}>{farmerDetails?.lotNumberRsp || '—'}</div>
+              </div>
+            </Col>
+            <Col md="4">
+              <div style={{ background: "linear-gradient(135deg,#fef3c7,#fde68a)", border: "1.5px solid #f59e0b", borderRadius: "12px", padding: "14px 16px" }}>
+                <div style={{ fontSize: "11px", color: "#92400e", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("Variety")}</div>
+                <div style={{ fontSize: "20px", color: "#78350f", fontWeight: 800, marginTop: "4px" }}>{farmerDetails?.raceName || '—'}</div>
+              </div>
+            </Col>
+            <Col lg="12">
+              <div style={{ background: "#fff", borderRadius: "10px", overflow: "hidden", border: "1px solid #e2e8f0", boxShadow: "0 2px 8px rgba(15,118,110,.06)" }}>
+                <div style={{ background: "linear-gradient(135deg,#0f766e,#14b8a6)", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: "12px", letterSpacing: "0.04em", textTransform: "uppercase" }}>
+                  📋 {t("Full Crop Details")}
+                </div>
+                <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                  <tbody>
+                    <tr><td style={styles.ctstyle}>{t("No of DFL's")}</td><td style={styles.valStyle}>{farmerDetails?.numbersOfDfls || '—'}</td></tr>
+                    <tr><td style={styles.ctstyle}>{t("Lot No.")}</td><td style={styles.valStyle}>{farmerDetails?.lotNumberRsp || '—'}</td></tr>
+                    <tr><td style={styles.ctstyle}>{t("Variety")}</td><td style={styles.valStyle}>{farmerDetails?.raceName || '—'}</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </Col>
           </Row>
-        </div>
-      </Modal.Body>
-    </Modal>
+        </Modal.Body>
+      </Modal>
       <Modal
         show={showModalWeighment}
         onHide={handleCloseModalWeighment}
         size="lg"
+        centered
       >
-        <Modal.Header closeButton style={styles.modalHeader}>
-        <Modal.Title style={styles.modalTitle}>{t("Weighment Details")}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body style={styles.modalBody}>
-        <div className="d-flex justify-content-center">
-          <Row className="g-5 d-flex justify-content-center" style={{ width: "100%" }}>
-            <Col lg="12"> {/* Use full width for the table */}
-              <table className="table small table-bordered" style={styles.table}>
-                
-                <tbody>
-                  <tr>
-                    <td style={styles.ctstyle}>{t("Initial Weighment")}:</td>
-                    <td>{farmerDetails?.initialWeighment || 'N/A'}</td>
-                  </tr>
-                  
-                </tbody>
-              </table>
+        <Modal.Header closeButton closeVariant="white" style={styles.modalHeader}>
+          <Modal.Title style={styles.modalTitle}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>⚖️ {t("Weighment Details")}</span>
+            <FarmerHeaderBadges item={farmerDetails} />
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={styles.modalBody}>
+          <Row className="g-3 justify-content-center">
+            <Col md="8" lg="6">
+              {/* Big hero KPI card — Initial Weighment is the only field, so make it count. */}
+              <div style={{
+                background: "linear-gradient(135deg,#0f766e 0%,#14b8a6 100%)",
+                borderRadius: "14px",
+                padding: "24px 22px",
+                color: "#fff",
+                boxShadow: "0 6px 20px rgba(15,118,110,.25)",
+                textAlign: "center",
+              }}>
+                <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", opacity: .9 }}>
+                  ⚖️ {t("Initial Weighment")}
+                </div>
+                <div style={{ fontSize: "36px", fontWeight: 800, marginTop: "8px", letterSpacing: ".02em" }}>
+                  {farmerDetails?.initialWeighment ? `${farmerDetails.initialWeighment}` : '—'}
+                  {farmerDetails?.initialWeighment && (
+                    <span style={{ fontSize: "16px", fontWeight: 700, marginLeft: "6px", opacity: .85 }}>{t("kg")}</span>
+                  )}
+                </div>
+                {farmerDetails?.allottedLotId && (
+                  <div style={{ marginTop: "12px", fontSize: "12px", opacity: .9 }}>
+                    📦 {t("Lot")} #{farmerDetails.allottedLotId}
+                  </div>
+                )}
+              </div>
             </Col>
           </Row>
-        </div>
-      </Modal.Body>
+        </Modal.Body>
       </Modal>
 
       <Modal
         show={showModalAssesment}
         onHide={handleCloseModalAssesment}
         size="lg"
+        centered
       >
-        <Modal.Header closeButton>
-          <Modal.Title>{t("Pupa Test")}</Modal.Title>
+        <Modal.Header closeButton style={{ background: "linear-gradient(135deg,#0f766e 0%,#14b8a6 50%,#5b57ac 100%)", border: "none", padding: "16px 24px", borderRadius: "8px 8px 0 0" }} closeVariant="white">
+          <Modal.Title style={{ color: "#fff", fontWeight: 800, fontSize: "16px", display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>🧪 {t("Pupa Test")}</span>
+            {selectedAssessmentItem?.firstName && (
+              <span style={{ background: "rgba(255,255,255,.22)", borderRadius: "20px", padding: "4px 14px", fontSize: "12px", fontWeight: 700 }}>
+                👤 {selectedAssessmentItem.firstName}
+              </span>
+            )}
+            {selectedAssessmentItem?.fruitsId && (
+              <span style={{ background: "rgba(255,255,255,.22)", borderRadius: "20px", padding: "4px 14px", fontSize: "12px", fontWeight: 700 }}>
+                🆔 {selectedAssessmentItem.fruitsId}
+              </span>
+            )}
+            {selectedAssessmentItem?.allottedLotId && (
+              <span style={{ background: "rgba(255,255,255,.22)", borderRadius: "20px", padding: "4px 14px", fontSize: "12px", fontWeight: 700 }}>
+                📦 {t("Lot")} #{selectedAssessmentItem.allottedLotId}
+              </span>
+            )}
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ padding: "20px 24px", background: "linear-gradient(180deg,#ffffff,#f8fffe)" }}>
           <Form
             noValidate
             validated={validatedInitialWeighment}
             onSubmit={handleinitialWeighment}
           >
+            {/* Pupa Test fields section — visually grouped under a teal banner so the
+                user can see Pupa Test vs Cocoon Assessment as two distinct stages. */}
+            <Card className="mb-3" style={{ border: "none", borderRadius: "12px", boxShadow: "0 2px 12px rgba(15,118,110,.10)", overflow: "hidden" }}>
+              <div style={{
+                background: "linear-gradient(135deg,#0f766e,#14b8a6)",
+                color: "#fff", padding: "10px 16px",
+                fontWeight: 800, fontSize: "13px", display: "flex", alignItems: "center", gap: "8px",
+              }}>
+                <span>🧪</span> {t("Pupa Test")}
+              </div>
+              <Card.Body style={{ padding: "16px" }}>
             <Row className="g-3">
               <Col lg="6">
                 <Form.Group className="form-group">
@@ -942,42 +1080,21 @@ const saveError = (message = "Something went wrong!") => {
                 )}
               </Form.Group>
             </Col>
+            </Row>
+              </Card.Body>
+            </Card>
 
-
-                
-
-                    <Block className="mt-3">
-                    <Card  className="mt-3"
-                          style={{
-                            border: "none",
-                            boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-                          }}>
-                <Card.Header style={{
-                              // backgroundColor: "#0a2463",
-                              backgroundColor: "#0F6CBE",
-                              fontWeight: "bold",
-                              fontSize: "1.2rem",
-                              padding: "7px 12px",
-                              position: "relative",
-                              color: "white",
-                              overflow: "hidden",
-                            }}> <span>{t("Cocoon Assessment")}</span>
-                            <div
-                              style={{
-                                position: "absolute",
-                                top: "50%",
-                                left: "50%",
-                                transform: "translate(-50%, -50%)",
-                                fontSize: "3rem",
-                                color: "rgba(255, 255, 255, 0.1)", // Light watermark color
-                                zIndex: 0,
-                                pointerEvents: "none", // Allow interactions to pass through
-                                whiteSpace: "nowrap",
-                              }}
-                            >
-                              {/* Farmers Details */}
-                            </div></Card.Header>
-                <Card.Body>
+            {/* Cocoon Assessment section — indigo banner so it's visually distinct from
+                the Pupa Test section above. */}
+            <Card style={{ border: "none", borderRadius: "12px", boxShadow: "0 2px 12px rgba(91,87,172,.10)", overflow: "hidden" }}>
+              <div style={{
+                background: "linear-gradient(135deg,#4338ca,#6366f1)",
+                color: "#fff", padding: "10px 16px",
+                fontWeight: 800, fontSize: "13px", display: "flex", alignItems: "center", gap: "8px",
+              }}>
+                <span>🐛</span> {t("Cocoon Assessment")}
+              </div>
+              <Card.Body style={{ padding: "16px" }}>
                 <Row className="g-gs">
             <Col lg="6">
                 <Form.Group className="form-group">
@@ -1020,31 +1137,37 @@ const saveError = (message = "Something went wrong!") => {
               </Row>
               </Card.Body>
               </Card>
-              </Block>
 
-              
-    {/* </Row> */}
-
-
-              <Col lg="12">
-                <div className="d-flex gap g-2 justify-content-center">
-                  <div className="gap-col">
-                    {/* <Button variant="primary" onClick={handleinitialWeighment}> */}
-                    <Button type="submit" variant="primary">
-                    {t("Proceed To Weighment")}
-                    </Button>
-                  </div>
-                  <div className="gap-col">
-                    <Button
-                      variant="secondary"
-                      onClick={handleCloseModalAssesment}
-                    >
-                      {t("Cancel")}
-                    </Button>
-                  </div>
-                </div>
-              </Col>
-            </Row>
+            <div style={{ display: "flex", justifyContent: "center", gap: "12px", marginTop: "18px" }}>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                style={{
+                  background: isSubmitting ? "#c8d6e5" : "linear-gradient(135deg,#0f766e,#14b8a6)",
+                  border: "none", borderRadius: "10px", padding: "11px 30px",
+                  fontWeight: 700, fontSize: "14px", color: "#fff",
+                  cursor: isSubmitting ? "not-allowed" : "pointer",
+                  boxShadow: isSubmitting ? "none" : "0 4px 14px rgba(15,118,110,.32)",
+                  display: "inline-flex", alignItems: "center", gap: "8px",
+                }}
+              >
+                {isSubmitting ? (
+                  <><span className="spinner-border spinner-border-sm" /> {t("Submitting…")}</>
+                ) : (
+                  <>✅ {t("Proceed To Weighment")}</>
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={handleCloseModalAssesment}
+                style={{
+                  background: "#f1f5f9", border: "1.5px solid #d0d9e8", borderRadius: "10px",
+                  padding: "11px 26px", fontWeight: 600, fontSize: "14px", color: "#4a5568", cursor: "pointer",
+                }}
+              >
+                {t("Cancel")}
+              </button>
+            </div>
           </Form>
         </Modal.Body>
       </Modal>

@@ -144,8 +144,13 @@ const handleDateChange = (date) => {
     return;
   }
 
-  // CASE 2️⃣: Market does NOT require base price → manual entry allowed
-  // Do NOT enforce price
+  // CASE 2️⃣: Market does NOT require base price → manual entry allowed.
+  // Still pre-fill the price from the searched lot so the user doesn't have to
+  // re-type it on every Add click — the previous reset (clean()) was wiping
+  // data.amount after the first add and leaving the second modal blank.
+  if (price) {
+    setData(prev => ({ ...prev, amount: prev.amount || price }));
+  }
   setShowModal(true);
 };
 

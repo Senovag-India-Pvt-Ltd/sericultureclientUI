@@ -433,7 +433,7 @@ function Query() {
     // 30-day token lifetime. localStorage.clear() also fires a storage event
     // in other browser tabs (App.js listener redirects them to login).
     if (type === "UPDATE" || type === "DELETE") {
-      await forceLogoutAfterDestructive(type, okMsg);
+      await forceLogoutAfterDestructive(type, okMsg, content.affectedRows);
       return;
     }
 
@@ -441,47 +441,114 @@ function Query() {
   };
 
   // Logout the current session (and all sibling tabs) after one successful
-  // destructive query. Shows a short countdown so the user sees what happened.
-  const forceLogoutAfterDestructive = async (type, okMsg) => {
+  // destructive query. Two stages:
+  //   1) Show a result popup with the rows-affected count prominently — user
+  //      must click OK to acknowledge (no auto-dismiss).
+  //   2) Then show a non-dismissable 10-second countdown popup before the
+  //      session is actually cleared.
+  const forceLogoutAfterDestructive = async (type, okMsg, affectedRows) => {
     // Set a sentinel BEFORE clear so other tabs receive a storage event with a value.
     try { localStorage.setItem("forced-logout", String(Date.now())); } catch (e) {}
 
+    const rowsCount = affectedRows == null ? null : Number(affectedRows);
+    const rowsLabel =
+      rowsCount === null
+        ? "Query executed"
+        : `${rowsCount.toLocaleString()} row${rowsCount === 1 ? "" : "s"} affected`;
+    const verb = type === "DELETE" ? "deleted" : "updated";
+
+    // ── Stage 1: result popup, user must click OK ──
     await Swal.fire({
       icon: "success",
-      title: `${type} executed — logging you out`,
+      title: `${type} executed successfully`,
       html: `
-        <div style="text-align:left; font-size:13px; color:#475569; margin-bottom:8px;">
-          <b>${type}</b> completed successfully.<br/>
-          <small>${escapeHtml(okMsg)}</small>
+        <div style="
+          display:flex; flex-direction:column; align-items:center; gap:6px;
+          margin: 6px 0 14px;
+        ">
+          <div style="
+            font-size: 44px; font-weight: 900; line-height: 1;
+            color: #065f46; letter-spacing: -.02em;
+          ">
+            ${rowsCount === null ? "—" : rowsCount.toLocaleString()}
+          </div>
+          <div style="font-size:13px; font-weight:700; color:#047857; text-transform:uppercase; letter-spacing:.06em;">
+            row${rowsCount === 1 ? "" : "s"} ${verb}
+          </div>
         </div>
-        <div class="sqlr-countdown">
-          <span>For security, you will be logged out in</span>
-          <span class="num" id="sqlr-logout-cd">5</span>
-          <span>second(s)…</span>
+        <div style="
+          background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px;
+          padding:10px 14px; font-size:13px; color:#166534; text-align:left;
+        ">
+          <b>Server message:</b><br/>
+          <span style="color:#065f46;">${escapeHtml(okMsg)}</span>
         </div>
-        <div style="text-align:left; font-size:12px; color:#64748b; margin-top:8px;">
-          The same login cannot run further UPDATE/DELETE queries.
-          Please sign in again if you need to continue.
+        <div style="text-align:left; font-size:12px; color:#64748b; margin-top:10px;">
+          For security, you will be logged out after this — the same login
+          cannot run further UPDATE/DELETE queries.
         </div>
       `,
-      confirmButtonText: "Log out now",
+      confirmButtonText: "OK, continue",
       allowOutsideClick: false,
       allowEscapeKey: false,
-      timer: 5000,
-      timerProgressBar: true,
       showClass: { popup: "sqlr-pop-show" },
       hideClass: { popup: "sqlr-pop-hide" },
       customClass: {
         container: "sqlr-swal-container",
         popup: "sqlr-swal sqlr-swal-success",
       },
+    });
+
+    // ── Stage 2: 10-second countdown, then logout ──
+    await Swal.fire({
+      icon: "info",
+      title: "Logging you out…",
+      html: `
+        <div style="text-align:center; font-size:13px; color:#475569; margin-bottom:6px;">
+          Your session will end in
+        </div>
+        <div style="
+          display:flex; justify-content:center; align-items:baseline; gap:6px;
+          margin: 6px 0 12px;
+        ">
+          <span id="sqlr-logout-cd" style="
+            font-size:54px; font-weight:900; color:#dc2626;
+            line-height:1; min-width:80px; text-align:center;
+            display:inline-block;
+            animation: sqlr-tick 1s ease-in-out infinite;
+          ">10</span>
+          <span style="font-size:18px; font-weight:700; color:#64748b;">seconds</span>
+        </div>
+        <div style="
+          height:8px; width:100%; background:#f1f5f9; border-radius:999px; overflow:hidden;
+          margin-top:6px;
+        ">
+          <div id="sqlr-logout-bar" style="
+            height:100%; width:100%;
+            background: linear-gradient(90deg,#ef4444,#dc2626);
+            transition: width 1s linear;
+          "></div>
+        </div>
+      `,
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      timer: 10000,
+      showClass: { popup: "sqlr-pop-show" },
+      hideClass: { popup: "sqlr-pop-hide" },
+      customClass: {
+        container: "sqlr-swal-container",
+        popup: "sqlr-swal sqlr-swal-warning",
+      },
       didOpen: () => {
         const popup = Swal.getPopup();
         const cdEl = popup.querySelector("#sqlr-logout-cd");
-        let n = 5;
+        const barEl = popup.querySelector("#sqlr-logout-bar");
+        let n = 10;
         const t = setInterval(() => {
           n -= 1;
           if (cdEl) cdEl.textContent = String(Math.max(0, n));
+          if (barEl) barEl.style.width = `${Math.max(0, n) * 10}%`;
           if (n <= 0) clearInterval(t);
         }, 1000);
         popup.addEventListener("swal-cleanup", () => clearInterval(t));

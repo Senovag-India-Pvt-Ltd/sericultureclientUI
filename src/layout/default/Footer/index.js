@@ -10,7 +10,7 @@ function Footer() {
     : "Department of Sericulture, Government of Karnataka";
   const developerText = isKannada
     ? "ಸೆನೋವಾಗ್ ಇಂಡಿಯಾ ಪ್ರೈ. ಲಿ. ಅವರಿಂದ ವಿನ್ಯಾಸ ಮತ್ತು ಅಭಿವೃದ್ಧಿಪಡಿಸಲಾಗಿದೆ"
-    : "Designed and Developed by Senovag India Pvt Ltd";
+    : "Designed and Developed by Senovag India Pvt. Ltd.";
 
   return (
     <div className="nk-footer" style={{backgroundColor: "#0f6cbe",color: "#fff"}}>

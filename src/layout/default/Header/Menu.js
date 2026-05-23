@@ -3290,14 +3290,14 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Inspection_Download_Inspection_Mobile_App ? (
+            {/* {showMenu.Inspection_Download_Inspection_Mobile_App ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Download Inspection Mobile App")}
                   to="http://e-reshme.karnataka.gov.in/seriui/sericulture.apk"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
             {/* {showMenu.Inspection_Tracking_Status_of_Mulberry ? (
               <MenuItem>
                 <MenuItemLink
