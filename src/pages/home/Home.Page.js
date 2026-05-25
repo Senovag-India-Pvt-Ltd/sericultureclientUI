@@ -93,18 +93,54 @@ const metricKeys = [
 ];
 
 const dummyMetrics = {
-  totalRegisteredFarmers: "1,27,760",
-  totalRegisteredReelers: "4,017",
-  totalRegisteredTraders: "63",
-  totalRegisteredRSP: "119",
-  totalRegisteredNSSO: "06",
-  totalRegisteredCRC: "411",
-  totalFarms: "89",
-  totalGrainages: "29",
-  totalMarkets: "40",
-  schemesOnlineServices: "27",
-  totalBeneficiaryApplications: "3,279",
-  totalAmountDisbursed: "68,76,76,250",
+  totalRegisteredFarmers: "—",
+  totalRegisteredReelers: "—",
+  totalRegisteredTraders: "—",
+  totalRegisteredRSP: "—",
+  totalRegisteredNSSO: "—",
+  totalRegisteredCRC: "—",
+  totalFarms: "—",
+  totalGrainages: "—",
+  totalMarkets: "—",
+  schemesOnlineServices: "—",
+  totalBeneficiaryApplications: "—",
+  totalAmountDisbursed: "—",
+};
+
+// === Live metric API config ====================================================
+// One dedicated count endpoint backs the Statistics panel — a single
+// pre-aggregated SQL query returning all twelve scalars in one row. Mounted
+// under /v1/dashboard/ which the auth module's SecurityConfig permits without
+// a JWT, so the public landing page can call it directly. Master-data tables
+// live in the same database so they're folded into this single query.
+const REGISTRATION_BASE = process.env.REACT_APP_API_BASE_URL_REGISTRATION || "/farmer-registration/v1/";
+
+// Indian-locale grouping ("1,27,760"). Numbers >= 1 stay integer; falsy/NaN → "—".
+const formatNumber = (value) => {
+  if (value === null || value === undefined) return "—";
+  const num = typeof value === "number" ? value : Number(value);
+  if (!Number.isFinite(num)) return "—";
+  return new Intl.NumberFormat("en-IN").format(Math.round(num));
+};
+
+// SQL Server lowercases result-set column names by default, but be tolerant of
+// camelCase too in case anyone changes the backend later.
+const pickNum = (obj, ...keys) => {
+  if (!obj) return 0;
+  for (const k of keys) {
+    const v = obj[k] ?? obj[k.toLowerCase()] ?? obj[k.toUpperCase()];
+    if (v !== undefined && v !== null && v !== "") {
+      const n = Number(v);
+      if (Number.isFinite(n)) return n;
+    }
+  }
+  return 0;
+};
+
+const fetchJson = async (url, signal) => {
+  const res = await fetch(url, { signal, cache: "no-store" });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
 };
 
 const photoFlashImages = [
@@ -230,7 +266,45 @@ const HomePage = () => {
   }, [serverOffsetMs]);
 
   useEffect(() => {
-    setMetrics(dummyMetrics);
+    const controller = new AbortController();
+    const { signal } = controller;
+
+    // One endpoint — single SQL query, twelve scalars in one row.
+    const loadMetrics = async () => {
+      let res = null;
+      try {
+        res = await fetchJson(`${REGISTRATION_BASE}dashboard/home-stats`, signal);
+      } catch {
+        return; // network/abort — leave existing values in place
+      }
+
+      if (signal.aborted) return;
+
+      setMetrics({
+        totalRegisteredFarmers:       formatNumber(pickNum(res, "farmers")),
+        totalRegisteredReelers:       formatNumber(pickNum(res, "reelers")),
+        totalRegisteredTraders:       formatNumber(pickNum(res, "traders")),
+        totalRegisteredRSP:           formatNumber(pickNum(res, "rsp")),
+        totalRegisteredNSSO:          formatNumber(pickNum(res, "nsso")),
+        totalRegisteredCRC:           formatNumber(pickNum(res, "crc")),
+        totalFarms:                   formatNumber(pickNum(res, "farms")),
+        totalGrainages:               formatNumber(pickNum(res, "grainages")),
+        totalMarkets:                 formatNumber(pickNum(res, "markets")),
+        schemesOnlineServices:        formatNumber(pickNum(res, "schemes")),
+        totalBeneficiaryApplications: formatNumber(pickNum(res, "beneficiaries")),
+        totalAmountDisbursed:         formatNumber(pickNum(res, "disbursed_amount", "disbursedAmount")),
+      });
+    };
+
+    void loadMetrics();
+
+    // Refresh once a minute so the "LIVE" badge isn't a lie.
+    const interval = window.setInterval(() => { void loadMetrics(); }, 60000);
+
+    return () => {
+      controller.abort();
+      window.clearInterval(interval);
+    };
   }, []);
 
   const photoSrc = visiblePhotos[activePhoto];
