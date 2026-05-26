@@ -1,6 +1,7 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
+import ReactSelect from "react-select";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import DatePicker from "react-datepicker";
@@ -64,6 +65,7 @@ function ServiceApplicationEdit() {
     hectareId: "",
     periodFrom: "",
     periodTo: "",
+    userMasterId: "",
   });
 
   const [developedLand, setDevelopedLand] = useState({
@@ -250,6 +252,9 @@ useEffect(() => {
         description: datas.description,
         hectareId: datas.hectareId,
         spacingId: datas.spacingId,
+        periodFrom: datas.periodFrom ? new Date(datas.periodFrom) : prev.periodFrom,
+        periodTo: datas.periodTo ? new Date(datas.periodTo) : prev.periodTo,
+        userMasterId: datas.userMasterId || "",
       }));
 
       setFarmerId(datas.farmerId);
@@ -708,6 +713,33 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
 
   const [developedArea, setDevelopedArea] = useState([]);
 
+  // Saved Land Details rows come from DbtFarmerLandDetails which stores only
+  // location *codes* (districtCode, talukCode, …) — no names. The FRUITS
+  // land data in landDetailsList has the names. Join on landCode so the saved
+  // table can render District/Taluk/Hobli/Village.
+  const enrichedSavedLandDetailsList = useMemo(() => {
+    const saved = Array.isArray(savedLandDetailsList) ? savedLandDetailsList : [];
+    const profile = Array.isArray(landDetailsList) ? landDetailsList : [];
+    if (saved.length === 0 || profile.length === 0) return saved;
+    const byLandCode = new Map();
+    profile.forEach((p) => {
+      if (p && p.landCode != null) byLandCode.set(String(p.landCode), p);
+    });
+    return saved.map((s) => {
+      const match = s && s.landCode != null
+        ? byLandCode.get(String(s.landCode))
+        : null;
+      if (!match) return s;
+      return {
+        ...s,
+        districtName: s.districtName || match.districtName,
+        talukName: s.talukName || match.talukName,
+        hobliName: s.hobliName || match.hobliName,
+        villageName: s.villageName || match.villageName,
+      };
+    });
+  }, [savedLandDetailsList, landDetailsList]);
+
   // const handleCheckboxChange = (farmerLandDetailsId) => {
   //   setLandDetailsIds((prevIds) => {
   //     const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
@@ -739,29 +771,26 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
   const handleCheckboxChange = (farmerLandDetailsId, selectedData) => {
     setLandDetailsIds((prevIds) => {
       const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
-      // For Single Select
-      const newIds = isAlreadySelected ? [] : [farmerLandDetailsId];
-      // For Multiple Select
-      // const newIds = isAlreadySelected
-      //   ? prevIds.filter((id) => id !== farmerLandDetailsId)
-      //   : [...prevIds, farmerLandDetailsId];
+      // Multi-select: keep previously checked rows and add/remove this one.
+      const newIds = isAlreadySelected
+        ? prevIds.filter((id) => id !== farmerLandDetailsId)
+        : [...prevIds, farmerLandDetailsId];
 
       setDevelopedArea((prevData) => {
         if (isAlreadySelected) {
           const { [farmerLandDetailsId]: _, ...rest } = prevData;
           return rest;
-        } else {
-          // If selected, add to developedArea
-          return {
-            // ...prevData,
-            [farmerLandDetailsId]: {
-              ...selectedData,
-              devAcre: prevData[farmerLandDetailsId]?.devAcre || "0",
-              devGunta: prevData[farmerLandDetailsId]?.devFGunta || "0",
-              devFGunta: prevData[farmerLandDetailsId]?.devFGunta || "0",
-            },
-          };
         }
+        // Preserve existing entries; add the newly selected row.
+        return {
+          ...prevData,
+          [farmerLandDetailsId]: {
+            ...selectedData,
+            devAcre: prevData[farmerLandDetailsId]?.devAcre || "0",
+            devGunta: prevData[farmerLandDetailsId]?.devGunta || "0",
+            devFGunta: prevData[farmerLandDetailsId]?.devFGunta || "0",
+          },
+        };
       });
 
       return newIds;
@@ -844,8 +873,27 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     getFinancialList();
   }, []);
 
+  // V2 edit: User Master dropdown (required-editable per edit spec)
+  const [userListData, setUserListData] = useState([]);
+  const getUserList = () => {
+    api
+      .get(baseURLMasterData + `userMaster/get-all`)
+      .then((response) => {
+        setUserListData(response.data.content.userMaster || []);
+      })
+      .catch(() => setUserListData([]));
+  };
   useEffect(() => {
-    if (!data.financialYearMasterId || financialyearListData.length === 0) return;
+    getUserList();
+  }, []);
+
+  // FY → period derivation is handled by the existing useEffect below
+  // (uses the getFinancialYearPeriod helper). Don't duplicate.
+
+  useEffect(() => {
+    if (!data.financialYearMasterId
+        || !Array.isArray(financialyearListData)
+        || financialyearListData.length === 0) return;
     const selectedFY = financialyearListData.find(
       (f) => String(f.financialYearMasterId) === String(data.financialYearMasterId)
     );
@@ -899,12 +947,12 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
   //   getSubSchemeList();
   // }, []);
 
-  const [viewDetailsData, setViewDetailsData] = useState({
-    // applicationDetails: [],
-    // landDetails: [],
-    // applicationTransactionDetails: [],
-    documentsResponses: [],
-  });
+  // viewDetailsData feeds a <DataTable data={viewDetailsData}>. The setter
+  // below replaces it with content.documentsResponses (an array), so the
+  // initial shape MUST also be an array — initialising as an object caused
+  // DataTable to crash with "undefined.map" when documentsResponses was
+  // missing for an application.
+  const [viewDetailsData, setViewDetailsData] = useState([]);
 
   const handleView = (_id) => {
     api
@@ -912,17 +960,10 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         applicationFormId: _id,
       })
       .then((response) => {
-        const content = response.data.content[0];
-        
-        // if (content.applicationDetailsResponses.length <= 0) {
-        //   saveError("No Details Found!!!");
-        // } else {
-          // Update state with document responses and other details if needed
-          setViewDetailsData(content.documentsResponses);
-          
-          // Fetch the ID list based on applicationFormId
-          // getIdList(_id);
-        // }
+        const content = response.data?.content?.[0];
+        if (content) {
+          setViewDetailsData(content.documentsResponses || []);
+        }
       })
       .catch((err) => {
         // Handle error if needed
@@ -1229,80 +1270,48 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
   };
 
   const postData = (event) => {
-    const transformedData = Object.keys(developedArea).map((id) => ({
-      // landDeveloped: developedLand.landDeveloped,
-      // landDetailId: parseInt(id),
-      ...developedArea[id],
-    }));
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
       setValidated(true);
-    } else {
-      event.preventDefault();
-      const formattedDates = {
-        periodFrom: formatDate(data.periodFrom),
-        periodTo: formatDate(data.periodTo),
-      };
-      const sendPost = {
-        id: id,
-        farmerId: farmerId,
+      return;
+    }
+    event.preventDefault();
+
+    // Equipment line-item flow is NOT part of the V2 edit endpoint contract,
+    // so route it through the legacy service endpoint.
+    if (data.equordev === "equipment") {
+      const legacyPayload = {
+        id,
+        farmerId,
         headOfAccountId: data.scHeadAccountId,
         schemeId: data.scSchemeDetailsId,
         subSchemeId: data.scSubSchemeDetailsId,
         componentType: data.scSubSchemeType,
-        componentTypeName: "",
-        sanctionAmount: data.sanctionAmount,
         schemeAmount: data.schemeAmount,
         sanctionNo: data.sanctionNumber,
-        acre: developedLand.acre,
-        gunta: developedLand.gunta,
-        fgunta: developedLand.fgunta,
         categoryId: data.scCategoryId,
         componentId: data.scComponentId,
-        landDetailId: landDetailsIds[0],
-        talukId: landData.talukId,
-        newFarmer: true,
-        expectedAmount: data.expectedAmount,
         financialYearMasterId: data.financialYearMasterId,
         vendorId: equipment.vendorId,
         spacingId: data.spacingId,
         hectareId: data.hectareId,
         description: equipment.description,
-        devAcre: 0,
-        devGunta: 0,
-        devFGunta: 0,
-        periodFrom: formattedDates.periodFrom,
-        periodTo: formattedDates.periodTo,
-      };
-
-      if (data.equordev === "land") {
-        // sendPost.applicationFormLandDetailRequestList = [
-        //   {
-        //     unitTypeMasterId: developedLand.unitType,
-        //     landDeveloped: developedLand.landDeveloped,
-        //   },
-        // ];
-        sendPost.dbtFarmerLandDetailsRequestList = transformedData;
-      } else if (data.equordev === "equipment") {
-        sendPost.applicationFormLineItemRequestList = [
+        periodFrom: formatDate(data.periodFrom),
+        periodTo: formatDate(data.periodTo),
+        applicationFormLineItemRequestList: [
           {
             unitTypeMasterId: equipment.unitType,
             lineItemComment: equipment.description,
             cost: equipment.price,
             vendorId: equipment.vendorId,
           },
-        ];
-      }
-
-      // if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
-      //   return;
-      // }
+        ],
+      };
       api
-        .post(baseURLDBT + `service/editServiceApplicationForm`, sendPost)
+        .post(baseURLDBT + `service/editServiceApplicationForm`, legacyPayload)
         .then((response) => {
-          
           if (response.data.errorCode === -1) {
             saveError(response.data.errorMessages[0]);
           } else if (response.data && response.data.error) {
@@ -1311,25 +1320,108 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
             saveSuccess();
             setApplicationId(response.data.content.applicationDocumentId);
             clear();
-            
             getIdList();
             setValidated(false);
           }
         })
         .catch((err) => {
-          if (
-            err.response &&
-            err.response &&
-            err.response.data &&
-            err.response.data.validationErrors
-          ) {
-            if (Object.keys(err.response.data.validationErrors).length > 0) {
-              saveError(err.response.data.validationErrors);
-            }
+          if (err.response?.data?.validationErrors) {
+            saveError(err.response.data.validationErrors);
           }
         });
       setValidated(true);
+      return;
     }
+
+    // Land flow goes through the V2 PUT endpoint for SERVICE applications.
+    // Backend updates ONLY sc_application_form_service + DbtFarmerLandDetails.
+    const savedByLandCode = new Map();
+    (savedLandDetailsList || []).forEach((s) => {
+      if (s && s.landCode != null) {
+        savedByLandCode.set(String(s.landCode), s);
+      }
+    });
+
+    const landRows = Object.keys(developedArea).map((key) => {
+      const row = developedArea[key] || {};
+      const saved = row.landCode != null
+        ? savedByLandCode.get(String(row.landCode))
+        : null;
+      const op = saved ? "UPDATE" : "NEW";
+      return {
+        op,
+        dbtFarmerLandDetailsId: saved ? saved.dbtFarmerLandDetailsId : null,
+        farmerId: farmerId ? Number(farmerId) : null,
+        hissa: row.hissa,
+        subsidyAvailed: row.subsidyAvailed,
+        surveyNumber: row.surveyNumber,
+        ownerName: row.ownerName,
+        surNoc: row.surNoc,
+        ownerNo: row.ownerNo,
+        mainOwnerNo: row.mainOwnerNo,
+        acre: row.acre,
+        gunta: row.gunta,
+        fGunta: row.fgunta != null ? row.fgunta : row.fGunta,
+        landCode: row.landCode,
+        districtCode: row.districtCode,
+        talukCode: row.talukCode,
+        hobliCode: row.hobliCode,
+        villageCode: row.villageCode,
+        devAcre: row.devAcre,
+        devGunta: row.devGunta,
+        devFGunta: row.devFGunta,
+      };
+    });
+
+    const v2Payload = {
+      id: id ? parseInt(id, 10) : null,
+      farmerId,
+      financialYearMasterId: data.financialYearMasterId || null,
+      schemeId: data.scSchemeDetailsId || null,
+      subSchemeId: data.scSubSchemeDetailsId || null,
+      componentType: data.scSubSchemeType || null,
+      componentId: data.scComponentId || null,
+      categoryId: data.scCategoryId || null,
+      headOfAccountId: data.scHeadAccountId || null,
+      userMasterId: data.userMasterId || null,
+      schemeAmount: data.schemeAmount || null,
+      sanctionNo: data.sanctionNumber || null,
+      vendorId: equipment.vendorId || null,
+      description: equipment.description || null,
+      hectareId: data.hectareId || null,
+      spacingId: data.spacingId || null,
+      // periodFrom/periodTo intentionally omitted; backend re-derives from FY.
+      landRows,
+    };
+
+    api
+      .put(baseURLDBT + `service/edit-service-application-form/${id}`, v2Payload)
+      .then((response) => {
+        const body = response.data && response.data.content;
+        if (body && body.error) {
+          saveError(body.errorDescription || "Update failed");
+          return;
+        }
+        saveSuccess();
+        clear();
+        getIdList();
+        setValidated(false);
+      })
+      .catch((err) => {
+        if (err.response?.status === 409) {
+          saveError(
+            err.response.data?.content?.errorDescription ||
+              "Application has already been pushed and cannot be edited"
+          );
+        } else if (err.response?.data?.content?.errorDescription) {
+          saveError(err.response.data.content.errorDescription);
+        } else if (err.response?.data?.validationErrors) {
+          saveError(err.response.data.validationErrors);
+        } else {
+          saveError("Update failed");
+        }
+      });
+    setValidated(true);
   };
 
   const styles = {
@@ -2356,14 +2448,13 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
                                 required
-                                disabled
                                 isInvalid={
                                   data.financialYearMasterId === undefined ||
                                   data.financialYearMasterId === "0"
                                 }
                               >
                                 <option value="">{t("Select Year")}</option>
-                                {financialyearListData.map((list) => (
+                                {(financialyearListData || []).map((list) => (
                                   <option
                                     key={list.financialYearMasterId}
                                     value={list.financialYearMasterId}
@@ -2400,7 +2491,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                               >
                                 <option value="">{t("Select Scheme Names")}</option>
                                 {scSchemeDetailsListData && scSchemeDetailsListData.length > 0 ? (
-                                  scSchemeDetailsListData.map((list) => (
+                                  (scSchemeDetailsListData || []).map((list) => (
                                   <option
                                     key={list.scSchemeDetailsId}
                                     value={list.scSchemeDetailsId}
@@ -2519,7 +2610,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                               >
                                 <option value="">{t("Select Component Type")}</option>
                                 {scSubSchemeDetailsListData && scSubSchemeDetailsListData.length > 0 ? (
-                                  scSubSchemeDetailsListData.map((list, i) => (
+                                  (scSubSchemeDetailsListData || []).map((list, i) => (
                                     <option key={i} value={list.subSchemeId}>
                                       {list.subSchemeName}
                                     </option>
@@ -2554,7 +2645,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                 }
                               >
                                 <option value="">Select Sub Scheme</option>
-                                {schemeQuotaDetailsListData.map((list) => (
+                                {(schemeQuotaDetailsListData || []).map((list) => (
                                   <option
                                     key={list.schemeQuotaId}
                                     value={list.schemeQuotaId}
@@ -2590,7 +2681,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                 }
                               >
                                 <option value="">{t("Select Component")}</option>
-                                {scComponentListData.map((list) => (
+                                {(scComponentListData || []).map((list) => (
                                   <option
                                     key={list.scComponentId}
                                     value={list.scComponentId}
@@ -2626,7 +2717,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                 }
                               >
                                 <option value="">{t("Select Sub Component")}</option>
-                                {scCategoryListData.map((list) => (
+                                {(scCategoryListData || []).map((list) => (
                                   <option
                                     key={list.scCategoryId}
                                     value={list.scCategoryId}
@@ -2662,7 +2753,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                 // }
                               >
                                 <option value="">{t("Select Head of Account")}</option>
-                                {scHeadAccountListData.map((list) => (
+                                {(scHeadAccountListData || []).map((list) => (
                                   <option
                                     key={list.headOfAccountId}
                                     value={list.headOfAccountId}
@@ -2674,6 +2765,42 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                               {/* <Form.Control.Feedback type="invalid">
                               {t("Head of Account is required")}
                               </Form.Control.Feedback> */}
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="userMasterId">
+                              {t("User Master")}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <ReactSelect
+                                options={(userListData || []).map((u) => ({
+                                  value: u.userMasterId,
+                                  label: `${u.username} (${u.userMasterId})`,
+                                }))}
+                                isSearchable
+                                isClearable
+                                placeholder={t("Search and select user")}
+                                value={
+                                  (userListData || [])
+                                    .map((u) => ({
+                                      value: u.userMasterId,
+                                      label: `${u.username} (${u.userMasterId})`,
+                                    }))
+                                    .find(
+                                      (opt) =>
+                                        String(opt.value) === String(data.userMasterId)
+                                    ) || null
+                                }
+                                onChange={(selectedOption) => {
+                                  setData((prev) => ({
+                                    ...prev,
+                                    userMasterId: selectedOption?.value || "",
+                                  }));
+                                }}
+                              />
                             </div>
                           </Form.Group>
                         </Col>
@@ -2811,7 +2938,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                       <DataTable
                         tableClassName="data-table-head-light table-responsive"
                         columns={LandDetailsColumns}
-                        data={savedLandDetailsList}
+                        data={enrichedSavedLandDetailsList}
                         highlightOnHover
                         // pagination
                         // paginationServer
@@ -2856,7 +2983,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                                 }
                               >
                                 <option value="">Select Vendor Name</option>
-                                {scVendorListData.map((list) => (
+                                {(scVendorListData || []).map((list) => (
                                   <option
                                     key={list.scVendorId}
                                     value={list.scVendorId}
@@ -2995,7 +3122,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                       <DataTable
                         tableClassName="data-table-head-light table-responsive"
                         columns={DocumentsUploaded}
-                        data={viewDetailsData}
+                        data={Array.isArray(viewDetailsData) ? viewDetailsData : []}
                         highlightOnHover
                         // pagination
                         // paginationServer
@@ -3139,7 +3266,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                           onChange={handleDocumentInputs}
                         >
                           <option value="">{t("Choose Document Type")}</option>
-                          {docListData.map((list) => (
+                          {(docListData || []).map((list) => (
                             <option
                               key={list.documentMasterId}
                               value={list.documentMasterId}
@@ -3184,7 +3311,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     <div className="mt-3">
       <h5>Uploaded Documents</h5>
       <ul>
-        {uploadedDocuments.map((doc, index) => (
+        {(uploadedDocuments || []).map((doc, index) => (
           <li key={index}>
             Document Type: {doc.documentId} - {doc.documentName}
           </li>
@@ -3197,7 +3324,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
   <div className="mt-3">
     <h5>{t("Uploaded Documents")}</h5>
     <ul>
-      {uploadedDocuments.map((doc, index) => (
+      {(uploadedDocuments || []).map((doc, index) => (
         <li key={index} className="d-flex align-items-center">
           {/* Show the image if it's available */}
           {doc.documentFile && (
@@ -3245,7 +3372,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
           <Modal.Title>File Upload</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {docListData.map(({ documentId, documentName }) => (
+          {(docListData || []).map(({ documentId, documentName }) => (
             <div key={documentId}>
               <Row className="d-flex justify-content-center align-items-center">
                 <Col lg="2">

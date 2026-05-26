@@ -1337,8 +1337,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
   const navigate = useNavigate();
   
   const handleEdit = (_id) => {
-    navigate(`/seriui/market-edit/${_id}`);
-    // navigate("/seriui/district");
+    navigate(`/seriui/application-form-edit/${_id}`);
   };
 
   const deleteError = () => {
@@ -1736,20 +1735,38 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
     {
   name: t("Action"),
   cell: (row) => (
-    <>
+    <div className="d-flex gap-2 align-items-center py-1" style={{ flexWrap: "nowrap" }}>
       <Button
         variant="primary"
         size="sm"
         onClick={() => handleView(row.scApplicationFormId)}
-        className="ms-1"
+        className="d-inline-flex align-items-center flex-shrink-0"
+        style={{ gap: "0.3rem", whiteSpace: "nowrap" }}
       >
-        {t("View")}
+        <Icon name="eye" />
+        <span>{t("View")}</span>
       </Button>
-    </>
+      <Button
+        variant="warning"
+        size="sm"
+        onClick={() => handleEdit(row.scApplicationFormId)}
+        disabled={row.fruitsStatus === true || row.dbtStatus === true}
+        title={(row.fruitsStatus === true || row.dbtStatus === true)
+          ? t("Already pushed — cannot edit")
+          : t("Edit application")}
+        className="d-inline-flex align-items-center flex-shrink-0"
+        style={{ gap: "0.3rem", whiteSpace: "nowrap" }}
+      >
+        <Icon name="edit" />
+        <span>{t("Edit")}</span>
+      </Button>
+    </div>
   ),
-  sortable: true,
+  sortable: false,
   hide: "md",
-  // grow: 2,
+  width: "200px",
+  minWidth: "200px",
+  center: true,
 },
 // {
 //   name: "",
