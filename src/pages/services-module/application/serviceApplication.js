@@ -5292,12 +5292,12 @@ const isUserValid = React.useMemo(() => {
     }
     if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS") {
       sendPost.equipmentTableRequestList = rearingEquipmentPurchaseList.map((item) => ({
-        eDescription: item.description,
-        eL1Rate: item.l1Rate,
-        eVendorId: item.vendorId,
-        eMachineTypeId: item.machineTypeId,
-        eMachineQuantity: item.machineQuantity,
-        eTaxInvoiceNo: item.taxInvoiceNo,
+        eDescription: item.description || null,
+        eL1Rate: item.l1Rate || null,
+        eVendorId: item.vendorId ? parseInt(item.vendorId, 10) : null,
+        eMachineTypeId: item.machineTypeId ? parseInt(item.machineTypeId, 10) : null,
+        eMachineQuantity: item.machineQuantity ? parseFloat(item.machineQuantity) : null,
+        eTaxInvoiceNo: item.taxInvoiceNo || null,
         eTaxInvoiceDate: item.taxInvoiceDate ? formatDate(item.taxInvoiceDate) : null,
       }));
     } else if (data.equordev.includes("equipment")) {
@@ -11321,7 +11321,8 @@ const fetchReelerDetails = () => {
 
                         {/* Subsidy Amount for Silk Samagra State: centralAmount + stateAmount */}
                         {schemeDetails.calculationBasedOn === "Silk Samagra State" &&
-                          getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Rearing Equipment SS" && (
+                          getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Rearing Equipment SS" &&
+                          getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Registered Private Bivoltine Chawki Rearing Center Subsidy" && (
                           <Col lg="4">
                             <Form.Group className="form-group mt-n5">
                               <Form.Label htmlFor="silkSamagraSubsidyAmount">
@@ -11484,7 +11485,9 @@ const fetchReelerDetails = () => {
                         getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
                           "Registered Private Bivoltine Chawki Rearing Center Subsidy") &&
                         getIncentiveAndBonusData?.[0]?.calculationBasedOn !==
-                          "SS Construction Of Low Cost Shed to Permanent Rearing House" && (
+                          "SS Construction Of Low Cost Shed to Permanent Rearing House" &&
+                        getIncentiveAndBonusData?.[0]?.calculationBasedOn !==
+                          "Silk Incentive-PSF" && (
                         <Col lg="4">
                           <Form.Group className="form-group mt-n5">
                             <Form.Label>
