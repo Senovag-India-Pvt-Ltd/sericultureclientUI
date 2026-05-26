@@ -715,28 +715,11 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       });
   };
   
-  // Get Default Financial Year
-
-  const getFinancialDefaultDetails = () => {
-    api
-      .get(baseURLMasterData + `financialYearMaster/get-is-default`)
-      .then((response) => {
-        setData((prev) => ({
-          ...prev,
-          financialYearMasterId: response.data.content.financialYearMasterId,
-        }));
-      })
-      .catch((err) => {
-        setData((prev) => ({
-          ...prev,
-          financialYearMasterId: "",
-        }));
-      });
-  };
-
-  useEffect(() => {
-    getFinancialDefaultDetails();
-  }, []);
+  // Default-FY auto-fill removed on the edit page: it raced with
+  // getIdList() and overwrote the saved Financial Year with the current
+  // default (e.g. saved 2023-2024 got replaced by default 2025-2026 on the
+  // form after reload). The FY for an existing application must come from
+  // the loaded record, not from the master-data default.
 
   console.log(data);
 
@@ -1037,20 +1020,25 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       };
     });
 
+    // Coerce IDs to numbers and dates to ISO strings so backend Jackson
+    // deserialises cleanly — string-encoded numbers were silently failing
+    // for some fields and leaving Financial Year / period unchanged.
+    const toNum = (v) => (v === "" || v == null ? null : Number(v));
     const v2Payload = {
       id: id ? parseInt(id, 10) : null,
       farmerId,
-      financialYearMasterId: data.financialYearMasterId || null,
-      schemeId: data.scSchemeDetailsId || null,
-      subSchemeId: data.scSubSchemeDetailsId || null,
-      componentType: data.scSubSchemeType || null,
-      componentId: data.scComponentId || null,
-      categoryId: data.scCategoryId || null,
-      headOfAccountId: data.scHeadAccountId || null,
-      userMasterId: data.userMasterId || null,
-      schemeAmount: data.schemeAmount || null,
-      sanctionNo: data.sanctionNumber || null,
-      // periodFrom/periodTo intentionally omitted; backend re-derives from FY.
+      financialYearMasterId: toNum(data.financialYearMasterId),
+      schemeId: toNum(data.scSchemeDetailsId),
+      subSchemeId: toNum(data.scSubSchemeDetailsId),
+      componentType: toNum(data.scSubSchemeType),
+      componentId: toNum(data.scComponentId),
+      categoryId: toNum(data.scCategoryId),
+      headOfAccountId: toNum(data.scHeadAccountId),
+      userMasterId: toNum(data.userMasterId),
+      schemeAmount: toNum(data.schemeAmount),
+      sanctionNo: toNum(data.sanctionNumber),
+      periodFrom: data.periodFrom ? formatDate(data.periodFrom) : null,
+      periodTo: data.periodTo ? formatDate(data.periodTo) : null,
       landRows,
     };
 
@@ -1206,12 +1194,17 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
   
 
   const saveSuccess = () => {
+    // Reload the window once the user dismisses the success popup so the
+    // form re-fetches every field (Financial Year, periodFrom, periodTo,
+    // dropdowns, land details) from the freshly-saved DB state. Avoids the
+    // flicker-then-stale-value issue caused by clear() + getIdList() racing
+    // against the open Swal.
     Swal.fire({
       icon: "success",
       title: "Updated Successfully",
-      //   text: `Receipt Number ${message}`,
+    }).then(() => {
+      window.location.reload();
     });
-    clear();
   };
 
   const [uploadStatus, setUploadStatus] = useState({});
