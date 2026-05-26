@@ -796,10 +796,13 @@ const hasRemaining = remainingQty > 0;
             dflLotNumber: noOfDFLs,
             // Per LotGroupage.rejection_quantity contract: (lotWeightAfterWeighment - distributedQuantity).
             // That's exactly remainingQty — the value the user sees in the "Remaining/Rejected" pill —
-            // so send it (not the legacy netWeight-based remainingCocoonWeight) to keep UI and DB aligned.
-            remainingCocoonWeight: movingToAnotherMarketFlag
-              ? 0
-              : (purposeForRejectionFlag ? remainingQty : remainingCocoonWeight),
+            // so always send it. The earlier `: remainingCocoonWeight` fallback was a legacy
+            // netWeight-based value that was 0 whenever the DB's saved netWeight matched the
+            // already-distributed total, which made the saved remainder come out as 0 even when
+            // 35 kg was actually still in store. Moving-to-another-market still forces 0 (the
+            // cocoons are gone), but anything else — rejection or simple leftover — must record
+            // the real remainder.
+            remainingCocoonWeight: movingToAnotherMarketFlag ? 0 : remainingQty,
             fruitsId: fruitsId,
             marketId: localStorage.getItem("marketId"),
             godownId: localStorage.getItem("godownId"),
@@ -851,10 +854,13 @@ const hasRemaining = remainingQty > 0;
             dflLotNumber: noOfDFLs,
             // Per LotGroupage.rejection_quantity contract: (lotWeightAfterWeighment - distributedQuantity).
             // That's exactly remainingQty — the value the user sees in the "Remaining/Rejected" pill —
-            // so send it (not the legacy netWeight-based remainingCocoonWeight) to keep UI and DB aligned.
-            remainingCocoonWeight: movingToAnotherMarketFlag
-              ? 0
-              : (purposeForRejectionFlag ? remainingQty : remainingCocoonWeight),
+            // so always send it. The earlier `: remainingCocoonWeight` fallback was a legacy
+            // netWeight-based value that was 0 whenever the DB's saved netWeight matched the
+            // already-distributed total, which made the saved remainder come out as 0 even when
+            // 35 kg was actually still in store. Moving-to-another-market still forces 0 (the
+            // cocoons are gone), but anything else — rejection or simple leftover — must record
+            // the real remainder.
+            remainingCocoonWeight: movingToAnotherMarketFlag ? 0 : remainingQty,
             auctionDate: formatAuctionDate(item.auctionDate),
             purposeForRejection: purposeForRejectionFlag,
             movingToAnotherMarket: movingToAnotherMarketFlag,
