@@ -1383,16 +1383,23 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     };
 
     api
-      .put(baseURLDBT + `service/edit-service-application-form/${id}`, v2Payload)
+      .post(baseURLDBT + `service/edit-service-application-form/${id}`, v2Payload)
       .then((response) => {
-        const body = response.data && response.data.content;
+        // Reject HTML responses (e.g. production WAF returning a block page
+        // with a 200/2xx status) — those have no .content and would silently
+        // be treated as success otherwise.
+        const isHtml = typeof response.data === "string"
+          && /<html/i.test(response.data);
+        if (isHtml || !response.data || typeof response.data !== "object") {
+          saveError("Update was blocked by the server (received non-JSON response). Please contact support.");
+          return;
+        }
+        const body = response.data.content;
         if (body && body.error) {
           saveError(body.errorDescription || "Update failed");
           return;
         }
         saveSuccess();
-        clear();
-        getIdList();
         setValidated(false);
       })
       .catch((err) => {
