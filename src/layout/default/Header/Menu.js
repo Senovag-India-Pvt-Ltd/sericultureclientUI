@@ -1953,44 +1953,6 @@ function Menu() {
                 />
               </MenuItem>
             ) : null} */}
-
-            {/* Acknowledgements / Work Orders / Selection Letters / Sanction Orders
-                live under the Schemes (Services_*) menu — moved here from Reports. */}
-            {showMenu.Reports_Format_Reports_Acknowledgement ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Acknowledgements")}
-                  to="/seriui/generate-acknowledgement"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.Reports_Format_Reports_WorkOrder ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Work Orders")}
-                  to="/seriui/generate-work-order"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.Reports_Format_Reports_Selection_Letters ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Selection Letters")}
-                  to="/seriui/generate-selection-letter"
-                />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.Reports_Format_Reports_Sanction_Order ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Sanction Orders")}
-                  to="/seriui/generate-sanction-order"
-                />
-              </MenuItem>
-            ) : null}
           </MenuSub>
         </MenuItem>
       ) : null}
@@ -5888,8 +5850,52 @@ function Menu() {
                       </MenuItem>
                     ) : null}
 
-                    {/* Acknowledgements / Work Orders / Selection Letters / Sanction Orders
-                        were moved out of Reports and into the Schemes (Services_*) menu. */}
+                        {/* ─── Schemes (sub-menu inside Format Reports) ─── */}
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("Schemes")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            {showMenu.Reports_Format_Reports_Acknowledgement ? (
+                              <MenuItem>
+                                <MenuItemLink
+                                  text={t("Acknowledgements")}
+                                  to="/seriui/generate-acknowledgement"
+                                />
+                              </MenuItem>
+                            ) : null}
+
+                            {showMenu.Reports_Format_Reports_WorkOrder ? (
+                              <MenuItem>
+                                <MenuItemLink
+                                  text={t("Work Orders")}
+                                  to="/seriui/generate-work-order"
+                                />
+                              </MenuItem>
+                            ) : null}
+
+                            {showMenu.Reports_Format_Reports_Selection_Letters ? (
+                              <MenuItem>
+                                <MenuItemLink
+                                  text={t("Selection Letters")}
+                                  to="/seriui/generate-selection-letter"
+                                />
+                              </MenuItem>
+                            ) : null}
+
+                            {showMenu.Reports_Format_Reports_Sanction_Order ? (
+                              <MenuItem>
+                                <MenuItemLink
+                                  text={t("Sanction Orders")}
+                                  to="/seriui/generate-sanction-order"
+                                />
+                              </MenuItem>
+                            ) : null}
+                          </MenuSub>
+                        </MenuItem>
 
                         {/* ─── Mysore Seed Area ─── */}
                         <MenuItem sub>
