@@ -537,7 +537,7 @@ useEffect(() => {
   const addSilkIncentiveRow = () => setSilkIncentiveList((prev) => [...prev, { ...emptySilkIncentiveRow }]);
   const removeSilkIncentiveRow = (index) => setSilkIncentiveList((prev) => prev.filter((_, i) => i !== index));
 
-  const emptyRearingEquipmentRow = { vendorId: "", description: "", machineTypeId: "", l1Rate: "", machineQuantity: "", taxInvoiceNo: "", taxInvoiceDate: null };
+  const emptyRearingEquipmentRow = { description: "", machineTypeId: "", l1Rate: "", machineQuantity: "", taxInvoiceNo: "", taxInvoiceDate: null };
   const [rearingEquipmentPurchaseList, setRearingEquipmentPurchaseList] = useState([{ ...emptyRearingEquipmentRow }]);
 
   const handleRearingEquipmentChange = (index, e) => {
@@ -5190,7 +5190,7 @@ const isUserValid = React.useMemo(() => {
       initialAmount: data.expectedAmount,
       // periodFrom: data.periodFrom,
       // periodTo: data.periodTo,
-      vendorId: equipment.vendorId,
+      vendorId: getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS" ? data.vendorId : equipment.vendorId,
       spacingId: data.spacingId,
       hectareId: data.hectareId,
       cocoonsWeight: data.cocoonsWeight,
@@ -5294,7 +5294,6 @@ const isUserValid = React.useMemo(() => {
       sendPost.equipmentTableRequestList = rearingEquipmentPurchaseList.map((item) => ({
         eDescription: item.description || null,
         eL1Rate: item.l1Rate || null,
-        eVendorId: item.vendorId ? parseInt(item.vendorId, 10) : null,
         eMachineTypeId: item.machineTypeId ? parseInt(item.machineTypeId, 10) : null,
         eMachineQuantity: item.machineQuantity ? parseFloat(item.machineQuantity) : null,
         eTaxInvoiceNo: item.taxInvoiceNo || null,
@@ -7897,55 +7896,6 @@ const fetchReelerDetails = () => {
                               </Form.Group>
                             </Col>
                             
-                            <Col lg="6">
-                                <Form.Group className="form-group mt-n3">
-                                  <Form.Label htmlFor="schemeAmount">Tax Invoice No</Form.Label>
-                                  <div className="form-control-wrap">
-                                    <Form.Control
-                                      id="taxInvoiceNo"
-                                      type="text"
-                                      name="taxInvoiceNo"
-                                      value={data.taxInvoiceNo}
-                                      onChange={handleInputs}
-                                      placeholder="Enter Tax Invoice No"
-                                      // required
-                                      // readOnly
-                                    />
-                                  </div>
-                                </Form.Group>
-                              </Col>
-
-                              <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="sordfl">
-                              {t("Tax Invoice Date")}
-                              {/* <span className="text-danger">*</span> */}
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <DatePicker
-                                selected={data.taxInvoiceDate}
-                                onChange={(date) =>
-                                  handleDateChange(date, "taxInvoiceDate")
-                                }
-                                // minDate={new Date("01/04/2023")}
-                                // maxDate={new Date("31/03/2024")}
-                                peekNextMonth
-                                showMonthDropdown
-                                showYearDropdown
-                                dropdownMode="select"
-                                dateFormat="dd/MM/yyyy"
-                                className="form-control"
-                                maxDate={new Date()}
-                                // readOnly={schemeDetails.calculationBasedOn === "Silk Samagra Central" || 
-                                //   schemeDetails.calculationBasedOn === "Silk Samagra State" || 
-                                //   !schemeDetails.calculationBasedOn}
-                                // readOnly
-                                // required
-                              />
-                            </div>
-                          </Form.Group>
-                        </Col>
-
                             <Col lg="6">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
@@ -11733,20 +11683,22 @@ const fetchReelerDetails = () => {
                       {/* ── Rearing Equipment SS: multiple rows ── */}
                       {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS" ? (
                         <>
+                          <Row className="g-gs mb-3">
+                            <Col lg="4">
+                              <Form.Group className="form-group mt-n3">
+                                <Form.Label>{t("Vendor Name")}</Form.Label>
+                                <Form.Select name="vendorId" value={data.vendorId} onChange={handleInputs}>
+                                  <option value="">{t("Select Vendor Name")}</option>
+                                  {scVendorListData.map((list) => (
+                                    <option key={list.scVendorId} value={list.scVendorId}>{list.name}</option>
+                                  ))}
+                                </Form.Select>
+                              </Form.Group>
+                            </Col>
+                          </Row>
                           {rearingEquipmentPurchaseList.map((row, index) => (
                             <div key={index} className="border rounded p-3 mb-3">
                               <Row className="g-gs">
-                                <Col lg="4">
-                                  <Form.Group className="form-group mt-n3">
-                                    <Form.Label>{t("Vendor Name")}</Form.Label>
-                                    <Form.Select name="vendorId" value={row.vendorId} onChange={(e) => handleRearingEquipmentChange(index, e)}>
-                                      <option value="">{t("Select Vendor Name")}</option>
-                                      {scVendorListData.map((list) => (
-                                        <option key={list.scVendorId} value={list.scVendorId}>{list.name}</option>
-                                      ))}
-                                    </Form.Select>
-                                  </Form.Group>
-                                </Col>
                                 <Col lg="4">
                                   <Form.Group className="form-group mt-n3">
                                     <Form.Label>{t("Equipment Details")}</Form.Label>
