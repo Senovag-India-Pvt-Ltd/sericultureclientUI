@@ -176,9 +176,7 @@ const handleDateChange = (date) => {
       data.buyerType === "Govt Grainage" ? data.grainageMasterName : '';
       setDataLotList((prev) => [...prev, {...data,auctionDate,allottedLotId,buyerName}]);
       // Reset the form for the next entry but keep the price (amount) intact
-
-      // Update total lot weight
-    setTotalLotWeight((prevTotal) => prevTotal + parseFloat(data.lotWeight || 0));
+      // totalLotWeight auto-recomputes from dataLotList via useMemo above.
 
     setData((prevData) => ({
       ...prevData,
@@ -213,16 +211,9 @@ const handleDateChange = (date) => {
   })
 
 const handleDeleteLotDetails = (i) => {
-  setDataLotList((prev) => {
-    const deletedLotWeight = parseFloat(prev[i].lotWeight || 0);
-
-    // Subtract deleted lot weight from totalLotWeight
-    setTotalLotWeight((prevTotal) => prevTotal - deletedLotWeight);
-
-    const newArray = prev.filter((item, place) => place !== i);
-    return newArray;
-  });
-};  
+  // totalLotWeight auto-recomputes from dataLotList via useMemo.
+  setDataLotList((prev) => prev.filter((item, place) => place !== i));
+};
 
   const [lotId, setLotId] = useState();
   const handleGetLotDetails = (i) => {
@@ -243,13 +234,7 @@ const handleUpdateLotDetails = (e, i, changes) => {
   } else {
     e.preventDefault();
 
-    const previousLotWeight = parseFloat(dataLotList[i].lotWeight || 0);
-    const newLotWeight = parseFloat(changes.lotWeight || 0);
-
-    // Adjust the total lot weight based on the difference between the old and new weight
-    setTotalLotWeight((prevTotal) => prevTotal - previousLotWeight + newLotWeight);
-
-    // Update the lot details in the list
+    // totalLotWeight auto-recomputes from dataLotList via useMemo.
     setDataLotList((prev) =>
       prev.map((item, ix) => ix === i ? { ...item, ...changes } : item)
     );
@@ -508,7 +493,16 @@ const handleUpdateLotDetails = (e, i, changes) => {
   };
 
   
-  const [totalLotWeight, setTotalLotWeight] = useState(0);
+  // totalLotWeight derived from dataLotList — previously this was a useState(0)
+  // that only updated via setTotalLotWeight on user add/edit/delete. On page
+  // LOAD it stayed at 0 even when saved buyer rows were loaded into
+  // dataLotList, which made "Remaining Cocoon in Kgs" fall into the
+  // netWeight-only branch and display 0 / a stale value. Deriving it
+  // guarantees it's always in sync with the current dataLotList.
+  const totalLotWeight = useMemo(
+    () => (dataLotList || []).reduce((sum, item) => sum + parseFloat(item.lotWeight || 0), 0),
+    [dataLotList]
+  );
   // Round to 2 decimals at the source so the Add-button cap matches what the user sees.
   // DB sometimes stores e.g. 19.39999 while UI displays 19.40 — without rounding here,
   // typing 9.40 into the buyer field when 10 is already distributed gets blocked because
@@ -522,8 +516,11 @@ const handleUpdateLotDetails = (e, i, changes) => {
     ).toFixed(2)
   );
 
-// Format only for display (ensure it's a number first)
-const formattedRemainingCocoonWeight = Number(remainingCocoonWeight).toFixed(2);
+// formattedRemainingCocoonWeight removed — the visible "Remaining Cocoon
+// in Kgs" cell now uses the same remainingQty formula as the Distributed
+// pill (lotWeightAfterWeighment - sum(lotWeights)), which is always
+// correct on load. remainingCocoonWeight below is still used by the
+// Add/Edit button caps.
 
 // Disable Add button if lotWeight exceeds remaining cocoon weight
 const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight);
@@ -1585,15 +1582,38 @@ const handlePurchaseModeChange = (e) => {
                                       </>
                                     );
                                   }
+                                  // Live remaining = final-weighment - sum(buyer lot weights).
+                                  // This is the same formula the bottom Distributed/Remaining
+                                  // pill uses; the previous formattedRemainingCocoonWeight was
+                                  // based on netWeight - totalLotWeight, which silently fell to 0
+                                  // whenever the DB's netWeight matched the distributed total.
                                   return (
                                     <>
                                       <td style={styles.ctstyle}>{t("Remaining Cocoon in Kgs:")}</td>
-                                      <td style={styles.cell}>{formattedRemainingCocoonWeight}</td>
+                                      <td style={styles.cell}>{Math.max(0, remainingQty).toFixed(2)}</td>
                                     </>
                                   );
                                 })()}
                                 <td style={styles.ctstyle}>{t("Remaining Cocoon in Store:")}</td>
-                                <td style={styles.cell}>{farmerdetails.remainingCocoonWeight}</td>
+                                <td style={styles.cell}>
+                                  {(() => {
+                                    // Business rule: cocoons stay in the store only when the lot
+                                    // was NOT moved to another market AND NOT rejected. In either
+                                    // of those two saved cases the leftover physically leaves the
+                                    // store (moved out / sent to rejection), so Store = 0.
+                                    // Tied to the SAVED state (not the live checkboxes) so toggling
+                                    // the boxes pre-save doesn't change the displayed inventory.
+                                    // Replaces a raw DB read of farmerdetails.remainingCocoonWeight
+                                    // which showed 0 for legacy records saved before the save-path
+                                    // fix at line 805/863.
+                                    const wasSavedRejected = !!farmerdetails?.purposeForRejection;
+                                    const wasSavedMoved = !!farmerdetails?.movingToAnotherMarket;
+                                    const storeRemaining = (wasSavedMoved || wasSavedRejected)
+                                      ? 0
+                                      : Math.max(0, remainingQty);
+                                    return storeRemaining.toFixed(2);
+                                  })()}
+                                </td>
                               </tr>
                             </tbody>
                           </table>
