@@ -538,6 +538,42 @@ function RearingOfDFLsForThe8LinesEdit() {
                     </Form.Group>
                   </Col>
 
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="lowYield">
+                        {t("Low Yield")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="lowYield"
+                          name="lowYield"
+                          value={data.lowYield}
+                          onChange={handleInputs}
+                          type="number"
+                          placeholder={t("Enter Low Yield")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="failedEggs">
+                        {t("Failed Eggs")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="failedEggs"
+                          name="failedEggs"
+                          value={data.failedEggs}
+                          onChange={handleInputs}
+                          type="number"
+                          placeholder={t("Enter Failed Eggs")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
                   <Col lg="2">
                     <Form.Group className="form-group mt-n4 ">
                       <Form.Label>
