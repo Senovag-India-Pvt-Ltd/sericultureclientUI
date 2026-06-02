@@ -143,6 +143,24 @@ function MaintenanceofMulberryfarmView() {
                         <td style={styles.ctstyle}>{t("Foliar Spray 2 Date")}:</td>
                         <td>{maintenanceGarden.foliarSpray2}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Irrigation Category")}:</td>
+                        <td>
+                          {maintenanceGarden.irrigationCategory == 1
+                            ? t("Irrigated")
+                            : maintenanceGarden.irrigationCategory == 2
+                            ? t("Rain-fed")
+                            : ""}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Total Production Plants")}:</td>
+                        <td>{maintenanceGarden.totalProductionPlants}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Gliricidia Plant Area")}:</td>
+                        <td>{maintenanceGarden.gliricidiaPlantArea}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>
