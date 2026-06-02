@@ -9174,7 +9174,10 @@ const fetchReelerDetails = () => {
                                   }))}
                                   placeholder={t("Select User")}
                                   isSearchable
-                                  menuPlacement="auto"
+                                  menuPlacement="bottom"
+                                  menuPosition="fixed"
+                                  menuPortalTarget={document.body}
+                                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                                   value={userFromDistrictData
                                     .map((list) => ({ value: list.userId, label: list.userName }))
                                     .find((opt) => opt.value === data.userId)}
@@ -9211,6 +9214,10 @@ const fetchReelerDetails = () => {
                                 }))}
                                 isSearchable
                                 placeholder={t("Select User")}
+                                menuPlacement="bottom"
+                                menuPosition="fixed"
+                                menuPortalTarget={document.body}
+                                styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                                 value={userListData
                                   .map((u) => ({
                                     value: u.userMasterId,
