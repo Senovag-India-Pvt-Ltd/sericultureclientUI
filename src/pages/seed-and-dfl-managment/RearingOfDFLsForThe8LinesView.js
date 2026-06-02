@@ -160,6 +160,14 @@ function RearingOfDFLsForThe8LinesView() {
                         <td style={styles.ctstyle}>{t("Crop Failure Details")}:</td>
                         <td>{rearing8Lines.cropFailureDetails}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Low Yield")}:</td>
+                        <td>{rearing8Lines.lowYield}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Failed Eggs")}:</td>
+                        <td>{rearing8Lines.failedEggs}</td>
+                      </tr>
                       {/* <tr>
                         <td style={styles.ctstyle}>{t("Cocoon Produced in NOs")}:</td>
                         <td>{rearing8Lines.cocoonAssessmentDetails}</td>

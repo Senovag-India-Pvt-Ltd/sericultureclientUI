@@ -2152,6 +2152,20 @@ const [showModal8, setShowModal8] = useState(false);
       sortable: true,
       hide: "md",
     },
+    {
+      name: t("Low Yield"),
+      selector: (row) => row.lowYield,
+      cell: (row) => <span>{row.lowYield}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Failed Eggs"),
+      selector: (row) => row.failedEggs,
+      cell: (row) => <span>{row.failedEggs}</span>,
+      sortable: true,
+      hide: "md",
+    },
 
     // {
     //   name: t("Cocoon Produced in NOs"),
