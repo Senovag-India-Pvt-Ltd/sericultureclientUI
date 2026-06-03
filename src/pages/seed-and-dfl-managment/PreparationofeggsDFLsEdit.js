@@ -43,6 +43,10 @@ function PreparationofeggsDFLsEdit() {
     pairNoRejectedCocoonsNo: "",
     eggSheetSerialNos:"",
     remainingDfls :"",
+    secondParentLotNumber: "",
+    rejectedPairsExamined: "",
+    rejectedPairsOther: "",
+    pebrineDiseaseBeds: "",
     lotNumber: "",
     autoGenerateLot: "no",
   });
@@ -191,8 +195,12 @@ function PreparationofeggsDFLsEdit() {
       pairNoRejectedCocoonsNo: "",
       eggSheetSerialNos:"",
       remainingDfls :"",
+      secondParentLotNumber: "",
+      rejectedPairsExamined: "",
+      rejectedPairsOther: "",
+      pebrineDiseaseBeds: "",
       lotNumber: "",
-      autoGenerateLot: "no", 
+      autoGenerateLot: "no",
     });
     setValidated(false);
     // getIdList();
@@ -1056,6 +1064,78 @@ function PreparationofeggsDFLsEdit() {
                                 {/* <Form.Control.Feedback type="invalid">
                                   Additional remarks is required
                                 </Form.Control.Feedback> */}
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="secondParentLotNumber">
+                                {t("Second Source Lot Number")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="secondParentLotNumber"
+                                  name="secondParentLotNumber"
+                                  value={data.secondParentLotNumber}
+                                  onChange={handleInputs}
+                                  type="text"
+                                  placeholder={t("Second Source Lot Number")}
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="rejectedPairsExamined">
+                                {t("Rejected Pairs (Examined)")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="rejectedPairsExamined"
+                                  name="rejectedPairsExamined"
+                                  value={data.rejectedPairsExamined}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder={t("Rejected Pairs (Examined)")}
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="rejectedPairsOther">
+                                {t("Rejected Pairs (Other)")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="rejectedPairsOther"
+                                  name="rejectedPairsOther"
+                                  value={data.rejectedPairsOther}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder={t("Rejected Pairs (Other)")}
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="pebrineDiseaseBeds">
+                                {t("Pebrine Disease Beds")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="pebrineDiseaseBeds"
+                                  name="pebrineDiseaseBeds"
+                                  value={data.pebrineDiseaseBeds}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  placeholder={t("Pebrine Disease Beds")}
+                                />
                               </div>
                             </Form.Group>
                           </Col>
