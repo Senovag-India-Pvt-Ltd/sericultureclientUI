@@ -26,6 +26,9 @@ function MaintenanceofMulberryfarmEdit() {
     soilTypeId: "",
     mulberrySpacing: "",
     plantationDate: "",
+    irrigationCategory: "",
+    totalProductionPlants: "",
+    gliricidiaPlantArea: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -93,6 +96,9 @@ function MaintenanceofMulberryfarmEdit() {
               soilTypeId: "",
               mulberrySpacing: "",
               plantationDate: "",
+              irrigationCategory: "",
+              totalProductionPlants: "",
+              gliricidiaPlantArea: "",
             });
             setValidated(false);
           }
@@ -114,6 +120,9 @@ function MaintenanceofMulberryfarmEdit() {
       soilTypeId: "",
       mulberrySpacing: "",
       plantationDate: "",
+      irrigationCategory: "",
+      totalProductionPlants: "",
+      gliricidiaPlantArea: "",
     });
     setValidated(false);
   };
@@ -380,6 +389,64 @@ function MaintenanceofMulberryfarmEdit() {
                           maxLength="6"
                           type="text"
                           placeholder={t("Enter Mulberry Spacing")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label>
+                        {t("Irrigation Category")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="irrigationCategory"
+                          value={data.irrigationCategory ?? ""}
+                          onChange={handleInputs}
+                        >
+                          <option value="">{t("Select Irrigation Category")}</option>
+                          <option value="1">{t("Irrigated")}</option>
+                          <option value="2">{t("Rain-fed")}</option>
+                        </Form.Select>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="totalProductionPlants">
+                        {t("Total Production Plants")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="totalProductionPlants"
+                          name="totalProductionPlants"
+                          value={data.totalProductionPlants ?? ""}
+                          onChange={handleInputs}
+                          type="number"
+                          min="0"
+                          placeholder={t("Enter Total Production Plants")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="gliricidiaPlantArea">
+                        {t("Gliricidia Plant Area")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="gliricidiaPlantArea"
+                          name="gliricidiaPlantArea"
+                          value={data.gliricidiaPlantArea ?? ""}
+                          onChange={handleInputs}
+                          type="number"
+                          min="0"
+                          step="any"
+                          placeholder={t("Enter Gliricidia Plant Area")}
                         />
                       </div>
                     </Form.Group>

@@ -574,6 +574,82 @@ function RearingOfDFLsForThe8LinesEdit() {
                     </Form.Group>
                   </Col>
 
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="singleEggBreak">
+                        {t("Loose Eggs in One DFL")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="singleEggBreak"
+                          name="singleEggBreak"
+                          value={data.singleEggBreak ?? ""}
+                          onChange={handleInputs}
+                          type="number"
+                          min="0"
+                          placeholder={t("Enter Loose Eggs in One DFL")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="hatchedLarvae">
+                        {t("Hatched Larvae")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="hatchedLarvae"
+                          name="hatchedLarvae"
+                          value={data.hatchedLarvae ?? ""}
+                          onChange={handleInputs}
+                          type="number"
+                          min="0"
+                          placeholder={t("Enter Hatched Larvae")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="fourthStageLarvae">
+                        {t("4th Stage Larvae")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="fourthStageLarvae"
+                          name="fourthStageLarvae"
+                          value={data.fourthStageLarvae ?? ""}
+                          onChange={handleInputs}
+                          type="number"
+                          min="0"
+                          placeholder={t("Enter 4th Stage Larvae")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="cocoonProduced">
+                        {t("Estimated Cocoons Produced")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="cocoonProduced"
+                          name="cocoonProduced"
+                          value={data.cocoonProduced ?? ""}
+                          onChange={handleInputs}
+                          type="number"
+                          min="0"
+                          placeholder={t("Enter Estimated Cocoons Produced")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
                   <Col lg="2">
                     <Form.Group className="form-group mt-n4 ">
                       <Form.Label>

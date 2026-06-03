@@ -2166,6 +2166,34 @@ const [showModal8, setShowModal8] = useState(false);
       sortable: true,
       hide: "md",
     },
+    {
+      name: t("Loose Eggs in One DFL"),
+      selector: (row) => row.singleEggBreak,
+      cell: (row) => <span>{row.singleEggBreak}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Hatched Larvae"),
+      selector: (row) => row.hatchedLarvae,
+      cell: (row) => <span>{row.hatchedLarvae}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("4th Stage Larvae"),
+      selector: (row) => row.fourthStageLarvae,
+      cell: (row) => <span>{row.fourthStageLarvae}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Estimated Cocoons Produced"),
+      selector: (row) => row.cocoonProduced,
+      cell: (row) => <span>{row.cocoonProduced}</span>,
+      sortable: true,
+      hide: "md",
+    },
 
     // {
     //   name: t("Cocoon Produced in NOs"),

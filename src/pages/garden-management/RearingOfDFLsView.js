@@ -152,6 +152,50 @@ function RearingOfDFLsView() {
                         <td style={styles.ctstyle}>{t("Cocoon Assessment Details")}:</td>
                         <td>{rearingOfDFLs.cocoonAssessmentDetails}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Average Loose Eggs per DFL")}:</td>
+                        <td>{rearingOfDFLs.averageLooseEggsPerDfl}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Worms Selected After 3rd Moult")}:</td>
+                        <td>{rearingOfDFLs.wormsSelectedAfter3rdMoult}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Worms Selected for Testing After 3rd Moult")}:</td>
+                        <td>{rearingOfDFLs.wormsSelectedForTestingAfter3rdMoult}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Low Yield")}:</td>
+                        <td>{rearingOfDFLs.lowYield}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Failed Eggs")}:</td>
+                        <td>{rearingOfDFLs.failedEggs}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Actual Brushed DFLs")}:</td>
+                        <td>{rearingOfDFLs.actualBrushedDfls}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Average Chawki per DFL")}:</td>
+                        <td>{rearingOfDFLs.averageChawkiPerDfl}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Leaf Quantity Used")}:</td>
+                        <td>{rearingOfDFLs.leafQuantityUsed}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("ERR After 3rd Moult")}:</td>
+                        <td>{rearingOfDFLs.errAfter3rdMoult}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Seed Cocoons")}:</td>
+                        <td>{rearingOfDFLs.seedCocoons}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Reeling Cocoons")}:</td>
+                        <td>{rearingOfDFLs.reelingCocoons}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

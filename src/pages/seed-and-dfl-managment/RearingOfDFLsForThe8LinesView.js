@@ -168,6 +168,22 @@ function RearingOfDFLsForThe8LinesView() {
                         <td style={styles.ctstyle}>{t("Failed Eggs")}:</td>
                         <td>{rearing8Lines.failedEggs}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Loose Eggs in One DFL")}:</td>
+                        <td>{rearing8Lines.singleEggBreak}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Hatched Larvae")}:</td>
+                        <td>{rearing8Lines.hatchedLarvae}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("4th Stage Larvae")}:</td>
+                        <td>{rearing8Lines.fourthStageLarvae}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Estimated Cocoons Produced")}:</td>
+                        <td>{rearing8Lines.cocoonProduced}</td>
+                      </tr>
                       {/* <tr>
                         <td style={styles.ctstyle}>{t("Cocoon Produced in NOs")}:</td>
                         <td>{rearing8Lines.cocoonAssessmentDetails}</td>
