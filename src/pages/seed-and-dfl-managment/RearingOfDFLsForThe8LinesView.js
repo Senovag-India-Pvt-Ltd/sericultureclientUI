@@ -184,6 +184,34 @@ function RearingOfDFLsForThe8LinesView() {
                         <td style={styles.ctstyle}>{t("Estimated Cocoons Produced")}:</td>
                         <td>{rearing8Lines.cocoonProduced}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Worms Tested (4th Stage)")}:</td>
+                        <td>{rearing8Lines.wormsTested4thStage}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Destroyed Worms")}:</td>
+                        <td>{rearing8Lines.destroyedWorms}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Average Yield (count)")}:</td>
+                        <td>{rearing8Lines.avgYieldCount}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Yield Weight (grams)")}:</td>
+                        <td>{rearing8Lines.yieldWeightGrams}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Disposal Quantity")}:</td>
+                        <td>{rearing8Lines.disposalQuantity}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Reeling Cocoons")}:</td>
+                        <td>{rearing8Lines.reelingCocoons}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("P4 Seed Cocoons")}:</td>
+                        <td>{rearing8Lines.p4SeedCocoons}</td>
+                      </tr>
                       {/* <tr>
                         <td style={styles.ctstyle}>{t("Cocoon Produced in NOs")}:</td>
                         <td>{rearing8Lines.cocoonAssessmentDetails}</td>

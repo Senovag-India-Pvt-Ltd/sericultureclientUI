@@ -650,6 +650,33 @@ function RearingOfDFLsForThe8LinesEdit() {
                     </Form.Group>
                   </Col>
 
+                  {[
+                    { k: "wormsTested4thStage", l: "Worms Tested (4th Stage)" },
+                    { k: "destroyedWorms",      l: "Destroyed Worms" },
+                    { k: "avgYieldCount",       l: "Average Yield (count)" },
+                    { k: "yieldWeightGrams",    l: "Yield Weight (grams)" },
+                    { k: "disposalQuantity",    l: "Disposal Quantity" },
+                    { k: "reelingCocoons",      l: "Reeling Cocoons" },
+                    { k: "p4SeedCocoons",       l: "P4 Seed Cocoons" },
+                  ].map((fld) => (
+                    <Col lg="4" key={fld.k}>
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor={fld.k}>{t(fld.l)}</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id={fld.k}
+                            name={fld.k}
+                            value={data[fld.k] ?? ""}
+                            onChange={handleInputs}
+                            type="number"
+                            min="0"
+                            placeholder={t(fld.l)}
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  ))}
+
                   <Col lg="2">
                     <Form.Group className="form-group mt-n4 ">
                       <Form.Label>
