@@ -6801,8 +6801,18 @@ function Menu() {
             {showMenu.Reports_Dashboard ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Dashboards")}
+                  text={t("Dashboards - Old")}
                   to="https://app.powerbi.com/view?r=eyJrIjoiYTJjNGEzYjktMzFkZS00NjBjLTg4NjUtMTViZTVjNDMzZjEyIiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9&pageName=7a11927e5e64dcc23c23"
+                  blank={true}
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.Reports_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Dashboards - New")}
+                  to="https://app.powerbi.com/view?r=eyJrIjoiYTFmMjJiMTctMDk2Yi00M2U0LTk2NTAtZmIzYjQ0ODE2YWM2IiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9"
                   blank={true}
                 />
               </MenuItem>
