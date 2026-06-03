@@ -155,7 +155,7 @@ const handleDateChange = (date) => {
 };
 
   
-  const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal = () => { setShowModal(false); setOriginalSoldAmount(0); };
   const handleShowModal1 = () => setShowModal1(true);
   const handleCloseModal1 = () => setShowModal1(false);
 
@@ -216,8 +216,10 @@ const handleDeleteLotDetails = (i) => {
 };
 
   const [lotId, setLotId] = useState();
+  const [originalSoldAmount, setOriginalSoldAmount] = useState(0);
   const handleGetLotDetails = (i) => {
     setData(dataLotList[i]);
+    setOriginalSoldAmount(parseFloat(dataLotList[i]?.soldAmount) || 0);
     setShowModal1(true);
     setLotId(i);
   };
@@ -313,7 +315,7 @@ const handleUpdateLotDetails = (e, i, changes) => {
     newData.soldAmount &&
     (newData.buyerId || newData.externalUnitId)
   ) {
-    validateReelerBalance(newData);
+    validateReelerBalance(newData, showModal1 ? originalSoldAmount : 0);
   }
 
   if (name === "allottedLotId") {
@@ -1040,18 +1042,17 @@ const hasRemaining = remainingQty > 0;
     return null;
   };
 
-  const validateReelerBalance = (updatedData) => {
+  const validateReelerBalance = (updatedData, previousSoldAmount = 0) => {
     const { buyerType, buyerId, externalUnitId, soldAmount } = updatedData;
 
-    // Only validate for Reeling and RSP buyer types
-    if (!buyerType || ["Govt Grainage", "NSSO"].includes(buyerType)) return;
+    if (!buyerType || buyerType === "Govt Grainage") return;
     if (!buyerId && !externalUnitId) return;
 
     const marketId = parseInt(
       updatedData.marketId || localStorage.getItem("marketId")
     );
 
-    setBalanceError(false); // reset while new validation is in-flight
+    setBalanceError(false);
 
     api
       .post(baseURLMarket + "lotGroupage/validateReelerBalance", {
@@ -1062,6 +1063,7 @@ const hasRemaining = remainingQty > 0;
             buyerId: buyerId ? parseInt(buyerId) : null,
             externalUnitId: externalUnitId ? parseInt(externalUnitId) : null,
             soldAmount: soldAmount ? parseInt(soldAmount) : 0,
+            previousSoldAmount: previousSoldAmount || 0,
           },
         ],
       })
@@ -1103,7 +1105,7 @@ const hasRemaining = remainingQty > 0;
       externalUnitId: "",
     };
     setData(updatedData);
-    validateReelerBalance(updatedData);
+    if (updatedData.soldAmount) validateReelerBalance(updatedData);
   };
 
   const handleGrainageOption = (e) => {
@@ -1117,7 +1119,7 @@ const hasRemaining = remainingQty > 0;
       externalUnitId: chooseUnit,
     };
     setData(updatedData);
-    validateReelerBalance(updatedData);
+    if (updatedData.soldAmount) validateReelerBalance(updatedData);
   };
 
   // District
@@ -2275,7 +2277,7 @@ const handlePurchaseModeChange = (e) => {
                                   externalUnitId: chooseUnit,
                                 };
                                 setData(updatedData);
-                                validateReelerBalance(updatedData);
+                                if (updatedData.soldAmount) validateReelerBalance(updatedData);
                               }}
                             />
 
@@ -2383,7 +2385,7 @@ const handlePurchaseModeChange = (e) => {
                                   externalUnitId: chooseUnit,
                                 };
                                 setData(updatedData);
-                                validateReelerBalance(updatedData);
+                                if (updatedData.soldAmount) validateReelerBalance(updatedData);
                               }}
                             />
                           <Form.Control.Feedback type="invalid">
@@ -2762,7 +2764,7 @@ const handlePurchaseModeChange = (e) => {
                                   externalUnitId: chooseUnit,
                                 };
                                 setData(updatedData);
-                                validateReelerBalance(updatedData);
+                                if (updatedData.soldAmount) validateReelerBalance(updatedData);
                               }}
                             />
                             <Form.Control.Feedback type="invalid">
@@ -2869,7 +2871,7 @@ const handlePurchaseModeChange = (e) => {
                                   externalUnitId: chooseUnit,
                                 };
                                 setData(updatedData);
-                                validateReelerBalance(updatedData);
+                                if (updatedData.soldAmount) validateReelerBalance(updatedData);
                               }}
                             />
                           <Form.Control.Feedback type="invalid">

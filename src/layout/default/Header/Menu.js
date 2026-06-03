@@ -260,11 +260,14 @@ function Menu() {
     Market_SeedMarket_Weighment: false,
     Market_SeedMarket_Delete_Lot:false,
     Market_SeedMarket_Lot_Distribution: false,
+    Market_SeedMarket_Update_Farmer_VBA: false,
+    Market_SeedMarket_Market_Fee_Collection: false,
 
     Market_SeedMarket_Payment: false,
     Market_SeedMarket_Ready_For_Payment: false,
     Market_SeedMarket_Bulk_Send_To_Payment: false,
     Market_SeedMarket_Payment_Statement: false,
+    Market_SeedMarket_Transfer_Market_Fee_To_Govt_Account: false,
 
     Market_SeedCocoonMarket: false,
     Market_SeedCocoonMarket_Inward: false,
@@ -505,6 +508,7 @@ function Menu() {
     Admin_Master_Auction_Reeler_Device_Mapping: false,
     Admin_Master_Auction_Race_Mapping: false,
     Admin_Master_Auction_Division: false,
+    Admin_Master_Auction_Govt_Account: false,
 
     Admin_Master_General: false,
     Admin_Master_General_Pages: false,
@@ -575,6 +579,7 @@ function Menu() {
     Reports_Export_Report_Commercial_Market_Average_Cocoon_Report: false,
 
     Reports_Export_Report_Seed_Market: false,
+    Reports_Export_Report_Seed_Market_Pending_MF_Report: false,
     Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt: false,
      Reports_Export_Report_Seed_Market_External_Unit_Balance_Report: false,
     Reports_Export_Report_Seed_Market_Reeler_Balance_Report: false,
@@ -2406,6 +2411,22 @@ function Menu() {
                         />
                       </MenuItem>
                     ) : null}
+                    {showMenu.Market_SeedMarket_Update_Farmer_VBA ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t("Update Farmer Virtual Bank Account")}
+                          to="/seriui/update-farmer-virtual-bank-account-seed-market"
+                        />
+                      </MenuItem>
+                    ) : null}
+                    {showMenu.Market_SeedMarket_Market_Fee_Collection ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t("Market Fee Collection")}
+                          to="/seriui/market-fee-collection"
+                        />
+                      </MenuItem>
+                    ) : null}
 
                     {showMenu.Market_SeedMarket_Payment ? (
                       <MenuItem sub>
@@ -2418,7 +2439,7 @@ function Menu() {
                         <MenuSub>
                          <MenuItem sub>
                          <MenuItemLink
-                         text="HDFC (Reeler,RSP)"
+                         text="HDFC (Reeler,RSP,NSSO)"
                           onClick={menuToggle}
                            onMouseEnter={menuHover}
                            sub
@@ -2447,25 +2468,29 @@ function Menu() {
                                 to="/seriui/payment-statement-for-seed-market"
                               />
                             </MenuItem>
-                                     ):null}
-                                     </MenuSub>
-                                     </MenuItem>
-                                      <MenuItem>
-                                       <MenuItemLink
-                                        text="DBT/K2 (Govt Grainage)"
-                                        // to="/seriui/dbt-dashboard"
-                                         />
-                                         </MenuItem>
-                                         <MenuItem>
-                                         <MenuItemLink
-                                         text="NSSO (Digital Transaction)"
-                                        //  to="/seriui/nsso-dashboard"
-                                          />
-                                          </MenuItem>
+                          ) : null}
+                         
+                        </MenuSub>
+                        </MenuItem>
+                        <MenuItem>
+                          <MenuItemLink
+                            text="DBT/K2 (Govt Grainage)"
+                            to="/seriui/dbt-k2-govt-grainage"
+                          />
+                        </MenuItem>
                                           </MenuSub>
                                           </MenuItem>
                                           ) : null}
-                    
+
+                    {showMenu.Market_SeedMarket_Transfer_Market_Fee_To_Govt_Account ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t("Transfer Market Fee to Govt Account")}
+                          to="/seriui/transfer-market-fee-to-govt-account"
+                        />
+                      </MenuItem>
+                    ) : null}
+
                     {showMenu.Market_SeedCocoonMarket_Inward ? (
                       <MenuItem>
                         <MenuItemLink
@@ -4599,6 +4624,14 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Admin_Master_Auction_Govt_Account ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Govt Account")}
+                              to="/seriui/govt-account"
+                            />
+                          </MenuItem>
+                        ) : null}
                         {showMenu.Admin_Master_Service_Reason_for_Lot_Cancellation ? (
                           <MenuItem>
                             <MenuItemLink
@@ -5550,6 +5583,14 @@ function Menu() {
                               to="/seriui/market-weekly-report"
                             />
                           </MenuItem>
+                          {showMenu.Reports_Export_Report_Seed_Market_Pending_MF_Report ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Pending Market Fee Report")}
+                                to="/seriui/pending-market-fee-report"
+                              />
+                            </MenuItem>
+                          ) : null}
                           <MenuItem>
                             <MenuItemLink
                               text={t("Seed MF Report")}
