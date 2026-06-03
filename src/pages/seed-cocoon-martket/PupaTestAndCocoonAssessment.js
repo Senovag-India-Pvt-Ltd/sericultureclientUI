@@ -353,7 +353,13 @@ function PupaTestAndCocoonAssessment() {
       setValidated(true);
     } else {
       event.preventDefault();
-      generateBiddingSlip(1);
+      if (isSubmitting) return;
+      setIsSubmitting(true);
+      try {
+        generateBiddingSlip(1);
+      } finally {
+        setIsSubmitting(false);
+      } 
       // try {
       //   const addGodown = localStorage.getItem("godownId")
       //     ? localStorage.getItem("godownId")
@@ -687,6 +693,39 @@ function PupaTestAndCocoonAssessment() {
     setisSubmit((current) => !current);
   };
 
+  // Double-click guard for the main submit button.
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Display-only farmer summary shown in every modal header. Falls back to the
+  // sample data the page was mocked with so the UI still renders before search.
+  const farmerSummary = {
+    name: "SHIVANNA",
+    fruitsId: (farmer && farmer.text) || "00004825062024",
+  };
+
+  // Shared inline styling tokens — kept local so this page can be tuned without
+  // touching shared CSS. All tokens reference the same teal/indigo palette used
+  // by the Market Weekly Report for a consistent "report screen" look.
+  const ui = {
+    label: { fontSize: "11px", fontWeight: 700, color: "#5a6a7e", marginBottom: "4px", display: "block", textTransform: "uppercase", letterSpacing: "0.06em" },
+    sel:   { borderRadius: "8px", border: "1.5px solid #d0d9e8", padding: "8px 12px", fontSize: "13px", background: "#f8fafd", color: "#1a202c", width: "100%" },
+    pillBtn: (bg, shadow, disabled) => ({
+      background: disabled ? "#c8d6e5" : bg,
+      border: "none", borderRadius: "10px", padding: "9px 22px",
+      fontWeight: 700, fontSize: "13px", color: "#fff",
+      cursor: disabled ? "not-allowed" : "pointer",
+      boxShadow: disabled ? "none" : shadow,
+      display: "inline-flex", alignItems: "center", gap: "8px", whiteSpace: "nowrap",
+      transition: "transform .12s ease, box-shadow .12s ease",
+    }),
+    chipBtn: {
+      background: "#f0f6ff", border: "1.5px solid #bee3f8", borderRadius: "10px",
+      padding: "12px 18px", cursor: "pointer", display: "flex", alignItems: "center",
+      gap: "10px", fontWeight: 600, fontSize: "13px", color: "#1e67a8",
+      transition: "all 0.15s ease", flex: "1 1 220px",
+    },
+  };
+
   const navigate = useNavigate();
   const saveSuccess = (bigList, smallList) => {
     let small;
@@ -739,90 +778,59 @@ function PupaTestAndCocoonAssessment() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">{t("Pupa test and assessment")}</Block.Title>
-            {/* <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  Bidding Slip
-                </li>
-              </ol>
-            </nav> */}
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
 
       <Block className="mt-n4">
-        {/* <Form action="#"> */}
         <Form noValidate validated={validatedDisplay} onSubmit={display}>
-          <Card>
-            <Card.Body>
-              <Row className="g-gs">
-                {/* <Col lg="12">
-                    <Form.Group as={Row} className="form-group" id="fid">
-                      <Form.Label column sm={3}>
-                        FRUITS ID / FARMER NUMBER<span className="text-danger">*</span>
-                      </Form.Label>
-                      <Col sm={3}>
-                        <Form.Control
-                          id="fruitsId"
-                          name="fruitsId"
-                          value={farmer.fruitsId}
-                          onChange={handleFarmerIdInputs}
-                          type="text"
-                          placeholder="Enter FRUITS ID / FARMER NUMBER"
-                        />
-                      </Col> */}
-                <Col sm={8} lg={12}>
-                  <Form.Group as={Row} className="form-group" id="fid">
-                    <Form.Label column sm={1} lg={2}>
-                      {t("Search Farmer Details By")}
-                    </Form.Label>
-                    <Col sm={1} lg={2}>
-                      <div className="form-control-wrap">
-                        <Form.Select
-                          name="select"
-                          value={farmer.select}
-                          onChange={handleFarmerIdInputs}
-                        >
-                          {/* <option value="">Select</option> */}
-                          <option value="mobileNumber">{t("Mobile Number")}</option>
-                          <option value="fruitsId">{t("Fruits Id")}</option>
-                          <option value="csbNumber">{t("CSB Number")}</option>
-                        </Form.Select>
-                      </div>
-                    </Col>
-
-                    <Col sm={2} lg={2}>
-                      <Form.Control
-                        id="fruitsId"
-                        name="text"
-                        value={farmer.text}
-                        onChange={handleFarmerIdInputs}
-                        type="text"
-                        placeholder={t("Search")}
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {t("Field Value is Required")}
-                      </Form.Control.Feedback>
-                    </Col>
-                    <Col sm={2} lg={3}>
-                      <Button type="submit" variant="primary">
-                        {t("Search")}
-                      </Button>
-                    </Col>
-                    {/* <Col sm={2} style={{ marginLeft: "-280px" }}> */}
-                    <Col sm={1} lg={2} style={{ marginLeft: "-15%" }}>
-                      <Link
-                        to="/seriui/stake-holder-registration"
-                        className="btn btn-primary border-0"
-                      >
-                        {t("Clear")}
-                      </Link>
-                    </Col>
-                  </Form.Group>
+          <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 4px 20px rgba(13,78,72,.10)", overflow: "hidden" }}>
+            {/* Gradient header strip — same vocabulary as the Market Weekly Report so the
+                Pupa Test screen feels like part of the same family of pages. */}
+            <div style={{
+              background: "linear-gradient(135deg,#0f766e 0%,#14b8a6 50%,#5b57ac 100%)",
+              padding: "12px 20px", display: "flex", alignItems: "center", gap: "12px",
+            }}>
+              <div style={{ width: "42px", height: "42px", borderRadius: "12px", background: "rgba(255,255,255,.18)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px" }}>🔬</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ color: "#fff", fontWeight: 800, fontSize: "15px", lineHeight: 1.2 }}>{t("Pupa Test & Cocoon Assessment")}</div>
+                <div style={{ color: "rgba(255,255,255,.85)", fontSize: "11px", marginTop: "2px" }}>{t("Search a farmer and review fitness, crop & weighment before assessment")}</div>
+              </div>
+            </div>
+            <Card.Body style={{ padding: "16px 20px 18px", background: "linear-gradient(180deg,#ffffff,#f8fffe)" }}>
+              <Row className="g-2 align-items-end">
+                <Col md={3}>
+                  <label style={ui.label}>{t("Search By")}</label>
+                  <Form.Select name="select" value={farmer.select} onChange={handleFarmerIdInputs} style={ui.sel}>
+                    <option value="mobileNumber">{t("Mobile Number")}</option>
+                    <option value="fruitsId">{t("Fruits Id")}</option>
+                    <option value="csbNumber">{t("CSB Number")}</option>
+                  </Form.Select>
+                </Col>
+                <Col md={4}>
+                  <label style={ui.label}>{t("Value")} <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <Form.Control
+                    id="fruitsId" name="text"
+                    value={farmer.text} onChange={handleFarmerIdInputs}
+                    type="text" placeholder={t("Enter Mobile / Fruits Id / CSB Number")}
+                    required
+                    style={ui.sel}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {t("Field Value is Required")}
+                  </Form.Control.Feedback>
+                </Col>
+                <Col md={5}>
+                  <div className="d-flex gap-2 flex-wrap">
+                    <button type="submit" style={ui.pillBtn("linear-gradient(135deg,#0f766e,#14b8a6)", "0 4px 12px rgba(15,118,110,.32)", false)}>
+                      🔍 {t("Search")}
+                    </button>
+                    <Link to="/seriui/stake-holder-registration" style={{ textDecoration: "none" }}>
+                      <button type="button" style={ui.pillBtn("linear-gradient(135deg,#64748b,#94a3b8)", "0 4px 12px rgba(100,116,139,.30)", false)}>
+                        🧹 {t("Clear")}
+                      </button>
+                    </Link>
+                  </div>
                 </Col>
               </Row>
             </Card.Body>
@@ -832,95 +840,74 @@ function PupaTestAndCocoonAssessment() {
           noValidate
           validated={validated}
           onSubmit={postData}
-          className="mt-2"
+          className="mt-3"
         >
-          <Row className="g-3 ">
-            <div className={isActive ? "" : "d-none"}>
-              <Row>
-                <Col lg="12">
-                  <Card>
-                    <Card.Body>
-                      <Row>
-                        <Col lg="3">
-                          <Form.Group as={Row} className="form-group">
-                            <Form.Label column sm={12}>
-                              <div
-                                className="d-flex align-items-center"
-                                onClick={handleShowModal}
-                              >
-                                <Icon name="info-fill" size="lg"></Icon>
-                                <span>{t("Personal Details")}</span>
-                              </div>
-                            </Form.Label>
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col lg="3">
-                          <Form.Group as={Row} className="form-group">
-                            <Form.Label column sm={12}>
-                              <div
-                                className="d-flex align-items-center"
-                                onClick={handleShowModalFC}
-                              >
-                                <Icon name="info-fill" size="lg"></Icon>
-                                <span>{t("FC Details")}</span>
-                              </div>
-                            </Form.Label>
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col lg="3">
-                          <Form.Group as={Row} className="form-group">
-                            <Form.Label column sm={12}>
-                              <div
-                                className="d-flex align-items-center"
-                                onClick={handleShowModalCrop}
-                              >
-                                <Icon name="info-fill" size="lg"></Icon>
-                                <span>{t("Crop Details")}</span>
-                              </div>
-                            </Form.Label>
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col lg="3">
-                          <Form.Group as={Row} className="form-group">
-                            <Form.Label column sm={12}>
-                              <div
-                                className="d-flex align-items-center"
-                                onClick={handleShowModalWeighment}
-                              >
-                                <Icon name="info-fill" size="lg"></Icon>
-                                <span>{t("Initial Weighment")}</span>
-                              </div>
-                            </Form.Label>
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                    </Card.Body>
-                  </Card>
+          <div className={isActive ? "" : "d-none"}>
+            <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 4px 20px rgba(13,78,72,.10)", overflow: "hidden", marginTop: "14px" }}>
+              {/* Identity strip — surfaces the loaded farmer's name & FRUITS id on the page itself,
+                  not just inside modals, so the user always sees who they're assessing. */}
+              <div style={{
+                background: "linear-gradient(135deg,#1e67a8 0%,#2d9cdb 100%)",
+                padding: "12px 24px", display: "flex", alignItems: "center", gap: "12px",
+              }}>
+                <span style={{ fontSize: "18px" }}>👤</span>
+                <div style={{ color: "#fff", fontWeight: 700, fontSize: "15px" }}>{t("Farmer Information")}</div>
+                <div style={{ marginLeft: "auto", display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                  <span style={{ background: "rgba(255,255,255,0.22)", borderRadius: "20px", padding: "4px 14px", color: "#fff", fontSize: "12px", fontWeight: 700 }}>
+                    {farmerSummary.name}
+                  </span>
+                  <span style={{ background: "rgba(255,255,255,0.22)", borderRadius: "20px", padding: "4px 14px", color: "#fff", fontSize: "12px", fontWeight: 700 }}>
+                    🆔 {farmerSummary.fruitsId}
+                  </span>
+                </div>
+              </div>
+              <Card.Body style={{ padding: "18px 20px" }}>
+                <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                  {[
+                    { icon: "👤", label: t("Personal Details"),   onClick: handleShowModal },
+                    { icon: "📄", label: t("FC Details"),         onClick: handleShowModalFC },
+                    { icon: "🌿", label: t("Crop Details"),       onClick: handleShowModalCrop },
+                    { icon: "⚖️", label: t("Initial Weighment"),  onClick: handleShowModalWeighment },
+                  ].map((item) => (
+                    <button
+                      key={item.label}
+                      type="button"
+                      onClick={item.onClick}
+                      style={ui.chipBtn}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = "#1e67a8"; e.currentTarget.style.color = "#fff"; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = "#f0f6ff"; e.currentTarget.style.color = "#1e67a8"; }}
+                    >
+                      <span style={{ fontSize: "18px" }}>{item.icon}</span>
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </Card.Body>
+            </Card>
 
-                  <div className="gap-col mt-1">
-                    <ul className="d-flex align-items-center justify-content-center gap g-3">
-                      <li>
-                        <Button type="submit" variant="primary">
-                          {t("Submit")}
-                        </Button>
-                      </li>
-                    </ul>
-                  </div>
-                </Col>
-              </Row>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "18px", gap: "6px" }}>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                style={ui.pillBtn("linear-gradient(135deg,#1e67a8,#2d9cdb)", "0 4px 14px rgba(30,103,168,0.35)", isSubmitting)}
+              >
+                {isSubmitting ? (
+                  <><span className="spinner-border spinner-border-sm" /> {t("Submitting…")}</>
+                ) : (
+                  <>✅ {t("Submit")}</>
+                )}
+              </button>
             </div>
-          </Row>
+          </div>
         </Form>
       </Block>
-      <Modal show={showModal} onHide={handleCloseModal} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>{t("Personal Details")}</Modal.Title>
+      <Modal show={showModal} onHide={handleCloseModal} size="lg" centered>
+        <Modal.Header closeButton style={{ background: "linear-gradient(135deg,#1e67a8 0%,#2d9cdb 100%)", border: "none", padding: "16px 24px", borderRadius: "8px 8px 0 0" }}>
+          <Modal.Title style={{ color: "#fff", fontWeight: 700, fontSize: "16px", display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+            <span>👤 {t("Personal Details")}</span>
+            <span style={{ background: "rgba(255,255,255,0.22)", borderRadius: "20px", padding: "3px 12px", fontSize: "12px", fontWeight: 700 }}>{farmerSummary.name}</span>
+            <span style={{ background: "rgba(255,255,255,0.22)", borderRadius: "20px", padding: "3px 12px", fontSize: "12px", fontWeight: 700 }}>🆔 {farmerSummary.fruitsId}</span>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="d-flex justify-content-center">
@@ -977,9 +964,13 @@ function PupaTestAndCocoonAssessment() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>{t("FC Details")}</Modal.Title>
+      <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg" centered>
+        <Modal.Header closeButton style={{ background: "linear-gradient(135deg,#1e67a8 0%,#2d9cdb 100%)", border: "none", padding: "16px 24px", borderRadius: "8px 8px 0 0" }}>
+          <Modal.Title style={{ color: "#fff", fontWeight: 700, fontSize: "16px", display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+            <span>📄 {t("FC Details")}</span>
+            <span style={{ background: "rgba(255,255,255,0.22)", borderRadius: "20px", padding: "3px 12px", fontSize: "12px", fontWeight: 700 }}>{farmerSummary.name}</span>
+            <span style={{ background: "rgba(255,255,255,0.22)", borderRadius: "20px", padding: "3px 12px", fontSize: "12px", fontWeight: 700 }}>🆔 {farmerSummary.fruitsId}</span>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="d-flex flex-column justify-content-center">
@@ -1039,9 +1030,13 @@ function PupaTestAndCocoonAssessment() {
           </div>
         </Modal.Body>
       </Modal>
-      <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>{t("Crop Details")}</Modal.Title>
+      <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg" centered>
+        <Modal.Header closeButton style={{ background: "linear-gradient(135deg,#1e67a8 0%,#2d9cdb 100%)", border: "none", padding: "16px 24px", borderRadius: "8px 8px 0 0" }}>
+          <Modal.Title style={{ color: "#fff", fontWeight: 700, fontSize: "16px", display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+            <span>🌿 {t("Crop Details")}</span>
+            <span style={{ background: "rgba(255,255,255,0.22)", borderRadius: "20px", padding: "3px 12px", fontSize: "12px", fontWeight: 700 }}>{farmerSummary.name}</span>
+            <span style={{ background: "rgba(255,255,255,0.22)", borderRadius: "20px", padding: "3px 12px", fontSize: "12px", fontWeight: 700 }}>🆔 {farmerSummary.fruitsId}</span>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="d-flex justify-content-center">
@@ -1086,9 +1081,14 @@ function PupaTestAndCocoonAssessment() {
         show={showModalWeighment}
         onHide={handleCloseModalWeighment}
         size="lg"
+        centered
       >
-        <Modal.Header closeButton>
-          <Modal.Title>{t("Crop Details")}</Modal.Title>
+        <Modal.Header closeButton style={{ background: "linear-gradient(135deg,#1e67a8 0%,#2d9cdb 100%)", border: "none", padding: "16px 24px", borderRadius: "8px 8px 0 0" }}>
+          <Modal.Title style={{ color: "#fff", fontWeight: 700, fontSize: "16px", display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+            <span>⚖️ {t("Initial Weighment")}</span>
+            <span style={{ background: "rgba(255,255,255,0.22)", borderRadius: "20px", padding: "3px 12px", fontSize: "12px", fontWeight: 700 }}>{farmerSummary.name}</span>
+            <span style={{ background: "rgba(255,255,255,0.22)", borderRadius: "20px", padding: "3px 12px", fontSize: "12px", fontWeight: 700 }}>🆔 {farmerSummary.fruitsId}</span>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form

@@ -197,6 +197,22 @@ function PreparationofeggsDFLsView() {
                         <td style={styles.ctstyle}>{t("Additional remarks")}:</td>
                         <td>{prepareEggs.additionalRemarks}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Second Source Lot Number")}:</td>
+                        <td>{prepareEggs.secondParentLotNumber}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Rejected Pairs (Examined)")}:</td>
+                        <td>{prepareEggs.rejectedPairsExamined}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Rejected Pairs (Other)")}:</td>
+                        <td>{prepareEggs.rejectedPairsOther}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Pebrine Disease Beds")}:</td>
+                        <td>{prepareEggs.pebrineDiseaseBeds}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

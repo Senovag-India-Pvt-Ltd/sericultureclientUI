@@ -24,6 +24,26 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
+const getFinancialYearPeriod = (financialYearStr) => {
+  let startYear;
+  if (financialYearStr) {
+    const match = String(financialYearStr).match(/(\d{4})/);
+    if (match) startYear = parseInt(match[1], 10);
+  }
+  if (!startYear) {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    startYear = month >= 3 ? year : year - 1;
+  }
+  return {
+    periodFrom: new Date(startYear, 3, 1),
+    periodTo: new Date(startYear + 1, 2, 31),
+  };
+};
+
+const getCurrentFinancialYearPeriod = () => getFinancialYearPeriod();
+
 function ServiceApplication() {
 
   const isSanctionEnabledFromDB = async (scSubSchemeDetailsId) => {
@@ -105,8 +125,8 @@ const generateFinalReport = async (selectedRows) => {
     userId: "",
     spacingId: "",
     hectareId: "",
-    periodFrom: new Date("2025-04-01"),
-    periodTo: new Date("2026-03-31"),
+    periodFrom: getCurrentFinancialYearPeriod().periodFrom,
+    periodTo: getCurrentFinancialYearPeriod().periodTo,
     cocoonsWeight:"",
     availBonus:"",
     // availBonus: true,
@@ -517,7 +537,7 @@ useEffect(() => {
   const addSilkIncentiveRow = () => setSilkIncentiveList((prev) => [...prev, { ...emptySilkIncentiveRow }]);
   const removeSilkIncentiveRow = (index) => setSilkIncentiveList((prev) => prev.filter((_, i) => i !== index));
 
-  const emptyRearingEquipmentRow = { vendorId: "", description: "", machineTypeId: "", l1Rate: "", machineQuantity: "", taxInvoiceNo: "" };
+  const emptyRearingEquipmentRow = { description: "", machineTypeId: "", l1Rate: "", machineQuantity: "", taxInvoiceNo: "", taxInvoiceDate: null };
   const [rearingEquipmentPurchaseList, setRearingEquipmentPurchaseList] = useState([{ ...emptyRearingEquipmentRow }]);
 
   const handleRearingEquipmentChange = (index, e) => {
@@ -525,6 +545,14 @@ useEffect(() => {
     setRearingEquipmentPurchaseList((prev) => {
       const updated = [...prev];
       updated[index] = { ...updated[index], [name]: value };
+      return updated;
+    });
+  };
+
+  const handleRearingEquipmentDateChange = (index, date) => {
+    setRearingEquipmentPurchaseList((prev) => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], taxInvoiceDate: date };
       return updated;
     });
   };
@@ -1376,12 +1404,16 @@ if (
     .get(baseURLMasterData + `financialYearMaster/get-is-default`)
     .then((response) => {
       const id = response.data.content.financialYearMasterId;
+      const fyStr = response.data.content.financialYear;
+      const { periodFrom, periodTo } = getFinancialYearPeriod(fyStr);
 
       setDefaultFinancialYearId(id);  // separate state
 
       setData((prev) => ({
         ...prev,
         financialYearMasterId: id,
+        periodFrom,
+        periodTo,
       }));
     })
     .catch(() => {
@@ -1944,7 +1976,17 @@ const isSDP =
   return;
 }
 
-    setData({ ...data, [name]: value });
+    if (name === "financialYearMasterId") {
+      const selectedFY = financialyearListData.find(
+        (f) => String(f.financialYearMasterId) === String(value)
+      );
+      const { periodFrom, periodTo } = getFinancialYearPeriod(
+        selectedFY?.financialYear
+      );
+      setData({ ...data, [name]: value, periodFrom, periodTo });
+    } else {
+      setData({ ...data, [name]: value });
+    }
 
     if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
       e.target.classList.add("is-invalid");
@@ -4527,8 +4569,24 @@ const isUserValid = React.useMemo(() => {
     event.preventDefault(); // Prevent the default form submission
     const form = event.currentTarget;
 
-      if (!isUserValid) {
-      setValidated(true);
+    const localStorageUserId = localStorage.getItem("userMasterId");
+    if (!localStorageUserId || localStorageUserId === "null") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please Select User Master",
+        text: "Please Select User Master and Save",
+        confirmButtonColor: "#1e67a8",
+      });
+      return;
+    }
+
+    if (!isUserValid) {
+      Swal.fire({
+        icon: "warning",
+        title: "Please Select User Master",
+        text: "Please Select User Master and Save",
+        confirmButtonColor: "#1e67a8",
+      });
       return;
     }
 
@@ -5001,10 +5059,8 @@ const isUserValid = React.useMemo(() => {
       if (!data.equordev.includes("constructedArea")) {
         missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
       }
-      if (!data.equordev.includes("equipment")) {
-        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
-      } else {
-        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
+      if (rearingEquipmentPurchaseList.some((item) => !item.l1Rate)) {
+        missingFields.push("L1 Rate in Equipment Purchase (required for all rows)");
       }
       if (missingFields.length > 0) {
         Swal.fire({
@@ -5125,7 +5181,7 @@ const isUserValid = React.useMemo(() => {
       talukId: landData.talukId,
       newFarmer: true,
       componentId: data.scComponentId,
-      financialYearMasterId: defaultFinancialYearId,
+      financialYearMasterId: data.financialYearMasterId,
       devAcre: 0,
       devGunta: 0,
       devFGunta: 0,
@@ -5134,7 +5190,7 @@ const isUserValid = React.useMemo(() => {
       initialAmount: data.expectedAmount,
       // periodFrom: data.periodFrom,
       // periodTo: data.periodTo,
-      vendorId: equipment.vendorId,
+      vendorId: getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS" ? data.vendorId : equipment.vendorId,
       spacingId: data.spacingId,
       hectareId: data.hectareId,
       cocoonsWeight: data.cocoonsWeight,
@@ -5234,25 +5290,23 @@ const isUserValid = React.useMemo(() => {
     if (data.equordev.includes("land")) {
       sendPost.dbtFarmerLandDetailsRequestList = transformedData; // Include land details
     }
-    if (data.equordev.includes("equipment")) {
-      if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS") {
-        sendPost.applicationFormLineItemRequestList = rearingEquipmentPurchaseList.map((item) => ({
-          lineItemComment: item.description,
-          cost: item.l1Rate,
-          vendorId: item.vendorId,
-          machineTypeId: item.machineTypeId,
-          machineQuantity: item.machineQuantity,
-          taxInvoiceNo: item.taxInvoiceNo,
-        }));
-      } else {
-        sendPost.applicationFormLineItemRequestList = [
-          {
-            lineItemComment: equipment.description,
-            cost: equipment.price,
-            vendorId: equipment.vendorId,
-          },
-        ];
-      }
+    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS") {
+      sendPost.equipmentTableRequestList = rearingEquipmentPurchaseList.map((item) => ({
+        eDescription: item.description || null,
+        eL1Rate: item.l1Rate || null,
+        eMachineTypeId: item.machineTypeId ? parseInt(item.machineTypeId, 10) : null,
+        eMachineQuantity: item.machineQuantity ? parseFloat(item.machineQuantity) : null,
+        eTaxInvoiceNo: item.taxInvoiceNo || null,
+        eTaxInvoiceDate: item.taxInvoiceDate ? formatDate(item.taxInvoiceDate) : null,
+      }));
+    } else if (data.equordev.includes("equipment")) {
+      sendPost.applicationFormLineItemRequestList = [
+        {
+          lineItemComment: equipment.description,
+          cost: equipment.price,
+          vendorId: equipment.vendorId,
+        },
+      ];
     }
     // if (data.equordev.includes("constructedArea")) {
     //     // Handle constructedArea data if needed
@@ -6012,8 +6066,8 @@ const isUserValid = React.useMemo(() => {
       hectareId: "",
       expectedAmount: "",
       financialYearMasterId: "",
-      periodFrom: new Date("2025-04-01"),
-      periodTo: new Date("2026-03-31"),
+      periodFrom: getCurrentFinancialYearPeriod().periodFrom,
+      periodTo: getCurrentFinancialYearPeriod().periodTo,
       cocoonsWeight:"",
       availBonus:"",
       // availBonus: true,
@@ -6128,6 +6182,18 @@ const isUserValid = React.useMemo(() => {
     background: "#f0f6ff",
     width: "380px",
   }).then((result) => {
+
+    const localStorageUserId2 = localStorage.getItem("userMasterId");
+    if (!localStorageUserId2 || localStorageUserId2 === "null" || !post.userMasterId) {
+      Swal.fire({
+        icon: "warning",
+        title: "Please Select User Master",
+        text: "Please Select User Master and Save it once again",
+        confirmButtonColor: "#1e67a8",
+      });
+      setSaveDisabled(false);
+      return;
+    }
 
     const apiEndpoint = isSanctionForReeling
       ? `${baseURLDBT}service/saveApplicationFormForReeler`
@@ -7418,6 +7484,58 @@ const fetchReelerDetails = () => {
                   </Form.Group>
                 </Col>
               </Row>
+              <Row className="g-gs mt-3">
+                <Col lg="6">
+                  <div
+                    style={{
+                      background: "#ffffff",
+                      border: "1px solid #dce8f5",
+                      borderRadius: "10px",
+                      padding: "12px 16px",
+                      boxShadow: "0 1px 4px rgba(26,95,168,0.06)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "12px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: "4px",
+                        height: "28px",
+                        background: "#1a5fa8",
+                        borderRadius: "2px",
+                        display: "inline-block",
+                      }}
+                    />
+                    <Form.Label
+                      htmlFor="financialYearMasterId"
+                      className="mb-0"
+                      style={{ fontWeight: "bold", color: "#1a3c6e", whiteSpace: "nowrap" }}
+                    >
+                      {t("Financial Year")}
+                      <span className="text-danger">*</span>
+                    </Form.Label>
+                    <Form.Select
+                      id="financialYearMasterId"
+                      name="financialYearMasterId"
+                      value={data.financialYearMasterId}
+                      onChange={handleInputs}
+                      required
+                      style={{ maxWidth: "240px" }}
+                    >
+                      <option value="">{t("Select Year")}</option>
+                      {financialyearListData.map((list) => (
+                        <option
+                          key={list.financialYearMasterId}
+                          value={list.financialYearMasterId}
+                        >
+                          {list.financialYear}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                </Col>
+              </Row>
               {showFarmerDetails && (
                 <Row className="g-gs mt-1">
                   <Col lg="12">
@@ -7778,55 +7896,6 @@ const fetchReelerDetails = () => {
                               </Form.Group>
                             </Col>
                             
-                            <Col lg="6">
-                                <Form.Group className="form-group mt-n3">
-                                  <Form.Label htmlFor="schemeAmount">Tax Invoice No</Form.Label>
-                                  <div className="form-control-wrap">
-                                    <Form.Control
-                                      id="taxInvoiceNo"
-                                      type="text"
-                                      name="taxInvoiceNo"
-                                      value={data.taxInvoiceNo}
-                                      onChange={handleInputs}
-                                      placeholder="Enter Tax Invoice No"
-                                      // required
-                                      // readOnly
-                                    />
-                                  </div>
-                                </Form.Group>
-                              </Col>
-
-                              <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="sordfl">
-                              {t("Tax Invoice Date")}
-                              {/* <span className="text-danger">*</span> */}
-                            </Form.Label>
-                            <div className="form-control-wrap">
-                              <DatePicker
-                                selected={data.taxInvoiceDate}
-                                onChange={(date) =>
-                                  handleDateChange(date, "taxInvoiceDate")
-                                }
-                                // minDate={new Date("01/04/2023")}
-                                // maxDate={new Date("31/03/2024")}
-                                peekNextMonth
-                                showMonthDropdown
-                                showYearDropdown
-                                dropdownMode="select"
-                                dateFormat="dd/MM/yyyy"
-                                className="form-control"
-                                maxDate={new Date()}
-                                // readOnly={schemeDetails.calculationBasedOn === "Silk Samagra Central" || 
-                                //   schemeDetails.calculationBasedOn === "Silk Samagra State" || 
-                                //   !schemeDetails.calculationBasedOn}
-                                // readOnly
-                                // required
-                              />
-                            </div>
-                          </Form.Group>
-                        </Col>
-
                             <Col lg="6">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
@@ -9105,7 +9174,10 @@ const fetchReelerDetails = () => {
                                   }))}
                                   placeholder={t("Select User")}
                                   isSearchable
-                                  menuPlacement="auto"
+                                  menuPlacement="bottom"
+                                  menuPosition="fixed"
+                                  menuPortalTarget={document.body}
+                                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                                   value={userFromDistrictData
                                     .map((list) => ({ value: list.userId, label: list.userName }))
                                     .find((opt) => opt.value === data.userId)}
@@ -9142,6 +9214,10 @@ const fetchReelerDetails = () => {
                                 }))}
                                 isSearchable
                                 placeholder={t("Select User")}
+                                menuPlacement="bottom"
+                                menuPosition="fixed"
+                                menuPortalTarget={document.body}
+                                styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                                 value={userListData
                                   .map((u) => ({
                                     value: u.userMasterId,
@@ -9282,6 +9358,7 @@ const fetchReelerDetails = () => {
                       </Form.Label>
                     </Form.Group>
                   </Col>
+                  {getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Rearing Equipment SS" && (
                   <Col lg="2">
                     <Form.Group
                       as={Row}
@@ -9302,6 +9379,7 @@ const fetchReelerDetails = () => {
                       </Form.Label>
                     </Form.Group>
                   </Col>
+                  )}
                   <Col lg="2">
                     <Form.Group
                       as={Row}
@@ -11200,7 +11278,8 @@ const fetchReelerDetails = () => {
 
                         {/* Subsidy Amount for Silk Samagra State: centralAmount + stateAmount */}
                         {schemeDetails.calculationBasedOn === "Silk Samagra State" &&
-                          getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Rearing Equipment SS" && (
+                          getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Rearing Equipment SS" &&
+                          getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Registered Private Bivoltine Chawki Rearing Center Subsidy" && (
                           <Col lg="4">
                             <Form.Group className="form-group mt-n5">
                               <Form.Label htmlFor="silkSamagraSubsidyAmount">
@@ -11363,7 +11442,9 @@ const fetchReelerDetails = () => {
                         getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
                           "Registered Private Bivoltine Chawki Rearing Center Subsidy") &&
                         getIncentiveAndBonusData?.[0]?.calculationBasedOn !==
-                          "SS Construction Of Low Cost Shed to Permanent Rearing House" && (
+                          "SS Construction Of Low Cost Shed to Permanent Rearing House" &&
+                        getIncentiveAndBonusData?.[0]?.calculationBasedOn !==
+                          "Silk Incentive-PSF" && (
                         <Col lg="4">
                           <Form.Group className="form-group mt-n5">
                             <Form.Label>
@@ -11598,7 +11679,7 @@ const fetchReelerDetails = () => {
                 </Block>
               )}
 
-              {data.equordev.includes("equipment") && (
+              {(data.equordev.includes("equipment") || getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS") && (
                 <Block className="mt-3">
                   <Card>
                     <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", fontWeight: 700, color: "white", padding: "10px 16px", letterSpacing: "0.3px" }}>
@@ -11609,20 +11690,22 @@ const fetchReelerDetails = () => {
                       {/* ── Rearing Equipment SS: multiple rows ── */}
                       {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS" ? (
                         <>
+                          <Row className="g-gs mb-3">
+                            <Col lg="4">
+                              <Form.Group className="form-group mt-n3">
+                                <Form.Label>{t("Vendor Name")}</Form.Label>
+                                <Form.Select name="vendorId" value={data.vendorId} onChange={handleInputs}>
+                                  <option value="">{t("Select Vendor Name")}</option>
+                                  {scVendorListData.map((list) => (
+                                    <option key={list.scVendorId} value={list.scVendorId}>{list.name}</option>
+                                  ))}
+                                </Form.Select>
+                              </Form.Group>
+                            </Col>
+                          </Row>
                           {rearingEquipmentPurchaseList.map((row, index) => (
                             <div key={index} className="border rounded p-3 mb-3">
                               <Row className="g-gs">
-                                <Col lg="4">
-                                  <Form.Group className="form-group mt-n3">
-                                    <Form.Label>{t("Vendor Name")}</Form.Label>
-                                    <Form.Select name="vendorId" value={row.vendorId} onChange={(e) => handleRearingEquipmentChange(index, e)}>
-                                      <option value="">{t("Select Vendor Name")}</option>
-                                      {scVendorListData.map((list) => (
-                                        <option key={list.scVendorId} value={list.scVendorId}>{list.name}</option>
-                                      ))}
-                                    </Form.Select>
-                                  </Form.Group>
-                                </Col>
                                 <Col lg="4">
                                   <Form.Group className="form-group mt-n3">
                                     <Form.Label>{t("Equipment Details")}</Form.Label>
@@ -11658,10 +11741,21 @@ const fetchReelerDetails = () => {
                                     <Form.Control type="text" name="taxInvoiceNo" value={row.taxInvoiceNo} onChange={(e) => handleRearingEquipmentChange(index, e)} placeholder="Enter Tax Invoice No" />
                                   </Form.Group>
                                 </Col>
+                                <Col lg="4">
+                                  <Form.Group className="form-group mt-n3">
+                                    <Form.Label>{t("Tax Invoice Date")}</Form.Label>
+                                    <DatePicker selected={row.taxInvoiceDate} onChange={(date) => handleRearingEquipmentDateChange(index, date)} peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select" dateFormat="dd/MM/yyyy" className="form-control" maxDate={new Date()} />
+                                  </Form.Group>
+                                </Col>
                                 <Col lg="12" className="text-end">
                                   {rearingEquipmentPurchaseList.length > 1 && (
-                                    <Button variant="danger" size="sm" onClick={() => removeRearingEquipmentRow(index)}>
+                                    <Button variant="danger" size="sm" onClick={() => removeRearingEquipmentRow(index)} className="me-2">
                                       {t("Remove")}
+                                    </Button>
+                                  )}
+                                  {index === rearingEquipmentPurchaseList.length - 1 && (
+                                    <Button variant="primary" size="sm" onClick={addRearingEquipmentRow}>
+                                      + {t("Add Row")}
                                     </Button>
                                   )}
                                 </Col>

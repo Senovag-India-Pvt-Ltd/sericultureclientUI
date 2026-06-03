@@ -129,10 +129,11 @@ const fmtCell = (v, kind) => {
 function GrainageMarketWeeklyReport() {
   const { t } = useTranslation();
 
-  const [filter, setFilter] = useState({ financialYearMasterId: "", month: "", week: "" });
+  const [filter, setFilter] = useState({ financialYearMasterId: "", month: "", week: "", marketId: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
 
   const [financialYearList, setFinancialYearList] = useState([]);
+  const [marketList,        setMarketList]        = useState([]);
 
   const [dataRows,           setDataRows]           = useState([]);
   const [hasReport,          setHasReport]          = useState(false);
@@ -154,6 +155,10 @@ function GrainageMarketWeeklyReport() {
         }
       })
       .catch(() => {});
+
+    api.get(baseURL + "marketMaster/get-all")
+      .then((r) => setMarketList(r.data.content.marketMaster || []))
+      .catch(() => setMarketList([]));
   }, []);
 
   const extractYear = (str) => {
@@ -174,6 +179,7 @@ function GrainageMarketWeeklyReport() {
   };
 
   const validate = () => {
+    if (!filter.marketId)              return "Please select a Market.";
     if (!filter.financialYearMasterId) return "Please select a Financial Year.";
     if (!filter.month)                 return "Please select a Month.";
     if (!filter.week)                  return "Please select a Week.";
@@ -200,7 +206,7 @@ function GrainageMarketWeeklyReport() {
   const params = () => {
     const m = Number(filter.month);
     const year = m >= 4 ? fyStartYear : fyStartYear + 1;
-    return { year, month: m, week: Number(filter.week) };
+    return { year, month: m, week: Number(filter.week), marketId: Number(filter.marketId) };
   };
 
   const handleView = async (e) => {
@@ -262,6 +268,9 @@ function GrainageMarketWeeklyReport() {
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
   const weekNum    = Number(filter.week);
   const weekRange  = WEEKS.find((w) => w.value === weekNum)?.range || "";
+  const market     = marketList.find((m) => String(m.marketMasterId) === String(filter.marketId));
+  const marketEn   = market?.marketMasterName || "";
+  const marketKn   = market?.marketNameInKannada || "";
 
   // Totals across all rows (DFLs column removed by the backend; matches Excel/PDF totals row).
   const totals = dataRows.reduce((acc, r) => {
@@ -304,6 +313,11 @@ function GrainageMarketWeeklyReport() {
             </div>
             {hasReport && (
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                {marketEn && (
+                  <span style={{ background: "rgba(255,255,255,.22)", borderRadius: "20px", padding: "4px 12px", color: "#fff", fontSize: "11px", fontWeight: 700, backdropFilter: "blur(6px)" }}>
+                    🛒 {marketEn}{marketKn ? ` · ${marketKn}` : ""}
+                  </span>
+                )}
                 <span style={{ background: "rgba(255,255,255,.22)", borderRadius: "20px", padding: "4px 12px", color: "#fff", fontSize: "11px", fontWeight: 700, backdropFilter: "blur(6px)" }}>
                   {monthLabel}{monthKn ? ` · ${monthKn}` : ""} {monthYear || ""}
                 </span>
@@ -318,9 +332,20 @@ function GrainageMarketWeeklyReport() {
             <Form onSubmit={handleView}>
               <Row className="g-2 align-items-end">
                 <Col md={3}>
+                  <label style={lbl}>Market <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <Form.Select name="marketId" value={filter.marketId} onChange={handleChange} style={sel}>
+                    <option value="">— Select Market —</option>
+                    {marketList.map((m) => (
+                      <option key={m.marketMasterId} value={m.marketMasterId}>
+                        {m.marketMasterName}{m.marketNameInKannada ? ` · ${m.marketNameInKannada}` : ""}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Col>
+                <Col md={2}>
                   <label style={lbl}>Financial Year <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="financialYearMasterId" value={filter.financialYearMasterId} onChange={handleChange} style={sel}>
-                    <option value="">— Select Year —</option>
+                    <option value="">— Year —</option>
                     {financialYearList.map((f) => (
                       <option key={f.financialYearMasterId} value={f.financialYearMasterId}>{f.financialYear}</option>
                     ))}
@@ -335,16 +360,16 @@ function GrainageMarketWeeklyReport() {
                     ))}
                   </Form.Select>
                 </Col>
-                <Col md={3}>
+                <Col md={2}>
                   <label style={lbl}>Week <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="week" value={filter.week} onChange={handleChange} style={sel}>
                     <option value="">— Week —</option>
                     {WEEKS.map((w) => (
-                      <option key={w.value} value={w.value}>Week {w.value} · days {w.range}</option>
+                      <option key={w.value} value={w.value}>W{w.value} · {w.range}</option>
                     ))}
                   </Form.Select>
                 </Col>
-                <Col md={4}>
+                <Col md={3}>
                   <div className="d-flex gap-2 flex-wrap">
                     <button type="submit" disabled={isLoading} style={btn("linear-gradient(135deg,#0f766e,#14b8a6)", "0 4px 12px rgba(15,118,110,.32)", isLoading)}>
                       {isLoading ? <><span className="spinner-border spinner-border-sm" /> Loading…</> : <>📋 View</>}
@@ -408,9 +433,9 @@ function GrainageMarketWeeklyReport() {
                 fontWeight: 800, fontSize: "15px", letterSpacing: ".02em",
                 textAlign: "center",
               }}>
-                Market Weekly Report &nbsp;·&nbsp; ಮಾರುಕಟ್ಟೆ ವಾರದ ವರದಿ
+                ಸರ್ಕಾರಿ ರೇಷ್ಮೆ ಗೂಡು ಮಾರುಕಟ್ಟೆ {marketKn || marketEn} &nbsp;·&nbsp; {monthKn} {monthYear} ನೆ ಮಾಹೆ {weekNum} ನೇ ವಾರದ ವಹಿವಾಟು ವರದಿ
                 <div style={{ fontSize: "12px", fontWeight: 600, opacity: .9, marginTop: "4px" }}>
-                  {monthKn} {monthYear} &nbsp;|&nbsp; Week {weekNum} (days {weekRange}) &nbsp;|&nbsp; grouped by ತಂಡಗಳು (lot_parental_level)
+                  Market Weekly Report{marketEn ? ` · ${marketEn}` : ""} &nbsp;|&nbsp; {monthLabel} {monthYear} &nbsp;|&nbsp; Week {weekNum} (days {weekRange})
                 </div>
               </div>
 

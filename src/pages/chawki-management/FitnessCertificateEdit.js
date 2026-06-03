@@ -137,6 +137,7 @@ function FitnessCertificateEdit() {
     const matchedGrainage = grainageList.find(g => g.grainageMasterName === row.grainageName);
     setEditData({
       cropInspectionId: row.fitnessCertificateId,
+      saleAndDisposalId: row.saleAndDisposalId ?? "",
       farmerId: row.farmerId ?? farmerDetails?.farmerId ?? "",
       fruitsId: row.fruitsId || "",
       noOfChandies: row.noOfChandies ?? "",
@@ -145,10 +146,10 @@ function FitnessCertificateEdit() {
       spunToDate: row.spunToDate ? row.spunToDate.substring(0, 10) : "",
       lotTestDetails: row.lotTestDetails || "",
       diseaseStatusId: row.diseaseStatusId ? String(row.diseaseStatusId) : "",
-      fitnessCertificatePath: row.fitnessCertificatePath || "",
       raceOfDfls: row.raceOfDfls ? String(row.raceOfDfls) : "",
+      grainageName: row.grainageName || "",
       grainageMasterId: matchedGrainage ? String(matchedGrainage.grainageMasterId) : "",
-      numbersOfDfls: row.numbersOfDfls || "",
+      numbersOfDfls: row.numbersOfDfls ?? "",
       lotNumberRsp: row.lotNumberRsp || "",
       dateOfBrushing: row.dateOfBrushing ? row.dateOfBrushing.substring(0, 10) : "",
     });
@@ -165,6 +166,7 @@ function FitnessCertificateEdit() {
     api
       .post(baseURL + `cropInspection/editFitnessCertificateDetails`, {
         cropInspectionId: editData.cropInspectionId,
+        saleAndDisposalId: editData.saleAndDisposalId || null,
         farmerId: editData.farmerId,
         fruitsId: editData.fruitsId,
         noOfChandies: editData.noOfChandies,
@@ -173,7 +175,6 @@ function FitnessCertificateEdit() {
         spunToDate: editData.spunToDate,
         lotTestDetails: editData.lotTestDetails,
         diseaseStatusId: editData.diseaseStatusId,
-        fitnessCertificatePath: editData.fitnessCertificatePath,
         raceOfDfls: editData.raceOfDfls,
         grainageMasterId: editData.grainageMasterId,
         numbersOfDfls: editData.numbersOfDfls,
@@ -362,13 +363,19 @@ function FitnessCertificateEdit() {
                           <td style={{ padding: "11px 16px" }}>{row.noOfChandies ?? "—"}</td>
                           <td style={{ padding: "11px 16px" }}>{row.expectedCocoon ?? "—"}</td>
                           <td style={{ padding: "10px 16px", textAlign: "center" }}>
-                            <Button
-                              size="sm"
-                              onClick={() => handleEditClick(row)}
-                              style={{ background: "linear-gradient(135deg, #f59e0b, #d97706)", border: "none", borderRadius: "6px", padding: "4px 14px", fontSize: "0.78rem", fontWeight: 600 }}
-                            >
-                              ✏️ {t("Edit")}
-                            </Button>
+                            {row.isDisposed === 1 ? (
+                              <span style={{ background: "#fee2e2", color: "#dc2626", borderRadius: "6px", padding: "4px 10px", fontSize: "0.75rem", fontWeight: 600 }}>
+                                🔒 {t("E-Inward Done")}
+                              </span>
+                            ) : (
+                              <Button
+                                size="sm"
+                                onClick={() => handleEditClick(row)}
+                                style={{ background: "linear-gradient(135deg, #f59e0b, #d97706)", border: "none", borderRadius: "6px", padding: "4px 14px", fontSize: "0.78rem", fontWeight: 600 }}
+                              >
+                                ✏️ {t("Edit")}
+                              </Button>
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -413,7 +420,15 @@ function FitnessCertificateEdit() {
                 <Col lg={4} md={6}>
                   <Form.Group>
                     <Form.Label style={labelStyle}>{t("Grainage")}</Form.Label>
-                    <Form.Select name="grainageMasterId" value={editData.grainageMasterId} onChange={handleEditInput} style={{ ...inputStyle, padding: "9px 12px" }}>
+                    <Form.Select
+                      name="grainageMasterId"
+                      value={
+                        editData.grainageMasterId ||
+                        (grainageList.find(g => g.grainageMasterName === editData.grainageName)?.grainageMasterId?.toString() || "")
+                      }
+                      onChange={handleEditInput}
+                      style={{ ...inputStyle, padding: "9px 12px" }}
+                    >
                       <option value="">{t("Select Grainage")}</option>
                       {grainageList.map((g) => (
                         <option key={g.grainageMasterId} value={String(g.grainageMasterId)}>{g.grainageMasterName}</option>
@@ -439,7 +454,7 @@ function FitnessCertificateEdit() {
                 <Col lg={4} md={6}>
                   <Form.Group>
                     <Form.Label style={labelStyle}>{t("Lot Number")}</Form.Label>
-                    <Form.Control name="lotNumberRsp" value={editData.lotNumberRsp} onChange={handleEditInput} type="text" placeholder={t("Enter Lot Number")} style={inputStyle} />
+                    <Form.Control name="lotNumberRsp" value={editData.lotNumberRsp} readOnly disabled style={readOnlyStyle} />
                   </Form.Group>
                 </Col>
 
@@ -487,13 +502,6 @@ function FitnessCertificateEdit() {
                         <option key={d.diseaseStatusId} value={String(d.diseaseStatusId)}>{d.name}</option>
                       ))}
                     </Form.Select>
-                  </Form.Group>
-                </Col>
-
-                <Col lg={4} md={6}>
-                  <Form.Group>
-                    <Form.Label style={labelStyle}>{t("Fitness Certificate Path")}</Form.Label>
-                    <Form.Control name="fitnessCertificatePath" value={editData.fitnessCertificatePath} readOnly disabled style={readOnlyStyle} />
                   </Form.Group>
                 </Col>
 

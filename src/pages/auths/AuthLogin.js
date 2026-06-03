@@ -13,6 +13,21 @@ import axios from "axios";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const joinUrl = (base, path) => `${(base || "").replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`;
 
+const showAuthAlert = ({ icon = "error", title, text }) =>
+  Swal.fire({
+    icon,
+    title,
+    html: `<div class="auth-swal-html">${text || ""}</div>`,
+    confirmButtonText: "OK",
+    buttonsStyling: false,
+    customClass: {
+      popup: "auth-swal-popup",
+      title: "auth-swal-title",
+      confirmButton: "auth-swal-confirm",
+      icon: "auth-swal-icon",
+    },
+  });
+
 const AuthLoginPage = () => {
   const navigate = useNavigate();
 
@@ -53,11 +68,11 @@ const AuthLoginPage = () => {
           startTimer();
           setMobileNumber("*".repeat(6) + temp.phoneNumber?.slice(6));
         } else {
-          Swal.fire("Invalid Username or Password", "Please enter valid credentials", "error");
+          showAuthAlert({ icon: "error", title: "Invalid Username or Password", text: "Please enter valid credentials." });
         }
       })
       .catch(() => {
-        Swal.fire("Error", "Could not generate OTP. Please try again.", "error");
+        showAuthAlert({ icon: "error", title: "Could not generate OTP", text: "Something went wrong. Please try again." });
       })
       .finally(() => {
         setIsGeneratingOTP(false);
@@ -80,7 +95,7 @@ const AuthLoginPage = () => {
         }
       })
       .catch(() => {
-        Swal.fire("Error", "Could not verify OTP. Please try again.", "error");
+        showAuthAlert({ icon: "error", title: "Could not verify OTP", text: "Something went wrong. Please try again." });
         setIsVerifyingOTP(false);
       });
   };
@@ -91,11 +106,11 @@ const AuthLoginPage = () => {
       if (success) {
         navigate(APP_ROUTES.homepage);
       } else {
-        Swal.fire("Login failed", "Invalid credentials", "error");
+        showAuthAlert({ icon: "error", title: "Login failed", text: "Invalid credentials." });
         setIsVerifyingOTP(false);
       }
     } catch {
-      Swal.fire("Error", "Login failed", "error");
+      showAuthAlert({ icon: "error", title: "Login failed", text: "Something went wrong. Please try again." });
       setIsVerifyingOTP(false);
     }
   };
@@ -562,6 +577,63 @@ const AuthLoginPage = () => {
         @keyframes logoPulse {
           0%, 100% { box-shadow: 0 0 0 10px rgba(255,255,255,0.05), 0 12px 36px rgba(0,0,0,0.3); }
           50%       { box-shadow: 0 0 0 16px rgba(255,255,255,0.08), 0 12px 36px rgba(0,0,0,0.3); }
+        }
+
+        /* ===== BRANDED SWEETALERT ===== */
+        .auth-swal-popup {
+          font-family: 'Poppins', 'Segoe UI', sans-serif !important;
+          border-radius: 20px !important;
+          padding: 28px 24px 22px !important;
+          border-top: 5px solid #f9a825 !important;
+          box-shadow:
+            0 30px 80px rgba(4, 30, 58, 0.35),
+            0 8px 24px rgba(4, 30, 58, 0.18) !important;
+          background: #ffffff !important;
+        }
+        .auth-swal-title {
+          color: #083d6e !important;
+          font-weight: 700 !important;
+          font-size: 1.35rem !important;
+          letter-spacing: 0.2px;
+        }
+        .auth-swal-html {
+          color: #5a7a9a !important;
+          font-size: 0.95rem !important;
+          margin-top: 6px !important;
+        }
+        .auth-swal-confirm {
+          background: linear-gradient(90deg, #0f6cbe, #1e85d8) !important;
+          border: none !important;
+          color: #fff !important;
+          font-weight: 600 !important;
+          padding: 10px 28px !important;
+          border-radius: 10px !important;
+          box-shadow: 0 8px 18px rgba(15, 108, 190, 0.35) !important;
+          transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+        }
+        .auth-swal-confirm:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 10px 22px rgba(15, 108, 190, 0.45) !important;
+        }
+        .auth-swal-confirm:focus {
+          box-shadow: 0 0 0 4px rgba(15, 108, 190, 0.25) !important;
+        }
+        .auth-swal-icon.swal2-error {
+          border-color: #e53e3e !important;
+          color: #e53e3e !important;
+        }
+        .auth-swal-icon.swal2-error [class^="swal2-x-mark-line"] {
+          background-color: #e53e3e !important;
+        }
+        .auth-swal-icon.swal2-success {
+          border-color: #2e7d32 !important;
+          color: #2e7d32 !important;
+        }
+        .auth-swal-icon.swal2-success .swal2-success-ring {
+          border-color: rgba(46, 125, 50, 0.3) !important;
+        }
+        .auth-swal-icon.swal2-success [class^="swal2-success-line"] {
+          background-color: #2e7d32 !important;
         }
       `}</style>
 

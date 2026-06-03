@@ -20,7 +20,7 @@ function GenerateWorkOrder() {
   const [addressDetails, setAddressDetails] = useState({
     fruitsId: "",
     financialYearId: "",
-    schemeId: "",
+    scSchemeDetailsId: "",
     componentId: "",
     subSchemeId: "",
     sanctionOrderNumber: "",
@@ -33,7 +33,7 @@ function GenerateWorkOrder() {
   const [subSchemeType, setSubSchemeType] = useState([]);
   const [workOrderNumber, setWorkOrderNumber] = useState("");
 
-  // ── fetch list on sanction order change ──────────────────────────
+  // ── fetch list on work order change ──────────────────────────────
   const search = (details = addressDetails) => {
     api
       .post(
@@ -79,7 +79,7 @@ function GenerateWorkOrder() {
         {},
         {
           params: {
-            schemeId: addressDetails.schemeId || 0,
+            schemeId: addressDetails.scSchemeDetailsId || 0,
             subSchemeId: addressDetails.subSchemeId || 0,
             componentId: addressDetails.componentId || 0,
             scCategoryId: addressDetails.scCategoryId || 0,
@@ -112,64 +112,35 @@ function GenerateWorkOrder() {
     getList();
   }, [page]);
 
-  // ── input handlers ────────────────────────────────────────────────
-  const handleInputsaddress = (e) => {
-    const { name, value } = e.target;
-    const updated = { ...addressDetails, [name]: value };
-    setAddressDetails(updated);
-    if (
-      updated.scSchemeDetailsId &&
-      updated.subSchemeId &&
-      updated.componentId &&
-      updated.scCategoryId
-    ) {
-      loadSanctionOrderNumbers(updated);
-    }
-  };
+  // ── work order numbers dropdown (getWorkOrderNumbers) ─────────────
+  const [workOrderNumbers, setWorkOrderNumbers] = useState([]);
 
-  const handleSanctionOrderChange = (e) => {
-    const value = e.target.value;
-    const updated = { ...addressDetails, sanctionOrderNumber: value };
-    setAddressDetails(updated);
-    setWorkOrderNumber(value);
-    search(updated);
-  };
-
-  // ── sanction order numbers dropdown ──────────────────────────────
-  const [sanctionOrderNumbers, setSanctionOrderNumbers] = useState([]);
-
-  const loadSanctionOrderNumbers = () => {
-    if (
-      addressDetails.financialYearId &&
-      addressDetails.scSchemeDetailsId &&
-      addressDetails.subSchemeId &&
-      addressDetails.componentId &&
-      addressDetails.scCategoryId &&
-      addressDetails.fruitsId
-    ) {
+  // Auto-fetch Work Order Numbers when all 5 filters are filled
+  useEffect(() => {
+    const { financialYearId, scSchemeDetailsId, subSchemeId, componentId, scCategoryId, fruitsId } = addressDetails;
+    if (financialYearId && scSchemeDetailsId && subSchemeId && componentId && scCategoryId) {
       api
         .post(
-          baseURLDBT +
-            `service/getSanctionOrderNumbers?financialYearId=${addressDetails.financialYearId}&schemeId=${addressDetails.scSchemeDetailsId}&subSchemeId=${addressDetails.subSchemeId}&componentId=${addressDetails.componentId}&categoryId=${addressDetails.scCategoryId}&fruitsId=${addressDetails.fruitsId || ""}`
+          baseURLDBT + `service/getWorkOrderNumbers`,
+          {},
+          {
+            params: {
+              financialYearId,
+              schemeId: scSchemeDetailsId,
+              subSchemeId,
+              componentId,
+              categoryId: scCategoryId,
+              ...(fruitsId ? { fruitsId } : {}),
+            },
+          }
         )
         .then((res) => {
-          if (res.data && res.data.content)
-            setSanctionOrderNumbers(res.data.content);
+          const content = res.data?.content;
+          setWorkOrderNumbers(Array.isArray(content) ? content : []);
         })
-        .catch(() => {});
-    }
-  };
-
-  useEffect(() => {
-    if (
-      addressDetails.financialYearId &&
-      addressDetails.scSchemeDetailsId &&
-      addressDetails.subSchemeId &&
-      addressDetails.componentId &&
-      addressDetails.scCategoryId &&
-      addressDetails.fruitsId
-    ) {
-      loadSanctionOrderNumbers(addressDetails);
+        .catch(() => setWorkOrderNumbers([]));
+    } else {
+      setWorkOrderNumbers([]);
     }
   }, [
     addressDetails.financialYearId,
@@ -179,6 +150,46 @@ function GenerateWorkOrder() {
     addressDetails.scCategoryId,
     addressDetails.fruitsId,
   ]);
+
+  // ── input handlers ────────────────────────────────────────────────
+  const handleInputsaddress = (e) => {
+    const { name, value } = e.target;
+    const updated = { ...addressDetails, [name]: value };
+    setAddressDetails(updated);
+
+    const { financialYearId, scSchemeDetailsId, subSchemeId, componentId, scCategoryId, fruitsId } = updated;
+    if (financialYearId && scSchemeDetailsId && subSchemeId && componentId && scCategoryId) {
+      api
+        .post(
+          baseURLDBT + `service/getWorkOrderNumbers`,
+          {},
+          {
+            params: {
+              financialYearId,
+              schemeId: scSchemeDetailsId,
+              subSchemeId,
+              componentId,
+              categoryId: scCategoryId,
+              ...(fruitsId ? { fruitsId } : {}),
+            },
+          }
+        )
+        .then((res) => {
+          const content = res.data?.content;
+          setWorkOrderNumbers(Array.isArray(content) ? content : []);
+        })
+        .catch(() => setWorkOrderNumbers([]));
+    } else {
+      setWorkOrderNumbers([]);
+    }
+  };
+
+  const handleWorkOrderChange = (e) => {
+    const value = e.target.value;
+    setAddressDetails((prev) => ({ ...prev, sanctionOrderNumber: value }));
+    setWorkOrderNumber(value);
+    search({ ...addressDetails, sanctionOrderNumber: value });
+  };
 
   // ── master data ───────────────────────────────────────────────────
   const [financialyearListData, setFinancialyearListData] = useState([]);
@@ -228,11 +239,7 @@ function GenerateWorkOrder() {
         .then((r) => setScComponentListData(r.data.content.unitCost))
         .catch(() => setScComponentListData([]));
     }
-  }, [
-    addressDetails.scSchemeDetailsId,
-    addressDetails.subSchemeId,
-    addressDetails.scCategoryId,
-  ]);
+  }, [addressDetails.scSchemeDetailsId, addressDetails.subSchemeId]);
 
   const [scCategoryListData, setScCategoryListData] = useState([]);
   useEffect(() => {
@@ -245,7 +252,7 @@ function GenerateWorkOrder() {
       .catch(() => setScCategoryListData([]));
   }, []);
 
-  // ── Generate PDF (scheme-based report endpoints) ──────────────────
+  // ── Generate PDF ──────────────────────────────────────────────────
   const handleGeneratePDF = () => {
     const selectedSanctionOrder = addressDetails.sanctionOrderNumber;
     if (!selectedSanctionOrder) {
@@ -312,7 +319,7 @@ function GenerateWorkOrder() {
     } catch (error) {}
   };
 
-  // ── Download PDF (workOrderNumber as file key) ────────────────────
+  // ── Download PDF ──────────────────────────────────────────────────
   const [isDownloading, setIsDownloading] = useState(false);
 
   const downloadFile = async () => {
@@ -320,7 +327,7 @@ function GenerateWorkOrder() {
       Swal.fire({
         icon: "info",
         title: "No File Found",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#ebf8ff,#fff);border:1.5px solid #90cdf4;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1e67a8,#2d9cdb);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(30,103,168,0.3)">📂</div><div><p style="color:#2c5282;font-size:14px;font-weight:700;margin:0 0 5px">No Pre-Generated PDF</p><p style="color:#2a4365;font-size:13px;margin:0;line-height:1.65">No pre-generated PDF was found for this work order. Try <b>Generate PDF</b> instead.</p></div></div></div>`,
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#ebf8ff,#fff);border:1.5px solid #90cdf4;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1e67a8,#2d9cdb);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(30,103,168,0.3)">📂</div><div><p style="color:#2c5282;font-size:14px;font-weight:700;margin:0 0 5px">No Pre-Generated PDF</p><p style="color:#2a4365;font-size:13px;margin:0;line-height:1.65">No pre-generated PDF was found for this work order.</p></div></div></div>`,
         confirmButtonText: "OK",
         confirmButtonColor: "#1e67a8",
         background: "#fff",
@@ -433,6 +440,13 @@ function GenerateWorkOrder() {
     justifyContent: "center",
   });
 
+  const filtersReady =
+    addressDetails.financialYearId &&
+    addressDetails.scSchemeDetailsId &&
+    addressDetails.subSchemeId &&
+    addressDetails.componentId &&
+    addressDetails.scCategoryId;
+
   // ── render ────────────────────────────────────────────────────────
   return (
     <Layout title="Work Order">
@@ -490,16 +504,19 @@ function GenerateWorkOrder() {
 
           <Card.Body style={{ padding: "28px 32px 24px" }}>
 
-            {/* Fruits ID — first field */}
+            {/* Fruits ID — optional */}
             <Row className="mb-3">
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Fruits ID</label>
+                <label style={labelStyle}>
+                  Fruits ID{" "}
+                  <span style={{ color: "#a0aec0", fontWeight: 400 }}>(optional)</span>
+                </label>
                 <Form.Control
                   type="text"
                   name="fruitsId"
                   value={addressDetails.fruitsId || ""}
                   onChange={handleInputsaddress}
-                  placeholder="Enter Fruits ID"
+                  placeholder="Enter Fruits ID to filter"
                   style={selectStyle}
                 />
               </Col>
@@ -513,22 +530,34 @@ function GenerateWorkOrder() {
             <Row className="mb-3">
               <Col md={6} style={fieldGroupStyle}>
                 <label style={labelStyle}>Financial Year</label>
-                <Form.Select name="financialYearId" value={addressDetails.financialYearId || ""} onChange={handleInputsaddress} style={selectStyle}>
+                <Form.Select
+                  name="financialYearId"
+                  value={addressDetails.financialYearId || ""}
+                  onChange={handleInputsaddress}
+                  style={selectStyle}
+                >
                   <option value="">— Select Financial Year —</option>
                   {financialyearListData.map((list) => (
-                    <option key={list.financialYearMasterId} value={list.financialYearMasterId}>{list.financialYear}</option>
+                    <option key={list.financialYearMasterId} value={list.financialYearMasterId}>
+                      {list.financialYear}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
               <Col md={6} style={fieldGroupStyle}>
                 <label style={labelStyle}>Scheme</label>
-                <Form.Select name="scSchemeDetailsId" value={addressDetails.scSchemeDetailsId || ""} onChange={handleInputsaddress} style={selectStyle}>
+                <Form.Select
+                  name="scSchemeDetailsId"
+                  value={addressDetails.scSchemeDetailsId || ""}
+                  onChange={handleInputsaddress}
+                  style={selectStyle}
+                >
                   <option value="">— Select Scheme —</option>
-                  {scSchemeDetailsListData && scSchemeDetailsListData.length
-                    ? scSchemeDetailsListData.map((list) => (
-                        <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>{list.schemeName}</option>
-                      ))
-                    : ""}
+                  {scSchemeDetailsListData?.map((list) => (
+                    <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
+                      {list.schemeName}
+                    </option>
+                  ))}
                 </Form.Select>
               </Col>
             </Row>
@@ -537,24 +566,34 @@ function GenerateWorkOrder() {
             <Row className="mb-3">
               <Col md={6} style={fieldGroupStyle}>
                 <label style={labelStyle}>Component Type</label>
-                <Form.Select name="subSchemeId" value={addressDetails.subSchemeId || ""} onChange={handleInputsaddress} style={selectStyle}>
+                <Form.Select
+                  name="subSchemeId"
+                  value={addressDetails.subSchemeId || ""}
+                  onChange={handleInputsaddress}
+                  style={selectStyle}
+                >
                   <option value="">— Select Component Type —</option>
-                  {scSubSchemeDetailsListData && scSubSchemeDetailsListData.length
-                    ? scSubSchemeDetailsListData.map((list) => (
-                        <option key={list.scSubSchemeDetailsId} value={list.subSchemeId}>{list.subSchemeName}</option>
-                      ))
-                    : ""}
+                  {scSubSchemeDetailsListData?.map((list) => (
+                    <option key={list.scSubSchemeDetailsId} value={list.subSchemeId}>
+                      {list.subSchemeName}
+                    </option>
+                  ))}
                 </Form.Select>
               </Col>
               <Col md={6} style={fieldGroupStyle}>
                 <label style={labelStyle}>Component</label>
-                <Form.Select name="componentId" value={addressDetails.componentId || ""} onChange={handleInputsaddress} style={selectStyle}>
+                <Form.Select
+                  name="componentId"
+                  value={addressDetails.componentId || ""}
+                  onChange={handleInputsaddress}
+                  style={selectStyle}
+                >
                   <option value="">— Select Component —</option>
-                  {scComponentListData && scComponentListData.length
-                    ? scComponentListData.map((list) => (
-                        <option key={list.scComponentId} value={list.scComponentId}>{list.scComponentName}</option>
-                      ))
-                    : ""}
+                  {scComponentListData?.map((list) => (
+                    <option key={list.scComponentId} value={list.scComponentId}>
+                      {list.scComponentName}
+                    </option>
+                  ))}
                 </Form.Select>
               </Col>
             </Row>
@@ -563,13 +602,18 @@ function GenerateWorkOrder() {
             <Row className="mb-4">
               <Col md={6} style={fieldGroupStyle}>
                 <label style={labelStyle}>Sub Component</label>
-                <Form.Select name="scCategoryId" value={addressDetails.scCategoryId || ""} onChange={handleInputsaddress} style={selectStyle}>
+                <Form.Select
+                  name="scCategoryId"
+                  value={addressDetails.scCategoryId || ""}
+                  onChange={handleInputsaddress}
+                  style={selectStyle}
+                >
                   <option value="">— Select Sub Component —</option>
-                  {scCategoryListData && scCategoryListData.length
-                    ? scCategoryListData.map((list) => (
-                        <option key={list.scCategoryId} value={list.scCategoryId}>{list.categoryName}</option>
-                      ))
-                    : ""}
+                  {scCategoryListData?.map((list) => (
+                    <option key={list.scCategoryId} value={list.scCategoryId}>
+                      {list.categoryName}
+                    </option>
+                  ))}
                 </Form.Select>
               </Col>
             </Row>
@@ -579,24 +623,40 @@ function GenerateWorkOrder() {
               Step 2 — Select Work Order &amp; Download
             </div>
 
-            {/* Row 4 */}
-            <Row className="align-items-end">
+            {/* Row 4 — Work Order Number + Sanction Order Number */}
+            <Row className="mb-3 align-items-end">
               <Col md={5} style={fieldGroupStyle}>
-                <label style={labelStyle}>Work Order Number</label>
-                <Form.Select name="sanctionOrderNumber" value={addressDetails.sanctionOrderNumber} onChange={handleSanctionOrderChange} style={selectStyle}>
-                  <option value="">— Select Work Order —</option>
-                  {sanctionOrderNumbers && sanctionOrderNumbers.length
-                    ? sanctionOrderNumbers.map((num, index) => {
-                        const val = typeof num === "object" ? num.workOrderNumber : num;
-                        return (
-                          <option key={index} value={val}>{val}</option>
-                        );
-                      })
-                    : ""}
+                <label style={labelStyle}>
+                  Work Order Number
+                  {workOrderNumbers.length > 0 && (
+                    <span style={{ marginLeft: "8px", fontSize: "11px", color: "#1a7a4a", fontWeight: 500 }}>
+                      ({workOrderNumbers.length} found)
+                    </span>
+                  )}
+                </label>
+                <Form.Select
+                  name="sanctionOrderNumber"
+                  value={addressDetails.sanctionOrderNumber}
+                  onChange={handleWorkOrderChange}
+                  style={selectStyle}
+                  disabled={!filtersReady}
+                >
+                  <option value="">
+                    {filtersReady ? "— Select Work Order —" : "— Fill filters above first —"}
+                  </option>
+                  {workOrderNumbers.map((item, index) => (
+                    <option key={index} value={item.workOrderNumber}>
+                      {item.workOrderNumber}
+                    </option>
+                  ))}
                 </Form.Select>
               </Col>
 
-              <Col md={7} className="d-flex gap-3 flex-wrap pb-1">
+            </Row>
+
+            {/* Row 5 — Download button */}
+            <Row>
+              <Col md={12} className="d-flex gap-3 flex-wrap pt-1">
                 <button
                   type="button"
                   onClick={downloadFile}
@@ -615,20 +675,9 @@ function GenerateWorkOrder() {
                     <>⬇ Download PDF</>
                   )}
                 </button>
-
-                {/* <button
-                  type="button"
-                  onClick={handleGeneratePDF}
-                  disabled={!addressDetails.sanctionOrderNumber}
-                  style={btnStyle(
-                    addressDetails.sanctionOrderNumber,
-                    "#1e67a8", "#2d9cdb", "rgba(30,103,168,0.35)"
-                  )}
-                >
-                  🖨 Generate PDF
-                </button> */}
               </Col>
             </Row>
+
           </Card.Body>
         </Card>
       </Block>

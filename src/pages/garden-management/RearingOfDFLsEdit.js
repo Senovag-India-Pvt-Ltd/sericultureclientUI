@@ -91,6 +91,17 @@ function RearingOfDFLsEdit() {
               spunOnDate: "",
               wormTestDetails: "",
               cocoonAssessmentDetails: "",
+              averageLooseEggsPerDfl: "",
+              wormsSelectedAfter3rdMoult: "",
+              wormsSelectedForTestingAfter3rdMoult: "",
+              lowYield: "",
+              failedEggs: "",
+              actualBrushedDfls: "",
+              averageChawkiPerDfl: "",
+              leafQuantityUsed: "",
+              errAfter3rdMoult: "",
+              seedCocoons: "",
+              reelingCocoons: "",
             });
             setValidated(false);
           }
@@ -118,6 +129,17 @@ function RearingOfDFLsEdit() {
       spunOnDate: "",
       wormTestDetails: "",
       cocoonAssessmentDetails: "",
+      averageLooseEggsPerDfl: "",
+      wormsSelectedAfter3rdMoult: "",
+      wormsSelectedForTestingAfter3rdMoult: "",
+      lowYield: "",
+      failedEggs: "",
+      actualBrushedDfls: "",
+      averageChawkiPerDfl: "",
+      leafQuantityUsed: "",
+      errAfter3rdMoult: "",
+      seedCocoons: "",
+      reelingCocoons: "",
     });
   };
 
@@ -420,6 +442,221 @@ function RearingOfDFLsEdit() {
                       <Form.Control.Feedback type="invalid">
                         {t("Cocoon Produced in NOs is required")}
                         </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="averageLooseEggsPerDfl">
+                      {t("Average Loose Eggs per DFL")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="averageLooseEggsPerDfl"
+                        name="averageLooseEggsPerDfl"
+                        value={data.averageLooseEggsPerDfl ?? ""}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder={t("Enter Average Loose Eggs per DFL")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="wormsSelectedAfter3rdMoult">
+                      {t("Worms Selected After 3rd Moult")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="wormsSelectedAfter3rdMoult"
+                        name="wormsSelectedAfter3rdMoult"
+                        value={data.wormsSelectedAfter3rdMoult ?? ""}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        placeholder={t("Enter Worms Selected After 3rd Moult")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="wormsSelectedForTestingAfter3rdMoult">
+                      {t("Worms Selected for Testing After 3rd Moult")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="wormsSelectedForTestingAfter3rdMoult"
+                        name="wormsSelectedForTestingAfter3rdMoult"
+                        value={data.wormsSelectedForTestingAfter3rdMoult ?? ""}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        placeholder={t("Enter Worms Selected for Testing After 3rd Moult")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="lowYield">
+                      {t("Low Yield")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="lowYield"
+                        name="lowYield"
+                        value={data.lowYield ?? ""}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        placeholder={t("Enter Low Yield")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="failedEggs">
+                      {t("Failed Eggs")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="failedEggs"
+                        name="failedEggs"
+                        value={data.failedEggs ?? ""}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        placeholder={t("Enter Failed Eggs")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="actualBrushedDfls">
+                      {t("Actual Brushed DFLs")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="actualBrushedDfls"
+                        name="actualBrushedDfls"
+                        value={data.actualBrushedDfls ?? ""}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        placeholder={t("Enter Actual Brushed DFLs")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="averageChawkiPerDfl">
+                      {t("Average Chawki per DFL")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="averageChawkiPerDfl"
+                        name="averageChawkiPerDfl"
+                        value={data.averageChawkiPerDfl ?? ""}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder={t("Enter Average Chawki per DFL")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="leafQuantityUsed">
+                      {t("Leaf Quantity Used")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="leafQuantityUsed"
+                        name="leafQuantityUsed"
+                        value={data.leafQuantityUsed ?? ""}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder={t("Enter Leaf Quantity Used")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="errAfter3rdMoult">
+                      {t("ERR After 3rd Moult")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="errAfter3rdMoult"
+                        name="errAfter3rdMoult"
+                        value={data.errAfter3rdMoult ?? ""}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder={t("Enter ERR After 3rd Moult")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="seedCocoons">
+                      {t("Seed Cocoons")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="seedCocoons"
+                        name="seedCocoons"
+                        value={data.seedCocoons ?? ""}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder={t("Enter Seed Cocoons")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="reelingCocoons">
+                      {t("Reeling Cocoons")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="reelingCocoons"
+                        name="reelingCocoons"
+                        value={data.reelingCocoons ?? ""}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder={t("Enter Reeling Cocoons")}
+                      />
                     </div>
                   </Form.Group>
                 </Col>

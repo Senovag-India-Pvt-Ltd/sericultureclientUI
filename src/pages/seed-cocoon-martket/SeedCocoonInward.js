@@ -257,6 +257,7 @@ function SeedCocoonInward() {
   const [isActive, setIsActive] = useState(false);
   const [bankLockError, setBankLockError] = useState(false);
   const [cropDetailsEmpty, setCropDetailsEmpty] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // const display = (event) => {
   //   const form = event.currentTarget;
@@ -544,6 +545,7 @@ const getIdList = (farmerId) => {
             spunFromDate: singleLot.spunFromDate,
             spunToDate: singleLot.spunToDate,
             fruitsId: singleLot.fruitsId,
+            saleAndDisposalId: singleLot.saleAndDisposalId || "",
           }));
         } else {
           // Multiple entries - wait for user to input
@@ -845,6 +847,8 @@ const getIdList = (farmerId) => {
       setValidated(true);
     } else {
       event.preventDefault();
+      if (isSubmitting) return;
+      setIsSubmitting(true);
       try {
         const addGodown = localStorage.getItem("godownId")
           ? localStorage.getItem("godownId")
@@ -873,6 +877,12 @@ const getIdList = (farmerId) => {
             await Promise.all(openWindows); // Wait for all bidding slips to be generated
           }
 
+          // Lock the SaleAndDisposalOfDfls record so FitnessCertificateEdit and CropInspectionEdit show the E-Inward Done badge
+          if (data.saleAndDisposalId) {
+            api.post(`${baseURLChawki}cropInspection/markAsDisposed?saleAndDisposalId=${data.saleAndDisposalId}`)
+              .catch(() => {});
+          }
+
           // Pass the alloted lot list, big bin list, and small bin list to saveSuccess
           saveSuccess(allotedLotList, allotedBigBinList, allotedSmallBinList);
         } else if (response.data.errorCode === -1) {
@@ -880,6 +890,8 @@ const getIdList = (farmerId) => {
         }
       } catch (err) {
         // Handle error
+      } finally {
+        setIsSubmitting(false);
       }
       setValidated(true);
     }
@@ -1382,17 +1394,21 @@ const getIdList = (farmerId) => {
   //   }
   // };
 
+  // Tracks in-flight FC downloads so a double-click doesn't open two PDFs.
+  const [downloadingFcIds, setDownloadingFcIds] = useState(new Set());
+  const isFcDownloading = (id) => downloadingFcIds.has(id ?? "__nokey__");
+
   const downloadFile = async (fitnessCertificateId, fruitsId) => {
+  const key = fitnessCertificateId ?? "__nokey__";
+  if (downloadingFcIds.has(key)) return;
+  setDownloadingFcIds((prev) => {
+    const next = new Set(prev);
+    next.add(key);
+    return next;
+  });
   try {
     const response = await api.post(
       baseURLReport + `getFitenessCertificate`,
-      // {
-      //   params: {
-      //     fitnessCertificateId: fitnessCertificateId,
-      //     fruitsId: fruitsId,
-      //   },
-      //   responseType: "blob",
-      // }
       {
           fitnessCertificateId: fitnessCertificateId,
            fruitsId: fruitsId,
@@ -1410,6 +1426,12 @@ const getIdList = (farmerId) => {
 
   } catch (error) {
     console.error("Error downloading file:", error);
+  } finally {
+    setDownloadingFcIds((prev) => {
+      const next = new Set(prev);
+      next.delete(key);
+      return next;
+    });
   }
 };
 
@@ -1560,17 +1582,21 @@ const getIdList = (farmerId) => {
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "16px", gap: "6px" }}>
                     <button
                       type="submit"
-                      disabled={bankLockError || cropDetailsEmpty}
+                      disabled={bankLockError || cropDetailsEmpty || isSubmitting}
                       style={{
-                        background: (bankLockError || cropDetailsEmpty) ? "#c8d6e5" : "linear-gradient(135deg,#1e67a8,#2d9cdb)",
+                        background: (bankLockError || cropDetailsEmpty || isSubmitting) ? "#c8d6e5" : "linear-gradient(135deg,#1e67a8,#2d9cdb)",
                         border: "none", borderRadius: "10px", padding: "11px 36px",
                         fontWeight: 700, fontSize: "14px", color: "#fff",
-                        cursor: (bankLockError || cropDetailsEmpty) ? "not-allowed" : "pointer",
-                        boxShadow: (bankLockError || cropDetailsEmpty) ? "none" : "0 4px 14px rgba(30,103,168,0.35)",
+                        cursor: (bankLockError || cropDetailsEmpty || isSubmitting) ? "not-allowed" : "pointer",
+                        boxShadow: (bankLockError || cropDetailsEmpty || isSubmitting) ? "none" : "0 4px 14px rgba(30,103,168,0.35)",
                         display: "flex", alignItems: "center", gap: "8px",
                       }}
                     >
-                      ✅ {t("Submit")}
+                      {isSubmitting ? (
+                        <><span className="spinner-border spinner-border-sm" /> {t("Submitting…")}</>
+                      ) : (
+                        <>✅ {t("Submit")}</>
+                      )}
                     </button>
                     {bankLockError && (
                       <small style={{ color: "#c53030", fontWeight: 600, fontSize: "12px" }}>
@@ -1588,7 +1614,7 @@ const getIdList = (farmerId) => {
             </div>
           </Row>
         </Form>
-      </Block>
+      </Block> 
 
       {/* ─── Update Bank Details modal ─────────────────────────────────── */}
       <Modal show={showBankModal} onHide={handleCloseBankModal} size="lg" backdrop="static">
@@ -2069,10 +2095,30 @@ const getIdList = (farmerId) => {
         </div>
         {data.previewUrl && <img style={{ height: "90px", width: "90px", borderRadius: "8px", objectFit: "cover", border: "1.5px solid #e2e8f0", marginBottom: "10px" }} src={data.previewUrl} alt={`FC ${index + 1}`} />}
         <div>
-          <button type="button" onClick={() => downloadFile(data.fitnessCertificateId, data.fruitsId)}
-            style={{ background: "linear-gradient(135deg,#1e67a8,#2d9cdb)", border: "none", borderRadius: "8px", padding: "7px 18px", fontWeight: 700, fontSize: "12px", color: "#fff", cursor: "pointer", boxShadow: "0 2px 8px rgba(30,103,168,0.25)", display: "inline-flex", alignItems: "center", gap: "6px" }}>
-            ⬇️ {t("Download File")}
-          </button>
+          {(() => {
+            const dl = isFcDownloading(data.fitnessCertificateId);
+            return (
+              <button
+                type="button"
+                disabled={dl}
+                onClick={() => downloadFile(data.fitnessCertificateId, data.fruitsId)}
+                style={{
+                  background: dl ? "#94a3b8" : "linear-gradient(135deg,#1e67a8,#2d9cdb)",
+                  border: "none", borderRadius: "8px", padding: "7px 18px",
+                  fontWeight: 700, fontSize: "12px", color: "#fff",
+                  cursor: dl ? "not-allowed" : "pointer",
+                  boxShadow: dl ? "none" : "0 2px 8px rgba(30,103,168,0.25)",
+                  display: "inline-flex", alignItems: "center", gap: "6px",
+                }}
+              >
+                {dl ? (
+                  <><span className="spinner-border spinner-border-sm" style={{ width: "12px", height: "12px", borderWidth: "2px" }} /> {t("Downloading…")}</>
+                ) : (
+                  <>⬇️ {t("Download File")}</>
+                )}
+              </button>
+            );
+          })()}
         </div>
       </div>
     )) : (
@@ -2270,6 +2316,7 @@ const getIdList = (farmerId) => {
                             lotVariety: matchedLot.raceOfDfls,
                             spunFromDate: matchedLot.spunFromDate,
                             spunToDate: matchedLot.spunToDate,
+                            saleAndDisposalId: matchedLot.saleAndDisposalId || "",
                           }));
                         } else {
                           setData((prev) => ({
@@ -2279,6 +2326,7 @@ const getIdList = (farmerId) => {
                             lotVariety: "",
                             spunFromDate: "",
                             spunToDate: "",
+                            saleAndDisposalId: "",
                           }));
                         }
                       }}

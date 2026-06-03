@@ -538,6 +538,145 @@ function RearingOfDFLsForThe8LinesEdit() {
                     </Form.Group>
                   </Col>
 
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="lowYield">
+                        {t("Low Yield")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="lowYield"
+                          name="lowYield"
+                          value={data.lowYield}
+                          onChange={handleInputs}
+                          type="number"
+                          placeholder={t("Enter Low Yield")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="failedEggs">
+                        {t("Failed Eggs")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="failedEggs"
+                          name="failedEggs"
+                          value={data.failedEggs}
+                          onChange={handleInputs}
+                          type="number"
+                          placeholder={t("Enter Failed Eggs")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="singleEggBreak">
+                        {t("Loose Eggs in One DFL")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="singleEggBreak"
+                          name="singleEggBreak"
+                          value={data.singleEggBreak ?? ""}
+                          onChange={handleInputs}
+                          type="number"
+                          min="0"
+                          placeholder={t("Enter Loose Eggs in One DFL")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="hatchedLarvae">
+                        {t("Hatched Larvae")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="hatchedLarvae"
+                          name="hatchedLarvae"
+                          value={data.hatchedLarvae ?? ""}
+                          onChange={handleInputs}
+                          type="number"
+                          min="0"
+                          placeholder={t("Enter Hatched Larvae")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="fourthStageLarvae">
+                        {t("4th Stage Larvae")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="fourthStageLarvae"
+                          name="fourthStageLarvae"
+                          value={data.fourthStageLarvae ?? ""}
+                          onChange={handleInputs}
+                          type="number"
+                          min="0"
+                          placeholder={t("Enter 4th Stage Larvae")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="cocoonProduced">
+                        {t("Estimated Cocoons Produced")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="cocoonProduced"
+                          name="cocoonProduced"
+                          value={data.cocoonProduced ?? ""}
+                          onChange={handleInputs}
+                          type="number"
+                          min="0"
+                          placeholder={t("Enter Estimated Cocoons Produced")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  {[
+                    { k: "wormsTested4thStage", l: "Worms Tested (4th Stage)" },
+                    { k: "destroyedWorms",      l: "Destroyed Worms" },
+                    { k: "avgYieldCount",       l: "Average Yield (count)" },
+                    { k: "yieldWeightGrams",    l: "Yield Weight (grams)" },
+                    { k: "disposalQuantity",    l: "Disposal Quantity" },
+                    { k: "reelingCocoons",      l: "Reeling Cocoons" },
+                    { k: "p4SeedCocoons",       l: "P4 Seed Cocoons" },
+                  ].map((fld) => (
+                    <Col lg="4" key={fld.k}>
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor={fld.k}>{t(fld.l)}</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id={fld.k}
+                            name={fld.k}
+                            value={data[fld.k] ?? ""}
+                            onChange={handleInputs}
+                            type="number"
+                            min="0"
+                            placeholder={t(fld.l)}
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  ))}
+
                   <Col lg="2">
                     <Form.Group className="form-group mt-n4 ">
                       <Form.Label>

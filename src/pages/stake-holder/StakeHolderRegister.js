@@ -2332,7 +2332,7 @@ function StakeHolderRegister() {
                 {t("farmer_registration")}
               </Block.Title>
               <p className="sh-page-subtitle mb-0">
-                {t("Register a new farmer with personal, land, address and bank details")}
+                {/* {t("Register a new farmer with personal, land, address and bank details")} */}
               </p>
             </Block.HeadContent>
             <Block.HeadContent>

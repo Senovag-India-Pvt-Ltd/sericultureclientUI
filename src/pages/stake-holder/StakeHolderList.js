@@ -377,9 +377,9 @@ function StakeHolderList() {
                 {t("farmer_registration_list")}
               </Block.Title>
               <p className="sh-page-subtitle mb-0">
-                {t(
+                {/* {t(
                   "Browse, search and manage registered farmers"
-                )}
+                )} */}
               </p>
             </Block.HeadContent>
             <Block.HeadContent>

@@ -33,6 +33,7 @@ const [dataLotList, setDataLotList] = useState([]);
     lotParentLevel: "",
     externalUnitId: "",
     fruitsId: "",
+    qtyNos: "",
   });
 
   const [auctionDate,setAuctionDate] = useState(new Date());
@@ -53,6 +54,7 @@ const [dataLotList, setDataLotList] = useState([]);
     lotParentLevel: "",
     externalUnitId: "",
      fruitsId: "",
+    qtyNos: "",
   });
   setBalanceError(false);
   setPurposeForRejection(false);
@@ -142,8 +144,13 @@ const handleDateChange = (date) => {
     return;
   }
 
-  // CASE 2️⃣: Market does NOT require base price → manual entry allowed
-  // Do NOT enforce price
+  // CASE 2️⃣: Market does NOT require base price → manual entry allowed.
+  // Still pre-fill the price from the searched lot so the user doesn't have to
+  // re-type it on every Add click — the previous reset (clean()) was wiping
+  // data.amount after the first add and leaving the second modal blank.
+  if (price) {
+    setData(prev => ({ ...prev, amount: prev.amount || price }));
+  }
   setShowModal(true);
 };
 
@@ -169,9 +176,7 @@ const handleDateChange = (date) => {
       data.buyerType === "Govt Grainage" ? data.grainageMasterName : '';
       setDataLotList((prev) => [...prev, {...data,auctionDate,allottedLotId,buyerName}]);
       // Reset the form for the next entry but keep the price (amount) intact
-
-      // Update total lot weight
-    setTotalLotWeight((prevTotal) => prevTotal + parseFloat(data.lotWeight || 0));
+      // totalLotWeight auto-recomputes from dataLotList via useMemo above.
 
     setData((prevData) => ({
       ...prevData,
@@ -184,6 +189,7 @@ const handleDateChange = (date) => {
       lotParentLevel: "",
       externalUnitId: "",
        fruitsId: "",
+      qtyNos: "",
       // Keep the amount (price) if it's already set
       amount: prevData.amount,
     }));
@@ -205,16 +211,9 @@ const handleDateChange = (date) => {
   })
 
 const handleDeleteLotDetails = (i) => {
-  setDataLotList((prev) => {
-    const deletedLotWeight = parseFloat(prev[i].lotWeight || 0);
-
-    // Subtract deleted lot weight from totalLotWeight
-    setTotalLotWeight((prevTotal) => prevTotal - deletedLotWeight);
-
-    const newArray = prev.filter((item, place) => place !== i);
-    return newArray;
-  });
-};  
+  // totalLotWeight auto-recomputes from dataLotList via useMemo.
+  setDataLotList((prev) => prev.filter((item, place) => place !== i));
+};
 
   const [lotId, setLotId] = useState();
   const [originalSoldAmount, setOriginalSoldAmount] = useState(0);
@@ -237,13 +236,7 @@ const handleUpdateLotDetails = (e, i, changes) => {
   } else {
     e.preventDefault();
 
-    const previousLotWeight = parseFloat(dataLotList[i].lotWeight || 0);
-    const newLotWeight = parseFloat(changes.lotWeight || 0);
-
-    // Adjust the total lot weight based on the difference between the old and new weight
-    setTotalLotWeight((prevTotal) => prevTotal - previousLotWeight + newLotWeight);
-
-    // Update the lot details in the list
+    // totalLotWeight auto-recomputes from dataLotList via useMemo.
     setDataLotList((prev) =>
       prev.map((item, ix) => ix === i ? { ...item, ...changes } : item)
     );
@@ -263,6 +256,7 @@ const handleUpdateLotDetails = (e, i, changes) => {
       lotParentLevel: "",
       externalUnitId: "",
        fruitsId: "",
+      qtyNos: "",
     });
   }
 };
@@ -501,32 +495,59 @@ const handleUpdateLotDetails = (e, i, changes) => {
   };
 
   
-  const [totalLotWeight, setTotalLotWeight] = useState(0);
-  // const remainingCocoonWeight = farmerdetails.netWeight - (data.lotWeight || 0);
-  // const remainingCocoonWeight = farmerdetails.netWeight - totalLotWeight;
-  // Conditionally update remainingCocoonWeight based on totalLotWeight
-const remainingCocoonWeight =
-  totalLotWeight > 0
-    ? Number(farmerdetails?.netWeight || 0) - Number(totalLotWeight || 0)
-    : Number(farmerdetails?.netWeight || 0);
+  // totalLotWeight derived from dataLotList — previously this was a useState(0)
+  // that only updated via setTotalLotWeight on user add/edit/delete. On page
+  // LOAD it stayed at 0 even when saved buyer rows were loaded into
+  // dataLotList, which made "Remaining Cocoon in Kgs" fall into the
+  // netWeight-only branch and display 0 / a stale value. Deriving it
+  // guarantees it's always in sync with the current dataLotList.
+  const totalLotWeight = useMemo(
+    () => (dataLotList || []).reduce((sum, item) => sum + parseFloat(item.lotWeight || 0), 0),
+    [dataLotList]
+  );
+  // Round to 2 decimals at the source so the Add-button cap matches what the user sees.
+  // DB sometimes stores e.g. 19.39999 while UI displays 19.40 — without rounding here,
+  // typing 9.40 into the buyer field when 10 is already distributed gets blocked because
+  // 9.40 > (19.39999 - 10). Production hits this; local data is usually clean and didn't.
+  const netWeightRounded = Number(Number(farmerdetails?.netWeight || 0).toFixed(2));
+  const totalLotWeightRounded = Number(Number(totalLotWeight || 0).toFixed(2));
+  const remainingCocoonWeight = Number(
+    (totalLotWeightRounded > 0
+      ? netWeightRounded - totalLotWeightRounded
+      : netWeightRounded
+    ).toFixed(2)
+  );
 
-// Format only for display (ensure it's a number first)
-const formattedRemainingCocoonWeight = Number(remainingCocoonWeight).toFixed(2);
+// formattedRemainingCocoonWeight removed — the visible "Remaining Cocoon
+// in Kgs" cell now uses the same remainingQty formula as the Distributed
+// pill (lotWeightAfterWeighment - sum(lotWeights)), which is always
+// correct on load. remainingCocoonWeight below is still used by the
+// Add/Edit button caps.
 
 // Disable Add button if lotWeight exceeds remaining cocoon weight
 const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight);
 
 // When editing, add back the original lot's weight so its own weight doesn't count against remaining
-const editRemainingCocoonWeight = remainingCocoonWeight + Number(dataLotList[lotId]?.lotWeight || 0);
+const editRemainingCocoonWeight = Number(
+  (remainingCocoonWeight + Number(Number(dataLotList[lotId]?.lotWeight || 0).toFixed(2))).toFixed(2)
+);
 const isEditDisabled = Number(data.lotWeight || 0) > Number(editRemainingCocoonWeight);
 
 // === Rejection-related derived values ===
-// Total weighed-in quantity for this lot
-const lotWeightAfterWeighmentVal = Number(farmerdetails?.lotWeightAfterWeighment || 0);
+// Total weighed-in quantity for this lot. Round to 2 decimals at the source so
+// display, pills, and the "distributed <= weighment" guard all use the same value.
+// (DB may store e.g. 9.39999 — UI shows 9.40 — without rounding here, distributing
+// exactly 9.40 would fail validation against the un-rounded 9.39999.)
+const lotWeightAfterWeighmentVal = Number(
+  Number(farmerdetails?.lotWeightAfterWeighment || 0).toFixed(2)
+);
 
-// Sum of distributed quantity across all rows added to the buyers list
+// Sum of distributed quantity across all rows added to the buyers list.
+// Round to 2 decimals to neutralise floating-point drift (0.1+0.1+0.1 = 0.30000000000000004).
 const distributedQuantity = useMemo(
-  () => (dataLotList || []).reduce((sum, item) => sum + Number(item.lotWeight || 0), 0),
+  () => Number(
+    (dataLotList || []).reduce((sum, item) => sum + Number(item.lotWeight || 0), 0).toFixed(2)
+  ),
   [dataLotList]
 );
 
@@ -774,14 +795,18 @@ const hasRemaining = remainingQty > 0;
             dflLotNumber: noOfDFLs,
             // Per LotGroupage.rejection_quantity contract: (lotWeightAfterWeighment - distributedQuantity).
             // That's exactly remainingQty — the value the user sees in the "Remaining/Rejected" pill —
-            // so send it (not the legacy netWeight-based remainingCocoonWeight) to keep UI and DB aligned.
-            remainingCocoonWeight: movingToAnotherMarketFlag
-              ? 0
-              : (purposeForRejectionFlag ? remainingQty : remainingCocoonWeight),
+            // so always send it. The earlier `: remainingCocoonWeight` fallback was a legacy
+            // netWeight-based value that was 0 whenever the DB's saved netWeight matched the
+            // already-distributed total, which made the saved remainder come out as 0 even when
+            // 35 kg was actually still in store. Moving-to-another-market still forces 0 (the
+            // cocoons are gone), but anything else — rejection or simple leftover — must record
+            // the real remainder.
+            remainingCocoonWeight: movingToAnotherMarketFlag ? 0 : remainingQty,
             fruitsId: fruitsId,
             marketId: localStorage.getItem("marketId"),
             godownId: localStorage.getItem("godownId"),
             purposeForRejection: purposeForRejectionFlag,
+            qtyNos: item.qtyNos,
             movingToAnotherMarket: movingToAnotherMarketFlag,
             movingMarketReason: movingToAnotherMarketFlag ? trimmedMovingMarketReason : null,
           }))
@@ -828,10 +853,13 @@ const hasRemaining = remainingQty > 0;
             dflLotNumber: noOfDFLs,
             // Per LotGroupage.rejection_quantity contract: (lotWeightAfterWeighment - distributedQuantity).
             // That's exactly remainingQty — the value the user sees in the "Remaining/Rejected" pill —
-            // so send it (not the legacy netWeight-based remainingCocoonWeight) to keep UI and DB aligned.
-            remainingCocoonWeight: movingToAnotherMarketFlag
-              ? 0
-              : (purposeForRejectionFlag ? remainingQty : remainingCocoonWeight),
+            // so always send it. The earlier `: remainingCocoonWeight` fallback was a legacy
+            // netWeight-based value that was 0 whenever the DB's saved netWeight matched the
+            // already-distributed total, which made the saved remainder come out as 0 even when
+            // 35 kg was actually still in store. Moving-to-another-market still forces 0 (the
+            // cocoons are gone), but anything else — rejection or simple leftover — must record
+            // the real remainder.
+            remainingCocoonWeight: movingToAnotherMarketFlag ? 0 : remainingQty,
             auctionDate: formatAuctionDate(item.auctionDate),
             purposeForRejection: purposeForRejectionFlag,
             movingToAnotherMarket: movingToAnotherMarketFlag,
@@ -861,6 +889,7 @@ const hasRemaining = remainingQty > 0;
                 averageYield: "",
                 externalUnitId: "",
                 fruitsId: "",
+                qtyNos: "",
               });
               clear();
               setValidated(false);
@@ -1121,6 +1150,7 @@ const hasRemaining = remainingQty > 0;
         averageYield: "",
         externalUnitId: "",
         fruitsId: "",
+        qtyNos: "",
     });
   setFarmerDetails({
     farmerFirstName:"",
@@ -1554,15 +1584,38 @@ const handlePurchaseModeChange = (e) => {
                                       </>
                                     );
                                   }
+                                  // Live remaining = final-weighment - sum(buyer lot weights).
+                                  // This is the same formula the bottom Distributed/Remaining
+                                  // pill uses; the previous formattedRemainingCocoonWeight was
+                                  // based on netWeight - totalLotWeight, which silently fell to 0
+                                  // whenever the DB's netWeight matched the distributed total.
                                   return (
                                     <>
                                       <td style={styles.ctstyle}>{t("Remaining Cocoon in Kgs:")}</td>
-                                      <td style={styles.cell}>{formattedRemainingCocoonWeight}</td>
+                                      <td style={styles.cell}>{Math.max(0, remainingQty).toFixed(2)}</td>
                                     </>
                                   );
                                 })()}
                                 <td style={styles.ctstyle}>{t("Remaining Cocoon in Store:")}</td>
-                                <td style={styles.cell}>{farmerdetails.remainingCocoonWeight}</td>
+                                <td style={styles.cell}>
+                                  {(() => {
+                                    // Business rule: cocoons stay in the store only when the lot
+                                    // was NOT moved to another market AND NOT rejected. In either
+                                    // of those two saved cases the leftover physically leaves the
+                                    // store (moved out / sent to rejection), so Store = 0.
+                                    // Tied to the SAVED state (not the live checkboxes) so toggling
+                                    // the boxes pre-save doesn't change the displayed inventory.
+                                    // Replaces a raw DB read of farmerdetails.remainingCocoonWeight
+                                    // which showed 0 for legacy records saved before the save-path
+                                    // fix at line 805/863.
+                                    const wasSavedRejected = !!farmerdetails?.purposeForRejection;
+                                    const wasSavedMoved = !!farmerdetails?.movingToAnotherMarket;
+                                    const storeRemaining = (wasSavedMoved || wasSavedRejected)
+                                      ? 0
+                                      : Math.max(0, remainingQty);
+                                    return storeRemaining.toFixed(2);
+                                  })()}
+                                </td>
                               </tr>
                             </tbody>
                           </table>
@@ -1924,6 +1977,7 @@ const handlePurchaseModeChange = (e) => {
                               { label: t("Buyer Type"), align: "left" },
                               { label: t("License Number/Address/Grainage/Name"), align: "left" },
                               { label: t("Quantity of Cocoons(In Kgs)"), align: "right" },
+                              { label: t("Qty (Nos)"), align: "right" },
                               { label: t("Rate per Kg"), align: "right" },
                               { label: t("Total Amount"), align: "right" },
                               { label: t("Invoice Number"), align: "left" },
@@ -1956,6 +2010,7 @@ const handlePurchaseModeChange = (e) => {
                               </td>
                               <td style={{ padding: "10px 14px", color: "#4a5568" }}>{item.buyerName}</td>
                               <td style={{ padding: "10px 14px", color: "#2d3748", fontWeight: 600, textAlign: "right" }}>{item.lotWeight}</td>
+                              <td style={{ padding: "10px 14px", color: "#2d3748", textAlign: "right" }}>{item.qtyNos || "—"}</td>
                               <td style={{ padding: "10px 14px", color: "#2d3748", textAlign: "right" }}>{item.amount}</td>
                               <td style={{ padding: "10px 14px", color: "#276749", fontWeight: 700, textAlign: "right" }}>{item.soldAmount}</td>
                               <td style={{ padding: "10px 14px", color: item.invoiceNumber ? "#1e67a8" : "#a0aec0", fontWeight: item.invoiceNumber ? 600 : 400 }}>{item.invoiceNumber || "—"}</td>
@@ -2466,6 +2521,24 @@ const handlePurchaseModeChange = (e) => {
           {/* </>
         )} */}
 
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="qtyNos">
+                        {t("Qty (Nos)")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="qtyNos"
+                          name="qtyNos"
+                          value={data.qtyNos}
+                          onChange={handleInputs}
+                          type="number"
+                          placeholder={t("Enter Qty (Nos)")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
                 <Col lg="12">
                 <div className="d-flex gap g-2 justify-content-center">
                   <div className="gap-col">
@@ -2934,6 +3007,24 @@ const handlePurchaseModeChange = (e) => {
             </Col>
           {/* </>
         )} */}
+
+                  <Col lg="6">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="qtyNos">
+                        {t("Qty (Nos)")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="qtyNos"
+                          name="qtyNos"
+                          value={data.qtyNos}
+                          onChange={handleInputs}
+                          type="number"
+                          placeholder={t("Enter Qty (Nos)")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
 
                 <Col lg="12">
                 <div className="d-flex gap g-2 justify-content-center">

@@ -274,6 +274,9 @@ function Menu() {
     Market_SeedCocoonMarket_Base_Price_Fixation: false,
     Market_SeedCocoonMarket_Lot_Wise_Price_Fixation: false,
     Market_SeedCocoonMarket_Pupa_Test_Cocoon_Assessment_Page: false,
+        Market_Crop_Inspection_Edit: false,
+            Market_Fitness_Edit: false,
+
 
     Market_SeedCocoonMarket_Payment: false,
     Market_SeedCocoonMarket_Ready_For_Payment: false,
@@ -1864,7 +1867,7 @@ function Menu() {
               </MenuItem>
             ) : null} */}
 
-             {showMenu.Services_Service_Crop_Details_Commercial_Market ? (
+             {/* {showMenu.Services_Service_Crop_Details_Commercial_Market ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Crop Details-Commercial Market")}
@@ -1880,7 +1883,7 @@ function Menu() {
                   to="/seriui/crop-details-seed-market"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
 
             {/* {showMenu.Services_Dbt_Application ? (
               <MenuItem>
@@ -2495,6 +2498,28 @@ function Menu() {
                             "Invoice, Permit, Cash Receipt, Market Receipt"
                           )}
                           to="/seriui/invoice-permit-market-receipt"
+                        />
+                      </MenuItem>
+                    ) : null}
+
+                    {showMenu.Market_Fitness_Edit ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t(
+                            "Fitness Certificate Edit"
+                          )}
+                          to="/seriui/fitness-certificate-edit"
+                        />
+                      </MenuItem>
+                    ) : null}
+
+                    {showMenu.Market_Crop_Inspection_Edit ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t(
+                            "Crop Inspection Edit"
+                          )}
+                          to="/seriui/crop-inspection-edit"
                         />
                       </MenuItem>
                     ) : null}
@@ -3290,14 +3315,14 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Inspection_Download_Inspection_Mobile_App ? (
+            {/* {showMenu.Inspection_Download_Inspection_Mobile_App ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Download Inspection Mobile App")}
                   to="http://e-reshme.karnataka.gov.in/seriui/sericulture.apk"
                 />
               </MenuItem>
-            ) : null}
+            ) : null} */}
             {/* {showMenu.Inspection_Tracking_Status_of_Mulberry ? (
               <MenuItem>
                 <MenuItemLink
@@ -4710,7 +4735,7 @@ function Menu() {
             {showMenu.Reports_Export_Report ? (
               <MenuItem sub>
                 <MenuItemLink
-                  text={t("Export Report")}
+                  text={t("Export Reports")}
                   onClick={menuToggle}
                   onMouseEnter={menuHover}
                   sub
@@ -5459,16 +5484,6 @@ function Menu() {
               </MenuItem>
             ) : null}
 
-            {showMenu.Reports_Dashboard ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Dashboards")}
-                  to="https://app.powerbi.com/view?r=eyJrIjoiYTJjNGEzYjktMzFkZS00NjBjLTg4NjUtMTViZTVjNDMzZjEyIiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9&pageName=7a11927e5e64dcc23c23"
-                  blank={true}
-                />
-              </MenuItem>
-            ) : null}
-
              {showMenu.Reports_Format_Reports ? (
                 <MenuItem sub>
                   <MenuItemLink
@@ -5640,22 +5655,6 @@ function Menu() {
                           sub
                         />
                         <MenuSub>
-                          {showMenu.Reports_Export_Report_Commercial_Market_Dashboard ? (
-                            <MenuItem>
-                              <MenuItemLink
-                                text={t("Dashboard")}
-                                to="/seriui/dashboard-report"
-                              />
-                            </MenuItem>
-                          ) : null}
-                          {showMenu.Reports_Export_Report_Commercial_Market_Dashboard ? (
-                            <MenuItem>
-                              <MenuItemLink
-                                text={t("All Market Dashboard")}
-                                to="/seriui/dashboard-report-all-market"
-                              />
-                            </MenuItem>
-                          ) : null}
                           {showMenu.Reports_Export_Report_Commercial_Market_Abstract ? (
                             <MenuItem>
                               <MenuItemLink
@@ -5872,54 +5871,73 @@ function Menu() {
                               />
                             </MenuItem>
                           ) : null}
+                          {showMenu.Reports_Export_Report_Commercial_Market_Dashboard ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("Daily Dashboard")}
+                                to="/seriui/dashboard-report"
+                              />
+                            </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Commercial_Market_Dashboard ? (
+                            <MenuItem>
+                              <MenuItemLink
+                                text={t("All Market Dashboard")}
+                                to="/seriui/dashboard-report-all-market"
+                              />
+                            </MenuItem>
+                          ) : null}
                         </MenuSub>
                       </MenuItem>
                     ) : null}
 
-                    {showMenu.Reports_Format_Reports_Acknowledgement ? (
-                      <MenuItem>
-                        <MenuItemLink
-                          text={t("Acknowledgements")}
-                          to="/seriui/generate-acknowledgement"
-                        />
-                      </MenuItem>
-                    ) : null}
+                        {/* ─── Schemes (sub-menu inside Format Reports) ─── */}
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("Schemes")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            {showMenu.Reports_Format_Reports_Acknowledgement ? (
+                              <MenuItem>
+                                <MenuItemLink
+                                  text={t("Acknowledgements")}
+                                  to="/seriui/generate-acknowledgement"
+                                />
+                              </MenuItem>
+                            ) : null}
 
-                    {showMenu.Reports_Format_Reports_WorkOrder ? (
-                      <MenuItem>
-                        <MenuItemLink
-                          text={t("Work Orders")}
-                          to="/seriui/generate-work-order"
-                        />
-                      </MenuItem>
-                    ) : null}
+                            {showMenu.Reports_Format_Reports_WorkOrder ? (
+                              <MenuItem>
+                                <MenuItemLink
+                                  text={t("Work Orders")}
+                                  to="/seriui/generate-work-order"
+                                />
+                              </MenuItem>
+                            ) : null}
 
-                    {showMenu.Reports_Format_Reports_Selection_Letters ? (
-                      <MenuItem>
-                        <MenuItemLink
-                          text={t("Selection Letters")}
-                          to="/seriui/generate-selection-letter"
-                        />
-                      </MenuItem>
-                    ) : null}
+                            {showMenu.Reports_Format_Reports_Selection_Letters ? (
+                              <MenuItem>
+                                <MenuItemLink
+                                  text={t("Selection Letters")}
+                                  to="/seriui/generate-selection-letter"
+                                />
+                              </MenuItem>
+                            ) : null}
 
-                    {showMenu.Reports_Format_Reports_Sanction_Order ? (
-                      <MenuItem>
-                        <MenuItemLink
-                          text={t("Sanction Orders")}
-                          to="/seriui/generate-sanction-order"
-                        />
-                      </MenuItem>
-                    ) : null}
+                            {showMenu.Reports_Format_Reports_Sanction_Order ? (
+                              <MenuItem>
+                                <MenuItemLink
+                                  text={t("Sanction Orders")}
+                                  to="/seriui/generate-sanction-order"
+                                />
+                              </MenuItem>
+                            ) : null}
+                          </MenuSub>
+                        </MenuItem>
 
-                    <MenuItem sub>
-                      <MenuItemLink
-                        text={t("Format Reports-New")}
-                        onClick={menuToggle}
-                        onMouseEnter={menuHover}
-                        sub
-                      />
-                      <MenuSub>
                         {/* ─── Mysore Seed Area ─── */}
                         <MenuItem sub>
                           <MenuItemLink
@@ -6386,7 +6404,7 @@ function Menu() {
                                 sub
                               />
                               <MenuSub>
-                                <MenuItem>
+                                {/* <MenuItem>
                                   <MenuItemLink
                                     text={t("Form-1 · Monthly Chawki Achievement")}
                                     to="/seriui/farm-form1-chawki-report"
@@ -6409,7 +6427,7 @@ function Menu() {
                                     text={t("Form-4 · Crop Progress (CY vs PY)")}
                                     to="/seriui/farm-form4-crop-progress-report"
                                   />
-                                </MenuItem>
+                                </MenuItem> */}
                                 <MenuItem>
                                   <MenuItemLink
                                     text={t("Sheet-1 · Monthly Progress (Form F-2)")}
@@ -6809,19 +6827,37 @@ function Menu() {
                           </MenuSub>
                         </MenuItem>
                         {/* ─── End Bivoltine Seed Area ─── */}
-                      </MenuSub>
-                    </MenuItem>
 
-                    <MenuItem>
+                    {/* <MenuItem>
                       <MenuItemLink
                         text={t("Format Reports-Old")}
                         to="https://e-reshme.karnataka.gov.in/ssrsreport/ssrsreport/BVM5_Format.aspx"
                         blank={true}
                       />
-                    </MenuItem>
+                    </MenuItem> */}
                  </MenuSub>
                 </MenuItem>
               ) : null}
+
+            {showMenu.Reports_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Dashboards - Old")}
+                  to="https://app.powerbi.com/view?r=eyJrIjoiYTJjNGEzYjktMzFkZS00NjBjLTg4NjUtMTViZTVjNDMzZjEyIiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9&pageName=7a11927e5e64dcc23c23"
+                  blank={true}
+                />
+              </MenuItem>
+            ) : null}
+
+            {showMenu.Reports_Dashboard ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Dashboards - New")}
+                  to="https://app.powerbi.com/view?r=eyJrIjoiYTFmMjJiMTctMDk2Yi00M2U0LTk2NTAtZmIzYjQ0ODE2YWM2IiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9"
+                  blank={true}
+                />
+              </MenuItem>
+            ) : null}
 
               {/* {showMenu.Reports_Admin ? (
                 <MenuItem sub>
@@ -6882,6 +6918,29 @@ function Menu() {
           </MenuSub>
         </MenuItem>
       ) : null}
+
+      <MenuItem sub>
+        <MenuItemLink
+          text={t("Manual Entry")}
+          onClick={menuToggle}
+          onMouseEnter={menuHover}
+          sub
+        />
+        <MenuSub>
+          <MenuItem>
+            <MenuItemLink
+              text={t("Crop Details-Seed Market")}
+              to="/seriui/crop-details-seed-market"
+            />
+          </MenuItem>
+          <MenuItem>
+            <MenuItemLink
+              text={t("Crop Details-Commercial Market")}
+              to="/seriui/crop-details-commercial-market"
+            />
+          </MenuItem>
+        </MenuSub>
+      </MenuItem>
 
       {/* Hard Code Menu with mapcode End */}
     </MenuList>

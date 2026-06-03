@@ -27,7 +27,22 @@ function FarmwiseAchievement() {
     raceMasterId: "",
     farmId: "",
     userMasterId: "",
+    week1: "",
+    week2: "",
+    week3: "",
+    week4: "",
   });
+
+  // Weekly achievement inputs — auto-sum into the monthly Achievement Value.
+  const handleWeek = (e) => {
+    const { name, value } = e.target;
+    setData((prev) => {
+      const next = { ...prev, [name]: value };
+      const sum = ["week1", "week2", "week3", "week4"]
+        .reduce((s, k) => s + (parseFloat(next[k]) || 0), 0);
+      return { ...next, value: sum > 0 ? String(sum) : next.value };
+    });
+  };
 
 
   
@@ -1702,6 +1717,30 @@ const handleShowModal = () => {
                         </div>
                       </Form.Group>
                     </Col>
+
+                    <Col lg="12">
+                      <div className="mt-n2 mb-1" style={{ fontWeight: 700, fontSize: "12px", color: "#4338ca", textTransform: "uppercase", letterSpacing: ".05em" }}>
+                        {t("Weekly Split")} <span style={{ fontWeight: 400, textTransform: "none", color: "#64748b" }}>({t("auto-sums into Achievement Value")})</span>
+                      </div>
+                    </Col>
+                    {[1, 2, 3, 4].map((w) => (
+                      <Col lg="3" key={`week${w}`}>
+                        <Form.Group className="form-group mt-n4">
+                          <Form.Label htmlFor={`week${w}`}>{t(`Week ${w}`)}</Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id={`week${w}`}
+                              name={`week${w}`}
+                              value={data[`week${w}`]}
+                              onChange={handleWeek}
+                              type="number"
+                              min="0"
+                              placeholder={t(`Week ${w}`)}
+                            />
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    ))}
 
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">

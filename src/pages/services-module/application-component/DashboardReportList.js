@@ -4009,8 +4009,24 @@ const allowedSchemes = [
   } else {
     event.preventDefault();
 
+    const localStorageUserId = localStorage.getItem("userMasterId");
+    if (!localStorageUserId || localStorageUserId === "null") {
+      Swal.fire({
+        icon: "warning",
+        title: "Please Select User Master",
+        text: "Please Select User Master and save",
+        confirmButtonColor: "#1e67a8",
+      });
+      return;
+    }
+
     if (allowAnyUser && !isUserValid) {
-      setValidated(true);
+      Swal.fire({
+        icon: "warning",
+        title: "Please Select User Master",
+        text: "Please Select User Master and save",
+        confirmButtonColor: "#1e67a8",
+      });
       return;
     }
 

@@ -536,6 +536,9 @@
 .photo-caption {
   margin: 10px 0 8px;
   font-size: calc(0.88rem * var(--text-scale));
+  /* Pin line-height so the 35px caption-zone calc in .stats-col padding-bottom
+     stays accurate regardless of browser default. */
+  line-height: 17px;
   font-weight: 700;
   color: var(--primary-dark);
   text-align: center;
@@ -572,7 +575,14 @@
 
 /* ---------- RIGHT: Statistics Panel ---------- */
 .stats-col {
-  padding: 20px 16px 60px 12px;
+  /* Bottom padding reserves the same vertical space the slideshow column gives
+     to its caption + dots row, so the stats panel's bottom edge lines up with
+     the photo-stage's bottom edge. Measured at base font scale:
+       caption  → margin-top 10 + line ~17 + margin-bottom 8 = 35px
+       dots     → 9px height + margin-bottom 4              = 13px
+       own pad  → 16px (matches slideshow padding-bottom)   = 16px
+       total                                                = 64px            */
+  padding: 20px 16px 64px 12px;
   display: flex;
   flex-direction: column;
 }
