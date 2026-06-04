@@ -127,6 +127,7 @@ function GrainageFarmFutureChawkiPlanReport() {
   const [upcoming,        setUpcoming]        = useState([]);
   const [targetVsActual,  setTargetVsActual]  = useState([]);
   const [p3CocoonsNext,   setP3CocoonsNext]   = useState([]);
+  const [plotwise,        setPlotwise]        = useState([]);
 
   const [hasReport,          setHasReport]          = useState(false);
   const [isLoading,          setIsLoading]          = useState(false);
@@ -213,6 +214,7 @@ function GrainageFarmFutureChawkiPlanReport() {
       setUpcoming(Array.isArray(data.upcoming) ? data.upcoming : []);
       setTargetVsActual(Array.isArray(data.targetVsActual) ? data.targetVsActual : []);
       setP3CocoonsNext(Array.isArray(data.p3CocoonsNext) ? data.p3CocoonsNext : []);
+      setPlotwise(Array.isArray(data.plotwise) ? data.plotwise : []);
       setHasReport(true);
     } catch {
       showErr("Fetch Failed", "Failed to load the Future Chawki Plan report.");
@@ -560,6 +562,68 @@ function GrainageFarmFutureChawkiPlanReport() {
                         ))}
                         <td className="gffc-num" style={valCell("indigo", true)}>{fmt(cocs.w_total)}</td>
                       </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+
+            {/* ── Section 4: Plot-wise leaf consumption & fertilizer ─────── */}
+            <Card className="mb-4" style={{ borderRadius: "14px", border: "none", boxShadow: "0 6px 28px rgba(13,78,72,.12)", overflow: "hidden" }}>
+              <div style={SECTION_TITLE_STYLE}>
+                ತೋಟವಾರು ಸೊಪ್ಪಿನ ಬಳಕೆ ಹಾಗೂ ಗೊಬ್ಬರದ ವಿವರ
+                <div style={{ fontSize: "11.5px", fontWeight: 600, opacity: .9, marginTop: "3px" }}>Plot-wise leaf consumption &amp; fertilizer applied (maintenance_of_mulberry_garden)</div>
+              </div>
+              <div className="gffc-scroll" style={{ overflowX: "auto" }}>
+                <table className="gffc-table" style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", minWidth: "820px" }}>
+                  <thead>
+                    <tr>
+                      <th style={{ ...TH_TEAL, minWidth: "120px", textAlign: "left" }}>
+                        <div style={{ fontSize: "12.5px" }}>ತೋಟ</div>
+                        <div style={{ fontSize: "10px", opacity: .85, marginTop: "1px" }}>Plot</div>
+                      </th>
+                      <th style={{ ...TH_TEAL, minWidth: "120px" }}>
+                        <div style={{ fontSize: "12.5px" }}>ಸೊಪ್ಪು (ಕಿ.ಗ್ರಾಂ)</div>
+                        <div style={{ fontSize: "10px", opacity: .85, marginTop: "1px" }}>Leaf (Kg)</div>
+                      </th>
+                      <th style={{ ...TH_INDIGO, minWidth: "120px" }}>
+                        <div style={{ fontSize: "12.5px" }}>ಕೊಟ್ಟಿಗೆ ಗೊಬ್ಬರ</div>
+                        <div style={{ fontSize: "10px", opacity: .85, marginTop: "1px" }}>FYM</div>
+                      </th>
+                      <th style={{ ...TH_INDIGO, minWidth: "130px" }}>
+                        <div style={{ fontSize: "12.5px" }}>ಅಮೋನಿಯಂ ಸಲ್ಫೇಟ್</div>
+                        <div style={{ fontSize: "10px", opacity: .85, marginTop: "1px" }}>Ammonium Sulphate</div>
+                      </th>
+                      <th style={{ ...TH_INDIGO, minWidth: "130px" }}>
+                        <div style={{ fontSize: "12.5px" }}>ಸಿ.ಸೂ.ಪಾಸ್ಫೇಟ್</div>
+                        <div style={{ fontSize: "10px", opacity: .85, marginTop: "1px" }}>Super Phosphate</div>
+                      </th>
+                      <th style={{ ...TH_INDIGO, minWidth: "120px" }}>
+                        <div style={{ fontSize: "12.5px" }}>ಮ್ಯೂ.ಪೊಟ್ಯಾಷ್</div>
+                        <div style={{ fontSize: "10px", opacity: .85, marginTop: "1px" }}>Muriate of Potash</div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {plotwise.length === 0 ? (
+                      <tr>
+                        <td colSpan={6} style={{ padding: "30px", textAlign: "center", color: "#a0aec0", fontSize: "13.5px" }}>
+                          ಯಾವುದೇ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ &nbsp;/&nbsp; No leaf/fertilizer activity recorded for this month.
+                        </td>
+                      </tr>
+                    ) : (
+                      plotwise.map((row, ri) => (
+                        <tr key={`pw-${ri}`}>
+                          <td style={{ padding: "10px 14px", fontWeight: 700, color: "#0f172a", borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0" }}>
+                            {row.plot_number || "—"}
+                          </td>
+                          <td className="gffc-num" style={valCell("teal", false)}>{fmt(row.leaf_kg)}</td>
+                          <td className="gffc-num" style={valCell("indigo", false)}>{fmt(row.fym)}</td>
+                          <td className="gffc-num" style={valCell("indigo", false)}>{fmt(row.ammonium_sulphate)}</td>
+                          <td className="gffc-num" style={valCell("indigo", false)}>{fmt(row.super_phosphate)}</td>
+                          <td className="gffc-num" style={valCell("indigo", false)}>{fmt(row.muriate_of_potash)}</td>
+                        </tr>
+                      ))
                     )}
                   </tbody>
                 </table>

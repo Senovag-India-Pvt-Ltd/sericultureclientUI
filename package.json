@@ -67,11 +67,11 @@
     "xlsx": "^0.18.5"
   },
   "scripts": {
-    "start": "env-cmd -f .env.development react-scripts start",
-    "build": "env-cmd -f .env.test react-scripts build",
-    "build:uat": "env-cmd -f .env.uat react-scripts build",
-    "build:prod": "env-cmd -f .env.production react-scripts build",
-    "test": "react-scripts test",
+    "start": "env-cmd -f .env.development craco start",
+    "build": "env-cmd -f .env.test craco build",
+    "build:uat": "env-cmd -f .env.uat craco build",
+    "build:prod": "env-cmd -f .env.production craco build",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -92,5 +92,8 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "/seriui/"
+  "homepage": "/seriui/",
+  "devDependencies": {
+    "@craco/craco": "^7.1.0"
+  }
 }

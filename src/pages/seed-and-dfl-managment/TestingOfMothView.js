@@ -116,6 +116,14 @@ function TestingOfMothView() {
                         </td>
                         <td>{testingMoth.sourceDetails}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Number of Beds")}:</td>
+                        <td>{testingMoth.numberOfBeds}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Number of Diseased Beds")}:</td>
+                        <td>{testingMoth.numberOfDiseasedBeds}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

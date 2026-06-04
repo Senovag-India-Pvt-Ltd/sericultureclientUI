@@ -1355,6 +1355,7 @@ const [showModal8, setShowModal8] = useState(false);
       temperatureHumidityDate: new Date(),
       temperature: "",
       humidity: "",
+      rainfall: "",
       afterNoonTwelveTemperature: "",
       afterNoonTwelveHumidity: "",
       eveningSixTemperature:"",
@@ -1403,6 +1404,7 @@ const [showModal8, setShowModal8] = useState(false);
             temperatureHumidityDate: formattedTemperatureHumidityDate,
             temperature: onlyTemperatureTableDetails.temperature,
             humidity: onlyTemperatureTableDetails.humidity,
+            rainfall: onlyTemperatureTableDetails.rainfall,
             afterNoonTwelveTemperature: onlyTemperatureTableDetails.afterNoonTwelveTemperature,
             afterNoonTwelveHumidity: onlyTemperatureTableDetails.afterNoonTwelveHumidity,
             eveningSixTemperature:onlyTemperatureTableDetails.eveningSixTemperature,
@@ -1447,6 +1449,7 @@ const [showModal8, setShowModal8] = useState(false);
       temperatureHumidityDate: new Date(),
       temperature: "",
       humidity: "",
+      rainfall: "",
       afterNoonTwelveTemperature: "",
       afterNoonTwelveHumidity: "",
       eveningSixTemperature:"",
@@ -1480,6 +1483,7 @@ const [showModal8, setShowModal8] = useState(false);
             temperatureHumidityDate: formattedTemperatureHumidityDate,
             temperature: editForTemperatureDetails.temperature,
             humidity: editForTemperatureDetails.humidity,
+            rainfall: editForTemperatureDetails.rainfall,
             afterNoonTwelveTemperature: editForTemperatureDetails.afterNoonTwelveTemperature,
             afterNoonTwelveHumidity: editForTemperatureDetails.afterNoonTwelveHumidity,
             eveningSixTemperature:editForTemperatureDetails.eveningSixTemperature,
@@ -1539,6 +1543,7 @@ const [showModal8, setShowModal8] = useState(false);
             temperatureHumidityDate: new Date(data.temperatureHumidityDate), // Ensure it's a Date object
             temperature: data.temperature || "",
             humidity: data.humidity || "",
+            rainfall: data.rainfall || "",
             afterNoonTwelveTemperature: data.afterNoonTwelveTemperature,
             afterNoonTwelveHumidity: data.afterNoonTwelveHumidity || "",
             eveningSixTemperature: data.eveningSixTemperature || "",
@@ -5693,6 +5698,27 @@ const [showModal8, setShowModal8] = useState(false);
                                         </div>
                                       </Form.Group>
                                     </Col>
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="rainfall">
+                                          {t("Rainfall (mm)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="rainfall"
+                                            name="rainfall"
+                                            value={
+                                              onlyTemperatureTableDetails.rainfall || ""
+                                            }
+                                            onChange={handleOnlyTemperatureInputs}
+                                            type="number"
+                                            min="0"
+                                            step="any"
+                                            placeholder={t("Rainfall (mm)")}
+                                          />
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
                                     </Row>
                                   </Card.Body>
                                 </Card>
@@ -5986,6 +6012,27 @@ const [showModal8, setShowModal8] = useState(false);
                                           {/* <Form.Control.Feedback type="invalid">
                                             Shell Percentage is required
                                           </Form.Control.Feedback> */}
+                                        </div>
+                                      </Form.Group>
+                                    </Col>
+                                    <Col lg="6">
+                                      <Form.Group className="form-group mt-n3">
+                                        <Form.Label htmlFor="rainfall">
+                                          {t("Rainfall (mm)")}
+                                        </Form.Label>
+                                        <div className="form-control-wrap">
+                                          <Form.Control
+                                            id="rainfall"
+                                            name="rainfall"
+                                            value={
+                                              editForTemperatureDetails.rainfall || ""
+                                            }
+                                            onChange={handleTemperatureForEditInputs}
+                                            type="number"
+                                            min="0"
+                                            step="any"
+                                            placeholder={t("Rainfall (mm)")}
+                                          />
                                         </div>
                                       </Form.Group>
                                     </Col>
