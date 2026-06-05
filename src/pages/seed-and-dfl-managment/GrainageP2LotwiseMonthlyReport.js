@@ -213,7 +213,7 @@ function GrainageP2LotwiseMonthlyReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const grainageDisplay = selectedGrainage?.grainageMasterName || "ಬಿಳಿದೇವಾಲಯ";
+  const grainageDisplay = selectedGrainage?.grainageMasterName || "—";
 
   // Split header row (serial_number === 0) from body rows; classify each body row.
   const { lotLabels, bodyRows } = useMemo(() => {

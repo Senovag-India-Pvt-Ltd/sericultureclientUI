@@ -529,8 +529,8 @@ function TscMulberryAreaReport() {
                             border: "1px solid rgba(255,255,255,.18)", fontWeight: 800,
                             minWidth: "85px",
                           }}>
-                            <div style={{ fontSize: "10.5px" }}>ಮಳೆ</div>
-                            <div style={{ fontSize: "8.5px", opacity: .8, marginTop: "1px" }}>Rain</div>
+                            <div style={{ fontSize: "10.5px" }}>ಮಳೆ ಆಶ್ರಿತ</div>
+                            <div style={{ fontSize: "8.5px", opacity: .8, marginTop: "1px" }}>Rain-fed</div>
                           </th>,
                           <th key={`${g}-i`} style={{
                             background: tone, color: text, padding: "8px 4px", textAlign: "center",

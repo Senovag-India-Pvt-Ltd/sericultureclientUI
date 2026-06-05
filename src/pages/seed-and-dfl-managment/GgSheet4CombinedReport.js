@@ -41,7 +41,7 @@ const COLUMNS = [
   { key: "section", label: "Section", kn: "ವಿಭಾಗ", align: "left", min: "220px" },
   { key: "description", label: "Description", kn: "ವಿವರ", align: "left", min: "260px" },
   { key: "mo_val", label: "Month", kn: "ಮಾಸದಲ್ಲಿ", align: "right" },
-  { key: "me_val", label: "Month End", kn: "ಮಾಸಾಂತ್ಯಕ್ಕೆ", align: "right" },
+  { key: "me_val", label: "Month End", kn: "ಮಾಸಾಂತ್ಯ", align: "right" },
   { key: "w1", label: "W1", kn: "1ನೇ ವಾರ", align: "right" },
   { key: "w2", label: "W2", kn: "2ನೇ ವಾರ", align: "right" },
   { key: "w3", label: "W3", kn: "3ನೇ ವಾರ", align: "right" },

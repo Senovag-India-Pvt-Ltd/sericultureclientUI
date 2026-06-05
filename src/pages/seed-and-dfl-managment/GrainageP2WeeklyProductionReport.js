@@ -221,7 +221,7 @@ function GrainageP2WeeklyProductionReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const grainageDisplay = selectedGrainage?.grainageMasterName || "ಬಿಳಿದೇವಾಲಯ";
+  const grainageDisplay = selectedGrainage?.grainageMasterName || "—";
 
   // KPIs from the rows
   const kpis = useMemo(() => {
