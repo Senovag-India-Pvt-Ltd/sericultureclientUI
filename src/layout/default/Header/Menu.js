@@ -268,6 +268,7 @@ function Menu() {
     Market_SeedMarket_Bulk_Send_To_Payment: false,
     Market_SeedMarket_Payment_Statement: false,
     Market_SeedMarket_Transfer_Market_Fee_To_Govt_Account: false,
+    Market_SeedMarket_Reeler_Bank_Transfer: false,
 
     Market_SeedCocoonMarket: false,
     Market_SeedCocoonMarket_Inward: false,
@@ -2487,6 +2488,15 @@ function Menu() {
                         <MenuItemLink
                           text={t("Transfer Market Fee to Govt Account")}
                           to="/seriui/transfer-market-fee-to-govt-account"
+                        />
+                      </MenuItem>
+                    ) : null}
+
+                    {showMenu.Market_SeedMarket_Reeler_Bank_Transfer ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t("Reeler Bank Transfer")}
+                          to="/seriui/reeler-bank-transfer"
                         />
                       </MenuItem>
                     ) : null}

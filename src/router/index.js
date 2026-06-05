@@ -1246,6 +1246,7 @@ import SeedMarketCreditReport from "../pages/reports-admin/market-auction/SeedMa
 import SeedMFReports from "../pages/reports-admin/market-auction/SeedMFReports.js";
 import PendingMarketFeeReport from "../pages/reports-admin/market-auction/PendingMarketFeeReport.js";
 import TransferMarketFeeToGovtAccount from "../pages/reports-admin/market-auction/TransferMarketFeeToGovtAccount.js";
+import ReelerBankTransfer from "../pages/market-and-auction/ReelerBankTransfer.js";
 import SeedMarketBiddingReport from "../pages/reports-admin/market-auction/SeedMarketBiddingReport.js";
 
 // Admin and Reports
@@ -1619,6 +1620,10 @@ function Router() {
             <Route
               path="transfer-market-fee-to-govt-account"
               element={<TransferMarketFeeToGovtAccount />}
+            />
+            <Route
+              path="reeler-bank-transfer"
+              element={<ReelerBankTransfer />}
             />
 
              <Route
