@@ -616,6 +616,42 @@ function DispatchofCocoonstoP4GrainageEdit() {
                             </Form.Group>
                           </Col>
 
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="cropNumber">
+                                {t("Crop Number")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                id="cropNumber"
+                                name="cropNumber"
+                                value={data.cropNumber || ""}
+                                onChange={handleInputs}
+                                type="text"
+                                placeholder={t("Enter Crop Number")}
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="cocoonSuppliedInKg">
+                                {t("Cocoons Supplied in Kg")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                id="cocoonSuppliedInKg"
+                                name="cocoonSuppliedInKg"
+                                value={data.cocoonSuppliedInKg || ""}
+                                onChange={handleInputs}
+                                type="number"
+                                placeholder={t("Enter Cocoons Supplied in Kg")}
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
                           {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label>

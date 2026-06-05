@@ -325,6 +325,44 @@ function EditTestingOfMoth() {
                     </div>
                   </Form.Group>
                 </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="numberOfBeds">
+                      {t("Number of Beds")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="numberOfBeds"
+                        name="numberOfBeds"
+                        value={data.numberOfBeds || ""}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        placeholder={t("Enter Number of Beds")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="numberOfDiseasedBeds">
+                      {t("Number of Diseased Beds")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="numberOfDiseasedBeds"
+                        name="numberOfDiseasedBeds"
+                        value={data.numberOfDiseasedBeds || ""}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        placeholder={t("Enter Number of Diseased Beds")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
                 </Row>
               )}
             </Card.Body>
