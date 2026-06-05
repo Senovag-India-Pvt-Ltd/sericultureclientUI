@@ -392,28 +392,8 @@ const HomePage = () => {
 
         {/* ===== PORTAL HEADER ===== */}
         <header className="portal-header">
-          {/* 1. e-Reshme Portal — logo left, text right */}
-          <div className="header-brand-col">
-            <img className="emblem-img" src={withBasePath("/images/center-emblem.png")} alt="Portal emblem" />
-            <div className="header-title-group">
-              <h1>{t.center[0]}</h1>
-              <p className="header-subtitle">{t.center[1]}, {t.center[2]}</p>
-            </div>
-          </div>
-
-          {/* Ministers row — evenly spaced, last hugs extreme right */}
-          <div className="officials-row">
-            {/* 2. CM Siddaramaiah — photo + name below */}
-            <div className="header-official header-official--stacked">
-              <img className="official-img" src={withBasePath("/images/left-profile.png")} alt={t.left.name} />
-              <div className="official-info">
-                <h3>{t.left.name}</h3>
-                <p className="official-role">{splitTitle(t.left.title)[0]}</p>
-                <p className="official-org">{splitTitle(t.left.title)[1]}</p>
-              </div>
-            </div>
-
-            {/* 3. Deputy CM D.K. Shivakumar — photo + name below */}
+          {/* Left: CM D.K. Shivakumar — photo + name below */}
+          <div className="officials-row officials-row--left">
             <div className="header-official header-official--stacked">
               <img className="official-img" src={withBasePath("/images/right-profile.jpeg")} alt={t.right.name} />
               <div className="official-info">
@@ -422,12 +402,23 @@ const HomePage = () => {
                 <p className="official-org">{splitTitle(t.right.title)[1]}</p>
               </div>
             </div>
+          </div>
 
-            {/* 4. Minister Venkatesh — photo + name below */}
+          {/* Center: e-Reshme Portal — emblem + text */}
+          <div className="header-brand-col header-brand-col--center">
+            <img className="emblem-img" src={withBasePath("/images/center-emblem.png")} alt="Portal emblem" />
+            <div className="header-title-group">
+              <h1>{t.center[0]}</h1>
+              <p className="header-subtitle">{t.center[1]}, {t.center[2]}</p>
+            </div>
+          </div>
+
+          {/* Right: Minister for Sericulture — empty photo placeholder + title */}
+          <div className="officials-row officials-row--right">
             <div className="header-official header-official--stacked">
-              <img className="official-img" src={withBasePath("/images/pic.png")} alt={t.extra.name} />
+              <span className="official-img official-img--empty" aria-hidden="true"></span>
               <div className="official-info">
-                <h3>{t.extra.name}</h3>
+                {t.extra.name && <h3>{t.extra.name}</h3>}
                 <p className="official-role">{splitTitle(t.extra.title)[0]}</p>
                 <p className="official-org">{splitTitle(t.extra.title)[1]}</p>
               </div>

@@ -12,6 +12,19 @@ module.exports = {
           fullySpecified: false,
         },
       });
+
+      // The production bundle is large. Terser's default parallel mode runs
+      // minification in worker threads and transfers the bundle via structured
+      // clone, which OOMs ("Data cannot be cloned, out of memory"). Running
+      // Terser in the main process uses the enlarged --max-old-space-size heap
+      // and avoids the cross-thread copy.
+      const minimizer = (webpackConfig.optimization || {}).minimizer || [];
+      minimizer.forEach((plugin) => {
+        if (plugin && plugin.constructor && plugin.constructor.name === 'TerserPlugin') {
+          plugin.options.parallel = false;
+        }
+      });
+
       return webpackConfig;
     }, 
   },

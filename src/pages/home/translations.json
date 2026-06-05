@@ -6,10 +6,10 @@
     },
     "right": {
       "name": "Sri. D.K. Shivakumar",
-      "title": "Hon'ble Deputy Chief Minister, Government of Karnataka"
+      "title": "Hon'ble Chief Minister, Government of Karnataka"
     },
     "extra": {
-      "name": "Sri. K. Venkatesh",
+      "name": "",
       "title": "Hon'ble Minister for Sericulture, Government of Karnataka"
     },
     "center": [
@@ -26,7 +26,7 @@
       "mobileApp": "Mobile App",
       "helpline": "Helpline",
       "statistics": "Statistics",
-      "website": "Department Website",
+      "website": "Website",
       "photoFlash": "Photo Flash",
       "statsPending": "Statistics API will be added soon"
     },
@@ -52,10 +52,10 @@
     },
     "right": {
       "name": "ಶ್ರೀ ಡಿ.ಕೆ. ಶಿವಕುಮಾರ್",
-      "title": "ಮಾನ್ಯ ಉಪ ಮುಖ್ಯಮಂತ್ರಿಗಳು, ಕರ್ನಾಟಕ ಸರ್ಕಾರ"
+      "title": "ಮಾನ್ಯ ಮುಖ್ಯಮಂತ್ರಿಗಳು, ಕರ್ನಾಟಕ ಸರ್ಕಾರ"
     },
     "extra": {
-      "name": "ಶ್ರೀ ಕೆ. ವೆಂಕಟೇಶ್",
+      "name": "",
       "title": "ಮಾನ್ಯ ರೇಷ್ಮೆ ಸಚಿವರು, ಕರ್ನಾಟಕ ಸರ್ಕಾರ"
     },
     "center": [
@@ -72,7 +72,7 @@
       "mobileApp": "ಮೊಬೈಲ್ ಆಪ್",
       "helpline": "ಸಹಾಯವಾಣಿ",
       "statistics": "ಅಂಕಿಅಂಶಗಳು",
-      "website": "ಇಲಾಖೆ ವೆಬ್‌ಸೈಟ್",
+      "website": "ವೆಬ್‌ಸೈಟ್",
       "photoFlash": "ಫೋಟೋ ಫ್ಲ್ಯಾಶ್",
       "statsPending": "ಅಂಕಿಅಂಶ API ಭಾಗ ಶೀಘ್ರದಲ್ಲೇ ಸೇರಿಸಲಾಗುತ್ತದೆ"
     },
