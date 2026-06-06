@@ -218,9 +218,13 @@ function AdsChawkiReport() {
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
 
   const totals = useMemo(() => {
-    const sum = (k) => dataRows.reduce((a, r) => a + numOrZero(r[k]), 0);
+    // Sum only the ಮೊಟ್ಟೆ (DFL) detail rows: exclude the ಬೆಳೆ (crop) rows (which
+    // carry crop counts, not goals/DFLs) and the backend grand-total (ಒಟ್ಟು) row,
+    // so figures are neither mixed nor double-counted.
+    const det = dataRows.filter((r) => String(r.metric).trim() === "ಮೊಟ್ಟೆ" && String(r.tsc).trim() !== "ಒಟ್ಟು");
+    const sum = (k) => det.reduce((a, r) => a + numOrZero(r[k]), 0);
     return {
-      tsc: dataRows.length,
+      tsc: det.length,
       annualCY: sum("annual_goal_cy"),
       goalCYM:  sum("goal_cy_m"),
       achCYM:   sum("ach_cy_m"),

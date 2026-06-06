@@ -272,14 +272,16 @@ function DdsWeeklyChawkiReport() {
     });
   }, [dataRows]);
 
-  // KPIs from Total tier rows
+  // KPIs from per-TSC tier rows — EXCLUDE the backend grand-total row
+  // (tsc_name === "ಒಟ್ಟು"), otherwise every figure is double-counted.
   const kpis = useMemo(() => {
-    const totalRows = dataRows.filter((r) => String(r.tier).trim() === "ಒಟ್ಟು");
-    const p1Rows    = dataRows.filter((r) => String(r.tier).trim() === "ಪಿ1");
-    const p2Rows    = dataRows.filter((r) => String(r.tier).trim() === "ಪಿ2");
+    const isGrand   = (r) => String(r.tsc_name).trim() === "ಒಟ್ಟು";
+    const totalRows = dataRows.filter((r) => String(r.tier).trim() === "ಒಟ್ಟು" && !isGrand(r));
+    const p1Rows    = dataRows.filter((r) => String(r.tier).trim() === "ಪಿ1"   && !isGrand(r));
+    const p2Rows    = dataRows.filter((r) => String(r.tier).trim() === "ಪಿ2"   && !isGrand(r));
     const sum = (rows, k) => rows.reduce((a, r) => a + numOrZero(r[k]), 0);
     return {
-      tscs:         grouped.length,
+      tscs:         grouped.filter((g) => String(g.tsc_name).trim() !== "ಒಟ್ಟು").length,
       goalW:        sum(totalRows, "goal_w"),
       goalM:        sum(totalRows, "goal_m"),
       totalDfl:     sum(totalRows, "total_dfl"),

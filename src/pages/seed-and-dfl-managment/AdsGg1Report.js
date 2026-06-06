@@ -309,12 +309,13 @@ function AdsGg1Report() {
     });
   }, [dataRows]);
 
-  // KPIs from CY rows only (latest year per grainage)
+  // KPIs from CY rows only (latest year per grainage) — exclude the grand-total group
   const kpis = useMemo(() => {
-    const cyRows = grouped.map((g) => g.rows[0]).filter(Boolean);
+    const det = grouped.filter((g) => String(g.grainage).trim() !== "ಒಟ್ಟು");
+    const cyRows = det.map((g) => g.rows[0]).filter(Boolean);
     const sum = (k) => cyRows.reduce((a, r) => a + numOrZero(r[k]), 0);
     return {
-      grainages: grouped.length,
+      grainages: det.length,
       progM:   sum("prog_m"),
       rcvM:    sum("rcv_m"),
       dflsM:   sum("dfls_m"),
