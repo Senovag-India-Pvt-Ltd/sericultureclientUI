@@ -1,5 +1,5 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import ReactSelect from "react-select";
 import Layout from "../../../layout/default";
@@ -740,6 +740,58 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     });
   }, [savedLandDetailsList, landDetailsList]);
 
+  // Pre-fill developedArea + landDetailsIds from previously-saved land details
+  // once on load. Restores user's prior selections and devAcre/devGunta/devFGunta
+  // values, AND stashes the existing dbtFarmerLandDetailsId per entry so
+  // postData can emit op:"UPDATE" reliably. Match strategy: landCode →
+  // farmerLandDetailsId → surveyNumber+ownerName fallback, because FRUITS does
+  // not expose landCode on farmerLandDetailsDTOList rows. Without this, every
+  // edit emitted op:"NEW" and silently inserted duplicate DbtFarmerLandDetails
+  // rows — the "land details is not updating" bug from rejection-list /
+  // drawing-officer edit.
+  const prefilledLandRef = useRef(false);
+  useEffect(() => {
+    if (prefilledLandRef.current) return;
+    const saved = Array.isArray(savedLandDetailsList) ? savedLandDetailsList : [];
+    const profile = Array.isArray(landDetailsList) ? landDetailsList : [];
+    if (saved.length === 0 || profile.length === 0) return;
+
+    const matchProfileIndex = (savedRow) => {
+      return profile.findIndex((p) => {
+        if (!p) return false;
+        if (savedRow.landCode != null && p.landCode != null
+            && String(savedRow.landCode) === String(p.landCode)) return true;
+        if (savedRow.farmerLandDetailsId != null && p.farmerLandDetailsId != null
+            && String(savedRow.farmerLandDetailsId) === String(p.farmerLandDetailsId)) return true;
+        if (savedRow.surveyNumber != null && p.surveyNumber != null
+            && String(savedRow.surveyNumber) === String(p.surveyNumber)
+            && String(savedRow.ownerName || "") === String(p.ownerName || "")) return true;
+        return false;
+      });
+    };
+
+    const nextIds = [];
+    const nextDeveloped = {};
+    saved.forEach((s) => {
+      const idx = matchProfileIndex(s);
+      if (idx < 0) return;
+      nextIds.push(idx);
+      nextDeveloped[idx] = {
+        ...profile[idx],
+        devAcre: s.devAcre != null ? String(s.devAcre) : "0",
+        devGunta: s.devGunta != null ? String(s.devGunta) : "0",
+        devFGunta: s.devFGunta != null ? String(s.devFGunta) : "0",
+        _dbtFarmerLandDetailsId: s.dbtFarmerLandDetailsId,
+      };
+    });
+
+    if (nextIds.length > 0) {
+      setLandDetailsIds(nextIds);
+      setDevelopedArea(nextDeveloped);
+    }
+    prefilledLandRef.current = true;
+  }, [savedLandDetailsList, landDetailsList]);
+
   // const handleCheckboxChange = (farmerLandDetailsId) => {
   //   setLandDetailsIds((prevIds) => {
   //     const isAlreadySelected = prevIds.includes(farmerLandDetailsId);
@@ -1316,24 +1368,20 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       return;
     }
 
-    // Land flow goes through the V2 PUT endpoint for SERVICE applications.
+    // Land flow goes through the V2 endpoint for SERVICE applications.
     // Backend updates ONLY sc_application_form_service + DbtFarmerLandDetails.
-    const savedByLandCode = new Map();
-    (savedLandDetailsList || []).forEach((s) => {
-      if (s && s.landCode != null) {
-        savedByLandCode.set(String(s.landCode), s);
-      }
-    });
-
+    // op is decided from the `_dbtFarmerLandDetailsId` stashed at prefill time
+    // (UPDATE when present, NEW otherwise). The previous match-by-landCode
+    // path never matched because FRUITS doesn't expose landCode on its rows,
+    // so every save silently duplicated DbtFarmerLandDetails inserts instead
+    // of updating existing rows.
     const landRows = Object.keys(developedArea).map((key) => {
       const row = developedArea[key] || {};
-      const saved = row.landCode != null
-        ? savedByLandCode.get(String(row.landCode))
-        : null;
-      const op = saved ? "UPDATE" : "NEW";
+      const savedId = row._dbtFarmerLandDetailsId;
+      const op = savedId ? "UPDATE" : "NEW";
       return {
         op,
-        dbtFarmerLandDetailsId: saved ? saved.dbtFarmerLandDetailsId : null,
+        dbtFarmerLandDetailsId: savedId || null,
         farmerId: farmerId ? Number(farmerId) : null,
         hissa: row.hissa,
         subsidyAvailed: row.subsidyAvailed,
