@@ -1244,7 +1244,6 @@ import { APP_BASE_PATH, APP_BASE_SEGMENT, APP_ROUTES } from "../config/appRoutes
 import SeedMarketTransactionReport from "../pages/reports-admin/market-auction/SeedMarketTransactionReport.js";
 import SeedMarketCreditReport from "../pages/reports-admin/market-auction/SeedMarketCreditReport.js";
 import SeedMFReports from "../pages/reports-admin/market-auction/SeedMFReports.js";
-import PendingMarketFeeReport from "../pages/reports-admin/market-auction/PendingMarketFeeReport.js";
 import TransferMarketFeeToGovtAccount from "../pages/reports-admin/market-auction/TransferMarketFeeToGovtAccount.js";
 import ReelerBankTransfer from "../pages/market-and-auction/ReelerBankTransfer.js";
 import SeedMarketBiddingReport from "../pages/reports-admin/market-auction/SeedMarketBiddingReport.js";
@@ -1613,10 +1612,6 @@ function Router() {
               element={<SeedMarketCreditReport />}
             />
 
-            <Route
-              path="pending-market-fee-report"
-              element={<PendingMarketFeeReport />}
-            />
             <Route
               path="transfer-market-fee-to-govt-account"
               element={<TransferMarketFeeToGovtAccount />}

@@ -82,9 +82,9 @@ const COLS = [
   { key: "dfl_source",    kn: "ಮೊಟ್ಟೆ ಮೂಲ", en: "DFL Source",   group: "race",   w: 130, align: "left" },
   { key: "lot_number",    kn: "ತಂಡ",         en: "Lot",          group: "race",   w: 90,  align: "center" },
   { key: "dfl_count",     kn: "ಮೊಟ್ಟೆ",      en: "DFL Count",    group: "egg",    w: 96,  align: "right",  main: true },
-  { key: "brushing_date", kn: "ಚಾಕಿ ದಿ",     en: "Brush Date",   group: "egg",    w: 110, align: "center" },
+  { key: "brushing_date", kn: "ಚಾಕಿ ದಿ",     en: "Brush Date",   group: "egg",    w: 110, align: "center", isDate: true },
   { key: "chawki_pct",    kn: "ಶೇ.ಚಾಕಿ",     en: "Chawki %",     group: "egg",    w: 84,  align: "right" },
-  { key: "ripe_date",     kn: "ಹಣ್ಣಾ ದಿ",   en: "Ripe Date",    group: "egg",    w: 110, align: "center" },
+  { key: "ripe_date",     kn: "ಹಣ್ಣಾ ದಿ",   en: "Ripe Date",    group: "egg",    w: 110, align: "center", isDate: true },
   { key: "cocoon_kg",     kn: "ಗೂಡು ಕೆ.ಜಿ",  en: "Cocoon kg",    group: "cocoon", w: 96,  align: "right",  main: true },
   { key: "cocoon_qty",    kn: "ಗೂಡು ಸಂ",     en: "Cocoon Qty",   group: "cocoon", w: 96,  align: "right" },
   { key: "avg_yield_kg",  kn: "ಸ.ಇ ಕೆ.ಜಿ",   en: "Yield kg",     group: "yield",  w: 84,  align: "right" },
@@ -93,7 +93,7 @@ const COLS = [
   { key: "sowing",        kn: "ಬಿತ್ತನೆ",     en: "Sowing",       group: "supply", w: 78,  align: "center", placeholder: true },
   { key: "reeling",       kn: "ರೀಲಿಂಗ್",     en: "Reeling",      group: "supply", w: 78,  align: "center", placeholder: true },
   { key: "bico_market",   kn: "ಬಿಕೋ",       en: "Bico/Mkt",     group: "supply", w: 90,  align: "center", placeholder: true },
-  { key: "supply_date",   kn: "ಸರಬ ದಿ",      en: "Supply Date",  group: "supply", w: 110, align: "center" },
+  { key: "supply_date",   kn: "ಸರಬ ದಿ",      en: "Supply Date",  group: "supply", w: 110, align: "center", isDate: true },
   { key: "supply_rate",   kn: "ಸರಬ ದರ",      en: "Rate",         group: "supply", w: 84,  align: "right" },
   { key: "notes",         kn: "ಷರಾ",        en: "Notes",        group: "note",   w: 110, align: "left" },
 ];
@@ -528,6 +528,8 @@ function FarmP2CropDetailReport() {
                             const raw = row[c.key];
                             const txt = c.key === "chawki_pct"
                               ? (raw ? `${fmt(raw)}%` : "")
+                              : c.isDate
+                              ? (raw == null ? "" : String(raw))
                               : fmt(raw);
                             const empty = txt === "" || raw === null || raw === undefined;
                             const placeholder = c.placeholder && empty;

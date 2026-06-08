@@ -196,6 +196,46 @@ function RearingOfDFLsView() {
                         <td style={styles.ctstyle}>{t("Reeling Cocoons")}:</td>
                         <td>{rearingOfDFLs.reelingCocoons}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Microscope Exam - Stage 1")}:</td>
+                        <td>{rearingOfDFLs.wormTestStage1}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Microscope Exam - Stage 2")}:</td>
+                        <td>{rearingOfDFLs.wormTestStage2}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Microscope Exam - Stage 3")}:</td>
+                        <td>{rearingOfDFLs.wormTestStage3}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Microscope Exam - Stage 4")}:</td>
+                        <td>{rearingOfDFLs.wormTestStage4}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Microscope Exam - Stage 5")}:</td>
+                        <td>{rearingOfDFLs.wormTestStage5}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Cocoon Shell Weight")}:</td>
+                        <td>{rearingOfDFLs.cocoonShellWeight}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Denier")}:</td>
+                        <td>{rearingOfDFLs.denier}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Mortality %")}:</td>
+                        <td>{rearingOfDFLs.mortalityPercent}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Worms in 4th Stage")}:</td>
+                        <td>{rearingOfDFLs.worms4thStage}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("BiCo / Market Cocoons")}:</td>
+                        <td>{rearingOfDFLs.bicoMarketCocoons}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

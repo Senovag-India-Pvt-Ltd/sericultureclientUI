@@ -580,7 +580,6 @@ function Menu() {
     Reports_Export_Report_Commercial_Market_Average_Cocoon_Report: false,
 
     Reports_Export_Report_Seed_Market: false,
-    Reports_Export_Report_Seed_Market_Pending_MF_Report: false,
     Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt: false,
      Reports_Export_Report_Seed_Market_External_Unit_Balance_Report: false,
     Reports_Export_Report_Seed_Market_Reeler_Balance_Report: false,
@@ -5593,14 +5592,6 @@ function Menu() {
                               to="/seriui/market-weekly-report"
                             />
                           </MenuItem>
-                          {showMenu.Reports_Export_Report_Seed_Market_Pending_MF_Report ? (
-                            <MenuItem>
-                              <MenuItemLink
-                                text={t("Pending Market Fee Report")}
-                                to="/seriui/pending-market-fee-report"
-                              />
-                            </MenuItem>
-                          ) : null}
                           <MenuItem>
                             <MenuItemLink
                               text={t("Seed MF Report")}
