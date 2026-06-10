@@ -1218,6 +1218,7 @@ import RegisteredPrivateChawki from "../pages/services-module/application-compon
 import RegisteredPrivateChawkiList from "../pages/services-module/application-component/RegisteredPrivateChawkiList";
 import LotWisePriceFixation from "../pages/seed-cocoon-martket/LotWisePriceFixation";
 import SakalaDashboard from "../pages/services-module/application/SakalaDashboard";
+import ApplicationPendingList from "../pages/services-module/application/ApplicationPendingList";
 import CumulativeReport from "../pages/services-module/application/CumulativeReport";
 import UserHierarchyMappingList from "../pages/masters/user-hierarchy-mapping/UserHierarchyMappingList";
 import UserHierarchyMappingEdit from "../pages/masters/user-hierarchy-mapping/UserHierarchyMappingEdit";
@@ -1230,6 +1231,10 @@ import SeedMarketDashboardReport from "../pages/reports-admin/market-auction/See
 import DownloadSanctionOrder from "../pages/market-and-auction/DownloadSanctionOrder";
 import GenerateAcknowledgement from "../pages/direct-benefit-transfer/GenerateAcknowledgement";
 import GenerateWorkOrder from "../pages/direct-benefit-transfer/GenerateWorkOrder";
+import SericultureTable from "../pages/masters/sericulture-table/SericultureTable";
+import SericultureTableList from "../pages/masters/sericulture-table/SericultureTableList";
+import SericultureTableEdit from "../pages/masters/sericulture-table/SericultureTableEdit";
+import SericultureTableView from "../pages/masters/sericulture-table/SericultureTableView";
 import GenerateSelectionLetter from "../pages/direct-benefit-transfer/GenerateSelectionLetter";
 import FitnessCertificate from "../pages/market-and-auction/FitnessCertificateReport";
 
@@ -1816,6 +1821,10 @@ function Router() {
             <Route
               path="pendency-dashboard"
               element={<SakalaDashboard />}
+            />
+            <Route
+              path="pendency-application-list"
+              element={<ApplicationPendingList />}
             />
             <Route
               path="cumulative-report"
@@ -3211,6 +3220,11 @@ function Router() {
             <Route path="silk-exchange-list" element={<SilkExchangeList />} />
             <Route path="silk-exchange-view/:id" element={<SilkExchangeView />} />
             <Route path="silk-exchange-edit/:id" element={<SilkExchangeEdit />} />
+
+            <Route path="sericulture-table" element={<SericultureTable />} />
+            <Route path="sericulture-table-list" element={<SericultureTableList />} />
+            <Route path="sericulture-table-view/:id" element={<SericultureTableView />} />
+            <Route path="sericulture-table-edit/:id" element={<SericultureTableEdit />} />
 
             <Route path="cropStatus" element={<CropStatus />} />
             <Route path="crop-status-list" element={<CropStatusList />} />

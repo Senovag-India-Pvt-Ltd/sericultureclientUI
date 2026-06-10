@@ -1480,12 +1480,16 @@ useEffect(() => {
         })
         .then((res) => {
           const mappings = res.data.content.schemeDocumentMaster || [];
-          setFilteredDocList(
-            mappings.map((m) => ({
-              documentMasterId: m.documentId,
-              documentMasterName: m.documentMasterName,
-            }))
-          );
+          if (mappings.length === 0) {
+            setFilteredDocList(allDocList);
+          } else {
+            setFilteredDocList(
+              mappings.map((m) => ({
+                documentMasterId: m.documentId,
+                documentMasterName: m.documentMasterName,
+              }))
+            );
+          }
         })
         .catch(() => {
           setFilteredDocList(allDocList);

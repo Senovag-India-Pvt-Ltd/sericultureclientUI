@@ -329,6 +329,13 @@ function UserMasterDetailsReport() {
       hide: "md",
     },
     {
+      name: "DDO Code",
+      selector: (row) => row.ddoCode,
+      cell: (row) => <span>{row.ddoCode || "—"}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
       name: "Email",
       selector: (row) => row.emailId,
       cell: (row) => <span>{row.emailId}</span>,
