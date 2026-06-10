@@ -242,9 +242,18 @@ function AdsPebrineReport() {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/ads-pebrine", { params: params() });
       setDataRows(Array.isArray(res.data) ? res.data : []);
       setHasReport(true);
-    } catch {
-      showErr("Fetch Failed", "Failed to load the ADS Pebrine Cases report.");
-    } finally {
+    } catch (err) {
+        const status = err?.response?.status;
+        if (status === 404 || status === 204) {
+          showErr("No Data Found", "No data found for the selected filters.");
+        } else {
+          const data = err?.response?.data;
+          const backendMsg = typeof data === "string"
+            ? data
+            : (data?.message || data?.error || data?.errorMessage || data?.error_description);
+          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the ADS Pebrine Cases report.");
+        }
+      } finally {
       setIsLoading(false);
     }
   };
@@ -290,14 +299,16 @@ function AdsPebrineReport() {
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
 
   const totals = useMemo(() => {
-    const sum = (k) => dataRows.reduce((a, r) => a + numOrZero(r[k]), 0);
+    // Exclude the backend grand-total (ಒಟ್ಟು) row so figures are not double-counted.
+    const det = dataRows.filter((r) => String(r.lot_no).trim() !== "ಒಟ್ಟು");
+    const sum = (k) => det.reduce((a, r) => a + numOrZero(r[k]), 0);
     return {
-      cases:       dataRows.length,
+      cases:       det.length,
       supplied:    sum("supplied_cocoons"),
       suitable:    sum("suitable_cocoons"),
       joints:      sum("joints"),
       dflsPrep:    sum("dfls_prepared"),
-      pebrineCount: sum("pebrine_count"),
+      pebrineCount: sum("moths_examined"),
       burnedDfls:  sum("burned_dfls"),
     };
   }, [dataRows]);
@@ -537,12 +548,12 @@ function AdsPebrineReport() {
                         <div style={hdrEn}>DFLs Prepared</div>
                       </th>
                       <th style={hdrStyle("linear-gradient(135deg,#7f1d1d,#dc2626)", "150px")}>
-                        <div style={{ fontSize: "12px" }}>🦠 ಗಂಟು ರೋಗ ಸ್ಥಿತಿ</div>
-                        <div style={hdrEn}>Pebrine Status</div>
+                        <div style={{ fontSize: "12px" }}>ಗಂಟುರೋಗ ಗೋಚರಿಸಿದ ದಿನಾಂಕ</div>
+                        <div style={hdrEn}>Detected Date</div>
                       </th>
                       <th style={hdrStyle("linear-gradient(135deg,#9f1239,#e11d48)", "120px")}>
-                        <div style={{ fontSize: "12px" }}>ಗಂಟು ರೋಗ ಸಂಖ್ಯೆ</div>
-                        <div style={hdrEn}>Pebrine Count</div>
+                        <div style={{ fontSize: "12px" }}>ಗಂಟುರೋಗ ಚಿಟ್ಟೆಗಳ ಸಂಖ್ಯೆ</div>
+                        <div style={hdrEn}>Moths Examined</div>
                       </th>
                       <th style={hdrStyle("linear-gradient(135deg,#7f1d1d,#991b1b)", "140px")}>
                         <div style={{ fontSize: "12px" }}>🔥 ನಾಶಪಡಿಸಿದ ಮೊಟ್ಟೆ</div>
@@ -562,7 +573,6 @@ function AdsPebrineReport() {
                     )}
                     {dataRows.map((row, ri) => {
                       const alt = ri % 2 === 1;
-                      const status = STATUS_STYLE(row.pebrine_status);
                       return (
                         <tr key={`${row.sl_no}-${ri}`} className="adspeb-tr" style={{ background: alt ? "#fafafa" : "#ffffff" }}>
                           <td style={td("center", "70px")}>
@@ -634,22 +644,16 @@ function AdsPebrineReport() {
                           <td className="adspeb-num" style={td("right", null, "#3730a3", 800)}>
                             {numOrZero(row.dfls_prepared) ? fmt(row.dfls_prepared) : "—"}
                           </td>
-                          <td style={td("center")}>
-                            <span
-                              className={status.pulse ? "adspeb-status-badge" : ""}
-                              style={{
-                                display: "inline-flex", alignItems: "center", gap: "6px",
-                                padding: "4px 12px", borderRadius: "999px",
-                                background: status.bg, color: status.color,
-                                fontWeight: 800, fontSize: "11.5px",
-                              }}
-                            >
-                              <span style={{ fontSize: "13px", lineHeight: 1 }}>{status.icon}</span>
-                              {status.label}
-                            </span>
+                          <td style={td("center", null, "#7f1d1d", 700)}>
+                            {row.detected_date ? (
+                              <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "12px" }}>
+                                <span style={{ color: "#dc2626" }}>📅</span>
+                                {row.detected_date}
+                              </span>
+                            ) : <span style={{ color: "#cbd5e0" }}>—</span>}
                           </td>
                           <td className="adspeb-num" style={td("right", null, "#9f1239", 800, "linear-gradient(135deg,#fff1f2,#ffe4e6)")}>
-                            {numOrZero(row.pebrine_count) ? fmt(row.pebrine_count) : "—"}
+                            {numOrZero(row.moths_examined) ? fmt(row.moths_examined) : "—"}
                           </td>
                           <td className="adspeb-num" style={td("right", null, "#7f1d1d", 800, "linear-gradient(135deg,#fee2e2,#fecaca)")}>
                             {numOrZero(row.burned_dfls) ? fmt(row.burned_dfls) : "—"}

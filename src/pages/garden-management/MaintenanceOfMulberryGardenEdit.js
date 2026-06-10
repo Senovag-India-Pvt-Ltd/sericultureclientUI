@@ -25,6 +25,12 @@ function MaintenanceOfMulberryGardenEdit() {
     soilTypeId: "",
     mulberrySpacing: "",
     plantationDate: "",
+    uprootedArea: "",
+    leafQuantityKg: "",
+    fymQuantity: "",
+    ammoniumSulphateQuantity: "",
+    superPhosphateQuantity: "",
+    muriateOfPotashQuantity: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -326,6 +332,78 @@ function MaintenanceOfMulberryGardenEdit() {
                           type="text"
                           placeholder={t("Enter Area(In Hectares)")}
                         />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="uprootedArea">{t("Uprooted Area")}</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control id="uprootedArea" name="uprootedArea"
+                          value={data.uprootedArea ?? ""} onChange={handleInputs}
+                          type="number" min="0" step="any"
+                          placeholder={t("Enter Uprooted Area")} />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="leafQuantityKg">{t("Leaf Quantity (Kg)")}</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control id="leafQuantityKg" name="leafQuantityKg"
+                          value={data.leafQuantityKg ?? ""} onChange={handleInputs}
+                          type="number" min="0" step="any"
+                          placeholder={t("Enter Leaf Quantity (Kg)")} />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="fymQuantity">{t("FYM Quantity")}</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control id="fymQuantity" name="fymQuantity"
+                          value={data.fymQuantity ?? ""} onChange={handleInputs}
+                          type="number" min="0" step="any"
+                          placeholder={t("Enter FYM Quantity")} />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="ammoniumSulphateQuantity">{t("Ammonium Sulphate Quantity")}</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control id="ammoniumSulphateQuantity" name="ammoniumSulphateQuantity"
+                          value={data.ammoniumSulphateQuantity ?? ""} onChange={handleInputs}
+                          type="number" min="0" step="any"
+                          placeholder={t("Enter Ammonium Sulphate Quantity")} />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="superPhosphateQuantity">{t("Super Phosphate Quantity")}</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control id="superPhosphateQuantity" name="superPhosphateQuantity"
+                          value={data.superPhosphateQuantity ?? ""} onChange={handleInputs}
+                          type="number" min="0" step="any"
+                          placeholder={t("Enter Super Phosphate Quantity")} />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="muriateOfPotashQuantity">{t("Muriate of Potash Quantity")}</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control id="muriateOfPotashQuantity" name="muriateOfPotashQuantity"
+                          value={data.muriateOfPotashQuantity ?? ""} onChange={handleInputs}
+                          type="number" min="0" step="any"
+                          placeholder={t("Enter Muriate of Potash Quantity")} />
                       </div>
                     </Form.Group>
                   </Col>

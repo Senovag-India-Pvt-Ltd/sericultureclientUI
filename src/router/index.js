@@ -683,6 +683,9 @@ import DivisionMaster from "../pages/masters/division-master/DivisionMaster";
 import DivisionMasterList from "../pages/masters/division-master/DivisionMasterList";
 import DivisionMasterView from "../pages/masters/division-master/DivisionMasterView";
 import DivisionMasterEdit from "../pages/masters/division-master/DivisionMasterEdit";
+import GovtAccount from "../pages/masters/market-auction/GovtAccount";
+import GovtAccountList from "../pages/masters/market-auction/GovtAccountList";
+import GovtAccountEdit from "../pages/masters/market-auction/GovtAccountEdit";
 import ScSchemeDetails from "../pages/masters/sc-scheme-details/ScSchemeDetails";
 import ScSchemeDetailsList from "../pages/masters/sc-scheme-details/ScSchemeDetailsList";
 import ScSchemeDetailsView from "../pages/masters/sc-scheme-details/ScSchemeDetailsView";
@@ -829,6 +832,8 @@ import TscOfficerSchemeList from "../pages/direct-benefit-transfer/TscOfficerSch
 import WeighmentForSeedMarket from "../pages/market-and-auction/WeighmentForSeedMarket";
 import LotGroupage from "../pages/market-and-auction/LotGroupage";
 import LotGroupageEdit from "../pages/market-and-auction/LotGroupageEdit";
+import UpdateFarmerVirtualBankAccountSeedMarket from "../pages/market-and-auction/UpdateFarmerVirtualBankAccountSeedMarket";
+import MarketFeeCollection from "../pages/market-and-auction/MarketFeeCollection";
 import AllApplicationList from "../pages/direct-benefit-transfer/AllApplicationList";
 import FinancialTargetSettingsDistrictUserList from "../pages/target-settings/financialtargetsettingsdistrict/FinancialTargetSettingsDistrictUserList";
 import DistrictWiseFarmerCountList from "../pages/direct-benefit-transfer/DistrictWiseFarmerCountList";
@@ -1244,6 +1249,8 @@ import { APP_BASE_PATH, APP_BASE_SEGMENT, APP_ROUTES } from "../config/appRoutes
 import SeedMarketTransactionReport from "../pages/reports-admin/market-auction/SeedMarketTransactionReport.js";
 import SeedMarketCreditReport from "../pages/reports-admin/market-auction/SeedMarketCreditReport.js";
 import SeedMFReports from "../pages/reports-admin/market-auction/SeedMFReports.js";
+import TransferMarketFeeToGovtAccount from "../pages/reports-admin/market-auction/TransferMarketFeeToGovtAccount.js";
+import ReelerBankTransfer from "../pages/market-and-auction/ReelerBankTransfer.js";
 import SeedMarketBiddingReport from "../pages/reports-admin/market-auction/SeedMarketBiddingReport.js";
 
 // Admin and Reports
@@ -1608,6 +1615,15 @@ function Router() {
             <Route
               path="seed-market-credit-report"
               element={<SeedMarketCreditReport />}
+            />
+
+            <Route
+              path="transfer-market-fee-to-govt-account"
+              element={<TransferMarketFeeToGovtAccount />}
+            />
+            <Route
+              path="reeler-bank-transfer"
+              element={<ReelerBankTransfer />}
             />
 
              <Route
@@ -3579,6 +3595,10 @@ function Router() {
             <Route path="division-list" element={<DivisionMasterList />} />
             <Route path="division-view/:id" element={<DivisionMasterView />} />
             <Route path="division-edit/:id" element={<DivisionMasterEdit />} />
+
+            <Route path="govt-account" element={<GovtAccount />} />
+            <Route path="govt-account-list" element={<GovtAccountList />} />
+            <Route path="govt-account-edit/:id" element={<GovtAccountEdit />} />
             <Route
               path="reject-reason-workflow"
               element={<RejectReasonWorkFlowMaster />}
@@ -4148,6 +4168,8 @@ function Router() {
               element={<WeighmentForSilkMarket />}
             />
             <Route path="lot-groupage" element={<LotGroupage />} />
+            <Route path="update-farmer-virtual-bank-account-seed-market" element={<UpdateFarmerVirtualBankAccountSeedMarket />} />
+            <Route path="market-fee-collection" element={<MarketFeeCollection />} />
             <Route path="invoice-permit-market-receipt" element={<InvoicePermitAndMarketReceipt />} />
             <Route path="seed-market-invoice-report" element={<SeedMarketInvoiceReport />} />
             <Route path="seed-market-bidding-slip-report" element={<SeedMarketBiddingSlipReport />} />

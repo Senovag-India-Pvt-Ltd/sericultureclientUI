@@ -661,6 +661,52 @@ function RearingOfDFLsEdit() {
                   </Form.Group>
                 </Col>
 
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <Col lg="4" key={`wts${s}`}>
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor={`wormTestStage${s}`}>
+                        {t(`Microscope Exam - Stage ${s}`)}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id={`wormTestStage${s}`}
+                          name={`wormTestStage${s}`}
+                          value={data[`wormTestStage${s}`] ?? ""}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder={t(`Enter Stage ${s} Microscope Exam`)}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+                ))}
+
+                {[
+                  { k: "cocoonShellWeight", l: "Cocoon Shell Weight" },
+                  { k: "denier", l: "Denier" },
+                  { k: "mortalityPercent", l: "Mortality %" },
+                  { k: "worms4thStage", l: "Worms in 4th Stage" },
+                  { k: "bicoMarketCocoons", l: "BiCo / Market Cocoons" },
+                ].map((f) => (
+                  <Col lg="4" key={f.k}>
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor={f.k}>{t(f.l)}</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id={f.k}
+                          name={f.k}
+                          value={data[f.k] ?? ""}
+                          onChange={handleInputs}
+                          type="number"
+                          min="0"
+                          step="any"
+                          placeholder={t(`Enter ${f.l}`)}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+                ))}
+
                 <Col lg="2">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="sordfl">

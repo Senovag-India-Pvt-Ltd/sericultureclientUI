@@ -155,7 +155,7 @@ const handleDateChange = (date) => {
 };
 
   
-  const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal = () => { setShowModal(false); setOriginalSoldAmount(0); };
   const handleShowModal1 = () => setShowModal1(true);
   const handleCloseModal1 = () => setShowModal1(false);
 
@@ -216,8 +216,10 @@ const handleDeleteLotDetails = (i) => {
 };
 
   const [lotId, setLotId] = useState();
+  const [originalSoldAmount, setOriginalSoldAmount] = useState(0);
   const handleGetLotDetails = (i) => {
     setData(dataLotList[i]);
+    setOriginalSoldAmount(parseFloat(dataLotList[i]?.soldAmount) || 0);
     setShowModal1(true);
     setLotId(i);
   };
@@ -313,7 +315,7 @@ const handleUpdateLotDetails = (e, i, changes) => {
     newData.soldAmount &&
     (newData.buyerId || newData.externalUnitId)
   ) {
-    validateReelerBalance(newData);
+    validateReelerBalance(newData, showModal1 ? originalSoldAmount : 0);
   }
 
   if (name === "allottedLotId") {
@@ -522,14 +524,11 @@ const handleUpdateLotDetails = (e, i, changes) => {
 // correct on load. remainingCocoonWeight below is still used by the
 // Add/Edit button caps.
 
-// Disable Add button if lotWeight exceeds remaining cocoon weight
-const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingCocoonWeight);
-
-// When editing, add back the original lot's weight so its own weight doesn't count against remaining
-const editRemainingCocoonWeight = Number(
-  (remainingCocoonWeight + Number(Number(dataLotList[lotId]?.lotWeight || 0).toFixed(2))).toFixed(2)
-);
-const isEditDisabled = Number(data.lotWeight || 0) > Number(editRemainingCocoonWeight);
+// editRemainingCocoonWeight kept as legacy; live caps now use remainingQty
+// (declared after this block) so the Add/Save button cap matches the
+// displayed "Remaining Cocoon in Kgs" and the modal's field-level validator.
+// The button caps (isAddDisabled / isEditDisabled) are defined below, after
+// remainingQty / editRemainingQty.
 
 // === Rejection-related derived values ===
 // Total weighed-in quantity for this lot. Round to 2 decimals at the source so
@@ -551,6 +550,21 @@ const distributedQuantity = useMemo(
 
 // Remaining qty = lotWeightAfterWeighment - distributedQuantity (validated >= 0 below)
 const remainingQty = Number((lotWeightAfterWeighmentVal - distributedQuantity).toFixed(2));
+
+// When EDITING an existing buyer row, the cap is the current remaining PLUS
+// the row's own previously-distributed weight (because we're going to swap it
+// out for the new value). Without this, editing a 10 kg row to 12 kg would
+// be wrongly blocked even when 10+remaining can absorb 12.
+const editRemainingQty = Number(
+  (remainingQty + Number(Number(dataLotList?.[lotId]?.lotWeight || 0).toFixed(2))).toFixed(2)
+);
+
+// Disable the Add / Save buttons when the entered lotWeight exceeds the cap.
+// Use the SAME numbers the field-level validator uses (remainingQty for Add,
+// editRemainingQty for Edit) so the button state and the red "should be less
+// than Remaining" message agree.
+const isAddDisabled = Number(data.lotWeight || 0) > Number(remainingQty);
+const isEditDisabled = Number(data.lotWeight || 0) > Number(editRemainingQty);
 
 // remainingPercentage = (remainingQty / lotWeightAfterWeighment) * 100  (guard divide-by-zero)
 const remainingPercentage = lotWeightAfterWeighmentVal > 0
@@ -1040,18 +1054,17 @@ const hasRemaining = remainingQty > 0;
     return null;
   };
 
-  const validateReelerBalance = (updatedData) => {
+  const validateReelerBalance = (updatedData, previousSoldAmount = 0) => {
     const { buyerType, buyerId, externalUnitId, soldAmount } = updatedData;
 
-    // Only validate for Reeling and RSP buyer types
-    if (!buyerType || ["Govt Grainage", "NSSO"].includes(buyerType)) return;
+    if (!buyerType || buyerType === "Govt Grainage") return;
     if (!buyerId && !externalUnitId) return;
 
     const marketId = parseInt(
       updatedData.marketId || localStorage.getItem("marketId")
     );
 
-    setBalanceError(false); // reset while new validation is in-flight
+    setBalanceError(false);
 
     api
       .post(baseURLMarket + "lotGroupage/validateReelerBalance", {
@@ -1062,6 +1075,7 @@ const hasRemaining = remainingQty > 0;
             buyerId: buyerId ? parseInt(buyerId) : null,
             externalUnitId: externalUnitId ? parseInt(externalUnitId) : null,
             soldAmount: soldAmount ? parseInt(soldAmount) : 0,
+            previousSoldAmount: previousSoldAmount || 0,
           },
         ],
       })
@@ -1103,7 +1117,7 @@ const hasRemaining = remainingQty > 0;
       externalUnitId: "",
     };
     setData(updatedData);
-    validateReelerBalance(updatedData);
+    if (updatedData.soldAmount) validateReelerBalance(updatedData);
   };
 
   const handleGrainageOption = (e) => {
@@ -1117,7 +1131,7 @@ const hasRemaining = remainingQty > 0;
       externalUnitId: chooseUnit,
     };
     setData(updatedData);
-    validateReelerBalance(updatedData);
+    if (updatedData.soldAmount) validateReelerBalance(updatedData);
   };
 
   // District
@@ -1952,13 +1966,23 @@ const handlePurchaseModeChange = (e) => {
                     <button
                       type="button"
                       onClick={handleShowModal}
-                      disabled={totalLotWeight >= farmerdetails.netWeight}
+                      // Disable when there is no leftover to distribute.
+                      // Uses remainingQty (lotWeightAfterWeighment - distributed)
+                      // — the SAME number shown in the "Remaining" pill and
+                      // the field-level cap — so the button state always
+                      // matches what the user sees. Previously this read
+                      // totalLotWeight >= farmerdetails.netWeight, where
+                      // netWeight from API can be smaller than the displayed
+                      // Final Weighment (moisture/rejection adjusted), making
+                      // the button go dead while the "Remaining" pill still
+                      // showed several kg left.
+                      disabled={remainingQty <= 0}
                       style={{
-                        background: totalLotWeight >= farmerdetails.netWeight ? "#c8d6e5" : "linear-gradient(135deg,#1e67a8,#2d9cdb)",
+                        background: remainingQty <= 0 ? "#c8d6e5" : "linear-gradient(135deg,#1e67a8,#2d9cdb)",
                         border: "none", borderRadius: "9px", padding: "8px 18px",
                         fontWeight: 700, fontSize: "13px", color: "#fff",
-                        cursor: totalLotWeight >= farmerdetails.netWeight ? "not-allowed" : "pointer",
-                        boxShadow: totalLotWeight >= farmerdetails.netWeight ? "none" : "0 3px 10px rgba(30,103,168,0.30)",
+                        cursor: remainingQty <= 0 ? "not-allowed" : "pointer",
+                        boxShadow: remainingQty <= 0 ? "none" : "0 3px 10px rgba(30,103,168,0.30)",
                         display: "inline-flex", alignItems: "center", gap: "6px",
                       }}
                     >
@@ -2275,7 +2299,7 @@ const handlePurchaseModeChange = (e) => {
                                   externalUnitId: chooseUnit,
                                 };
                                 setData(updatedData);
-                                validateReelerBalance(updatedData);
+                                if (updatedData.soldAmount) validateReelerBalance(updatedData);
                               }}
                             />
 
@@ -2383,7 +2407,7 @@ const handlePurchaseModeChange = (e) => {
                                   externalUnitId: chooseUnit,
                                 };
                                 setData(updatedData);
-                                validateReelerBalance(updatedData);
+                                if (updatedData.soldAmount) validateReelerBalance(updatedData);
                               }}
                             />
                           <Form.Control.Feedback type="invalid">
@@ -2410,7 +2434,12 @@ const handlePurchaseModeChange = (e) => {
                           type="number"
                           placeholder={t("Enter Quantity of Cocoons Allotted (In Kgs)")}
                           required
-                          isInvalid={parseFloat(data.lotWeight) > remainingCocoonWeight}
+                          // Validate against remainingQty (the SAME number the
+                          // user sees in "Remaining Cocoon in Kgs" and the
+                          // bottom pill), not the legacy netWeight-based
+                          // remainingCocoonWeight which can be slightly smaller
+                          // and produced false "should be less than" errors.
+                          isInvalid={parseFloat(data.lotWeight) > remainingQty}
                         />
                         <Form.Control.Feedback type="invalid">
                         {t("Quantity of Cocoons Allotted (In Kgs) Should be less than Remaining Cocoon")}
@@ -2762,7 +2791,7 @@ const handlePurchaseModeChange = (e) => {
                                   externalUnitId: chooseUnit,
                                 };
                                 setData(updatedData);
-                                validateReelerBalance(updatedData);
+                                if (updatedData.soldAmount) validateReelerBalance(updatedData);
                               }}
                             />
                             <Form.Control.Feedback type="invalid">
@@ -2869,7 +2898,7 @@ const handlePurchaseModeChange = (e) => {
                                   externalUnitId: chooseUnit,
                                 };
                                 setData(updatedData);
-                                validateReelerBalance(updatedData);
+                                if (updatedData.soldAmount) validateReelerBalance(updatedData);
                               }}
                             />
                           <Form.Control.Feedback type="invalid">
@@ -2896,7 +2925,13 @@ const handlePurchaseModeChange = (e) => {
                           type="number"
                           placeholder={t("Enter Quantity of Cocoons Allotted (In Kgs)")}
                           required
-                          isInvalid={parseFloat(data.lotWeight) > editRemainingCocoonWeight}
+                          // Validate against editRemainingQty (weighment-based,
+                          // with this row's own weight added back so the user
+                          // can edit up to their original allocation plus
+                          // whatever is currently leftover). Replaces the
+                          // legacy editRemainingCocoonWeight which used the
+                          // netWeight formula and could wrongly reject edits.
+                          isInvalid={parseFloat(data.lotWeight) > editRemainingQty}
                         />
                         <Form.Control.Feedback type="invalid">
                         {t("Quantity of Cocoons Allotted (In Kgs) Should be less than Remaining Cocoon")}

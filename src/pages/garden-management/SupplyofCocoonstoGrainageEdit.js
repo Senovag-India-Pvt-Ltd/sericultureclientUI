@@ -528,6 +528,24 @@ function SupplyofCocoonstoGrainage() {
                             </Form.Group>
                           </Col>
 
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n4">
+                              <Form.Label htmlFor="cropNumber">
+                                {t("Crop Number")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                id="cropNumber"
+                                name="cropNumber"
+                                value={data.cropNumber || ""}
+                                onChange={handleInputs}
+                                type="text"
+                                placeholder={t("Enter Crop Number")}
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
                           <Col lg="2">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">

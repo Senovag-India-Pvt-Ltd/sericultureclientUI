@@ -580,7 +580,7 @@ function GrainageProgressReport() {
                 }}
               >
                 <span style={{ fontSize: "12px", color: "#718096", fontWeight: 600 }}>
-                  ಬಿತ್ತನೆಕೋರಿ {selectedGrainage?.grainageMasterName || ""} — {monthLabel} {monthKn} ಮಾಹೆ
+                  ಬಿತ್ತನೆಕೋಠಿ {selectedGrainage?.grainageMasterName || ""} — {monthLabel} {monthKn} ಮಾಹೆ
                 </span>
                 <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
                   <button

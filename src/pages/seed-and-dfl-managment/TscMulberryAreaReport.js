@@ -207,9 +207,18 @@ function TscMulberryAreaReport() {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/tsc-mulberry-area", { params: params() });
       setDataRows(Array.isArray(res.data) ? res.data : []);
       setHasReport(true);
-    } catch {
-      showErr("Fetch Failed", "Failed to load the TSC Mulberry Area report.");
-    } finally {
+    } catch (err) {
+        const status = err?.response?.status;
+        if (status === 404 || status === 204) {
+          showErr("No Data Found", "No data found for the selected filters.");
+        } else {
+          const data = err?.response?.data;
+          const backendMsg = typeof data === "string"
+            ? data
+            : (data?.message || data?.error || data?.errorMessage || data?.error_description);
+          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the TSC Mulberry Area report.");
+        }
+      } finally {
       setIsLoading(false);
     }
   };
@@ -529,8 +538,8 @@ function TscMulberryAreaReport() {
                             border: "1px solid rgba(255,255,255,.18)", fontWeight: 800,
                             minWidth: "85px",
                           }}>
-                            <div style={{ fontSize: "10.5px" }}>ಮಳೆ</div>
-                            <div style={{ fontSize: "8.5px", opacity: .8, marginTop: "1px" }}>Rain</div>
+                            <div style={{ fontSize: "10.5px" }}>ಮಳೆ ಆಶ್ರಿತ</div>
+                            <div style={{ fontSize: "8.5px", opacity: .8, marginTop: "1px" }}>Rain-fed</div>
                           </th>,
                           <th key={`${g}-i`} style={{
                             background: tone, color: text, padding: "8px 4px", textAlign: "center",

@@ -213,9 +213,18 @@ function AdsPlantationReport() {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/ads-plantation", { params: params() });
       setDataRows(Array.isArray(res.data) ? res.data : []);
       setHasReport(true);
-    } catch {
-      showErr("Fetch Failed", "Failed to load the ADS Plantation report.");
-    } finally {
+    } catch (err) {
+        const status = err?.response?.status;
+        if (status === 404 || status === 204) {
+          showErr("No Data Found", "No data found for the selected filters.");
+        } else {
+          const data = err?.response?.data;
+          const backendMsg = typeof data === "string"
+            ? data
+            : (data?.message || data?.error || data?.errorMessage || data?.error_description);
+          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the ADS Plantation report.");
+        }
+      } finally {
       setIsLoading(false);
     }
   };
@@ -253,9 +262,11 @@ function AdsPlantationReport() {
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
 
   const totals = useMemo(() => {
-    const sum = (k) => dataRows.reduce((a, r) => a + numOrZero(r[k]), 0);
+    // Exclude the backend grand-total (ಒಟ್ಟು) row so figures are not double-counted.
+    const det = dataRows.filter((r) => String(r.tsc).trim() !== "ಒಟ್ಟು");
+    const sum = (k) => det.reduce((a, r) => a + numOrZero(r[k]), 0);
     return {
-      tsc:        dataRows.length,
+      tsc:        det.length,
       prevArea:   sum("prev_area"),
       target:     sum("annual_target"),
       plantedM:   sum("planted_m"),

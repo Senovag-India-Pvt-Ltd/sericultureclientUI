@@ -30,6 +30,10 @@ function ExternalUnitRegisterEdit() {
     talukId: "",
     tscMasterId: "",
     nameKan: "",
+    bankName: "",
+    bankAccountNumber: "",
+    bankBranchName: "",
+    bankIfscCode: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -248,9 +252,9 @@ function ExternalUnitRegisterEdit() {
       e.target.classList.add("is-valid");
     }
 
-    if (name === "branchName") {
+    if (name === "branchName" || name === "bankBranchName") {
       setData({ ...data, [name]: value.toUpperCase() });
-    } else if (name === "ifscCode") {
+    } else if (name === "ifscCode" || name === "bankIfscCode") {
       setData({ ...data, [name]: value.toUpperCase() });
     } else {
       setData({ ...data, [name]: value });
@@ -301,6 +305,10 @@ function ExternalUnitRegisterEdit() {
               capacity: "",
               marketMasterId: "",
               lotNumberNomenclature: "",
+              bankName: "",
+              bankAccountNumber: "",
+              bankBranchName: "",
+              bankIfscCode: "",
             });
             setValidated(false);
           }
@@ -332,6 +340,10 @@ function ExternalUnitRegisterEdit() {
       talukId: "",
       tscMasterId: "",
       nameKan: "",
+      bankName: "",
+      bankAccountNumber: "",
+      bankBranchName: "",
+      bankIfscCode: "",
     });
 
     setVbAccountList([]);
@@ -369,6 +381,12 @@ function ExternalUnitRegisterEdit() {
 
           // ✅ Kannada name
           nameKan: res.nameKan || "",
+
+          // ✅ Bank details
+          bankName: res.bankName || "",
+          bankAccountNumber: res.bankAccountNumber || "",
+          bankBranchName: res.bankBranchName || "",
+          bankIfscCode: res.bankIfscCode || "",
         });
 
         // ✅ Load taluk
@@ -1098,6 +1116,73 @@ function ExternalUnitRegisterEdit() {
                 </Card.Body>
               </Card>
             </Block> */}
+
+            <Block className="mt-3">
+              <Card>
+                <Card.Header>{t("Bank Details")}</Card.Header>
+                <Card.Body>
+                  <Row className="g-gs">
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label>{t("Bank Name")}</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            name="bankName"
+                            value={data.bankName || ""}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder={t("Enter Bank Name")}
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label>{t("Bank Account Number")}</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            name="bankAccountNumber"
+                            value={data.bankAccountNumber || ""}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder={t("Enter Bank Account Number")}
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label>{t("Branch Name")}</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            name="bankBranchName"
+                            value={data.bankBranchName || ""}
+                            onChange={handleInputs}
+                            type="text"
+                            placeholder={t("Enter Branch Name")}
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label>{t("IFSC Code")}</Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            name="bankIfscCode"
+                            value={data.bankIfscCode || ""}
+                            onChange={handleInputs}
+                            type="text"
+                            maxLength={11}
+                            placeholder={t("Enter IFSC Code")}
+                          />
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Block>
 
             <Block className="mt-3">
               <Card>

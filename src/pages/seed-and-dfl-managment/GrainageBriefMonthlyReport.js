@@ -104,6 +104,7 @@ const RACE_STYLE = (race) => {
   if (r.includes("ಪಿ2"))           return { bg: "linear-gradient(135deg,#ddd6fe,#c4b5fd)", color: "#4c1d95", icon: "②", isTotal: false };
   if (r.includes("ಪಿ1"))           return { bg: "linear-gradient(135deg,#bfdbfe,#93c5fd)", color: "#1e3a8a", icon: "①", isTotal: false };
   if (r.includes("ಹೈ"))             return { bg: "linear-gradient(135deg,#a7f3d0,#6ee7b7)", color: "#064e3b", icon: "ⓗ", isTotal: false };
+  if (r.includes("ದ್ವಿತಳಿ"))         return { bg: "linear-gradient(135deg,#bfdbfe,#93c5fd)", color: "#1e3a8a", icon: "Ⓑ", isTotal: false };
   if (r.includes("ಒಟ್ಟು") || r.toLowerCase() === "total")
                                     return { bg: "linear-gradient(135deg,#fde68a,#fcd34d)", color: "#78350f", icon: "Σ", isTotal: true };
   return                                { bg: "linear-gradient(135deg,#e2e8f0,#cbd5e1)", color: "#334155", icon: "·", isTotal: false };
@@ -189,9 +190,18 @@ function GrainageBriefMonthlyReport() {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/grainage-brief-monthly", { params: params() });
       setDataRows(Array.isArray(res.data) ? res.data : []);
       setHasReport(true);
-    } catch {
-      showErr("Fetch Failed", "Failed to load the Grainage Monthly Brief Progress report.");
-    } finally { setIsLoading(false); }
+    } catch (err) {
+        const status = err?.response?.status;
+        if (status === 404 || status === 204) {
+          showErr("No Data Found", "No data found for the selected filters.");
+        } else {
+          const data = err?.response?.data;
+          const backendMsg = typeof data === "string"
+            ? data
+            : (data?.message || data?.error || data?.errorMessage || data?.error_description);
+          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the Grainage Monthly Brief Progress report.");
+        }
+      } finally { setIsLoading(false); }
   };
 
   const handlePdf = async () => {
@@ -266,17 +276,17 @@ function GrainageBriefMonthlyReport() {
   }, [dataRows, monthYear]);
 
   return (
-    <Layout title={t("Grainage Monthly Brief Progress Report (P1 + P2 Bivoltine)")}>
+    <Layout title={t("Grainage Monthly Brief Progress Report (Bivoltine)")}>
       <Block.Head><Block.HeadBetween><Block.HeadContent>
         <Block.Title tag="h2">
-          {t("ಮಾಹೆಯ ಪ್ರಗತಿಯ ಸಂಕ್ಷಿಪ್ತ ವರದಿ — ಬಿತ್ತನೆಕೋಠಿ (ಪಿ1 + ಪಿ2)")}
+          {t("ಮಾಹೆಯ ಪ್ರಗತಿಯ ಸಂಕ್ಷಿಪ್ತ ವರದಿ — ಬಿತ್ತನೆಕೋಠಿ (ದ್ವಿತಳಿ)")}
           <span style={{
             display: "inline-flex", alignItems: "center", gap: "4px",
             background: "linear-gradient(135deg,#ccfbf1,#a7f3d0)",
             color: "#0f766e", padding: "2px 10px", borderRadius: "20px",
             fontSize: "10.5px", fontWeight: 800, marginLeft: "8px",
             border: "1px solid #5eead4", verticalAlign: "middle",
-          }}>P1 & P2 · Bivoltine · CY + PY × Race</span>
+          }}>Bivoltine · CY + PY × Race</span>
         </Block.Title>
       </Block.HeadContent></Block.HeadBetween></Block.Head>
 
@@ -289,10 +299,10 @@ function GrainageBriefMonthlyReport() {
             <div style={{ width: "42px", height: "42px", borderRadius: "12px", background: "rgba(255,255,255,.18)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px", backdropFilter: "blur(6px)" }}>📊</div>
             <div style={{ flex: 1 }}>
               <div style={{ color: "#fff", fontWeight: 800, fontSize: "15px", lineHeight: 1.2 }}>
-                ಬಿತ್ತನೆಕೋಠಿ ಮಾಹೆಯ ಪ್ರಗತಿಯ ಸಂಕ್ಷಿಪ್ತ ವರದಿ — ಮಿಶ್ರ + ಪಿ1 + ಪಿ2 + ಹೈ
+                ಬಿತ್ತನೆಕೋಠಿ ಮಾಹೆಯ ಪ್ರಗತಿಯ ಸಂಕ್ಷಿಪ್ತ ವರದಿ — ಮಿಶ್ರ + ದ್ವಿತಳಿ + ಹೈ
                 <span style={{ background: "rgba(255,255,255,.22)", padding: "2px 9px", borderRadius: "12px", marginLeft: "8px", fontSize: "10.5px", fontWeight: 800 }}>Brief</span>
               </div>
-              <div style={{ color: "rgba(255,255,255,.85)", fontSize: "11px", marginTop: "2px" }}>P1 &amp; P2 Grainage (Bivoltine) — Race-wise Programme · Achievement · Storage · Distribution (CY + PY)</div>
+              <div style={{ color: "rgba(255,255,255,.85)", fontSize: "11px", marginTop: "2px" }}>Grainage (Bivoltine) — Race-wise Programme · Achievement · Storage · Distribution (CY + PY)</div>
             </div>
             {hasReport && (
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>

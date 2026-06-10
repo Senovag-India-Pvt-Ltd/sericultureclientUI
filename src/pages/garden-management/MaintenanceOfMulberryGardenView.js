@@ -139,7 +139,31 @@ function MaintenanceOfMulberryGardenView() {
                         <td style={styles.ctstyle}>{t("Foliar Spray 2 Date")}:</td>
                         <td>{maintenanceGarden.foliarSpray2}</td>
                       </tr>
-                     
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Uprooted Area")}:</td>
+                        <td>{maintenanceGarden.uprootedArea}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Leaf Quantity (Kg)")}:</td>
+                        <td>{maintenanceGarden.leafQuantityKg}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("FYM Quantity")}:</td>
+                        <td>{maintenanceGarden.fymQuantity}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Ammonium Sulphate Quantity")}:</td>
+                        <td>{maintenanceGarden.ammoniumSulphateQuantity}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Super Phosphate Quantity")}:</td>
+                        <td>{maintenanceGarden.superPhosphateQuantity}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Muriate of Potash Quantity")}:</td>
+                        <td>{maintenanceGarden.muriateOfPotashQuantity}</td>
+                      </tr>
+
                     </tbody>
                   </table>
                 </Col>

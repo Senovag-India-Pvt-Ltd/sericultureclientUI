@@ -66,7 +66,7 @@ const fmt = (v) => {
 };
 
 const COLS = [
-  { key: "race_id",   kn: "ಕ್ರ.ಸಂ",      en: "Race ID",  minW: 70  },
+  { key: "race_id",   kn: "ಕ್ರ.ಸಂ",      en: "Sr.No",    minW: 70  },
   { key: "race_name", kn: "ತಳಿ",         en: "Race",     minW: 200 },
   { key: "w1",        kn: "1ನೇ ವಾರ",     en: "Week 1",   minW: 110, week: true },
   { key: "w2",        kn: "2ನೇ ವಾರ",     en: "Week 2",   minW: 110, week: true },
@@ -129,7 +129,18 @@ function P3FarmSheet9WeeklyHatchingReport() {
     try {
       const res = await api.get(baseURLSeedDFL + "p3-farm/sheet9", { params: params() });
       setDataRows(Array.isArray(res.data) ? res.data : []); setHasReport(true);
-    } catch { showErr("Fetch Failed", "Failed to load the Sheet-9 Weekly Hatching report."); }
+    } catch (err) {
+        const status = err?.response?.status;
+        if (status === 404 || status === 204) {
+          showErr("No Data Found", "No data found for the selected filters.");
+        } else {
+          const data = err?.response?.data;
+          const backendMsg = typeof data === "string"
+            ? data
+            : (data?.message || data?.error || data?.errorMessage || data?.error_description);
+          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the Sheet-9 Weekly Hatching report.");
+        }
+      }
     finally { setIsLoading(false); }
   };
   const handlePdf = async () => {
@@ -299,7 +310,7 @@ function P3FarmSheet9WeeklyHatchingReport() {
                                   : c.week ? (empty ? "transparent" : "linear-gradient(135deg,#f0f9ff,#e0f2fe)")
                                   : "transparent",
                               )}>
-                                {ci === 0 ? (v ?? "—") : empty ? "—" : fmt(v)}
+                                {ci === 0 ? (ri + 1) : empty ? "—" : fmt(v)}
                               </td>
                             );
                           })}

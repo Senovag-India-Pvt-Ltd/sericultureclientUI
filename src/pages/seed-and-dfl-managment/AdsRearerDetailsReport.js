@@ -189,9 +189,18 @@ function AdsRearerDetailsReport() {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/ads-rearer-details", { params: params() });
       setDataRows(Array.isArray(res.data) ? res.data : []);
       setHasReport(true);
-    } catch {
-      showErr("Fetch Failed", "Failed to load the ADS Rearer Details report.");
-    } finally { setIsLoading(false); }
+    } catch (err) {
+        const status = err?.response?.status;
+        if (status === 404 || status === 204) {
+          showErr("No Data Found", "No data found for the selected filters.");
+        } else {
+          const data = err?.response?.data;
+          const backendMsg = typeof data === "string"
+            ? data
+            : (data?.message || data?.error || data?.errorMessage || data?.error_description);
+          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the ADS Rearer Details report.");
+        }
+      } finally { setIsLoading(false); }
   };
 
   const handlePdf = async () => {
@@ -225,19 +234,23 @@ function AdsRearerDetailsReport() {
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
 
   const totals = useMemo(() => {
-    const sum = (k) => dataRows.reduce((a, r) => a + numOrZero(r[k]), 0);
+    // Backend emits a grand-total (ಒಟ್ಟು) pair (current year first, then previous).
+    // Use the current-year grand-total row directly so we don't double-count it or
+    // sum the current + previous year rows together. TSC count = named CY rows.
+    const grand = dataRows.find((r) => String(r.tsc).trim() === "ಒಟ್ಟು") || {};
+    const g = (k) => numOrZero(grand[k]);
     return {
-      tsc: dataRows.length,
-      gp: sum("gp_count"),
-      farmers: sum("farmer_count"),
-      women: sum("women_count"),
-      sc: sum("sc_count"),
-      st: sum("st_count"),
-      min: sum("minority_count"),
-      large: sum("large_count"),
-      medium: sum("medium_count"),
-      small: sum("small_count"),
-      marginal: sum("marginal_count"),
+      tsc: dataRows.filter((r) => { const n = String(r.tsc).trim(); return n && n !== "ಒಟ್ಟು"; }).length,
+      gp: g("gp_count"),
+      farmers: g("farmer_count"),
+      women: g("women_count"),
+      sc: g("sc_count"),
+      st: g("st_count"),
+      min: g("minority_count"),
+      large: g("large_count"),
+      medium: g("medium_count"),
+      small: g("small_count"),
+      marginal: g("marginal_count"),
     };
   }, [dataRows]);
 

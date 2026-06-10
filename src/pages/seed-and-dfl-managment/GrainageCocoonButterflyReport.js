@@ -159,9 +159,18 @@ function GrainageCocoonButterflyReport() {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/cocoon-butterfly", { params: params() });
       setReportRows(Array.isArray(res.data) ? res.data : []);
       setHasReport(true);
-    } catch {
-      errAlert("Fetch Failed", "Failed to load the cocoon/butterfly report. Please try again.");
-    } finally {
+    } catch (err) {
+        const status = err?.response?.status;
+        if (status === 404 || status === 204) {
+          errAlert("No Data Found", "No data found for the selected filters.");
+        } else {
+          const data = err?.response?.data;
+          const backendMsg = typeof data === "string"
+            ? data
+            : (data?.message || data?.error || data?.errorMessage || data?.error_description);
+          errAlert("Fetch Failed", backendMsg || err?.message || "Failed to load the cocoon/butterfly report. Please try again.");
+        }
+      } finally {
       setIsLoading(false);
     }
   };

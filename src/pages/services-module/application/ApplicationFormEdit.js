@@ -1,5 +1,5 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import ReactSelect from "react-select";
 import Layout from "../../../layout/default";
@@ -521,7 +521,61 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     });
   }, [savedLandDetailsList, landDetailsList]);
 
-  
+  // Pre-fill developedArea + landDetailsIds from the previously-saved land
+  // details exactly ONCE per page load. This restores the checked rows and
+  // their devAcre/devGunta/devFGunta values so the user sees their prior
+  // selections, AND — critically — stashes the existing dbtFarmerLandDetailsId
+  // inside each developedArea entry under `_dbtFarmerLandDetailsId`. postData
+  // reads that ID to send op: "UPDATE" instead of falling back to NEW (which
+  // was inserting duplicate rows on every save, leaving the original record
+  // untouched — the "land details is not updating" bug from rejection-list /
+  // drawing-officer edit). FRUITS doesn't expose landCode on
+  // farmerLandDetailsDTOList, so we match by surveyNumber + ownerName, with
+  // fallbacks for landCode and farmerLandDetailsId if either side exposes them.
+  const prefilledLandRef = useRef(false);
+  useEffect(() => {
+    if (prefilledLandRef.current) return;
+    const saved = Array.isArray(savedLandDetailsList) ? savedLandDetailsList : [];
+    const profile = Array.isArray(landDetailsList) ? landDetailsList : [];
+    if (saved.length === 0 || profile.length === 0) return;
+
+    const matchProfileIndex = (savedRow) => {
+      return profile.findIndex((p) => {
+        if (!p) return false;
+        if (savedRow.landCode != null && p.landCode != null
+            && String(savedRow.landCode) === String(p.landCode)) return true;
+        if (savedRow.farmerLandDetailsId != null && p.farmerLandDetailsId != null
+            && String(savedRow.farmerLandDetailsId) === String(p.farmerLandDetailsId)) return true;
+        // FRUITS exposes surveyNumber + ownerName; combo is unique-enough per farmer.
+        if (savedRow.surveyNumber != null && p.surveyNumber != null
+            && String(savedRow.surveyNumber) === String(p.surveyNumber)
+            && String(savedRow.ownerName || "") === String(p.ownerName || "")) return true;
+        return false;
+      });
+    };
+
+    const nextIds = [];
+    const nextDeveloped = {};
+    saved.forEach((s) => {
+      const idx = matchProfileIndex(s);
+      if (idx < 0) return;
+      nextIds.push(idx);
+      nextDeveloped[idx] = {
+        ...profile[idx],
+        devAcre: s.devAcre != null ? String(s.devAcre) : "0",
+        devGunta: s.devGunta != null ? String(s.devGunta) : "0",
+        devFGunta: s.devFGunta != null ? String(s.devFGunta) : "0",
+        // Stash the saved DB id so postData can emit op: "UPDATE".
+        _dbtFarmerLandDetailsId: s.dbtFarmerLandDetailsId,
+      };
+    });
+
+    if (nextIds.length > 0) {
+      setLandDetailsIds(nextIds);
+      setDevelopedArea(nextDeveloped);
+    }
+    prefilledLandRef.current = true;
+  }, [savedLandDetailsList, landDetailsList]);
 
   const handleCheckboxChange = (farmerLandDetailsId, selectedData) => {
     setLandDetailsIds((prevIds) => {
@@ -979,25 +1033,20 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       return;
     }
 
-    // Land flow goes through the V2 PUT endpoint. Land rows are emitted as
-    // NEW/UPDATE based on whether a saved DbtFarmerLandDetails row already
-    // exists for the same landCode.
-    const savedByLandCode = new Map();
-    (savedLandDetailsList || []).forEach((s) => {
-      if (s && s.landCode != null) {
-        savedByLandCode.set(String(s.landCode), s);
-      }
-    });
-
+    // Land flow goes through the V2 endpoint. The op is decided from the
+    // `_dbtFarmerLandDetailsId` stashed at prefill time (UPDATE if present —
+    // i.e. this row was already saved — else NEW). FRUITS doesn't expose
+    // landCode on its rows, so matching by landCode at SAVE time always
+    // missed and every row used to come out as NEW, which silently inserted
+    // duplicate DbtFarmerLandDetails rows on every save and left the
+    // original ones untouched. The stashed id is the reliable signal.
     const landRows = Object.keys(developedArea).map((key) => {
       const row = developedArea[key] || {};
-      const saved = row.landCode != null
-        ? savedByLandCode.get(String(row.landCode))
-        : null;
-      const op = saved ? "UPDATE" : "NEW";
+      const savedId = row._dbtFarmerLandDetailsId;
+      const op = savedId ? "UPDATE" : "NEW";
       return {
         op,
-        dbtFarmerLandDetailsId: saved ? saved.dbtFarmerLandDetailsId : null,
+        dbtFarmerLandDetailsId: savedId || null,
         farmerId: farmerId ? Number(farmerId) : null,
         hissa: row.hissa,
         subsidyAvailed: row.subsidyAvailed,

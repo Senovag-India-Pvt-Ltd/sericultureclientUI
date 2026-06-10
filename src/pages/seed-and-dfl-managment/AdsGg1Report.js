@@ -242,9 +242,18 @@ function AdsGg1Report() {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/ads-gg1", { params: params() });
       setDataRows(Array.isArray(res.data) ? res.data : []);
       setHasReport(true);
-    } catch {
-      showErr("Fetch Failed", "Failed to load the ADS GG1 report.");
-    } finally {
+    } catch (err) {
+        const status = err?.response?.status;
+        if (status === 404 || status === 204) {
+          showErr("No Data Found", "No data found for the selected filters.");
+        } else {
+          const data = err?.response?.data;
+          const backendMsg = typeof data === "string"
+            ? data
+            : (data?.message || data?.error || data?.errorMessage || data?.error_description);
+          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the ADS GG1 report.");
+        }
+      } finally {
       setIsLoading(false);
     }
   };
@@ -309,12 +318,13 @@ function AdsGg1Report() {
     });
   }, [dataRows]);
 
-  // KPIs from CY rows only (latest year per grainage)
+  // KPIs from CY rows only (latest year per grainage) — exclude the grand-total group
   const kpis = useMemo(() => {
-    const cyRows = grouped.map((g) => g.rows[0]).filter(Boolean);
+    const det = grouped.filter((g) => String(g.grainage).trim() !== "ಒಟ್ಟು");
+    const cyRows = det.map((g) => g.rows[0]).filter(Boolean);
     const sum = (k) => cyRows.reduce((a, r) => a + numOrZero(r[k]), 0);
     return {
-      grainages: grouped.length,
+      grainages: det.length,
       progM:   sum("prog_m"),
       rcvM:    sum("rcv_m"),
       dflsM:   sum("dfls_m"),

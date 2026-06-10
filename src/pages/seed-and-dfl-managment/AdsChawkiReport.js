@@ -182,9 +182,18 @@ function AdsChawkiReport() {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/ads-chawki", { params: params() });
       setDataRows(Array.isArray(res.data) ? res.data : []);
       setHasReport(true);
-    } catch {
-      showErr("Fetch Failed", "Failed to load the ADS Chawki report.");
-    } finally { setIsLoading(false); }
+    } catch (err) {
+        const status = err?.response?.status;
+        if (status === 404 || status === 204) {
+          showErr("No Data Found", "No data found for the selected filters.");
+        } else {
+          const data = err?.response?.data;
+          const backendMsg = typeof data === "string"
+            ? data
+            : (data?.message || data?.error || data?.errorMessage || data?.error_description);
+          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the ADS Chawki report.");
+        }
+      } finally { setIsLoading(false); }
   };
 
   const handlePdf = async () => {
@@ -218,9 +227,13 @@ function AdsChawkiReport() {
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
 
   const totals = useMemo(() => {
-    const sum = (k) => dataRows.reduce((a, r) => a + numOrZero(r[k]), 0);
+    // Sum only the ಮೊಟ್ಟೆ (DFL) detail rows: exclude the ಬೆಳೆ (crop) rows (which
+    // carry crop counts, not goals/DFLs) and the backend grand-total (ಒಟ್ಟು) row,
+    // so figures are neither mixed nor double-counted.
+    const det = dataRows.filter((r) => String(r.metric).trim() === "ಮೊಟ್ಟೆ" && String(r.tsc).trim() !== "ಒಟ್ಟು");
+    const sum = (k) => det.reduce((a, r) => a + numOrZero(r[k]), 0);
     return {
-      tsc: dataRows.length,
+      tsc: det.length,
       annualCY: sum("annual_goal_cy"),
       goalCYM:  sum("goal_cy_m"),
       achCYM:   sum("ach_cy_m"),
