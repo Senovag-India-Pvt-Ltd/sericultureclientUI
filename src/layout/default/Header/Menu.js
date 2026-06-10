@@ -6840,23 +6840,31 @@ function Menu() {
                 </MenuItem>
               ) : null}
 
+            {/* Dashboards merged into a single expandable parent with Old / New as children. */}
             {showMenu.Reports_Dashboard ? (
-              <MenuItem>
+              <MenuItem sub>
                 <MenuItemLink
-                  text={t("Dashboards - Old")}
-                  to="https://app.powerbi.com/view?r=eyJrIjoiYTJjNGEzYjktMzFkZS00NjBjLTg4NjUtMTViZTVjNDMzZjEyIiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9&pageName=7a11927e5e64dcc23c23"
-                  blank={true}
+                  text={t("Dashboards")}
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
                 />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.Reports_Dashboard ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Dashboards - New")}
-                  to="https://app.powerbi.com/view?r=eyJrIjoiYTFmMjJiMTctMDk2Yi00M2U0LTk2NTAtZmIzYjQ0ODE2YWM2IiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9"
-                  blank={true}
-                />
+                <MenuSub>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Old")}
+                      to="https://app.powerbi.com/view?r=eyJrIjoiYTJjNGEzYjktMzFkZS00NjBjLTg4NjUtMTViZTVjNDMzZjEyIiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9&pageName=7a11927e5e64dcc23c23"
+                      blank={true}
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("New")}
+                      to="https://app.powerbi.com/view?r=eyJrIjoiYTFmMjJiMTctMDk2Yi00M2U0LTk2NTAtZmIzYjQ0ODE2YWM2IiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9"
+                      blank={true}
+                    />
+                  </MenuItem>
+                </MenuSub>
               </MenuItem>
             ) : null}
 

@@ -1966,13 +1966,23 @@ const handlePurchaseModeChange = (e) => {
                     <button
                       type="button"
                       onClick={handleShowModal}
-                      disabled={totalLotWeight >= farmerdetails.netWeight}
+                      // Disable when there is no leftover to distribute.
+                      // Uses remainingQty (lotWeightAfterWeighment - distributed)
+                      // — the SAME number shown in the "Remaining" pill and
+                      // the field-level cap — so the button state always
+                      // matches what the user sees. Previously this read
+                      // totalLotWeight >= farmerdetails.netWeight, where
+                      // netWeight from API can be smaller than the displayed
+                      // Final Weighment (moisture/rejection adjusted), making
+                      // the button go dead while the "Remaining" pill still
+                      // showed several kg left.
+                      disabled={remainingQty <= 0}
                       style={{
-                        background: totalLotWeight >= farmerdetails.netWeight ? "#c8d6e5" : "linear-gradient(135deg,#1e67a8,#2d9cdb)",
+                        background: remainingQty <= 0 ? "#c8d6e5" : "linear-gradient(135deg,#1e67a8,#2d9cdb)",
                         border: "none", borderRadius: "9px", padding: "8px 18px",
                         fontWeight: 700, fontSize: "13px", color: "#fff",
-                        cursor: totalLotWeight >= farmerdetails.netWeight ? "not-allowed" : "pointer",
-                        boxShadow: totalLotWeight >= farmerdetails.netWeight ? "none" : "0 3px 10px rgba(30,103,168,0.30)",
+                        cursor: remainingQty <= 0 ? "not-allowed" : "pointer",
+                        boxShadow: remainingQty <= 0 ? "none" : "0 3px 10px rgba(30,103,168,0.30)",
                         display: "inline-flex", alignItems: "center", gap: "6px",
                       }}
                     >
