@@ -153,9 +153,18 @@ function GrainageEggDistributionReport() {
       setTotalRow(all.find((r) => Number(r.serial_number) === 99) || null);
       setDataRows(all.filter((r) => Number(r.serial_number) !== 99));
       setHasReport(true);
-    } catch {
-      errAlert("Fetch Failed", "Failed to load the egg distribution report. Please try again.");
-    } finally {
+    } catch (err) {
+        const status = err?.response?.status;
+        if (status === 404 || status === 204) {
+          errAlert("No Data Found", "No data found for the selected filters.");
+        } else {
+          const data = err?.response?.data;
+          const backendMsg = typeof data === "string"
+            ? data
+            : (data?.message || data?.error || data?.errorMessage || data?.error_description);
+          errAlert("Fetch Failed", backendMsg || err?.message || "Failed to load the egg distribution report. Please try again.");
+        }
+      } finally {
       setIsLoading(false);
     }
   };

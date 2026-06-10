@@ -193,9 +193,18 @@ function TscMonthlyMulberryAreaReport() {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/tsc-monthly/mulberry-area", { params: params() });
       setDataRows(Array.isArray(res.data) ? res.data : []);
       setHasReport(true);
-    } catch {
-      showErr("Fetch Failed", "Failed to load the TSC Monthly Mulberry Area (Form 27A) report.");
-    } finally {
+    } catch (err) {
+        const status = err?.response?.status;
+        if (status === 404 || status === 204) {
+          showErr("No Data Found", "No data found for the selected filters.");
+        } else {
+          const data = err?.response?.data;
+          const backendMsg = typeof data === "string"
+            ? data
+            : (data?.message || data?.error || data?.errorMessage || data?.error_description);
+          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the TSC Monthly Mulberry Area (Form 27A) report.");
+        }
+      } finally {
       setIsLoading(false);
     }
   };
