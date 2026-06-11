@@ -5628,6 +5628,30 @@ function Menu() {
                               to="/seriui/seed-market-district-wise-report"
                             />
                           </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Seed Market Budget Remittance (Sheet 2 §C · Entry)")}
+                              to="/seriui/seed-market-budget-entry"
+                            />
+                          </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Seed Market Budget Remittance (Sheet 2 §C · List)")}
+                              to="/seriui/seed-market-budget-list"
+                            />
+                          </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Seed Market Staff Establishment (Sheet 2 §D · Entry)")}
+                              to="/seriui/seed-market-staff-entry"
+                            />
+                          </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Seed Market Staff Establishment (Sheet 2 §D · List)")}
+                              to="/seriui/seed-market-staff-list"
+                            />
+                          </MenuItem>
 
                           <MenuItem>
                             <MenuItemLink

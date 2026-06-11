@@ -1065,6 +1065,12 @@ import {
   TrainingMaintenanceExpenseReport,
 } from "../pages/seed-and-dfl-managment/TrainingReports";
 import TscChawkiHarvestReport from "../pages/seed-and-dfl-managment/TscChawkiHarvestReport";
+import SeedMarketBudgetEntry from "../pages/seed-and-dfl-managment/SeedMarketBudgetEntry";
+import SeedMarketBudgetList from "../pages/seed-and-dfl-managment/SeedMarketBudgetList";
+import SeedMarketBudgetEdit from "../pages/seed-and-dfl-managment/SeedMarketBudgetEdit";
+import SeedMarketStaffEntry from "../pages/seed-and-dfl-managment/SeedMarketStaffEntry";
+import SeedMarketStaffList from "../pages/seed-and-dfl-managment/SeedMarketStaffList";
+import SeedMarketStaffEdit from "../pages/seed-and-dfl-managment/SeedMarketStaffEdit";
 import TscSeedCocoonReport from "../pages/seed-and-dfl-managment/TscSeedCocoonReport";
 import TscChawkiCocoonWeeklyReport from "../pages/seed-and-dfl-managment/TscChawkiCocoonWeeklyReport";
 import TscNewMulberryPlantingsReport from "../pages/seed-and-dfl-managment/TscNewMulberryPlantingsReport";
@@ -2298,6 +2304,12 @@ function Router() {
             <Route path="seed-market-monthly-progress-report" element={<SeedMarketMonthlyProgressReport />} />
             <Route path="seed-market-monthly-pricing-report" element={<SeedMarketMonthlyPricingReport />} />
             <Route path="seed-market-district-wise-report" element={<SeedMarketDistrictWiseReport />} />
+            <Route path="seed-market-budget-entry" element={<SeedMarketBudgetEntry />} />
+            <Route path="seed-market-budget-list" element={<SeedMarketBudgetList />} />
+            <Route path="seed-market-budget-edit/:id" element={<SeedMarketBudgetEdit />} />
+            <Route path="seed-market-staff-entry" element={<SeedMarketStaffEntry />} />
+            <Route path="seed-market-staff-list" element={<SeedMarketStaffList />} />
+            <Route path="seed-market-staff-edit/:id" element={<SeedMarketStaffEdit />} />
             <Route path="dd-mulberry-area-report" element={<DdMulberryAreaReport />} />
             <Route path="dd-crop-yield-report" element={<DdCropYieldReport />} />
             <Route path="dd-chawki-progress-report" element={<DdChawkiProgressReport />} />
