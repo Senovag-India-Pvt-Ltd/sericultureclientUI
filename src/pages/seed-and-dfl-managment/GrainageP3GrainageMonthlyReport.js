@@ -177,7 +177,7 @@ function GrainageP3GrainageMonthlyReport() {
     setHasReport(false);
     setDataRows([]);
     try {
-      const res = await api.get(baseURLSeedDFL + "grainage-progress-report/p3-grainage-monthly", { params: params() });
+      const res = await api.get(baseURLSeedDFL + "p3-grainage-monthly-report", { params: params() });
       setDataRows(Array.isArray(res.data) ? res.data : []);
       setHasReport(true);
     } catch (err) {
@@ -201,7 +201,7 @@ function GrainageP3GrainageMonthlyReport() {
     if (err) { showWarn(err); return; }
     setIsDownloadingPdf(true);
     try {
-      const res = await api.get(baseURLSeedDFL + "grainage-progress-report/p3-grainage-monthly/pdf", { params: params(), responseType: "blob" });
+      const res = await api.get(baseURLSeedDFL + "p3-grainage-monthly-report/pdf", { params: params(), responseType: "blob" });
       window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
     } catch {
       showErr("PDF Failed", "Could not generate the PDF report.");
@@ -215,7 +215,7 @@ function GrainageP3GrainageMonthlyReport() {
     if (err) { showWarn(err); return; }
     setIsDownloadingExcel(true);
     try {
-      const res = await api.get(baseURLSeedDFL + "grainage-progress-report/p3-grainage-monthly/excel", { params: params(), responseType: "blob" });
+      const res = await api.get(baseURLSeedDFL + "p3-grainage-monthly-report/excel", { params: params(), responseType: "blob" });
       const url = URL.createObjectURL(new Blob([res.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
       const a = document.createElement("a");
       a.href = url;
