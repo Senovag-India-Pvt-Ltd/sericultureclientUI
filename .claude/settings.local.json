@@ -1,7 +1,15 @@
 {
   "permissions": {
     "allow": [
-      "Bash(grep -E \"\\\\.\\(js|jsx|css\\)$\")"
+      "Bash(grep -E \"\\\\.\\(js|jsx|css\\)$\")",
+      "Bash(ls \"c:\\\\Users\\\\cheta\\\\Desktop\\\\Aryan\\\\Project\\\\backend\\\\master-data\\\\src\\\\main\\\\java\\\\com\\\\sericulture\\\\masterdata\\\\model\\\\entity\" | grep -i component)",
+      "Read(//c/Users/cheta/Desktop/Aryan/Project/backend/master-data/src/main/java/com/sericulture/masterdata/model/entity/**)",
+      "Bash(ls -la \"c:\\\\Users\\\\cheta\\\\Desktop\\\\Aryan\\\\Project\\\\backend\" 2>&1 | head -30)",
+      "Read(//c/Users/cheta/Desktop/Aryan/Project/backend/**)",
+      "Bash(xargs grep -l \"farmerName\\\\|farmer_name\\\\|fruitsId\\\\|fruits_id\")"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\cheta\\Desktop\\Aryan\\Project\\backend\\dbt\\src\\main\\java\\com\\sericulture\\dbt\\controller"
     ]
   }
 }

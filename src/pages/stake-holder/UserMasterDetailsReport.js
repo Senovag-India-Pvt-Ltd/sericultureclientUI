@@ -80,16 +80,16 @@ function UserMasterDetailsReport() {
           },
           responseType: 'blob',
           headers: {
-            accept: "text/csv",
+            accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             "Content-Type": "application/json",
           },
         }
       )
       .then((response) => {
-        const blob = new Blob([response.data], { type: "text/csv" });
+        const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = `user_master_report.csv`;
+        link.download = `user_master_report.xlsx`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -325,6 +325,13 @@ function UserMasterDetailsReport() {
       name: "Mobile Number",
       selector: (row) => row.phoneNumber,
       cell: (row) => <span>{row.phoneNumber}</span>,
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: "DDO Code",
+      selector: (row) => row.ddoCode,
+      cell: (row) => <span>{row.ddoCode || "—"}</span>,
       sortable: true,
       hide: "md",
     },
