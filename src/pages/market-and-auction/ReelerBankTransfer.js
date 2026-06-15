@@ -35,7 +35,8 @@ function ReelerBankTransfer() {
     transferAmount &&
     parseFloat(transferAmount) > 0 &&
     parseFloat(transferAmount) <= parseFloat(balanceData.transferableAmount) &&
-    fileName.trim();
+    fileName.trim() &&
+    comment.trim();
 
   const handleSearch = (e) => {
     const form = e.currentTarget;
@@ -46,6 +47,10 @@ function ReelerBankTransfer() {
       return;
     }
     e.preventDefault();
+    if (!marketId) {
+      Swal.fire({ icon: "warning", title: t("Not Allowed"), text: t("You are not assigned to a market. Please contact your administrator.") });
+      return;
+    }
     setBalanceData(null);
     setSearched(false);
     setTransferAmount("");
@@ -59,8 +64,15 @@ function ReelerBankTransfer() {
       })
       .then((res) => {
         const content = res.data?.content;
-        if (content?.error) {
-          Swal.fire({ icon: "error", title: t("Error"), text: content.error_description });
+        const errEntry = res.data?.errorMessages?.[0];
+        const backendError =
+          (typeof errEntry === "string" ? errEntry : null) ||
+          errEntry?.message?.[0]?.message ||
+          errEntry?.message ||
+          content?.error_description;
+
+        if (content?.error || backendError) {
+          Swal.fire({ icon: "error", title: t("Error"), text: backendError || t("Buyer not found.") });
         } else {
           setBalanceData(content);
           setSearched(true);
@@ -69,7 +81,14 @@ function ReelerBankTransfer() {
         }
       })
       .catch((err) => {
-        const msg = err.response?.data?.error_description || err.response?.data?.errorMessages?.[0]?.message || err.message || t("Buyer not found.");
+        const errEntry2 = err.response?.data?.errorMessages?.[0];
+        const msg =
+          (typeof errEntry2 === "string" ? errEntry2 : null) ||
+          errEntry2?.message?.[0]?.message ||
+          errEntry2?.message ||
+          err.response?.data?.error_description ||
+          err.message ||
+          t("Buyer not found.");
         Swal.fire({ icon: "error", title: t("Error"), text: msg });
       })
       .finally(() => setLoading(false));
@@ -103,14 +122,28 @@ function ReelerBankTransfer() {
       })
       .then((res) => {
         const content = res.data?.content;
-        if (content?.error) {
-          Swal.fire({ icon: "error", title: t("Error"), text: content.error_description });
+        const errEntry = res.data?.errorMessages?.[0];
+        const backendError =
+          (typeof errEntry === "string" ? errEntry : null) ||
+          errEntry?.message?.[0]?.message ||
+          errEntry?.message ||
+          content?.error_description;
+
+        if (content?.error || backendError) {
+          Swal.fire({ icon: "error", title: t("Error"), text: backendError || t("Transfer failed.") });
         } else {
           Swal.fire({ icon: "success", title: t("Success"), text: `Transfer of ${formatINR(transferAmount)} initiated successfully.` });
         }
       })
       .catch((err) => {
-        const msg = err.response?.data?.error_description || err.response?.data?.errorMessages?.[0]?.message || err.message || t("Transfer failed.");
+        const errEntry = err.response?.data?.errorMessages?.[0];
+        const msg =
+          (typeof errEntry === "string" ? errEntry : null) ||
+          errEntry?.message?.[0]?.message ||
+          errEntry?.message ||
+          err.response?.data?.error_description ||
+          err.message ||
+          t("Transfer failed.");
         Swal.fire({ icon: "error", title: t("Error"), text: msg });
       })
       .finally(() => setTransferring(false));
@@ -132,10 +165,24 @@ function ReelerBankTransfer() {
         link.click();
         link.remove();
       })
-      .catch((err) => {
-        if (err.response?.status === 404) {
-          Swal.fire({ icon: "info", title: t("Not Found"), text: t("CSV not found. Please initiate a transfer first or check the file name.") });
-        } else {
+      .catch(async (err) => {
+        const status = err.response?.status;
+        try {
+          const text = await err.response?.data?.text();
+          const json = JSON.parse(text);
+          const backendMsg =
+            json?.errorMessages?.[0]?.message?.[0]?.message ||
+            json?.errorMessages?.[0]?.message ||
+            json?.error_description ||
+            json?.message ||
+            (typeof json?.content === "string" ? json.content : null);
+
+          Swal.fire({
+            icon: status === 403 ? "error" : "warning",
+            title: status === 403 ? t("Access Denied") : t("Download Failed"),
+            text: backendMsg || t("Failed to download CSV."),
+          });
+        } catch {
           Swal.fire({ icon: "error", title: t("Error"), text: t("Failed to download CSV.") });
         }
       });
@@ -308,12 +355,12 @@ function ReelerBankTransfer() {
                   </Col>
                   <Col md={4}>
                     <Form.Group>
-                      <Form.Label style={labelStyle}>{t("Comment")}</Form.Label>
+                      <Form.Label style={labelStyle}>{t("Comment")} <span className="text-danger">*</span></Form.Label>
                       <Form.Control
                         type="text"
                         value={comment}
                         onChange={(e) => setComment(e.target.value.slice(0, 500))}
-                        placeholder={t("Enter reason / comment (optional)")}
+                        placeholder={t("Enter reason ")}
                         maxLength={500}
                         style={{ borderRadius: "8px", fontSize: "14px" }}
                       />
