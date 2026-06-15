@@ -329,6 +329,29 @@ function EditTestingOfMoth() {
 
                 <Col lg="4">
                   <Form.Group className="form-group">
+                    <Form.Label>
+                      {t("Examination Stage")}<span className="text-danger">*</span>
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="stage"
+                        value={data.stage || ""}
+                        onChange={handleInputs}
+                        required
+                      >
+                        <option value="">{t("Select Examination Stage")}</option>
+                        <option value="COCOON">{t("Cocoon Test")}</option>
+                        <option value="MOTH">{t("Moth Test")}</option>
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        {t("Examination Stage is required")}
+                      </Form.Control.Feedback>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group">
                     <Form.Label htmlFor="numberOfBeds">
                       {t("Number of Beds")}
                     </Form.Label>

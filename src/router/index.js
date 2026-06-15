@@ -1082,6 +1082,7 @@ import AdsGg3Report from "../pages/seed-and-dfl-managment/AdsGg3Report";
 import AdsPebrineReport from "../pages/seed-and-dfl-managment/AdsPebrineReport";
 import AdsPlantationReport from "../pages/seed-and-dfl-managment/AdsPlantationReport";
 import AdsRearerDetailsReport from "../pages/seed-and-dfl-managment/AdsRearerDetailsReport";
+import AdsRearerYearComparisonReport from "../pages/seed-and-dfl-managment/AdsRearerYearComparisonReport";
 import AdsChawkiReport from "../pages/seed-and-dfl-managment/AdsChawkiReport";
 import DdsWeeklyChawkiReport from "../pages/seed-and-dfl-managment/DdsWeeklyChawkiReport";
 import FarmForm1ChawkiReport from "../pages/seed-and-dfl-managment/FarmForm1ChawkiReport";
@@ -2338,6 +2339,7 @@ function Router() {
             <Route path="ads-pebrine-report" element={<AdsPebrineReport />} />
             <Route path="ads-plantation-report" element={<AdsPlantationReport />} />
             <Route path="ads-rearer-details-report" element={<AdsRearerDetailsReport />} />
+            <Route path="ads-rearer-year-comparison-report" element={<AdsRearerYearComparisonReport />} />
             <Route path="ads-chawki-report" element={<AdsChawkiReport />} />
             <Route path="dds-weekly-chawki-report" element={<DdsWeeklyChawkiReport />} />
             <Route path="farm-form1-chawki-report" element={<FarmForm1ChawkiReport />} />

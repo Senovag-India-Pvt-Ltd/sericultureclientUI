@@ -248,6 +248,10 @@ function AdsChawkiReport() {
   const yoyM   = totals.achPYM === 0 ? 0 : ((totals.achCYM - totals.achPYM) / totals.achPYM) * 100;
   const yoyMe  = totals.achPYMe === 0 ? 0 : ((totals.achCYMe - totals.achPYMe) / totals.achPYMe) * 100;
 
+  // Detail rows only: the ಮೊಟ್ಟೆ (DFL) metric, excluding the backend ಒಟ್ಟು totals;
+  // the footer renders the single grand total (matches the Excel/PDF which are also ಮೊಟ್ಟೆ).
+  const detRows = dataRows.filter((r) => String(r.metric).trim() === "ಮೊಟ್ಟೆ" && String(r.tsc).trim() !== "ಒಟ್ಟು");
+
   return (
     <Layout title={t("ADS · TSC Chawki Programme & Achievement")}>
       <Block.Head><Block.HeadBetween><Block.HeadContent>
@@ -441,7 +445,7 @@ function AdsChawkiReport() {
                     {dataRows.length === 0 && (
                       <tr><td colSpan={10} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>ಯಾವುದೇ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ &nbsp;/&nbsp; No records found.</td></tr>
                     )}
-                    {dataRows.map((row, ri) => {
+                    {detRows.map((row, ri) => {
                       const alt = ri % 2 === 1;
                       const cyM  = numOrZero(row.ach_cy_m);
                       const pyM  = numOrZero(row.ach_py_m);
@@ -475,7 +479,7 @@ function AdsChawkiReport() {
                         </tr>
                       );
                     })}
-                    {dataRows.length > 0 && (
+                    {detRows.length > 0 && (
                       <tr style={{ background: "linear-gradient(135deg,#fef3c7,#fde68a)" }}>
                         <td colSpan={2} style={{ padding: "13px 16px", textAlign: "right", color: "#78350f", fontWeight: 800, fontSize: "13px", borderTop: "2px solid #f59e0b" }}>ಒಟ್ಟು &nbsp;/&nbsp; Grand Total</td>
                         <td className="adschawki-num" style={ftd("#5b21b6")}>{fmt(totals.annualCY)}</td>

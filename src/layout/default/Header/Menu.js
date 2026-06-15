@@ -6318,6 +6318,12 @@ function Menu() {
                                 </MenuItem>
                                 <MenuItem>
                                   <MenuItemLink
+                                    text={t("ADS · TSC Farmer Demographic — Year Comparison")}
+                                    to="/seriui/ads-rearer-year-comparison-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
                                     text={t("ADS · TSC Chawki Programme & Achievement")}
                                     to="/seriui/ads-chawki-report"
                                   />
