@@ -553,7 +553,7 @@ function GrainageP3WeeklyProgrammeReport() {
                           <tbody>
                             <tr>
                               {WEEK_COLS.map((w) => {
-                                const v = row?.[w.key];
+                                const v = row?.[w.key === "total" ? "w_total" : w.key];
                                 const has = v !== null && v !== undefined && String(v).trim() !== "";
                                 const isTotal = w.key === "total";
                                 const n = numOrZero(v);
