@@ -5594,6 +5594,12 @@ function Menu() {
                           </MenuItem>
                           <MenuItem>
                             <MenuItemLink
+                              text={t("Pending Market Fee Report")}
+                              to="/seriui/pending-market-fee-report"
+                            />
+                          </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
                               text={t("Seed MF Report")}
                               to="/seriui/seed-mf-report"
                             />
