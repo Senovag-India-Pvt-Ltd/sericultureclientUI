@@ -249,13 +249,6 @@ function GrainageMulberryWeeklyReport() {
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
   const prevYear   = monthYear ? monthYear - 1 : null;
 
-  const filledCount = dataRows.reduce((acc, r) => {
-    let c = 0;
-    VALUE_KEYS.forEach((k) => { if (r[k] && String(r[k]).trim() !== "" && r[k] !== "0") c++; });
-    return acc + c;
-  }, 0);
-  const totalCells = dataRows.length * VALUE_KEYS.length;
-
   return (
     <Layout title={t("Mulberry Farm Maintenance Report")}>
       <Block.Head>
@@ -353,10 +346,6 @@ function GrainageMulberryWeeklyReport() {
               <div style={{ background: "linear-gradient(135deg,#cffafe,#ecfeff)", border: "1.5px solid #67e8f9", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "150px" }}>
                 <span style={{ fontSize: "11px", color: "#0e7490", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>Period</span>
                 <span style={{ fontSize: "14px", color: "#1a202c", fontWeight: 700, marginTop: "2px" }}>{monthLabel} {monthYear}</span>
-              </div>
-              <div style={{ background: "linear-gradient(135deg,#fef3c7,#fffbeb)", border: "1.5px solid #fcd34d", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "120px" }}>
-                <span style={{ fontSize: "11px", color: "#a16207", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>Filled</span>
-                <span style={{ fontSize: "14px", color: "#1a202c", fontWeight: 700, marginTop: "2px" }}>{filledCount} / {totalCells}</span>
               </div>
               <div style={{ background: "linear-gradient(135deg,#ccfbf1,#ecfdf5)", border: "1.5px solid #5eead4", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "150px" }}>
                 <span style={{ fontSize: "11px", color: "#0f766e", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>ಪ್ರಸಕ್ತ ವರ್ಷ</span>
