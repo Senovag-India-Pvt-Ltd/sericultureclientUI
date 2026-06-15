@@ -26,6 +26,7 @@ function TestingOfMoth() {
     sourceDetails: "",
     numberOfBeds: "",
     numberOfDiseasedBeds: "",
+    examinationDate: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -64,6 +65,7 @@ function TestingOfMoth() {
                 sourceDetails: "",
                 numberOfBeds: "",
                 numberOfDiseasedBeds: "",
+                examinationDate: "",
             });
             setValidated(false);
           }
@@ -84,6 +86,7 @@ function TestingOfMoth() {
         sourceDetails: "",
         numberOfBeds: "",
         numberOfDiseasedBeds: "",
+        examinationDate: "",
     });
   };
 
@@ -345,6 +348,23 @@ function TestingOfMoth() {
                         type="number"
                         min="0"
                         placeholder={t("Enter Number of Diseased Beds")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="examinationDate">
+                      {t("Examination Date")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="examinationDate"
+                        name="examinationDate"
+                        value={data.examinationDate ? String(data.examinationDate).slice(0, 10) : ""}
+                        onChange={handleInputs}
+                        type="date"
                       />
                     </div>
                   </Form.Group>

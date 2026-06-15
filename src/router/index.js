@@ -1065,6 +1065,12 @@ import {
   TrainingMaintenanceExpenseReport,
 } from "../pages/seed-and-dfl-managment/TrainingReports";
 import TscChawkiHarvestReport from "../pages/seed-and-dfl-managment/TscChawkiHarvestReport";
+import SeedMarketBudgetEntry from "../pages/seed-and-dfl-managment/SeedMarketBudgetEntry";
+import SeedMarketBudgetList from "../pages/seed-and-dfl-managment/SeedMarketBudgetList";
+import SeedMarketBudgetEdit from "../pages/seed-and-dfl-managment/SeedMarketBudgetEdit";
+import SeedMarketStaffEntry from "../pages/seed-and-dfl-managment/SeedMarketStaffEntry";
+import SeedMarketStaffList from "../pages/seed-and-dfl-managment/SeedMarketStaffList";
+import SeedMarketStaffEdit from "../pages/seed-and-dfl-managment/SeedMarketStaffEdit";
 import TscSeedCocoonReport from "../pages/seed-and-dfl-managment/TscSeedCocoonReport";
 import TscChawkiCocoonWeeklyReport from "../pages/seed-and-dfl-managment/TscChawkiCocoonWeeklyReport";
 import TscNewMulberryPlantingsReport from "../pages/seed-and-dfl-managment/TscNewMulberryPlantingsReport";
@@ -1223,6 +1229,7 @@ import RegisteredPrivateChawki from "../pages/services-module/application-compon
 import RegisteredPrivateChawkiList from "../pages/services-module/application-component/RegisteredPrivateChawkiList";
 import LotWisePriceFixation from "../pages/seed-cocoon-martket/LotWisePriceFixation";
 import SakalaDashboard from "../pages/services-module/application/SakalaDashboard";
+import ApplicationPendingList from "../pages/services-module/application/ApplicationPendingList";
 import CumulativeReport from "../pages/services-module/application/CumulativeReport";
 import UserHierarchyMappingList from "../pages/masters/user-hierarchy-mapping/UserHierarchyMappingList";
 import UserHierarchyMappingEdit from "../pages/masters/user-hierarchy-mapping/UserHierarchyMappingEdit";
@@ -1235,6 +1242,10 @@ import SeedMarketDashboardReport from "../pages/reports-admin/market-auction/See
 import DownloadSanctionOrder from "../pages/market-and-auction/DownloadSanctionOrder";
 import GenerateAcknowledgement from "../pages/direct-benefit-transfer/GenerateAcknowledgement";
 import GenerateWorkOrder from "../pages/direct-benefit-transfer/GenerateWorkOrder";
+import SericultureTable from "../pages/masters/sericulture-table/SericultureTable";
+import SericultureTableList from "../pages/masters/sericulture-table/SericultureTableList";
+import SericultureTableEdit from "../pages/masters/sericulture-table/SericultureTableEdit";
+import SericultureTableView from "../pages/masters/sericulture-table/SericultureTableView";
 import GenerateSelectionLetter from "../pages/direct-benefit-transfer/GenerateSelectionLetter";
 import FitnessCertificate from "../pages/market-and-auction/FitnessCertificateReport";
 
@@ -1840,6 +1851,10 @@ function Router() {
               element={<SakalaDashboard />}
             />
             <Route
+              path="pendency-application-list"
+              element={<ApplicationPendingList />}
+            />
+            <Route
               path="cumulative-report"
               element={<CumulativeReport />}
             />
@@ -2304,6 +2319,12 @@ function Router() {
             <Route path="seed-market-monthly-progress-report" element={<SeedMarketMonthlyProgressReport />} />
             <Route path="seed-market-monthly-pricing-report" element={<SeedMarketMonthlyPricingReport />} />
             <Route path="seed-market-district-wise-report" element={<SeedMarketDistrictWiseReport />} />
+            <Route path="seed-market-budget-entry" element={<SeedMarketBudgetEntry />} />
+            <Route path="seed-market-budget-list" element={<SeedMarketBudgetList />} />
+            <Route path="seed-market-budget-edit/:id" element={<SeedMarketBudgetEdit />} />
+            <Route path="seed-market-staff-entry" element={<SeedMarketStaffEntry />} />
+            <Route path="seed-market-staff-list" element={<SeedMarketStaffList />} />
+            <Route path="seed-market-staff-edit/:id" element={<SeedMarketStaffEdit />} />
             <Route path="dd-mulberry-area-report" element={<DdMulberryAreaReport />} />
             <Route path="dd-crop-yield-report" element={<DdCropYieldReport />} />
             <Route path="dd-chawki-progress-report" element={<DdChawkiProgressReport />} />
@@ -3233,6 +3254,11 @@ function Router() {
             <Route path="silk-exchange-list" element={<SilkExchangeList />} />
             <Route path="silk-exchange-view/:id" element={<SilkExchangeView />} />
             <Route path="silk-exchange-edit/:id" element={<SilkExchangeEdit />} />
+
+            <Route path="sericulture-table" element={<SericultureTable />} />
+            <Route path="sericulture-table-list" element={<SericultureTableList />} />
+            <Route path="sericulture-table-view/:id" element={<SericultureTableView />} />
+            <Route path="sericulture-table-edit/:id" element={<SericultureTableEdit />} />
 
             <Route path="cropStatus" element={<CropStatus />} />
             <Route path="crop-status-list" element={<CropStatusList />} />

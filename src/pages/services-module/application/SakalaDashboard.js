@@ -1,582 +1,596 @@
-// import { Row, Col, Card, Button, Dropdown, Table, Badge } from 'react-bootstrap';
-import {
-  Row,
-  Col,
-  Card,
-  Button,
-  Modal,
-  Form,
-  Tooltip,
-  OverlayTrigger,
-} from "react-bootstrap";
-import { Link } from "react-router-dom";
-// import { ChartDoughnut } from "../../../components/Chart/Charts";
-// import { ChartLegend } from "../../../components";
+import { Row, Col, Card, Button, Form, Spinner } from "react-bootstrap";
 import Block from "../../../components/Block/Block";
-import DataTable from "react-data-table-component";
-import { Colors } from "../../../utilities/index";
-import { useState, useEffect } from "react";
-
-import Layout from "../../../layout/default";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import Layout from "../../../layout/default";
 import { Icon } from "../../../components";
 import api from "../../../services/auth/api";
 import { useTranslation } from "react-i18next";
 
-// const baseURL2 = process.env.REACT_APP_API_BASE_URL_HELPDESK;
-const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
+const baseURLDBT    = process.env.REACT_APP_API_BASE_URL_DBT;
+const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-// import {
-//     Image,
-//   } from '../../../components';
-
-function SakalaDashboard() {
-  const [listData, setListData] = useState({});
-  const [page, setPage] = useState(0);
-  const countPerPage = 5;
-  const [totalRows, setTotalRows] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage } };
-  const _header = { "Content-Type": "application/json", accept: "*/*" };
-
-  const styles = {
-    // backgroundColor: "#cdefff",
-    borderRadius: "3%",
-    cursor: "pointer",
-  };
-// Translation
-const { t } = useTranslation();
-  const rainbowColors = [
-    "#b82424",
-    "#ca8b17",
-    "#acac22",
-    "#287728",
-    "#575797",
-    "#88699f",
-    "#bf45bf",
-  ];
-
-  const schemeList = [
-    { id: 1, name: "Chawki Subsidy Scheme" },
-    { id: 2, name: "Bivoltine Cocoon Scheme" },
-    { id: 3, name: "Sericulture Farmer Benefit" },
-  ];
-
-    const [showModal6, setShowModal6] = useState(false);
-  
-    const handleShowModal6 = () => setShowModal6(true);
-    const handleCloseModal6 = () => setShowModal6(false);
-
-  const dashboardData = [
-  {
-    id: 1,
-    title: "Total Applications",
-    count: 12450,
-    color: "#0d6efd",
-    icon: "file-text",
-  },
-  {
-    id: 2,
-    title: "DFLs Details Entry",
-    count: 8450,
-    color: "#198754",
-    icon: "check-circle",
-  },
-  {
-    id: 3,
-    title: "TSC Verification",
-    count: 2980,
-    color: "#ffc107",
-    icon: "clock",
-  },
-  {
-    id: 4,
-    title: "Crop Inspection",
-    count: 720,
-    color: "#dc3545",
-    icon: "x-circle",
-  },
+const STATUS_ITEMS = [
+  { key: "WITHIN_SLA",  label: "Within SLA",  bs: "success", dotColor: "#197a48" },
+  { key: "OUTSIDE_SLA", label: "Outside SLA", bs: "warning",  dotColor: "#c47d0a" },
+  { key: "PENDING",     label: "Pending",      bs: "danger",  dotColor: "#c0392b" },
 ];
 
+const accents = ["#1e67a8", "#0d4f8a", "#155e7a", "#1a6e5c", "#3d5a99", "#4a4a8a", "#165888"];
 
-  const [data, setData] = useState({
-    text: "",
-    searchBy: "ticketArn",
-  });
+// ─── Filter Bar ───────────────────────────────────────────────────────────────
+function FilterBar({ district, component, fruitsId, onDistrictChange, onComponentChange,
+  onFruitsIdChange, onApply, onClear, districts, componentNames }) {
 
-  const handleInputs = (e) => {
-    // debugger;
-    let { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
-
-
-  const handleSearchInputs = (e) => {
-    const { value } = e.target; // Destructure the selected value
-    setSchemeId(value); // Update schemeId with the selected value
-  };
-
-  // to get sc-scheme-details
-  const [scSchemeDetailsListData, setScSchemeDetailsListData] = useState([]);
-  const getList = () => {
-    api
-      .get(baseURLMasterData + `scSchemeDetails/get-all`)
-      .then((response) => {
-        setScSchemeDetailsListData(response.data.content.ScSchemeDetails);
-      })
-      .catch((err) => {
-        setScSchemeDetailsListData([]);
-      });
-  };
-
-  useEffect(() => {
-    getList();
-  }, []);
-
-  const [hdUserData, setHdUserData] = useState({
-    userMasterId: localStorage.getItem("userMasterId"),
-  });
-
-  
-  // Get Dashboards
-  const [dashboardList, setDashboardList] = useState([]);
-  const getDashboard = (e) => {
-    // setLoading(true);
-    api
-      .post(
-        baseURLDBT + `service/getUserDashboardCount`,
-        {},
-        { params: { id: localStorage.getItem("userMasterId") } }
-        // { params: { id: 30 } }
-      )
-      .then((response) => {
-        setDashboardList(response.data.content);
-        // setListData(response.data.content.hdTicket);
-        // setTotalRows(response.data.content.totalItems);
-        // setLoading(false);
-      })
-      .catch((err) => {
-        // setListData({});
-        // setLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    getDashboard();
-  }, []);
-
-  const [schemeId, setSchemeId] = useState("");
-
-  const getUserDashboardCountBySchemeId = () => {
-    api
-      .post(
-        `${baseURLDBT}service/getUserDashboardCountBySchemeId`,
-        {},
-        { params: { schemeId } } // Pass schemeId as a query parameter
-      )
-      .then((response) => {
-        setDashboardList(response.data.content);
-      })
-      .catch((err) => {
-        console.error("Error fetching dashboard by schemeId", err);
-      });
-  };
-
-  // useEffect(() => {
-  //   getDashboard();
-  // }, []);
-
-
-  const customStyles = {
-    rows: {
-      style: {
-        minHeight: "45px", // override the row height
-      },
-    },
-    headCells: {
-      style: {
-        backgroundColor: "#1e67a8",
-        color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
-      },
-    },
-    cells: {
-      style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
-      },
-    },
-  };
-
-  const navigate = useNavigate();
-  const handleView = (_id) => {
-    navigate(`/seriui/user-ticket-view/${_id}`);
-  };
-
- 
-
-  const goto = (id) => {
-  
-    navigate(`/seriui/dashboard-report-list/${id}`)
-  };
-
-  const [selectedDashboard, setSelectedDashboard] = useState("");
-const [showTable, setShowTable] = useState(false);
-const dashboardDetailsData = [
-  {
-    dashboard: "Pending Beyond Due Date",
-    beneficiaryName: "Ramesh Kumar",
-    fid: "FID123456789012",
-    applicationSubmissionDate: "2025-12-01",
-    applicationDueDate: "2025-12-31",
-    breachedDays: 12,
-    daysPending: 12,
-    status: "Breached",
-  },
-  {
-    dashboard: "Disposed Within Prescribed Time",
-    beneficiaryName: "Suresh Naik",
-    fid: "FID987654321098",
-    applicationSubmissionDate: "2025-12-05",
-    applicationDueDate: "2026-01-04",
-    breachedDays: 0,
-    daysPending: 0,
-    status: "Completed On Time",
-  },
-  {
-    dashboard: "Disposed After Due Date",
-    beneficiaryName: "Mahesh Gowda",
-    fid: "FID456789123456",
-    applicationSubmissionDate: "2025-12-10",
-    applicationDueDate: "2026-01-09",
-    breachedDays: 5,
-    daysPending: 0,
-    status: "Delayed",
-  },
-];
-
-
+  const active = district || component || (fruitsId && fruitsId.trim());
+  const lbl = { fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" };
 
   return (
-    <Layout title="Pendency Dashboard">
+    <Card className="mb-3" style={{ border: "none", boxShadow: "0 1px 6px rgba(0,0,0,0.07)" }}>
+      <div style={{ background: "#1e67a8", padding: "10px 18px", borderRadius: "8px 8px 0 0" }}>
+        <div className="d-flex align-items-center gap-2">
+          <Icon name="filter" style={{ color: "#fff", fontSize: 13 }} />
+          <span style={{ color: "#fff", fontWeight: 700, fontSize: "0.84rem" }}>Filter Applications</span>
+          {active && (
+            <span style={{ background: "rgba(255,255,255,0.25)", color: "#fff", fontSize: "0.62rem", fontWeight: 700, borderRadius: "20px", padding: "1px 9px" }}>
+              Active
+            </span>
+          )}
+        </div>
+      </div>
+      <Card.Body className="py-3 px-3">
+        <Row className="g-2 align-items-end">
+          <Col md="3" xs="12">
+            <Form.Group className="form-group">
+              <Form.Label className="form-label text-muted mb-1" style={lbl}>District</Form.Label>
+              <Form.Select size="sm" value={district || ""}
+                onChange={(e) => onDistrictChange(e.target.value ? Number(e.target.value) : null)}>
+                <option value="">All Districts</option>
+                {districts.map((d) => <option key={d.districtId} value={d.districtId}>{d.districtName}</option>)}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col md="3" xs="12">
+            <Form.Group className="form-group">
+              <Form.Label className="form-label text-muted mb-1" style={lbl}>Component Type</Form.Label>
+              <Form.Select size="sm" value={component || ""}
+                onChange={(e) => onComponentChange(e.target.value ? Number(e.target.value) : null)}>
+                <option value="">All Components</option>
+                {Object.entries(componentNames).map(([id, name]) => (
+                  <option key={id} value={id}>{name}</option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col md="3" xs="12">
+            <Form.Group className="form-group">
+              <Form.Label className="form-label text-muted mb-1" style={lbl}>Fruits ID</Form.Label>
+              <Form.Control size="sm" type="text" value={fruitsId || ""}
+                onChange={(e) => onFruitsIdChange(e.target.value || null)}
+                onKeyDown={(e) => e.key === "Enter" && onApply()}
+                placeholder="Enter Fruits ID" maxLength={16} />
+            </Form.Group>
+          </Col>
+          <Col md="3" xs="12">
+            <div className="d-flex gap-2">
+              <Button size="sm" variant="primary" onClick={onApply} className="flex-fill">Apply</Button>
+              <Button size="sm" variant="secondary" onClick={onClear} className="flex-fill">Clear</Button>
+            </div>
+          </Col>
+        </Row>
+      </Card.Body>
+    </Card>
+  );
+}
+
+// ─── Inline Breadcrumb (drill-down navigation) ────────────────────────────────
+function DrillBreadcrumb({ crumbs, onNavigate }) {
+  return (
+    <nav className="mb-3">
+      <ol className="breadcrumb breadcrumb-arrow mb-0">
+        {crumbs.map((c, i) => (
+          <li key={i}
+            className={`breadcrumb-item${i === crumbs.length - 1 ? " active fw-bold" : ""}`}
+            style={{ cursor: i < crumbs.length - 1 ? "pointer" : "default", fontSize: "0.82rem" }}
+            onClick={() => i < crumbs.length - 1 && onNavigate(i)}>
+            {c}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+}
+
+// ─── SLA Card ─────────────────────────────────────────────────────────────────
+const STAT_STYLES = {
+  WITHIN_SLA:  { color: "#197a48", hoverBg: "#f0faf5", borderColor: "#b7dfc9" },
+  OUTSIDE_SLA: { color: "#c47d0a", hoverBg: "#fffbf0", borderColor: "#f9d98a" },
+  PENDING:     { color: "#c0392b", hoverBg: "#fef5f5", borderColor: "#f0b8b2" },
+};
+
+function SlaCard({ title, total, withinSla, outsideSla, pendingCount, accent = "#1e67a8", onDrillDown, onViewStatus }) {
+  const stats = [
+    { label: "Within SLA",  count: withinSla,    type: "WITHIN_SLA" },
+    { label: "Outside SLA", count: outsideSla,   type: "OUTSIDE_SLA" },
+    { label: "Pending",     count: pendingCount, type: "PENDING" },
+  ];
+
+  return (
+    <div className="h-100" style={{
+      borderRadius: "10px", overflow: "hidden",
+      boxShadow: "0 2px 10px rgba(0,0,0,0.09)",
+      transition: "transform 0.15s, box-shadow 0.15s",
+      background: "#fff",
+    }}
+      onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 10px 28px rgba(0,0,0,0.14)"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 2px 10px rgba(0,0,0,0.09)"; }}>
+
+      {/* ── Coloured header ── */}
+      <div style={{ background: accent, padding: "16px 18px 14px" }}>
+        <div className="d-flex align-items-start justify-content-between gap-2">
+          <p style={{
+            color: "rgba(255,255,255,0.95)", fontSize: "0.84rem", fontWeight: 600,
+            margin: 0, lineHeight: 1.5, flex: 1,
+          }} title={title}>
+            {title}
+          </p>
+          {onDrillDown && (
+            <button onClick={onDrillDown} style={{
+              background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.38)",
+              color: "#fff", borderRadius: "6px", fontSize: "0.7rem", fontWeight: 600,
+              padding: "3px 10px", cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0,
+            }}>
+              Sub-Schemes ›
+            </button>
+          )}
+        </div>
+
+        <div style={{ marginTop: 10, display: "flex", alignItems: "baseline", gap: 8 }}>
+          <span style={{ color: "#fff", fontSize: "2.1rem", fontWeight: 900, lineHeight: 1 }}>
+            {(total ?? 0).toLocaleString()}
+          </span>
+          <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.73rem" }}>applications</span>
+        </div>
+      </div>
+
+      {/* ── 3 stat cells ── */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
+        {stats.map(({ label, count, type }, idx) => {
+          const s = STAT_STYLES[type];
+          return (
+            <div key={type}
+              onClick={() => onViewStatus(type)}
+              style={{
+                padding: "14px 8px", textAlign: "center", cursor: "pointer",
+                borderRight: idx < 2 ? "1px solid #efefef" : "none",
+                borderTop: "1px solid #efefef",
+                transition: "background 0.13s",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = s.hoverBg; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = ""; }}>
+              <div style={{ fontSize: "1.55rem", fontWeight: 900, color: s.color, lineHeight: 1, marginBottom: 4 }}>
+                {(count ?? 0).toLocaleString()}
+              </div>
+              <div style={{ fontSize: "0.62rem", color: "#8a97a8", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: 6 }}>
+                {label}
+              </div>
+              <span style={{
+                fontSize: "0.6rem", fontWeight: 700, color: s.color,
+                background: s.hoverBg, border: `1px solid ${s.borderColor}`,
+                borderRadius: "20px", padding: "2px 8px",
+              }}>
+                View List
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  MAIN COMPONENT
+// ═══════════════════════════════════════════════════════════════════════════════
+function SakalaDashboard() {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const [level,             setLevel]             = useState(0);
+  const [selectedScheme,    setSelectedScheme]    = useState(null);
+  const [selectedSubScheme, setSelectedSubScheme] = useState(null);
+  const [selectedStatus,    setSelectedStatus]    = useState(null);
+
+  const [loading,          setLoading]          = useState(false);
+  const [totalPending,     setTotalPending]     = useState(0);
+  const [schemeWiseSla,    setSchemeWiseSla]    = useState([]);
+  const [subSchemeWiseSla, setSubSchemeWiseSla] = useState([]);
+
+  const [filterDistrict,  setFilterDistrict]  = useState(null);
+  const [filterComponent, setFilterComponent] = useState(null);
+  const [filterFruitsId,  setFilterFruitsId]  = useState("");
+
+  const [schemeNames,    setSchemeNames]    = useState({});
+  const [subSchemeNames, setSubSchemeNames] = useState({});
+  const [componentNames, setComponentNames] = useState({});
+  const [districts,      setDistricts]      = useState([]);
+
+  const load = (fn) => { setLoading(true); return fn().finally(() => setLoading(false)); };
+
+  // ── Master data ──────────────────────────────────────────────────────────────
+  useEffect(() => {
+    api.get(baseURLMaster + `scSchemeDetails/get-all`)
+      .then((r) => {
+        const m = {};
+        (r.data.content.ScSchemeDetails || []).forEach((s) => { m[s.scSchemeDetailsId] = s.schemeName; });
+        setSchemeNames(m);
+      }).catch(() => {});
+
+    api.get(baseURLMaster + `scComponent/get-all`, { params: { isActive: true } })
+      .then((r) => {
+        const m = {};
+        (r.data.content?.scComponent || []).forEach((c) => { if (c.scComponentId) m[c.scComponentId] = c.scComponentName; });
+        setComponentNames(m);
+      }).catch(() => {});
+
+    api.get(baseURLMaster + `district/get-all`)
+      .then((r) => setDistricts(r.data.content?.district || []))
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (!selectedScheme) return;
+    api.get(baseURLDBT + `master/cost/get-by-scheme-id/${selectedScheme.schemeId}`)
+      .then((r) => {
+        const m = {};
+        (r.data.content.unitCost || []).forEach((s) => { m[s.subSchemeId] = s.subSchemeName; });
+        setSubSchemeNames(m);
+      }).catch(() => {});
+  }, [selectedScheme]);
+
+  // ── Level 0 total ────────────────────────────────────────────────────────────
+  const fetchTotal = useCallback(() => {
+    load(() => api.get(baseURLDBT + `service/sakala/pending-count`)
+      .then((r) => setTotalPending(r.data?.totalPending ?? 0)).catch(() => {}));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => { fetchTotal(); }, [fetchTotal]);
+
+  // ── Fetchers ─────────────────────────────────────────────────────────────────
+  const buildFilterParams = (dId, cId, fId) => ({
+    ...(dId != null       && { districtId:  dId }),
+    ...(cId != null       && { componentId: cId }),
+    ...(fId && fId.trim() && { fruitsId: fId.trim() }),
+  });
+
+  const fetchSchemeWiseSla = (dId, cId, fId) =>
+    load(() => api.get(baseURLDBT + `service/sakala/scheme-wise-sla`, { params: buildFilterParams(dId, cId, fId) })
+      .then((r) => setSchemeWiseSla(r.data || [])).catch(() => setSchemeWiseSla([])));
+
+  const fetchSubSchemeWiseSla = (sid, dId, cId, fId) =>
+    load(() => api.get(baseURLDBT + `service/sakala/subscheme-wise-sla`, {
+        params: { schemeId: sid, ...buildFilterParams(dId, cId, fId) },
+      })
+      .then((r) => setSubSchemeWiseSla(r.data || [])).catch(() => setSubSchemeWiseSla([])));
+
+  // ── Filter apply / clear ─────────────────────────────────────────────────────
+  const applyFilters = () => {
+    if (level === 1) fetchSchemeWiseSla(filterDistrict, filterComponent, filterFruitsId);
+    else if (level === 2 && selectedScheme) fetchSubSchemeWiseSla(selectedScheme.schemeId, filterDistrict, filterComponent, filterFruitsId);
+  };
+
+  const clearFilters = () => {
+    setFilterDistrict(null);
+    setFilterComponent(null);
+    setFilterFruitsId("");
+    if (level === 1) fetchSchemeWiseSla(null, null, null);
+    else if (level === 2 && selectedScheme) fetchSubSchemeWiseSla(selectedScheme.schemeId, null, null, null);
+  };
+
+  // ── Navigation ────────────────────────────────────────────────────────────────
+  const goSchemes = () => { setLevel(1); fetchSchemeWiseSla(filterDistrict, filterComponent, filterFruitsId); };
+
+  const goSubSchemes = (scheme) => {
+    setSelectedScheme(scheme);
+    setSelectedSubScheme(null);
+    setLevel(2);
+    fetchSubSchemeWiseSla(scheme.schemeId, filterDistrict, filterComponent, filterFruitsId);
+  };
+
+  const goToList = (params) => navigate("/seriui/pendency-application-list", { state: params });
+
+  const goApplicationListFromScheme = (scheme, status) =>
+    goToList({ schemeId: scheme.schemeId, statusType: status, schemeName: scheme.schemeName });
+
+  const goApplicationListFromSubScheme = (subScheme, status) =>
+    goToList({
+      schemeId:      selectedScheme.schemeId,
+      subSchemeId:   subScheme.subSchemeId,
+      statusType:    status,
+      schemeName:    selectedScheme.schemeName,
+      subSchemeName: subScheme.subSchemeName,
+      slaDays:       subScheme.slaDays,
+    });
+
+  const navigateTo = (li) => {
+    setLevel(li);
+    if (li <= 0) { setSelectedScheme(null); setSelectedSubScheme(null); setSelectedStatus(null); }
+    if (li === 1) { setSelectedSubScheme(null); setSelectedStatus(null); fetchSchemeWiseSla(filterDistrict, filterComponent, filterFruitsId); }
+    if (li === 2 && selectedScheme) { setSelectedStatus(null); fetchSubSchemeWiseSla(selectedScheme.schemeId, filterDistrict, filterComponent, filterFruitsId); }
+  };
+
+  // ── Breadcrumbs ───────────────────────────────────────────────────────────────
+  const crumbs = ["Dashboard"];
+  if (level >= 1) crumbs.push("Schemes");
+  if (level >= 2 && selectedScheme) crumbs.push(selectedScheme.schemeName || `Scheme ${selectedScheme.schemeId}`);
+
+  const activeFilterCount = [filterDistrict, filterComponent, filterFruitsId && filterFruitsId.trim()].filter(Boolean).length;
+
+  // ── Render ────────────────────────────────────────────────────────────────────
+  return (
+    <Layout title="Application Pendency Dashboard">
+      <style>{`
+        @keyframes fadeSlideUp {
+          from { opacity: 0; transform: translateY(12px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .sak-anim { animation: fadeSlideUp 0.25s ease both; }
+        .sak-del-1 { animation-delay: 0.04s; }
+        .sak-del-2 { animation-delay: 0.09s; }
+        .sak-del-3 { animation-delay: 0.14s; }
+        .sak-del-4 { animation-delay: 0.19s; }
+        .sak-del-5 { animation-delay: 0.24s; }
+      `}</style>
+
+      {/* ── Page Header ──────────────────────────────────────────────────────── */}
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Pendency Dashboard")}</Block.Title>
+            <Block.Title tag="h2">{t("Application Pendency Dashboard")}</Block.Title>
+            <nav>
+              <ol className="breadcrumb breadcrumb-arrow mb-0">
+                <li className="breadcrumb-item"><a href="/seriui/">Home</a></li>
+                <li className="breadcrumb-item active">Application Pendency Dashboard</li>
+              </ol>
+            </nav>
           </Block.HeadContent>
-          
+          {level > 0 && (
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Button variant="primary" size="sm"
+                    className="d-md-none d-inline-flex align-items-center gap-1"
+                    onClick={() => navigateTo(level - 1)}>
+                    <Icon name="arrow-long-left" />
+                    <span>Back</span>
+                  </Button>
+                </li>
+                <li>
+                  <Button variant="primary"
+                    className="d-none d-md-inline-flex align-items-center gap-1"
+                    onClick={() => navigateTo(level - 1)}>
+                    <Icon name="arrow-long-left" />
+                    <span>{level === 2 ? "Back to Schemes" : "Back to Dashboard"}</span>
+                  </Button>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          )}
         </Block.HeadBetween>
       </Block.Head>
 
       <Block className="mt-n4">
-      
-  
-      <Row className="g-4 mt-3">
-            {dashboardData.map((item) => (
-                <Col xxl="3" xl="3" lg="4" md="6" sm="12" key={item.id}>
-                <Card
-                    className="h-100 shadow-sm dashboard-card"
-                    style={{
-                    borderRadius: "14px",
-                    cursor: "pointer",
-                    borderLeft: `6px solid ${item.color}`,
-                    }}
-                    // onClick={() => goto(item.id)}
-                    onClick={() => {
-                        if (item.id === 1) {
-                            handleShowModal6();   // ✅ Open Modal 6
-                        } else {
-                            goto(item.id);        // ✅ Normal navigation
-                        }
-                        }}
-                    >
-                    <Card.Body className="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 className="text-muted mb-1">{item.title}</h6>
-                        <h2 className="fw-bold mb-0">{item.count}</h2>
+
+        {/* Drill-down breadcrumb */}
+        {level > 0 && <DrillBreadcrumb crumbs={crumbs} onNavigate={navigateTo} />}
+
+        {/* Filter Bar */}
+        {level > 0 && (
+          <FilterBar
+            district={filterDistrict} component={filterComponent} fruitsId={filterFruitsId}
+            onDistrictChange={setFilterDistrict} onComponentChange={setFilterComponent}
+            onFruitsIdChange={setFilterFruitsId} onApply={applyFilters} onClear={clearFilters}
+            districts={districts} componentNames={componentNames}
+          />
+        )}
+
+        {/* Spinner */}
+        {loading && (
+          <div className="d-flex justify-content-center align-items-center py-5">
+            <div className="text-center">
+              <Spinner animation="border" className="text-primary" style={{ width: 36, height: 36 }} />
+              <p className="text-muted mt-3 mb-0 small">Loading…</p>
+            </div>
+          </div>
+        )}
+
+        {/* ── LEVEL 0 — Overview ──────────────────────────────────────────────── */}
+        {!loading && level === 0 && (
+          <div className="sak-anim">
+            <Row className="g-gs justify-content-start">
+              <Col xxl="4" lg="5" md="7" xs="12">
+                <Card style={{
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
+                  border: "none", borderRadius: "12px", overflow: "hidden",
+                }}>
+
+                  {/* Gradient header */}
+                  <div style={{
+                    background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)",
+                    padding: "22px 24px 18px",
+                  }}>
+                    <p style={{
+                      color: "rgba(255,255,255,0.65)", fontSize: "0.68rem",
+                      fontWeight: 700, textTransform: "uppercase",
+                      letterSpacing: "0.1em", margin: 0,
+                    }}>
+                      Department of Sericulture
+                    </p>
+                    <h5 style={{
+                      color: "#fff", fontWeight: 700, margin: "4px 0 0",
+                      fontSize: "1.05rem", lineHeight: 1.3,
+                    }}>
+                      Application Pendency Overview
+                    </h5>
+                  </div>
+
+                  <Card.Body className="px-4 pt-4 pb-4">
+
+                    {/* Total count */}
+                    <div className="pb-3 mb-3 border-bottom">
+                      <p className="text-muted mb-1 fw-semibold text-uppercase"
+                        style={{ fontSize: "0.68rem", letterSpacing: "0.07em" }}>
+                        Total Applications
+                      </p>
+                      <div className="fw-bold text-primary mb-1"
+                        style={{ fontSize: "3.4rem", lineHeight: 1, fontFamily: "inherit" }}>
+                        {totalPending.toLocaleString()}
+                      </div>
+                      <p className="text-muted mb-0" style={{ fontSize: "0.78rem" }}>
+                        Across all schemes and statuses
+                      </p>
                     </div>
 
-                    <div
-                        className="d-flex align-items-center justify-content-center"
-                        style={{
-                        width: "48px",
-                        height: "48px",
-                        borderRadius: "50%",
-                        backgroundColor: item.color,
-                        color: "#fff",
-                        }}
-                    >
-                        <Icon name={item.icon} size="lg" />
+                    {/* SLA Status legend */}
+                    <div className="mb-4">
+                      <div className="d-flex flex-wrap gap-3">
+                        {STATUS_ITEMS.map((s) => (
+                          <div key={s.key} className="d-flex align-items-center gap-1">
+                            <span style={{
+                              width: 6, height: 6, borderRadius: "50%",
+                              background: s.dotColor, display: "inline-block", flexShrink: 0,
+                            }} />
+                            <span style={{ fontSize: "0.68rem", color: "#6c757d" }}>
+                              {s.label}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    </Card.Body>
+
+                    {/* CTA button */}
+                    <Button
+                      variant="primary"
+                      className="w-100 d-flex align-items-center justify-content-center gap-2"
+                      style={{ padding: "10px 0", fontWeight: 700, fontSize: "0.88rem", borderRadius: "8px" }}
+                      onClick={goSchemes}>
+                      <Icon name="bar-chart-2" />
+                      View Scheme-wise Breakdown
+                    </Button>
+
+                  </Card.Body>
                 </Card>
-                </Col>
-            ))}
+              </Col>
             </Row>
+          </div>
+        )}
+
+        {/* ── LEVEL 1 — Scheme SLA cards ─────────────────────────────────────── */}
+        {!loading && level === 1 && (
+          <div className="sak-anim">
+            {/* Section header */}
+            <div style={{
+              borderLeft: "4px solid #1e67a8", background: "#fff",
+              borderRadius: "0 8px 8px 0", padding: "10px 16px",
+              marginBottom: "16px", boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+              display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
+            }}>
+              <span style={{ fontWeight: 700, fontSize: "0.9rem", color: "#1a2a3a" }}>Scheme-wise Breakdown</span>
+              {activeFilterCount > 0 && (
+                <span className="badge bg-primary" style={{ fontSize: "0.63rem" }}>
+                  {activeFilterCount} filter{activeFilterCount > 1 ? "s" : ""} active
+                </span>
+              )}
+              <span className="text-muted small">
+                Click a count to view the application list · Click Sub-Schemes to drill down
+              </span>
+            </div>
+
+            {schemeWiseSla.length === 0 ? (
+              <div className="text-center py-5">
+                <p className="text-muted mb-0">No applications found for the selected filters.</p>
+              </div>
+            ) : (
+              <Row className="g-3">
+                {schemeWiseSla.map((item, i) => {
+                  const schemeName = schemeNames[item.schemeId] || `Scheme ${item.schemeId}`;
+                  const scheme = { schemeId: item.schemeId, schemeName };
+                  return (
+                    <Col lg="4" md="6" key={item.schemeId} className={`sak-anim sak-del-${Math.min(i + 1, 5)}`}>
+                      <SlaCard
+                        title={schemeName}
+                        total={item.totalCount}
+                        withinSla={item.withinSla}
+                        outsideSla={item.outsideSla}
+                        pendingCount={item.pendingCount}
+                        accent={accents[i % accents.length]}
+                        onDrillDown={() => goSubSchemes(scheme)}
+                        onViewStatus={(status) => goApplicationListFromScheme(scheme, status)}
+                      />
+                    </Col>
+                  );
+                })}
+              </Row>
+            )}
+          </div>
+        )}
+
+        {/* ── LEVEL 2 — Sub-scheme SLA cards ─────────────────────────────────── */}
+        {!loading && level === 2 && (
+          <div className="sak-anim">
+            {/* Section header card */}
+            {/* Section header */}
+            <div style={{
+              borderLeft: "4px solid #1e67a8", background: "#fff",
+              borderRadius: "0 8px 8px 0", padding: "10px 16px",
+              marginBottom: "16px", boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+              display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
+            }}>
+              <span style={{ fontWeight: 700, fontSize: "0.9rem", color: "#1a2a3a" }}>Sub-Schemes</span>
+              {selectedScheme?.schemeName && (
+                <span className="badge bg-light border text-secondary fw-semibold" style={{ fontSize: "0.72rem" }}>
+                  {selectedScheme.schemeName}
+                </span>
+              )}
+              {activeFilterCount > 0 && (
+                <span className="badge bg-primary" style={{ fontSize: "0.63rem" }}>
+                  {activeFilterCount} filter{activeFilterCount > 1 ? "s" : ""} active
+                </span>
+              )}
+              <span className="text-muted small">Click a count to view the application list</span>
+            </div>
+
+            {subSchemeWiseSla.length === 0 ? (
+              <div className="text-center py-5">
+                <p className="text-muted mb-0">No sub-scheme data found for the selected filters.</p>
+              </div>
+            ) : (
+              <Row className="g-3">
+                {subSchemeWiseSla.map((item, i) => {
+                  const subSchemeName = subSchemeNames[item.subSchemeId] || `Sub-Scheme ${item.subSchemeId}`;
+                  const subScheme = { subSchemeId: item.subSchemeId, subSchemeName, slaDays: item.slaDays };
+                  return (
+                    <Col lg="4" md="6" key={item.subSchemeId} className={`sak-anim sak-del-${Math.min(i + 1, 5)}`}>
+                      <SlaCard
+                        title={subSchemeName}
+                        total={item.totalCount}
+                        withinSla={item.withinSla}
+                        outsideSla={item.outsideSla}
+                        pendingCount={item.pendingCount}
+                        accent={accents[(i + 2) % accents.length]}
+                        onDrillDown={null}
+                        onViewStatus={(status) => goApplicationListFromSubScheme(subScheme, status)}
+                      />
+                    </Col>
+                  );
+                })}
+              </Row>
+            )}
+          </div>
+        )}
+
       </Block>
-
-
-       <Modal show={showModal6} onHide={handleCloseModal6} size="xl" centered>
-  <Modal.Header
-  closeButton
-  className="bg-light"
-  style={{ padding: "18px 24px" }}
->
-  <Modal.Title className="fw-bold text-primary">
-    📊 Dashboard Summary
-  </Modal.Title>
-</Modal.Header>
-
-
-  <Modal.Body className="pt-2 pb-4">
-  <Row className="g-4">
-
-    {/* Pending Beyond Due Date */}
-    <Col md={4}>
-      <Card className="kpi-card gradient-danger">
-        <Card.Body className="text-center text-white">
-          <div className="kpi-icon kpi-icon-danger mb-3">
-            <Icon name="clock" />
-          </div>
-
-          {/* <h6 className="opacity-75 mb-1"> */}
-          <h6 className="opacity-75 mb-1" style={{ fontSize: "13px" }}>
-            Pending Beyond Due Date
-          </h6>
-
-          {/* <h6 className="fw-semibold mb-0">128</h6> */}
-          <h6 className="fw-semibold mb-0" style={{ fontSize: "18px" }}>
-                128
-                </h6>
-
-
-          <span className="badge bg-light text-danger px-3 py-1">
-            Breached
-          </span>
-        </Card.Body>
-      </Card>
-    </Col>
-
-    {/* Disposed Within Prescribed Time */}
-    <Col md={4}>
-      <Card className="kpi-card gradient-success">
-        <Card.Body className="text-center text-white">
-          <div className="kpi-icon kpi-icon-success mb-3">
-            <Icon name="check-circle" />
-          </div>
-
-          <h6 className="opacity-75 mb-1">
-            Disposed Within Prescribed Time
-          </h6>
-
-          <h6 className="fw-semibold mb-0">128</h6>
-
-
-
-          <span className="badge bg-light text-success px-3 py-1">
-            On Time
-          </span>
-        </Card.Body>
-      </Card>
-    </Col>
-
-    {/* Disposed After Due Date */}
-    <Col md={4}>
-      <Card className="kpi-card gradient-warning">
-        <Card.Body className="text-center text-white">
-          <div className="kpi-icon kpi-icon-warning mb-3">
-            <Icon name="alert-circle" />
-          </div>
-
-          <h6 className="opacity-75 mb-1">
-            Disposed After Due Date
-          </h6>
-
-          <h6 className="fw-semibold mb-0">128</h6>
-
-
-          <span className="badge bg-light text-warning px-3 py-1">
-            Delayed
-          </span>
-        </Card.Body>
-      </Card>
-    </Col>
-
-  </Row>
-
-  <hr className="my-4" />
-
-<Card className="shadow-sm border-0">
-  <Card.Body>
-    <Row className="g-3 align-items-end">
-
-      <Col md={6}>
-        <Form.Group>
-          <Form.Label className="fw-bold">
-            Select Dashboard
-          </Form.Label>
-          <Form.Select
-            value={selectedDashboard}
-            onChange={(e) => setSelectedDashboard(e.target.value)}
-          >
-            <option value="">-- Select Dashboard --</option>
-            <option value="Pending Beyond Due Date">
-              Pending Beyond Due Date
-            </option>
-            <option value="Disposed Within Prescribed Time">
-              Disposed Within Prescribed Time
-            </option>
-            <option value="Disposed After Due Date">
-              Disposed After Due Date
-            </option>
-          </Form.Select>
-        </Form.Group>
-      </Col>
-
-      <Col md={3}>
-        <Button
-          variant="primary"
-          className="w-100"
-          onClick={() => setShowTable(true)}
-          disabled={!selectedDashboard}
-        >
-          Search
-        </Button>
-      </Col>
-
-    </Row>
-  </Card.Body>
-</Card>
-
-{showTable && (
-  <Card className="mt-4 shadow-sm border-0">
-    <Card.Body>
-      <h5 className="mb-3 text-primary">
-        Dashboard Details
-      </h5>
-
-      <div className="table-responsive">
-        <table className="table table-bordered table-hover align-middle">
-          <thead className="table-light">
-            <tr>
-              <th>Beneficiary Name</th>
-              <th>FID</th>
-              <th>Application Submission Date </th>
-              <th>Application Due Date </th>
-              <th>Breached Days</th>
-              <th>Days Pending</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {dashboardDetailsData
-              .filter(
-                (item) => item.dashboard === selectedDashboard
-              )
-              .map((item, index) => (
-                <tr key={index}>
-                   <td>{item.beneficiaryName}</td>
-                    <td>{item.fid}</td>
-                    <td>{item.applicationSubmissionDate}</td>
-                    <td>{item.applicationDueDate}</td>
-                    <td>{item.breachedDays}</td>
-                    <td>{item.daysPending}</td>
-                  <td>
-                    <span
-                      className={`badge ${
-                        item.status === "Completed On Time"
-                          ? "bg-success"
-                          : item.status === "Delayed"
-                          ? "bg-warning text-dark"
-                          : "bg-danger"
-                      }`}
-                    >
-                      {item.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
-    </Card.Body>
-  </Card>
-)}
-
-
-</Modal.Body>
-
-
-        <Modal.Footer className="border-0">
-            <Button variant="secondary" onClick={handleCloseModal6}>
-            Close
-            </Button>
-        </Modal.Footer>
-
-        {/* Inline Styles */}
-        <style>
-        {`
-        .kpi-card {
-        border-radius: 14px;
-        border: none;
-        min-height: 120px; /* 👈 smaller */
-        transition: all 0.25s ease;
-        cursor: pointer;
-        padding: 6px;
-        }
-
-        .kpi-card:hover {
-        transform: translateY(-4px) scale(1.01);
-        box-shadow: 0 10px 18px rgba(0,0,0,0.18);
-        }
-
-        /* Gradient Backgrounds */
-        .gradient-danger {
-            background: linear-gradient(135deg, #f8b4b4, #f06565);
-            }
-
-            .gradient-success {
-            background: linear-gradient(135deg, #b6e3c6, #4fb286);
-            }
-
-            .gradient-warning {
-            background: linear-gradient(135deg, #ffe5a3, #ffb703);
-            }
-
-        /* Icon Styles */
-        .kpi-icon {
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 16px;
-        margin-bottom: 6px
-        margin: 0 auto;
-        background: rgba(255,255,255,0.3);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-
-        .kpi-icon-danger {
-            color: #fff;
-        }
-
-        .kpi-icon-success {
-            color: #fff;
-        }
-
-        .kpi-icon-warning {
-            color: #fff;
-        }
-        `}
-        </style>
-
-        </Modal>
-
     </Layout>
   );
 }

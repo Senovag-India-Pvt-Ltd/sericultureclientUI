@@ -203,7 +203,13 @@ function TestingOfMothList() {
       sortable: true,
       hide: "md",
     },
-    
+    {
+      name: t("Examination Date"),
+      selector: (row) => row.examinationDate,
+      cell: (row) => <span>{row.examinationDate ? String(row.examinationDate).slice(0, 10) : ""}</span>,
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (

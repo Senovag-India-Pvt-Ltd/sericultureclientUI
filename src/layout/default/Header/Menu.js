@@ -5634,6 +5634,30 @@ function Menu() {
                               to="/seriui/seed-market-district-wise-report"
                             />
                           </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Seed Market Budget Remittance (Sheet 2 §C · Entry)")}
+                              to="/seriui/seed-market-budget-entry"
+                            />
+                          </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Seed Market Budget Remittance (Sheet 2 §C · List)")}
+                              to="/seriui/seed-market-budget-list"
+                            />
+                          </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Seed Market Staff Establishment (Sheet 2 §D · Entry)")}
+                              to="/seriui/seed-market-staff-entry"
+                            />
+                          </MenuItem>
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Seed Market Staff Establishment (Sheet 2 §D · List)")}
+                              to="/seriui/seed-market-staff-list"
+                            />
+                          </MenuItem>
 
                           <MenuItem>
                             <MenuItemLink
@@ -6250,64 +6274,9 @@ function Menu() {
                           </MenuSub>
                         </MenuItem>
 
-                        <MenuItem sub>
-                          <MenuItemLink
-                            text={t("TSC Reports")}
-                            onClick={menuToggle}
-                            onMouseEnter={menuHover}
-                            sub
-                          />
-                          <MenuSub>
-                            <MenuItem>
-                              <MenuItemLink
-                                text={t("TSC Farmer Statistics Report")}
-                                to="/seriui/tsc-farmer-stats-report"
-                              />
-                            </MenuItem>
-                            <MenuItem>
-                              <MenuItemLink
-                                text={t("TSC Mulberry Area Report")}
-                                to="/seriui/tsc-mulberry-area-report"
-                              />
-                            </MenuItem>
-                            <MenuItem>
-                              <MenuItemLink
-                                text={t("TSC Chawki & Harvest Report")}
-                                to="/seriui/tsc-chawki-harvest-report"
-                              />
-                            </MenuItem>
-                            <MenuItem>
-                              <MenuItemLink
-                                text={t("TSC Seed Cocoon Production Report")}
-                                to="/seriui/tsc-seed-cocoon-report"
-                              />
-                            </MenuItem>
-                            <MenuItem>
-                              <MenuItemLink
-                                text={t("TSC Chawki & Cocoon Weekly Report")}
-                                to="/seriui/tsc-chawki-cocoon-weekly-report"
-                              />
-                            </MenuItem>
-                            <MenuItem>
-                              <MenuItemLink
-                                text={t("TSC New Mulberry Plantings Report")}
-                                to="/seriui/tsc-new-mulberry-plantings-report"
-                              />
-                            </MenuItem>
-                            <MenuItem>
-                              <MenuItemLink
-                                text={t("TSC P2 Brushed DFLs Report")}
-                                to="/seriui/tsc-p2-brushed-dfls-report"
-                              />
-                            </MenuItem>
-                            <MenuItem>
-                              <MenuItemLink
-                                text={t("TSC Daily Chawki Weekly Report")}
-                                to="/seriui/tsc-daily-chawki-week-report"
-                              />
-                            </MenuItem>
-                          </MenuSub>
-                        </MenuItem>
+                        {/* TSC Reports moved out of Mysore Seed Area to the new
+                            top-level "TSC Reports" parent in Format Reports — see "TSC
+                            (Mysore Seed Area)" child of that parent. */}
 
                         <MenuItem sub>
                               <MenuItemLink
@@ -6587,9 +6556,157 @@ function Menu() {
                               </MenuSub>
                             </MenuItem>
 
+                            {/* TSC Reports (Bivoltine) moved out of Bivoltine Seed Area to
+                                the new top-level "TSC Reports" parent in Format Reports —
+                                see "TSC (Bivoltine)" child of that parent. */}
+
+                            {/* ─── ADS Reports (under Bivoltine Seed Area) ─── */}
                             <MenuItem sub>
                               <MenuItemLink
-                                text={t("TSC Reports (Bivoltine)")}
+                                text={t("ADS Reports")}
+                                onClick={menuToggle}
+                                onMouseEnter={menuHover}
+                                sub
+                              />
+                              <MenuSub>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Monthly Subdivision Progress (5 Programmes)")}
+                                    to="/seriui/tsc-monthly-subdivision-progress-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Monthly Farmer Category Detail")}
+                                    to="/seriui/tsc-monthly-farmer-category-detail-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("NREGA Progress — Line Department (Block-wise)")}
+                                    to="/seriui/tsc-monthly-nrega-progress-report"
+                                  />
+                                </MenuItem>
+                              </MenuSub>
+                            </MenuItem>
+
+                            {/* ─── DD Reports (under Bivoltine Seed Area) ─── */}
+                            <MenuItem sub>
+                              <MenuItemLink
+                                text={t("DD Reports")}
+                                onClick={menuToggle}
+                                onMouseEnter={menuHover}
+                                sub
+                              />
+                              <MenuSub>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("DD · Form 27A · Mulberry Area")}
+                                    to="/seriui/dd-mulberry-area-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("DD · Form 27B · Crop Yield Detail")}
+                                    to="/seriui/dd-crop-yield-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("DD · Form 28 · Chawki Progress (Bivoltine)")}
+                                    to="/seriui/dd-chawki-progress-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("DD · Form 32 · Cocoon Production (Bivoltine)")}
+                                    to="/seriui/dd-cocoon-progress-report"
+                                  />
+                                </MenuItem>
+                              </MenuSub>
+                            </MenuItem>
+
+                            {/* Training moved out of Bivoltine Seed Area to the new
+                                top-level "Training Reports" parent in Format Reports. */}
+                          </MenuSub>
+                        </MenuItem>
+                        {/* ─── End Bivoltine Seed Area ─── */}
+
+                        {/* ─── TSC Reports — single top-level parent in Format Reports;
+                            Mysore-side and Bivoltine-side TSC reports live as siblings
+                            inside, no longer buried under Seed Area parents. ─── */}
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("TSC Reports")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            {/* ─── TSC (Mysore Seed Area) — 8 reports ─── */}
+                            <MenuItem sub>
+                              <MenuItemLink
+                                text={t("TSC (Mysore Seed Area)")}
+                                onClick={menuToggle}
+                                onMouseEnter={menuHover}
+                                sub
+                              />
+                              <MenuSub>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Farmer Statistics Report")}
+                                    to="/seriui/tsc-farmer-stats-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Mulberry Area Report")}
+                                    to="/seriui/tsc-mulberry-area-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Chawki & Harvest Report")}
+                                    to="/seriui/tsc-chawki-harvest-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Seed Cocoon Production Report")}
+                                    to="/seriui/tsc-seed-cocoon-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Chawki & Cocoon Weekly Report")}
+                                    to="/seriui/tsc-chawki-cocoon-weekly-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC New Mulberry Plantings Report")}
+                                    to="/seriui/tsc-new-mulberry-plantings-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC P2 Brushed DFLs Report")}
+                                    to="/seriui/tsc-p2-brushed-dfls-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("TSC Daily Chawki Weekly Report")}
+                                    to="/seriui/tsc-daily-chawki-week-report"
+                                  />
+                                </MenuItem>
+                              </MenuSub>
+                            </MenuItem>
+
+                            {/* ─── TSC (Bivoltine) — 22 reports ─── */}
+                            <MenuItem sub>
+                              <MenuItemLink
+                                text={t("TSC (Bivoltine)")}
                                 onClick={menuToggle}
                                 onMouseEnter={menuHover}
                                 sub
@@ -6735,105 +6852,40 @@ function Menu() {
                                 </MenuItem>
                               </MenuSub>
                             </MenuItem>
+                          </MenuSub>
+                        </MenuItem>
 
-                            {/* ─── ADS Reports (under Bivoltine Seed Area) ─── */}
-                            <MenuItem sub>
+                        {/* ─── Training Reports — moved out of Bivoltine Seed Area;
+                            only Bivoltine variant exists today so the 3 reports sit
+                            directly inside this parent (no extra nesting). ─── */}
+                        <MenuItem sub>
+                          <MenuItemLink
+                            text={t("Training Reports")}
+                            onClick={menuToggle}
+                            onMouseEnter={menuHover}
+                            sub
+                          />
+                          <MenuSub>
+                            <MenuItem>
                               <MenuItemLink
-                                text={t("ADS Reports")}
-                                onClick={menuToggle}
-                                onMouseEnter={menuHover}
-                                sub
+                                text={t("Training · Form 1 · Physical Progress")}
+                                to="/seriui/training-physical-progress-report"
                               />
-                              <MenuSub>
-                                <MenuItem>
-                                  <MenuItemLink
-                                    text={t("TSC Monthly Subdivision Progress (5 Programmes)")}
-                                    to="/seriui/tsc-monthly-subdivision-progress-report"
-                                  />
-                                </MenuItem>
-                                <MenuItem>
-                                  <MenuItemLink
-                                    text={t("TSC Monthly Farmer Category Detail")}
-                                    to="/seriui/tsc-monthly-farmer-category-detail-report"
-                                  />
-                                </MenuItem>
-                                <MenuItem>
-                                  <MenuItemLink
-                                    text={t("NREGA Progress — Line Department (Block-wise)")}
-                                    to="/seriui/tsc-monthly-nrega-progress-report"
-                                  />
-                                </MenuItem>
-                              </MenuSub>
                             </MenuItem>
-
-                            {/* ─── DD Reports (under Bivoltine Seed Area) ─── */}
-                            <MenuItem sub>
+                            <MenuItem>
                               <MenuItemLink
-                                text={t("DD Reports")}
-                                onClick={menuToggle}
-                                onMouseEnter={menuHover}
-                                sub
+                                text={t("Training · Form 2 · Financial Progress")}
+                                to="/seriui/training-financial-progress-report"
                               />
-                              <MenuSub>
-                                <MenuItem>
-                                  <MenuItemLink
-                                    text={t("DD · Form 27A · Mulberry Area")}
-                                    to="/seriui/dd-mulberry-area-report"
-                                  />
-                                </MenuItem>
-                                <MenuItem>
-                                  <MenuItemLink
-                                    text={t("DD · Form 27B · Crop Yield Detail")}
-                                    to="/seriui/dd-crop-yield-report"
-                                  />
-                                </MenuItem>
-                                <MenuItem>
-                                  <MenuItemLink
-                                    text={t("DD · Form 28 · Chawki Progress (Bivoltine)")}
-                                    to="/seriui/dd-chawki-progress-report"
-                                  />
-                                </MenuItem>
-                                <MenuItem>
-                                  <MenuItemLink
-                                    text={t("DD · Form 32 · Cocoon Production (Bivoltine)")}
-                                    to="/seriui/dd-cocoon-progress-report"
-                                  />
-                                </MenuItem>
-                              </MenuSub>
                             </MenuItem>
-
-                            {/* ─── Training (under Bivoltine Seed Area) ─── */}
-                            <MenuItem sub>
+                            <MenuItem>
                               <MenuItemLink
-                                text={t("Training")}
-                                onClick={menuToggle}
-                                onMouseEnter={menuHover}
-                                sub
+                                text={t("Training · Form 3 · Maintenance Expense (Item-wise)")}
+                                to="/seriui/training-maintenance-expense-report"
                               />
-                              <MenuSub>
-                                <MenuItem>
-                                  <MenuItemLink
-                                    text={t("Training · Form 1 · Physical Progress")}
-                                    to="/seriui/training-physical-progress-report"
-                                  />
-                                </MenuItem>
-                                <MenuItem>
-                                  <MenuItemLink
-                                    text={t("Training · Form 2 · Financial Progress")}
-                                    to="/seriui/training-financial-progress-report"
-                                  />
-                                </MenuItem>
-                                <MenuItem>
-                                  <MenuItemLink
-                                    text={t("Training · Form 3 · Maintenance Expense (Item-wise)")}
-                                    to="/seriui/training-maintenance-expense-report"
-                                  />
-                                </MenuItem>
-                              </MenuSub>
                             </MenuItem>
                           </MenuSub>
                         </MenuItem>
-                        {/* ─── End Bivoltine Seed Area ─── */}
 
                     {/* <MenuItem>
                       <MenuItemLink
@@ -6846,23 +6898,31 @@ function Menu() {
                 </MenuItem>
               ) : null}
 
+            {/* Dashboards merged into a single expandable parent with Old / New as children. */}
             {showMenu.Reports_Dashboard ? (
-              <MenuItem>
+              <MenuItem sub>
                 <MenuItemLink
-                  text={t("Dashboards - Old")}
-                  to="https://app.powerbi.com/view?r=eyJrIjoiYTJjNGEzYjktMzFkZS00NjBjLTg4NjUtMTViZTVjNDMzZjEyIiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9&pageName=7a11927e5e64dcc23c23"
-                  blank={true}
+                  text={t("Dashboards")}
+                  onClick={menuToggle}
+                  onMouseEnter={menuHover}
+                  sub
                 />
-              </MenuItem>
-            ) : null}
-
-            {showMenu.Reports_Dashboard ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Dashboards - New")}
-                  to="https://app.powerbi.com/view?r=eyJrIjoiYTFmMjJiMTctMDk2Yi00M2U0LTk2NTAtZmIzYjQ0ODE2YWM2IiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9"
-                  blank={true}
-                />
+                <MenuSub>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Old")}
+                      to="https://app.powerbi.com/view?r=eyJrIjoiYTJjNGEzYjktMzFkZS00NjBjLTg4NjUtMTViZTVjNDMzZjEyIiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9&pageName=7a11927e5e64dcc23c23"
+                      blank={true}
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("New")}
+                      to="https://app.powerbi.com/view?r=eyJrIjoiYTFmMjJiMTctMDk2Yi00M2U0LTk2NTAtZmIzYjQ0ODE2YWM2IiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9"
+                      blank={true}
+                    />
+                  </MenuItem>
+                </MenuSub>
               </MenuItem>
             ) : null}
 

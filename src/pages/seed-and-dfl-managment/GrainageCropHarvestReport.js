@@ -164,9 +164,18 @@ function GrainageCropHarvestReport() {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/crop-harvest", { params: params() });
       setDataRows(Array.isArray(res.data) ? res.data : []);
       setHasReport(true);
-    } catch {
-      showErr("Fetch Failed", "Failed to load the Crop Harvest Details report.");
-    } finally {
+    } catch (err) {
+        const status = err?.response?.status;
+        if (status === 404 || status === 204) {
+          showErr("No Data Found", "No data found for the selected filters.");
+        } else {
+          const data = err?.response?.data;
+          const backendMsg = typeof data === "string"
+            ? data
+            : (data?.message || data?.error || data?.errorMessage || data?.error_description);
+          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the Crop Harvest Details report.");
+        }
+      } finally {
       setIsLoading(false);
     }
   };
@@ -441,7 +450,7 @@ function GrainageCropHarvestReport() {
                                 color: has ? "#134e4a" : "#cbd5e0",
                                 fontWeight: 700, fontSize: "13px", verticalAlign: "middle",
                               }}>
-                                <div>{has ? (row[w.key] ?? v) : "—"}</div>
+                                <div>{String(row[w.key] ?? "").trim() !== "" ? (row[w.key] ?? v) : "—"}</div>
                                 {has && wkMax > 0 && (
                                   <div style={{
                                     marginTop: "5px",
@@ -464,10 +473,10 @@ function GrainageCropHarvestReport() {
                             background: monthVal > 0
                               ? "linear-gradient(135deg,#e0e7ff,#eef2ff)"
                               : (alt ? "#f1f5f9" : "#ffffff"),
-                            color: monthVal > 0 ? "#312e81" : "#cbd5e0",
+                            color: monthVal > 0 ? "#312e81" : "#64748b",
                             fontWeight: 800, fontSize: "13.5px",
                           }}>
-                            {monthVal > 0 ? (row.monthly_total ?? monthVal) : "—"}
+                            {String(row.monthly_total ?? "").trim() !== "" ? row.monthly_total : "—"}
                           </td>
                           <td className="gchr-num" style={{
                             padding: "12px 12px", textAlign: "center",
@@ -475,10 +484,10 @@ function GrainageCropHarvestReport() {
                             background: cumVal > 0
                               ? "linear-gradient(135deg,#ddd6fe,#ede9fe)"
                               : (alt ? "#f1f5f9" : "#ffffff"),
-                            color: cumVal > 0 ? "#4c1d95" : "#cbd5e0",
+                            color: cumVal > 0 ? "#4c1d95" : "#64748b",
                             fontWeight: 800, fontSize: "13.5px",
                           }}>
-                            {cumVal > 0 ? (row.cumulative_total ?? cumVal) : "—"}
+                            {String(row.cumulative_total ?? "").trim() !== "" ? row.cumulative_total : "—"}
                           </td>
                         </tr>
                       );

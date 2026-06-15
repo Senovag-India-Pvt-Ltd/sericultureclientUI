@@ -166,7 +166,18 @@ function TscMonthlyP1ChawkiLotwiseReport() {
     try {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/tsc-monthly/p1-chawki-lotwise", { params: params() });
       setDataRows(Array.isArray(res.data) ? res.data : []); setHasReport(true);
-    } catch { showErr("Fetch Failed", "Failed to load the TSC Monthly P1 Chawki Lot-wise (Sheet 14) report."); }
+    } catch (err) {
+        const status = err?.response?.status;
+        if (status === 404 || status === 204) {
+          showErr("No Data Found", "No data found for the selected filters.");
+        } else {
+          const data = err?.response?.data;
+          const backendMsg = typeof data === "string"
+            ? data
+            : (data?.message || data?.error || data?.errorMessage || data?.error_description);
+          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the TSC Monthly P1 Chawki Lot-wise (Sheet 14) report.");
+        }
+      }
     finally { setIsLoading(false); }
   };
   const handlePdf = async () => {
