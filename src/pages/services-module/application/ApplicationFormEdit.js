@@ -285,10 +285,15 @@ useEffect(() => {
             handleError(err);
           });
 
+        // Prefill the SAVED land rows scoped to THIS application (route id is
+        // the parent sc_application_form id here) instead of the farmer's full
+        // land list. This guarantees each row's authoritative
+        // dbtFarmerLandDetailsId is recovered, so a save emits op=UPDATE against
+        // the correct row — and never pre-checks another application's rows.
         api
           .get(
             baseURLDBT +
-              `dbt-farmer-land-details/get-by-farmer-id/${datas.farmerId}`
+              `dbt-farmer-land-details/get-by-parent-application-form-id/${id}`
           )
           .then((response) => {
             if (response.data.errorCode === -1) {
