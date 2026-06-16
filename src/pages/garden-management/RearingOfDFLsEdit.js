@@ -101,7 +101,7 @@ function RearingOfDFLsEdit() {
               leafQuantityUsed: "",
               errAfter3rdMoult: "",
               seedCocoons: "",
-              reelingCocoons: "",
+              reelingCocoons: "", reelingCocoonsWeight: "", reelingCocoonsValue: "",
             });
             setValidated(false);
           }
@@ -139,7 +139,7 @@ function RearingOfDFLsEdit() {
       leafQuantityUsed: "",
       errAfter3rdMoult: "",
       seedCocoons: "",
-      reelingCocoons: "",
+      reelingCocoons: "", reelingCocoonsWeight: "", reelingCocoonsValue: "",
     });
   };
 
@@ -656,6 +656,46 @@ function RearingOfDFLsEdit() {
                         min="0"
                         step="any"
                         placeholder={t("Enter Reeling Cocoons")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="reelingCocoonsWeight">
+                      {t("Reeling Cocoons Weight (kg)")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="reelingCocoonsWeight"
+                        name="reelingCocoonsWeight"
+                        value={data.reelingCocoonsWeight ?? ""}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder={t("Enter Reeling Cocoons Weight (kg)")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="reelingCocoonsValue">
+                      {t("Reeling Cocoons Value (₹)")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="reelingCocoonsValue"
+                        name="reelingCocoonsValue"
+                        value={data.reelingCocoonsValue ?? ""}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder={t("Enter Reeling Cocoons Value (₹)")}
                       />
                     </div>
                   </Form.Group>

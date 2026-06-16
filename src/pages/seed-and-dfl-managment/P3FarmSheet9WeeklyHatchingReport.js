@@ -66,7 +66,7 @@ const fmt = (v) => {
 };
 
 const COLS = [
-  { key: "race_id",   kn: "ಕ್ರ.ಸಂ",      en: "Sr.No",    minW: 70  },
+  { key: "sl_no",     kn: "ಕ್ರ.ಸಂ",      en: "Sr.No",    minW: 70  },
   { key: "race_name", kn: "ತಳಿ",         en: "Race",     minW: 200 },
   { key: "w1",        kn: "1ನೇ ವಾರ",     en: "Week 1",   minW: 110, week: true },
   { key: "w2",        kn: "2ನೇ ವಾರ",     en: "Week 2",   minW: 110, week: true },

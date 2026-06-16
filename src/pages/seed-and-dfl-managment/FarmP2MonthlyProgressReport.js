@@ -513,7 +513,7 @@ function FarmP2MonthlyProgressReport() {
               <span>
                 <strong>ಸಾಧನೆ</strong> rows show <span style={{ color: "#0f766e", fontWeight: 700 }}>monthly</span> achievement vs the
                 <span style={{ color: "#5b21b6", fontWeight: 700 }}> cumulative</span> from the financial-year start.
-                Empty rows are section headers; values come from <em>maintenance_of_mulberry_garden</em>, <em>targets</em>, <em>receipt_of_dfls</em> & <em>preservation_of_seed_cocoon_for_processing</em>.
+                Empty rows are section headers; values come from <em>maintenance_of_mulberry_garden</em>, <em>targets</em>, <em>receipt_of_dfls</em> & <em>supply_of_cocoons</em> (farm cocoon dispatch).
               </span>
             </div>
           </div>

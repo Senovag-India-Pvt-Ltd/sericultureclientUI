@@ -28,6 +28,8 @@ function MaintenanceofMulberryfarm() {
     gliricidiaPlantArea: "",
     uprootedArea: "",
     leafQuantityKg: "",
+    uprootedDate: "",
+    leafHarvestDate: "",
     fymQuantity: "",
     ammoniumSulphateQuantity: "",
     superPhosphateQuantity: "",
@@ -84,6 +86,12 @@ function MaintenanceofMulberryfarm() {
           ...data,
           pruningDate: formattedDate,
           plantationDate: formattedPlantationDate,
+          uprootedDate: data.uprootedDate instanceof Date
+            ? data.uprootedDate.getFullYear() + "-" + String(data.uprootedDate.getMonth() + 1).padStart(2, "0") + "-" + String(data.uprootedDate.getDate()).padStart(2, "0")
+            : null,
+          leafHarvestDate: data.leafHarvestDate instanceof Date
+            ? data.leafHarvestDate.getFullYear() + "-" + String(data.leafHarvestDate.getMonth() + 1).padStart(2, "0") + "-" + String(data.leafHarvestDate.getDate()).padStart(2, "0")
+            : null,
         })
         .then((response) => {
           if (response.data.error) {
@@ -102,7 +110,7 @@ function MaintenanceofMulberryfarm() {
               totalProductionPlants: "",
               gliricidiaPlantArea: "",
               uprootedArea: "",
-              leafQuantityKg: "",
+              leafQuantityKg: "", uprootedDate: "", leafHarvestDate: "",
               fymQuantity: "",
               ammoniumSulphateQuantity: "",
               superPhosphateQuantity: "",
@@ -141,7 +149,7 @@ function MaintenanceofMulberryfarm() {
       totalProductionPlants: "",
       gliricidiaPlantArea: "",
       uprootedArea: "",
-      leafQuantityKg: "",
+      leafQuantityKg: "", uprootedDate: "", leafHarvestDate: "",
       fymQuantity: "",
       ammoniumSulphateQuantity: "",
       superPhosphateQuantity: "",
@@ -490,6 +498,36 @@ function MaintenanceofMulberryfarm() {
                         value={data.leafQuantityKg} onChange={handleInputs}
                         type="number" min="0" step="any"
                         placeholder={t("Enter Leaf Quantity (Kg)")} />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="uprootedDate">{t("Uprooted Date")}</Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={data.uprootedDate}
+                        onChange={(date) => handleDateChange(date, "uprootedDate")}
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                        placeholderText={t("Select Uprooted Date")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="leafHarvestDate">{t("Leaf Harvest Date")}</Form.Label>
+                    <div className="form-control-wrap">
+                      <DatePicker
+                        selected={data.leafHarvestDate}
+                        onChange={(date) => handleDateChange(date, "leafHarvestDate")}
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
+                        placeholderText={t("Select Leaf Harvest Date")}
+                      />
                     </div>
                   </Form.Group>
                 </Col>

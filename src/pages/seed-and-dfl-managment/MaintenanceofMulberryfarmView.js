@@ -170,6 +170,14 @@ function MaintenanceofMulberryfarmView() {
                         <td>{maintenanceGarden.leafQuantityKg}</td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>{t("Uprooted Date")}:</td>
+                        <td>{maintenanceGarden.uprootedDate}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Leaf Harvest Date")}:</td>
+                        <td>{maintenanceGarden.leafHarvestDate}</td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>{t("FYM Quantity")}:</td>
                         <td>{maintenanceGarden.fymQuantity}</td>
                       </tr>

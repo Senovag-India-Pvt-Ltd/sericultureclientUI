@@ -2830,6 +2830,14 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
+                  {showMenu.SeedDFL_Grainage ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Grainage Monthly Cost")}
+                        to="/seriui/grainage-monthly-cost-list"
+                      />
+                    </MenuItem>
+                  ) : null}
 
                   {showMenu.SeedDFL_Grainage_Sale_Of_Pierced_Cocoons ? (
                     <MenuItem>
@@ -6430,28 +6438,13 @@ function Menu() {
                                 </MenuItem>
                                 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Sheet-5 · Monthly Crop Report Part 1 (rows 1–14)")}
+                                    text={t("Monthly Crop Report (rows 1–37)")}
                                     to="/seriui/p3-farm-sheet5-crop-report-part1"
                                   />
                                 </MenuItem>
-                                <MenuItem>
-                                  <MenuItemLink
-                                    text={t("Sheet-6 · Monthly Feeding & Moult (rows 15–22)")}
-                                    to="/seriui/p3-farm-sheet6-feeding-moulting-report"
-                                  />
-                                </MenuItem>
-                                {/* <MenuItem>
-                                  <MenuItemLink
-                                    text={t("Sheet-6 · Annual Feeding & Moult (2nd–5th instar)")}
-                                    to="/seriui/p3-farm-annual-sheet6-report"
-                                  />
-                                </MenuItem> */}
-                                <MenuItem>
-                                  <MenuItemLink
-                                    text={t("Sheet-7 · Monthly Crop Report Part 3 (rows 23–37)")}
-                                    to="/seriui/p3-farm-sheet7-crop-report-part3"
-                                  />
-                                </MenuItem>
+                                {/* Sheet-6 (rows 15-22) and Sheet-7 (rows 23-37) merged into the
+                                    Monthly Crop Report above (same format, one continuous form).
+                                    Their /p3-farm/sheet6 & /sheet7 endpoints remain for compatibility. */}
                                 <MenuItem>
                                   <MenuItemLink
                                     text={t("Sheet-9 · Weekly Cocoon Hatching Programme")}

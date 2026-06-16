@@ -197,6 +197,14 @@ function RearingOfDFLsView() {
                         <td>{rearingOfDFLs.reelingCocoons}</td>
                       </tr>
                       <tr>
+                        <td style={styles.ctstyle}>{t("Reeling Cocoons Weight (kg)")}:</td>
+                        <td>{rearingOfDFLs.reelingCocoonsWeight}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Reeling Cocoons Value (₹)")}:</td>
+                        <td>{rearingOfDFLs.reelingCocoonsValue}</td>
+                      </tr>
+                      <tr>
                         <td style={styles.ctstyle}>{t("Microscope Exam - Stage 1")}:</td>
                         <td>{rearingOfDFLs.wormTestStage1}</td>
                       </tr>

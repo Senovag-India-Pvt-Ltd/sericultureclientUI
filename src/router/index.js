@@ -606,6 +606,9 @@ import MaintenanceOfPiercedCocoons from "../pages/seed-and-dfl-managment/Mainten
 import MaintenanceOfPiercedCocoonsList from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoonsList";
 import EditMaintenanceOfPiercedCocoons from "../pages/seed-and-dfl-managment/EditMaintenanceOfPiercedCocoons";
 import MaintenanceOfPiercedCocoonsView from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoonsView";
+import GrainageMonthlyCost from "../pages/seed-and-dfl-managment/GrainageMonthlyCost";
+import GrainageMonthlyCostList from "../pages/seed-and-dfl-managment/GrainageMonthlyCostList";
+import GrainageMonthlyCostEdit from "../pages/seed-and-dfl-managment/GrainageMonthlyCostEdit";
 import MaintenanceOfEggLayingSheetsView from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheetsView";
 import EditMaintenanceOfEggLayingSheets from "../pages/seed-and-dfl-managment/EditMaintenanceOfEggLayingSheets";
 import MaintenanceOfEggLayingSheetsList from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheetsList";
@@ -2413,6 +2416,18 @@ function Router() {
             <Route
               path="maintenance-of-pierced-cocoons-view/:id"
               element={<MaintenanceOfPiercedCocoonsView />}
+            />
+            <Route
+              path="grainage-monthly-cost"
+              element={<GrainageMonthlyCost />}
+            />
+            <Route
+              path="grainage-monthly-cost-list"
+              element={<GrainageMonthlyCostList />}
+            />
+            <Route
+              path="grainage-monthly-cost-edit/:id"
+              element={<GrainageMonthlyCostEdit />}
             />
             <Route
               path="maintenance-of-egg-laying-sheets"
