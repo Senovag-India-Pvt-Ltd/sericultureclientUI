@@ -121,6 +121,10 @@ function FarmView() {
                         <td style={styles.ctstyle}>{t("Is BSF")}:</td>
                         <td>{Farm.isBsf}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Farm Type")}:</td>
+                        <td>{Farm.farmType}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

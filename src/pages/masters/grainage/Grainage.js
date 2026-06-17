@@ -222,15 +222,16 @@ function Grainage() {
                         {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
-                        <Form.Control
-                          id="title"
+                        <Form.Select
                           name="grainageType"
                           value={data.grainageType}
                           onChange={handleInputs}
-                          type="text"
-                          placeholder={t("Enter Grainage Type")}
-                          // required
-                        />
+                        >
+                          <option value="">{t("Select Grainage Type")}</option>
+                          <option value="Mysore Seed Area GG">Mysore Seed Area GG</option>
+                          <option value="Bivoltine Seed Area GG">Bivoltine Seed Area GG</option>
+                          <option value="Commercial GG">Commercial GG</option>
+                        </Form.Select>
                         {/* <Form.Control.Feedback type="invalid">
                         Grainage Type in Kannada is required.
                         </Form.Control.Feedback> */}

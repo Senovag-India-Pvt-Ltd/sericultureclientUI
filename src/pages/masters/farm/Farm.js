@@ -22,6 +22,7 @@ function Farm() {
     farmNameInKannada: "",
     userMasterId:"",
     isBsf:"",
+    farmType:"",
   });
 
   const [validated, setValidated] = useState(false);
@@ -54,6 +55,7 @@ function Farm() {
                 farmNameInKannada: "",
                 userMasterId:"",
                 isBsf:"",
+                farmType:"",
             });
             setValidated(false);
           }
@@ -80,6 +82,7 @@ function Farm() {
         farmNameInKannada: "",
         userMasterId:"",
         isBsf:"",
+        farmType:"",
     });
   };
 
@@ -268,6 +271,30 @@ function Farm() {
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
                           {t("This Field required")}
+                        </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label>
+                        {t("Farm Type")}<span className="text-danger">*</span>
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="farmType"
+                          value={data.farmType}
+                          onChange={handleInputs}
+                          required
+                        >
+                          <option value="">{t("Select Farm Type")}</option>
+                          <option value="Mysore Seed Area GSF">Mysore Seed Area GSF</option>
+                          <option value="Bivoltine Seed Area GSF">Bivoltine Seed Area GSF</option>
+                          <option value="Commercial GSF">Commercial GSF</option>
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          {t("Farm Type is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
