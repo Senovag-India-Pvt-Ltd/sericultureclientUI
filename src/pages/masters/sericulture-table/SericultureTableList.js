@@ -42,6 +42,7 @@ function SericultureTableList() {
             sericultureTableId: rec.sericultureTableId,
             stageName:          rec.approvalStageName || `Stage ${rec.stepId}`,
             daysCount:          rec.daysCount,
+            groupNo:            rec.groupNo,
           });
         });
 
@@ -84,11 +85,18 @@ function SericultureTableList() {
     });
   };
 
-  // All stages in a group share the same daysCount?
-  const getGroupDays = (stages) => {
-    if (stages.length === 0) return null;
-    const allSame = stages.every((s) => s.daysCount === stages[0].daysCount);
-    return allSame ? stages[0].daysCount : null;
+  // Bucket a group's stages by their persisted groupNo (the real, user-defined
+  // group identity), so two distinct groups that happen to share the same
+  // daysCount value are never merged. Legacy rows saved before groupNo
+  // existed (groupNo == null) fall back to bucketing by daysCount, same as before.
+  const getDaysSubGroups = (stages) => {
+    const byKey = {};
+    stages.forEach((s) => {
+      const key = s.groupNo != null ? `g${s.groupNo}` : `d${s.daysCount}`;
+      if (!byKey[key]) byKey[key] = { days: s.daysCount, items: [] };
+      byKey[key].items.push(s);
+    });
+    return Object.values(byKey).sort((a, b) => b.days - a.days);
   };
 
   return (
@@ -129,7 +137,7 @@ function SericultureTableList() {
         ) : (
           <Row className="g-3">
             {groups.map((group) => {
-              const commonDays = getGroupDays(group.stages);
+              const daysSubGroups = getDaysSubGroups(group.stages);
               return (
                 <Col lg="12" key={group.key}>
                   <Card
@@ -159,20 +167,6 @@ function SericultureTableList() {
                         <span style={{ color: "#cce4ff", fontSize: "0.82rem" }}>
                           Sub Scheme: <strong style={{ color: "white" }}>{group.subSchemeName}</strong>
                         </span>
-                        {commonDays != null && (
-                          <span
-                            style={{
-                              background: "#fff3cd",
-                              color: "#856404",
-                              borderRadius: "20px",
-                              padding: "2px 12px",
-                              fontSize: "0.78rem",
-                              fontWeight: 700,
-                            }}
-                          >
-                            ⏱ Days Count : {commonDays}
-                          </span>
-                        )}
                       </div>
                       <span
                         style={{
@@ -188,32 +182,48 @@ function SericultureTableList() {
                       </span>
                     </Card.Header>
 
-                    {/* Stage Badges — stage name only; daysCount shown once in header */}
+                    {/* Stages grouped by their own Days Count — distinct batches stay visible */}
                     <Card.Body style={{ padding: "16px 20px" }}>
-                      <div style={{ marginBottom: "10px" }}>
-                        <span style={{ fontSize: "0.8rem", color: "#555", fontWeight: 600 }}>
-                          {t("Approval Stages")} :
-                        </span>
-                      </div>
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                        {group.stages.map((stage) => (
-                          <div
-                            key={stage.sericultureTableId}
-                            style={{
-                              border: "1.5px solid #1e67a8",
-                              borderRadius: "8px",
-                              padding: "6px 14px",
-                              background: "#e8f0fe",
-                              display: "inline-flex",
-                              alignItems: "center",
-                            }}
-                          >
-                            <span style={{ fontSize: "0.82rem", color: "#1e67a8", fontWeight: 600 }}>
-                              {stage.stageName}
+                      {daysSubGroups.map((sub, si) => (
+                        <div key={sub.days} style={{ marginBottom: si < daysSubGroups.length - 1 ? "14px" : 0 }}>
+                          <div style={{ marginBottom: "8px", display: "flex", alignItems: "center", gap: "8px" }}>
+                            <span
+                              style={{
+                                background: "#fff3cd",
+                                color: "#856404",
+                                borderRadius: "20px",
+                                padding: "2px 12px",
+                                fontSize: "0.78rem",
+                                fontWeight: 700,
+                              }}
+                            >
+                              ⏱ {t("Days Count")} : {sub.days}
+                            </span>
+                            <span style={{ fontSize: "0.78rem", color: "#888" }}>
+                              {sub.items.length} {t("stage(s)")}
                             </span>
                           </div>
-                        ))}
-                      </div>
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                            {sub.items.map((stage) => (
+                              <div
+                                key={stage.sericultureTableId}
+                                style={{
+                                  border: "1.5px solid #1e67a8",
+                                  borderRadius: "8px",
+                                  padding: "6px 14px",
+                                  background: "#e8f0fe",
+                                  display: "inline-flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <span style={{ fontSize: "0.82rem", color: "#1e67a8", fontWeight: 600 }}>
+                                  {stage.stageName}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
                     </Card.Body>
 
                     {/* Actions */}

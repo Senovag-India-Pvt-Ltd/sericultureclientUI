@@ -10,9 +10,9 @@ const baseURLDBT    = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 const STATUS_META = {
-  WITHIN_SLA:  { label: "Within SLA",  badgeClass: "bg-success" },
-  OUTSIDE_SLA: { label: "Outside SLA", badgeClass: "bg-warning text-dark" },
-  PENDING:     { label: "Pending",      badgeClass: "bg-danger" },
+  WITHIN_SLA:  { label: "Within SLA",  badgeClass: "bg-success",          icon: "check-circle",  color1: "#1f9d55", color2: "#157a40" },
+  OUTSIDE_SLA: { label: "Outside SLA", badgeClass: "bg-warning text-dark", icon: "alert-triangle", color1: "#e0a324", color2: "#c47d0a" },
+  PENDING:     { label: "Pending",      badgeClass: "bg-danger",           icon: "clock",          color1: "#e0544a", color2: "#c0392b" },
 };
 
 // Table header style matching the app's DataTable customStyles
@@ -23,20 +23,28 @@ const TH = {
 };
 
 // ── Filter Bar ─────────────────────────────────────────────────────────────────
-function FilterBar({ district, component, fruitsId, onDistrictChange, onComponentChange,
-  onFruitsIdChange, onApply, onClear, districts, components }) {
+function FilterBar({ district, component, subScheme, fruitsId, onDistrictChange, onComponentChange,
+  onSubSchemeChange, onFruitsIdChange, onApply, onClear, districts, components, subSchemes }) {
 
-  const active = district || component || (fruitsId && fruitsId.trim());
+  const active = district || component || subScheme || (fruitsId && fruitsId.trim());
   const lbl = { fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" };
 
   return (
-    <Card className="mb-3">
-      <Card.Body className="py-3">
-        <div className="d-flex align-items-center gap-2 mb-3">
-          <Icon name="filter" style={{ color: "#1e67a8", fontSize: 14 }} />
-          <span className="fw-bold text-primary" style={{ fontSize: "0.85rem" }}>Filter Applications</span>
-          {active && <span className="badge bg-primary ms-1" style={{ fontSize: "0.63rem" }}>Active</span>}
+    <Card className="mb-3" style={{ border: "none", borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}>
+      <div style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", padding: "11px 18px" }}>
+        <div className="d-flex align-items-center gap-2">
+          <span style={{ width: 22, height: 22, borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <Icon name="filter" style={{ color: "#fff", fontSize: 12 }} />
+          </span>
+          <span style={{ color: "#fff", fontWeight: 700, fontSize: "0.84rem" }}>Filter Applications</span>
+          {active && (
+            <span style={{ background: "rgba(255,255,255,0.25)", color: "#fff", fontSize: "0.62rem", fontWeight: 700, borderRadius: "20px", padding: "1px 9px" }}>
+              Active
+            </span>
+          )}
         </div>
+      </div>
+      <Card.Body className="py-3 px-3">
         <Row className="g-2 align-items-end">
           <Col md="3" xs="12">
             <Form.Group className="form-group">
@@ -45,6 +53,16 @@ function FilterBar({ district, component, fruitsId, onDistrictChange, onComponen
                 onChange={(e) => onDistrictChange(e.target.value ? Number(e.target.value) : null)}>
                 <option value="">All Districts</option>
                 {districts.map((d) => <option key={d.districtId} value={d.districtId}>{d.districtName}</option>)}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col md="3" xs="12">
+            <Form.Group className="form-group">
+              <Form.Label className="form-label text-muted mb-1" style={lbl}>Sub Scheme</Form.Label>
+              <Form.Select size="sm" value={subScheme || ""}
+                onChange={(e) => onSubSchemeChange(e.target.value ? Number(e.target.value) : null)}>
+                <option value="">All Sub Schemes</option>
+                {subSchemes.map((s) => <option key={s.scSubSchemeDetailsId} value={s.scSubSchemeDetailsId}>{s.subSchemeName}</option>)}
               </Form.Select>
             </Form.Group>
           </Col>
@@ -69,8 +87,12 @@ function FilterBar({ district, component, fruitsId, onDistrictChange, onComponen
           </Col>
           <Col md="3" xs="12">
             <div className="d-flex gap-2">
-              <Button size="sm" variant="primary" onClick={onApply} className="flex-fill">Apply</Button>
-              <Button size="sm" variant="secondary" onClick={onClear} className="flex-fill">Clear</Button>
+              <Button size="sm" variant="primary" onClick={onApply} className="flex-fill d-flex align-items-center justify-content-center gap-1" style={{ borderRadius: "6px", fontWeight: 600 }}>
+                <Icon name="search" style={{ fontSize: 12 }} /> Apply
+              </Button>
+              <Button size="sm" variant="outline-secondary" onClick={onClear} className="flex-fill d-flex align-items-center justify-content-center gap-1" style={{ borderRadius: "6px", fontWeight: 600 }}>
+                <Icon name="cross" style={{ fontSize: 12 }} /> Clear
+              </Button>
             </div>
           </Col>
         </Row>
@@ -103,29 +125,36 @@ export default function ApplicationPendingList() {
 
   const [filterDistrict,  setFilterDistrict]  = useState(null);
   const [filterComponent, setFilterComponent] = useState(null);
+  const [filterSubScheme, setFilterSubScheme] = useState(subSchemeId ?? null);
   const [filterFruitsId,  setFilterFruitsId]  = useState("");
 
   const [districts,  setDistricts]  = useState([]);
   const [components, setComponents] = useState([]);
+  const [subSchemes, setSubSchemes] = useState([]);
 
   useEffect(() => {
     api.get(baseURLMaster + "district/get-all")
       .then((r) => setDistricts(r.data.content?.district || [])).catch(() => {});
     api.get(baseURLMaster + "scComponent/get-all", { params: { isActive: true } })
       .then((r) => setComponents(r.data.content?.scComponent || [])).catch(() => {});
+    if (schemeId) {
+      api.get(baseURLMaster + `scSubSchemeDetails/get-by-sc-scheme-details-id/${schemeId}`)
+        .then((r) => setSubSchemes(r.data.content?.scSubSchemeDetails || [])).catch(() => {});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (!schemeId || !statusType) { setApiError("Missing parameters. Please go back and try again."); return; }
-    fetchList(null, null, "");
+    fetchList(null, null, filterSubScheme, "");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const fetchList = (dId, cId, fId) => {
+  const fetchList = (dId, cId, sId, fId) => {
     setApiError(null);
     setLoading(true);
     const params = { schemeId, statusType };
-    if (subSchemeId != null) params.subSchemeId = subSchemeId;
+    if (sId != null)        params.subSchemeId = sId;
     if (dId != null)         params.districtId  = dId;
     if (cId != null)         params.componentId = cId;
     if (fId && fId.trim())  params.fruitsId    = fId.trim();
@@ -141,12 +170,13 @@ export default function ApplicationPendingList() {
       .finally(() => setLoading(false));
   };
 
-  const applyFilters = () => fetchList(filterDistrict, filterComponent, filterFruitsId);
+  const applyFilters = () => fetchList(filterDistrict, filterComponent, filterSubScheme, filterFruitsId);
   const clearFilters = () => {
     setFilterDistrict(null);
     setFilterComponent(null);
+    setFilterSubScheme(null);
     setFilterFruitsId("");
-    fetchList(null, null, "");
+    fetchList(null, null, null, "");
   };
 
   const meta = STATUS_META[statusType] || { label: statusType || "Applications", badgeClass: "bg-primary" };
@@ -155,19 +185,32 @@ export default function ApplicationPendingList() {
     if (!status) return <span className="text-muted">—</span>;
     const isPaid    = status === "PAYMENT SUCCESS IN DBT";
     const isPending = status.toUpperCase().includes("PENDING");
-    const cls = isPaid ? "bg-success" : isPending ? "bg-danger" : "bg-primary";
+    const cls  = isPaid ? "bg-success" : isPending ? "bg-danger" : "bg-primary";
+    const icon = isPaid ? "check-circle" : isPending ? "clock" : "alert-circle";
     return (
-      <span className={`badge ${cls}`} style={{ fontSize: "0.67rem", fontWeight: 600, whiteSpace: "normal", textAlign: "left" }}>
+      <span className={`badge ${cls} d-inline-flex align-items-center gap-1`} style={{ fontSize: "0.67rem", fontWeight: 600, whiteSpace: "normal", textAlign: "left" }}>
+        <Icon name={icon} style={{ fontSize: 10 }} />
         {status}
       </span>
     );
   };
 
   const HEADERS = [
-    "#", "Farmer Name", "Fruits ID", "ARN", "District",
+    "#", "Scheme Name", "Sub Scheme Name", "Farmer Name", "Fruits ID", "ARN", "District",
     "Component Type", "Approval Stage", "Submission Date",
     "SLA Days", "SLA Due Date", "Days Elapsed", "Status",
   ];
+
+  // Sub-scheme can vary per row when "All Sub Schemes" filter is active;
+  // resolve from row.subSchemeId against the fetched master list, falling
+  // back to the page-level subSchemeName when a single sub-scheme is fixed.
+  const subSchemeNameFor = (row) => {
+    if (row.subSchemeId != null) {
+      const match = subSchemes.find((s) => s.scSubSchemeDetailsId === row.subSchemeId);
+      if (match) return match.subSchemeName;
+    }
+    return subSchemeName;
+  };
 
   const totalPages = Math.ceil(rows.length / PAGE_SIZE);
   const pagedRows  = rows.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
@@ -219,46 +262,67 @@ export default function ApplicationPendingList() {
       <Block className="mt-n4">
 
         {/* ── Context strip ────────────────────────────────────────────────────── */}
-        <Card className="mb-3">
-          <Card.Body className="py-2">
-            <div className="d-flex align-items-center flex-wrap gap-2">
-              <span className={`badge ${meta.badgeClass}`}>{meta.label}</span>
-              <span className="fw-bold">{schemeName}</span>
-              {subSchemeName && <span className="text-muted small">/ {subSchemeName}</span>}
+        <Card className="mb-3" style={{ border: "none", borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}>
+          <div style={{
+            background: `linear-gradient(135deg, ${meta.color1} 0%, ${meta.color2} 100%)`,
+            padding: "13px 20px", position: "relative", overflow: "hidden",
+          }}>
+            <span style={{
+              position: "absolute", top: -30, right: -30, width: 100, height: 100,
+              borderRadius: "50%", background: "rgba(255,255,255,0.08)",
+            }} />
+            <div className="d-flex align-items-center flex-wrap gap-2" style={{ position: "relative" }}>
+              <span style={{
+                width: 26, height: 26, borderRadius: "50%", background: "rgba(255,255,255,0.2)",
+                display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+              }}>
+                <Icon name={meta.icon} style={{ color: "#fff", fontSize: 13 }} />
+              </span>
+              <span style={{ color: "#fff", fontWeight: 700, fontSize: "0.92rem" }}>{meta.label}</span>
+              <span style={{ color: "rgba(255,255,255,0.9)", fontSize: "0.85rem", fontWeight: 600 }}>{schemeName}</span>
+              {subSchemeName && <span style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.8rem" }}>/ {subSchemeName}</span>}
               {slaDays && (
-                <span className="badge bg-light text-secondary border" style={{ fontSize: "0.72rem" }}>
+                <span style={{ background: "rgba(255,255,255,0.2)", color: "#fff", fontSize: "0.7rem", fontWeight: 600, borderRadius: "20px", padding: "2px 10px" }}>
                   SLA: {slaDays} days
                 </span>
               )}
               <div className="ms-auto d-flex align-items-center gap-2">
                 {!loading && (
-                  <span className="text-muted small">
+                  <span style={{ color: "rgba(255,255,255,0.85)", fontSize: "0.78rem" }}>
                     {rows.length} record{rows.length !== 1 ? "s" : ""} · {totalPages} page{totalPages !== 1 ? "s" : ""}
                   </span>
                 )}
-                <Button size="sm" variant="outline-secondary"
+                <button type="button"
                   className="d-inline-flex align-items-center gap-1"
-                  onClick={() => fetchList(filterDistrict, filterComponent, filterFruitsId)}>
-                  <Icon name="reload" />
+                  style={{
+                    background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.38)",
+                    color: "#fff", borderRadius: "6px", fontSize: "0.76rem", fontWeight: 600,
+                    padding: "4px 12px", cursor: "pointer",
+                  }}
+                  onClick={() => fetchList(filterDistrict, filterComponent, filterSubScheme, filterFruitsId)}>
+                  <Icon name="reload" style={{ fontSize: 12 }} />
                   <span>Refresh</span>
-                </Button>
+                </button>
               </div>
             </div>
-          </Card.Body>
+          </div>
         </Card>
 
         {/* ── Filter Bar ───────────────────────────────────────────────────────── */}
         <FilterBar
           district={filterDistrict}
           component={filterComponent}
+          subScheme={filterSubScheme}
           fruitsId={filterFruitsId}
           onDistrictChange={setFilterDistrict}
           onComponentChange={setFilterComponent}
+          onSubSchemeChange={setFilterSubScheme}
           onFruitsIdChange={setFilterFruitsId}
           onApply={applyFilters}
           onClear={clearFilters}
           districts={districts}
           components={components}
+          subSchemes={subSchemes}
         />
 
         {/* ── Error ────────────────────────────────────────────────────────────── */}
@@ -267,7 +331,7 @@ export default function ApplicationPendingList() {
             <Icon name="alert-circle" />
             <span>{apiError}</span>
             <button type="button" className="btn btn-sm btn-link text-danger ms-auto p-0"
-              onClick={() => fetchList(filterDistrict, filterComponent, filterFruitsId)}>
+              onClick={() => fetchList(filterDistrict, filterComponent, filterSubScheme, filterFruitsId)}>
               Retry
             </button>
           </div>
@@ -296,9 +360,9 @@ export default function ApplicationPendingList() {
 
         {/* ── Table ────────────────────────────────────────────────────────────── */}
         {!loading && rows.length > 0 && (
-          <Card>
+          <Card style={{ border: "none", borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}>
             <div className="table-responsive">
-              <table className="table table-middle table-hover mb-0">
+              <table className="table table-middle table-hover table-striped mb-0">
                 <thead>
                   <tr>
                     {HEADERS.map((h) => <th key={h} style={TH}>{h}</th>)}
@@ -314,6 +378,12 @@ export default function ApplicationPendingList() {
                         <td className="text-muted small fw-semibold" style={{ width: 40 }}>
                           {firstIdx + i + 1}
                         </td>
+
+                        {/* Scheme Name */}
+                        <td className="small">{schemeName || <span className="text-muted">—</span>}</td>
+
+                        {/* Sub Scheme Name */}
+                        <td className="small">{subSchemeNameFor(row) || <span className="text-muted">—</span>}</td>
 
                         {/* Farmer Name */}
                         <td style={{ minWidth: 150 }}>
@@ -375,7 +445,8 @@ export default function ApplicationPendingList() {
 
                         {/* Days Elapsed */}
                         <td>
-                          <span className={`badge ${breached ? "bg-danger" : "bg-success"} fw-bold`}>
+                          <span className={`badge ${breached ? "bg-danger" : "bg-success"} fw-bold d-inline-flex align-items-center gap-1`}>
+                            <Icon name={breached ? "alert-triangle" : "check-circle"} style={{ fontSize: 10 }} />
                             {row.daysElapsed} d
                           </span>
                         </td>
