@@ -174,6 +174,12 @@ function GrainageMonthlyCostList() {
       cell: (row) => <span>{row.income ?? 0}</span>,
       sortable: true,
     },
+    {
+      name: t("DCB Income"),
+      selector: (row) => row.dcbIncome,
+      cell: (row) => <span>{row.dcbIncome ?? 0}</span>,
+      sortable: true,
+    },
   ];
 
   return (

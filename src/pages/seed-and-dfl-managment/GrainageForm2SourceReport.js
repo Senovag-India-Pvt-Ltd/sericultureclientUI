@@ -107,12 +107,12 @@ const SECTION_META = {
   "5":  { icon: "👥", hue: "violet",  en: "Pairs Obtained (by source)" },
   "6":  { icon: "🥚", hue: "indigo",  en: "DFLs Obtained (by source)" },
   "7":  { icon: "📊", hue: "emerald", en: "Yield (by source)", isPct: true },
-  "8":  { icon: "🦠", hue: "rose",    en: "Pebrine Destroyed DFLs" },
-  "9":  { icon: "🥚", hue: "blue",    en: "DFLs Received" },
-  "10": { icon: "Σ",  hue: "emerald", en: "Aggregate Totals" },
-  "11": { icon: "💸", hue: "rose",    en: "Expense (₹)" },
-  "12": { icon: "💰", hue: "rose",    en: "Production Cost / 100 DFL" },
-  "13": { icon: "📈", hue: "emerald", en: "Profit / Loss (₹)" },
+  "8":  { icon: "💸", hue: "rose",    en: "Expense (₹)" },
+  "9":  { icon: "🧮", hue: "blue",    en: "Production Cost / 100 DFL" },
+  "10": { icon: "💰", hue: "emerald", en: "Income" },
+  "11": { icon: "📈", hue: "rose",    en: "Profit / Loss (₹)" },
+  "12": { icon: "🦠", hue: "rose",    en: "Pebrine Destroyed DFLs" },
+  "13": { icon: "🥚", hue: "indigo",  en: "Prepared DFLs" },
 };
 
 const HUE = {
@@ -293,8 +293,8 @@ function GrainageForm2SourceReport() {
     const cocoonsTot = find(4, "ಒಟ್ಟು");
     const dflsTot = find(6, "ಒಟ್ಟು");
     const yieldTot = find(7, "ಒಟ್ಟು");
-    const pebrine = find(8);
-    const recv = find(9);
+    const pebrine = find(12);
+    const recv = find(6);
     return {
       annualCY: numOrZero(annual.cy_month),
       annualPY: numOrZero(annual.py_month),

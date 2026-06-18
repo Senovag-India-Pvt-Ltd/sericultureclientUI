@@ -37,6 +37,7 @@ function GrainageMonthlyCostEdit() {
     staffCost: row?.staffCost ?? "",
     otherCost: row?.otherCost ?? "",
     income: row?.income ?? "",
+    dcbIncome: row?.dcbIncome ?? "",
   });
   const [validated, setValidated] = useState(false);
   const [grainageList, setGrainageList] = useState([]);
@@ -82,6 +83,7 @@ function GrainageMonthlyCostEdit() {
         staffCost: data.staffCost === "" ? 0 : data.staffCost,
         otherCost: data.otherCost === "" ? 0 : data.otherCost,
         income: data.income === "" ? 0 : data.income,
+        dcbIncome: data.dcbIncome === "" ? 0 : data.dcbIncome,
       };
       api
         .post(baseURLSeedDfl + `grainage-monthly-cost/save-info`, payload)
@@ -279,6 +281,24 @@ function GrainageMonthlyCostEdit() {
                         min="0"
                         step="any"
                         placeholder={t("Enter Income")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="dcbIncome">{t("DCB Income")}</Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="dcbIncome"
+                        name="dcbIncome"
+                        value={data.dcbIncome}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder={t("Enter DCB Income")}
                       />
                     </div>
                   </Form.Group>

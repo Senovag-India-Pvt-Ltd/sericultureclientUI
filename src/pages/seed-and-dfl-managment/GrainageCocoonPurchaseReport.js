@@ -97,14 +97,12 @@ const fmt = (v) => {
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 });
 };
 
-// 3 logical sections, each has a header row (sl=0/2/4) + data rows (sl=1/3/5)
+// 3 logical sections keyed by section number (sl_no = 1/2/3). Within each section
+// the band/header row carries an empty sub_label; race + ಒಟ್ಟು rows carry a sub_label.
 const SECTION_META = {
-  "0": { icon: "🪺", hue: "orange",  en: "Purchased Cocoons", isHeader: true },
-  "1": { icon: "🪺", hue: "orange",  en: "Purchased Cocoons", isHeader: false, isPct: false },
-  "2": { icon: "🥚", hue: "violet",  en: "Received DFLs",     isHeader: true },
-  "3": { icon: "🥚", hue: "violet",  en: "Received DFLs",     isHeader: false, isPct: false },
-  "4": { icon: "📊", hue: "emerald", en: "Yield Obtained",    isHeader: true },
-  "5": { icon: "📊", hue: "emerald", en: "Yield Obtained",    isHeader: false, isPct: true },
+  "1": { icon: "🪺", hue: "orange",  en: "Purchased Cocoons", isPct: false },
+  "2": { icon: "🥚", hue: "violet",  en: "Received DFLs",     isPct: false },
+  "3": { icon: "📊", hue: "emerald", en: "Yield Obtained",    isPct: true },
 };
 
 const HUE = {
@@ -250,16 +248,16 @@ function GrainageCocoonPurchaseReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const grainageName = selectedGrainage?.grainageMasterName || "—";
+  const grainageName = selectedGrainage?.grainageMasterNameInKannada || selectedGrainage?.grainageMasterName || "—";
 
   // KPI extraction — pick the "ಒಟ್ಟು" sub-row of each section
   const kpis = useMemo(() => {
     const find = (sn) => dataRows.find(
       (r) => String(r.sl_no) === String(sn) && isTotalSub(r.sub_label)
     ) || {};
-    const cocTot = find(1);   // Section 1 total
-    const dflTot = find(3);   // Section 2 total
-    const yldTot = find(5);   // Section 3 total (yield %)
+    const cocTot = find(1);   // Section 1 total (sl_no=1)
+    const dflTot = find(2);   // Section 2 total (sl_no=2)
+    const yldTot = find(3);   // Section 3 total — yield % (sl_no=3)
     return {
       cocM:   numOrZero(cocTot.m_total),
       cocMe:  numOrZero(cocTot.me_total),
@@ -267,6 +265,13 @@ function GrainageCocoonPurchaseReport() {
       dflMe:  numOrZero(dflTot.me_total),
       yldM:   numOrZero(yldTot.m_total),
       yldMe:  numOrZero(yldTot.me_total),
+      // Previous-year (same month + FY-cumulative)
+      cocPyM:  numOrZero(cocTot.py_m_total),
+      cocPyMe: numOrZero(cocTot.py_me_total),
+      dflPyM:  numOrZero(dflTot.py_m_total),
+      dflPyMe: numOrZero(dflTot.py_me_total),
+      yldPyM:  numOrZero(yldTot.py_m_total),
+      yldPyMe: numOrZero(yldTot.py_me_total),
       // Source split (Farm vs Purchase) for cocoons (Month)
       cocFarmM:     numOrZero(cocTot.m_farm),
       cocPurchM:    numOrZero(cocTot.m_purchase),
@@ -274,7 +279,7 @@ function GrainageCocoonPurchaseReport() {
   }, [dataRows]);
 
   return (
-    <Layout title={t("Grainage Cocoon Purchase Report (Cocoons / DFLs / Yield)")}>
+    <Layout title={t("ಖರೀದಿಸಿದ ಗೂಡುಗಳ ವರದಿ — ಬಿತ್ತನೆ ಕೋಠಿ")}>
       <Block.Head><Block.HeadBetween><Block.HeadContent>
         <Block.Title tag="h2">
           {t("ಮಾಹೆಯ ಅಂತ್ಯಕ್ಕೆ ಖರೀದಿಸಿದ ಗೂಡುಗಳ ವರದಿ — ಬಿತ್ತನೆ ಕೋಠಿ")}
@@ -300,7 +305,7 @@ function GrainageCocoonPurchaseReport() {
                 ಮಾಹೆಯ ಅಂತ್ಯಕ್ಕೆ ಖರೀದಿಸಿದ ಗೂಡುಗಳ ವರದಿ — ಬಿತ್ತನೆ ಕೋಠಿ
                 <span style={{ background: "rgba(255,255,255,.22)", padding: "2px 9px", borderRadius: "12px", marginLeft: "8px", fontSize: "10.5px", fontWeight: 800 }}>Cocoon Purchase</span>
               </div>
-              <div style={{ color: "rgba(255,255,255,.85)", fontSize: "11px", marginTop: "2px" }}>P1 &amp; P2 Grainage (Bivoltine) — Cocoons / DFLs / Yield split by source: Farm vs Purchased (Month + FY-Cum)</div>
+              <div style={{ color: "rgba(255,255,255,.85)", fontSize: "11px", marginTop: "2px" }}>ಪಿ1 ಮತ್ತು ಪಿ2 ಬಿತ್ತನೆ ಕೋಠಿ — ಮೂಲವಾರು (ಕೃಷಿ ಕ್ಷೇತ್ರ / ಖರೀದಿ) ಗೂಡು · ಮೊಟ್ಟೆ · ಇಳುವರಿ (ಮಾಸ ಮತ್ತು ಮಾಸಾಂತ್ಯ)</div>
             </div>
             {hasReport && (
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
@@ -379,55 +384,58 @@ function GrainageCocoonPurchaseReport() {
             <div className="d-flex flex-wrap gap-2 mb-3">
               <div style={legendChip("linear-gradient(135deg,#dbeafe,#bfdbfe)", "#1e3a8a", "#93c5fd")}>
                 <span style={{ fontSize: "11px", fontWeight: 800 }}>🌾</span>
-                <span style={{ fontSize: "11.5px", fontWeight: 700 }}>ರೇಷ್ಮೆ ಕೃಷಿ ಕ್ಷೇತ್ರ · Farm-source</span>
+                <span style={{ fontSize: "11.5px", fontWeight: 700 }}>ರೇಷ್ಮೆ ಕೃಷಿ ಕ್ಷೇತ್ರ</span>
               </div>
               <div style={legendChip("linear-gradient(135deg,#fed7aa,#fdba74)", "#7c2d12", "#fb923c")}>
                 <span style={{ fontSize: "11px", fontWeight: 800 }}>🛒</span>
-                <span style={{ fontSize: "11.5px", fontWeight: 700 }}>ಖರೀದಿ · Purchased</span>
+                <span style={{ fontSize: "11.5px", fontWeight: 700 }}>ಖರೀದಿ</span>
               </div>
               <div style={legendChip("linear-gradient(135deg,#fcd34d,#fbbf24)", "#78350f", "#f59e0b")}>
                 <span style={{ fontSize: "11px", fontWeight: 800 }}>Σ</span>
-                <span style={{ fontSize: "11.5px", fontWeight: 700 }}>ಒಟ್ಟು · Combined Total</span>
+                <span style={{ fontSize: "11.5px", fontWeight: 700 }}>ಒಟ್ಟು</span>
               </div>
             </div>
 
             {/* KPIs */}
             <div className="d-flex flex-wrap gap-3 mb-3 align-items-stretch">
               <div style={kpi("#ccfbf1", "#5eead4", "#0f766e")}>
-                <span style={kpiLbl("#0f766e")}>Grainage</span>
+                <span style={kpiLbl("#0f766e")}>ಬಿತ್ತನೆ ಕೋಠಿ</span>
                 <span style={{ ...kpiVal("#134e4a", 14), fontWeight: 800 }}>{grainageName}</span>
               </div>
               <div style={kpi("#fef3c7", "#fcd34d", "#92400e")}>
-                <span style={kpiLbl("#92400e")}>Period</span>
+                <span style={kpiLbl("#92400e")}>ಮಾಹೆ</span>
                 <span style={{ ...kpiVal("#78350f", 13.5), fontWeight: 700 }}>{monthLabel} {monthYear}</span>
               </div>
               <div style={kpi("#fed7aa", "#fb923c", "#7c2d12")}>
-                <span style={kpiLbl("#7c2d12")}>🪺 ಗೂಡುಗಳು Cocoons (M)</span>
+                <span style={kpiLbl("#7c2d12")}>🪺 ಗೂಡುಗಳು (ಮಾಸ)</span>
                 <span className="gcp-num" style={kpiVal("#7c2d12", 16)}>{kpis.cocM.toLocaleString()}</span>
-                <span style={{ fontSize: "10.5px", color: "#9a3412", fontWeight: 700, marginTop: "1px" }}>FY Cum: {kpis.cocMe.toLocaleString()}</span>
+                <span style={{ fontSize: "10.5px", color: "#9a3412", fontWeight: 700, marginTop: "1px" }}>ಮಾ.ಅಂತ್ಯ: {kpis.cocMe.toLocaleString()}</span>
+                <span style={{ fontSize: "10px", color: "#9a3412", fontWeight: 600, opacity: .75 }}>ಹಿಂ.ವರ್ಷ: {kpis.cocPyM.toLocaleString()} / {kpis.cocPyMe.toLocaleString()}</span>
               </div>
               <div style={kpi("#ddd6fe", "#a78bfa", "#5b21b6")}>
-                <span style={kpiLbl("#5b21b6")}>🥚 ಮೊಟ್ಟೆಗಳು DFLs (M)</span>
+                <span style={kpiLbl("#5b21b6")}>🥚 ಮೊಟ್ಟೆಗಳು (ಮಾಸ)</span>
                 <span className="gcp-num" style={kpiVal("#4c1d95", 16)}>{kpis.dflM.toLocaleString()}</span>
-                <span style={{ fontSize: "10.5px", color: "#5b21b6", fontWeight: 700, marginTop: "1px" }}>FY Cum: {kpis.dflMe.toLocaleString()}</span>
+                <span style={{ fontSize: "10.5px", color: "#5b21b6", fontWeight: 700, marginTop: "1px" }}>ಮಾ.ಅಂತ್ಯ: {kpis.dflMe.toLocaleString()}</span>
+                <span style={{ fontSize: "10px", color: "#5b21b6", fontWeight: 600, opacity: .75 }}>ಹಿಂ.ವರ್ಷ: {kpis.dflPyM.toLocaleString()} / {kpis.dflPyMe.toLocaleString()}</span>
               </div>
               <div style={{
                 ...kpi(yieldBand(kpis.yldM).bg, yieldBand(kpis.yldM).border, yieldBand(kpis.yldM).color),
                 background: yieldBand(kpis.yldM).bg + ", #ffffff",
               }}>
-                <span style={kpiLbl(yieldBand(kpis.yldM).color)}>📊 ಇಳುವರಿ Yield (M)</span>
+                <span style={kpiLbl(yieldBand(kpis.yldM).color)}>📊 ಇಳುವರಿ (ಮಾಸ)</span>
                 <span className="gcp-num" style={kpiVal(yieldBand(kpis.yldM).color, 18)}>{kpis.yldM.toFixed(2)}%</span>
-                <span style={{ fontSize: "10.5px", color: yieldBand(kpis.yldM).color, fontWeight: 700, marginTop: "1px", opacity: .9 }}>FY Cum: {kpis.yldMe.toFixed(2)}%</span>
+                <span style={{ fontSize: "10.5px", color: yieldBand(kpis.yldM).color, fontWeight: 700, marginTop: "1px", opacity: .9 }}>ಮಾ.ಅಂತ್ಯ: {kpis.yldMe.toFixed(2)}%</span>
+                <span style={{ fontSize: "10px", color: yieldBand(kpis.yldM).color, fontWeight: 600, opacity: .7 }}>ಹಿಂ.ವರ್ಷ: {kpis.yldPyM.toFixed(2)}% / {kpis.yldPyMe.toFixed(2)}%</span>
               </div>
               <div style={kpi("#dbeafe", "#93c5fd", "#1e40af")}>
-                <span style={kpiLbl("#1e40af")}>🌾 Farm-source (M)</span>
+                <span style={kpiLbl("#1e40af")}>🌾 ಕೃಷಿ ಕ್ಷೇತ್ರ (ಮಾಸ)</span>
                 <span className="gcp-num" style={kpiVal("#1e3a8a", 15)}>{kpis.cocFarmM.toLocaleString()}</span>
-                <span style={{ fontSize: "10.5px", color: "#1e40af", fontWeight: 700, marginTop: "1px" }}>cocoons</span>
+                <span style={{ fontSize: "10.5px", color: "#1e40af", fontWeight: 700, marginTop: "1px" }}>ಗೂಡುಗಳು</span>
               </div>
               <div style={kpi("#fed7aa", "#fb923c", "#9a3412")}>
-                <span style={kpiLbl("#9a3412")}>🛒 Purchased (M)</span>
+                <span style={kpiLbl("#9a3412")}>🛒 ಖರೀದಿ (ಮಾಸ)</span>
                 <span className="gcp-num" style={kpiVal("#7c2d12", 15)}>{kpis.cocPurchM.toLocaleString()}</span>
-                <span style={{ fontSize: "10.5px", color: "#9a3412", fontWeight: 700, marginTop: "1px" }}>{kpis.cocPurchM === 0 ? "(not yet tracked)" : "cocoons"}</span>
+                <span style={{ fontSize: "10.5px", color: "#9a3412", fontWeight: 700, marginTop: "1px" }}>{kpis.cocPurchM === 0 ? "(ಲಭ್ಯವಿಲ್ಲ)" : "ಗೂಡುಗಳು"}</span>
               </div>
             </div>
 
@@ -439,7 +447,7 @@ function GrainageCocoonPurchaseReport() {
               }}>
                 {monthKn} {monthYear || ""}ರ ಮಾಹೆಯ ಅಂತ್ಯಕ್ಕೆ ಖರೀದಿಸಿದ ಗೂಡುಗಳು · ಬಿತ್ತನೆ ಕೋಠಿ {grainageName}
                 <div style={{ fontSize: "12px", fontWeight: 600, opacity: .9, marginTop: "4px" }}>
-                  Cocoon Purchase Report · Cocoons → DFLs → Yield, by source (Farm vs Purchased) &nbsp;·&nbsp; {monthLabel} {monthYear || ""}
+                  ಖರೀದಿಸಿದ ಗೂಡುಗಳ ವರದಿ · ಮೂಲವಾರು ಗೂಡು → ಮೊಟ್ಟೆ → ಇಳುವರಿ &nbsp;·&nbsp; {monthKn || monthLabel} {monthYear || ""}
                 </div>
               </div>
 
@@ -465,6 +473,10 @@ function GrainageCocoonPurchaseReport() {
                         <div style={{ fontSize: "12.5px" }}>Σ ಮಾಸಾಂತ್ಯ</div>
                         <div style={hdrEn}>FY Cum (Month-end)</div>
                       </th>
+                      <th colSpan={2} style={hdr("linear-gradient(135deg,#475569,#94a3b8)")}>
+                        <div style={{ fontSize: "12.5px" }}>🕘 ಹಿಂದಿನ ವರ್ಷ</div>
+                        <div style={hdrEn}>Previous Year</div>
+                      </th>
                     </tr>
                     {/* Row 2: leaves Farm / Purchase / Total per group */}
                     <tr>
@@ -486,11 +498,17 @@ function GrainageCocoonPurchaseReport() {
                       <th style={subhdr("linear-gradient(135deg,#fcd34d,#fbbf24)", "#78350f")}>
                         <div style={{ fontSize: "10.5px" }}>Σ ಒಟ್ಟು</div><div style={subhdrEn}>Total</div>
                       </th>
+                      <th style={subhdr("linear-gradient(135deg,#e2e8f0,#cbd5e1)", "#475569")}>
+                        <div style={{ fontSize: "10.5px" }}>ಮಾಸ ಒಟ್ಟು</div><div style={subhdrEn}>M Total</div>
+                      </th>
+                      <th style={subhdr("linear-gradient(135deg,#cbd5e1,#94a3b8)", "#334155")}>
+                        <div style={{ fontSize: "10.5px" }}>ಮಾಸಾಂತ್ಯ ಒಟ್ಟು</div><div style={subhdrEn}>ME Total</div>
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {dataRows.length === 0 && (
-                      <tr><td colSpan={9} style={{ padding: "60px 20px", textAlign: "center", background: "linear-gradient(180deg,#f0fdfa,#fff)" }}>
+                      <tr><td colSpan={11} style={{ padding: "60px 20px", textAlign: "center", background: "linear-gradient(180deg,#f0fdfa,#fff)" }}>
                         <div style={{ fontSize: "40px", marginBottom: "8px" }}>🛒</div>
                         <div style={{ fontSize: "15px", fontWeight: 800, color: "#0f766e", marginBottom: "4px" }}>ಯಾವುದೇ ಗೂಡು ಖರೀದಿ ಮಾಹಿತಿ ಇಲ್ಲ</div>
                         <div style={{ fontSize: "13px", color: "#475569", fontWeight: 600 }}>No cocoon purchase data found for this grainage in {monthLabel} {monthYear}.</div>
@@ -498,17 +516,18 @@ function GrainageCocoonPurchaseReport() {
                     )}
                     {dataRows.map((row, ri) => {
                       const sn = String(row.sl_no);
-                      const meta = SECTION_META[sn] || { icon: "·", hue: "orange", isHeader: false };
+                      const meta = SECTION_META[sn] || { icon: "·", hue: "orange", isPct: false };
                       const pal = HUE[meta.hue];
-                      const isSectionHeader = meta.isHeader;
                       const sub = String(row.sub_label ?? "").trim();
+                      // Header/band row = the one with an empty sub_label within the section
+                      const isSectionHeader = sub === "";
                       const totalSub = isTotalSub(sub);
 
                       // Section header rows render full-width as a coloured band
                       if (isSectionHeader) {
                         return (
                           <tr key={ri}>
-                            <td colSpan={9} style={{
+                            <td colSpan={11} style={{
                               background: pal.band,
                               padding: "12px 18px",
                               borderTop: ri === 0 ? "none" : "2px solid #e2e8f0",
@@ -595,6 +614,11 @@ function GrainageCocoonPurchaseReport() {
                                    color="#7c2d12" bg="linear-gradient(135deg,#fed7aa,#fdba74)" source="purchase" />
                           <ValCell v={row.me_total}   meta={meta} totalSub={totalSub}
                                    color="#78350f" bg="linear-gradient(135deg,#fcd34d,#fbbf24)"
+                                   weight={800} right="2px solid #e2e8f0" source="total" />
+                          <ValCell v={row.py_m_total}  meta={meta} totalSub={totalSub}
+                                   color="#475569" bg="linear-gradient(135deg,#f1f5f9,#e2e8f0)" source="total" />
+                          <ValCell v={row.py_me_total} meta={meta} totalSub={totalSub}
+                                   color="#475569" bg="linear-gradient(135deg,#e2e8f0,#cbd5e1)"
                                    weight={800} source="total" />
                         </tr>
                       );

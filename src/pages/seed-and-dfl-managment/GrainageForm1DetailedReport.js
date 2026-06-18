@@ -111,7 +111,7 @@ const SECTION_META = {
   "9":  { icon: "Σ",  hue: "emerald", en: "All-Race Total Stored" },
   "10": { icon: "🥚", hue: "amber",   en: "Mixed-Race DFLs Prepared" },
   "11": { icon: "🥚", hue: "violet",  en: "Bivoltine DFLs Prepared" },
-  "12": { icon: "📊", hue: "emerald", en: "Yield (Cocoons / DFL × 100)", isPct: true },
+  "12": { icon: "📊", hue: "emerald", en: "Yield (Cocoons / DFL × 100)" },
   "13": { icon: "💸", hue: "rose",    en: "Expense (₹)" },
   "14": { icon: "💰", hue: "rose",    en: "Production Cost per 100 DFL" },
   "15": { icon: "💸", hue: "rose",    en: "Expense Breakdown" },
