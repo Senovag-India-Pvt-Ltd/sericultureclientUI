@@ -745,41 +745,81 @@ const handleAttachFileUpload = async (hdTicketId) => {
             </div>
           </Block.HeadContent>
           <Block.HeadContent>
-            {(() => {
-              const people = ["Shraddha", "Ashwika", "Vaishnavi", "Amulya"];
-              const weekIdx = Math.min(Math.ceil(new Date().getDate() / 7) - 1, 3);
-              const person = people[weekIdx];
-              return (
+            <div style={{ display: "flex", alignItems: "stretch", gap: "16px" }}>
+
+              {/* ── Helpdesk Number Card ── */}
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "16px",
+                flex: 1,
+                minWidth: "280px",
+                background: "linear-gradient(135deg, #ffffff 0%, #eef5ff 100%)",
+                border: "2px solid #c8ddf7",
+                borderRadius: "16px",
+                padding: "14px 22px",
+                boxShadow: "0 6px 24px rgba(15,76,138,0.15)",
+              }}>
                 <div style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "16px",
-                  background: "linear-gradient(135deg, #ffffff 0%, #eef5ff 100%)",
-                  border: "2px solid #c8ddf7",
-                  borderRadius: "16px",
-                  padding: "14px 22px",
-                  boxShadow: "0 6px 24px rgba(15,76,138,0.15)",
+                  width: "54px", height: "54px", borderRadius: "50%",
+                  background: "linear-gradient(135deg, #1e67a8 0%, #0f3060 100%)",
+                  color: "#fff", display: "flex", alignItems: "center",
+                  justifyContent: "center", flexShrink: 0,
+                  boxShadow: "0 4px 14px rgba(15,76,138,0.30)",
+                  fontSize: "22px",
                 }}>
-                  <div style={{
-                    width: "54px", height: "54px", borderRadius: "50%",
-                    background: "linear-gradient(135deg, #1e67a8 0%, #0f3060 100%)",
-                    color: "#fff", display: "flex", alignItems: "center",
-                    justifyContent: "center", fontWeight: 900, fontSize: "22px",
-                    flexShrink: 0, boxShadow: "0 4px 14px rgba(15,76,138,0.30)",
-                  }}>
-                    {person.charAt(0)}
+                  📞
+                </div>
+                <div style={{ lineHeight: 1.4 }}>
+                  <div style={{ fontSize: "13px", fontWeight: 700, color: "#1e67a8", textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: "3px" }}>
+                    Helpdesk Number
                   </div>
-                  <div style={{ lineHeight: 1.4 }}>
-                    <div style={{ fontSize: "13px", fontWeight: 700, color: "#1e67a8", textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: "3px" }}>
-                      Seed Market Support For Sunday
-                    </div>
-                    <div style={{ fontSize: "20px", fontWeight: 900, color: "#0f3060" }}>
-                      {person}
-                    </div>
+                  <div style={{ fontSize: "20px", fontWeight: 900, color: "#0f3060" }}>
+                    080-24413900
                   </div>
                 </div>
-              );
-            })()}
+              </div>
+
+              {/* ── Seed Market Support Card ── */}
+              {(() => {
+                const people = ["Shraddha", "Ashwika", "Vaishnavi", "Amulya"];
+                const weekIdx = Math.min(Math.ceil(new Date().getDate() / 7) - 1, 3);
+                const person = people[weekIdx];
+                return (
+                  <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "16px",
+                    flex: 1,
+                    minWidth: "280px",
+                    background: "linear-gradient(135deg, #ffffff 0%, #eef5ff 100%)",
+                    border: "2px solid #c8ddf7",
+                    borderRadius: "16px",
+                    padding: "14px 22px",
+                    boxShadow: "0 6px 24px rgba(15,76,138,0.15)",
+                  }}>
+                    <div style={{
+                      width: "54px", height: "54px", borderRadius: "50%",
+                      background: "linear-gradient(135deg, #1e67a8 0%, #0f3060 100%)",
+                      color: "#fff", display: "flex", alignItems: "center",
+                      justifyContent: "center", fontWeight: 900, fontSize: "22px",
+                      flexShrink: 0, boxShadow: "0 4px 14px rgba(15,76,138,0.30)",
+                    }}>
+                      {person.charAt(0)}
+                    </div>
+                    <div style={{ lineHeight: 1.4 }}>
+                      <div style={{ fontSize: "13px", fontWeight: 700, color: "#1e67a8", textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: "3px" }}>
+                        Seed Market Support For Sunday
+                      </div>
+                      <div style={{ fontSize: "20px", fontWeight: 900, color: "#0f3060" }}>
+                        {person}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+
+            </div>
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
