@@ -249,7 +249,8 @@ function GrainageRaceProgressReport() {
   // Pull race rows by their backend order: CSR-2 (sl=1), CSR-4 (sl=2), Total (sl=3)
   const rowCSR2  = dataRows.find((r) => String(r.sl_no) === "1") || {};
   const rowCSR4  = dataRows.find((r) => String(r.sl_no) === "2") || {};
-  const rowTotal = dataRows.find((r) => String(r.sl_no) === "3") || {};
+  // Total row carries a blank sl_no (to match the source format) — find it by label.
+  const rowTotal = dataRows.find((r) => String(r.race || "").includes("ಒಟ್ಟು")) || {};
 
   const kpis = useMemo(() => {
     const tStoredM  = numOrZero(rowTotal.stored_m);
@@ -495,29 +496,29 @@ function GrainageRaceProgressReport() {
                         <div style={hdrEn}>DFLs Prepared</div>
                       </th>
                       <th colSpan={2} style={hdr("linear-gradient(135deg,#065f46,#10b981)")}>
-                        <div style={{ fontSize: "12.5px" }}>📊 ಇಳುವರಿ</div>
+                        <div style={{ fontSize: "12.5px" }}>📊 ಪಡೆದ ಇಳುವರಿ</div>
                         <div style={hdrEn}>Yield (DFL ÷ Stored × 100)</div>
                       </th>
                     </tr>
                     {/* Row 2: leaves */}
                     <tr>
                       <th style={subhdr("linear-gradient(135deg,#fed7aa,#fdba74)", "#7c2d12")}>
-                        <div style={{ fontSize: "10.5px" }}>ಮಾಸ</div><div style={subhdrEn}>Month</div>
+                        <div style={{ fontSize: "10.5px" }}>ತಿಂ.</div><div style={subhdrEn}>Month</div>
                       </th>
                       <th style={subhdr("linear-gradient(135deg,#fdba74,#fb923c)", "#7c2d12")}>
-                        <div style={{ fontSize: "10.5px" }}>ಮಾಸಾಂತ್ಯ</div><div style={subhdrEn}>FY Cum</div>
+                        <div style={{ fontSize: "10.5px" }}>ತಿಂ.ಅಂ.</div><div style={subhdrEn}>FY Cum</div>
                       </th>
                       <th style={subhdr("linear-gradient(135deg,#ddd6fe,#c4b5fd)", "#4c1d95")}>
-                        <div style={{ fontSize: "10.5px" }}>ಮಾಸ</div><div style={subhdrEn}>Month</div>
+                        <div style={{ fontSize: "10.5px" }}>ತಿಂ.</div><div style={subhdrEn}>Month</div>
                       </th>
                       <th style={subhdr("linear-gradient(135deg,#c4b5fd,#a78bfa)", "#4c1d95")}>
-                        <div style={{ fontSize: "10.5px" }}>ಮಾಸಾಂತ್ಯ</div><div style={subhdrEn}>FY Cum</div>
+                        <div style={{ fontSize: "10.5px" }}>ತಿಂ.ಅಂ.</div><div style={subhdrEn}>FY Cum</div>
                       </th>
                       <th style={subhdr("linear-gradient(135deg,#a7f3d0,#6ee7b7)", "#064e3b")}>
-                        <div style={{ fontSize: "10.5px" }}>ಮಾಸ</div><div style={subhdrEn}>Month</div>
+                        <div style={{ fontSize: "10.5px" }}>ತಿಂ.</div><div style={subhdrEn}>Month</div>
                       </th>
                       <th style={subhdr("linear-gradient(135deg,#6ee7b7,#34d399)", "#064e3b")}>
-                        <div style={{ fontSize: "10.5px" }}>ಮಾಸಾಂತ್ಯ</div><div style={subhdrEn}>FY Cum</div>
+                        <div style={{ fontSize: "10.5px" }}>ತಿಂ.ಅಂ.</div><div style={subhdrEn}>FY Cum</div>
                       </th>
                     </tr>
                   </thead>
