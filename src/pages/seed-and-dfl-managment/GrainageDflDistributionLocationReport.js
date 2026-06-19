@@ -327,9 +327,9 @@ function GrainageDflDistributionLocationReport() {
             <div style={{ flex: 1 }}>
               <div style={{ color: "#fff", fontWeight: 800, fontSize: "15px", lineHeight: 1.2 }}>
                 ಮೊಟ್ಟೆ ವಿಲೇವಾರಿ ವಿವರ — ತಾಲೂಕು / ಜಿಲ್ಲೆವಾರು (ಬಿತ್ತನೆ ಕೋಠಿ)
-                <span style={{ background: "rgba(255,255,255,.22)", padding: "2px 9px", borderRadius: "12px", marginLeft: "8px", fontSize: "10.5px", fontWeight: 800 }}>Distribution</span>
+                <span style={{ background: "rgba(255,255,255,.22)", padding: "2px 9px", borderRadius: "12px", marginLeft: "8px", fontSize: "10.5px", fontWeight: 800 }}>ವಿಲೇವಾರಿ</span>
               </div>
-              <div style={{ color: "rgba(255,255,255,.85)", fontSize: "11px", marginTop: "2px" }}>P1 &amp; P2 Grainage (Bivoltine) — DFL Distribution by Taluk / District (CSR-2 P1 vs CSR-2 P2)</div>
+              <div style={{ color: "rgba(255,255,255,.85)", fontSize: "11px", marginTop: "2px" }}>ಪಿ1 ಮತ್ತು ಪಿ2 ಗ್ರೇನೇಜ್ (ದ್ವಿತಳಿ) — ತಾಲೂಕು / ಜಿಲ್ಲೆವಾರು ಮೊಟ್ಟೆ ವಿಲೇವಾರಿ (ಸಿಎಸ್ಆರ್-2 ಪ1 ಮತ್ತು ಪ2)</div>
             </div>
             {hasReport && (
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
@@ -519,7 +519,7 @@ function GrainageDflDistributionLocationReport() {
               }}>
                 ಮೊಟ್ಟೆ ವಿಲೇವಾರಿ ವಿವರ · ಬಿತ್ತನೆ ಕೋಠಿ {grainageName} &nbsp;·&nbsp; {monthKn} {monthYear || ""}
                 <div style={{ fontSize: "12px", fontWeight: 600, opacity: .9, marginTop: "4px" }}>
-                  DFL Distribution by Taluk / District &nbsp;·&nbsp; Home: <strong>{districtName}</strong> &nbsp;·&nbsp; {monthLabel} {monthYear || ""}
+                  ತಾಲೂಕು / ಜಿಲ್ಲೆವಾರು ಮೊಟ್ಟೆ ವಿಲೇವಾರಿ &nbsp;·&nbsp; ಸ್ಥಳೀಯ: <strong>{districtName}</strong> &nbsp;·&nbsp; {monthLabel} {monthYear || ""}
                 </div>
               </div>
 
