@@ -606,6 +606,9 @@ import MaintenanceOfPiercedCocoons from "../pages/seed-and-dfl-managment/Mainten
 import MaintenanceOfPiercedCocoonsList from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoonsList";
 import EditMaintenanceOfPiercedCocoons from "../pages/seed-and-dfl-managment/EditMaintenanceOfPiercedCocoons";
 import MaintenanceOfPiercedCocoonsView from "../pages/seed-and-dfl-managment/MaintenanceOfPiercedCocoonsView";
+import GrainageMonthlyCost from "../pages/seed-and-dfl-managment/GrainageMonthlyCost";
+import GrainageMonthlyCostList from "../pages/seed-and-dfl-managment/GrainageMonthlyCostList";
+import GrainageMonthlyCostEdit from "../pages/seed-and-dfl-managment/GrainageMonthlyCostEdit";
 import MaintenanceOfEggLayingSheetsView from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheetsView";
 import EditMaintenanceOfEggLayingSheets from "../pages/seed-and-dfl-managment/EditMaintenanceOfEggLayingSheets";
 import MaintenanceOfEggLayingSheetsList from "../pages/seed-and-dfl-managment/MaintenanceOfEggLayingSheetsList";
@@ -1082,6 +1085,7 @@ import AdsGg3Report from "../pages/seed-and-dfl-managment/AdsGg3Report";
 import AdsPebrineReport from "../pages/seed-and-dfl-managment/AdsPebrineReport";
 import AdsPlantationReport from "../pages/seed-and-dfl-managment/AdsPlantationReport";
 import AdsRearerDetailsReport from "../pages/seed-and-dfl-managment/AdsRearerDetailsReport";
+import AdsRearerYearComparisonReport from "../pages/seed-and-dfl-managment/AdsRearerYearComparisonReport";
 import AdsChawkiReport from "../pages/seed-and-dfl-managment/AdsChawkiReport";
 import DdsWeeklyChawkiReport from "../pages/seed-and-dfl-managment/DdsWeeklyChawkiReport";
 import FarmForm1ChawkiReport from "../pages/seed-and-dfl-managment/FarmForm1ChawkiReport";
@@ -2344,6 +2348,7 @@ function Router() {
             <Route path="ads-pebrine-report" element={<AdsPebrineReport />} />
             <Route path="ads-plantation-report" element={<AdsPlantationReport />} />
             <Route path="ads-rearer-details-report" element={<AdsRearerDetailsReport />} />
+            <Route path="ads-rearer-year-comparison-report" element={<AdsRearerYearComparisonReport />} />
             <Route path="ads-chawki-report" element={<AdsChawkiReport />} />
             <Route path="dds-weekly-chawki-report" element={<DdsWeeklyChawkiReport />} />
             <Route path="farm-form1-chawki-report" element={<FarmForm1ChawkiReport />} />
@@ -2411,6 +2416,18 @@ function Router() {
             <Route
               path="maintenance-of-pierced-cocoons-view/:id"
               element={<MaintenanceOfPiercedCocoonsView />}
+            />
+            <Route
+              path="grainage-monthly-cost"
+              element={<GrainageMonthlyCost />}
+            />
+            <Route
+              path="grainage-monthly-cost-list"
+              element={<GrainageMonthlyCostList />}
+            />
+            <Route
+              path="grainage-monthly-cost-edit/:id"
+              element={<GrainageMonthlyCostEdit />}
             />
             <Route
               path="maintenance-of-egg-laying-sheets"

@@ -25,7 +25,8 @@ const COLS = [
   { key: "bittane_wt",        kn: "ಬಿತ್ತನೆ (ತೂಕ)",            en: "Seed (kg)",        minW: 100 },
   { key: "reeling_no",        kn: "ನೂಲಿಗೆ (ಸಂಖ್ಯೆ)",          en: "Reeling (#)",      minW: 100 },
   { key: "reeling_wt",        kn: "ನೂಲಿಗೆ (ತೂಕ)",             en: "Reeling (kg)",     minW: 100 },
-  { key: "avg_yield",         kn: "ಸರಾಸರಿ ಇಳುವರಿ",            en: "Avg Yield",        minW: 95 },
+  { key: "avg_yield_no",      kn: "ಸರಾಸರಿ ಇಳುವರಿ (ಸಂಖ್ಯೆ)",   en: "Avg Yield (#)",    minW: 95 },
+  { key: "avg_yield_wt",      kn: "ಸರಾಸರಿ ಇಳುವರಿ (ತೂಕ)",      en: "Avg Yield (kg)",   minW: 95 },
 ];
 
 if (!document.getElementById("p3s3-styles")) {

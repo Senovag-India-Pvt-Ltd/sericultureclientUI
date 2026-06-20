@@ -1139,6 +1139,44 @@ function PreparationofeggsDFLsEdit() {
                               </div>
                             </Form.Group>
                           </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="numberOfBeds">
+                                {t("Number of Beds")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="numberOfBeds"
+                                  name="numberOfBeds"
+                                  value={data.numberOfBeds || ""}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  min="0"
+                                  placeholder={t("Number of Beds")}
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
+
+                          <Col lg="4">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="lowYield">
+                                {t("Low Yield")}
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Control
+                                  id="lowYield"
+                                  name="lowYield"
+                                  value={data.lowYield || ""}
+                                  onChange={handleInputs}
+                                  type="number"
+                                  min="0"
+                                  placeholder={t("Low Yield")}
+                                />
+                              </div>
+                            </Form.Group>
+                          </Col>
                         </Row>
                       </Card.Body>
                     </Card>

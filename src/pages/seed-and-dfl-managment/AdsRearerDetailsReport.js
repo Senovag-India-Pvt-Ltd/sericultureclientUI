@@ -405,7 +405,7 @@ function AdsRearerDetailsReport() {
                         <div style={{ fontSize: "12.5px" }}>ತಾಂತ್ರಿಕ ಸೇವಾ ಕೇಂದ್ರ</div><div style={hdrEn}>TSC</div>
                       </th>
                       <th rowSpan={2} style={hdr("linear-gradient(135deg,#475569,#64748b)", "100px", true)}>
-                        <div style={{ fontSize: "12px" }}>ಗ್ರಾ.ಪಂ.</div><div style={hdrEn}>GP</div>
+                        <div style={{ fontSize: "12px" }}>ಹಳ್ಳಿಗಳ ಸಂಖ್ಯೆ</div><div style={hdrEn}>Villages</div>
                       </th>
                       <th rowSpan={2} style={hdr("linear-gradient(135deg,#1d4ed8,#3b82f6)", "120px", true)}>
                         <div style={{ fontSize: "12px" }}>👨‍🌾 ಒಟ್ಟು ಬೆಳೆಗಾರರು</div><div style={hdrEn}>Farmers</div>
@@ -450,7 +450,7 @@ function AdsRearerDetailsReport() {
                     {dataRows.length === 0 && (
                       <tr><td colSpan={12} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>ಯಾವುದೇ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ &nbsp;/&nbsp; No records found.</td></tr>
                     )}
-                    {dataRows.map((row, ri) => {
+                    {dataRows.filter((r) => String(r.ord) !== "999999").map((row, ri) => {
                       const alt = ri % 2 === 1;
                       const farmers = numOrZero(row.farmer_count);
                       const wPct = pct(numOrZero(row.women_count), farmers);

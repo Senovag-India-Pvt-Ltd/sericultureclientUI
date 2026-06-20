@@ -11,9 +11,9 @@ const baseURLDBT    = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 const STATUS_ITEMS = [
-  { key: "WITHIN_SLA",  label: "Within SLA",  bs: "success", dotColor: "#197a48" },
-  { key: "OUTSIDE_SLA", label: "Outside SLA", bs: "warning",  dotColor: "#c47d0a" },
-  { key: "PENDING",     label: "Pending",      bs: "danger",  dotColor: "#c0392b" },
+  { key: "WITHIN_SLA",  label: "Within SLA",  bs: "success", dotColor: "#197a48", icon: "check-circle" },
+  { key: "OUTSIDE_SLA", label: "Outside SLA", bs: "warning",  dotColor: "#c47d0a", icon: "alert-triangle" },
+  { key: "PENDING",     label: "Pending",      bs: "danger",  dotColor: "#c0392b", icon: "clock" },
 ];
 
 const accents = ["#1e67a8", "#0d4f8a", "#155e7a", "#1a6e5c", "#3d5a99", "#4a4a8a", "#165888"];
@@ -26,10 +26,12 @@ function FilterBar({ district, component, fruitsId, onDistrictChange, onComponen
   const lbl = { fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" };
 
   return (
-    <Card className="mb-3" style={{ border: "none", boxShadow: "0 1px 6px rgba(0,0,0,0.07)" }}>
-      <div style={{ background: "#1e67a8", padding: "10px 18px", borderRadius: "8px 8px 0 0" }}>
+    <Card className="mb-3" style={{ border: "none", borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}>
+      <div style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", padding: "11px 18px" }}>
         <div className="d-flex align-items-center gap-2">
-          <Icon name="filter" style={{ color: "#fff", fontSize: 13 }} />
+          <span style={{ width: 22, height: 22, borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <Icon name="filter" style={{ color: "#fff", fontSize: 12 }} />
+          </span>
           <span style={{ color: "#fff", fontWeight: 700, fontSize: "0.84rem" }}>Filter Applications</span>
           {active && (
             <span style={{ background: "rgba(255,255,255,0.25)", color: "#fff", fontSize: "0.62rem", fontWeight: 700, borderRadius: "20px", padding: "1px 9px" }}>
@@ -73,8 +75,12 @@ function FilterBar({ district, component, fruitsId, onDistrictChange, onComponen
           </Col>
           <Col md="3" xs="12">
             <div className="d-flex gap-2">
-              <Button size="sm" variant="primary" onClick={onApply} className="flex-fill">Apply</Button>
-              <Button size="sm" variant="secondary" onClick={onClear} className="flex-fill">Clear</Button>
+              <Button size="sm" variant="primary" onClick={onApply} className="flex-fill d-flex align-items-center justify-content-center gap-1" style={{ borderRadius: "6px", fontWeight: 600 }}>
+                <Icon name="search" style={{ fontSize: 12 }} /> Apply
+              </Button>
+              <Button size="sm" variant="outline-secondary" onClick={onClear} className="flex-fill d-flex align-items-center justify-content-center gap-1" style={{ borderRadius: "6px", fontWeight: 600 }}>
+                <Icon name="cross" style={{ fontSize: 12 }} /> Clear
+              </Button>
             </div>
           </Col>
         </Row>
@@ -103,9 +109,9 @@ function DrillBreadcrumb({ crumbs, onNavigate }) {
 
 // ─── SLA Card ─────────────────────────────────────────────────────────────────
 const STAT_STYLES = {
-  WITHIN_SLA:  { color: "#197a48", hoverBg: "#f0faf5", borderColor: "#b7dfc9" },
-  OUTSIDE_SLA: { color: "#c47d0a", hoverBg: "#fffbf0", borderColor: "#f9d98a" },
-  PENDING:     { color: "#c0392b", hoverBg: "#fef5f5", borderColor: "#f0b8b2" },
+  WITHIN_SLA:  { color: "#197a48", hoverBg: "#f0faf5", borderColor: "#b7dfc9", icon: "check-circle", barColor: "#3ddc84" },
+  OUTSIDE_SLA: { color: "#c47d0a", hoverBg: "#fffbf0", borderColor: "#f9d98a", icon: "alert-triangle", barColor: "#ffd166" },
+  PENDING:     { color: "#c0392b", hoverBg: "#fef5f5", borderColor: "#f0b8b2", icon: "clock", barColor: "#ff6b6b" },
 };
 
 function SlaCard({ title, total, withinSla, outsideSla, pendingCount, accent = "#1e67a8", onDrillDown, onViewStatus }) {
@@ -114,6 +120,9 @@ function SlaCard({ title, total, withinSla, outsideSla, pendingCount, accent = "
     { label: "Outside SLA", count: outsideSla,   type: "OUTSIDE_SLA" },
     { label: "Pending",     count: pendingCount, type: "PENDING" },
   ];
+
+  const safeTotal = total || 0;
+  const pct = (n) => (safeTotal > 0 ? ((n ?? 0) / safeTotal) * 100 : 0);
 
   return (
     <div className="h-100" style={{
@@ -151,6 +160,14 @@ function SlaCard({ title, total, withinSla, outsideSla, pendingCount, accent = "
           </span>
           <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.73rem" }}>applications</span>
         </div>
+
+        {safeTotal > 0 && (
+          <div style={{ marginTop: 10, display: "flex", height: 5, borderRadius: 4, overflow: "hidden", background: "rgba(255,255,255,0.15)" }}>
+            <div style={{ width: `${pct(withinSla)}%`, background: STAT_STYLES.WITHIN_SLA.barColor }} />
+            <div style={{ width: `${pct(outsideSla)}%`, background: STAT_STYLES.OUTSIDE_SLA.barColor }} />
+            <div style={{ width: `${pct(pendingCount)}%`, background: STAT_STYLES.PENDING.barColor }} />
+          </div>
+        )}
       </div>
 
       {/* ── 3 stat cells ── */}
@@ -168,6 +185,7 @@ function SlaCard({ title, total, withinSla, outsideSla, pendingCount, accent = "
               }}
               onMouseEnter={(e) => { e.currentTarget.style.background = s.hoverBg; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = ""; }}>
+              <Icon name={s.icon} style={{ fontSize: "0.85rem", color: s.color, marginBottom: 2, display: "block" }} />
               <div style={{ fontSize: "1.55rem", fontWeight: 900, color: s.color, lineHeight: 1, marginBottom: 4 }}>
                 {(count ?? 0).toLocaleString()}
               </div>
@@ -418,18 +436,34 @@ function SakalaDashboard() {
                   {/* Gradient header */}
                   <div style={{
                     background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)",
-                    padding: "22px 24px 18px",
+                    padding: "22px 24px 18px", position: "relative", overflow: "hidden",
                   }}>
-                    <p style={{
-                      color: "rgba(255,255,255,0.65)", fontSize: "0.68rem",
-                      fontWeight: 700, textTransform: "uppercase",
-                      letterSpacing: "0.1em", margin: 0,
-                    }}>
-                      Department of Sericulture
-                    </p>
+                    <span style={{
+                      position: "absolute", top: -34, right: -34, width: 120, height: 120,
+                      borderRadius: "50%", background: "rgba(255,255,255,0.08)",
+                    }} />
+                    <span style={{
+                      position: "absolute", bottom: -44, right: 24, width: 70, height: 70,
+                      borderRadius: "50%", background: "rgba(255,255,255,0.06)",
+                    }} />
+                    <div className="d-flex align-items-center gap-2" style={{ position: "relative" }}>
+                      <span style={{
+                        width: 30, height: 30, borderRadius: "9px", background: "rgba(255,255,255,0.18)",
+                        display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+                      }}>
+                        <Icon name="building" style={{ color: "#fff", fontSize: 15 }} />
+                      </span>
+                      <p style={{
+                        color: "rgba(255,255,255,0.7)", fontSize: "0.68rem",
+                        fontWeight: 700, textTransform: "uppercase",
+                        letterSpacing: "0.1em", margin: 0,
+                      }}>
+                        Department of Sericulture
+                      </p>
+                    </div>
                     <h5 style={{
-                      color: "#fff", fontWeight: 700, margin: "4px 0 0",
-                      fontSize: "1.05rem", lineHeight: 1.3,
+                      color: "#fff", fontWeight: 700, margin: "10px 0 0",
+                      fontSize: "1.05rem", lineHeight: 1.3, position: "relative",
                     }}>
                       Application Pendency Overview
                     </h5>
@@ -458,10 +492,13 @@ function SakalaDashboard() {
                         {STATUS_ITEMS.map((s) => (
                           <div key={s.key} className="d-flex align-items-center gap-1">
                             <span style={{
-                              width: 6, height: 6, borderRadius: "50%",
-                              background: s.dotColor, display: "inline-block", flexShrink: 0,
-                            }} />
-                            <span style={{ fontSize: "0.68rem", color: "#6c757d" }}>
+                              width: 18, height: 18, borderRadius: "50%",
+                              background: `${s.dotColor}1a`, display: "inline-flex",
+                              alignItems: "center", justifyContent: "center", flexShrink: 0,
+                            }}>
+                              <Icon name={s.icon} style={{ fontSize: 10, color: s.dotColor }} />
+                            </span>
+                            <span style={{ fontSize: "0.68rem", color: "#6c757d", fontWeight: 600 }}>
                               {s.label}
                             </span>
                           </div>
@@ -489,24 +526,6 @@ function SakalaDashboard() {
         {/* ── LEVEL 1 — Scheme SLA cards ─────────────────────────────────────── */}
         {!loading && level === 1 && (
           <div className="sak-anim">
-            {/* Section header */}
-            <div style={{
-              borderLeft: "4px solid #1e67a8", background: "#fff",
-              borderRadius: "0 8px 8px 0", padding: "10px 16px",
-              marginBottom: "16px", boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
-              display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
-            }}>
-              <span style={{ fontWeight: 700, fontSize: "0.9rem", color: "#1a2a3a" }}>Scheme-wise Breakdown</span>
-              {activeFilterCount > 0 && (
-                <span className="badge bg-primary" style={{ fontSize: "0.63rem" }}>
-                  {activeFilterCount} filter{activeFilterCount > 1 ? "s" : ""} active
-                </span>
-              )}
-              <span className="text-muted small">
-                Click a count to view the application list · Click Sub-Schemes to drill down
-              </span>
-            </div>
-
             {schemeWiseSla.length === 0 ? (
               <div className="text-center py-5">
                 <p className="text-muted mb-0">No applications found for the selected filters.</p>
@@ -539,14 +558,16 @@ function SakalaDashboard() {
         {/* ── LEVEL 2 — Sub-scheme SLA cards ─────────────────────────────────── */}
         {!loading && level === 2 && (
           <div className="sak-anim">
-            {/* Section header card */}
             {/* Section header */}
             <div style={{
               borderLeft: "4px solid #1e67a8", background: "#fff",
-              borderRadius: "0 8px 8px 0", padding: "10px 16px",
-              marginBottom: "16px", boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+              borderRadius: "0 10px 10px 0", padding: "11px 16px",
+              marginBottom: "16px", boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
               display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
             }}>
+              <span style={{ width: 24, height: 24, borderRadius: "7px", background: "#eaf2fb", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <Icon name="layers" style={{ fontSize: 12, color: "#1e67a8" }} />
+              </span>
               <span style={{ fontWeight: 700, fontSize: "0.9rem", color: "#1a2a3a" }}>Sub-Schemes</span>
               {selectedScheme?.schemeName && (
                 <span className="badge bg-light border text-secondary fw-semibold" style={{ fontSize: "0.72rem" }}>

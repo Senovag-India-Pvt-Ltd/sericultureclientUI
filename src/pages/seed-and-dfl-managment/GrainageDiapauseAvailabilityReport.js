@@ -24,11 +24,6 @@ const MONTH_KN = [
   "ಜುಲೈ", "ಆಗಸ್ಟ್", "ಸೆಪ್ಟೆಂಬರ್", "ಅಕ್ಟೋಬರ್", "ನವೆಂಬರ್", "ಡಿಸೆಂಬರ್",
 ];
 
-const MONTH_EN_SHORT = [
-  "", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-];
-
 if (!document.getElementById("gdiap-styles")) {
   const s = document.createElement("style");
   s.id = "gdiap-styles";
@@ -232,55 +227,61 @@ function GrainageDiapauseAvailabilityReport() {
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
   const grainageName = selectedGrainage?.grainageMasterName || "—";
 
-  // KPIs over the 5-month window + identify peak month + mark anchor (current) row
+  // Backend returns ONE row per cold-storage lot; group by month for the spanning
+  // table, the chart and the KPIs.
+  const byMonth = useMemo(() => {
+    const map = new Map();
+    dataRows.forEach((r) => {
+      const k = String(r.month_label || "");
+      if (!map.has(k)) map.set(k, { label: k, rows: [] });
+      map.get(k).rows.push(r);
+    });
+    return Array.from(map.values()).map((g) => ({
+      ...g,
+      p1: g.rows.reduce((a, r) => a + numOrZero(r.p1_dfls), 0),
+      p2: g.rows.reduce((a, r) => a + numOrZero(r.p2_dfls), 0),
+    }));
+  }, [dataRows]);
+
   const kpis = useMemo(() => {
-    const sumP1Lots  = dataRows.reduce((a, r) => a + numOrZero(r.p1_lots), 0);
-    const sumP2Lots  = dataRows.reduce((a, r) => a + numOrZero(r.p2_lots), 0);
+    const sumP1Lots  = dataRows.filter((r) => String(r.p1_lots ?? "").trim() !== "").length;
+    const sumP2Lots  = dataRows.filter((r) => String(r.p2_lots ?? "").trim() !== "").length;
     const sumP1Dfls  = dataRows.reduce((a, r) => a + numOrZero(r.p1_dfls), 0);
     const sumP2Dfls  = dataRows.reduce((a, r) => a + numOrZero(r.p2_dfls), 0);
     const grand      = sumP1Dfls + sumP2Dfls;
 
-    let peakRow = null;
-    let peakVal = 0;
-    dataRows.forEach((r) => {
-      const v = numOrZero(r.p1_dfls) + numOrZero(r.p2_dfls);
-      if (v > peakVal) { peakVal = v; peakRow = r; }
-    });
+    let peak = null, peakVal = 0;
+    byMonth.forEach((m) => { const v = m.p1 + m.p2; if (v > peakVal) { peakVal = v; peak = m; } });
 
     return {
-      monthCount:  dataRows.length,
+      monthCount:  byMonth.length,
       sumP1Lots, sumP2Lots, sumP1Dfls, sumP2Dfls, grand,
       p1Share: grand === 0 ? 0 : (sumP1Dfls / grand) * 100,
       p2Share: grand === 0 ? 0 : (sumP2Dfls / grand) * 100,
-      peakLabel: peakRow ? `${MONTH_EN_SHORT[numOrZero(peakRow.month_num)] || ""} ${numOrZero(peakRow.year)}` : "—",
-      peakKn:    peakRow ? `${MONTH_KN[numOrZero(peakRow.month_num)] || ""}-${numOrZero(peakRow.year)}` : "—",
+      peakKn:    peak ? peak.label : "—",
       peakVal,
     };
-  }, [dataRows]);
+  }, [dataRows, byMonth]);
 
-  // Bar chart max for normalising heights
-  const chartMax = useMemo(() => {
-    let m = 0;
-    dataRows.forEach((r) => {
-      const v = numOrZero(r.p1_dfls) + numOrZero(r.p2_dfls);
-      if (v > m) m = v;
-    });
-    return m;
-  }, [dataRows]);
+  // Bar chart max for normalising heights (per-month totals)
+  const chartMax = useMemo(
+    () => byMonth.reduce((m, x) => Math.max(m, x.p1 + x.p2), 0),
+    [byMonth]
+  );
 
   return (
     <Layout title={t("Grainage Diapause / Refrigerated DFL Availability (5-month forecast)")}>
       <Block.Head><Block.HeadBetween><Block.HeadContent>
         <Block.Title tag="h2">
           <span className="gdiap-snow" style={{ marginRight: "8px" }}>❄️</span>
-          {t("ಶೈತ್ಯೀಕರಿಸಿದ ಶುದ್ಧ ತಳಿ ಮೊಟ್ಟೆಗಳ ಲಭ್ಯತೆ — ಮುಂದಿನ 5 ತಿಂಗಳುಗಳು")}
+          {t("ಶೈತ್ಯಾಗಾರದಲ್ಲಿ ಶೈತ್ಯೀಕರಿಸಿದ ಶುದ್ಧ ತಳಿ ರೇಷ್ಮೆ ಮೊಟ್ಟೆಗಳ (ಜಡತ್ವ) ಮಾಹೆವಾರು ಲಭ್ಯತೆ")}
           <span style={{
             display: "inline-flex", alignItems: "center", gap: "4px",
             background: "linear-gradient(135deg,#cffafe,#a5f3fc)",
             color: "#155e75", padding: "2px 10px", borderRadius: "20px",
             fontSize: "10.5px", fontWeight: 800, marginLeft: "8px",
             border: "1px solid #67e8f9", verticalAlign: "middle",
-          }}>P1 & P2 · Bivoltine · Diapause · 5-month Forecast</span>
+          }}>ಪಿ1 ಮತ್ತು ಪಿ2 · ದ್ವಿತಳಿ · ಜಡತ್ವ · 5 ಮಾಹೆಯ ಮುನ್ಸೂಚನೆ</span>
         </Block.Title>
       </Block.HeadContent></Block.HeadBetween></Block.Head>
 
@@ -295,8 +296,8 @@ function GrainageDiapauseAvailabilityReport() {
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ color: "#fff", fontWeight: 800, fontSize: "15px", lineHeight: 1.2 }}>
-                ಶೈತ್ಯೀಕರಿಸಿದ ಶುದ್ಧ ತಳಿ ಮೊಟ್ಟೆಗಳ ಲಭ್ಯತೆ — ಮುಂದಿನ 5 ತಿಂಗಳುಗಳು
-                <span style={{ background: "rgba(255,255,255,.22)", padding: "2px 9px", borderRadius: "12px", marginLeft: "8px", fontSize: "10.5px", fontWeight: 800 }}>Diapause · 5-mo</span>
+                ಶೈತ್ಯಾಗಾರದಲ್ಲಿ ಶೈತ್ಯೀಕರಿಸಿದ ಶುದ್ಧ ತಳಿ ರೇಷ್ಮೆ ಮೊಟ್ಟೆಗಳ (ಜಡತ್ವ) ಮಾಹೆವಾರು ಲಭ್ಯತೆ
+                <span style={{ background: "rgba(255,255,255,.22)", padding: "2px 9px", borderRadius: "12px", marginLeft: "8px", fontSize: "10.5px", fontWeight: 800 }}>Diapause</span>
               </div>
               <div style={{ color: "rgba(255,255,255,.85)", fontSize: "11px", marginTop: "2px" }}>P1 &amp; P2 Grainage (Bivoltine) — Refrigerated pure-race DFL availability rolling forward 5 months from anchor</div>
             </div>
@@ -422,9 +423,9 @@ function GrainageDiapauseAvailabilityReport() {
                     </span>
                   </div>
                   <div style={{ display: "flex", alignItems: "flex-end", gap: "12px", height: "180px", padding: "0 8px" }}>
-                    {dataRows.map((row, ri) => {
-                      const p1 = numOrZero(row.p1_dfls);
-                      const p2 = numOrZero(row.p2_dfls);
+                    {byMonth.map((m, ri) => {
+                      const p1 = m.p1;
+                      const p2 = m.p2;
                       const total = p1 + p2;
                       const maxBarHeight = 150;
                       const totalH = chartMax === 0 ? 0 : (total / chartMax) * maxBarHeight;
@@ -471,9 +472,8 @@ function GrainageDiapauseAvailabilityReport() {
                               }}>📍 NOW</span>
                             )}
                           </div>
-                          <div style={{ fontSize: "11px", fontWeight: 700, color: isAnchor ? "#0f766e" : "#475569", lineHeight: 1.2, textAlign: "center" }}>
-                            <div>{MONTH_EN_SHORT[numOrZero(row.month_num)] || "—"}</div>
-                            <div style={{ fontSize: "9.5px", opacity: .8, fontWeight: 600 }}>{numOrZero(row.year)}</div>
+                          <div style={{ fontSize: "10.5px", fontWeight: 700, color: isAnchor ? "#0f766e" : "#475569", lineHeight: 1.2, textAlign: "center" }}>
+                            <div>{m.label || "—"}</div>
                           </div>
                         </div>
                       );
@@ -506,25 +506,22 @@ function GrainageDiapauseAvailabilityReport() {
                   <thead>
                     {/* Row 1: top groups */}
                     <tr>
-                      <th rowSpan={2} style={hdr("linear-gradient(135deg,#1e293b,#36506b)", "55px", true)}>
-                        <div style={{ fontSize: "11.5px" }}>ಕ್ರ.ಸಂ.</div><div style={hdrEn}>Sl</div>
-                      </th>
-                      <th rowSpan={2} style={hdr("linear-gradient(135deg,#334155,#475569)", "180px", true, "left")}>
+                      <th rowSpan={2} style={hdr("linear-gradient(135deg,#334155,#475569)", "150px", true)}>
                         <div style={{ fontSize: "12.5px" }}>📅 ಮಾಹೆ</div><div style={hdrEn}>Month</div>
                       </th>
                       <th colSpan={3} style={hdr("linear-gradient(135deg,#1e40af,#3b82f6)")}>
-                        <div style={{ fontSize: "12.5px" }}>① ಪಿ1 ತಳಿ (CSR-2 P1)</div>
-                        <div style={hdrEn}>Race CSR-2 · P1</div>
+                        <div style={{ fontSize: "12.5px" }}>ಪಿ1</div>
+                        <div style={hdrEn}>P1</div>
                       </th>
                       <th colSpan={3} style={hdr("linear-gradient(135deg,#5b21b6,#7c3aed)")}>
-                        <div style={{ fontSize: "12.5px" }}>② ಪಿ2 ತಳಿ (CSR-2 P2 + Hybrid)</div>
-                        <div style={hdrEn}>Race CSR-2 P2 / Hybrid</div>
+                        <div style={{ fontSize: "12.5px" }}>ಪಿ2</div>
+                        <div style={hdrEn}>P2</div>
                       </th>
                     </tr>
                     {/* Row 2: leaves */}
                     <tr>
                       <th style={subhdr("linear-gradient(135deg,#bfdbfe,#93c5fd)", "#1e3a8a")}>
-                        <div style={{ fontSize: "10.5px" }}>ತಂಡ ಸಂ.</div><div style={subhdrEn}>Lots</div>
+                        <div style={{ fontSize: "10.5px" }}>ತಂಡದ ಸಂಖ್ಯೆ</div><div style={subhdrEn}>Lot No</div>
                       </th>
                       <th style={subhdr("linear-gradient(135deg,#dbeafe,#bfdbfe)", "#1e3a8a")}>
                         <div style={{ fontSize: "10.5px" }}>ಇಂದ</div><div style={subhdrEn}>From</div>
@@ -533,7 +530,7 @@ function GrainageDiapauseAvailabilityReport() {
                         <div style={{ fontSize: "10.5px" }}>ಮೊಟ್ಟೆಗಳು</div><div style={subhdrEn}>DFLs</div>
                       </th>
                       <th style={subhdr("linear-gradient(135deg,#ddd6fe,#c4b5fd)", "#4c1d95")}>
-                        <div style={{ fontSize: "10.5px" }}>ತಂಡ ಸಂ.</div><div style={subhdrEn}>Lots</div>
+                        <div style={{ fontSize: "10.5px" }}>ತಂಡದ ಸಂಖ್ಯೆ</div><div style={subhdrEn}>Lot No</div>
                       </th>
                       <th style={subhdr("linear-gradient(135deg,#ede9fe,#ddd6fe)", "#4c1d95")}>
                         <div style={{ fontSize: "10.5px" }}>ಇಂದ</div><div style={subhdrEn}>From</div>
@@ -545,105 +542,52 @@ function GrainageDiapauseAvailabilityReport() {
                   </thead>
                   <tbody>
                     {dataRows.length === 0 && (
-                      <tr><td colSpan={8} style={{ padding: "60px 20px", textAlign: "center", background: "linear-gradient(180deg,#ecfeff,#fff)" }}>
+                      <tr><td colSpan={7} style={{ padding: "60px 20px", textAlign: "center", background: "linear-gradient(180deg,#ecfeff,#fff)" }}>
                         <div style={{ fontSize: "40px", marginBottom: "8px" }}>❄️</div>
                         <div style={{ fontSize: "15px", fontWeight: 800, color: "#0e7490", marginBottom: "4px" }}>ಯಾವುದೇ ಲಭ್ಯತೆ ಮಾಹಿತಿ ಇಲ್ಲ</div>
                         <div style={{ fontSize: "13px", color: "#475569", fontWeight: 600 }}>No diapause DFL availability data found for this grainage.</div>
                       </td></tr>
                     )}
-                    {dataRows.map((row, ri) => {
-                      const isAnchor = ri === 0;
-                      const total = numOrZero(row.p1_dfls) + numOrZero(row.p2_dfls);
-                      const isPeak = total > 0 && total === kpis.peakVal;
-                      const monthName = MONTH_EN_SHORT[numOrZero(row.month_num)] || "";
-                      const yr = numOrZero(row.year);
-                      const rowBg = isAnchor
-                        ? "linear-gradient(135deg,#ecfdf5,#d1fae5)"
-                        : (ri % 2 === 1 ? "#f8fafc" : "#ffffff");
+                    {byMonth.map((g, gi) => g.rows.map((row, ri) => {
+                      const first = ri === 0;
+                      const altBg = gi % 2 === 1 ? "#f8fafc" : "#ffffff";
                       return (
-                        <tr key={ri} className="gdiap-tr" style={{ background: rowBg }}>
-                          <td style={{
-                            padding: "12px 8px", textAlign: "center",
-                            borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0",
-                            background: isAnchor ? "linear-gradient(135deg,#5eead4,#2dd4bf)"
-                                                  : "linear-gradient(135deg,#0e7490,#06b6d4)",
-                          }}>
-                            <span style={{
-                              display: "inline-flex", alignItems: "center", justifyContent: "center",
-                              minWidth: "28px", height: "28px", borderRadius: "50%",
-                              background: "rgba(255,255,255,.95)",
-                              color: isAnchor ? "#134e4a" : "#0e7490",
-                              fontWeight: 800, fontSize: "12px",
-                            }}>{row.sl_no}</span>
-                          </td>
-                          <td style={{
-                            padding: "12px 14px", textAlign: "left",
-                            borderBottom: "1px solid #e2e8f0", borderRight: "2px solid #e2e8f0",
-                            color: "#0f172a", fontWeight: 800, fontSize: "13px",
-                          }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                              <span style={{ fontSize: "16px" }}>{isAnchor ? "📍" : "📅"}</span>
-                              <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.2 }}>
-                                <span style={{ fontWeight: 800 }}>{row.month_label || `${monthName} ${yr}`}</span>
-                                <span style={{ fontSize: "10.5px", fontWeight: 700, opacity: .7, color: "#475569" }}>
-                                  {monthName} {yr}
-                                </span>
-                              </div>
-                              {isAnchor && (
-                                <span style={{
-                                  display: "inline-block", padding: "2px 8px", borderRadius: "999px",
-                                  background: "linear-gradient(135deg,#5eead4,#2dd4bf)",
-                                  color: "#134e4a", fontWeight: 800, fontSize: "10px",
-                                  border: "1px solid #2dd4bf",
-                                }}>NOW</span>
-                              )}
-                              {isPeak && !isAnchor && (
-                                <span style={{
-                                  display: "inline-block", padding: "2px 8px", borderRadius: "999px",
-                                  background: "linear-gradient(135deg,#fde68a,#fcd34d)",
-                                  color: "#78350f", fontWeight: 800, fontSize: "10px",
-                                  border: "1px solid #fcd34d",
-                                }}>📈 PEAK</span>
-                              )}
-                            </div>
-                          </td>
+                        <tr key={`${gi}-${ri}`} className="gdiap-tr" style={{ background: altBg }}>
+                          {first && (
+                            <td rowSpan={g.rows.length} style={{
+                              padding: "12px 14px", textAlign: "center", verticalAlign: "middle",
+                              borderBottom: "2px solid #e2e8f0", borderRight: "2px solid #e2e8f0",
+                              color: "#0f172a", fontWeight: 800, fontSize: "13px",
+                              background: "linear-gradient(135deg,#ecfeff,#cffafe)",
+                            }}>
+                              <span style={{ fontSize: "15px", marginRight: "6px" }}>📅</span>{g.label}
+                            </td>
+                          )}
                           {/* P1 group */}
-                          <ValCell v={row.p1_lots} color="#1e3a8a" bg="linear-gradient(135deg,#dbeafe,#bfdbfe)" />
-                          <SourceCell v={row.p1_source} />
-                          <ValCell v={row.p1_dfls} color="#1e3a8a" bg="linear-gradient(135deg,#bfdbfe,#93c5fd)" weight={800} right="2px solid #e2e8f0" />
+                          <LotCell  v={row.p1_lots}   color="#1e3a8a" bg="linear-gradient(135deg,#dbeafe,#bfdbfe)" />
+                          <DateCell v={row.p1_source} />
+                          <ValCell  v={row.p1_dfls}   color="#1e3a8a" bg="linear-gradient(135deg,#bfdbfe,#93c5fd)" weight={800} right="2px solid #e2e8f0" />
                           {/* P2 group */}
-                          <ValCell v={row.p2_lots} color="#4c1d95" bg="linear-gradient(135deg,#ede9fe,#ddd6fe)" />
-                          <SourceCell v={row.p2_source} />
-                          <ValCell v={row.p2_dfls} color="#4c1d95" bg="linear-gradient(135deg,#ddd6fe,#c4b5fd)" weight={800} />
+                          <LotCell  v={row.p2_lots}   color="#4c1d95" bg="linear-gradient(135deg,#ede9fe,#ddd6fe)" />
+                          <DateCell v={row.p2_source} />
+                          <ValCell  v={row.p2_dfls}   color="#4c1d95" bg="linear-gradient(135deg,#ddd6fe,#c4b5fd)" weight={800} />
                         </tr>
                       );
-                    })}
+                    }))}
                     {/* Totals row */}
                     {dataRows.length > 0 && (
                       <tr style={{ background: "linear-gradient(135deg,#fcd34d,#fbbf24)" }}>
                         <td style={{
-                          padding: "14px 8px", textAlign: "center",
-                          borderTop: "3px solid #f59e0b",
-                          background: "linear-gradient(135deg,#fbbf24,#f59e0b)",
-                        }}>
-                          <span style={{
-                            display: "inline-flex", alignItems: "center", justifyContent: "center",
-                            minWidth: "28px", height: "28px", borderRadius: "50%",
-                            background: "rgba(255,255,255,.95)",
-                            color: "#78350f", fontWeight: 800, fontSize: "12px",
-                          }}>Σ</span>
-                        </td>
-                        <td style={{
-                          padding: "14px 14px", textAlign: "left",
-                          borderTop: "3px solid #f59e0b",
+                          padding: "14px 14px", textAlign: "right",
+                          borderTop: "3px solid #f59e0b", borderRight: "2px solid #f59e0b",
                           color: "#78350f", fontWeight: 800, fontSize: "13.5px",
                         }}>
-                          ಒಟ್ಟು 12 ತಿಂಗಳುಗಳು · 12-Month Total
+                          Σ ಒಟ್ಟು · Total
                         </td>
-                        <td className="gdiap-num" style={totalCell("#1e3a8a")}>{fmt(kpis.sumP1Lots)}</td>
+                        <td className="gdiap-num" style={totalCell("#1e3a8a")}>{kpis.sumP1Lots} ತಂಡ</td>
                         <td style={totalCell()}>—</td>
                         <td className="gdiap-num" style={{ ...totalCell("#1e3a8a"), background: "linear-gradient(135deg,#bfdbfe,#93c5fd)", borderRight: "2px solid #f59e0b", fontSize: "14px" }}>{fmt(kpis.sumP1Dfls)}</td>
-                        <td className="gdiap-num" style={totalCell("#4c1d95")}>{fmt(kpis.sumP2Lots)}</td>
+                        <td className="gdiap-num" style={totalCell("#4c1d95")}>{kpis.sumP2Lots} ತಂಡ</td>
                         <td style={totalCell()}>—</td>
                         <td className="gdiap-num" style={{ ...totalCell("#4c1d95"), background: "linear-gradient(135deg,#ddd6fe,#c4b5fd)", fontSize: "14px" }}>{fmt(kpis.sumP2Dfls)}</td>
                       </tr>
@@ -692,25 +636,31 @@ function ValCell({ v, color, bg, weight, right }) {
   );
 }
 
-// "From" / source cell — backend currently sends an empty string (placeholder
-// for the source grainage / cold-storage facility). Render as a striped
-// "not yet tracked" tile so users know it's a known-empty column.
-function SourceCell({ v }) {
+// ತಂಡದ ಸಂಖ್ಯೆ (lot number) — a string like "14P1"; render verbatim (no numeric format).
+function LotCell({ v, color, bg }) {
   const s = String(v ?? "").trim();
   const empty = s === "";
   return (
     <td style={{
-      padding: "12px 12px", textAlign: "center",
+      padding: "11px 12px", textAlign: "center",
       borderBottom: "1px solid #f1f5f9", borderRight: "1px solid #f8fafc",
-      background: empty
-        ? "repeating-linear-gradient(135deg,#f8fafc,#f8fafc 6px,#f1f5f9 6px,#f1f5f9 12px)"
-        : "transparent",
-      color: empty ? "#94a3b8" : "#334155",
-      fontWeight: 600, fontSize: "11.5px",
-    }}
-    title={empty ? "Source facility not yet tracked" : undefined}>
-      {empty ? "—" : s}
-    </td>
+      background: empty ? "transparent" : bg,
+      color: empty ? "#cbd5e0" : color,
+      fontWeight: 700, fontSize: "12.5px",
+    }}>{empty ? "—" : s}</td>
+  );
+}
+
+// ಇಂದ (from) — the cold-storage release date (dd/mm/yyyy).
+function DateCell({ v }) {
+  const s = String(v ?? "").trim();
+  const empty = s === "";
+  return (
+    <td style={{
+      padding: "11px 12px", textAlign: "center",
+      borderBottom: "1px solid #f1f5f9", borderRight: "1px solid #f8fafc",
+      color: empty ? "#cbd5e0" : "#334155", fontWeight: 600, fontSize: "11.5px",
+    }}>{empty ? "—" : <span style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>📅 {s}</span>}</td>
   );
 }
 

@@ -466,8 +466,8 @@ function GrainageBriefMonthlyReport() {
                         <div style={{ fontSize: "11.5px" }}>ವಾರ್ಷಿಕ ಗುರಿ</div><div style={hdrEn}>Annual Target</div>
                       </th>
                       <th colSpan={2} style={hdr("linear-gradient(135deg,#9a3412,#ea580c)")}>
-                        <div style={{ fontSize: "12px" }}>🎯 ಕಾರ್ಯಕ್ರಮ</div>
-                        <div style={hdrEn}>Programme</div>
+                        <div style={{ fontSize: "12px" }}>🎯 ಮೊಟ್ಟೆ ಉತ್ಪಾದನೆ ಗುರಿ</div>
+                        <div style={hdrEn}>Egg Production Target</div>
                       </th>
                       <th colSpan={2} style={hdr("linear-gradient(135deg,#0f766e,#14b8a6)")}>
                         <div style={{ fontSize: "12px" }}>✅ ಸಾಧನೆ</div>
@@ -532,9 +532,6 @@ function GrainageBriefMonthlyReport() {
                         const rowBg = isTotal
                           ? "linear-gradient(135deg,#fef3c7,#fde68a)"
                           : (ri % 2 === 1 ? "#f8fafc" : "#ffffff");
-                        const cyM = numOrZero(row.ach_m);
-                        const cyP = numOrZero(row.prog_m);
-                        const computedPct = cyP === 0 ? 0 : (cyM / cyP) * 100;
                         return (
                           <tr key={`${g.yearLabel}-${ri}`} className="gbm-tr" style={{ background: rowBg }}>
                             {isFirst && (
@@ -609,19 +606,21 @@ function GrainageBriefMonthlyReport() {
                               isTotal ? 800 : 800,
                               numOrZero(row.ach_me) === 0 ? "transparent" : "linear-gradient(135deg,#ccfbf1,#99f6e4)",
                             )}>{numOrZero(row.ach_me) === 0 ? "—" : fmt(row.ach_me)}</td>
-                            {/* % cell — backend sends "0", so for the Total row of the latest year we
-                                synthesise it client-side from prog/ach to give the user a real number. */}
+                            {/* % Achievement — backend now computes ach/prog × 100 (real value at Total row) */}
                             <td className="gbm-num" style={td("right",
-                              isTotal ? "#14532d" : "#cbd5e0",
+                              numOrZero(row.pct_m) === 0 ? "#cbd5e0"
+                                : (numOrZero(row.pct_m) >= 100 ? "#14532d" : numOrZero(row.pct_m) >= 75 ? "#065f46" : numOrZero(row.pct_m) >= 50 ? "#92400e" : "#7f1d1d"),
                               800,
-                              isTotal && computedPct >= 100 ? "linear-gradient(135deg,#bbf7d0,#86efac)" :
-                              isTotal && computedPct >= 75  ? "linear-gradient(135deg,#a7f3d0,#6ee7b7)" :
-                              isTotal && computedPct >= 50  ? "linear-gradient(135deg,#fde68a,#fcd34d)" :
-                              isTotal                       ? "linear-gradient(135deg,#fecaca,#fca5a5)" : "transparent",
-                            )}>
-                              {isTotal ? `${computedPct.toFixed(1)}%` : "—"}
-                            </td>
-                            <td className="gbm-num" style={td("right", "#cbd5e0", 600, "transparent")}>—</td>
+                              numOrZero(row.pct_m) === 0 ? "transparent" :
+                              numOrZero(row.pct_m) >= 100 ? "linear-gradient(135deg,#bbf7d0,#86efac)" :
+                              numOrZero(row.pct_m) >= 75  ? "linear-gradient(135deg,#a7f3d0,#6ee7b7)" :
+                              numOrZero(row.pct_m) >= 50  ? "linear-gradient(135deg,#fde68a,#fcd34d)" :
+                                                            "linear-gradient(135deg,#fecaca,#fca5a5)",
+                            )}>{numOrZero(row.pct_m) === 0 ? "—" : `${fmt(row.pct_m)}%`}</td>
+                            <td className="gbm-num" style={td("right",
+                              numOrZero(row.pct_me) === 0 ? "#cbd5e0" : "#065f46", 800,
+                              numOrZero(row.pct_me) === 0 ? "transparent" : "linear-gradient(135deg,#a7f3d0,#6ee7b7)",
+                            )}>{numOrZero(row.pct_me) === 0 ? "—" : `${fmt(row.pct_me)}%`}</td>
                             <td className="gbm-num" style={td("right",
                               isTotal ? "#78350f" : (numOrZero(row.storage_m) === 0 ? "#cbd5e0" : "#4c1d95"),
                               isTotal ? 800 : 700,
@@ -632,8 +631,15 @@ function GrainageBriefMonthlyReport() {
                               isTotal ? 800 : 800,
                               numOrZero(row.storage_me) === 0 ? "transparent" : "linear-gradient(135deg,#ede9fe,#ddd6fe)",
                             )}>{numOrZero(row.storage_me) === 0 ? "—" : fmt(row.storage_me)}</td>
-                            <td className="gbm-num" style={td("right", "#cbd5e0", 600, "transparent")}>—</td>
-                            <td className="gbm-num" style={td("right", "#cbd5e0", 600, "transparent")}>—</td>
+                            {/* ಇಳುವರಿ Yield — backend computes ach/storage × 100 (DFLs per preserved seed) */}
+                            <td className="gbm-num" style={td("right",
+                              numOrZero(row.yield_m) === 0 ? "#cbd5e0" : "#0c4a6e", 800,
+                              numOrZero(row.yield_m) === 0 ? "transparent" : "linear-gradient(135deg,#bae6fd,#7dd3fc)",
+                            )}>{numOrZero(row.yield_m) === 0 ? "—" : `${fmt(row.yield_m)}%`}</td>
+                            <td className="gbm-num" style={td("right",
+                              numOrZero(row.yield_me) === 0 ? "#cbd5e0" : "#0c4a6e", 800,
+                              numOrZero(row.yield_me) === 0 ? "transparent" : "linear-gradient(135deg,#7dd3fc,#38bdf8)",
+                            )}>{numOrZero(row.yield_me) === 0 ? "—" : `${fmt(row.yield_me)}%`}</td>
                             <td className="gbm-num" style={td("right",
                               isTotal ? "#78350f" : (numOrZero(row.dist_m) === 0 ? "#cbd5e0" : "#881337"),
                               isTotal ? 800 : 700,

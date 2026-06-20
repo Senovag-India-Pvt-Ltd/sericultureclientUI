@@ -31,6 +31,8 @@ function MaintenanceofMulberryfarmEdit() {
     gliricidiaPlantArea: "",
     uprootedArea: "",
     leafQuantityKg: "",
+    uprootedDate: "",
+    leafHarvestDate: "",
     fymQuantity: "",
     ammoniumSulphateQuantity: "",
     superPhosphateQuantity: "",
@@ -84,6 +86,12 @@ function MaintenanceofMulberryfarmEdit() {
           ...data,
           // pruningDate: formattedDate,
           // plantationDate: formattedPlantationDate,
+          uprootedDate: data.uprootedDate
+            ? (() => { const d = new Date(data.uprootedDate); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); })()
+            : null,
+          leafHarvestDate: data.leafHarvestDate
+            ? (() => { const d = new Date(data.leafHarvestDate); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); })()
+            : null,
         })
         .then((response) => {
           //   const trScheduleId = response.data.content.trScheduleId;
@@ -478,6 +486,36 @@ function MaintenanceofMulberryfarmEdit() {
                           value={data.uprootedArea ?? ""} onChange={handleInputs}
                           type="number" min="0" step="any"
                           placeholder={t("Enter Uprooted Area")} />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="uprootedDate">{t("Uprooted Date")}</Form.Label>
+                      <div className="form-control-wrap">
+                        <DatePicker
+                          selected={data.uprootedDate ? new Date(data.uprootedDate) : null}
+                          onChange={(date) => handleDateChange(date, "uprootedDate")}
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                          placeholderText={t("Select Uprooted Date")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group mt-n4">
+                      <Form.Label htmlFor="leafHarvestDate">{t("Leaf Harvest Date")}</Form.Label>
+                      <div className="form-control-wrap">
+                        <DatePicker
+                          selected={data.leafHarvestDate ? new Date(data.leafHarvestDate) : null}
+                          onChange={(date) => handleDateChange(date, "leafHarvestDate")}
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                          placeholderText={t("Select Leaf Harvest Date")}
+                        />
                       </div>
                     </Form.Group>
                   </Col>

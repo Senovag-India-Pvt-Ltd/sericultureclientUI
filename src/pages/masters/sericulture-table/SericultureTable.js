@@ -3,14 +3,13 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import Swal from "sweetalert2";
 import React from "react";
 import api from "../../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function SericultureTable() {
   const { t } = useTranslation();
@@ -20,7 +19,6 @@ function SericultureTable() {
   // Pre-populate from URL params (e.g. when navigating from list "Edit")
   const [schemeId, setSchemeId]       = useState(searchParams.get("schemeId")    || "");
   const [subSchemeId, setSubSchemeId] = useState(searchParams.get("subSchemeId") || "");
-  const [daysCount, setDaysCount]     = useState("");
   const [saving, setSaving]           = useState(false);
 
   // Skip the reset on initial mount so URL-param values are preserved
@@ -36,12 +34,15 @@ function SericultureTable() {
   }, []);
 
   // ── Sub Scheme list (loads whenever schemeId is known) ────────────
+  // Sourced from the master-data module's own ScSubSchemeDetails path —
+  // not the DBT unit-cost endpoint, whose subSchemeId does not map to
+  // scSubSchemeDetailsId and silently broke saves.
   const [subSchemeListData, setSubSchemeListData] = useState([]);
   useEffect(() => {
     if (schemeId) {
       api
-        .get(baseURLDBT + `master/cost/get-by-scheme-id/${schemeId}`)
-        .then((r) => setSubSchemeListData(r.data.content.unitCost || []))
+        .get(baseURL + `scSubSchemeDetails/get-by-sc-scheme-details-id/${schemeId}`)
+        .then((r) => setSubSchemeListData(r.data.content.scSubSchemeDetails || []))
         .catch(() => setSubSchemeListData([]));
     } else {
       setSubSchemeListData([]);
@@ -52,12 +53,10 @@ function SericultureTable() {
       return;
     }
     setSubSchemeId("");
-    setDaysCount("");
-    setApprovalStages((prev) => prev.map((s) => ({ ...s, checked: false, sericultureTableId: null })));
   }, [schemeId]);
 
-  // ── Approval Stages — always loaded from get-all on mount ─────────
-  // sericultureTableId is set when pre-checking existing saved stages
+  // ── Approval Stages — master list, always loaded from get-all on mount ────
+  // sericultureTableId is attached per-stage once a scheme+subScheme is picked
   const [approvalStages, setApprovalStages] = useState([]);
 
   useEffect(() => {
@@ -65,12 +64,28 @@ function SericultureTable() {
       .get(baseURL + `scApprovalStage/get-all`)
       .then((r) => {
         const stages = r.data.content.scApprovalStage || [];
-        setApprovalStages(stages.map((s) => ({ ...s, checked: false, sericultureTableId: null })));
+        setApprovalStages(stages.map((s) => ({ ...s, sericultureTableId: null })));
       })
       .catch(() => setApprovalStages([]));
   }, []);
 
-  // When scheme + subScheme are both selected, pre-check already-saved stages
+  // ── Groups ───────────────────────────────────────────────────────────────
+  // Each group = { id, daysCount, stageIds: [scApprovalStageId, ...] }.
+  // A stage can only belong to one group at a time.
+  const [groups, setGroups] = useState([]);
+  const groupIdRef = useRef(0);
+  const nextGroupId = () => ++groupIdRef.current;
+
+  // Stages picked for the NEXT group, not yet committed via "Add Group"
+  const [pendingStageIds, setPendingStageIds] = useState([]);
+  const [pendingDaysCount, setPendingDaysCount] = useState("");
+
+  const groupedIdSet = useMemo(
+    () => new Set(groups.flatMap((g) => g.stageIds)),
+    [groups]
+  );
+
+  // When scheme + subScheme are both selected, pre-load already-saved stages into groups
   useEffect(() => {
     if (schemeId && subSchemeId) {
       api
@@ -83,80 +98,150 @@ function SericultureTable() {
           saved.forEach((item) => {
             savedMap[item.scApprovalStageId] = item;
           });
+
           setApprovalStages((prev) =>
             prev.map((stage) => {
               const match = savedMap[stage.scApprovalStageId];
-              return match
-                ? { ...stage, checked: !!match.checked, sericultureTableId: match.sericultureTableId || null }
-                : { ...stage, checked: false, sericultureTableId: null };
+              return { ...stage, sericultureTableId: match?.sericultureTableId || null };
             })
           );
-          // Pre-fill daysCount if all existing checked stages share the same value
-          const checkedSaved = saved.filter((i) => i.checked && i.daysCount != null);
-          if (checkedSaved.length > 0 && checkedSaved.every((i) => i.daysCount === checkedSaved[0].daysCount)) {
-            setDaysCount(String(checkedSaved[0].daysCount));
-          } else {
-            setDaysCount("");
-          }
+
+          // Bucket already-saved + checked stages by their persisted groupNo —
+          // the real, user-defined group identity — so two groups that happen
+          // to share the same Days Count are never merged back together.
+          // Legacy rows saved before groupNo existed (groupNo == null) fall
+          // back to bucketing by daysCount, same as before.
+          let maxGroupNo = 0;
+          saved.forEach((i) => {
+            if (i.groupNo != null) maxGroupNo = Math.max(maxGroupNo, i.groupNo);
+          });
+
+          const byGroup = {};
+          saved
+            .filter((i) => i.checked && i.daysCount != null)
+            .forEach((i) => {
+              const key = i.groupNo != null ? `g${i.groupNo}` : `d${i.daysCount}`;
+              if (!byGroup[key]) byGroup[key] = { groupNo: i.groupNo, daysCount: i.daysCount, stageIds: [] };
+              byGroup[key].stageIds.push(i.scApprovalStageId);
+            });
+
+          const initialGroups = Object.values(byGroup).map((g) => {
+            if (g.groupNo == null) {
+              maxGroupNo += 1;
+              g.groupNo = maxGroupNo;
+            }
+            return { id: g.groupNo, daysCount: g.daysCount, stageIds: g.stageIds };
+          });
+
+          groupIdRef.current = maxGroupNo;
+          setGroups(initialGroups);
+          setPendingStageIds([]);
+          setPendingDaysCount("");
         })
         .catch(() => {
-          setApprovalStages((prev) => prev.map((s) => ({ ...s, checked: false, sericultureTableId: null })));
-          setDaysCount("");
+          setApprovalStages((prev) => prev.map((s) => ({ ...s, sericultureTableId: null })));
+          setGroups([]);
         });
     } else {
-      setApprovalStages((prev) => prev.map((s) => ({ ...s, checked: false, sericultureTableId: null })));
-      setDaysCount("");
+      setApprovalStages((prev) => prev.map((s) => ({ ...s, sericultureTableId: null })));
+      setGroups([]);
+      setPendingStageIds([]);
+      setPendingDaysCount("");
     }
   }, [schemeId, subSchemeId]);
 
-  // ── Checkbox helpers ──────────────────────────────────────────────
-  const selectedCount = approvalStages.filter((s) => s.checked).length;
-  const isAllChecked  = approvalStages.length > 0 && selectedCount === approvalStages.length;
+  // ── Pending-selection helpers (stages not yet locked into a group) ────────
+  const availableStages = approvalStages.filter((s) => !groupedIdSet.has(s.scApprovalStageId));
+  const isAllPendingChecked =
+    availableStages.length > 0 &&
+    availableStages.every((s) => pendingStageIds.includes(s.scApprovalStageId));
 
   const handleCheckAll = () =>
-    setApprovalStages((prev) => prev.map((s) => ({ ...s, checked: !isAllChecked })));
+    setPendingStageIds(isAllPendingChecked ? [] : availableStages.map((s) => s.scApprovalStageId));
 
-  const handleCheckbox = (index) =>
-    setApprovalStages((prev) =>
-      prev.map((item, i) => (i === index ? { ...item, checked: !item.checked } : item))
+  const togglePending = (stageId) =>
+    setPendingStageIds((prev) =>
+      prev.includes(stageId) ? prev.filter((id) => id !== stageId) : [...prev, stageId]
     );
 
-  // ── Save — one shared daysCount applied to all selected stages ────
+  // ── Group actions ───────────────────────────────────────────────────────
+  const addGroup = () => {
+    if (pendingStageIds.length === 0) {
+      Swal.fire({ icon: "warning", title: "Validation Error", text: "Select at least one Approval Stage for this group." });
+      return;
+    }
+    if (!pendingDaysCount || Number(pendingDaysCount) <= 0) {
+      Swal.fire({ icon: "warning", title: "Validation Error", text: "Enter a valid Days Count for this group." });
+      return;
+    }
+    setGroups((prev) => [
+      ...prev,
+      { id: nextGroupId(), daysCount: Number(pendingDaysCount), stageIds: [...pendingStageIds] },
+    ]);
+    setPendingStageIds([]);
+    setPendingDaysCount("");
+  };
+
+  const removeGroup = (groupId) =>
+    setGroups((prev) => prev.filter((g) => g.id !== groupId));
+
+  const removeStageFromGroup = (groupId, stageId) =>
+    setGroups((prev) =>
+      prev
+        .map((g) => (g.id === groupId ? { ...g, stageIds: g.stageIds.filter((id) => id !== stageId) } : g))
+        .filter((g) => g.stageIds.length > 0)
+    );
+
+  const stageName = (stageId) =>
+    approvalStages.find((s) => s.scApprovalStageId === stageId)?.stageName || `Stage ${stageId}`;
+
+  // ── Save — each group's stages get that group's own daysCount ────────────
   const postData = async () => {
     if (!schemeId || !subSchemeId) {
       Swal.fire({ icon: "warning", title: "Validation Error", text: "Please select Scheme and Sub Scheme." });
       return;
     }
-    if (selectedCount === 0) {
-      Swal.fire({ icon: "warning", title: "Validation Error", text: "Please select at least one Approval Stage." });
-      return;
-    }
-    if (!daysCount || Number(daysCount) <= 0) {
-      Swal.fire({ icon: "warning", title: "Validation Error", text: "Please enter a valid Days Count." });
+    const totalGroupedStages = groups.reduce((acc, g) => acc + g.stageIds.length, 0);
+    if (totalGroupedStages === 0) {
+      Swal.fire({ icon: "warning", title: "Validation Error", text: "Please add at least one Approval Stage group." });
       return;
     }
 
     setSaving(true);
     try {
+      const stageDaysMap = {};
+      const stageGroupNoMap = {};
+      groups.forEach((g) =>
+        g.stageIds.forEach((sid) => {
+          stageDaysMap[sid] = g.daysCount;
+          stageGroupNoMap[sid] = g.id;
+        })
+      );
+
       const promises = approvalStages.map((stage) => {
-        if (stage.checked) {
+        const days = stageDaysMap[stage.scApprovalStageId];
+        if (days != null) {
+          const groupNo = stageGroupNoMap[stage.scApprovalStageId];
           if (stage.sericultureTableId) {
             return api.post(baseURL + `sericultureTable/edit`, {
               sericultureTableId: stage.sericultureTableId,
               schemeId:    Number(schemeId),
               subSchemeId: Number(subSchemeId),
               stepId:      stage.scApprovalStageId,
-              daysCount:   Number(daysCount),
-            });
-          } else {
-            return api.post(baseURL + `sericultureTable/add`, {
-              schemeId:    Number(schemeId),
-              subSchemeId: Number(subSchemeId),
-              stepId:      stage.scApprovalStageId,
-              daysCount:   Number(daysCount),
+              daysCount:   Number(days),
+              groupNo,
             });
           }
-        } else if (!stage.checked && stage.sericultureTableId) {
+          return api.post(baseURL + `sericultureTable/add`, {
+            schemeId:    Number(schemeId),
+            subSchemeId: Number(subSchemeId),
+            stepId:      stage.scApprovalStageId,
+            daysCount:   Number(days),
+            groupNo,
+          });
+        }
+        if (stage.sericultureTableId) {
+          // Was saved before but no longer part of any group — remove it
           return api.delete(baseURL + `sericultureTable/delete/${stage.sericultureTableId}`);
         }
         return Promise.resolve();
@@ -218,7 +303,7 @@ function SericultureTable() {
             <Row className="g-4">
 
               {/* Scheme */}
-              <Col lg="4">
+              <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label style={{ fontWeight: 600, color: "#444", fontSize: "0.875rem" }}>
                     {t("Scheme")} <span className="text-danger">*</span>
@@ -239,7 +324,7 @@ function SericultureTable() {
               </Col>
 
               {/* Sub Scheme */}
-              <Col lg="4">
+              <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label style={{ fontWeight: 600, color: "#444", fontSize: "0.875rem" }}>
                     {t("Sub Scheme")} <span className="text-danger">*</span>
@@ -247,12 +332,12 @@ function SericultureTable() {
                   <Form.Select
                     value={subSchemeId}
                     onChange={(e) => setSubSchemeId(e.target.value)}
-                    disabled={!schemeId}
+                    disabled={!schemeId}C
                     style={{ borderRadius: "8px", borderColor: "#d0dff0", padding: "9px 12px", fontSize: "0.875rem" }}
                   >
                     <option value="">{t("Select Sub Scheme")}</option>
                     {subSchemeListData.map((list) => (
-                      <option key={list.scSubSchemeDetailsId} value={list.subSchemeId}>
+                      <option key={list.scSubSchemeDetailsId} value={list.scSubSchemeDetailsId}>
                         {list.subSchemeName}
                       </option>
                     ))}
@@ -260,29 +345,7 @@ function SericultureTable() {
                 </Form.Group>
               </Col>
 
-              {/* Days Count — shared for all selected stages */}
-              <Col lg="4">
-                <Form.Group className="form-group">
-                  <Form.Label style={{ fontWeight: 600, color: "#444", fontSize: "0.875rem" }}>
-                    {t("Days Count")} <span className="text-danger">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="number"
-                    value={daysCount}
-                    onChange={(e) => setDaysCount(e.target.value)}
-                    placeholder={t("Enter Days Count")}
-                    min={1}
-                    style={{ borderRadius: "8px", borderColor: "#d0dff0", padding: "9px 12px", fontSize: "0.875rem" }}
-                  />
-                  {selectedCount > 0 && daysCount && (
-                    <small style={{ color: "#1e67a8", fontWeight: 600, marginTop: "4px", display: "block" }}>
-                      ✓ {daysCount} {t("days")} — {selectedCount} {t("stage(s)")}
-                    </small>
-                  )}
-                </Form.Group>
-              </Col>
-
-              {/* Approval Stage Checkbox List — always visible */}
+              {/* Available Approval Stages — pick a batch, then assign it a Days Count below */}
               <Col lg="12">
                 <div style={{ border: "1px solid #d0dff0", borderRadius: "10px", overflow: "hidden" }}>
 
@@ -295,24 +358,22 @@ function SericultureTable() {
                       alignItems: "center",
                       justifyContent: "space-between",
                       borderBottom: "1px solid #d0dff0",
+                      flexWrap: "wrap",
+                      gap: "8px",
                     }}
                   >
                     <span style={{ fontWeight: 700, color: "#1e67a8", fontSize: "0.875rem" }}>
-                      📋 {t("Select Approval Stages")} <span className="text-danger">*</span>
+                      📋 {t("Select Approval Stages for the next group")}
                     </span>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      {selectedCount > 0 && (
+                      {pendingStageIds.length > 0 && (
                         <span
                           style={{
-                            background: "#1e67a8",
-                            color: "white",
-                            borderRadius: "20px",
-                            padding: "2px 12px",
-                            fontSize: "0.78rem",
-                            fontWeight: 600,
+                            background: "#1e67a8", color: "white", borderRadius: "20px",
+                            padding: "2px 12px", fontSize: "0.78rem", fontWeight: 600,
                           }}
                         >
-                          {selectedCount} selected
+                          {pendingStageIds.length} selected
                         </span>
                       )}
                       <Form.Check
@@ -320,89 +381,180 @@ function SericultureTable() {
                         id="check-all-stages"
                         label={
                           <span style={{ fontSize: "0.82rem", fontWeight: 600, color: "#555" }}>
-                            {isAllChecked ? t("Uncheck All") : t("Check All")}
+                            {isAllPendingChecked ? t("Uncheck All") : t("Check All")}
                           </span>
                         }
-                        checked={isAllChecked}
+                        checked={isAllPendingChecked}
                         onChange={handleCheckAll}
+                        disabled={availableStages.length === 0}
                       />
                     </div>
                   </div>
 
-                  {/* Checkbox cards */}
-                  <div style={{ padding: "16px 18px", maxHeight: "320px", overflowY: "auto" }}>
-                    {approvalStages.length === 0 ? (
+                  {/* Checkbox cards — only stages not already locked into a group */}
+                  <div style={{ padding: "16px 18px", maxHeight: "280px", overflowY: "auto" }}>
+                    {availableStages.length === 0 ? (
                       <p className="text-muted mb-0 text-center" style={{ padding: "20px 0" }}>
-                        No approval stages available.
+                        {approvalStages.length === 0
+                          ? "No approval stages available."
+                          : "All approval stages are already assigned to a group below."}
                       </p>
                     ) : (
                       <Row className="g-2">
-                        {approvalStages.map((stage, index) => (
-                          <Col lg="4" md="6" key={stage.scApprovalStageId}>
-                            <div
-                              onClick={() => handleCheckbox(index)}
-                              style={{
-                                border: stage.checked ? "1.5px solid #1e67a8" : "1.5px solid #e0e6ef",
-                                borderRadius: "8px",
-                                padding: "9px 12px",
-                                cursor: "pointer",
-                                background: stage.checked ? "#e8f0fe" : "#fafbff",
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "8px",
-                                transition: "all 0.15s",
-                                userSelect: "none",
-                              }}
-                            >
+                        {availableStages.map((stage) => {
+                          const checked = pendingStageIds.includes(stage.scApprovalStageId);
+                          return (
+                            <Col lg="4" md="6" key={stage.scApprovalStageId}>
                               <div
+                                onClick={() => togglePending(stage.scApprovalStageId)}
                                 style={{
-                                  width: "16px",
-                                  height: "16px",
-                                  borderRadius: "4px",
-                                  border: stage.checked ? "2px solid #1e67a8" : "2px solid #bbb",
-                                  background: stage.checked ? "#1e67a8" : "white",
+                                  border: checked ? "1.5px solid #1e67a8" : "1.5px solid #e0e6ef",
+                                  borderRadius: "8px",
+                                  padding: "9px 12px",
+                                  cursor: "pointer",
+                                  background: checked ? "#e8f0fe" : "#fafbff",
                                   display: "flex",
                                   alignItems: "center",
-                                  justifyContent: "center",
-                                  flexShrink: 0,
+                                  gap: "8px",
+                                  transition: "all 0.15s",
+                                  userSelect: "none",
                                 }}
                               >
-                                {stage.checked && (
-                                  <span style={{ color: "white", fontSize: "10px", lineHeight: 1 }}>✓</span>
-                                )}
+                                <div
+                                  style={{
+                                    width: "16px", height: "16px", borderRadius: "4px",
+                                    border: checked ? "2px solid #1e67a8" : "2px solid #bbb",
+                                    background: checked ? "#1e67a8" : "white",
+                                    display: "flex", alignItems: "center", justifyContent: "center",
+                                    flexShrink: 0,
+                                  }}
+                                >
+                                  {checked && <span style={{ color: "white", fontSize: "10px", lineHeight: 1 }}>✓</span>}
+                                </div>
+                                <span
+                                  style={{
+                                    fontSize: "0.8rem",
+                                    color: checked ? "#1e67a8" : "#444",
+                                    fontWeight: checked ? 600 : 400,
+                                    lineHeight: 1.3,
+                                  }}
+                                >
+                                  {stage.stageName}
+                                </span>
                               </div>
-                              <span
-                                style={{
-                                  fontSize: "0.8rem",
-                                  color: stage.checked ? "#1e67a8" : "#444",
-                                  fontWeight: stage.checked ? 600 : 400,
-                                  lineHeight: 1.3,
-                                }}
-                              >
-                                {stage.stageName}
-                              </span>
-                            </div>
-                          </Col>
-                        ))}
+                            </Col>
+                          );
+                        })}
                       </Row>
                     )}
                   </div>
 
-                  {/* Summary strip */}
-                  {selectedCount > 0 && daysCount && (
-                    <div
+                  {/* Days Count for this batch + Add Group */}
+                  <div
+                    style={{
+                      background: "#fafbff", borderTop: "1px solid #eef0f5",
+                      padding: "12px 18px", display: "flex", alignItems: "flex-end",
+                      gap: "12px", flexWrap: "wrap",
+                    }}
+                  >
+                    <div style={{ minWidth: "200px" }}>
+                      <Form.Label style={{ fontWeight: 600, color: "#444", fontSize: "0.82rem", marginBottom: "4px" }}>
+                        {t("Days Count for this group")}
+                      </Form.Label>
+                      <Form.Control
+                        type="number"
+                        value={pendingDaysCount}
+                        onChange={(e) => setPendingDaysCount(e.target.value)}
+                        placeholder={t("Enter Days Count")}
+                        min={1}
+                        style={{ borderRadius: "8px", borderColor: "#d0dff0", padding: "8px 12px", fontSize: "0.875rem" }}
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      onClick={addGroup}
+                      disabled={!schemeId || !subSchemeId}
                       style={{
-                        background: "#e8f4e8",
-                        borderTop: "1px solid #c3e6c3",
-                        padding: "10px 18px",
-                        fontSize: "0.82rem",
-                        color: "#2e7d32",
-                        fontWeight: 600,
+                        background: "linear-gradient(135deg, #1e67a8, #0d4f8a)",
+                        border: "none", borderRadius: "8px", padding: "8px 22px",
+                        fontWeight: 700, fontSize: "0.85rem",
                       }}
                     >
-                      ✓ {selectedCount} stage(s) — Days Count : <strong>{daysCount}</strong>
-                    </div>
-                  )}
+                      + {t("Add Group")}
+                    </Button>
+                  </div>
+                </div>
+              </Col>
+
+              {/* Configured Groups summary */}
+              <Col lg="12">
+                <div style={{ border: "1px solid #d0dff0", borderRadius: "10px", overflow: "hidden" }}>
+                  <div
+                    style={{
+                      background: "#f0f6ff", padding: "12px 18px",
+                      borderBottom: "1px solid #d0dff0",
+                    }}
+                  >
+                    <span style={{ fontWeight: 700, color: "#1e67a8", fontSize: "0.875rem" }}>
+                      🗂 {t("Configured Groups")} ({groups.length})
+                    </span>
+                  </div>
+                  <div style={{ padding: "16px 18px" }}>
+                    {groups.length === 0 ? (
+                      <p className="text-muted mb-0 text-center" style={{ padding: "10px 0" }}>
+                        {t("No groups added yet. Select stages above, set a Days Count, and click \"Add Group\".")}
+                      </p>
+                    ) : (
+                      groups.map((group, gi) => (
+                        <div
+                          key={group.id}
+                          style={{
+                            border: "1px solid #c3e6c3",
+                            borderRadius: "8px",
+                            padding: "10px 14px",
+                            marginBottom: gi < groups.length - 1 ? "10px" : 0,
+                            background: "#f3faf3",
+                          }}
+                        >
+                          <div className="d-flex align-items-center justify-content-between flex-wrap" style={{ gap: "8px", marginBottom: "8px" }}>
+                            <span style={{ fontWeight: 700, color: "#2e7d32", fontSize: "0.85rem" }}>
+                              Group {gi + 1} — ⏱ {group.daysCount} {t("day(s)")} — {group.stageIds.length} {t("stage(s)")}
+                            </span>
+                            <Button
+                              size="sm"
+                              variant="outline-danger"
+                              onClick={() => removeGroup(group.id)}
+                              style={{ fontSize: "0.72rem", padding: "2px 10px", borderRadius: "6px" }}
+                            >
+                              {t("Remove Group")}
+                            </Button>
+                          </div>
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                            {group.stageIds.map((sid) => (
+                              <span
+                                key={sid}
+                                style={{
+                                  border: "1.5px solid #2e7d32", borderRadius: "8px",
+                                  padding: "4px 8px 4px 12px", background: "#e6f4e6",
+                                  display: "inline-flex", alignItems: "center", gap: "8px",
+                                  fontSize: "0.78rem", color: "#2e7d32", fontWeight: 600,
+                                }}
+                              >
+                                {stageName(sid)}
+                                <span
+                                  onClick={() => removeStageFromGroup(group.id, sid)}
+                                  style={{ cursor: "pointer", color: "#888", fontWeight: 700 }}
+                                  title="Remove from group"
+                                >
+                                  ×
+                                </span>
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
                 </div>
               </Col>
 

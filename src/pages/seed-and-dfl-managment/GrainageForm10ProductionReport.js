@@ -403,12 +403,12 @@ function GrainageForm10ProductionReport() {
                 <span style={{ ...kpiVal("#78350f", 13.5), fontWeight: 700 }}>{monthLabel} {monthYear}</span>
               </div>
               <div style={kpi("#a7f3d0", "#6ee7b7", "#065f46")}>
-                <span style={kpiLbl("#065f46")}>📈 CY Zone Ach (Month)</span>
+                <span style={kpiLbl("#065f46")}>📈 CY Total Ach (Month)</span>
                 <span className="gf10-num" style={kpiVal("#064e3b", 16)}>{overview.cyAchM.toLocaleString()}</span>
                 <span style={{ fontSize: "10.5px", color: "#065f46", fontWeight: 700, marginTop: "1px" }}>FY Cum: {overview.cyAchCum.toLocaleString()}</span>
               </div>
               <div style={kpi("#c7d2fe", "#a5b4fc", "#3730a3")}>
-                <span style={kpiLbl("#3730a3")}>📉 PY Zone Ach (Month)</span>
+                <span style={kpiLbl("#3730a3")}>📉 PY Total Ach (Month)</span>
                 <span className="gf10-num" style={kpiVal("#312e81", 16)}>{overview.pyAchM.toLocaleString()}</span>
               </div>
               <div style={{
@@ -597,7 +597,7 @@ function ProductionSection({ rows, hue, titleKn, titleEn, monthKn, monthYear, mo
           <span style={{ fontSize: "10.5px", color: pal.text, fontWeight: 700, marginTop: "1px" }}>Annual: {numOrZero(monthRow.ann_tot).toLocaleString()}</span>
         </div>
         <div style={kpi(pal.soft, pal.border, pal.text)}>
-          <span style={kpiLbl(pal.text)}>✅ ಸಾಧನೆ Zone (Month)</span>
+          <span style={kpiLbl(pal.text)}>✅ ಸಾಧನೆ ಒಟ್ಟು (Month)</span>
           <span className="gf10-num" style={kpiVal(pal.deep, 15)}>{achZ.toLocaleString()}</span>
           <span style={{ fontSize: "10.5px", color: pal.text, fontWeight: 700, marginTop: "1px" }}>FY Cum: {numOrZero(cumRow.ach_zone_total).toLocaleString()}</span>
         </div>
@@ -611,7 +611,7 @@ function ProductionSection({ rows, hue, titleKn, titleEn, monthKn, monthYear, mo
           background: band.bg + ", #ffffff",
         }}>
           <span style={kpiLbl(band.color)}>
-            {pct >= 100 ? "🎉" : "📊"} ಶೇ. ಸಾಧನೆ Zone Ach %
+            {pct >= 100 ? "🎉" : "📊"} ಶೇ. ಸಾಧನೆ ಒಟ್ಟು Ach %
           </span>
           <span className="gf10-num" style={kpiVal(band.color, 18)}>{pct.toFixed(2)}%</span>
         </div>
@@ -620,7 +620,7 @@ function ProductionSection({ rows, hue, titleKn, titleEn, monthKn, monthYear, mo
       <ProductionTable rows={rows} hue={hue} yearLabelText={yearLabelText} />
 
       <ActionFooter
-        text={`${tabKey === "cy" ? "Section-1" : "Section-2"} · ${grainageName} — ${monthLabel} ${monthKn} ${monthYear} · All values in lakhs · Zone Ach (Month) ${achZ.toLocaleString()} (${pct.toFixed(1)}%)`}
+        text={`${tabKey === "cy" ? "Section-1" : "Section-2"} · ${grainageName} — ${monthLabel} ${monthKn} ${monthYear} · All values in lakhs · Total Ach (Month) ${achZ.toLocaleString()} (${pct.toFixed(1)}%)`}
         tabKey={tabKey} handlePdf={handlePdf} handleExcel={handleExcel}
         pdfLoading={pdfLoading} excelLoading={excelLoading}
         bg="linear-gradient(135deg,#f0fdfa,#eef2ff)" border="#a7f3d0" textColor="#0f766e"
@@ -677,7 +677,7 @@ function ProductionTable({ rows, yearLabelText }) {
               <div style={{ fontSize: "10px" }}>ದ್ವಿ ಒಟ್ಟು</div><div style={subhdrEn}>BV Tot</div>
             </th>
             <th style={subhdr("linear-gradient(135deg,#fcd34d,#fbbf24)", "#78350f")}>
-              <div style={{ fontSize: "10px" }}>ವಲಯ</div><div style={subhdrEn}>Zone</div>
+              <div style={{ fontSize: "10px" }}>ಒಟ್ಟು ಮಾಹೆ</div><div style={subhdrEn}>Total Month</div>
             </th>
             <th style={subhdr("linear-gradient(135deg,#fed7aa,#fdba74)", "#7c2d12")}>
               <div style={{ fontSize: "10px" }}>ಮಿಶ್ರ</div><div style={subhdrEn}>CB</div>
@@ -695,7 +695,7 @@ function ProductionTable({ rows, yearLabelText }) {
               <div style={{ fontSize: "10px" }}>ದ್ವಿ ಒಟ್ಟು</div><div style={subhdrEn}>BV Tot</div>
             </th>
             <th style={subhdr("linear-gradient(135deg,#fcd34d,#fbbf24)", "#78350f")}>
-              <div style={{ fontSize: "10px" }}>ವಲಯ</div><div style={subhdrEn}>Zone</div>
+              <div style={{ fontSize: "10px" }}>ಒಟ್ಟು ಮಾಹೆ</div><div style={subhdrEn}>Total Month</div>
             </th>
           </tr>
         </thead>
@@ -960,12 +960,12 @@ function IncomeSection({ rows, monthKn, monthYear, monthLabel, grainageName,
           <span className="gf10-num" style={kpiVal(pal.deep, 15)}>{fmtINR(cum.dfl_val_total)}</span>
         </div>
         <div style={kpi(pal.soft, pal.border, pal.text)}>
-          <span style={kpiLbl(pal.text)}>🪺 ಗೂಡಿನ ಮೌಲ್ಯ Cocoon Sales (FY Cum)</span>
+          <span style={kpiLbl(pal.text)}>🪺 ಚಿಟ್ಟೆ ಕೊರೆದ ಗೂಡಿನ ಮೌಲ್ಯ Pierced (FY Cum)</span>
           <span className="gf10-num" style={kpiVal(pal.deep, 15)}>{fmtINR(cum.coc_val_total)}</span>
         </div>
         <div style={kpi(pal.soft, pal.border, pal.text)}>
-          <span style={kpiLbl(pal.text)}>👤 ವ್ಯಕ್ತಿಗತ Personal</span>
-          <span className="gf10-num" style={kpiVal(pal.deep, 15)}>{fmtINR(cum.personal_share)}</span>
+          <span style={kpiLbl(pal.text)}>🩺 ಡಿ.ಸಿ.ಬಿ ಮೊತ್ತ DCB (FY Cum)</span>
+          <span className="gf10-num" style={kpiVal(pal.deep, 15)}>{fmtINR(cum.dcb_bv)}</span>
         </div>
         <div style={kpi("#fde68a", "#fcd34d", "#78350f")}>
           <span style={kpiLbl("#78350f")}>Σ ಒಟ್ಟು Grand Total</span>
@@ -988,15 +988,15 @@ function IncomeSection({ rows, monthKn, monthYear, monthLabel, grainageName,
                 <div style={hdrEn}>DFL Sales Value ₹</div>
               </th>
               <th colSpan={3} style={hdr("linear-gradient(135deg,#b45309,#d97706)")}>
-                <div style={{ fontSize: "12px" }}>🪺 ಬಿತ್ತನೆ ಗೂಡಿನ ಮೌಲ್ಯ</div>
-                <div style={hdrEn}>Cocoon Sales Value ₹</div>
+                <div style={{ fontSize: "12px" }}>🪺 ಚಿಟ್ಟೆ ಕೊರೆದ ಗೂಡಿನ ಮೌಲ್ಯ</div>
+                <div style={hdrEn}>Pierced Cocoon Value ₹</div>
               </th>
               <th colSpan={2} style={hdr("linear-gradient(135deg,#5b21b6,#7c3aed)")}>
-                <div style={{ fontSize: "12px" }}>🩺 ಡಿ.ಸಿ.ಬಿ ವೆಚ್ಚ</div>
-                <div style={hdrEn}>DCB Cost ₹</div>
+                <div style={{ fontSize: "12px" }}>🩺 ಡಿ.ಸಿ.ಬಿ ಮೊತ್ತ</div>
+                <div style={hdrEn}>DCB Amount ₹</div>
               </th>
               <th rowSpan={2} style={hdr("linear-gradient(135deg,#1e40af,#3b82f6)", "115px", true)}>
-                <div style={{ fontSize: "11.5px" }}>ವ್ಯಕ್ತಿಗತ</div><div style={hdrEn}>Personal ₹</div>
+                <div style={{ fontSize: "11.5px" }}>ವಸತಿಗೃಹ ಬಾಡಿಗೆ</div><div style={hdrEn}>Quarters Rent ₹</div>
               </th>
               <th rowSpan={2} style={hdr("linear-gradient(135deg,#475569,#64748b)", "100px", true)}>
                 <div style={{ fontSize: "11.5px" }}>ಇತರೆ</div><div style={hdrEn}>Others ₹</div>

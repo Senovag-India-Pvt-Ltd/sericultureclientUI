@@ -397,7 +397,7 @@ function GrainageP2PebrineCasesReport() {
                         <div style={{ fontSize: "12px" }}>ಕ್ರ.ಸಂ.</div>
                         <div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85, marginTop: "2px" }}>Sl.No</div>
                       </th>
-                      <th colSpan={3} style={{
+                      <th colSpan={5} style={{
                         background: "linear-gradient(135deg,#0f766e,#14b8a6)",
                         color: "#fff", padding: "10px 8px", textAlign: "center",
                         border: "1px solid rgba(255,255,255,.18)", fontWeight: 800,
@@ -406,7 +406,7 @@ function GrainageP2PebrineCasesReport() {
                         <div style={{ fontSize: "13px", fontWeight: 800 }}>ಕೋಶ ಪರೀಕ್ಷೆ</div>
                         <div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85, marginTop: "2px" }}>Cocoon Test</div>
                       </th>
-                      <th colSpan={3} style={{
+                      <th colSpan={5} style={{
                         background: "linear-gradient(135deg,#4338ca,#6366f1)",
                         color: "#fff", padding: "10px 8px", textAlign: "center",
                         border: "1px solid rgba(255,255,255,.18)", fontWeight: 800,
@@ -429,10 +429,14 @@ function GrainageP2PebrineCasesReport() {
                     <tr>
                       {[
                         { tone: "linear-gradient(180deg,#14b8a6,#0d9488)", kn: "ಪರೀಕ್ಷಿಸಿದ ತಂಡಗಳು",      en: "Tested" },
+                        { tone: "linear-gradient(180deg,#14b8a6,#0d9488)", kn: "ತಂಡ ಹಾಸಿಗೆ",          en: "Beds" },
                         { tone: "linear-gradient(180deg,#14b8a6,#0d9488)", kn: "ಗಂಟುರೋಗ ಗೋಚರಿಸಿದ", en: "Pebrine" },
+                        { tone: "linear-gradient(180deg,#14b8a6,#0d9488)", kn: "ರೋಗದ ಹಾಸಿಗೆ",         en: "Pebrine Beds" },
                         { tone: "linear-gradient(180deg,#14b8a6,#0d9488)", kn: "ಶೇಕಡಾವಾರು",           en: "%" },
                         { tone: "linear-gradient(180deg,#6366f1,#4f46e5)", kn: "ಪರೀಕ್ಷಿಸಿದ ತಂಡಗಳು",      en: "Tested" },
+                        { tone: "linear-gradient(180deg,#6366f1,#4f46e5)", kn: "ತಂಡ ಹಾಸಿಗೆ",          en: "Beds" },
                         { tone: "linear-gradient(180deg,#6366f1,#4f46e5)", kn: "ಗಂಟುರೋಗ ಗೋಚರಿಸಿದ", en: "Pebrine" },
+                        { tone: "linear-gradient(180deg,#6366f1,#4f46e5)", kn: "ರೋಗದ ಹಾಸಿಗೆ",         en: "Pebrine Beds" },
                         { tone: "linear-gradient(180deg,#6366f1,#4f46e5)", kn: "ಶೇಕಡಾವಾರು",           en: "%" },
                       ].map((h, i) => (
                         <th key={i} style={{
@@ -450,7 +454,7 @@ function GrainageP2PebrineCasesReport() {
                   <tbody>
                     {dataRows.length === 0 && (
                       <tr>
-                        <td colSpan={8} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>
+                        <td colSpan={13} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>
                           ಯಾವುದೇ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ &nbsp;/&nbsp; No records found.
                         </td>
                       </tr>
@@ -499,12 +503,26 @@ function GrainageP2PebrineCasesReport() {
                           <td className="gp2pb-num" style={{
                             padding: "11px 12px", textAlign: "center",
                             borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #eef2f6",
+                            background: "transparent",
+                            color: total ? "#78350f" : "#134e4a",
+                            fontWeight: total ? 800 : 700, fontSize: "13px",
+                          }}>{fmt(row.coc_tested_beds ?? 0)}</td>
+                          <td className="gp2pb-num" style={{
+                            padding: "11px 12px", textAlign: "center",
+                            borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #eef2f6",
                             background: total
                               ? "transparent"
                               : (cocPebrine > 0 ? "linear-gradient(135deg,#fee2e2,#fecaca)" : "transparent"),
                             color: total ? "#78350f" : (cocPebrine > 0 ? "#991b1b" : "#134e4a"),
                             fontWeight: total ? 800 : (cocPebrine > 0 ? 800 : 700), fontSize: "13px",
                           }}>{fmt(row.coc_pebrine_batches ?? 0)}</td>
+                          <td className="gp2pb-num" style={{
+                            padding: "11px 12px", textAlign: "center",
+                            borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #eef2f6",
+                            background: "transparent",
+                            color: total ? "#78350f" : (cocPebrine > 0 ? "#991b1b" : "#134e4a"),
+                            fontWeight: total ? 800 : 700, fontSize: "13px",
+                          }}>{fmt(row.coc_pebrine_beds ?? 0)}</td>
                           <td className="gp2pb-num" style={{
                             padding: "11px 12px", textAlign: "center",
                             borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #eef2f6",
@@ -524,12 +542,26 @@ function GrainageP2PebrineCasesReport() {
                           <td className="gp2pb-num" style={{
                             padding: "11px 12px", textAlign: "center",
                             borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #eef2f6",
+                            background: "transparent",
+                            color: total ? "#78350f" : "#312e81",
+                            fontWeight: total ? 800 : 700, fontSize: "13px",
+                          }}>{fmt(row.moth_tested_beds ?? 0)}</td>
+                          <td className="gp2pb-num" style={{
+                            padding: "11px 12px", textAlign: "center",
+                            borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #eef2f6",
                             background: total
                               ? "transparent"
                               : (mothPebrine > 0 ? "linear-gradient(135deg,#fee2e2,#fecaca)" : "transparent"),
                             color: total ? "#78350f" : (mothPebrine > 0 ? "#991b1b" : "#312e81"),
                             fontWeight: total ? 800 : (mothPebrine > 0 ? 800 : 700), fontSize: "13px",
                           }}>{fmt(row.moth_pebrine_batches ?? 0)}</td>
+                          <td className="gp2pb-num" style={{
+                            padding: "11px 12px", textAlign: "center",
+                            borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #eef2f6",
+                            background: "transparent",
+                            color: total ? "#78350f" : (mothPebrine > 0 ? "#991b1b" : "#312e81"),
+                            fontWeight: total ? 800 : 700, fontSize: "13px",
+                          }}>{fmt(row.moth_pebrine_beds ?? 0)}</td>
                           <td className="gp2pb-num" style={{
                             padding: "11px 12px", textAlign: "center",
                             borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #eef2f6",

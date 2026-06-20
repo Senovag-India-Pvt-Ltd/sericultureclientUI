@@ -313,6 +313,10 @@ function AdsPebrineReport() {
     };
   }, [dataRows]);
 
+  // Detail rows only (exclude the backend grand-total ಒಟ್ಟು row); the footer below
+  // renders the single grand total, so the total never appears twice.
+  const detRows = dataRows.filter((r) => String(r.lot_no).trim() !== "ಒಟ್ಟು");
+
   return (
     <Layout title={t("ADS · Pebrine Cases Detail Report")}>
       <Block.Head>
@@ -571,7 +575,7 @@ function AdsPebrineReport() {
                         </td>
                       </tr>
                     )}
-                    {dataRows.map((row, ri) => {
+                    {detRows.map((row, ri) => {
                       const alt = ri % 2 === 1;
                       return (
                         <tr key={`${row.sl_no}-${ri}`} className="adspeb-tr" style={{ background: alt ? "#fafafa" : "#ffffff" }}>
@@ -661,7 +665,7 @@ function AdsPebrineReport() {
                         </tr>
                       );
                     })}
-                    {dataRows.length > 0 && (
+                    {detRows.length > 0 && (
                       <tr style={{ background: "linear-gradient(135deg,#fef3c7,#fde68a)" }}>
                         <td colSpan={2} style={{
                           padding: "13px 16px", textAlign: "right",

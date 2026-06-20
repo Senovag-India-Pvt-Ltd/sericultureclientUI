@@ -161,7 +161,7 @@ function GrainageP2ProductionIncomeReport() {
     setHasReport(false);
     setDataRows([]);
     try {
-      const res = await api.get(baseURLSeedDFL + "grainage-progress-report/p2-production-income", { params: params() });
+      const res = await api.get(baseURLSeedDFL + "grainage-progress-report/p2-grainage-production-income", { params: params() });
       setDataRows(Array.isArray(res.data) ? res.data : []);
       setHasReport(true);
     } catch (err) {
@@ -185,7 +185,7 @@ function GrainageP2ProductionIncomeReport() {
     if (err) { showWarn(err); return; }
     setIsDownloadingPdf(true);
     try {
-      const res = await api.get(baseURLSeedDFL + "grainage-progress-report/p2-production-income/pdf", { params: params(), responseType: "blob" });
+      const res = await api.get(baseURLSeedDFL + "grainage-progress-report/p2-grainage-production-income/pdf", { params: params(), responseType: "blob" });
       window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
     } catch {
       showErr("PDF Failed", "Could not generate the PDF report.");
@@ -199,7 +199,7 @@ function GrainageP2ProductionIncomeReport() {
     if (err) { showWarn(err); return; }
     setIsDownloadingExcel(true);
     try {
-      const res = await api.get(baseURLSeedDFL + "grainage-progress-report/p2-production-income/excel", { params: params(), responseType: "blob" });
+      const res = await api.get(baseURLSeedDFL + "grainage-progress-report/p2-grainage-production-income/excel", { params: params(), responseType: "blob" });
       const url = URL.createObjectURL(new Blob([res.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
       const a = document.createElement("a");
       a.href = url;

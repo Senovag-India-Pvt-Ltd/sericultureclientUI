@@ -365,9 +365,13 @@ const fetchFarmerRelatedData = (datas) => {
     })
     .catch(handleError);
 
-  // Land Details API
+  // Land Details API — scoped to THIS application (route id is the
+  // sc_application_form_service id here) rather than the farmer's full land
+  // list, so each row's authoritative dbtFarmerLandDetailsId is recovered and a
+  // save emits op=UPDATE against the correct row (no duplicate inserts / no
+  // stale rows from the farmer's other applications).
   api
-    .get(baseURLDBT + `dbt-farmer-land-details/get-by-farmer-id/${datas.farmerId}`)
+    .get(baseURLDBT + `dbt-farmer-land-details/get-by-application-form-id/${id}`)
     .then((response) => {
       if (response.data.errorCode !== -1 && response.data.content) {
         const landDetails = response.data.content.dbtFarmerLandDetails || [];

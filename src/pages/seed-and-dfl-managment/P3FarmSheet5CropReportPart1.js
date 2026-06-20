@@ -1,15 +1,15 @@
 import React from "react";
 import { P3FarmFormSummaryReport } from "./P3FarmFormSummaryShared";
 
-// Sheet 5 — Monthly Crop Report Part 1 (rows 1-14)
-// Crop count, chawki eggs, breeds, sources, lot batches, chawki %, microscope readings.
+// Monthly Crop Report — FULL (rows 1-37). Merged from the former Sheet 5 (1-14) +
+// Sheet 6 (15-22) + Sheet 7 (23-37); the /p3-farm/sheet5 endpoint now returns all rows.
 const cfg = {
   sheet: "5",
   endpoint: "p3-farm/sheet5",
-  titleKn: "ಪ್ರಪತ್ರ 5 · ಮಾಸಿಕ ಬೆಳೆ ವರದಿ (ಭಾಗ 1) — ಸಾಲುಗಳು 1–14",
-  titleEn: "Monthly Crop Report (Part 1) · rows 1-14",
-  descEn:  "P3 Farms (Bivoltine) — chawki eggs, breeds, sources, microscope readings · CY vs PY",
-  tagText: "P3 Farms · Bivoltine · Sheet-5 · Part 1",
+  titleKn: "ಪ್ರಪತ್ರ 5 · ಮಾಸಿಕ ಬೆಳೆ ವರದಿ — ಸಾಲುಗಳು 1–37",
+  titleEn: "Monthly Crop Report (Full) · rows 1-37",
+  descEn:  "P3 Farms (Bivoltine) — crop, feeding & moult, cocoon & disposal · CY vs PY",
+  tagText: "P3 Farms · Bivoltine · Monthly Crop Report",
   icon: "🌾",
   palette: {
     primary: "#0f766e", deep: "#134e4a",

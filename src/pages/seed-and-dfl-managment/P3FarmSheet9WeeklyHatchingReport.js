@@ -66,7 +66,7 @@ const fmt = (v) => {
 };
 
 const COLS = [
-  { key: "race_id",   kn: "ಕ್ರ.ಸಂ",      en: "Sr.No",    minW: 70  },
+  { key: "sl_no",     kn: "ಕ್ರ.ಸಂ",      en: "Sr.No",    minW: 70  },
   { key: "race_name", kn: "ತಳಿ",         en: "Race",     minW: 200 },
   { key: "w1",        kn: "1ನೇ ವಾರ",     en: "Week 1",   minW: 110, week: true },
   { key: "w2",        kn: "2ನೇ ವಾರ",     en: "Week 2",   minW: 110, week: true },
@@ -269,7 +269,7 @@ function P3FarmSheet9WeeklyHatchingReport() {
             <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 6px 28px rgba(14,165,233,.14)", overflow: "hidden" }}>
               <div style={{ background: "linear-gradient(135deg,#0c4a6e,#0369a1 50%,#0ea5e9)", color: "#fff", padding: "16px 22px", fontWeight: 800, fontSize: "15px", textAlign: "center" }}>
                 ಪ್ರಪತ್ರ 9 · {monthKn} {monthYear || ""} ರ ವಾರವಾರು ಗೂಡು ಲಭ್ಯತೆ — {farmName}
-                <div style={{ fontSize: "12px", fontWeight: 600, opacity: .9, marginTop: "4px" }}>Race-wise Weekly Cocoon Programme · {monthLabel} {monthYear}</div>
+                <div style={{ fontSize: "12px", fontWeight: 600, opacity: .9, marginTop: "4px" }}>ಲಭ್ಯವಿರುವ ಗೂಡುಗಳ ವಿವರ · {monthLabel} {monthYear}</div>
               </div>
               <div style={{ overflowX: "auto" }}>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12.5px", minWidth: "900px" }}>

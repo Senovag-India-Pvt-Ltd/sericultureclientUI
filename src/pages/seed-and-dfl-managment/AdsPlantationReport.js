@@ -262,8 +262,9 @@ function AdsPlantationReport() {
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
 
   const totals = useMemo(() => {
-    // Exclude the backend grand-total (ಒಟ್ಟು) row so figures are not double-counted.
-    const det = dataRows.filter((r) => String(r.tsc).trim() !== "ಒಟ್ಟು");
+    // KPI sums use only detail rows (numeric sl_no); division header / subtotal /
+    // grand-total rows have an empty sl_no and must be excluded to avoid double-counting.
+    const det = dataRows.filter((r) => String(r.sl_no).trim() !== "");
     const sum = (k) => det.reduce((a, r) => a + numOrZero(r[k]), 0);
     return {
       tsc:        det.length,
@@ -490,12 +491,18 @@ function AdsPlantationReport() {
                     {dataRows.map((row, ri) => {
                       const alt = ri % 2 === 1;
                       const exp = numOrZero(row.expansion);
-                      return (
-                        <tr key={`${row.sl_no}-${ri}`} className="adsplant-tr" style={{ background: alt ? "#f7fef8" : "#ffffff" }}>
+                      const isHdr = String(row.sl_no).trim() === "" && String(row.tsc || "").startsWith("ವಲಯ");
+                      const isTot = String(row.sl_no).trim() === "" && !isHdr;
+                      return isHdr ? (
+                        <tr key={`${row.sl_no}-${ri}`} className="adsplant-tr" style={{ background: "linear-gradient(135deg,#e0f2fe,#bae6fd)" }}>
+                          <td colSpan={10} style={{ padding: "10px 16px", fontWeight: 800, color: "#075985", fontSize: "13px" }}>{row.tsc}</td>
+                        </tr>
+                      ) : (
+                        <tr key={`${row.sl_no}-${ri}`} className="adsplant-tr" style={{ background: isTot ? "linear-gradient(135deg,#fef3c7,#fde68a)" : (alt ? "#f7fef8" : "#ffffff") }}>
                           <td style={td("center", null, "#475569", 700)}>
-                            <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: "28px", height: "28px", borderRadius: "50%", background: "linear-gradient(135deg,#dcfce7,#bbf7d0)", color: "#14532d", fontWeight: 800, fontSize: "11.5px" }}>{row.sl_no}</span>
+                            {isTot ? "" : <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: "28px", height: "28px", borderRadius: "50%", background: "linear-gradient(135deg,#dcfce7,#bbf7d0)", color: "#14532d", fontWeight: 800, fontSize: "11.5px" }}>{row.sl_no}</span>}
                           </td>
-                          <td style={td("left", null, "#0f172a", 700)}>{row.tsc || "—"}</td>
+                          <td style={td("left", null, "#0f172a", isTot ? 800 : 700)}>{row.tsc || "—"}</td>
                           <td className="adsplant-num" style={td("right", null, "#14532d", 700, "#f0fdf4")}>{fmtHa(row.prev_area)}</td>
                           <td className="adsplant-num" style={td("right", null, "#92400e", 700, "#fffbeb")}>{fmtHa(row.annual_target)}</td>
                           <td className="adsplant-num" style={td("right", null, "#3f6212", 700, "#f7fee7")}>{fmtHa(row.planted_m)}</td>
@@ -512,21 +519,6 @@ function AdsPlantationReport() {
                         </tr>
                       );
                     })}
-                    {dataRows.length > 0 && (
-                      <tr style={{ background: "linear-gradient(135deg,#fef3c7,#fde68a)" }}>
-                        <td colSpan={2} style={{ padding: "13px 16px", textAlign: "right", color: "#78350f", fontWeight: 800, fontSize: "13px", borderTop: "2px solid #f59e0b" }}>
-                          ಒಟ್ಟು &nbsp;/&nbsp; Grand Total
-                        </td>
-                        <td className="adsplant-num" style={ftd("#14532d")}>{fmtHa(totals.prevArea)}</td>
-                        <td className="adsplant-num" style={ftd("#92400e")}>{fmtHa(totals.target)}</td>
-                        <td className="adsplant-num" style={ftd("#3f6212")}>{fmtHa(totals.plantedM)}</td>
-                        <td className="adsplant-num" style={ftd("#365314")}>{fmtHa(totals.plantedMe)}</td>
-                        <td className="adsplant-num" style={ftd("#7f1d1d")}>{fmtHa(totals.uprootedM)}</td>
-                        <td className="adsplant-num" style={ftd("#7f1d1d")}>{fmtHa(totals.uprootedMe)}</td>
-                        <td className="adsplant-num" style={ftd("#064e3b")}>{fmtHa(totals.currArea)}</td>
-                        <td className="adsplant-num" style={ftd(totals.expansion >= 0 ? "#1e3a8a" : "#881337")}>{fmtSignedHa(totals.expansion)}</td>
-                      </tr>
-                    )}
                   </tbody>
                 </table>
               </div>

@@ -285,10 +285,15 @@ useEffect(() => {
             handleError(err);
           });
 
+        // Prefill the SAVED land rows scoped to THIS application (route id is
+        // the parent sc_application_form id here) instead of the farmer's full
+        // land list. This guarantees each row's authoritative
+        // dbtFarmerLandDetailsId is recovered, so a save emits op=UPDATE against
+        // the correct row — and never pre-checks another application's rows.
         api
           .get(
             baseURLDBT +
-              `dbt-farmer-land-details/get-by-farmer-id/${datas.farmerId}`
+              `dbt-farmer-land-details/get-by-parent-application-form-id/${id}`
           )
           .then((response) => {
             if (response.data.errorCode === -1) {
@@ -330,7 +335,16 @@ useEffect(() => {
       .then((response) => {
         console.log("landdetails", response.data);
         if (response.data.content.farmerLandDetailsDTOList.length > 0) {
-          setLandDetailsList(response.data.content.farmerLandDetailsDTOList);
+          // _rowKey is a stable identity for the row, fixed at load time —
+          // the DataTable's own row-index argument shifts when a sortable
+          // column header is clicked, which previously caused edits/saves
+          // to silently target the wrong land parcel after sorting.
+          setLandDetailsList(
+            response.data.content.farmerLandDetailsDTOList.map((r, idx) => ({
+              ...r,
+              _rowKey: idx,
+            }))
+          );
         }
       })
       .catch((err) => {
@@ -1040,6 +1054,17 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     // missed and every row used to come out as NEW, which silently inserted
     // duplicate DbtFarmerLandDetails rows on every save and left the
     // original ones untouched. The stashed id is the reliable signal.
+    // Coerce IDs to numbers and dates to ISO strings so backend Jackson
+    // deserialises cleanly — string-encoded numbers were silently failing
+    // for some fields and leaving Financial Year / period unchanged.
+    const toNum = (v) => (v === "" || v == null ? null : Number(v));
+
+    // acre/gunta/fGunta/devAcre/devGunta/devFGunta come from text inputs as
+    // strings, but the backend DTO/entity type them as Long — an empty or
+    // non-numeric string deserialises to either null (silent no-op via the
+    // copyLandFields null-guard) or a 400, both of which look like "update
+    // succeeded but nothing changed" from the UI. Coerce here so a real
+    // edited value always reaches the backend as a number.
     const landRows = Object.keys(developedArea).map((key) => {
       const row = developedArea[key] || {};
       const savedId = row._dbtFarmerLandDetailsId;
@@ -1053,26 +1078,22 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         surveyNumber: row.surveyNumber,
         ownerName: row.ownerName,
         surNoc: row.surNoc,
-        ownerNo: row.ownerNo,
-        mainOwnerNo: row.mainOwnerNo,
-        acre: row.acre,
-        gunta: row.gunta,
-        fGunta: row.fgunta != null ? row.fgunta : row.fGunta,
-        landCode: row.landCode,
-        districtCode: row.districtCode,
-        talukCode: row.talukCode,
-        hobliCode: row.hobliCode,
-        villageCode: row.villageCode,
-        devAcre: row.devAcre,
-        devGunta: row.devGunta,
-        devFGunta: row.devFGunta,
+        ownerNo: toNum(row.ownerNo),
+        mainOwnerNo: toNum(row.mainOwnerNo),
+        acre: toNum(row.acre),
+        gunta: toNum(row.gunta),
+        fGunta: toNum(row.fgunta != null ? row.fgunta : row.fGunta),
+        landCode: toNum(row.landCode),
+        districtCode: toNum(row.districtCode),
+        talukCode: toNum(row.talukCode),
+        hobliCode: toNum(row.hobliCode),
+        villageCode: toNum(row.villageCode),
+        devAcre: toNum(row.devAcre),
+        devGunta: toNum(row.devGunta),
+        devFGunta: toNum(row.devFGunta),
       };
     });
 
-    // Coerce IDs to numbers and dates to ISO strings so backend Jackson
-    // deserialises cleanly — string-encoded numbers were silently failing
-    // for some fields and leaving Financial Year / period unchanged.
-    const toNum = (v) => (v === "" || v == null ? null : Number(v));
     const v2Payload = {
       id: id ? parseInt(id, 10) : null,
       farmerId,
@@ -1327,8 +1348,12 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
               }));
             }
             if (response.data.content.farmerLandDetailsDTOList.length > 0) {
+              // See getDirectData — _rowKey gives each row a stable identity
+              // independent of the DataTable's post-sort row position.
               setLandDetailsList(
-                response.data.content.farmerLandDetailsDTOList
+                response.data.content.farmerLandDetailsDTOList.map(
+                  (r, idx) => ({ ...r, _rowKey: idx })
+                )
               );
             }
             if (response.data.content.farmerAddressDTOList.length > 0) {
@@ -1409,13 +1434,13 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       //   />
       name: "Select",
       selector: "select",
-      cell: (row, i) => (
+      cell: (row) => (
         <input
           type="checkbox"
           name="selectedLand"
-          value={i}
-          checked={landDetailsIds.includes(i)}
-          onChange={() => handleCheckboxChange(i, row)}
+          value={row._rowKey}
+          checked={landDetailsIds.includes(row._rowKey)}
+          onChange={() => handleCheckboxChange(row._rowKey, row)}
         />
       ),
       // ignoreRowClick: true,
@@ -1467,16 +1492,6 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     {
       name: t("Acre"),
       selector: (row) => row.acre,
-      // cell: (row) => (
-      //   <Form.Control
-      //     // id="farmerName"
-      //     // name="farmerName"
-      //     type="text"
-      //     value={row.acre}
-      //     // onChange={handleInputs}
-      //     placeholder="Edit Acre"
-      //   />
-      // ),
       cell: (row) => <span>{row.acre}</span>,
       sortable: true,
       hide: "md",
@@ -1484,16 +1499,6 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     {
       name: t("Gunta"),
       selector: (row) => row.gunta,
-      // cell: (row) => (
-      //   <Form.Control
-      //     // id="farmerName"
-      //     // name="farmerName"
-      //     type="text"
-      //     value={row.gunta}
-      //     // onChange={handleInputs}
-      //     placeholder="Edit Gunta"
-      //   />
-      // ),
       cell: (row) => <span>{row.gunta}</span>,
       sortable: true,
       hide: "md",
@@ -1502,17 +1507,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     {
       name: t("FGunta"),
       selector: (row) => row.fgunta,
-      // cell: (row) => (
-      //   <Form.Control
-      //     // id="farmerName"
-      //     // name="farmerName"
-      //     type="text"
-      //     value={row.fgunta}
-      //     // onChange={handleInputs}
-      //     placeholder="Edit FGunta"
-      //   />
-      // ),
-      cell: (row) => <span>{row.gunta}</span>,
+      cell: (row) => <span>{row.fgunta}</span>,
       sortable: true,
       hide: "md",
     },
@@ -1557,29 +1552,29 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
   {
     name: "Developed Area (Acre/Gunta/FGunta)",
     // selector: (row) => row.acre,
-    cell: (row, i) => (
+    cell: (row) => (
       <>
         <Form.Control
           name="devAcre"
           type="text"
-          value={developedArea[i]?.devAcre || ""}
-          onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
+          value={developedArea[row._rowKey]?.devAcre || ""}
+          onChange={(e) => handleInlineDevelopedLandChange(e, row, row._rowKey)}
           placeholder="Acre"
           className="m-1"
         />
         <Form.Control
           name="devGunta"
           type="text"
-          value={developedArea[i]?.devGunta || ""}
-          onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
+          value={developedArea[row._rowKey]?.devGunta || ""}
+          onChange={(e) => handleInlineDevelopedLandChange(e, row, row._rowKey)}
           placeholder="Gunta"
           className="m-1"
         />
         <Form.Control
           name="devFGunta"
           type="text"
-          value={developedArea[i]?.devFGunta || ""}
-          onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
+          value={developedArea[row._rowKey]?.devFGunta || ""}
+          onChange={(e) => handleInlineDevelopedLandChange(e, row, row._rowKey)}
           placeholder="FGunta"
           className="m-1"
         />

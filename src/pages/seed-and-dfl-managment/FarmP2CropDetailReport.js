@@ -90,9 +90,9 @@ const COLS = [
   { key: "avg_yield_kg",  kn: "ಸ.ಇ ಕೆ.ಜಿ",   en: "Yield kg",     group: "yield",  w: 84,  align: "right" },
   { key: "avg_yield_qty", kn: "ಸ.ಇ ಸಂ",     en: "Yield Qty",    group: "yield",  w: 84,  align: "right" },
   { key: "cocoons_per_kg",kn: "ಕೆ.ಜಿ/ಗೂಡು", en: "Coc/kg",       group: "yield",  w: 84,  align: "right" },
-  { key: "sowing",        kn: "ಬಿತ್ತನೆ",     en: "Sowing",       group: "supply", w: 78,  align: "center", placeholder: true },
-  { key: "reeling",       kn: "ರೀಲಿಂಗ್",     en: "Reeling",      group: "supply", w: 78,  align: "center", placeholder: true },
-  { key: "bico_market",   kn: "ಬಿಕೋ",       en: "Bico/Mkt",     group: "supply", w: 90,  align: "center", placeholder: true },
+  { key: "sowing",        kn: "ಬಿತ್ತನೆ",     en: "Sowing",       group: "supply", w: 78,  align: "right" },
+  { key: "reeling",       kn: "ರೀಲಿಂಗ್",     en: "Reeling",      group: "supply", w: 78,  align: "right" },
+  { key: "bico_market",   kn: "ಬಿಕೋ",       en: "Bico/Mkt",     group: "supply", w: 90,  align: "right" },
   { key: "supply_date",   kn: "ಸರಬ ದಿ",      en: "Supply Date",  group: "supply", w: 110, align: "center", isDate: true },
   { key: "supply_rate",   kn: "ಸರಬ ದರ",      en: "Rate",         group: "supply", w: 84,  align: "right" },
   { key: "notes",         kn: "ಷರಾ",        en: "Notes",        group: "note",   w: 110, align: "left" },
@@ -448,15 +448,6 @@ function FarmP2CropDetailReport() {
                   {b.label}
                 </span>
               ))}
-              <span style={{
-                display: "inline-flex", alignItems: "center", gap: "5px",
-                background: "#f8fafc", color: "#5a6a7e",
-                border: "1.5px dashed #cbd5e1",
-                borderRadius: "20px", padding: "3px 12px", fontSize: "11px", fontWeight: 700,
-              }}>
-                <span className="fp2cd-stripe" style={{ display: "inline-block", width: "14px", height: "10px", borderRadius: "3px" }} />
-                Not yet tracked
-              </span>
             </div>
 
             {/* Table */}
@@ -582,9 +573,9 @@ function FarmP2CropDetailReport() {
               <span>💡</span>
               <span>
                 Spine: <em>rearing_of_dfls</em> filtered on <strong>brushing_date</strong> within {monthLabel} {monthYear || ""}.
-                Cocoon weights / counts come from <em>preservation_of_seed_cocoon_for_processing</em>;
-                supply date &amp; rate from the latest <em>sale_and_disposal_of_dfls</em> row per lot.
-                Hatched columns (<em>Sowing</em>, <em>Reeling</em>, <em>Bico/Mkt</em>) are not yet tracked in source data — shown as striped placeholders.
+                Cocoon weights / counts and supply date come from <em>supply_of_cocoons</em> (the farm cocoon dispatch) per lot.
+                <em>Sowing / Reeling / Bico-Mkt</em> are the cocoon-disposal split from <em>rearing_of_dfls</em>.
+                <strong>Supply Rate</strong> has no source column yet (data-entry gap) and shows 0.
               </span>
             </div>
           </div>
