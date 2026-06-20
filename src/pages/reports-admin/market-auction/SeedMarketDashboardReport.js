@@ -14,12 +14,14 @@ const thStyle = {
   color: "#1a5276",
   fontWeight: 700,
   padding: "10px 12px",
-  whiteSpace: "nowrap",
+  whiteSpace: "normal",
+  wordBreak: "break-word",
   textAlign: "center",
   border: "1px solid #d0e8f5",
-  fontSize: "0.78rem",
+  fontSize: "0.88rem",
   letterSpacing: "0.3px",
   verticalAlign: "middle",
+  lineHeight: "1.4",
 };
 
 const tdStyle = (key) => ({
