@@ -72,6 +72,10 @@ function SeedMarketTripletReport() {
         },
         { responseType: "blob" }
       );
+      if (!response.data || response.data.size === 0) {
+        Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+        return;
+      }
       const fileURL = URL.createObjectURL(new Blob([response.data], { type: "application/pdf" }));
       const printWindow = window.open(fileURL);
       if (printWindow) {

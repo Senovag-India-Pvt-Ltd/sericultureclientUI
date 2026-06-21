@@ -585,6 +585,13 @@ function SeedMarketTransactionReport() {
                     </tr>
                   </thead>
                   <tbody>
+                    {rows.length === 0 && (
+                      <tr>
+                        <td colSpan={headers.length} style={{ textAlign: "center", padding: "30px", color: "#888", fontSize: "14px" }}>
+                          No Data Found
+                        </td>
+                      </tr>
+                    )}
                     {rows.map((item, idx) => {
                       const bg = idx % 2 === 0 ? "#fff" : "#f7fafd";
                       return (

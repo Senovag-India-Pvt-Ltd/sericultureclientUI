@@ -211,6 +211,13 @@ function SeedMarketCreditReport() {
           </Card>
         </Form>
 
+        {/* NO DATA */}
+        {seedMarketCreditData && seedMarketCreditData.length === 0 && validatedDisplay && (
+          <div className="text-center py-4 text-muted" style={{ fontSize: "15px" }}>
+            No Data Found
+          </div>
+        )}
+
         {/* TABLE */}
         {seedMarketCreditData && seedMarketCreditData.length > 0 && (
           <Row className="g-gs pt-2 d-flex justify-content-center">

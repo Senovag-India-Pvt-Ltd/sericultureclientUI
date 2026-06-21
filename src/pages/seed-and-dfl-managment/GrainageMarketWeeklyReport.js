@@ -242,6 +242,10 @@ function GrainageMarketWeeklyReport() {
     setIsDownloadingPdf(true);
     try {
       const res = await api.get(baseURLSeedDFL + "weekly-market-report/pdf", { params: params(), responseType: "blob" });
+      if (!res.data || res.data.size === 0) {
+        Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+        return;
+      }
       window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
     } catch {
       showErr("PDF Failed", "Could not generate the PDF report.");

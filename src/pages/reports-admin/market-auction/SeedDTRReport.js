@@ -102,6 +102,10 @@ function SeedDtrReport() {
   api.post(baseURLReport + "get-seed-DTR", getPayload(), {
     responseType: "blob"
   }).then((res) => {
+    if (!res.data || res.data.size === 0) {
+      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      return;
+    }
     const file = new Blob([res.data], { type: "application/pdf" });
     window.open(URL.createObjectURL(file));
   }).catch(() => Swal.fire("Print failed"));
