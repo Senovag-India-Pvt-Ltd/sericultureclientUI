@@ -107,7 +107,9 @@ const [HelpDesks, setHelpDesks] = useState({});
 
     // ---------- Attachment helpers ----------
       const mimeByExtension = (fileName) => {
-        const ext = (fileName || "").split(".").pop().toLowerCase();
+        // Normalize: backend stores "file_jpg" with underscore — convert to "file.jpg"
+        const normalized = (fileName || "").replace(/_([^_.]+)$/, ".$1");
+        const ext = normalized.split(".").pop().toLowerCase();
         const map = {
           pdf: "application/pdf",
           png: "image/png",
@@ -122,7 +124,7 @@ const [HelpDesks, setHelpDesks] = useState({});
           doc: "application/msword",
           docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
           xls: "application/vnd.ms-excel",
-          xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheetml",
+          xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
           ppt: "application/vnd.ms-powerpoint",
           pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
           zip: "application/zip",
@@ -142,21 +144,35 @@ const [HelpDesks, setHelpDesks] = useState({});
       const [selectedFileMime, setSelectedFileMime] = useState("");
 
       const getFile = async (file) => {
-        const parameters = `fileName=${file}`;
+        if (!file) return;
+
+        // If hdAttachFiles is already a full S3/HTTP URL, use it directly
+        if (file.startsWith("http://") || file.startsWith("https://")) {
+          const mime = mimeByExtension(file);
+          setSelectedFile(file);
+          setSelectedFileMime(mime);
+          return;
+        }
+
+        const parameters = `fileName=${encodeURIComponent(file)}`;
         try {
           const response = await api.get(
             baseURL + `api/s3/download?${parameters}`,
-            {
-              responseType: "arraybuffer",
-            }
+            { responseType: "arraybuffer" }
           );
+
+          if (!response.data || response.data.byteLength === 0) {
+            console.warn("S3 download returned empty data for:", file);
+            return;
+          }
+
           const mime = mimeByExtension(file);
           const blob = new Blob([response.data], { type: mime });
           const url = URL.createObjectURL(blob);
           setSelectedFile(url);
           setSelectedFileMime(mime);
         } catch (error) {
-          console.error("Error fetching file:", error);
+          console.error("Error fetching file from S3:", error);
         }
       };
 

@@ -662,6 +662,10 @@ function Menu() {
     Reports_Export_Report_Admin: false,
     Reports_Export_Report_Admin_User_Details_Report: false,
 
+    ManualEntry: false,
+    ManualEntry_Crop_Details_Seed_Market: false,
+    ManualEntry_Crop_Details_Commercial_Market: false,
+
 
     // Reports_Pendency_Report: false,
 
@@ -1064,6 +1068,13 @@ function Menu() {
     if (data.includes("Reports_Export_Report_Admin")) {
       Object.keys(updatedShowMenu).forEach((key) => {
         if (key.startsWith("Reports_Export_Report_Admin_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("ManualEntry")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("ManualEntry_")) {
           updatedShowMenu[key] = true;
         }
       });
@@ -1599,6 +1610,16 @@ function Menu() {
         Reports: true,
         Reports_Export_Report: true,
         Reports_Export_Report_Admin: true,
+      }));
+    }
+
+    const hasManualEntry = data.some((item) =>
+      item.startsWith("ManualEntry_")
+    );
+    if (hasManualEntry) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        ManualEntry: true,
       }));
     }
 
@@ -6985,28 +7006,36 @@ function Menu() {
         </MenuItem>
       ) : null}
 
-      <MenuItem sub>
-        <MenuItemLink
-          text={t("Manual Entry")}
-          onClick={menuToggle}
-          onMouseEnter={menuHover}
-          sub
-        />
-        <MenuSub>
-          <MenuItem>
+      {showMenu.ManualEntry ? (
+        <MenuItem sub>
+          {showMenu.ManualEntry ? (
             <MenuItemLink
-              text={t("Crop Details-Seed Market")}
-              to="/seriui/crop-details-seed-market"
+              text={t("Manual Entry")}
+              onClick={menuToggle}
+              onMouseEnter={menuHover}
+              sub
             />
-          </MenuItem>
-          <MenuItem>
-            <MenuItemLink
-              text={t("Crop Details-Commercial Market")}
-              to="/seriui/crop-details-commercial-market"
-            />
-          </MenuItem>
-        </MenuSub>
-      </MenuItem>
+          ) : null}
+          <MenuSub>
+            {showMenu.ManualEntry_Crop_Details_Seed_Market ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Crop Details-Seed Market")}
+                  to="/seriui/crop-details-seed-market"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.ManualEntry_Crop_Details_Commercial_Market ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Crop Details-Commercial Market")}
+                  to="/seriui/crop-details-commercial-market"
+                />
+              </MenuItem>
+            ) : null}
+          </MenuSub>
+        </MenuItem>
+      ) : null}
 
       {/* Hard Code Menu with mapcode End */}
     </MenuList>
