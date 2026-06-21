@@ -101,14 +101,24 @@ function SeedDtrReport() {
 
   api.post(baseURLReport + "get-seed-DTR", getPayload(), {
     responseType: "blob"
-  }).then((res) => {
-    if (!res.data || res.data.size === 0) {
+  }).then(async (res) => {
+    const blobData = res.data;
+    if (!blobData || blobData.size === 0) {
       Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
       return;
     }
-    const file = new Blob([res.data], { type: "application/pdf" });
-    window.open(URL.createObjectURL(file));
-  }).catch(() => Swal.fire("Print failed"));
+    const firstBytes = await blobData.slice(0, 10).text();
+    if (!firstBytes.startsWith('%PDF')) {
+      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      return;
+    }
+    window.open(URL.createObjectURL(blobData));
+  }).catch(async (err) => {
+    let isNoData = false;
+    try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0/i.test(t); } } catch (_) {}
+    if (isNoData) Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+    else Swal.fire({ icon: "error", title: "Generation Failed", text: "Could not generate the report. Please try again." });
+  });
 };
 
   return (

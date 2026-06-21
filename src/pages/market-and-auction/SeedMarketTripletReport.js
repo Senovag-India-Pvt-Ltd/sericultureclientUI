@@ -72,26 +72,35 @@ function SeedMarketTripletReport() {
         },
         { responseType: "blob" }
       );
-      if (!response.data || response.data.size === 0) {
+      const blobData = response.data;
+      if (!blobData || blobData.size === 0) {
         Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
         return;
       }
-      const fileURL = URL.createObjectURL(new Blob([response.data], { type: "application/pdf" }));
+      const firstBytes = await blobData.slice(0, 10).text();
+      if (!firstBytes.startsWith('%PDF')) {
+        Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+        return;
+      }
+      const fileURL = URL.createObjectURL(blobData);
       const printWindow = window.open(fileURL);
       if (printWindow) {
         printWindow.onload = () => printWindow.print();
       }
-    } catch {
-      Swal.fire({
-        icon: "error",
-        title: "Generation Failed",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Could Not Generate</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">Failed to generate the Triplet. Please try again.</p></div></div></div>`,
-        confirmButtonText: "Close",
-        confirmButtonColor: "#e53e3e",
-        background: "#fff",
-        showClass: { popup: "animate__animated animate__shakeX animate__faster" },
-        customClass: { popup: "swal-pop" },
-      });
+    } catch (err) {
+      let isNoData = false;
+      try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0/i.test(t); } } catch (_) {}
+      if (isNoData) {
+        Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      } else {
+        Swal.fire({
+          icon: "error", title: "Generation Failed",
+          html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Could Not Generate</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">Failed to generate the Triplet. Please try again.</p></div></div></div>`,
+          confirmButtonText: "Close", confirmButtonColor: "#e53e3e", background: "#fff",
+          showClass: { popup: "animate__animated animate__shakeX animate__faster" },
+          customClass: { popup: "swal-pop" },
+        });
+      }
     } finally {
       setIsGenerating(false);
     }
