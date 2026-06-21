@@ -1,231 +1,151 @@
-import { Card, Button } from "react-bootstrap";
+import { Card, Button, Pagination } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
-// import DataTable from "../../../components/DataTable/DataTable";
-import DataTable from "react-data-table-component";
-import StateDatas from "../../../store/masters/state/StateData";
 import { useNavigate } from "react-router-dom";
-import React from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Swal from "sweetalert2";
-import { useEffect, useState } from "react";
-// import axios from "axios";
 import { useTranslation } from "react-i18next";
 import api from "../../../../src/services/auth/api";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const ITEMS_PER_PAGE = 5;
 
 function ScCategoryList() {
-  // Translation
   const { t } = useTranslation();
-  const [listData, setListData] = useState({});
-  const [page, setPage] = useState(0);
-  const countPerPage = 5;
-  const [totalRows, setTotalRows] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage } };
+  const navigate = useNavigate();
+
+  const [rawData, setRawData]         = useState([]);
+  const [loading, setLoading]         = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const getList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURL + `scCategory/list`, _params)
-      .then((response) => {
-        setListData(response.data.content.scCategory);
-        setTotalRows(response.data.content.totalItems);
+    api
+      .get(baseURL + `scCategory/list`, { params: { pageNumber: 0, size: 1000 } })
+      .then((res) => {
+        setRawData(res.data.content.scCategory || []);
         setLoading(false);
       })
-      .catch((err) => {
-        setListData({});
+      .catch(() => {
+        setRawData([]);
         setLoading(false);
       });
   };
 
-  useEffect(() => {
-    getList();
-  }, [page]);
+  useEffect(() => { getList(); }, []);
 
-  const navigate = useNavigate();
-  const handleView = (_id) => {
-    navigate(`/seriui/sc-category-view/${_id}`);
-  };
+  // Each item from /list now has a `mappings` array — use it directly
+  const groupedData = useMemo(() => {
+    return rawData.map((item) => ({
+      scCategoryId:         item.scCategoryId,
+      categoryName:         item.categoryName,
+      categoryNameInKannada: item.categoryNameInKannada,
+      codeNumber:           item.codeNumber,
+      description:          item.description,
+      categoryShortName:    item.categoryShortName,
+      mappings: (item.mappings || []).map((m) => ({
+        scCategoryMappingId: m.scCategoryMappingId,
+        schemeName:   m.schemeName,
+        subSchemeName: m.subSchemeName,
+        dbtCode:      m.dbtCode,
+      })),
+    }));
+  }, [rawData]);
 
-  const handleEdit = (_id) => {
-    navigate(`/seriui/sc-category-edit/${_id}`);
-    // navigate("/seriui/state");
-  };
+  const totalPages = Math.ceil(groupedData.length / ITEMS_PER_PAGE);
 
-  const deleteError = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
+  const paginatedGroups = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return groupedData.slice(start, start + ITEMS_PER_PAGE);
+  }, [groupedData, currentPage]);
+
+  const tableRows = useMemo(() => {
+    const rows = [];
+    paginatedGroups.forEach((group, gi) => {
+      group.mappings.forEach((m, mi) => {
+        rows.push({
+          isFirst:  mi === 0,
+          rowSpan:  group.mappings.length,
+          groupIdx: gi,
+          scCategoryId: group.scCategoryId,
+          categoryName: group.categoryName,
+          categoryNameInKannada: group.categoryNameInKannada,
+          codeNumber: group.codeNumber,
+          description: group.description,
+          categoryShortName: group.categoryShortName,
+          schemeName: m.schemeName,
+          subSchemeName: m.subSchemeName,
+          dbtCode: m.dbtCode,
+          mappingId: m.scCategoryMappingId,   // now uses mapping table ID
+          totalMappings: group.mappings.length,
+        });
+      });
     });
-  };
+    return rows;
+  }, [paginatedGroups]);
 
-  const deleteConfirm = (_id) => {
+  const handleEdit   = (id) => navigate(`/seriui/sc-category-edit/${id}`);
+
+  const deleteMapping = (mappingId) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "It will delete permanently!",
+      text: "It will delete this scheme mapping permanently!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.value) {
-        const response = api
-          .delete(baseURL + `scCategory/delete/${_id}`)
-          .then((response) => {
-            // deleteConfirm(_id);
-            getList();
-            Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
-              "success"
-            );
-          })
-          .catch((err) => {
-            deleteError();
-          });
-        // Swal.fire("Deleted", "You successfully deleted this record", "success");
+        api.delete(baseURL + `scCategory/mapping/delete/${mappingId}`)
+          .then(() => { getList(); Swal.fire("Deleted", "Scheme mapping deleted successfully", "success"); })
+          .catch(() => Swal.fire({ icon: "error", title: "Delete failed", text: "Something went wrong!" }));
       } else {
-        console.log(result.value);
         Swal.fire("Cancelled", "Your record is not deleted", "info");
       }
     });
   };
 
-  createTheme(
-    "solarized",
-    {
-      text: {
-        primary: "#004b8e",
-        secondary: "#2aa198",
-      },
-      background: {
-        default: "#fff",
-      },
-      context: {
-        background: "#cb4b16",
-        text: "#FFFFFF",
-      },
-      divider: {
-        default: "#d3d3d3",
-      },
-      action: {
-        button: "rgba(0,0,0,.54)",
-        hover: "rgba(0,0,0,.02)",
-        disabled: "rgba(0,0,0,.12)",
-      },
-    },
-    "light"
-  );
-
-  const customStyles = {
-    rows: {
-      style: {
-        minHeight: "45px", // override the row height
-      },
-    },
-    headCells: {
-      style: {
-        backgroundColor: "#1e67a8",
-        color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
-      },
-    },
-    cells: {
-      style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
-      },
-    },
+  const renderPagination = () => {
+    if (totalPages <= 1) return null;
+    const items = [];
+    items.push(<Pagination.Prev key="prev" disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)} />);
+    for (let i = 1; i <= totalPages; i++) {
+      items.push(
+        <Pagination.Item key={i} active={i === currentPage} onClick={() => setCurrentPage(i)}>{i}</Pagination.Item>
+      );
+    }
+    items.push(<Pagination.Next key="next" disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)} />);
+    return (
+      <div className="d-flex justify-content-between align-items-center px-3 py-2"
+        style={{ borderTop: "1px solid #d0dff0", backgroundColor: "#f0f6ff", borderRadius: "0 0 14px 14px" }}>
+        <span style={{ fontSize: "13px", color: "#1e67a8", fontWeight: 500 }}>
+          {(currentPage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(currentPage * ITEMS_PER_PAGE, groupedData.length)} of {groupedData.length} categories
+        </span>
+        <Pagination size="sm" className="mb-0">{items}</Pagination>
+      </div>
+    );
   };
 
-  const ScCategoryDataColumns = [
-    {
-      name: t("Action"),
-      cell: (row) => (
-        //   Button style
-        <div className="text-start w-100">
-          {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => handleView(row.scCategoryId)}
-          >
-             {t("View")}
-          </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            className="ms-2"
-            onClick={() => handleEdit(row.scCategoryId)}
-          >
-            {t("Edit")}
-          </Button>
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={() => deleteConfirm(row.scCategoryId)}
-            className="ms-2"
-          >
-            {t("delete")}
-          </Button>
-        </div>
-      ),
-      sortable: false,
-      hide: "md",
-    },
+  const thStyle = {
+    backgroundColor: "#1e67a8",
+    color: "#fff",
+    fontSize: "13px",
+    fontWeight: 600,
+    padding: "10px 10px",
+    verticalAlign: "middle",
+    whiteSpace: "nowrap",
+    borderColor: "#1e67a8",
+  };
 
-
-    {
-        name: t("Sub Component"),
-        selector: (row) => row.categoryName,
-        cell: (row) => <span>{row.categoryName}</span>,
-        sortable: true,
-        hide: "md",
-      },
-    {
-      name: t("Sub Component in Kannada"),
-      selector: (row) => row.categoryNameInKannada,
-      cell: (row) => <span>{row.categoryNameInKannada}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: t("Category Short Name"),
-      selector: (row) => row.categoryShortName,
-      cell: (row) => <span>{row.categoryShortName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: t("Code  Number"),
-      selector: (row) => row.codeNumber,
-      cell: (row) => <span>{row.codeNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Description"),
-      selector: (row) => row.description,
-      cell: (row) => <span>{row.description}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Dbt Code"),
-      selector: (row) => row.dbtCode,
-      cell: (row) => <span>{row.dbtCode}</span>,
-      sortable: true,
-      hide: "md",
-    },
-  ];
+  const tdBase = (isMapping = false) => ({
+    padding: "9px 10px",
+    verticalAlign: "middle",
+    fontSize: "13px",
+    color: "#333",
+    borderColor: "#dee2e6",
+    backgroundColor: isMapping ? "#f9fafb" : "#fff",
+  });
 
   return (
     <Layout title="List of Sub Component">
@@ -237,21 +157,13 @@ function ScCategoryList() {
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
-                <Link
-                  to="/seriui/sc-category"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="plus" />
-                  <span>{t("create")}</span>
+                <Link to="/seriui/sc-category" className="btn btn-primary btn-md d-md-none">
+                  <Icon name="plus" /><span>{t("create")}</span>
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/seriui/sc-category"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="plus" />
-                  <span>{t("create")}</span>
+                <Link to="/seriui/sc-category" className="btn btn-primary d-none d-md-inline-flex">
+                  <Icon name="plus" /><span>{t("create")}</span>
                 </Link>
               </li>
             </ul>
@@ -260,25 +172,96 @@ function ScCategoryList() {
       </Block.Head>
 
       <Block className="mt-n4">
-        <Card>
-          <DataTable
-            // title="scCategory List"
-            tableClassName="data-table-head-light table-responsive"
-            columns={ScCategoryDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+        <Card style={{
+          borderRadius: "14px",
+          overflow: "hidden",
+          border: "none",
+          boxShadow: "0 4px 20px rgba(30,103,168,0.13)",
+        }}>
+          {loading ? (
+            <div className="d-flex justify-content-center align-items-center py-5">
+              <div className="spinner-border text-primary me-2" role="status" />
+              <span className="text-muted">{t("Loading...")}</span>
+            </div>
+          ) : (
+            <>
+              <div className="table-responsive">
+                <table className="table table-bordered mb-0" style={{ borderCollapse: "collapse" }}>
+                  <thead>
+                    {/* Level 1 — section labels */}
+                    <tr>
+                      <th colSpan={6} style={{ ...thStyle, textAlign: "center", borderRight: "2px solid #fff" }}>
+                        {t("Category Details")}
+                      </th>
+                      <th colSpan={4} style={{ ...thStyle, textAlign: "center" }}>
+                        {t("Scheme Wise Mapping")}
+                      </th>
+                    </tr>
+                    {/* Level 2 — column names */}
+                    <tr>
+                      <th style={{ ...thStyle, width: "80px" }}>{t("Action")}</th>
+                      <th style={thStyle}>{t("Sub Component")}</th>
+                      <th style={thStyle}>{t("Sub Component in Kannada")}</th>
+                      <th style={{ ...thStyle, width: "110px" }}>{t("Code Number")}</th>
+                      <th style={{ ...thStyle, width: "110px" }}>{t("Short Name")}</th>
+                      <th style={{ ...thStyle, borderRight: "2px solid #fff" }}>{t("Description")}</th>
+                      <th style={{ ...thStyle, backgroundColor: "#145a8a" }}>{t("Scheme Name")}</th>
+                      <th style={{ ...thStyle, backgroundColor: "#145a8a" }}>{t("Sub Scheme Name")}</th>
+                      <th style={{ ...thStyle, backgroundColor: "#1e67a8", width: "90px" }}>{t("Dbt Code")}</th>
+                      <th style={{ ...thStyle, backgroundColor: "#1e67a8", width: "90px" }}>{t("Action")}</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {tableRows.length === 0 ? (
+                      <tr>
+                        <td colSpan={10} className="text-center py-4 text-muted" style={{ fontSize: "14px" }}>
+                          {t("No records found")}
+                        </td>
+                      </tr>
+                    ) : (
+                      tableRows.map((row, idx) => (
+                        <tr key={idx} style={{ borderTop: row.isFirst && idx !== 0 ? "2px solid #dee2e6" : undefined }}>
+
+                          {/* ── Merged category columns ── */}
+                          {row.isFirst && (
+                            <>
+                              <td rowSpan={row.rowSpan} style={{ ...tdBase(), textAlign: "center" }}>
+                                <Button variant="primary" size="sm" onClick={() => handleEdit(row.scCategoryId)}>
+                                  {t("Edit")}
+                                </Button>
+                              </td>
+                              <td rowSpan={row.rowSpan} style={{ ...tdBase(), fontWeight: 600, color: "#1e67a8" }}>
+                                {row.categoryName || "-"}
+                                <div style={{ fontSize: "11px", color: "#888", fontWeight: 400, marginTop: "2px" }}>
+                                  {row.totalMappings} {row.totalMappings === 1 ? "scheme" : "schemes"}
+                                </div>
+                              </td>
+                              <td rowSpan={row.rowSpan} style={tdBase()}>{row.categoryNameInKannada || "-"}</td>
+                              <td rowSpan={row.rowSpan} style={tdBase()}>{row.codeNumber || "-"}</td>
+                              <td rowSpan={row.rowSpan} style={tdBase()}>{row.categoryShortName || "-"}</td>
+                              <td rowSpan={row.rowSpan} style={{ ...tdBase(), borderRight: "2px solid #dee2e6" }}>{row.description || "-"}</td>
+                            </>
+                          )}
+
+                          {/* ── Scheme columns ── */}
+                          <td style={tdBase(true)}>{row.schemeName || "-"}</td>
+                          <td style={tdBase(true)}>{row.subSchemeName || "-"}</td>
+                          <td style={{ ...tdBase(true), textAlign: "center", fontWeight: 600 }}>{row.dbtCode || "-"}</td>
+                          <td style={{ ...tdBase(true), textAlign: "center" }}>
+                            <Button variant="danger" size="sm" onClick={() => deleteMapping(row.mappingId)}>
+                              {t("delete")}
+                            </Button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+              {renderPagination()}
+            </>
+          )}
         </Card>
       </Block>
     </Layout>

@@ -73,6 +73,10 @@ function SeedMarketPermitReport() {
         { marketId: data.marketId, externalUnitRegistrationId: data.externalUnitRegistrationId, fromDate: formatDate(data.fromDate), toDate: formatDate(data.toDate) },
         { responseType: "blob" }
       );
+      if (!response.data || response.data.size === 0) {
+        Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+        return;
+      }
       window.open(URL.createObjectURL(new Blob([response.data], { type: "application/pdf" })));
     } catch {
       Swal.fire({
