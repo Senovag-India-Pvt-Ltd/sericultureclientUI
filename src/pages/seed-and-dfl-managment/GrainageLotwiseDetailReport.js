@@ -99,7 +99,10 @@ const fmt = (v) => {
 };
 
 // Detects date strings sent by the SQL (CONVERT style 103 → DD/MM/YYYY)
-const isDateLike = (s) => /^\s*\d{1,2}\/\d{1,2}\/\d{4}\s*$/.test(String(s ?? ""));
+// Matches a single date, a range ("dd/mm/yyyy - dd/mm/yyyy"), or a comma-list of
+// dates ("dd/mm/yyyy, dd/mm/yyyy, ..."). Without the range/list arms, the spun-on
+// and multi-moth-date cells fall through to numeric parsing and render as a bare day.
+const isDateLike = (s) => /^\s*\d{1,2}\/\d{1,2}\/\d{4}(\s*[-,]\s*\d{1,2}\/\d{1,2}\/\d{4})*\s*$/.test(String(s ?? ""));
 
 // Section meta — icon + hue per Sl group, plus row-level overrides
 const SECTION_META = {
@@ -682,7 +685,9 @@ function LotCell({ v, meta, totalSub, hue, lotInactive }) {
 
   // Numeric or percentage rendering with empty/zero treatment
   const n = numOrZero(v);
-  const isNumeric = !isNaN(parseFloat(s));
+  // Strict: only a fully-numeric string counts (Number("29/09/2025") is NaN, whereas
+  // parseFloat would have returned 29 and shown a date as a bare number).
+  const isNumeric = s !== "" && !isNaN(Number(s));
   const isZero = isNumeric && n === 0;
   const display = empty
     ? "—"

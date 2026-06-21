@@ -297,7 +297,7 @@ function GrainageDaywiseChawkiReport() {
             color: "#0f766e", padding: "2px 10px", borderRadius: "20px",
             fontSize: "10.5px", fontWeight: 800, marginLeft: "8px",
             border: "1px solid #5eead4", verticalAlign: "middle",
-          }}>P1 & P2 · Bivoltine · Race × W1‑W4 × Home/Other</span>
+          }}>ಪಿ1 ಮತ್ತು ಪಿ2 · ದ್ವಿತಳಿ · ತಳಿ × ವಾರ 1‑4 × ಸ್ಥಳೀಯ/ಹೊರ</span>
         </Block.Title>
       </Block.HeadContent></Block.HeadBetween></Block.Head>
 
@@ -311,9 +311,9 @@ function GrainageDaywiseChawkiReport() {
             <div style={{ flex: 1 }}>
               <div style={{ color: "#fff", fontWeight: 800, fontSize: "15px", lineHeight: 1.2 }}>
                 ದಿನಾಂಕವಾರು ಚಾಕಿ ವಿವರ — ಬಿತ್ತನೆ ಕೋಠಿ
-                <span style={{ background: "rgba(255,255,255,.22)", padding: "2px 9px", borderRadius: "12px", marginLeft: "8px", fontSize: "10.5px", fontWeight: 800 }}>Day-wise Chawki</span>
+                <span style={{ background: "rgba(255,255,255,.22)", padding: "2px 9px", borderRadius: "12px", marginLeft: "8px", fontSize: "10.5px", fontWeight: 800 }}>ದಿನಾಂಕವಾರು ಚಾಕಿ</span>
               </div>
-              <div style={{ color: "rgba(255,255,255,.85)", fontSize: "11px", marginTop: "2px" }}>P1 &amp; P2 Grainage (Bivoltine) — Sericulture-month chawki distribution: 4 races × 4 weeks × Home/Other district split</div>
+              <div style={{ color: "rgba(255,255,255,.85)", fontSize: "11px", marginTop: "2px" }}>ಪಿ1 ಮತ್ತು ಪಿ2 ಗ್ರೇನೇಜ್ (ದ್ವಿತಳಿ) — ರೇಷ್ಮೆ ಮಾಸದ ಚಾಕಿ ವಿತರಣೆ: ಸಿಎಸ್ಆರ್-2 (ಪಿ1/ಪಿ2) × 4  ವಾರಗಳು × ಸ್ಥಳೀಯ/ಹೊರ ಜಿಲ್ಲೆ</div>
             </div>
             {hasReport && (
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
@@ -452,7 +452,7 @@ function GrainageDaywiseChawkiReport() {
               <div style={kpi("#fde68a", "#fcd34d", "#78350f")}>
                 <span style={kpiLbl("#78350f")}>Σ ಒಟ್ಟು Grand Total</span>
                 <span className="gdw-num" style={kpiVal("#78350f", 18)}>{kpis.grand.toLocaleString()}</span>
-                <span style={{ fontSize: "10.5px", color: "#92400e", fontWeight: 700, marginTop: "1px" }}>across 4 weeks · 4 races</span>
+                <span style={{ fontSize: "10.5px", color: "#92400e", fontWeight: 700, marginTop: "1px" }}>across 4 weeks · CSR-2 ಪಿ1/ಪಿ2</span>
               </div>
               <div style={kpi("#ddd6fe", "#a78bfa", "#5b21b6")}>
                 <span style={kpiLbl("#5b21b6")}>📈 Peak Week</span>
@@ -552,7 +552,7 @@ function GrainageDaywiseChawkiReport() {
               }}>
                 ದಿನಾಂಕವಾರು ಚಾಕಿ ವಿವರ · ಬಿತ್ತನೆ ಕೋಠಿ {grainageName} &nbsp;·&nbsp; {monthKn} {monthYear || ""}
                 <div style={{ fontSize: "12px", fontWeight: 600, opacity: .9, marginTop: "4px" }}>
-                  Day-wise Chawki · Sericulture-month (24 prev → 23 current) · Race × Week × {selectedDistrict ? `Home (${districtName}) vs Other` : "Other Districts"}
+                  ದಿನಾಂಕವಾರು ಚಾಕಿ · ರೇಷ್ಮೆ ಮಾಸ (ಹಿಂದಿನ 24 → ಪ್ರಸ್ತುತ 23) · ತಳಿ × ವಾರ × {selectedDistrict ? `ಸ್ಥಳೀಯ (${districtName}) ಮತ್ತು ಹೊರ` : "ಹೊರ ಜಿಲ್ಲೆಗಳು"}
                 </div>
               </div>
 
@@ -561,11 +561,8 @@ function GrainageDaywiseChawkiReport() {
                   <thead>
                     {/* Row 1: top groups */}
                     <tr>
-                      <th rowSpan={2} style={hdr("linear-gradient(135deg,#1e293b,#36506b)", "55px", true)}>
-                        <div style={{ fontSize: "11.5px" }}>ಕ್ರ.ಸಂ.</div><div style={hdrEn}>Sl</div>
-                      </th>
                       <th rowSpan={2} style={hdr("linear-gradient(135deg,#334155,#475569)", "150px", true, "left")}>
-                        <div style={{ fontSize: "12.5px" }}>ತಳಿ</div><div style={hdrEn}>Race</div>
+                        <div style={{ fontSize: "12.5px" }}>ತಳಿ ಸಿಎಸ್ಆರ್-2</div><div style={hdrEn}>Race CSR-2</div>
                       </th>
                       <th colSpan={5} style={hdr("linear-gradient(135deg,#0d9488,#14b8a6)")}>
                         <div style={{ fontSize: "12.5px" }}>🏠 ಜಿಲ್ಲೆ Home {selectedDistrict ? `· ${districtName}` : ""}</div>
@@ -605,7 +602,7 @@ function GrainageDaywiseChawkiReport() {
                   </thead>
                   <tbody>
                     {dataRows.length === 0 && (
-                      <tr><td colSpan={13} style={{ padding: "60px 20px", textAlign: "center", background: "linear-gradient(180deg,#f0fdfa,#fff)" }}>
+                      <tr><td colSpan={12} style={{ padding: "60px 20px", textAlign: "center", background: "linear-gradient(180deg,#f0fdfa,#fff)" }}>
                         <div style={{ fontSize: "40px", marginBottom: "8px" }}>📅</div>
                         <div style={{ fontSize: "15px", fontWeight: 800, color: "#0f766e", marginBottom: "4px" }}>ಯಾವುದೇ ಚಾಕಿ ಮಾಹಿತಿ ಇಲ್ಲ</div>
                         <div style={{ fontSize: "13px", color: "#475569", fontWeight: 600 }}>No daywise chawki data found for this grainage in {monthLabel} {monthYear}.</div>
@@ -619,20 +616,6 @@ function GrainageDaywiseChawkiReport() {
                         : (ri % 2 === 1 ? "#f8fafc" : "#ffffff");
                       return (
                         <tr key={ri} className="gdw-tr" style={{ background: rowBg }}>
-                          <td style={{
-                            padding: "12px 8px", textAlign: "center",
-                            borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0",
-                            background: isTotal ? "linear-gradient(135deg,#fcd34d,#fbbf24)"
-                                                  : "linear-gradient(135deg,#1e293b,#334155)",
-                          }}>
-                            <span style={{
-                              display: "inline-flex", alignItems: "center", justifyContent: "center",
-                              minWidth: "28px", height: "28px", borderRadius: "50%",
-                              background: "rgba(255,255,255,.92)",
-                              color: isTotal ? "#78350f" : "#0f766e",
-                              fontWeight: 800, fontSize: "12px",
-                            }}>{row.sl_no}</span>
-                          </td>
                           <td style={{
                             padding: "12px 14px", textAlign: "left",
                             borderBottom: "1px solid #e2e8f0", borderRight: "2px solid #e2e8f0",
