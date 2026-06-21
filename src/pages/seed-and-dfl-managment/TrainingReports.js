@@ -279,15 +279,26 @@ export function TrainingPhysicalProgressReport() {
     return rpt.dataRows;
   }, [rpt.dataRows, hideTotals]);
 
+  // A % total is only meaningful if at least one course has BOTH a target and an
+  // achievement for that period; otherwise the total % would blend unrelated courses.
+  const aligned = useMemo(() => {
+    const d = rpt.dataRows.filter((r) => !isTotalRow(r, "course_name"));
+    return {
+      mo: d.some((r) => numOrZero(r.mo_target) > 0 && numOrZero(r.mo_ach) > 0),
+      me: d.some((r) => numOrZero(r.me_target) > 0 && numOrZero(r.me_ach) > 0),
+    };
+  }, [rpt.dataRows]);
+
   const kpis = useMemo(() => {
     const tot = rpt.dataRows.find((r) => isTotalRow(r, "course_name")); if (!tot) return null;
     return {
       annual: numOrZero(tot.annual_target),
       moTgt:  numOrZero(tot.mo_target),  moAch: numOrZero(tot.mo_ach),
       meTgt:  numOrZero(tot.me_target),  meAch: numOrZero(tot.me_ach),
-      pctMo:  numOrZero(tot.pct_mo),     pctMe: numOrZero(tot.pct_me),
+      pctMo:  aligned.mo ? numOrZero(tot.pct_mo) : null,
+      pctMe:  aligned.me ? numOrZero(tot.pct_me) : null,
     };
-  }, [rpt.dataRows]);
+  }, [rpt.dataRows, aligned]);
 
   return (
     <Layout title={t("Training · Form 1 · Physical Progress")}>
@@ -337,14 +348,14 @@ export function TrainingPhysicalProgressReport() {
                 <div style={{ background: "linear-gradient(135deg,#dbeafe,#eff6ff)", border: "1.5px solid #93c5fd", borderRadius: "12px", padding: "10px 18px", minWidth: "200px" }}>
                   <div style={{ fontSize: "11px", color: "#1d4ed8", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>Mo · Ach / Tgt</div>
                   <div className="tr-num" style={{ fontSize: "14px", color: "#1e3a8a", fontWeight: 800 }}>{fmtInt(kpis.moAch)} / {fmtInt(kpis.moTgt)}</div>
-                  <div className="tr-pbar-track"><div className="tr-pbar-fill" style={{ width: `${Math.min(100, kpis.pctMo)}%`, background: pctColor(kpis.pctMo) }} /></div>
-                  <div className="tr-num" style={{ fontSize: "10.5px", color: "#1e40af", fontWeight: 700, marginTop: "2px" }}>{fmtPct(kpis.pctMo)}</div>
+                  <div className="tr-pbar-track"><div className="tr-pbar-fill" style={{ width: `${Math.min(100, kpis.pctMo || 0)}%`, background: pctColor(kpis.pctMo || 0) }} /></div>
+                  <div className="tr-num" style={{ fontSize: "10.5px", color: "#1e40af", fontWeight: 700, marginTop: "2px" }}>{kpis.pctMo == null ? "—" : fmtPct(kpis.pctMo)}</div>
                 </div>
                 <div style={{ background: "linear-gradient(135deg,#bbf7d0,#dcfce7)", border: "1.5px solid #86efac", borderRadius: "12px", padding: "10px 18px", minWidth: "200px" }}>
                   <div style={{ fontSize: "11px", color: "#166534", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>ME · Ach / Tgt</div>
                   <div className="tr-num" style={{ fontSize: "14px", color: "#14532d", fontWeight: 800 }}>{fmtInt(kpis.meAch)} / {fmtInt(kpis.meTgt)}</div>
-                  <div className="tr-pbar-track"><div className="tr-pbar-fill" style={{ width: `${Math.min(100, kpis.pctMe)}%`, background: pctColor(kpis.pctMe) }} /></div>
-                  <div className="tr-num" style={{ fontSize: "10.5px", color: "#15803d", fontWeight: 700, marginTop: "2px" }}>{fmtPct(kpis.pctMe)}</div>
+                  <div className="tr-pbar-track"><div className="tr-pbar-fill" style={{ width: `${Math.min(100, kpis.pctMe || 0)}%`, background: pctColor(kpis.pctMe || 0) }} /></div>
+                  <div className="tr-num" style={{ fontSize: "10.5px", color: "#15803d", fontWeight: 700, marginTop: "2px" }}>{kpis.pctMe == null ? "—" : fmtPct(kpis.pctMe)}</div>
                 </div>
               </>}
             </div>
@@ -405,10 +416,10 @@ export function TrainingPhysicalProgressReport() {
                           {numCell(row.annual_target, "#fffbeb", "#854d0e", true)}
                           {numCell(row.mo_target,    "#eff6ff", "#1e40af")}
                           {numCell(row.mo_ach,       "#f0fdfa", "#115e59", true)}
-                          {pctCell(numOrZero(row.pct_mo))}
+                          {pctCell(isTotal && !aligned.mo ? 0 : numOrZero(row.pct_mo))}
                           {numCell(row.me_target,    "linear-gradient(135deg,#dbeafe,#bfdbfe)", "#1e3a8a")}
                           {numCell(row.me_ach,       "linear-gradient(135deg,#dcfce7,#bbf7d0)", "#14532d", true)}
-                          {pctCell(numOrZero(row.pct_me))}
+                          {pctCell(isTotal && !aligned.me ? 0 : numOrZero(row.pct_me))}
                         </tr>
                       );
                     })}

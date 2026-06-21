@@ -5957,6 +5957,15 @@ function Menu() {
                               </MenuItem>
                             ) : null}
 
+                            {showMenu.Reports_Format_Reports_WorkOrder ? (
+                              <MenuItem>
+                                <MenuItemLink
+                                  text={t("Regenerate Work Order")}
+                                  to="/seriui/regenerate-work-order"
+                                />
+                              </MenuItem>
+                            ) : null}
+
                             {showMenu.Reports_Format_Reports_Selection_Letters ? (
                               <MenuItem>
                                 <MenuItemLink
@@ -5971,6 +5980,15 @@ function Menu() {
                                 <MenuItemLink
                                   text={t("Sanction Orders")}
                                   to="/seriui/generate-sanction-order"
+                                />
+                              </MenuItem>
+                            ) : null}
+
+                            {showMenu.Reports_Format_Reports_Sanction_Order ? (
+                              <MenuItem>
+                                <MenuItemLink
+                                  text={t("Regenerate Sanction Order")}
+                                  to="/seriui/regenerate-sanction-order"
                                 />
                               </MenuItem>
                             ) : null}

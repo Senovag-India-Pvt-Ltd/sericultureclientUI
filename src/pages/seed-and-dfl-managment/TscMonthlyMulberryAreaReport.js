@@ -441,10 +441,7 @@ function TscMonthlyMulberryAreaReport() {
                 fontWeight: 800, fontSize: "15px", letterSpacing: ".02em",
                 textAlign: "center",
               }}>
-                ನಮೂನೆ-27ಎ · ಮಾಸಿಕ ಹಿಪ್ಪುನೇರಳೆ ವಿಸ್ತೀರ್ಣ ಪ್ರಗತಿ ವರದಿ — {talukName} — {monthKn} {filter.year}
-                <div style={{ fontSize: "12px", fontWeight: 600, opacity: .9, marginTop: "4px" }}>
-                  Form 27A · TSC-wise Mulberry Area Progress (in hectares) · {monthLabel} {filter.year} · FY {fyLabel}
-                </div>
+                {districtName !== "—" ? `${districtName} ಜಿಲ್ಲೆಯ ` : ""}{talukName !== "—" ? `${talukName} ತಾಲ್ಲೂಕಿನ ` : ""}ಹಿಪ್ಪುನೇರಳೆ ವಿಸ್ತೀರ್ಣದ ಪ್ರಗತಿ ವರದಿ  ನಮೂನೆ – 27ಎ  ಮಾಹೆ : {monthKn}– {filter.year}
               </div>
 
               <div className="tscm27a-scroll" style={{ overflowX: "auto" }}>

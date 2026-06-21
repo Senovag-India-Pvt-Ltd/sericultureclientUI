@@ -1223,6 +1223,7 @@ import SilkExchangeList from "../pages/masters/silkExchange/SilkExchangeList";
 import SilkExchangeView from "../pages/masters/silkExchange/SilkExchangeView";
 import SilkExchangeEdit from "../pages/masters/silkExchange/SilkExchangeEdit";
 import GenerateSanctionOrder from "../pages/direct-benefit-transfer/GenerateSanctionOrder";
+import RegenerateSanctionOrder from "../pages/direct-benefit-transfer/RegenerateSanctionOrder";
 import CropDetailsForCommercialMarket from "../pages/direct-benefit-transfer/CropDetailsForCommercialMarket";
 import CropDetailsForCommercialMarketList from "../pages/direct-benefit-transfer/CropDetailsCommercialMarketList";
 import CropDetailsForSeedMarket from "../pages/direct-benefit-transfer/CropDetailsSeedMarket";
@@ -1246,6 +1247,7 @@ import SeedMarketDashboardReport from "../pages/reports-admin/market-auction/See
 import DownloadSanctionOrder from "../pages/market-and-auction/DownloadSanctionOrder";
 import GenerateAcknowledgement from "../pages/direct-benefit-transfer/GenerateAcknowledgement";
 import GenerateWorkOrder from "../pages/direct-benefit-transfer/GenerateWorkOrder";
+import RegenerateWorkOrder from "../pages/direct-benefit-transfer/RegenerateWorkOrder";
 import SericultureTable from "../pages/masters/sericulture-table/SericultureTable";
 import SericultureTableList from "../pages/masters/sericulture-table/SericultureTableList";
 import SericultureTableEdit from "../pages/masters/sericulture-table/SericultureTableEdit";
@@ -3255,8 +3257,10 @@ function Router() {
             <Route path="registered-private-chawki-list" element={<RegisteredPrivateChawkiList  />} /> 
 
             <Route path="generate-sanction-order" element={<GenerateSanctionOrder />} />
+            <Route path="regenerate-sanction-order" element={<RegenerateSanctionOrder />} />
             <Route path="generate-acknowledgement" element={<GenerateAcknowledgement />} />
             <Route path="generate-work-order" element={<GenerateWorkOrder />} />
+            <Route path="regenerate-work-order" element={<RegenerateWorkOrder />} />
             <Route path="generate-selection-letter" element={<GenerateSelectionLetter />} />
             <Route path="crop-details-commercial-market" element={<CropDetailsForCommercialMarket />} />
             <Route path="crop-details-commercial-market-list" element={<CropDetailsForCommercialMarketList />} />

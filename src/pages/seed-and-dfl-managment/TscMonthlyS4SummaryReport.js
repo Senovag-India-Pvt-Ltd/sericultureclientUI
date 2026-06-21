@@ -105,6 +105,17 @@ const raceTone = (raceRaw) => {
   return { bg: "linear-gradient(135deg,#e2e8f0,#cbd5e1)", color: "#334155" };
 };
 
+// 7 metric groups (each split ತಿಂ / ಅಂತ್ಯ) — matches the source format
+const GROUPS = [
+  { key: "brushed", kn: "ಚಾಕಿಯಾದ ಮೊಟ್ಟೆ",            en: "Brushed (DFLs)",     fmt: "int", band: "linear-gradient(135deg,#1d4ed8,#3b82f6)", leaf: "linear-gradient(180deg,#93c5fd,#60a5fa)", cell: "#eff6ff", tot: "linear-gradient(135deg,#dbeafe,#bfdbfe)", text: "#1e40af" },
+  { key: "ripe",    kn: "ಹಣ್ಣಾದ ಮೊಟ್ಟೆ",             en: "Ripe (DFLs)",        fmt: "int", band: "linear-gradient(135deg,#7c3aed,#a78bfa)", leaf: "linear-gradient(180deg,#c4b5fd,#a78bfa)", cell: "#f5f3ff", tot: "linear-gradient(135deg,#ede9fe,#ddd6fe)", text: "#5b21b6" },
+  { key: "cocoon",  kn: "ಗೂಡು ಉತ್ಪಾದನೆ",             en: "Cocoon (kg)",        fmt: "dec", band: "linear-gradient(135deg,#15803d,#22c55e)", leaf: "linear-gradient(180deg,#86efac,#4ade80)", cell: "#f0fdf4", tot: "linear-gradient(135deg,#dcfce7,#bbf7d0)", text: "#166534" },
+  { key: "yield",   kn: "ಸರಾಸರಿ ಇಳುವರಿ",             en: "Avg Yield",          fmt: "dec", band: "linear-gradient(135deg,#a16207,#fbbf24)", leaf: "linear-gradient(180deg,#fde68a,#fcd34d)", cell: "#fffbeb", tot: "linear-gradient(135deg,#fef3c7,#fde68a)", text: "#854d0e" },
+  { key: "cpk",     kn: "ಪ್ರತಿ ಕೆ.ಜಿ.ಗೆ ಗೂಡಿನ ಸಂಖ್ಯೆ", en: "Cocoons / kg",      fmt: "int", band: "linear-gradient(135deg,#0e7490,#06b6d4)", leaf: "linear-gradient(180deg,#67e8f9,#22d3ee)", cell: "#ecfeff", tot: "linear-gradient(135deg,#cffafe,#a5f3fc)", text: "#155e75" },
+  { key: "area",    kn: "ಹಿ.ನೇ.ವಿಸ್ತೀರ್ಣ",            en: "Mulberry Area (ha)", fmt: "dec", band: "linear-gradient(135deg,#0f766e,#14b8a6)", leaf: "linear-gradient(180deg,#5eead4,#2dd4bf)", cell: "#f0fdfa", tot: "linear-gradient(135deg,#ccfbf1,#99f6e4)", text: "#115e59" },
+  { key: "growers", kn: "ಬೆಳೆಗಾರರ ಸಂಖ್ಯೆ",           en: "Growers",            fmt: "int", band: "linear-gradient(135deg,#5b57ac,#818cf8)", leaf: "linear-gradient(180deg,#a5b4fc,#818cf8)", cell: "#eef2ff", tot: "linear-gradient(135deg,#e0e7ff,#c7d2fe)", text: "#3730a3" },
+];
+
 // Yield rating thresholds (kg per 100 DFLs)
 const yieldRating = (avg) => {
   if (avg >= 50) return { bg: "linear-gradient(135deg,#16a34a,#22c55e)", color: "#fff", label: "Excellent", icon: "🏆" };
@@ -202,32 +213,41 @@ function TscMonthlyS4SummaryReport() {
   const talukName    = talukList.find((tk) => String(tk.talukId) === String(filter.talukId))?.talukName || "—";
   const monthLabel   = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthKn      = MONTH_KN[Number(filter.month)] || "";
+  const fyLabel      = (() => {
+    const m = Number(filter.month), y = Number(filter.year);
+    const fyStart = m >= 4 ? y : y - 1;
+    return `${fyStart}-${String((fyStart + 1) % 100).padStart(2, "0")}`;
+  })();
+
+  const isTotalRow = (r) => String(r?.race ?? "").trim() === "ಒಟ್ಟು";
 
   const filteredRows = useMemo(() => {
     if (!search.trim()) return dataRows;
     const q = search.trim().toLowerCase();
-    return dataRows.filter((r) => String(r.race ?? "").toLowerCase().includes(q));
+    return dataRows.filter((r) => isTotalRow(r) || String(r.race ?? "").toLowerCase().includes(q));
   }, [dataRows, search]);
 
   const kpis = useMemo(() => {
-    let bMo = 0, bMe = 0, rMo = 0, rMe = 0, cMo = 0, cMe = 0;
+    let bMo = 0, bMe = 0, rMo = 0, rMe = 0, cMo = 0, cMe = 0, gMe = 0;
     let bestYield = -1, bestYieldRace = "—";
     let topCocoonKg = -1, topCocoonRace = "—";
     dataRows.forEach((r) => {
+      if (isTotalRow(r)) return;
       bMo += numOrZero(r.brushed_mo);
       bMe += numOrZero(r.brushed_me);
       rMo += numOrZero(r.ripe_mo);
       rMe += numOrZero(r.ripe_me);
       cMo += numOrZero(r.cocoon_mo);
       cMe += numOrZero(r.cocoon_me);
-      const y = numOrZero(r.avg_yield);
+      gMe += numOrZero(r.growers_me);
+      const y = numOrZero(r.yield_me);
       if (y > bestYield) { bestYield = y; bestYieldRace = r.race || "—"; }
       const ck = numOrZero(r.cocoon_me);
       if (ck > topCocoonKg) { topCocoonKg = ck; topCocoonRace = r.race || "—"; }
     });
     const overallAvg = bMe > 0 ? (cMe * 100) / bMe : 0;
     const ripeRate   = bMe > 0 ? (rMe * 100) / bMe : 0;
-    return { bMo, bMe, rMo, rMe, cMo, cMe, bestYield: bestYield < 0 ? 0 : bestYield, bestYieldRace, topCocoonKg: topCocoonKg < 0 ? 0 : topCocoonKg, topCocoonRace, overallAvg, ripeRate };
+    return { bMo, bMe, rMo, rMe, cMo, cMe, gMe, bestYield: bestYield < 0 ? 0 : bestYield, bestYieldRace, topCocoonKg: topCocoonKg < 0 ? 0 : topCocoonKg, topCocoonRace, overallAvg, ripeRate };
   }, [dataRows]);
 
   const overallRating = yieldRating(kpis.overallAvg);
@@ -401,159 +421,62 @@ function TscMonthlyS4SummaryReport() {
             </div>
 
             <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 6px 28px rgba(13,78,72,.12)", overflow: "hidden" }}>
-              <div style={{ background: "linear-gradient(135deg,#134e4a,#0f766e 50%,#5b57ac)", color: "#fff", padding: "16px 22px", fontWeight: 800, fontSize: "15px", textAlign: "center" }}>
-                ನಮೂನೆ ಎಸ್-4 · ತಳಿವಾರು ಸಂಕ್ಷಿಪ್ತ ವರದಿ — {talukName} — {monthKn} {filter.year}
+              <div style={{ background: "linear-gradient(135deg,#134e4a,#0f766e 50%,#5b57ac)", color: "#fff", padding: "16px 22px", fontWeight: 800, fontSize: "14.5px", textAlign: "center", lineHeight: 1.5 }}>
+                {districtName} ಬಿತ್ತನೆ ವಲಯ {talukName} ತಾಲ್ಲೂಕಿನ {monthKn} – {filter.year} ನೇ ಮಾಹೆಯ ಸಂಕ್ಷಿಪ್ತ ವರದಿ ({fyLabel})
                 <div style={{ fontSize: "12px", fontWeight: 600, opacity: .9, marginTop: "4px" }}>
-                  Form S-4 · Per-Race Summary · Brushed / Ripe / Cocoon (Mo + ME) + Avg Yield · {monthLabel} {filter.year}
+                  Form S-4 · Per-Race Monthly Summary · {monthLabel} {filter.year}
                 </div>
               </div>
 
-              <div className="tscs4b-scroll" style={{ overflowX: "auto", maxHeight: "70vh", overflowY: "auto" }}>
-                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px", minWidth: "1300px" }}>
+              <div className="tscs4b-scroll" style={{ overflowX: "auto", maxHeight: "72vh", overflowY: "auto" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "11.5px", minWidth: "1700px" }}>
                   <thead>
                     {/* Row 1 — group bands */}
                     <tr>
-                      <th rowSpan={2} style={{
-                        background: "linear-gradient(135deg,#1e293b,#36506b)", color: "#fff",
-                        padding: "10px 6px", textAlign: "center",
-                        border: "1px solid rgba(255,255,255,.18)", fontWeight: 800,
-                        whiteSpace: "nowrap", width: "60px", verticalAlign: "middle",
-                        position: "sticky", top: 0, zIndex: 2,
-                      }}>
-                        <div style={{ fontSize: "12px" }}>ಕ್ರ.ಸಂ.</div>
-                        <div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85, marginTop: "2px" }}>Sl.</div>
-                      </th>
-                      <th rowSpan={2} style={{
-                        background: "linear-gradient(135deg,#a16207,#ca8a04)", color: "#fff",
-                        padding: "10px 14px", textAlign: "left",
-                        border: "1px solid rgba(255,255,255,.18)", fontWeight: 800,
-                        minWidth: "220px", verticalAlign: "middle",
-                        position: "sticky", top: 0, zIndex: 2,
-                      }}>
-                        <div style={{ fontSize: "12.5px" }}>ತಳಿ</div>
-                        <div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85, marginTop: "2px" }}>Race</div>
-                      </th>
-                      <th colSpan={2} style={{
-                        background: "linear-gradient(135deg,#1d4ed8,#3b82f6)", color: "#fff",
-                        padding: "10px 8px", textAlign: "center",
-                        border: "1px solid rgba(255,255,255,.18)", fontWeight: 800,
-                        position: "sticky", top: 0, zIndex: 2,
-                      }}>
-                        <div style={{ fontSize: "12.5px" }}>ಚಾಕಿ</div>
-                        <div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85, marginTop: "2px" }}>Brushed (DFLs)</div>
-                      </th>
-                      <th colSpan={2} style={{
-                        background: "linear-gradient(135deg,#7c3aed,#a78bfa)", color: "#fff",
-                        padding: "10px 8px", textAlign: "center",
-                        border: "1px solid rgba(255,255,255,.18)", fontWeight: 800,
-                        position: "sticky", top: 0, zIndex: 2,
-                      }}>
-                        <div style={{ fontSize: "12.5px" }}>ಹಣ್ಣಾದ</div>
-                        <div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85, marginTop: "2px" }}>Ripe (DFLs)</div>
-                      </th>
-                      <th colSpan={2} style={{
-                        background: "linear-gradient(135deg,#15803d,#22c55e)", color: "#fff",
-                        padding: "10px 8px", textAlign: "center",
-                        border: "1px solid rgba(255,255,255,.18)", fontWeight: 800,
-                        position: "sticky", top: 0, zIndex: 2,
-                      }}>
-                        <div style={{ fontSize: "12.5px" }}>ಗೂಡು</div>
-                        <div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85, marginTop: "2px" }}>Cocoon (kg)</div>
-                      </th>
-                      <th rowSpan={2} style={{
-                        background: "linear-gradient(135deg,#a16207,#fbbf24)", color: "#fff",
-                        padding: "10px 8px", textAlign: "center",
-                        border: "1px solid rgba(255,255,255,.18)", fontWeight: 800,
-                        minWidth: "180px", verticalAlign: "middle",
-                        position: "sticky", top: 0, zIndex: 2,
-                      }}>
-                        <div style={{ fontSize: "12.5px" }}>ಸರಾಸರಿ ಇಳುವರಿ</div>
-                        <div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85, marginTop: "2px" }}>Avg Yield · kg / 100 DFLs</div>
-                      </th>
-                    </tr>
-                    {/* Row 2 — Mo / ME for the 3 banded groups */}
-                    <tr>
-                      {[
-                        { kn: "ಮಾಸ", en: "Mo", tone: "linear-gradient(180deg,#93c5fd,#60a5fa)", text: "#1e3a8a" },
-                        { kn: "ಅಂತ್ಯ", en: "ME", tone: "linear-gradient(180deg,#93c5fd,#60a5fa)", text: "#1e3a8a", strong: true },
-                        { kn: "ಮಾಸ", en: "Mo", tone: "linear-gradient(180deg,#c4b5fd,#a78bfa)", text: "#4c1d95" },
-                        { kn: "ಅಂತ್ಯ", en: "ME", tone: "linear-gradient(180deg,#c4b5fd,#a78bfa)", text: "#4c1d95", strong: true },
-                        { kn: "ಮಾಸ", en: "Mo", tone: "linear-gradient(180deg,#86efac,#4ade80)", text: "#14532d" },
-                        { kn: "ಅಂತ್ಯ", en: "ME", tone: "linear-gradient(180deg,#86efac,#4ade80)", text: "#14532d", strong: true },
-                      ].map((c, i) => (
-                        <th key={i} style={{
-                          background: c.tone, color: c.text,
-                          padding: "8px 4px", textAlign: "center",
-                          border: "1px solid rgba(255,255,255,.18)",
-                          fontWeight: c.strong ? 800 : 700, minWidth: "130px",
-                          position: "sticky", top: "44px", zIndex: 2,
-                        }}>
-                          <div style={{ fontSize: "10.5px" }}>{c.kn}</div>
-                          <div style={{ fontSize: "8.5px", opacity: .8, marginTop: "1px" }}>{c.en}</div>
+                      <th rowSpan={2} style={{ background: "linear-gradient(135deg,#1e293b,#36506b)", color: "#fff", padding: "9px 6px", textAlign: "center", border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, width: "52px", verticalAlign: "middle", position: "sticky", top: 0, zIndex: 3 }}>ಕ್ರ.<br />ಸಂ.</th>
+                      <th rowSpan={2} style={{ background: "linear-gradient(135deg,#a16207,#ca8a04)", color: "#fff", padding: "9px 14px", textAlign: "left", border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, minWidth: "180px", verticalAlign: "middle", position: "sticky", top: 0, zIndex: 3 }}>ತಳಿ</th>
+                      {GROUPS.map((g) => (
+                        <th key={g.key} colSpan={2} style={{ background: g.band, color: "#fff", padding: "9px 8px", textAlign: "center", border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, position: "sticky", top: 0, zIndex: 2 }}>
+                          <div style={{ fontSize: "11.5px" }}>{g.kn}</div>
+                          <div style={{ fontSize: "8.5px", fontWeight: 600, opacity: .85, marginTop: "1px" }}>{g.en}</div>
                         </th>
                       ))}
+                    </tr>
+                    {/* Row 2 — ತಿಂ / ಅಂತ್ಯ leaves */}
+                    <tr>
+                      {GROUPS.map((g) => ([
+                        <th key={`${g.key}-mo`} style={{ background: g.leaf, color: g.text, padding: "6px 4px", textAlign: "center", border: "1px solid rgba(255,255,255,.18)", fontWeight: 700, minWidth: "78px", position: "sticky", top: "42px", zIndex: 2 }}>ತಿಂ</th>,
+                        <th key={`${g.key}-me`} style={{ background: g.leaf, color: g.text, padding: "6px 4px", textAlign: "center", border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, minWidth: "78px", position: "sticky", top: "42px", zIndex: 2 }}>ಅಂತ್ಯ</th>,
+                      ]))}
                     </tr>
                   </thead>
                   <tbody>
                     {filteredRows.length === 0 && (
-                      <tr><td colSpan={9} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>{dataRows.length === 0 ? "ಯಾವುದೇ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ / No records found." : `No matches for "${search}".`}</td></tr>
+                      <tr><td colSpan={16} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>{dataRows.length === 0 ? "ಯಾವುದೇ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ / No records found." : `No matches for "${search}".`}</td></tr>
                     )}
                     {filteredRows.map((row, ri) => {
-                      const rowBg = ri % 2 === 1 ? "#f8fafc" : "#ffffff";
+                      const tot = isTotalRow(row);
+                      const rowBg = tot ? "linear-gradient(135deg,#fff7ed,#ffedd5)" : (ri % 2 === 1 ? "#f8fafc" : "#ffffff");
                       const rTone = raceTone(row.race);
-                      const bMo = numOrZero(row.brushed_mo); const bMe = numOrZero(row.brushed_me);
-                      const rMo = numOrZero(row.ripe_mo);    const rMe = numOrZero(row.ripe_me);
-                      const cMo = numOrZero(row.cocoon_mo);  const cMe = numOrZero(row.cocoon_me);
-                      const yld = numOrZero(row.avg_yield);
-                      const rate = yieldRating(yld);
-                      const cb = { padding: "10px 10px", borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #eef2f6", fontSize: "12px", verticalAlign: "middle" };
-
-                      const numCell = (val, has, palBg, palTotalBg, palText, isTotal, extra = {}) => (
-                        <td className="tscs4b-num" style={{
-                          ...cb, ...extra, textAlign: "right", paddingRight: "16px",
-                          background: has ? (isTotal ? palTotalBg : palBg) : "transparent",
-                          color: has ? palText : "#cbd5e0",
-                          fontWeight: isTotal ? 800 : 600,
-                        }}>
-                          {has ? (val) : "—"}
-                        </td>
-                      );
-
+                      const cb = { padding: "9px 8px", borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #eef2f6", fontSize: "11.5px", verticalAlign: "middle" };
+                      const fmtFor = (g, v) => (g.fmt === "dec" ? fmtDec(v) : fmtInt(v));
                       return (
-                        <tr key={`${row.sl_no}-${ri}`} className="tscs4b-tr" style={{ background: rowBg }}>
-                          <td style={{ ...cb, textAlign: "center", borderRight: "1px solid #e2e8f0", color: "#475569", fontWeight: 700 }}>
-                            <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: "26px", height: "26px", borderRadius: "50%", background: "linear-gradient(135deg,#e2e8f0,#cbd5e1)", color: "#1e293b", fontWeight: 800, fontSize: "11px" }}>{row.sl_no}</span>
+                        <tr key={`${row.sl_no}-${ri}`} className="tscs4b-tr" style={{ background: rowBg, fontWeight: tot ? 800 : 400 }}>
+                          <td style={{ ...cb, textAlign: "center", color: "#475569", fontWeight: 700 }}>
+                            {tot ? "" : <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: "24px", height: "24px", borderRadius: "50%", background: "linear-gradient(135deg,#e2e8f0,#cbd5e1)", color: "#1e293b", fontWeight: 800, fontSize: "10.5px" }}>{row.sl_no}</span>}
                           </td>
-                          <td style={{ ...cb, textAlign: "left", paddingLeft: "14px", borderRight: "2px solid #e2e8f0" }}>
-                            <span style={{ display: "inline-block", padding: "4px 12px", borderRadius: "12px", background: rTone.bg, color: rTone.color, fontWeight: 800, fontSize: "12.5px" }}>
-                              {row.race || "—"}
-                            </span>
+                          <td style={{ ...cb, textAlign: "left", paddingLeft: "12px", borderRight: "2px solid #e2e8f0" }}>
+                            {tot ? <span style={{ color: "#9a3412", fontWeight: 800 }}>ಒಟ್ಟು</span>
+                                 : <span style={{ display: "inline-block", padding: "4px 12px", borderRadius: "12px", background: rTone.bg, color: rTone.color, fontWeight: 800, fontSize: "12px" }}>{row.race || "—"}</span>}
                           </td>
-                          {numCell(fmtInt(row.brushed_mo), bMo > 0, "#eff6ff", "linear-gradient(135deg,#dbeafe,#bfdbfe)", "#1e40af", false)}
-                          {numCell(fmtInt(row.brushed_me), bMe > 0, "#eff6ff", "linear-gradient(135deg,#dbeafe,#bfdbfe)", "#1e40af", true,  { borderRight: "2px solid #e2e8f0" })}
-                          {numCell(fmtInt(row.ripe_mo),    rMo > 0, "#f5f3ff", "linear-gradient(135deg,#ede9fe,#ddd6fe)", "#5b21b6", false)}
-                          {numCell(fmtInt(row.ripe_me),    rMe > 0, "#f5f3ff", "linear-gradient(135deg,#ede9fe,#ddd6fe)", "#5b21b6", true,  { borderRight: "2px solid #e2e8f0" })}
-                          {numCell(fmtDec(row.cocoon_mo),  cMo > 0, "#f0fdf4", "linear-gradient(135deg,#dcfce7,#bbf7d0)", "#166534", false)}
-                          {numCell(fmtDec(row.cocoon_me),  cMe > 0, "#f0fdf4", "linear-gradient(135deg,#dcfce7,#bbf7d0)", "#166534", true,  { borderRight: "2px solid #e2e8f0" })}
-                          <td style={{ ...cb, textAlign: "center" }}>
-                            {yld > 0 ? (
-                              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
-                                <span style={{
-                                  display: "inline-flex", alignItems: "center", justifyContent: "center",
-                                  minWidth: "30px", height: "30px", borderRadius: "50%",
-                                  background: rate.bg, color: rate.color,
-                                  fontWeight: 900, fontSize: "12px",
-                                  boxShadow: "inset 0 0 0 2px rgba(255,255,255,.5)",
-                                }}>
-                                  {rate.icon}
-                                </span>
-                                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-                                  <span className="tscs4b-num" style={{ fontSize: "13px", fontWeight: 800, color: "#0f172a" }}>{fmtDec(row.avg_yield)}</span>
-                                  <span style={{ fontSize: "9.5px", fontWeight: 700, color: rate.color === "#fff" ? "#475569" : rate.color, textTransform: "uppercase", letterSpacing: ".05em" }}>{rate.label}</span>
-                                </div>
-                              </div>
-                            ) : <span style={{ color: "#cbd5e0" }}>—</span>}
-                          </td>
+                          {GROUPS.map((g) => {
+                            const moK = `${g.key}_mo`, meK = `${g.key}_me`;
+                            const moV = numOrZero(row[moK]), meV = numOrZero(row[meK]);
+                            return ([
+                              <td key={moK} className="tscs4b-num" style={{ ...cb, textAlign: "right", paddingRight: "12px", background: moV > 0 ? g.cell : "transparent", color: moV > 0 ? g.text : "#cbd5e0", fontWeight: tot ? 800 : 600 }}>{fmtFor(g, row[moK])}</td>,
+                              <td key={meK} className="tscs4b-num" style={{ ...cb, textAlign: "right", paddingRight: "12px", borderRight: "2px solid #e2e8f0", background: meV > 0 ? g.tot : "transparent", color: meV > 0 ? g.text : "#cbd5e0", fontWeight: 800 }}>{fmtFor(g, row[meK])}</td>,
+                            ]);
+                          })}
                         </tr>
                       );
                     })}
