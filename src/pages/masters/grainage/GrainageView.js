@@ -118,6 +118,10 @@ function GrainageView() {
                         <td style={styles.ctstyle}>{t("Grainage Type")}:</td>
                         <td>{Grainage.grainageType}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Grainage Area Type")}:</td>
+                        <td>{Grainage.grainageAreaType}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </Col>

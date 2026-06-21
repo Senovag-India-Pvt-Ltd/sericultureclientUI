@@ -37,6 +37,7 @@ const { t } = useTranslation();
       grainageMasterName: data.grainageMasterName,
       grainageMasterNameInKannada: data.grainageMasterNameInKannada,
       grainageType: data.grainageType,
+      grainageAreaType: data.grainageAreaType,
       grainageNameRepresentation: data.grainageNameRepresentation,
       userMasterId:data.userMasterId
     };
@@ -58,6 +59,7 @@ const { t } = useTranslation();
                 grainageMasterName: "",
                 grainageMasterNameInKannada: "",
                 grainageType: "",
+                grainageAreaType: "",
                 grainageNameRepresentation: "",
                 userMasterId:"",
             });
@@ -256,22 +258,45 @@ const { t } = useTranslation();
                         {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
-                        <Form.Select
+                        <Form.Control
+                          id="title"
                           name="grainageType"
                           value={data.grainageType}
                           onChange={handleInputs}
-                        >
-                          <option value="">{t("Select Grainage Type")}</option>
-                          <option value="Mysore Seed Area GG">Mysore Seed Area GG</option>
-                          <option value="Bivoltine Seed Area GG">Bivoltine Seed Area GG</option>
-                          <option value="Commercial GG">Commercial GG</option>
-                        </Form.Select>
+                          type="text"
+                          placeholder={t("Enter Grainage Type")}
+                          // required
+                        />
                         {/* <Form.Control.Feedback type="invalid">
                         Grainage Type in Kannada is required.
                         </Form.Control.Feedback> */}
                       </div>
                     </Form.Group>
                   </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group">
+                        <Form.Label>
+                          {t("Grainage Area Type")}<span className="text-danger">*</span>
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="grainageAreaType"
+                            value={data.grainageAreaType}
+                            onChange={handleInputs}
+                            required
+                          >
+                            <option value="">{t("Select Grainage Area Type")}</option>
+                            <option value="Mysore Seed Area GG">Mysore Seed Area GG</option>
+                            <option value="Bivoltine Seed Area GG">Bivoltine Seed Area GG</option>
+                            <option value="Commercial GG">Commercial GG</option>
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            {t("Grainage Area Type is required")}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+                    </Col>
 
 
                   <Col lg="6">
