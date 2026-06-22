@@ -411,12 +411,12 @@ function TscMonthlyP1ChawkiLotwiseReport() {
                     <tr>
                       {[
                         { kn: "ಕ್ರ.ಸಂ.",                  w: 55,  bg: "linear-gradient(135deg,#1e293b,#36506b)", align: "center" },
-                        { kn: "ವಲಯ",                     w: 140, bg: "linear-gradient(135deg,#5b21b6,#7c3aed)", align: "left" },
+                        { kn: "ವಾರ",                     w: 90,  bg: "linear-gradient(135deg,#5b21b6,#7c3aed)", align: "center" },
                         { kn: "ತಾಂ.ಸೇ.ಕೇ",              w: 150, bg: "linear-gradient(135deg,#334155,#475569)", align: "left" },
                         { kn: "ರೈತರ ಹೆಸರು / ತಂದೆಯ ಹೆಸರು", w: 220, bg: "linear-gradient(135deg,#0f766e,#14b8a6)", align: "left" },
                         { kn: "ಗ್ರಾಮ",                   w: 140, bg: "linear-gradient(135deg,#0e7490,#06b6d4)", align: "left" },
                         { kn: "ತಂಡ ಸಂಖ್ಯೆ",              w: 120, bg: "linear-gradient(135deg,#1d4ed8,#3b82f6)", align: "center" },
-                        { kn: "ತಳಿ",                     w: 150, bg: "linear-gradient(135deg,#a16207,#ca8a04)", align: "center" },
+                        { kn: "ಬಿಕೋ",                    w: 150, bg: "linear-gradient(135deg,#a16207,#ca8a04)", align: "center" },
                         { kn: "ಮೊಟ್ಟೆ",                  w: 110, bg: "linear-gradient(135deg,#15803d,#22c55e)", align: "right" },
                         { kn: "ಚಾಕಿ ದಿನಾಂಕ",             w: 140, bg: "linear-gradient(135deg,#9d174d,#db2777)", align: "center" },
                         { kn: "ಶೇ ಚಾಕಿ",                 w: 150, bg: "linear-gradient(135deg,#a16207,#fbbf24)", align: "center" },
@@ -438,31 +438,44 @@ function TscMonthlyP1ChawkiLotwiseReport() {
                       const cb = { padding: "9px 10px", borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #eef2f6", fontSize: "12px", verticalAlign: "middle", whiteSpace: "nowrap" };
                       const rt = row.row_type;
 
-                      // Weekly subtotal / "no data" note rows (yellow band)
-                      if (rt === "subtotal" || rt === "note") {
+                      // Weekly subtotal (yellow): label spans left, DFL total in the ಮೊಟ್ಟೆ column
+                      if (rt === "subtotal") {
                         return (
                           <tr key={`sub-${ri}`}>
-                            <td colSpan={7} style={{ ...cb, textAlign: rt === "note" ? "center" : "right", paddingRight: "14px", background: "#fff9c4", color: "#7c5b00", fontWeight: 800, whiteSpace: "normal" }}>
+                            <td colSpan={7} style={{ ...cb, textAlign: "right", paddingRight: "14px", background: "#fff4b8", color: "#5c4400", fontWeight: 800, whiteSpace: "normal" }}>
                               {row.farmer_name}
                             </td>
-                            <td className="tscp1chk-num" style={{ ...cb, textAlign: "right", paddingRight: "16px", background: "#fff59d", color: "#5c4400", fontWeight: 900 }}>
-                              {rt === "subtotal" ? fmtInt(row.dfls) : ""}
+                            <td className="tscp1chk-num" style={{ ...cb, textAlign: "right", paddingRight: "16px", background: "#ffec99", color: "#5c4400", fontWeight: 900 }}>
+                              {fmtInt(row.dfls)}
                             </td>
-                            <td colSpan={2} style={{ ...cb, background: "#fff9c4" }} />
+                            <td colSpan={2} style={{ ...cb, background: "#fff4b8" }} />
                           </tr>
                         );
                       }
-                      // Grand total row
-                      if (rt === "total") {
+                      // Empty-week note (yellow strip across the full width)
+                      if (rt === "note") {
                         return (
-                          <tr key={`tot-${ri}`}>
-                            <td colSpan={7} style={{ ...cb, textAlign: "right", paddingRight: "14px", background: "linear-gradient(135deg,#fed7aa,#fdba74)", color: "#7c2d12", fontWeight: 900, fontSize: "13px" }}>
+                          <tr key={`note-${ri}`}>
+                            <td colSpan={10} style={{ ...cb, textAlign: "center", background: "#fff4b8", color: "#5c4400", fontWeight: 800, whiteSpace: "normal" }}>
                               {row.farmer_name}
                             </td>
-                            <td className="tscp1chk-num" style={{ ...cb, textAlign: "right", paddingRight: "16px", background: "linear-gradient(135deg,#fdba74,#fb923c)", color: "#7c2d12", fontWeight: 900, fontSize: "13px" }}>
-                              {fmtInt(row.dfls)}
-                            </td>
-                            <td colSpan={2} style={{ ...cb, background: "linear-gradient(135deg,#fed7aa,#fdba74)" }} />
+                          </tr>
+                        );
+                      }
+                      // Green summary matrix: header (1ನೇ..4ನೇ ವಾರ + ಒಟ್ಟು) then ಮೊಟ್ಟೆ / ಬೆಳೆ rows
+                      if (rt === "matrix_head" || rt === "matrix_dfls" || rt === "matrix_crop") {
+                        const head = rt === "matrix_head";
+                        const cellG = { ...cb, textAlign: "center", background: "#cdeeb0", color: "#1c4532", fontWeight: head ? 800 : 900, whiteSpace: "normal" };
+                        return (
+                          <tr key={`mx-${ri}`}>
+                            <td colSpan={2} style={{ ...cb, background: "#cdeeb0" }} />
+                            <td style={{ ...cellG, fontWeight: 900 }}>{row.tsc_name}</td>
+                            <td style={cellG}>{head ? row.farmer_name : fmtInt(row.farmer_name)}</td>
+                            <td style={cellG}>{head ? row.village     : fmtInt(row.village)}</td>
+                            <td style={cellG}>{head ? row.lot_number  : fmtInt(row.lot_number)}</td>
+                            <td style={cellG}>{head ? row.race        : fmtInt(row.race)}</td>
+                            <td className="tscp1chk-num" style={cellG}>{head ? row.dfls : fmtInt(row.dfls)}</td>
+                            <td colSpan={2} style={{ ...cb, background: "#cdeeb0" }} />
                           </tr>
                         );
                       }
@@ -478,8 +491,10 @@ function TscMonthlyP1ChawkiLotwiseReport() {
                           <td style={{ ...cb, textAlign: "center", borderRight: "1px solid #e2e8f0", color: "#475569", fontWeight: 700 }}>
                             <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: "26px", height: "26px", borderRadius: "50%", background: "linear-gradient(135deg,#e2e8f0,#cbd5e1)", color: "#1e293b", fontWeight: 800, fontSize: "11px" }}>{row.sl_no}</span>
                           </td>
-                          <td style={{ ...cb, textAlign: "left", paddingLeft: "12px", color: "#5b21b6", fontWeight: 700, whiteSpace: "normal" }}>
-                            {row.zone || "—"}
+                          <td style={{ ...cb, textAlign: "center" }}>
+                            {row.zone ? (
+                              <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: "12px", background: "linear-gradient(135deg,#ede9fe,#ddd6fe)", color: "#5b21b6", fontWeight: 800, fontSize: "11.5px", whiteSpace: "nowrap" }}>{row.zone}</span>
+                            ) : <span style={{ color: "#cbd5e0" }}>—</span>}
                           </td>
                           <td style={{ ...cb, textAlign: "left", paddingLeft: "12px", color: "#0f172a", fontWeight: 700, whiteSpace: "normal" }}>
                             {row.tsc_name || "—"}
