@@ -242,13 +242,22 @@ function GrainageMarketWeeklyReport() {
     setIsDownloadingPdf(true);
     try {
       const res = await api.get(baseURLSeedDFL + "weekly-market-report/pdf", { params: params(), responseType: "blob" });
-      if (!res.data || res.data.size === 0) {
+      const blobData = res.data;
+      if (!blobData || blobData.size === 0) {
         Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
         return;
       }
-      window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
-    } catch {
-      showErr("PDF Failed", "Could not generate the PDF report.");
+      const firstBytes = await blobData.slice(0, 10).text();
+      if (!firstBytes.startsWith('%PDF')) {
+        Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+        return;
+      }
+      window.open(URL.createObjectURL(blobData));
+    } catch (err) {
+      let isNoData = false;
+      try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0/i.test(t); } } catch (_) {}
+      if (isNoData) Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      else showErr("PDF Failed", "Could not generate the PDF report.");
     } finally {
       setIsDownloadingPdf(false);
     }
