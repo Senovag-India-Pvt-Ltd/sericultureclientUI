@@ -83,13 +83,13 @@ function SeedMarketBiddingSlipReport() {
         return;
       }
       const pdfUrl = URL.createObjectURL(blobData);
-      const a = document.createElement('a');
-      a.href = pdfUrl;
-      a.download = `bidding-slip-lot-${lotNo}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(pdfUrl), 1000);
+      const pdfWindow = window.open(pdfUrl, '_blank');
+      if (!pdfWindow) {
+        const a = document.createElement('a');
+        a.href = pdfUrl; a.download = `bidding-slip-lot-${lotNo}.pdf`;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      }
+      setTimeout(() => URL.revokeObjectURL(pdfUrl), 10000);
     } catch (err) {
       let isNoData = false;
       try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0|No data found/i.test(t); } } catch (_) {}
@@ -163,11 +163,6 @@ function SeedMarketBiddingSlipReport() {
                   />
                 </Col>
               </Row>
-
-              <div style={{ background: "#f0f6ff", borderRadius: "10px", padding: "10px 14px", marginBottom: "20px", fontSize: "12px", color: "#4a5568" }}>
-                <strong style={{ color: "#1e67a8" }}>Market ID:</strong> {localStorage.getItem("marketId") || "—"} &nbsp;|&nbsp;
-                <strong style={{ color: "#1e67a8" }}>Godown ID:</strong> {localStorage.getItem("godownId") || "—"}
-              </div>
 
               <div style={{ borderTop: "1.5px dashed #d0d9e8", margin: "8px 0 24px" }} />
 

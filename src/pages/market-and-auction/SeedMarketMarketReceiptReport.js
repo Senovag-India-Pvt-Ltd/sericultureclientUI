@@ -67,13 +67,13 @@ function SeedMarketMarketReceiptReport() {
         return;
       }
       const pdfUrl = URL.createObjectURL(blobData);
-      const a = document.createElement('a');
-      a.href = pdfUrl;
-      a.download = `market-receipt-lot-${data.allottedLotId}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(pdfUrl), 1000);
+      const pdfWindow = window.open(pdfUrl, '_blank');
+      if (!pdfWindow) {
+        const a = document.createElement('a');
+        a.href = pdfUrl; a.download = `market-receipt-lot-${data.allottedLotId}.pdf`;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      }
+      setTimeout(() => URL.revokeObjectURL(pdfUrl), 10000);
     } catch (err) {
       let isNoData = false;
       try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0|No data found/i.test(t); } } catch (_) {}
