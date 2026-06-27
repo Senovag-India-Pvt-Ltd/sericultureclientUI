@@ -127,6 +127,14 @@ const handleDateChange = (date) => {
   const [showModal, setShowModal] = useState(false);
   const [showModal1, setShowModal1] = useState(false);
   const [balanceError, setBalanceError] = useState(false);
+
+  // --- Sale & disposal selection ---
+  // A single fruitsId + lotNumber can map to more than one sale_and_disposal_of_dfls row.
+  // When that happens we let the user pick which one to mark as disposed instead of letting
+  // the backend lookup fail. The chosen id is sent as `saleDisposalId` in the save/update payload.
+  const [saleDisposalCandidates, setSaleDisposalCandidates] = useState([]);
+  const [showDisposalModal, setShowDisposalModal] = useState(false);
+  const [selectedSaleDisposalId, setSelectedSaleDisposalId] = useState(null);
   // const handleShowModal = () => setShowModal(true);
  const handleShowModal = () => {
   // CASE 1️⃣: Market requires base price → price must exist
@@ -752,25 +760,93 @@ const hasRemaining = remainingQty > 0;
   //   }
   // };
 
+  // Step 1: validate. Then resolve any sale-disposal ambiguity before actually saving.
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
       setValidated(true);
-    } else {
-      event.preventDefault();
+      return;
+    }
+    event.preventDefault();
 
-      // === Front-end validation: distributed quantity cannot exceed final weighment ===
-      if (lotWeightAfterWeighmentVal > 0 && distributedQuantity > lotWeightAfterWeighmentVal) {
-        saveError(`Distributed Quantity (${distributedQuantity} Kg) cannot exceed Final Weighment (${lotWeightAfterWeighmentVal} Kg).`);
-        return;
-      }
-      if (isRemainingNegative) {
-        saveError("Remaining Quantity cannot be negative. Please review the distributed quantities.");
-        return;
-      }
+    // === Front-end validation: distributed quantity cannot exceed final weighment ===
+    if (lotWeightAfterWeighmentVal > 0 && distributedQuantity > lotWeightAfterWeighmentVal) {
+      saveError(`Distributed Quantity (${distributedQuantity} Kg) cannot exceed Final Weighment (${lotWeightAfterWeighmentVal} Kg).`);
+      return;
+    }
+    if (isRemainingNegative) {
+      saveError("Remaining Quantity cannot be negative. Please review the distributed quantities.");
+      return;
+    }
 
+    // Reason is required when "Moving to another market" is ticked.
+    if (!!movingToAnotherMarket && !(movingMarketReason || "").trim()) {
+      saveError("Please enter a Reason for moving to another market.");
+      return;
+    }
+
+    setValidated(true);
+    resolveDisposalThenSave();
+  };
+
+  // Step 2: decide whether the user needs to pick a disposal record.
+  // The backend only marks a sale_and_disposal_of_dfls row as disposed when the lot is fully
+  // distributed (remaining sent as 0). When several rows share the same fruitsId + lotNumber the
+  // backend can't know which one — so we fetch the candidates and let the user choose.
+  const resolveDisposalThenSave = () => {
+    const remainingSent = (!!movingToAnotherMarket) ? 0 : remainingQty;
+
+    // Something still remains → no disposal lookup happens on the backend → save directly.
+    if (remainingSent !== 0) {
+      performSave(null);
+      return;
+    }
+
+    setIsSaving(true);
+    api
+      .post(baseURLMarket + "lotGroupage/getSaleDisposalCandidates", {
+        fruitsId: fruitsId,
+        lotParentLevel: lotParentLevel,
+        dflLotNumber: noOfDFLs,
+      })
+      .then((res) => {
+        const candidates = res?.data?.content || [];
+        if (candidates.length > 1) {
+          // Ambiguous — show the rows and let the user pick which one to mark disposed.
+          setSaleDisposalCandidates(candidates);
+          setSelectedSaleDisposalId(null);
+          setShowDisposalModal(true);
+          setIsSaving(false);
+        } else {
+          // 0 or exactly 1 match — backend resolves it automatically.
+          performSave(candidates.length === 1 ? candidates[0].saleDisposalId : null);
+        }
+      })
+      .catch(() => {
+        // Lookup failed — fall back to a normal save; backend still guards against bad data.
+        performSave(null);
+      });
+  };
+
+  // User picked a disposal record in the modal → continue the save with that id.
+  const confirmDisposalSelection = () => {
+    if (selectedSaleDisposalId == null) {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select a disposal record",
+        text: "Choose which disposal record to mark as disposed to continue.",
+        confirmButtonColor: "#1e67a8",
+      });
+      return;
+    }
+    setShowDisposalModal(false);
+    performSave(selectedSaleDisposalId);
+  };
+
+  // Step 3: build the payload (with the chosen saleDisposalId, if any) and post it.
+  const performSave = (saleDisposalId = null) => {
       const formattedAuctionDate = formatAuctionDate(auctionDate);
       const hasLotGroupageId = dataLotList.some(item => item.lotGroupageId);
       setIsSaving(true);
@@ -779,13 +855,6 @@ const hasRemaining = remainingQty > 0;
       const purposeForRejectionFlag = !!purposeForRejection;
       const movingToAnotherMarketFlag = !!movingToAnotherMarket;
       const trimmedMovingMarketReason = (movingMarketReason || "").trim();
-
-      // Reason is required when "Moving to another market" is ticked.
-      if (movingToAnotherMarketFlag && !trimmedMovingMarketReason) {
-        setIsSaving(false);
-        saveError("Please enter a Reason for moving to another market.");
-        return;
-      }
 
       if (hasLotGroupageId) {
         const requestData = {
@@ -821,6 +890,8 @@ const hasRemaining = remainingQty > 0;
             qtyNos: item.qtyNos,
             movingToAnotherMarket: movingToAnotherMarketFlag,
             movingMarketReason: movingToAnotherMarketFlag ? trimmedMovingMarketReason : null,
+            // Chosen disposal row when fruitsId + lotNumber mapped to more than one.
+            saleDisposalId: saleDisposalId,
           }))
         };
 
@@ -876,6 +947,8 @@ const hasRemaining = remainingQty > 0;
             purposeForRejection: purposeForRejectionFlag,
             movingToAnotherMarket: movingToAnotherMarketFlag,
             movingMarketReason: movingToAnotherMarketFlag ? trimmedMovingMarketReason : null,
+            // Chosen disposal row when fruitsId + lotNumber mapped to more than one.
+            saleDisposalId: saleDisposalId,
           })),
         };
 
@@ -919,7 +992,6 @@ const hasRemaining = remainingQty > 0;
       }
 
       setValidated(true);
-    }
   };
 
   const printTriplet = () => {
@@ -3093,6 +3165,116 @@ const handlePurchaseModeChange = (e) => {
               </Col>
             </Row>
           </Form>
+        </Modal.Body>
+      </Modal>
+
+      {/* Sale & Disposal selection — shown when one fruitsId + lotNumber maps to several
+          disposal rows. The user picks one; its id is sent as saleDisposalId on save. */}
+      <Modal
+        show={showDisposalModal}
+        onHide={() => { setShowDisposalModal(false); setIsSaving(false); }}
+        size="lg"
+        centered
+      >
+        <Modal.Header
+          closeButton
+          style={{ background: "linear-gradient(135deg, #1e67a8 0%, #2d9cdb 100%)", border: "none", padding: "16px 24px" }}
+        >
+          <Modal.Title style={{ color: "#fff", fontWeight: 700, fontSize: "16px", display: "flex", alignItems: "center", gap: "10px" }}>
+            <span style={{ fontSize: "20px" }}>📋</span>
+            {t("Select Disposal Record")}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ padding: "22px 26px", background: "#f8fafd" }}>
+          <div
+            style={{
+              background: "linear-gradient(135deg,#fffaf0,#fff)",
+              border: "1.5px solid #fbd38d",
+              borderRadius: "12px",
+              padding: "12px 16px",
+              marginBottom: "18px",
+              color: "#7b341e",
+              fontSize: "13px",
+              lineHeight: 1.6,
+            }}
+          >
+            We found <b>{saleDisposalCandidates.length}</b> disposal records for
+            {" "}<b>FRUITS ID {fruitsId}</b> / <b>Lot {lotParentLevel}</b>.
+            Please choose the correct one to mark as <b>disposed</b>.
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxHeight: "55vh", overflowY: "auto" }}>
+            {saleDisposalCandidates.map((c) => {
+              const isSelected = selectedSaleDisposalId === c.saleDisposalId;
+              return (
+                <div
+                  key={c.saleDisposalId}
+                  onClick={() => setSelectedSaleDisposalId(c.saleDisposalId)}
+                  style={{
+                    cursor: "pointer",
+                    border: isSelected ? "2px solid #1e67a8" : "1.5px solid #e2e8f0",
+                    background: isSelected ? "linear-gradient(135deg,#ebf5ff,#f7fbff)" : "#fff",
+                    borderRadius: "14px",
+                    padding: "14px 18px",
+                    boxShadow: isSelected ? "0 6px 18px rgba(30,103,168,0.18)" : "0 2px 6px rgba(0,0,0,0.05)",
+                    transition: "all .15s ease",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "10px" }}>
+                    <input
+                      type="radio"
+                      name="saleDisposalCandidate"
+                      checked={isSelected}
+                      onChange={() => setSelectedSaleDisposalId(c.saleDisposalId)}
+                      style={{ width: "18px", height: "18px", accentColor: "#1e67a8" }}
+                    />
+                    <span style={{ fontWeight: 700, color: "#1a202c", fontSize: "14px" }}>
+                      {t("Disposal ID")}: {c.saleDisposalId}
+                    </span>
+                    {Number(c.isDisposed) === 1 && (
+                      <span style={{ marginLeft: "auto", background: "#c6f6d5", color: "#22543d", borderRadius: "999px", padding: "3px 12px", fontSize: "11px", fontWeight: 700 }}>
+                        {t("Already Disposed")}
+                      </span>
+                    )}
+                  </div>
+                  <Row className="g-2" style={{ fontSize: "12.5px", color: "#2d3748" }}>
+                    <Col xs={6} md={4}><b>Lot No:</b> {c.lotNumber ?? "-"}</Col>
+                    <Col xs={6} md={4}><b>No. of DFLs:</b> {c.numberOfDflsDisposed ?? "-"}</Col>
+                    <Col xs={6} md={4}><b>Race ID:</b> {c.raceId ?? "-"}</Col>
+                    <Col xs={6} md={4}><b>Egg Sheets:</b> {c.eggSheetNumbers ?? "-"}</Col>
+                    <Col xs={6} md={4}><b>Release Date:</b> {c.releaseDate ?? "-"}</Col>
+                    <Col xs={6} md={4}><b>Disposal Date:</b> {c.dateOfDisposal ?? "-"}</Col>
+                    <Col xs={12} md={8}><b>Farm:</b> {c.nameAndAddressOfTheFarm ?? "-"}</Col>
+                    <Col xs={6} md={4}><b>Invoice:</b> {c.invoiceNumber ?? "-"}</Col>
+                    <Col xs={6} md={4}><b>Receipt No:</b> {c.receiptNo ?? "-"}</Col>
+                  </Row>
+                </div>
+              );
+            })}
+          </div>
+
+          <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "20px" }}>
+            <Button
+              variant="light"
+              onClick={() => { setShowDisposalModal(false); setIsSaving(false); }}
+              style={{ borderRadius: "10px", fontWeight: 600, padding: "9px 22px", border: "1px solid #cbd5e0" }}
+            >
+              {t("Cancel")}
+            </Button>
+            <Button
+              onClick={confirmDisposalSelection}
+              disabled={selectedSaleDisposalId == null}
+              style={{
+                borderRadius: "10px",
+                fontWeight: 700,
+                padding: "9px 26px",
+                border: "none",
+                background: selectedSaleDisposalId == null ? "#a0aec0" : "linear-gradient(135deg,#1e67a8,#2d9cdb)",
+              }}
+            >
+              {t("Confirm & Save")}
+            </Button>
+          </div>
         </Modal.Body>
       </Modal>
     </Layout>
