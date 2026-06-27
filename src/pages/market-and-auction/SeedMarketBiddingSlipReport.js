@@ -60,6 +60,7 @@ function SeedMarketBiddingSlipReport() {
       });
       return;
     }
+    const pdfWindow = window.open('', '_blank');
     setIsGenerating(true);
     try {
       const response = await api.post(
@@ -74,18 +75,23 @@ function SeedMarketBiddingSlipReport() {
       );
       const blobData = response.data;
       if (!blobData || blobData.size === 0) {
+        pdfWindow?.close();
         Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
         return;
       }
       const firstBytes = await blobData.slice(0, 10).text();
       if (!firstBytes.startsWith('%PDF')) {
+        pdfWindow?.close();
         Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
         return;
       }
-      window.open(URL.createObjectURL(blobData));
+      const pdfUrl = URL.createObjectURL(blobData);
+      if (pdfWindow) pdfWindow.location.href = pdfUrl;
+      setTimeout(() => URL.revokeObjectURL(pdfUrl), 10000);
     } catch (err) {
+      pdfWindow?.close();
       let isNoData = false;
-      try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0/i.test(t); } } catch (_) {}
+      try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0|No data found/i.test(t); } } catch (_) {}
       if (isNoData) {
         Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
       } else {
@@ -132,7 +138,7 @@ function SeedMarketBiddingSlipReport() {
               Filter Parameters
             </div>
 
-            <Form onSubmit={handleGenerate}>
+            <Form noValidate onSubmit={handleGenerate}>
               <Row className="mb-3">
                 <Col md={6} style={fieldGroupStyle}>
                   <label style={labelStyle}>Bidding Slip Lot No <span style={{ color: "#e53e3e" }}>*</span></label>
