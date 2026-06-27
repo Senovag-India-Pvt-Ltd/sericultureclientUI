@@ -5392,11 +5392,12 @@ const isUserValid = React.useMemo(() => {
             // }
             // console.log(response);
             const unitCostMaster = response.data.content.unitCostMaster || [];
-            const totalSharePerc = unitCostMaster.reduce(
-              (sum, item) => sum + Number(item.shareInPercentage || 0), 0
-            );
-            if (totalSharePerc > 0) {
-              setSharePercentage(totalSharePerc);
+            // Take share percentage from the first (matching) row only — NOT sum of all rows.
+            // Production has multiple rows per category (one per designation) which summed
+            // incorrectly (e.g. 75+75+75 = 225 instead of correct 75).
+            const singleSharePerc = Number(unitCostMaster[0]?.shareInPercentage || 0);
+            if (singleSharePerc > 0) {
+              setSharePercentage(singleSharePerc);
             }
             setAmountValue((prev) => ({
               ...prev,
@@ -8195,6 +8196,8 @@ const fetchReelerDetails = () => {
                                       <option value="7.50">7.50</option>
                                       <option value="B-Grade">B-Grade</option>
                                       <option value="2 A-Grade">2 A-Grade</option>
+                         <option value="2 B-Grade">2 B-Grade</option>
+                          <option value="3 A-Grade">3 A-Grade</option>
                                     </Form.Select>
                                     <Form.Control.Feedback type="invalid">
                                       {t("Renditta/Grade is required")}

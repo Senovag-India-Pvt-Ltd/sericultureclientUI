@@ -436,6 +436,8 @@ return (
                                             <option value="7.50">7.50</option>
                                             <option value="B-Grade">B-Grade</option>
                                             <option value="2 A-Grade">2 A-Grade</option>
+                                            <option value="2 B-Grade">2 B-Grade</option>
+                                            <option value="3 A-Grade">3 A-Grade</option>
                                           </Form.Select>
                                           <Form.Control.Feedback type="invalid">
                                             {t("Renditta/Grade is required")}

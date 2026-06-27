@@ -1124,9 +1124,9 @@ if (!isAllowed) return;   // ❌ block only when DB has 1
       const getCategoryList = (schemeId, subSchemeId,componentId) => {
         api
           .post(baseURLDBT + `master/cost/get-by-schemeId-and-subSchemeId-and-componentId`, {
-            schemeId: schemeId,
-            subSchemeId: subSchemeId,
-            scComponentId: componentId,
+            schemeId: Number(schemeId),
+            subSchemeId: Number(subSchemeId),
+            scComponentId: Number(componentId),
           })
           .then((response) => {
             setCategoryListData(response.data.content.unitCost);

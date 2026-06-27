@@ -82,10 +82,17 @@ function SeedMarketBiddingSlipReport() {
         Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
         return;
       }
-      window.open(URL.createObjectURL(blobData));
+      const pdfUrl = URL.createObjectURL(blobData);
+      const a = document.createElement('a');
+      a.href = pdfUrl;
+      a.download = `bidding-slip-lot-${lotNo}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(pdfUrl), 1000);
     } catch (err) {
       let isNoData = false;
-      try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0/i.test(t); } } catch (_) {}
+      try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0|No data found/i.test(t); } } catch (_) {}
       if (isNoData) {
         Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
       } else {
@@ -132,7 +139,7 @@ function SeedMarketBiddingSlipReport() {
               Filter Parameters
             </div>
 
-            <Form onSubmit={handleGenerate}>
+            <Form noValidate onSubmit={handleGenerate}>
               <Row className="mb-3">
                 <Col md={6} style={fieldGroupStyle}>
                   <label style={labelStyle}>Bidding Slip Lot No <span style={{ color: "#e53e3e" }}>*</span></label>
