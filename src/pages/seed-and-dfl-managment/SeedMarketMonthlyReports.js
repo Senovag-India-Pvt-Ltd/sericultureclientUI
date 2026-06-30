@@ -125,7 +125,7 @@ function MarketFilterCard({
       </div>
 
       <Card.Body style={{ padding: "16px 20px 18px", background: "linear-gradient(180deg,#ffffff,#f8fffe)" }}>
-        <Form onSubmit={onSubmit}>
+        <Form onSubmit={onSubmit} noValidate>
           <Row className="g-2 align-items-end">
             <Col md={5}>
               <label style={lbl}>Market <span style={{ color: "#e53e3e" }}>*</span></label>
@@ -233,7 +233,23 @@ function useSeedMarketReport(endpointKey, filenamePrefix, friendlyTitle) {
     setIsLoading(true); setHasReport(false); setDataRows([]);
     try {
       const res = await api.get(baseURLSeedDFL + `grainage-progress-report/${endpointKey}`, { params: params() });
-      setDataRows(Array.isArray(res.data) ? res.data : []); setHasReport(true);
+      const rows = Array.isArray(res.data) ? res.data : [];
+      setDataRows(rows);
+      // Check if rows have any actual numeric data (not just template rows with all-null values)
+      const NON_DATA_KEYS = new Set(['sl_no', 'description', 'sub_desc', 'category', 'district', 'race', 'type']);
+      const hasAnyData = rows.length > 0 && rows.some(row =>
+        Object.entries(row).some(([key, val]) => {
+          if (NON_DATA_KEYS.has(key) || val === null || val === undefined || val === '') return false;
+          const n = parseFloat(val);
+          return !isNaN(n) && n !== 0;
+        })
+      );
+      if (!hasAnyData) {
+        Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+        setHasReport(false);
+      } else {
+        setHasReport(true);
+      }
     } catch (err) {
         const status = err?.response?.status;
         if (status === 404 || status === 204) {
@@ -263,10 +279,17 @@ function useSeedMarketReport(endpointKey, filenamePrefix, friendlyTitle) {
         Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
         return;
       }
-      window.open(URL.createObjectURL(blobData));
+      const pdfUrl = URL.createObjectURL(blobData);
+      const pdfWindow = window.open(pdfUrl, '_blank');
+      if (!pdfWindow) {
+        const a = document.createElement('a');
+        a.href = pdfUrl; a.download = 'seed-market-monthly-report.pdf';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      }
+      setTimeout(() => URL.revokeObjectURL(pdfUrl), 10000);
     } catch (err) {
       let isNoData = false;
-      try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0/i.test(t); } } catch (_) {}
+      try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0|No data found/i.test(t); } } catch (_) {}
       if (isNoData) Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
       else showErr("PDF Failed", "Could not generate the PDF report.");
     } finally { setIsDownloadingPdf(false); }

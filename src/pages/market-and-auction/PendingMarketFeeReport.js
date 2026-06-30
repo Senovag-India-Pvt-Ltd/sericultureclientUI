@@ -115,6 +115,10 @@ function PendingMarketFeeReport() {
   };
 
   const handleDownloadExcel = () => {
+    if (!lotList || lotList.length === 0) {
+      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      return;
+    }
     const marketId = parseInt(localStorage.getItem("marketId")) || 0;
     const payload = {
       marketId: marketId,
@@ -158,8 +162,27 @@ function PendingMarketFeeReport() {
         payload,
         { responseType: "blob" }
       );
-      const url = URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }));
-      window.open(url);
+      const blobData = res.data;
+      if (!blobData || blobData.size === 0) {
+        Swal.fire({ icon: "info", title: t("No Data Found"), text: t("No records found for the selected criteria.") });
+        return;
+      }
+      const firstBytes = await blobData.slice(0, 10).text();
+      if (!firstBytes.startsWith('%PDF')) {
+        Swal.fire({ icon: "info", title: t("No Data Found"), text: t("No records found for the selected criteria.") });
+        return;
+      }
+      const pdfUrl = URL.createObjectURL(blobData);
+      const pdfWindow = window.open(pdfUrl, '_blank');
+      if (!pdfWindow) {
+        const a = document.createElement('a');
+        a.href = pdfUrl;
+        a.download = 'PendingMarketFeeReport.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+      setTimeout(() => URL.revokeObjectURL(pdfUrl), 10000);
     } catch {
       Swal.fire({ icon: "error", title: t("Error"), text: t("Failed to generate PDF report.") });
     } finally {

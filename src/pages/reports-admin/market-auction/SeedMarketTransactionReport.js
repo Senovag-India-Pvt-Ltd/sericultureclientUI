@@ -213,6 +213,10 @@ function SeedMarketTransactionReport() {
   };
 
   const downloadExcel = async () => {
+    if (!reportData || !reportData.reelerTransactionReports || reportData.reelerTransactionReports.length === 0) {
+      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      return;
+    }
     const isEgg = data.buyerType === "EXTERNAL_UNIT";
     const endpoint = isEgg
       ? "lotGroupage/downloadEggProducerTxnReport"
@@ -239,10 +243,17 @@ function SeedMarketTransactionReport() {
   };
 
   const downloadPdf = async () => {
+    if (!reportData || !reportData.reelerTransactionReports || reportData.reelerTransactionReports.length === 0) {
+      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      return;
+    }
     const isEgg = data.buyerType === "EXTERNAL_UNIT";
     const endpoint = isEgg
       ? "lotGroupage/downloadEggProducerTxnReportPDF"
       : "lotGroupage/downloadSeedMarketTxnReportPDF";
+    const filename = isEgg
+      ? "ExternalUnitTransactionReport.pdf"
+      : "SeedMarketTransactionReport.pdf";
     setLoadPdf(true);
     try {
       const res = await api.post(
@@ -250,8 +261,27 @@ function SeedMarketTransactionReport() {
         requestBody(),
         { responseType: "blob" },
       );
-      const url = URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }));
-      window.open(url);
+      const blobData = res.data;
+      if (!blobData || blobData.size === 0) {
+        Swal.fire({ icon: "info", title: t("No Data Found"), text: t("No records found for the selected criteria.") });
+        return;
+      }
+      const firstBytes = await blobData.slice(0, 10).text();
+      if (!firstBytes.startsWith('%PDF')) {
+        Swal.fire({ icon: "info", title: t("No Data Found"), text: t("No records found for the selected criteria.") });
+        return;
+      }
+      const pdfUrl = URL.createObjectURL(blobData);
+      const pdfWindow = window.open(pdfUrl, '_blank');
+      if (!pdfWindow) {
+        const a = document.createElement('a');
+        a.href = pdfUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+      setTimeout(() => URL.revokeObjectURL(pdfUrl), 10000);
     } catch {
       Swal.fire({ icon: "error", title: t("Error"), text: t("Failed to generate PDF report.") });
     } finally {
@@ -467,12 +497,12 @@ function SeedMarketTransactionReport() {
                         ? <><span className="spinner-border spinner-border-sm" style={{ width: 13, height: 13 }} /> {t("Loading...")}</>
                         : <>🔍 {t("View")}</>}
                     </button>
-                    <button type="button" onClick={downloadExcel} disabled={loadExcel} style={btnStyle("linear-gradient(135deg,#1d6a3a,#22883f)", "0 3px 10px rgba(29,106,58,0.28)", loadExcel)}>
+                    <button type="button" onClick={downloadExcel} disabled={loadExcel || !reportData || !reportData.reelerTransactionReports || reportData.reelerTransactionReports.length === 0} style={btnStyle("linear-gradient(135deg,#1d6a3a,#22883f)", "0 3px 10px rgba(29,106,58,0.28)", loadExcel || !reportData || !reportData.reelerTransactionReports || reportData.reelerTransactionReports.length === 0)}>
                       {loadExcel
                         ? <><span className="spinner-border spinner-border-sm" style={{ width: 13, height: 13 }} /> {t("Downloading...")}</>
                         : <>🟢 {t("Download Excel")}</>}
                     </button>
-                    <button type="button" onClick={downloadPdf} disabled={loadPdf} style={btnStyle("linear-gradient(135deg,#c53030,#e53e3e)", "0 3px 10px rgba(197,48,48,0.28)", loadPdf)}>
+                    <button type="button" onClick={downloadPdf} disabled={loadPdf || !reportData || !reportData.reelerTransactionReports || reportData.reelerTransactionReports.length === 0} style={btnStyle("linear-gradient(135deg,#c53030,#e53e3e)", "0 3px 10px rgba(197,48,48,0.28)", loadPdf || !reportData || !reportData.reelerTransactionReports || reportData.reelerTransactionReports.length === 0)}>
                       {loadPdf
                         ? <><span className="spinner-border spinner-border-sm" style={{ width: 13, height: 13 }} /> {t("Generating...")}</>
                         : <>📥 {t("Download PDF")}</>}

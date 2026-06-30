@@ -112,10 +112,17 @@ function SeedDtrReport() {
       Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
       return;
     }
-    window.open(URL.createObjectURL(blobData));
+    const pdfUrl = URL.createObjectURL(blobData);
+    const pdfWindow = window.open(pdfUrl, '_blank');
+    if (!pdfWindow) {
+      const a = document.createElement('a');
+      a.href = pdfUrl; a.download = 'seed-dtr-report.pdf';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    }
+    setTimeout(() => URL.revokeObjectURL(pdfUrl), 10000);
   }).catch(async (err) => {
     let isNoData = false;
-    try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0/i.test(t); } } catch (_) {}
+    try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0|No data found/i.test(t); } } catch (_) {}
     if (isNoData) Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
     else Swal.fire({ icon: "error", title: "Generation Failed", text: "Could not generate the report. Please try again." });
   });
@@ -134,7 +141,7 @@ function SeedDtrReport() {
 
       <Block className="mt-n5">
 
-        <Form onSubmit={postData}>
+        <Form onSubmit={postData} noValidate>
           <Row className="g-3">
 
             <Card style={{

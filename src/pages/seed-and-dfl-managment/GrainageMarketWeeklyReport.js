@@ -218,8 +218,14 @@ function GrainageMarketWeeklyReport() {
     setDataRows([]);
     try {
       const res = await api.get(baseURLSeedDFL + "weekly-market-report", { params: params() });
-      setDataRows(Array.isArray(res.data) ? res.data : []);
-      setHasReport(true);
+      const rows = Array.isArray(res.data) ? res.data : [];
+      setDataRows(rows);
+      if (rows.length === 0) {
+        Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+        setHasReport(false);
+      } else {
+        setHasReport(true);
+      }
     } catch (err) {
         const status = err?.response?.status;
         if (status === 404 || status === 204) {
@@ -239,6 +245,10 @@ function GrainageMarketWeeklyReport() {
   const handlePdf = async () => {
     const err = validate();
     if (err) { showWarn(err); return; }
+    if (!dataRows || dataRows.length === 0) {
+      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      return;
+    }
     setIsDownloadingPdf(true);
     try {
       const res = await api.get(baseURLSeedDFL + "weekly-market-report/pdf", { params: params(), responseType: "blob" });
@@ -252,10 +262,17 @@ function GrainageMarketWeeklyReport() {
         Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
         return;
       }
-      window.open(URL.createObjectURL(blobData));
+      const pdfUrl = URL.createObjectURL(blobData);
+      const pdfWindow = window.open(pdfUrl, '_blank');
+      if (!pdfWindow) {
+        const a = document.createElement('a');
+        a.href = pdfUrl; a.download = 'grainage-market-weekly-report.pdf';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      }
+      setTimeout(() => URL.revokeObjectURL(pdfUrl), 10000);
     } catch (err) {
       let isNoData = false;
-      try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0/i.test(t); } } catch (_) {}
+      try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0|No data found/i.test(t); } } catch (_) {}
       if (isNoData) Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
       else showErr("PDF Failed", "Could not generate the PDF report.");
     } finally {
@@ -266,6 +283,10 @@ function GrainageMarketWeeklyReport() {
   const handleExcel = async () => {
     const err = validate();
     if (err) { showWarn(err); return; }
+    if (!dataRows || dataRows.length === 0) {
+      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      return;
+    }
     setIsDownloadingExcel(true);
     try {
       const res = await api.get(baseURLSeedDFL + "weekly-market-report/excel", { params: params(), responseType: "blob" });
@@ -351,7 +372,7 @@ function GrainageMarketWeeklyReport() {
           </div>
 
           <Card.Body style={{ padding: "16px 20px 18px", background: "linear-gradient(180deg,#ffffff,#f8fffe)" }}>
-            <Form onSubmit={handleView}>
+            <Form onSubmit={handleView} noValidate>
               <Row className="g-2 align-items-end">
                 <Col md={3}>
                   <label style={lbl}>Market <span style={{ color: "#e53e3e" }}>*</span></label>
@@ -396,10 +417,10 @@ function GrainageMarketWeeklyReport() {
                     <button type="submit" disabled={isLoading} style={btn("linear-gradient(135deg,#0f766e,#14b8a6)", "0 4px 12px rgba(15,118,110,.32)", isLoading)}>
                       {isLoading ? <><span className="spinner-border spinner-border-sm" /> Loading…</> : <>📋 View</>}
                     </button>
-                    <button type="button" disabled={isDownloadingPdf} onClick={handlePdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 4px 12px rgba(185,28,28,.30)", isDownloadingPdf)}>
+                    <button type="button" disabled={isDownloadingPdf || !dataRows || dataRows.length === 0} onClick={handlePdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 4px 12px rgba(185,28,28,.30)", isDownloadingPdf || !dataRows || dataRows.length === 0)}>
                       {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📄 PDF</>}
                     </button>
-                    <button type="button" disabled={isDownloadingExcel} onClick={handleExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 4px 12px rgba(21,128,61,.30)", isDownloadingExcel)}>
+                    <button type="button" disabled={isDownloadingExcel || !dataRows || dataRows.length === 0} onClick={handleExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 4px 12px rgba(21,128,61,.30)", isDownloadingExcel || !dataRows || dataRows.length === 0)}>
                       {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📊 Excel</>}
                     </button>
                   </div>
@@ -599,10 +620,10 @@ function GrainageMarketWeeklyReport() {
                   &nbsp;·&nbsp; {dataRows.length} group{dataRows.length === 1 ? "" : "s"}
                 </span>
                 <div className="d-flex gap-2 flex-wrap">
-                  <button type="button" onClick={handlePdf} disabled={isDownloadingPdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 2px 8px rgba(185,28,28,.25)", isDownloadingPdf)}>
+                  <button type="button" onClick={handlePdf} disabled={isDownloadingPdf || !dataRows || dataRows.length === 0} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 2px 8px rgba(185,28,28,.25)", isDownloadingPdf || !dataRows || dataRows.length === 0)}>
                     {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Generating…</> : <>📄 Download PDF</>}
                   </button>
-                  <button type="button" onClick={handleExcel} disabled={isDownloadingExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 2px 8px rgba(21,128,61,.25)", isDownloadingExcel)}>
+                  <button type="button" onClick={handleExcel} disabled={isDownloadingExcel || !dataRows || dataRows.length === 0} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 2px 8px rgba(21,128,61,.25)", isDownloadingExcel || !dataRows || dataRows.length === 0)}>
                     {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Exporting…</> : <>📊 Download Excel</>}
                   </button>
                 </div>

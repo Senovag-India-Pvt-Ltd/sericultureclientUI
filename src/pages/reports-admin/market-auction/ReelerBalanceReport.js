@@ -99,6 +99,10 @@ function ReelerBalanceReport() {
       Swal.fire("Please select Market");
       return;
     }
+    if (!reportData || reportData.length === 0) {
+      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      return;
+    }
 
     api
       .post(baseURLMarket + "lotGroupage/reeler-balance-report", null, {
@@ -158,7 +162,7 @@ function ReelerBalanceReport() {
                     variant="primary"
                     size="lg"
                     onClick={downloadReport}
-                    disabled={!data.marketId || loading}
+                    disabled={!data.marketId || loading || !reportData || reportData.length === 0}
                     style={{
                       borderRadius: "10px",
                     }}
