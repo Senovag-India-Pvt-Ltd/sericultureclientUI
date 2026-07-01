@@ -85,11 +85,20 @@ function PendingMarketFeeReport() {
         }
       })
       .catch((err) => {
-        const msg =
-          err.response?.data?.errorMessages?.[0]?.message ||
-          err.message ||
-          t("Failed to fetch report data.");
-        Swal.fire({ icon: "error", title: t("Error"), text: msg });
+        // errorMessages[0].message is an array of objects — drill into it
+        const firstErrBlock = err.response?.data?.errorMessages?.[0]?.message;
+        const msgText = Array.isArray(firstErrBlock)
+          ? firstErrBlock[0]?.message
+          : typeof firstErrBlock === "string"
+          ? firstErrBlock
+          : err.message || t("Failed to fetch report data.");
+
+        const isNoData = typeof msgText === "string" && /no data found/i.test(msgText);
+        Swal.fire({
+          icon: isNoData ? "info" : "error",
+          title: isNoData ? t("No Data Found") : t("Error"),
+          text: isNoData ? t("No records found for the selected criteria.") : msgText,
+        });
         setSearched(true);
       })
       .finally(() => setLoading(false));
