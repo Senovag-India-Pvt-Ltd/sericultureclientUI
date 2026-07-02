@@ -216,8 +216,7 @@ const [sanctionOrderNumbers, setSanctionOrderNumbers] = useState([]);
     addressDetails.scSchemeDetailsId &&
     addressDetails.subSchemeId &&
     addressDetails.componentId &&
-    addressDetails.scCategoryId &&
-    addressDetails.fruitsId
+    addressDetails.scCategoryId
   ) {
     api
       .post(
@@ -241,8 +240,7 @@ useEffect(() => {
     addressDetails.scSchemeDetailsId &&
     addressDetails.subSchemeId &&
     addressDetails.componentId &&
-    addressDetails.scCategoryId &&
-    addressDetails.fruitsId
+    addressDetails.scCategoryId
   ) {
     loadSanctionOrderNumbers(addressDetails);
   }

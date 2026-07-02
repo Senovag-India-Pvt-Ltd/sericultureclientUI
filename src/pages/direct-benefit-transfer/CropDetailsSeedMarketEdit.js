@@ -126,6 +126,7 @@ const { t } = useTranslation();
     marketId: "",
     biddingSlipNo: "",
     cocoonRatePerKg: "",
+    reelingRate: "",
     incentiveReceiptNo: "",
     fruitsId: "",
     crcName: "",
@@ -928,6 +929,24 @@ const { t } = useTranslation();
                           {/* <Form.Control.Feedback type="invalid">
                           Screening Batch No is required
                           </Form.Control.Feedback> */}
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="4">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label htmlFor="reelingRate">
+                          {t("Reeling Rate")}
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Control
+                            id="reelingRate"
+                            name="reelingRate"
+                            value={data.reelingRate}
+                            onChange={handleInputs}
+                            type="number"
+                            placeholder={t("Enter Reeling Rate")}
+                          />
                         </div>
                       </Form.Group>
                     </Col>
