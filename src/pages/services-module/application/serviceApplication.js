@@ -2348,49 +2348,13 @@ const [totalSubsidy, setTotalSubsidy] = useState(0);
 //   });
 // };
 
-const calculateBonusAmount = ({ calcType, maxNoOfCocoonsPerKg,minAverageYield } = {}) => {
+const calculateBonusAmount = ({ calcType, maxNoOfCocoonsPerKg, minAverageYield } = {}) => {
   const cocoonsWeight = parseFloat(data.cocoonsWeight || 0);
-  const amountPerKg = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
-  const avgYield = parseFloat(data.averageYield || 0);
-  const noOfDFLs = parseFloat(data.lotWeight || 0);
+  const amountPerKg   = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
 
-  // let baseQuantity;
-  let baseQuantity = cocoonsWeight;
-
-  // ⭐ Special rule:
-  // If calcType is Bivoltine incentive AND averageYield > maxNoOfCocoonsPerKg,
-  // then calculate based on: maxNoOfCocoonsPerKg * amountPerKg
-  // if (
-  //   calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF" &&
-  //   maxNoOfCocoonsPerKg &&
-  //   avgYield > parseFloat(maxNoOfCocoonsPerKg)
-  // ) {
-  //   if (noOfDFLs < 100) {
-  //     // 🔥 BELOW 100 DFLs RULE
-  //     baseQuantity = (noOfDFLs * maxNoOfCocoonsPerKg) / 100;
-  //   } else {
-  //     // 🔥 100 OR MORE DFLs RULE
-  //     baseQuantity = maxNoOfCocoonsPerKg;
-  //   }
-  // }
-  if (calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF") {
-
-    // ❌ Below minimum → should already be blocked before calling this
-    if (avgYield < minAverageYield) return;
-
-    // 🔥 If avgYield exceeds max → LIMIT the cocoons weight
-    if (avgYield > maxNoOfCocoonsPerKg) {
-      baseQuantity = (noOfDFLs / 100) * maxNoOfCocoonsPerKg;
-    }
-    // else → use actual cocoonsWeight (no change)
-  }
-
-  const calculatedAmount = baseQuantity * amountPerKg;
-
-  // Round to 2 decimals
-  // const roundedAmount = Math.round(calculatedAmount * 100) / 100;
-
-  const roundedAmount = Math.round(calculatedAmount);
+  // Original formula: Total = Cocoons Transacted × Rate per kg
+  const calculatedAmount = cocoonsWeight * amountPerKg;
+  const roundedAmount    = Math.round(calculatedAmount);
 
   setAmountValue((prev) => ({
     ...prev,
