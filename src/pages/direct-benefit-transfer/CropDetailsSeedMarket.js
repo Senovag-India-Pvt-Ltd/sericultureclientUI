@@ -51,6 +51,7 @@ function CropDetailsForSeedMarket() {
     biddingSlipNo: "",
     biddingSlipNumber: "",
     cocoonRatePerKg: "",
+    reelingRate: "",
     transactionDate: "",
     quantityOfSeedCocoons: "",
   });
@@ -253,6 +254,7 @@ function CropDetailsForSeedMarket() {
         biddingSlipNo: t.biddingSlipNo,
         biddingSlipNumber: t.biddingSlipNumber,
         cocoonRatePerKg: t.cocoonRatePerKg,
+        reelingRate: t.reelingRate,
         transactionDate: formatDate(t.transactionDate),
         quantityOfSeedCocoons: t.quantityOfSeedCocoons,
       })),
@@ -972,6 +974,7 @@ function CropDetailsForSeedMarket() {
                                   <th>{t("Bidding Slip Number")}</th>
                                   <th>{t("Bidding Slip Lot No")}</th>
                                   <th>{t("Cocoon Rate Per Kg")}</th>
+                                  <th>{t("Reeling Rate")}</th>
                                   <th>{t("Total Quantity Of Seed Cocoons")}</th>
                                   <th>{t("Transaction Date")}</th>
                                 </tr>
@@ -1002,6 +1005,7 @@ function CropDetailsForSeedMarket() {
                                     <td>{item.biddingSlipNumber}</td>
                                     <td>{item.biddingSlipNo}</td>
                                     <td>{item.cocoonRatePerKg}</td>
+                                    <td>{item.reelingRate}</td>
                                     <td>{item.quantityOfSeedCocoons}</td>
                                     <td>{formatDate(item.transactionDate)}</td>
                                   </tr>
@@ -1194,6 +1198,28 @@ function CropDetailsForSeedMarket() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
+                    {t("Reeling Rate")}<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="reelingRate"
+                      name="reelingRate"
+                      type="number"
+                      value={transactionDetails.reelingRate}
+                      onChange={handleMapInputs}
+                      placeholder={t("Enter Reeling Rate")}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Reeling Rate is required")}
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>
                     {t("Total Quantity Of Seed Cocoons")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
@@ -1355,6 +1381,28 @@ function CropDetailsForSeedMarket() {
                     />
                     <Form.Control.Feedback type="invalid">
                       {t("Cocoon Rate Per Kg is required")}
+                    </Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+              </Col>
+
+              <Col lg="6">
+                <Form.Group className="form-group mt-n4">
+                  <Form.Label>
+                    {t("Reeling Rate")}<span className="text-danger">*</span>
+                  </Form.Label>
+                  <div className="form-control-wrap">
+                    <Form.Control
+                      id="reelingRate"
+                      name="reelingRate"
+                      type="number"
+                      value={transactionDetails.reelingRate}
+                      onChange={handleMapInputs}
+                      placeholder={t("Enter Reeling Rate")}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {t("Reeling Rate is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>

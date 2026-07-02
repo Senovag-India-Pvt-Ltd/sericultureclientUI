@@ -324,7 +324,7 @@ function RegenerateSanctionOrder() {
           <div style={{ background: "linear-gradient(135deg, #1e67a8 0%, #2d9cdb 100%)", padding: "18px 28px", display: "flex", alignItems: "center", gap: "12px" }}>
             <div style={{ width: "38px", height: "38px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px" }}>🖨️</div>
             <div>
-              <div style={{ color: "#fff", fontWeight: 700, fontSize: "17px", lineHeight: 1.2 }}>Regenerate Sanction Order (Jasper)</div>
+              <div style={{ color: "#fff", fontWeight: 700, fontSize: "17px", lineHeight: 1.2 }}>Regenerate Sanction Order</div>
               <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "2px" }}>Builds a fresh PDF from Jasper — not the stored S3 copy</div>
             </div>
           </div>
