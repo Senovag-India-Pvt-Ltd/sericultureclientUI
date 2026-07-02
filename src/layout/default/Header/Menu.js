@@ -411,6 +411,7 @@ function Menu() {
     Admin_Master_Service: false,
     Admin_Master_Service_Document: false,
     Admin_Master_Service_Department: false,
+    Admin_Master_Service_Sericulture_Table: false,
     Admin_Master_Service_Reject_Reason_WorkFlow: false,
     Admin_Master_Service_Reject_Reason: false,
     Admin_Master_Service_Silk_Exchange: false,
@@ -454,6 +455,7 @@ function Menu() {
     Admin_Master_Service_Calculation_Bonus: false,
     Admin_Master_Service_Calculation_RH_Amount: false,
     Admin_Master_Service_Calculation_Registered_Private_Chawki: false,
+    Admin_Master_Service_Calculation_ARM: true,
     
 
     Admin_Master_Training: false,
@@ -4033,6 +4035,15 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
+                        {showMenu.Admin_Master_Service_Calculation_ARM ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("ARM Calculation")}
+                              to="/seriui/arm-calculation-list"
+                            />
+                          </MenuItem>
+                        ) : null}
+
                         </MenuSub>
                       </MenuItem>
                     ) : null}
@@ -4232,6 +4243,15 @@ function Menu() {
                             <MenuItemLink
                               text={t("Scheme Wise Document")}
                               to="/seriui/scheme-document"
+                            />
+                          </MenuItem>
+                        ) : null}
+
+                        {showMenu.Admin_Master_Service_Sericulture_Table ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Sericulture Table")}
+                              to="/seriui/sericulture-table"
                             />
                           </MenuItem>
                         ) : null}
