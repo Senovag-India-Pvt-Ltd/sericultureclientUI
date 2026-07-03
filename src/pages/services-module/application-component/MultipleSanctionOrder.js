@@ -2556,7 +2556,7 @@ const saveRejectSuccess = (message) => {
                   <div className="form-control-wrap">
                     <Form.Control
                       id="sanctionNo"
-                      type="text"
+                      type="number"
                       name="sanctionNo"
                       value={actionData.sanctionNo}
                       onChange={handleActionInputs}

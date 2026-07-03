@@ -144,8 +144,7 @@ function GenerateSelectionLetter() {
       addressDetails.scSchemeDetailsId &&
       addressDetails.subSchemeId &&
       addressDetails.componentId &&
-      addressDetails.scCategoryId &&
-      addressDetails.fruitsId
+      addressDetails.scCategoryId
     ) {
       api
         .post(
@@ -166,8 +165,7 @@ function GenerateSelectionLetter() {
       addressDetails.scSchemeDetailsId &&
       addressDetails.subSchemeId &&
       addressDetails.componentId &&
-      addressDetails.scCategoryId &&
-      addressDetails.fruitsId
+      addressDetails.scCategoryId
     ) {
       loadSanctionOrderNumbers(addressDetails);
     }

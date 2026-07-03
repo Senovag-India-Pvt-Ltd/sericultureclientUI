@@ -6980,6 +6980,18 @@ function Menu() {
                       blank={true}
                     />
                   </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Pendency Dashboard")}
+                      to="/seriui/pendency-dashboard"
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Cumulative Report")}
+                      to="/seriui/cumulative-report"
+                    />
+                  </MenuItem>
                 </MenuSub>
               </MenuItem>
             ) : null}
