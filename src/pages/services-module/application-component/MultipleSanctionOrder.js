@@ -29,6 +29,13 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
+// Month options for the Silk Incentive-PSF filter (values match saf.month in DB)
+const MONTHS = [
+  "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
+  "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER",
+];
+const titleCase = (s) => (s ? s.charAt(0) + s.slice(1).toLowerCase() : s);
+
 function MultipleSanctionOrder() {
   const { id } = useParams();
   const { t } = useTranslation();
@@ -53,6 +60,7 @@ function MultipleSanctionOrder() {
     tscId: "",
     machineTypeId: "",
     raceId: "",
+    month: "",
   });
 
   let name, value;
@@ -336,6 +344,15 @@ const enableSanctionIfRequired = async () => {
   return;
 }
 
+  if (isMachineTypeRequired && !data.month) {
+  Swal.fire({
+    icon: "warning",
+    title: "Month Required",
+    text: "Please select Month",
+  });
+  return;
+}
+
 
   // Reset
   setSelectedRows([]);
@@ -358,6 +375,10 @@ const enableSanctionIfRequired = async () => {
           tscId: data.tscId > 0 ? data.tscId : null,
           machineTypeId: data.machineTypeId > 0 ? data.machineTypeId : null,
           raceId: data.raceId > 0 ? data.raceId : null,
+          month:
+            sanctionOrderForScheme === "Silk Incentive-PSF" && data.month
+              ? data.month
+              : null,
 
         },
       }
@@ -2502,6 +2523,27 @@ const saveRejectSuccess = (message) => {
                                   </option>
                                 ))
                               : ""}
+                          </Form.Select>
+                        </div>
+                      </Col>
+
+                      <Form.Label column sm={1}>
+                        {t("Month")}
+                      </Form.Label>
+
+                      <Col sm={2}>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="month"
+                            value={data.month}
+                            onChange={handleInputs}
+                          >
+                            <option value="">{t("Select Month")}</option>
+                            {MONTHS.map((m) => (
+                              <option key={m} value={m}>
+                                {titleCase(m)}
+                              </option>
+                            ))}
                           </Form.Select>
                         </div>
                       </Col>
