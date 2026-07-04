@@ -1,4 +1,4 @@
-import { Card, Button } from "react-bootstrap";
+import { Card, Button, Form, InputGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
@@ -19,42 +19,35 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 function DesignationList() {
     // Translation
     const { t } = useTranslation();
-  const [listData, setListData] = useState({});
-  const [page, setPage] = useState(0);
-  const countPerPage = 5;
-  const [totalRows, setTotalRows] = useState(0);
+  const [listData, setListData] = useState([]);
+  const [searchText, setSearchText] = useState("");
   const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage } };
 
   const getList = () => {
     setLoading(true);
-    // axios
-    //   .get(baseURL + `designation/list`, _params)
-    //   .then((response) => {
-    //     setListData(response.data.content.designation);
-    //     setTotalRows(response.data.content.totalItems);
-    //     setLoading(false);
-    //   })
-    //   .catch((err) => {
-    //     setListData({});
-    //     setLoading(false);
-    //   });
-    const response = api
-      .get(baseURL + `designation/list`, _params)
+    api
+      .get(baseURL + `designation/list`, { params: { pageNumber: 0, size: 5000 } })
       .then((response) => {
-        setListData(response.data.content.designation);
-        setTotalRows(response.data.content.totalItems);
+        setListData(response.data.content.designation || []);
         setLoading(false);
       })
       .catch((err) => {
-        setListData({});
+        setListData([]);
         setLoading(false);
       });
   };
 
   useEffect(() => {
     getList();
-  }, [page]);
+  }, []);
+
+  const filteredData = Array.isArray(listData)
+    ? listData.filter((row) =>
+        !searchText ||
+        (row.name || "").toLowerCase().includes(searchText.toLowerCase()) ||
+        (row.designationNameInKannada || "").toLowerCase().includes(searchText.toLowerCase())
+      )
+    : [];
 
   const navigate = useNavigate();
   const handleView = (_id) => {
@@ -247,19 +240,43 @@ function DesignationList() {
 
       <Block className="mt-n4">
         <Card>
+          {/* Search Bar */}
+          <div style={{ padding: "12px 16px", borderBottom: "2px solid #1e67a8", background: "#f0f5fb", display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+            <InputGroup style={{ maxWidth: "360px" }}>
+              <InputGroup.Text style={{ background: "#1e67a8", border: "none", color: "#fff", borderRadius: "6px 0 0 6px" }}>
+                🔍
+              </InputGroup.Text>
+              <Form.Control
+                type="text"
+                placeholder={t("Search Designation...")}
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                style={{ border: "1.5px solid #1e67a8", borderLeft: "none", borderRadius: "0 6px 6px 0", fontSize: "13px", color: "#004b8e" }}
+              />
+              {searchText && (
+                <button
+                  onClick={() => setSearchText("")}
+                  style={{ background: "#fff", border: "1.5px solid #1e67a8", borderLeft: "none", borderRadius: "0 6px 6px 0", padding: "0 10px", cursor: "pointer", color: "#dc3545", fontWeight: 700, fontSize: "14px" }}
+                >
+                  ✕
+                </button>
+              )}
+            </InputGroup>
+            {searchText && (
+              <span style={{ fontSize: "12px", color: "#1e67a8", fontWeight: 600 }}>
+                {filteredData.length} {t("result(s) found")}
+              </span>
+            )}
+          </div>
+
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={DesignationDataColumns}
-            data={listData}
+            data={filteredData}
             highlightOnHover
             pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
+            paginationPerPage={20}
+            paginationRowsPerPageOptions={[20, 50, 100]}
             progressPending={loading}
             theme="solarized"
             customStyles={customStyles}

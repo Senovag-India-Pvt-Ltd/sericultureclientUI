@@ -569,6 +569,10 @@ import ScApprovalStage from "../pages/masters/sc-approval-stage/ScApprovalStage"
 import ScApprovalStageList from "../pages/masters/sc-approval-stage/ScApprovalStageList";
 import ScApprovalStageView from "../pages/masters/sc-approval-stage/ScApprovalStageView";
 import EditScApprovalStage from "../pages/masters/sc-approval-stage/EditScApprovalStage";
+import ArmCalculation from "../pages/masters/armCalculation/ArmCalculation";
+import ArmCalculationList from "../pages/masters/armCalculation/ArmCalculationList";
+import ArmCalculationEdit from "../pages/masters/armCalculation/ArmCalculationEdit";
+import ArmCalculationView from "../pages/masters/armCalculation/ArmCalculationView";
 import ScProgramApprovalMapping from "../pages/masters/sc-program-approval-mapping/ScProgramApprovalMapping";
 import ScProgramApprovalMappingList from "../pages/masters/sc-program-approval-mapping/ScProgramApprovalMappingList";
 import ScProgramApprovalMappingView from "../pages/masters/sc-program-approval-mapping/ScProgramApprovalMappingView";
@@ -3826,6 +3830,10 @@ function Router() {
             <Route path="sc-program-list" element={<ScProgramList />} />
             <Route path="sc-program-view/:id" element={<ScProgramView />} />
             <Route path="sc-program-edit/:id" element={<ScProgramEdit />} />
+            <Route path="arm-calculation" element={<ArmCalculation />} />
+            <Route path="arm-calculation-list" element={<ArmCalculationList />} />
+            <Route path="arm-calculation-view/:id" element={<ArmCalculationView />} />
+            <Route path="arm-calculation-edit/:id" element={<ArmCalculationEdit />} />
             <Route path="sc-approval-stage" element={<ScApprovalStage />} />
             <Route
               path="sc-approval-stage-list"
