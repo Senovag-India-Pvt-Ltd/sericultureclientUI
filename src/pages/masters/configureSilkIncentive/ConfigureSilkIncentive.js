@@ -393,9 +393,15 @@ const handleInputs = (e) => {
                           <option value="1-Table(2 ಬೇಸಿನ್‌)">1-Table(2 ಬೇಸಿನ್‌)</option>
                           <option value="2-Table(4 ಬೇಸಿನ್‌)">2-Table(4 ಬೇಸಿನ್‌)</option>
                           <option value="3-Table(6 ಬೇಸಿನ್‌)">3-Table(6 ಬೇಸಿನ್‌)</option>
+                          <option value="1 ಬೇಸಿನ್‌">1 ಬೇಸಿನ್‌</option>
+                          <option value="2 ಬೇಸಿನ್‌">2 ಬೇಸಿನ್‌</option>
                           <option value="3 ಬೇಸಿನ್‌">3 ಬೇಸಿನ್‌</option>
+                          <option value="4 ಬೇಸಿನ್‌">4 ಬೇಸಿನ್‌</option>
                           <option value="5 ಬೇಸಿನ್‌">5 ಬೇಸಿನ್‌</option>
                           <option value="6 ಬೇಸಿನ್‌">6 ಬೇಸಿನ್‌</option>
+                          <option value="7 ಬೇಸಿನ್‌">7 ಬೇಸಿನ್‌</option>
+                          <option value="8 ಬೇಸಿನ್‌">8 ಬೇಸಿನ್‌</option>
+                          <option value="9 ಬೇಸಿನ್‌">9 ಬೇಸಿನ್‌</option>
                           <option value="10 ಬೇಸಿನ್‌">10 ಬೇಸಿನ್‌</option>
                           <option value="36 ends">36 ends</option>
                           <option value="48 ends">48 ends</option>
