@@ -444,7 +444,8 @@ function ScSubSchemeDetails() {
                              <option value="SS Construction Of Low Cost Shed to Permanent Rearing House">SS Construction Of Low Cost Shed to Permanent Rearing House</option>
                               <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
                               <option value="SDP RH 225">SDP RH 225</option>
-                              <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>     
+                              <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
+                              <option value="Automatic Reeling Machine Unit">Automatic Reeling Machine Unit</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -452,7 +453,7 @@ function ScSubSchemeDetails() {
                         </div>
                       </Form.Group>
                     </Col>
-  
+
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
@@ -504,6 +505,7 @@ function ScSubSchemeDetails() {
                              <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
                              <option value="SDP RH 225">SDP RH 225</option>
                               <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
+                              <option value="Automatic Reeling Machine Unit">Automatic Reeling Machine Unit</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -563,6 +565,7 @@ function ScSubSchemeDetails() {
                              <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
                              <option value="SDP RH 225">SDP RH 225</option>
                               <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
+                              <option value="Automatic Reeling Machine Unit">Automatic Reeling Machine Unit</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -621,6 +624,7 @@ function ScSubSchemeDetails() {
                              <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
                              <option value="SDP RH 225">SDP RH 225</option>
                               <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
+                              <option value="Automatic Reeling Machine Unit">Automatic Reeling Machine Unit</option>
 
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
@@ -681,6 +685,7 @@ function ScSubSchemeDetails() {
                              <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
                              <option value="SDP RH 225">SDP RH 225</option>
                               <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
+                              <option value="Automatic Reeling Machine Unit">Automatic Reeling Machine Unit</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
