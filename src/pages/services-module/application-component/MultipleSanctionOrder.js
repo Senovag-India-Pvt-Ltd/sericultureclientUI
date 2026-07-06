@@ -29,12 +29,14 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
-// Month options for the Silk Incentive-PSF filter (values match saf.month in DB)
-const MONTHS = [
-  "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
-  "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER",
-];
 const titleCase = (s) => (s ? s.charAt(0) + s.slice(1).toLowerCase() : s);
+// Display a saved saf.month value nicely: "APRIL-MAY" -> "April - May",
+// "APRIL 2026" -> "April 2026", "APRIL" -> "April".
+const formatMonthLabel = (m) =>
+  String(m)
+    .split("-")
+    .map((part) => part.trim().split(/\s+/).map(titleCase).join(" "))
+    .join(" - ");
 
 function MultipleSanctionOrder() {
   const { id } = useParams();
@@ -120,6 +122,9 @@ function MultipleSanctionOrder() {
 //   }
 // };
 const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState("");
+// Month filter options for Silk Incentive-PSF — populated from distinct saf.month
+// values actually saved for the selected scheme/sub-scheme/component/sub-component.
+const [monthOptions, setMonthOptions] = useState([]);
 
 
 const handleInputs = (e) => {
@@ -146,6 +151,8 @@ const handleInputs = (e) => {
     setIsRowSelectable(false);
     setSelectedRows([]);
     setIsSubmitEnabled(false);
+    // Context changed → any previously selected month is no longer valid.
+    setData((prev) => (prev.month ? { ...prev, month: "" } : prev));
   }
 
   // 👉 When Component is selected, pick sanctionOrderForScheme & subSchemeType
@@ -165,6 +172,47 @@ const handleInputs = (e) => {
 };
 
 
+
+  // Load the distinct saved months for the Month filter once the full
+  // Silk Incentive-PSF context (scheme/sub-scheme/component/sub-component) is chosen.
+  useEffect(() => {
+    const ready =
+      sanctionOrderForScheme === "Silk Incentive-PSF" &&
+      data.schemeId > 0 &&
+      data.subSchemeId > 0 &&
+      data.scComponentId > 0 &&
+      data.scCategoryId > 0;
+
+    if (!ready) {
+      setMonthOptions([]);
+      return;
+    }
+
+    api
+      .post(
+        baseURLDBT + `service/multipleSanctionMonths`,
+        {},
+        {
+          params: {
+            userId: localStorage.getItem("userMasterId"),
+            schemeId: data.schemeId,
+            subSchemeId: data.subSchemeId,
+            componentId: data.scComponentId,
+            scCategoryId: data.scCategoryId,
+          },
+        }
+      )
+      .then((response) => {
+        setMonthOptions(response.data.content || []);
+      })
+      .catch(() => setMonthOptions([]));
+  }, [
+    sanctionOrderForScheme,
+    data.schemeId,
+    data.subSchemeId,
+    data.scComponentId,
+    data.scCategoryId,
+  ]);
 
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
   const [isRowSelectable, setIsRowSelectable] = useState(false);
@@ -2539,9 +2587,9 @@ const saveRejectSuccess = (message) => {
                             onChange={handleInputs}
                           >
                             <option value="">{t("Select Month")}</option>
-                            {MONTHS.map((m) => (
+                            {monthOptions.map((m) => (
                               <option key={m} value={m}>
-                                {titleCase(m)}
+                                {formatMonthLabel(m)}
                               </option>
                             ))}
                           </Form.Select>

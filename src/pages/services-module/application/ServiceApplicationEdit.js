@@ -966,12 +966,13 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       (f) => String(f.financialYearMasterId) === String(data.financialYearMasterId)
     );
     if (!selectedFY) return;
-    // For monthly-frequency schemes the period follows the selected month, not the
-    // full financial year — leave it to the month handler / loaded value.
-    if (isMonthlyFrequency) return;
+    // For monthly-frequency schemes (or records already carrying a saved month) the
+    // period follows the selected month, not the full financial year — leave it to the
+    // month handler / loaded value so we don't clobber the loaded per-month dates.
+    if (isMonthlyFrequency || parseMonthYear(data.monthYear)) return;
     const { periodFrom, periodTo } = getFinancialYearPeriod(selectedFY.financialYear);
     setData((prev) => ({ ...prev, periodFrom, periodTo }));
-  }, [data.financialYearMasterId, financialyearListData, isMonthlyFrequency]);
+  }, [data.financialYearMasterId, financialyearListData, isMonthlyFrequency, data.monthYear]);
 
   // to get sc-sub-scheme-details by sc-scheme-details
   const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
@@ -1332,6 +1333,12 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     }));
   };
 
+  // Show the Month field when the sub scheme is configured monthly OR the record
+  // already has a saved month-year (e.g. "APRIL 2026") — the latter guarantees the
+  // field appears for already-saved monthly applications even before / regardless of
+  // the config fetch resolving.
+  const showMonthField = isMonthlyFrequency || !!parseMonthYear(data.monthYear);
+
   const handleDevelopedLandInputs = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -1366,7 +1373,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     event.preventDefault();
 
     // Monthly Frequency: Month is mandatory for monthly-frequency sub schemes.
-    if (isMonthlyFrequency && !data.monthYear) {
+    if (showMonthField && !data.monthYear) {
       Swal.fire({
         icon: "warning",
         title: "Month Required",
@@ -2985,7 +2992,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                           </Form.Group>
                         </Col> */}
 
-                        {isMonthlyFrequency && (
+                        {showMonthField && (
                           <Col lg="2">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="monthYear">
