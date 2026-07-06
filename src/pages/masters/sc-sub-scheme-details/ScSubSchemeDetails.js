@@ -44,6 +44,7 @@ function ScSubSchemeDetails() {
     allotReleaseDate: "",
     sanctionEnable: true,
     schemeCodeForSanctionOrder: "",
+    monthlyFrequency: false,
   });
 
   const startOfYear = new Date(new Date().getFullYear(), 0, 1);
@@ -125,7 +126,15 @@ function ScSubSchemeDetails() {
         allotReleaseDate: "",
         sanctionEnable: true,
         schemeCodeForSanctionOrder: "",
+        monthlyFrequency: false,
     });
+  };
+
+  const handleMonthlyFrequencyCheckBox = (e) => {
+    setData((prev) => ({
+      ...prev,
+      monthlyFrequency: e.target.checked,
+    }));
   };
 
   const handleCheckBox = (e) => {
@@ -966,6 +975,20 @@ function ScSubSchemeDetails() {
     {t("Enable Sanction")}
   </Form.Label>
 </Col>
+
+                        {/* Monthly Frequency */}
+                        <Col sm={2} className="d-flex align-items-center">
+                          <Form.Check
+                            type="checkbox"
+                            id="monthlyFrequency"
+                            checked={!!data.monthlyFrequency}
+                            onChange={handleMonthlyFrequencyCheckBox}
+                            className="me-2"
+                          />
+                          <Form.Label htmlFor="monthlyFrequency" className="mb-0">
+                            {t("Monthly Frequency")}
+                          </Form.Label>
+                        </Col>
                       </Row>
 
                 </Row>
