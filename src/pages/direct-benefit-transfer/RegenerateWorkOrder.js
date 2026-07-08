@@ -10,6 +10,35 @@ const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
+// Work-order report endpoint per scheme — mirrors DashboardReportList.callWorkOrderAcknowledgment
+// so the regenerated Work Order PDF matches what was originally generated.
+// (No farmer/company branching for work orders.)
+const WORK_ORDER_ENDPOINTS = {
+  "Silk Samagra State": "getWorkOrder",
+  "Silk Samagra Central": "getWorkOrder",
+  "PDMC": "pdmcWorkOrder",
+  "PMKSY": "pdmcWorkOrder",
+  "Reeling Shed-PSF": "selection-reeling-shed",
+  "Silk Incentive-PSF": "selection-reeling-shed",
+  "Adopting Boiler-PSF": "selection-boiler",
+  "SS Construction Of Low Cost Shed to Permanent Rearing House": "getWorkOrderRHSSconstruction",
+  "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House": "getWorkOrderSDPConstruction",
+  "ICB-PSF": "selection-icb",
+  "Adopting Heat Recovery Unit-PSF": "selection-heat-recovery-unit",
+  "Adopting Silent Generator": "selection-silent-generator",
+  "Adopting Solar power Generator": "selection-solar-generator",
+  "Adopting Solar Water Heater": "selection-solar-water-heater",
+  "MERM-PSF": "selection-MERM",
+  "IMCB-PSF": "selection-imcb",
+  "Rearing Equipment SS": "SelectionRearingEquipmentSS",
+  "Registered Private Bivoltine Chawki Rearing Center Subsidy": "SelectionCRC",
+  "SDP RH 225": "getRHSDP225WorkOrder",
+  "SDP Low Cost Shed": "getRHSDPLowCostShedWorkOrder",
+  "Automatic Reeling Machine Unit": "selection-arm",
+};
+// PDMC/PMKSY use a minimal payload; every other scheme sends scheme+subScheme+category.
+const WORK_ORDER_MINIMAL_PAYLOAD = new Set(["PDMC", "PMKSY"]);
+
 // Regenerate Work Order — always builds the PDF freshly from Jasper via the
 // reports `getWorkOrder` endpoint (NOT the pre-generated copy stored on S3).
 function RegenerateWorkOrder() {
@@ -31,6 +60,8 @@ function RegenerateWorkOrder() {
   const [applicationFormId, setApplicationFormId] = useState(null);
   const [workOrderNumber, setWorkOrderNumber] = useState("");
   const [workOrderNumbers, setWorkOrderNumbers] = useState([]);
+  // The scheme's "work order for scheme" config drives which Jasper report is used.
+  const [workOrderForScheme, setWorkOrderForScheme] = useState(null);
 
   // ── resolve the applicationFormId for the selected WORK ORDER number ──
   // getSanctionOrderData matches sanction_order_number only, so a work-order
@@ -165,6 +196,24 @@ function RegenerateWorkOrder() {
       .catch(() => setScCategoryListData([]));
   }, []);
 
+  // Resolve the scheme's work-order report type once scheme + component type are chosen.
+  useEffect(() => {
+    if (addressDetails.scSchemeDetailsId && addressDetails.subSchemeId) {
+      api
+        .get(
+          baseURLMasterData +
+            `scSubSchemeDetails/get-by-scheme-and-sub-scheme-details-id/${addressDetails.scSchemeDetailsId}/${addressDetails.subSchemeId}`
+        )
+        .then((r) => {
+          const list = r.data?.content?.scSubSchemeDetails;
+          setWorkOrderForScheme(list?.[0]?.workOrderForScheme || null);
+        })
+        .catch(() => setWorkOrderForScheme(null));
+    } else {
+      setWorkOrderForScheme(null);
+    }
+  }, [addressDetails.scSchemeDetailsId, addressDetails.subSchemeId]);
+
   // ── Regenerate from Jasper (getWorkOrder) ──
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -181,18 +230,34 @@ function RegenerateWorkOrder() {
       });
       return;
     }
-    setIsGenerating(true);
-    try {
-      const response = await api.post(
-        baseURLReport + `getWorkOrder`,
-        {
+    const endpoint = WORK_ORDER_ENDPOINTS[workOrderForScheme];
+    if (!endpoint) {
+      Swal.fire({
+        icon: "warning",
+        title: "Scheme Not Supported",
+        text: workOrderForScheme
+          ? `No work order report is configured for "${workOrderForScheme}".`
+          : "Could not determine the scheme's work order type. Please reselect the Scheme and Component Type.",
+        confirmButtonColor: "#d97706",
+      });
+      return;
+    }
+    const payload = WORK_ORDER_MINIMAL_PAYLOAD.has(workOrderForScheme)
+      ? {
+          applicationFormId: applicationFormId,
+          schemeId: addressDetails.scSchemeDetailsId,
+        }
+      : {
           applicationFormId: applicationFormId,
           schemeId: addressDetails.scSchemeDetailsId,
           subSchemeId: addressDetails.subSchemeId,
           categoryId: addressDetails.scCategoryId,
-        },
-        { responseType: "blob" }
-      );
+        };
+    setIsGenerating(true);
+    try {
+      const response = await api.post(baseURLReport + endpoint, payload, {
+        responseType: "blob",
+      });
       const file = new Blob([response.data], { type: "application/pdf" });
       window.open(URL.createObjectURL(file));
     } catch (error) {
