@@ -831,6 +831,8 @@ import RejectReasonWorkFlowEdit from "../pages/masters/reject-reason-workflow/Re
 import ApplicationFormList from "../pages/direct-benefit-transfer/ApplicationFormList";
 import ReportSuccessList from "../pages/direct-benefit-transfer/ReportSuccessList";
 import ReportRejectList from "../pages/direct-benefit-transfer/ReportRejectList";
+import DbtPaymentFailedTickets from "../pages/direct-benefit-transfer/DbtPaymentFailedTickets";
+import DbtPaymentFailedTicketDetails from "../pages/direct-benefit-transfer/DbtPaymentFailedTicketDetails";
 import ApplicationFormEdit from "../pages/services-module/application/ApplicationFormEdit";
 import TscOfficerList from "../pages/direct-benefit-transfer/TscOfficerList";
 import ServiceApplicationEdit from "../pages/services-module/application/ServiceApplicationEdit";
@@ -1888,6 +1890,14 @@ function Router() {
             <Route path="report-success-list" element={<ReportSuccessList />} />
             <Route path="report-reject-list" element={<ReportRejectList />} />
             <Route path="dbt-pushed-list" element={<DbtPushedList />} />
+            <Route
+              path="dbt-payment-failed-tickets"
+              element={<DbtPaymentFailedTickets />}
+            />
+            <Route
+              path="dbt-payment-failed-tickets/:id"
+              element={<DbtPaymentFailedTicketDetails />}
+            />
             <Route path="all-application" element={<AllApplicationDetails />} />
             <Route path="dbt-success-report" element={<DbtSuccessApplication />} />
             <Route path="dbt-failure-report" element={<DbtFailureApplication />} />
