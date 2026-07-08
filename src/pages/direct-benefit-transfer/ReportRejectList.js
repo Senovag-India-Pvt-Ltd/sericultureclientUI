@@ -1047,7 +1047,7 @@ function ReportRejectList() {
       hide: "md",
     },
     {
-      name: t("farmer_name"),
+      name: t("beneficiary_name"),
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
       sortable: true,
@@ -1817,7 +1817,7 @@ function ReportRejectList() {
                           <td>{detail.fruitsId}</td>
                         </tr>
                         <tr>
-                          <td style={styles.ctstyle}>Farmer Name:</td>
+                          <td style={styles.ctstyle}>Beneficiary Name:</td>
                           <td>{detail.farmerFirstName}</td>
                         </tr>
                         <tr>
@@ -1982,7 +1982,7 @@ function ReportRejectList() {
                     <thead>
                       <tr>
                         <th>Fruits Id</th>
-                        <th>Farmer Name</th>
+                        <th>Beneficiary Name</th>
                         <th>Sanction No</th>
                         <th>Scheme Name</th>
                         <th>Sub Scheme Name</th>
@@ -2195,7 +2195,7 @@ function ReportRejectList() {
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>{t("farmer_name")}</td>
+                        <td style={styles.ctstyle}>{t("beneficiary_name")}</td>
                         <td>
                           {viewDetailsData?.applicationDetails?.[0]
                             ?.farmerFirstName || "N/A"}

@@ -11,21 +11,69 @@ import api from "../../services/auth/api";
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
-const EMPTY_FILTERS = {
+const CANNOT_CLOSE_MSG =
+  "This ticket cannot be closed because the DBT payment is still in Failure status. " +
+  "The ticket can only be closed after the payment is successful.";
+
+// Consistently-styled popups so overlays match the beautified page.
+const SwalStyled = Swal.mixin({ customClass: { popup: "dpft-swal" } });
+
+const dpftStyles = `
+.dpft-hero{background:linear-gradient(120deg,#0d3b66 0%,#1a63a6 52%,#2f9bd8 100%);border-radius:18px;padding:22px 26px;color:#fff;box-shadow:0 12px 30px rgba(13,59,102,.22);position:relative;overflow:hidden;}
+.dpft-hero:after{content:"";position:absolute;right:-50px;top:-50px;width:190px;height:190px;background:rgba(255,255,255,.08);border-radius:50%;}
+.dpft-hero-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;position:relative;z-index:1;}
+.dpft-hero-eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.85;display:flex;align-items:center;}
+.dpft-hero-title{font-size:24px;font-weight:800;margin:5px 0 6px;color:#fff;}
+.dpft-hero-crumb .breadcrumb-item,.dpft-hero-crumb a{color:rgba(255,255,255,.85)!important;font-size:13px;text-decoration:none;}
+.dpft-hero-crumb .breadcrumb-item.active{color:#fff!important;}
+.dpft-hero-fy{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;padding:8px 16px;border-radius:30px;font-weight:600;font-size:13px;white-space:nowrap;display:inline-flex;align-items:center;}
+.dpft-kpi{border:none!important;border-radius:16px!important;box-shadow:0 4px 18px rgba(20,40,80,.07)!important;transition:transform .18s ease,box-shadow .18s ease;}
+.dpft-kpi:hover{transform:translateY(-4px);box-shadow:0 16px 32px rgba(20,40,80,.14)!important;}
+.dpft-kpi-icon{width:52px;height:52px;flex:0 0 52px;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 6px 14px rgba(0,0,0,.14);}
+.dpft-kpi-val{font-size:26px;font-weight:800;line-height:1;color:#1f2d3d;}
+.dpft-kpi-lbl{font-size:12.5px;color:#7b899c;font-weight:600;margin-top:3px;}
+.dpft-card{border:none!important;border-radius:16px!important;box-shadow:0 4px 20px rgba(20,40,80,.06)!important;overflow:hidden;}
+.dpft-card>.card-header{background:#fff!important;border-bottom:1px solid #eef2f7!important;padding:15px 20px;font-weight:700;color:#1f2d3d;display:flex;align-items:center;}
+.dpft-chip{width:30px;height:30px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;color:#fff;margin-right:10px;background:linear-gradient(135deg,#0d3b66,#2f9bd8);}
+.dpft-card .form-label{color:#5b6b7f;}
+.dpft-card .form-control,.dpft-card .form-select{border-radius:10px;border-color:#e2e8f2;padding:9px 12px;}
+.dpft-card .form-control:focus,.dpft-card .form-select:focus{border-color:#2f80ed;box-shadow:0 0 0 3px rgba(47,128,237,.12);}
+.dpft-swal.swal2-popup{border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.22);}
+`;
+
+// ---- Financial-year helpers (Indian FY: 1 Apr – 31 Mar) ------------------
+const fyStartYear = (date = new Date()) => {
+  const y = date.getFullYear();
+  return date.getMonth() >= 3 ? y : y - 1; // month 3 = April
+};
+const fyValue = (startYear) => `${startYear}-${startYear + 1}`;
+const fyRange = (startYear) => ({
+  fromDate: `${startYear}-04-01`,
+  toDate: `${startYear + 1}-03-31`,
+});
+const buildFyOptions = (count = 7) => {
+  const cur = fyStartYear();
+  return Array.from({ length: count }, (_, i) => {
+    const s = cur - i;
+    return { value: fyValue(s), label: fyValue(s), startYear: s };
+  });
+};
+
+const CURRENT_FY_START = fyStartYear();
+const CURRENT_FY = fyValue(CURRENT_FY_START);
+const FY_OPTIONS = buildFyOptions();
+
+const defaultFilters = () => ({
   applicationNumber: "",
-  farmerName: "",
   mobileNumber: "",
-  districtId: "",
-  talukId: "",
+  fruitsId: "",
   schemeId: "",
   subSchemeId: "",
-  paymentStatus: "",
-  acknowledgementStatus: "",
-  ticketStatus: "",
   failureType: "",
-  fromDate: "",
-  toDate: "",
-};
+  ticketStatus: "",
+  financialYear: CURRENT_FY,
+  ...fyRange(CURRENT_FY_START),
+});
 
 function DbtPaymentFailedTickets() {
   const navigate = useNavigate();
@@ -42,44 +90,47 @@ function DbtPaymentFailedTickets() {
     todaysTickets: 0,
   });
 
-  const [filters, setFilters] = useState({ ...EMPTY_FILTERS });
+  const [filters, setFilters] = useState(defaultFilters());
   const [listData, setListData] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
   const [page, setPage] = useState(0); // 0-based for the backend
   const [perPage, setPerPage] = useState(10);
-  const [sortBy, setSortBy] = useState("dbtPaymentFailedTicketId");
+  const [sortBy, setSortBy] = useState("modifiedDate");
   const [sortDir, setSortDir] = useState("desc");
   const [loading, setLoading] = useState(false);
 
-  const [districtList, setDistrictList] = useState([]);
-  const [talukList, setTalukList] = useState([]);
   const [schemeList, setSchemeList] = useState([]);
   const [subSchemeList, setSubSchemeList] = useState([]);
 
   createTheme(
-    "solarized",
+    "seriTheme",
     {
-      text: { primary: "#004b8e", secondary: "#2aa198" },
+      text: { primary: "#1f2d3d", secondary: "#5b6b7f" },
       background: { default: "#fff" },
       context: { background: "#cb4b16", text: "#FFFFFF" },
-      divider: { default: "#d3d3d3" },
+      divider: { default: "#eaeef3" },
+      highlightOnHover: { default: "#f3f7fb", text: "#1f2d3d" },
     },
     "light"
   );
 
   const customStyles = {
-    rows: { style: { minHeight: "44px" } },
+    table: { style: { borderRadius: "10px", overflow: "hidden" } },
+    rows: { style: { minHeight: "48px", fontSize: "13px" } },
     headCells: {
       style: {
-        backgroundColor: "#1e67a8",
+        backgroundColor: "#0d3b66",
         color: "#fff",
-        fontSize: "13px",
-        fontWeight: 600,
-        paddingLeft: "8px",
-        paddingRight: "8px",
+        fontSize: "12px",
+        fontWeight: 700,
+        textTransform: "uppercase",
+        letterSpacing: "0.3px",
+        paddingLeft: "10px",
+        paddingRight: "10px",
       },
     },
-    cells: { style: { paddingLeft: "8px", paddingRight: "8px", fontSize: "13px" } },
+    cells: { style: { paddingLeft: "10px", paddingRight: "10px" } },
+    pagination: { style: { borderTop: "1px solid #eaeef3" } },
   };
 
   // ---- helpers -------------------------------------------------------
@@ -110,14 +161,47 @@ function DbtPaymentFailedTickets() {
   };
 
   const ticketStatusBadge = (status) => {
-    if (status === "Closed") return <span className="badge bg-secondary">Closed</span>;
-    return <span className="badge bg-primary">Open</span>;
+    if (status === "Closed")
+      return (
+        <span className="badge rounded-pill bg-secondary">
+          <Icon name="check-circle" className="me-1" />
+          Closed
+        </span>
+      );
+    return (
+      <span className="badge rounded-pill bg-primary">
+        <Icon name="clock" className="me-1" />
+        Open
+      </span>
+    );
+  };
+
+  const failureTypeBadge = (type) => {
+    if (type === "ACKNOWLEDGEMENT_FAILED")
+      return <span className="badge bg-warning text-dark">Acknowledgement</span>;
+    if (type === "PAYMENT_FAILED") return <span className="badge bg-danger">Payment</span>;
+    return <span className="badge bg-secondary">-</span>;
   };
 
   const formatDate = (value) => {
     if (!value) return "";
     try {
       return new Date(value).toLocaleDateString("en-GB");
+    } catch (e) {
+      return value;
+    }
+  };
+
+  const formatDateTime = (value) => {
+    if (!value) return "-";
+    try {
+      return new Date(value).toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
     } catch (e) {
       return value;
     }
@@ -163,11 +247,15 @@ function DbtPaymentFailedTickets() {
   ) => {
     setLoading(true);
     const body = {
-      ...activeFilters,
-      districtId: activeFilters.districtId || null,
-      talukId: activeFilters.talukId || null,
+      applicationNumber: activeFilters.applicationNumber || null,
+      mobileNumber: activeFilters.mobileNumber || null,
+      fruitsId: activeFilters.fruitsId || null,
       schemeId: activeFilters.schemeId || null,
       subSchemeId: activeFilters.subSchemeId || null,
+      failureType: activeFilters.failureType || null,
+      ticketStatus: activeFilters.ticketStatus || null,
+      fromDate: activeFilters.fromDate || null,
+      toDate: activeFilters.toDate || null,
       pageNumber,
       size,
       sortBy: sortField,
@@ -188,24 +276,6 @@ function DbtPaymentFailedTickets() {
       });
   };
 
-  const getDistrictList = () => {
-    api
-      .get(baseURLMasterData + `district/get-all`)
-      .then((res) => setDistrictList(res?.data?.content?.district || []))
-      .catch(() => setDistrictList([]));
-  };
-
-  const getTalukList = (districtId) => {
-    if (!districtId) {
-      setTalukList([]);
-      return;
-    }
-    api
-      .get(baseURLMasterData + `taluk/get-by-district-id/${districtId}`)
-      .then((res) => setTalukList(res?.data?.content?.taluk || []))
-      .catch(() => setTalukList([]));
-  };
-
   const getSchemeList = () => {
     api
       .get(baseURLMasterData + `scSchemeDetails/get-all`)
@@ -222,7 +292,6 @@ function DbtPaymentFailedTickets() {
 
   useEffect(() => {
     checkAccess();
-    getDistrictList();
     getSchemeList();
     getSubSchemeList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -232,13 +301,15 @@ function DbtPaymentFailedTickets() {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    const next = { ...filters, [name]: value };
-    setFilters(next);
-    if (name === "districtId") {
-      next.talukId = "";
-      setFilters(next);
-      getTalukList(value);
-    }
+    setFilters((prev) => {
+      const next = { ...prev, [name]: value };
+      // Selecting a financial year auto-fills the date range.
+      if (name === "financialYear" && value) {
+        const opt = FY_OPTIONS.find((o) => o.value === value);
+        if (opt) Object.assign(next, fyRange(opt.startYear));
+      }
+      return next;
+    });
   };
 
   const search = () => {
@@ -247,9 +318,8 @@ function DbtPaymentFailedTickets() {
   };
 
   const reset = () => {
-    const cleared = { ...EMPTY_FILTERS };
+    const cleared = defaultFilters();
     setFilters(cleared);
-    setTalukList([]);
     setPage(0);
     getList(0, perPage, sortBy, sortDir, cleared);
   };
@@ -283,7 +353,7 @@ function DbtPaymentFailedTickets() {
       .get(baseURLDBT + `payment-failed-tickets/${row.dbtPaymentFailedTicketId}/refresh-status`)
       .then((res) => {
         const updated = res?.data?.content;
-        Swal.fire({
+        SwalStyled.fire({
           icon: "success",
           title: "Status refreshed",
           html: `Payment Status: <b>${updated?.paymentStatus || "N/A"}</b><br/>${
@@ -295,29 +365,54 @@ function DbtPaymentFailedTickets() {
         getDashboard();
       })
       .catch((err) => {
-        Swal.fire({ icon: "error", title: "Error", text: extractError(err) });
+        SwalStyled.fire({ icon: "error", title: "Error", text: extractError(err) });
       });
   };
 
+  // Validate the LATEST DBT payment status before closing. If the payment is
+  // still in Failure status the ticket stays Open and the user sees the
+  // mandated message — the UI is never marked as "Ticket Closed".
   const closeTicket = (row) => {
-    Swal.fire({
+    SwalStyled.fire({
       title: "Close this ticket?",
-      text: `Ticket ${row.ticketArn || row.dbtPaymentFailedTicketId} will be closed.`,
+      text: `Ticket ${row.ticketArn || row.dbtPaymentFailedTicketId} will be validated and closed.`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Yes, close it",
-      confirmButtonColor: "#1e67a8",
+      confirmButtonText: "Validate & Close",
+      confirmButtonColor: "#0d3b66",
     }).then((result) => {
       if (!result.isConfirmed) return;
+      SwalStyled.fire({ title: "Validating latest DBT payment status...", allowOutsideClick: false });
+      Swal.showLoading();
       api
-        .put(baseURLDBT + `payment-failed-tickets/${row.dbtPaymentFailedTicketId}/close`)
-        .then(() => {
-          Swal.fire({ icon: "success", title: "Ticket closed", timer: 2000 });
-          getList(page, perPage, sortBy, sortDir, filters);
-          getDashboard();
+        .get(baseURLDBT + `payment-failed-tickets/${row.dbtPaymentFailedTicketId}/refresh-status`)
+        .then((res) => {
+          const latest = res?.data?.content;
+          if (!latest?.canClose) {
+            // Still failed → keep Open, show mandated message, reflect latest status.
+            getList(page, perPage, sortBy, sortDir, filters);
+            getDashboard();
+            SwalStyled.fire({ icon: "error", title: "Cannot close ticket", text: CANNOT_CLOSE_MSG });
+            return;
+          }
+          api
+            .put(baseURLDBT + `payment-failed-tickets/${row.dbtPaymentFailedTicketId}/close`)
+            .then(() => {
+              SwalStyled.fire({ icon: "success", title: "Ticket closed", timer: 2000 });
+              getList(page, perPage, sortBy, sortDir, filters);
+              getDashboard();
+            })
+            .catch((err) => {
+              const msg = extractError(err);
+              SwalStyled.fire({
+                icon: "error",
+                title: "Cannot close ticket",
+                text: /success/i.test(msg) ? CANNOT_CLOSE_MSG : msg,
+              });
+            });
         })
         .catch((err) => {
-          Swal.fire({ icon: "error", title: "Cannot close ticket", text: extractError(err) });
+          SwalStyled.fire({ icon: "error", title: "Error", text: extractError(err) });
         });
     });
   };
@@ -326,12 +421,16 @@ function DbtPaymentFailedTickets() {
 
   const columns = [
     {
-      name: "Ticket",
+      name: "Ticket ARN",
       selector: (row) => row.ticketArn,
       sortable: true,
       sortField: "ticketArn",
-      cell: (row) => <span>{row.ticketArn || row.ticketNumber || "-"}</span>,
-      width: "150px",
+      cell: (row) => (
+        <span className="fw-semibold text-primary" role="button" onClick={() => viewTicket(row)}>
+          {row.ticketArn || row.ticketNumber || "-"}
+        </span>
+      ),
+      width: "160px",
     },
     {
       name: "Application No",
@@ -339,50 +438,60 @@ function DbtPaymentFailedTickets() {
       sortable: true,
       sortField: "arn",
       cell: (row) => <span>{row.applicationNumber || "-"}</span>,
+      width: "150px",
     },
     {
-      name: "Farmer",
+      name: "FRUITS ID",
+      selector: (row) => row.fruitsId,
+      cell: (row) => <span>{row.fruitsId || "-"}</span>,
+      width: "130px",
+    },
+    {
+      name: "Farmer / Reeler",
       selector: (row) => row.farmerName,
       sortable: true,
       sortField: "farmerName",
-      cell: (row) => <span>{row.farmerName || "-"}</span>,
+      cell: (row) => (
+        <div>
+          <div className="fw-medium">{row.farmerName || "-"}</div>
+          <div className="text-muted small d-flex align-items-center gap-1">
+            {row.beneficiaryType ? (
+              <span className="badge bg-light text-dark border">{row.beneficiaryType}</span>
+            ) : null}
+            {row.mobileNumber ? <span>{row.mobileNumber}</span> : null}
+          </div>
+        </div>
+      ),
+      minWidth: "180px",
     },
     {
       name: "Scheme",
       selector: (row) => row.schemeName,
-      cell: (row) => <span>{row.schemeName || "-"}</span>,
+      cell: (row) => (
+        <div>
+          <div>{row.schemeName || "-"}</div>
+          {row.subSchemeName ? <div className="text-muted small">{row.subSchemeName}</div> : null}
+        </div>
+      ),
+      minWidth: "170px",
     },
     {
-      name: "Sub Scheme",
-      selector: (row) => row.subSchemeName,
-      cell: (row) => <span>{row.subSchemeName || "-"}</span>,
+      name: "Type",
+      selector: (row) => row.failureType,
+      cell: (row) => failureTypeBadge(row.failureType),
+      width: "140px",
     },
     {
-      name: "District",
-      selector: (row) => row.districtName,
-      sortable: true,
-      sortField: "districtName",
-      cell: (row) => <span>{row.districtName || "-"}</span>,
-    },
-    {
-      name: "Payment",
+      name: "Payment Status",
       selector: (row) => row.paymentStatus,
       cell: (row) => statusBadge(row.paymentStatus),
+      minWidth: "150px",
     },
     {
       name: "Acknowledgement",
       selector: (row) => row.acknowledgementStatus,
       cell: (row) => statusBadge(row.acknowledgementStatus),
-    },
-    {
-      name: "Failure Reason",
-      selector: (row) => row.dbtFailureReason || row.acknowledgementFailureReason,
-      cell: (row) => (
-        <span title={row.dbtFailureReason || row.acknowledgementFailureReason || ""}>
-          {row.dbtFailureReason || row.acknowledgementFailureReason || "-"}
-        </span>
-      ),
-      wrap: true,
+      minWidth: "150px",
     },
     {
       name: "Ticket Status",
@@ -390,6 +499,7 @@ function DbtPaymentFailedTickets() {
       sortable: true,
       sortField: "ticketStatus",
       cell: (row) => ticketStatusBadge(row.ticketStatus),
+      width: "130px",
     },
     {
       name: "Created",
@@ -397,11 +507,19 @@ function DbtPaymentFailedTickets() {
       sortable: true,
       sortField: "createdDate",
       cell: (row) => <span>{formatDate(row.createdDate)}</span>,
+      width: "110px",
     },
     {
-      name: "Assigned",
-      selector: (row) => row.createdBy,
-      cell: (row) => <span>{row.assignedUser || row.createdBy || "SYSTEM"}</span>,
+      name: "Last Updated",
+      selector: (row) => row.modifiedDate,
+      sortable: true,
+      sortField: "modifiedDate",
+      cell: (row) => (
+        <span className="text-nowrap" style={{ fontSize: "12px" }}>
+          {formatDateTime(row.modifiedDate || row.createdDate)}
+        </span>
+      ),
+      minWidth: "150px",
     },
     {
       name: "Actions",
@@ -430,7 +548,7 @@ function DbtPaymentFailedTickets() {
           )}
         </div>
       ),
-      width: "150px",
+      width: "140px",
       ignoreRowClick: true,
     },
   ];
@@ -438,12 +556,12 @@ function DbtPaymentFailedTickets() {
   // ---- dashboard cards ----------------------------------------------
 
   const cards = [
-    { label: "Total Tickets", value: dashboard.totalTickets, icon: "reports", bg: "primary" },
-    { label: "Open Tickets", value: dashboard.openTickets, icon: "clock", bg: "info" },
-    { label: "Closed Tickets", value: dashboard.closedTickets, icon: "task", bg: "secondary" },
-    { label: "Payment Failed", value: dashboard.paymentFailed, icon: "cross-circle", bg: "danger" },
-    { label: "Ack Failed", value: dashboard.acknowledgementFailed, icon: "alert-circle", bg: "warning" },
-    { label: "Today's Tickets", value: dashboard.todaysTickets, icon: "bell", bg: "success" },
+    { label: "Total Tickets", value: dashboard.totalTickets, icon: "reports", grad: "linear-gradient(135deg,#0d3b66,#1d6fb8)", accent: "#0d3b66" },
+    { label: "Open Tickets", value: dashboard.openTickets, icon: "clock", grad: "linear-gradient(135deg,#2f80ed,#56ccf2)", accent: "#2f80ed" },
+    { label: "Closed Tickets", value: dashboard.closedTickets, icon: "check-circle", grad: "linear-gradient(135deg,#5b6b7f,#93a3b8)", accent: "#6b7a90" },
+    { label: "Payment Failed", value: dashboard.paymentFailed, icon: "cross-circle", grad: "linear-gradient(135deg,#e2445c,#ff7a90)", accent: "#e2445c" },
+    { label: "Ack Failed", value: dashboard.acknowledgementFailed, icon: "alert-circle", grad: "linear-gradient(135deg,#f2994a,#f9c66b)", accent: "#f2994a" },
+    { label: "Today's Tickets", value: dashboard.todaysTickets, icon: "bell", grad: "linear-gradient(135deg,#1e9e6a,#4bd6a0)", accent: "#1e9e6a" },
   ];
 
   // ---- render --------------------------------------------------------
@@ -472,40 +590,47 @@ function DbtPaymentFailedTickets() {
 
   return (
     <Layout title="DBT Payment Failed Tickets">
-      <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">DBT Payment Failed Tickets</Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  Failed Payment Monitoring
-                </li>
-              </ol>
-            </nav>
-          </Block.HeadContent>
-        </Block.HeadBetween>
-      </Block.Head>
+      <style>{dpftStyles}</style>
+
+      <Block>
+        <div className="dpft-hero">
+          <div className="dpft-hero-row">
+            <div>
+              <div className="dpft-hero-eyebrow">
+                <Icon name="shield-check" className="me-1" /> Failed Payment Monitoring
+              </div>
+              <div className="dpft-hero-title">DBT Payment Failed Tickets</div>
+              <nav>
+                <ol className="breadcrumb breadcrumb-arrow mb-0 dpft-hero-crumb">
+                  <li className="breadcrumb-item">
+                    <Link to="/seriui/">Home</Link>
+                  </li>
+                  <li className="breadcrumb-item active" aria-current="page">
+                    Failed Payment Monitoring
+                  </li>
+                </ol>
+              </nav>
+            </div>
+            <span className="dpft-hero-fy">
+              <Icon name="calendar" className="me-1" /> FY {filters.financialYear}
+            </span>
+          </div>
+        </div>
+      </Block>
 
       {/* Dashboard cards */}
-      <Block>
+      <Block className="mt-3">
         <Row className="g-3">
           {cards.map((c) => (
             <Col sm="6" md="4" xl="2" key={c.label}>
-              <Card className="h-100">
+              <Card className="dpft-kpi h-100">
                 <Card.Body className="d-flex align-items-center">
-                  <div
-                    className={`d-flex align-items-center justify-content-center rounded bg-${c.bg} text-white me-3`}
-                    style={{ width: "44px", height: "44px", flex: "0 0 44px" }}
-                  >
-                    <Icon name={c.icon} />
+                  <div className="dpft-kpi-icon me-3" style={{ background: c.grad }}>
+                    <Icon name={c.icon} style={{ fontSize: "22px" }} />
                   </div>
                   <div>
-                    <div className="fs-4 fw-bold lh-1">{c.value}</div>
-                    <div className="text-muted small">{c.label}</div>
+                    <div className="dpft-kpi-val">{c.value}</div>
+                    <div className="dpft-kpi-lbl">{c.label}</div>
                   </div>
                 </Card.Body>
               </Card>
@@ -516,60 +641,27 @@ function DbtPaymentFailedTickets() {
 
       {/* Filter section */}
       <Block className="mt-3">
-        <Card>
+        <Card className="dpft-card">
+          <Card.Header>
+            <span className="dpft-chip">
+              <Icon name="filter" />
+            </span>
+            <span>Filters</span>
+          </Card.Header>
           <Card.Body>
             <Row className="g-3">
-              <Col md="3">
-                <Form.Label>Application Number</Form.Label>
-                <Form.Control
-                  name="applicationNumber"
-                  value={filters.applicationNumber}
-                  onChange={handleFilterChange}
-                  placeholder="Application No"
-                />
-              </Col>
-              <Col md="3">
-                <Form.Label>Farmer Name</Form.Label>
-                <Form.Control
-                  name="farmerName"
-                  value={filters.farmerName}
-                  onChange={handleFilterChange}
-                  placeholder="Farmer name"
-                />
-              </Col>
-              <Col md="3">
-                <Form.Label>Mobile Number</Form.Label>
-                <Form.Control
-                  name="mobileNumber"
-                  value={filters.mobileNumber}
-                  onChange={handleFilterChange}
-                  placeholder="Mobile"
-                />
-              </Col>
-              <Col md="3">
-                <Form.Label>District</Form.Label>
-                <Form.Select name="districtId" value={filters.districtId} onChange={handleFilterChange}>
-                  <option value="">All</option>
-                  {districtList.map((d) => (
-                    <option key={d.districtId} value={d.districtId}>
-                      {d.districtName}
+              <Col sm="6" lg="3">
+                <Form.Label className="small fw-semibold">Financial Year</Form.Label>
+                <Form.Select name="financialYear" value={filters.financialYear} onChange={handleFilterChange}>
+                  {FY_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>
+                      {o.label}
                     </option>
                   ))}
                 </Form.Select>
               </Col>
-              <Col md="3">
-                <Form.Label>Taluk</Form.Label>
-                <Form.Select name="talukId" value={filters.talukId} onChange={handleFilterChange}>
-                  <option value="">All</option>
-                  {talukList.map((t) => (
-                    <option key={t.talukId} value={t.talukId}>
-                      {t.talukName}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Col>
-              <Col md="3">
-                <Form.Label>Scheme</Form.Label>
+              <Col sm="6" lg="3">
+                <Form.Label className="small fw-semibold">Scheme</Form.Label>
                 <Form.Select name="schemeId" value={filters.schemeId} onChange={handleFilterChange}>
                   <option value="">All</option>
                   {schemeList.map((s) => (
@@ -579,8 +671,8 @@ function DbtPaymentFailedTickets() {
                   ))}
                 </Form.Select>
               </Col>
-              <Col md="3">
-                <Form.Label>Sub Scheme</Form.Label>
+              <Col sm="6" lg="3">
+                <Form.Label className="small fw-semibold">Sub Scheme</Form.Label>
                 <Form.Select name="subSchemeId" value={filters.subSchemeId} onChange={handleFilterChange}>
                   <option value="">All</option>
                   {subSchemeList.map((s) => (
@@ -590,24 +682,51 @@ function DbtPaymentFailedTickets() {
                   ))}
                 </Form.Select>
               </Col>
-              <Col md="3">
-                <Form.Label>Failure Type</Form.Label>
+              <Col sm="6" lg="3">
+                <Form.Label className="small fw-semibold">Failure Type</Form.Label>
                 <Form.Select name="failureType" value={filters.failureType} onChange={handleFilterChange}>
                   <option value="">All</option>
                   <option value="PAYMENT_FAILED">Payment Failed</option>
                   <option value="ACKNOWLEDGEMENT_FAILED">Acknowledgement Failed</option>
                 </Form.Select>
               </Col>
-              <Col md="3">
-                <Form.Label>Ticket Status</Form.Label>
+              <Col sm="6" lg="3">
+                <Form.Label className="small fw-semibold">Ticket Status</Form.Label>
                 <Form.Select name="ticketStatus" value={filters.ticketStatus} onChange={handleFilterChange}>
                   <option value="">All</option>
                   <option value="Open">Open</option>
                   <option value="Closed">Closed</option>
                 </Form.Select>
               </Col>
-              <Col md="3">
-                <Form.Label>From Date</Form.Label>
+              <Col sm="6" lg="3">
+                <Form.Label className="small fw-semibold">FRUITS ID</Form.Label>
+                <Form.Control
+                  name="fruitsId"
+                  value={filters.fruitsId}
+                  onChange={handleFilterChange}
+                  placeholder="FRUITS ID"
+                />
+              </Col>
+              <Col sm="6" lg="3">
+                <Form.Label className="small fw-semibold">ARN Number</Form.Label>
+                <Form.Control
+                  name="applicationNumber"
+                  value={filters.applicationNumber}
+                  onChange={handleFilterChange}
+                  placeholder="Application / ARN No"
+                />
+              </Col>
+              <Col sm="6" lg="3">
+                <Form.Label className="small fw-semibold">Mobile Number</Form.Label>
+                <Form.Control
+                  name="mobileNumber"
+                  value={filters.mobileNumber}
+                  onChange={handleFilterChange}
+                  placeholder="Mobile"
+                />
+              </Col>
+              <Col sm="6" lg="3">
+                <Form.Label className="small fw-semibold">From Date</Form.Label>
                 <Form.Control
                   type="date"
                   name="fromDate"
@@ -615,8 +734,8 @@ function DbtPaymentFailedTickets() {
                   onChange={handleFilterChange}
                 />
               </Col>
-              <Col md="3">
-                <Form.Label>To Date</Form.Label>
+              <Col sm="6" lg="3">
+                <Form.Label className="small fw-semibold">To Date</Form.Label>
                 <Form.Control
                   type="date"
                   name="toDate"
@@ -624,12 +743,12 @@ function DbtPaymentFailedTickets() {
                   onChange={handleFilterChange}
                 />
               </Col>
-              <Col md="3" className="d-flex align-items-end gap-2">
-                <Button variant="primary" onClick={search}>
+              <Col lg="6" className="d-flex align-items-end gap-2">
+                <Button variant="primary" onClick={search} disabled={loading}>
                   <Icon name="search" className="me-1" />
                   Search
                 </Button>
-                <Button variant="outline-secondary" onClick={reset}>
+                <Button variant="outline-secondary" onClick={reset} disabled={loading}>
                   <Icon name="reload" className="me-1" />
                   Reset
                 </Button>
@@ -641,14 +760,24 @@ function DbtPaymentFailedTickets() {
 
       {/* Data table */}
       <Block className="mt-3">
-        <Card>
+        <Card className="dpft-card">
+          <Card.Header className="justify-content-between">
+            <span className="d-flex align-items-center">
+              <span className="dpft-chip">
+                <Icon name="list" />
+              </span>
+              Tickets
+            </span>
+            <span className="text-muted small fw-normal">{totalRows} record(s)</span>
+          </Card.Header>
           <DataTable
             columns={columns}
             data={listData}
             progressPending={loading}
             progressComponent={
-              <div className="py-4">
-                <Spinner animation="border" variant="primary" /> <span className="ms-2">Loading...</span>
+              <div className="py-5 text-center">
+                <Spinner animation="border" variant="primary" />
+                <div className="text-muted mt-2">Loading tickets...</div>
               </div>
             }
             pagination
@@ -661,13 +790,14 @@ function DbtPaymentFailedTickets() {
             sortServer
             onSort={handleSort}
             highlightOnHover
+            pointerOnHover
             responsive
-            theme="solarized"
+            theme="seriTheme"
             customStyles={customStyles}
             noDataComponent={
               <div className="text-center py-5">
-                <Icon name="inbox" style={{ fontSize: "40px" }} className="text-muted mb-2" />
-                <p className="text-muted mb-0">No payment-failed tickets found.</p>
+                <Icon name="inbox" style={{ fontSize: "44px" }} className="text-muted mb-2" />
+                <p className="text-muted mb-0">No payment-failed tickets found for the selected filters.</p>
               </div>
             }
           />

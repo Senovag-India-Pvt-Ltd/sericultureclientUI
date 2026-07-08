@@ -1319,7 +1319,7 @@ function DbtPushedList() {
                                   <td>{detail.fruitsId}</td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>Farmer Name:</td>
+                                  <td style={styles.ctstyle}>Beneficiary Name:</td>
                                   <td>{detail.farmerFirstName}</td>
                                 </tr>
                                 <tr>

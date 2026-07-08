@@ -78,7 +78,7 @@ function SubsidyCounterSigning() {
                   {/* <th></th> */}
                   <th>{t("Farmer Id")}</th>
                   <th>{t("Financial Year")}</th>
-                  <th>{t("farmer_name")}</th>
+                  <th>{t("beneficiary_name")}</th>
                   <th>{t("mobile_number")}</th>
                   <th>{t("Category")}</th>
                   <th>{t("Head of Account")}</th>
@@ -315,12 +315,12 @@ function SubsidyCounterSigning() {
               </Col>
               <Col lg="6">
                 <Form.Group className="form-group">
-                  <Form.Label htmlFor="fname">{t("farmer_name")}</Form.Label>
+                  <Form.Label htmlFor="fname">{t("beneficiary_name")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="fname"
                       type="text"
-                      placeholder={t("farmer_name")}
+                      placeholder={t("beneficiary_name")}
                       value="Basappa"
                     />
                   </div>
@@ -454,12 +454,12 @@ function SubsidyCounterSigning() {
               </Col>
               <Col lg="6">
                 {/* <Form.Group className="form-group">
-                  <Form.Label htmlFor="fname">Farmer Name</Form.Label>
+                  <Form.Label htmlFor="fname">Beneficiary Name</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="fname"
                       type="text"
-                      placeholder="Farmer Name"
+                      placeholder="Beneficiary Name"
                       value="Basappa"
                     />
                   </div>
@@ -593,12 +593,12 @@ function SubsidyCounterSigning() {
               </Col>
               <Col lg="6">
                 {/* <Form.Group className="form-group">
-                  <Form.Label htmlFor="fname">Farmer Name</Form.Label>
+                  <Form.Label htmlFor="fname">Beneficiary Name</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="fname"
                       type="text"
-                      placeholder="Farmer Name"
+                      placeholder="Beneficiary Name"
                       value="Basappa"
                     />
                   </div>

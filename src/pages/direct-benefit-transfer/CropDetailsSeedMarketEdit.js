@@ -379,7 +379,7 @@ const { t } = useTranslation();
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            {t("Farmer Name is required")}
+                            {t("Beneficiary Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

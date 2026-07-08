@@ -9,6 +9,34 @@ import api from "../../services/auth/api";
 
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
+const CANNOT_CLOSE_MSG =
+  "This ticket cannot be closed because the DBT payment is still in Failure status. " +
+  "The ticket can only be closed after the payment is successful.";
+
+const SwalStyled = Swal.mixin({ customClass: { popup: "dpft-swal" } });
+
+const dpftStyles = `
+.dpft-hero{background:linear-gradient(120deg,#0d3b66 0%,#1a63a6 52%,#2f9bd8 100%);border-radius:18px;padding:22px 26px;color:#fff;box-shadow:0 12px 30px rgba(13,59,102,.22);position:relative;overflow:hidden;}
+.dpft-hero:after{content:"";position:absolute;right:-50px;top:-50px;width:190px;height:190px;background:rgba(255,255,255,.08);border-radius:50%;}
+.dpft-hero-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;position:relative;z-index:1;}
+.dpft-hero-eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.85;display:flex;align-items:center;}
+.dpft-hero-title{font-size:23px;font-weight:800;margin:5px 0 6px;color:#fff;}
+.dpft-hero-crumb .breadcrumb-item,.dpft-hero-crumb a{color:rgba(255,255,255,.85)!important;font-size:13px;text-decoration:none;}
+.dpft-hero-crumb .breadcrumb-item.active{color:#fff!important;}
+.dpft-pill{font-size:12px;font-weight:700;padding:3px 13px;border-radius:30px;display:inline-flex;align-items:center;}
+.dpft-pill-open{background:#e7f0ff;color:#1257c9;}
+.dpft-pill-closed{background:rgba(255,255,255,.22);color:#fff;border:1px solid rgba(255,255,255,.45);}
+.dpft-section{border:none!important;border-radius:16px!important;box-shadow:0 4px 20px rgba(20,40,80,.06)!important;overflow:hidden;margin-bottom:18px;}
+.dpft-section>.card-header{background:#fff!important;border-bottom:1px solid #eef2f7!important;padding:15px 20px;font-weight:700;color:#1f2d3d;display:flex;align-items:center;}
+.dpft-section>.card-body{padding:18px 22px 6px;}
+.dpft-chip{width:32px;height:32px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;color:#fff;margin-right:12px;background:linear-gradient(135deg,#0d3b66,#2f9bd8);flex:0 0 32px;}
+.dpft-flabel{font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:#93a0b3;font-weight:600;margin-bottom:2px;}
+.dpft-fvalue{font-size:14.5px;font-weight:600;color:#1f2d3d;word-break:break-word;}
+.dpft-alert{border:none;border-radius:14px;background:#fff6e9;color:#8a5a12;box-shadow:0 4px 16px rgba(242,153,74,.14);border-left:5px solid #f2994a;padding:14px 18px;}
+.dpft-swal.swal2-popup{border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.22);}
+.dpft-hero .btn-light{font-weight:600;}
+`;
+
 function DbtPaymentFailedTicketDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -67,7 +95,7 @@ function DbtPaymentFailedTicketDetails() {
         if (err?.response?.status === 403) {
           setForbidden(true);
         } else {
-          Swal.fire({ icon: "error", title: "Error", text: extractError(err) });
+          SwalStyled.fire({ icon: "error", title: "Error", text: extractError(err) });
         }
       });
   };
@@ -83,7 +111,7 @@ function DbtPaymentFailedTicketDetails() {
       .then((res) => {
         const updated = res?.data?.content;
         setTicket((prev) => ({ ...prev, ...updated }));
-        Swal.fire({
+        SwalStyled.fire({
           icon: "success",
           title: "Status refreshed",
           html: `Payment Status: <b>${updated?.paymentStatus || "N/A"}</b><br/>${
@@ -92,43 +120,65 @@ function DbtPaymentFailedTicketDetails() {
           timer: 2500,
         });
       })
-      .catch((err) => Swal.fire({ icon: "error", title: "Error", text: extractError(err) }));
+      .catch((err) => SwalStyled.fire({ icon: "error", title: "Error", text: extractError(err) }));
   };
 
   const closeTicket = () => {
-    Swal.fire({
+    SwalStyled.fire({
       title: "Close this ticket?",
-      text: `Ticket ${ticket?.ticketArn || id} will be closed.`,
+      text: `Ticket ${ticket?.ticketArn || id} will be validated and closed.`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Yes, close it",
-      confirmButtonColor: "#1e67a8",
+      confirmButtonText: "Validate & Close",
+      confirmButtonColor: "#0d3b66",
     }).then((result) => {
       if (!result.isConfirmed) return;
+      SwalStyled.fire({ title: "Validating latest DBT payment status...", allowOutsideClick: false });
+      Swal.showLoading();
+      // Re-check the latest DBT payment status before closing.
       api
-        .put(baseURLDBT + `payment-failed-tickets/${id}/close`)
-        .then(() => {
-          Swal.fire({ icon: "success", title: "Ticket closed", timer: 2000 });
-          loadTicket();
+        .get(baseURLDBT + `payment-failed-tickets/${id}/refresh-status`)
+        .then((res) => {
+          const latest = res?.data?.content;
+          setTicket((prev) => ({ ...prev, ...latest }));
+          if (!latest?.canClose) {
+            // Still Failure → keep the ticket Open, show the mandated message.
+            SwalStyled.fire({ icon: "error", title: "Cannot close ticket", text: CANNOT_CLOSE_MSG });
+            return;
+          }
+          api
+            .put(baseURLDBT + `payment-failed-tickets/${id}/close`)
+            .then(() => {
+              SwalStyled.fire({ icon: "success", title: "Ticket closed", timer: 2000 });
+              loadTicket();
+            })
+            .catch((err) => {
+              const msg = extractError(err);
+              SwalStyled.fire({
+                icon: "error",
+                title: "Cannot close ticket",
+                text: /success/i.test(msg) ? CANNOT_CLOSE_MSG : msg,
+              });
+            });
         })
-        .catch((err) =>
-          Swal.fire({ icon: "error", title: "Cannot close ticket", text: extractError(err) })
-        );
+        .catch((err) => SwalStyled.fire({ icon: "error", title: "Error", text: extractError(err) }));
     });
   };
 
   const Field = ({ label, value }) => (
     <Col md="4" className="mb-3">
-      <div className="text-muted small">{label}</div>
-      <div className="fw-medium">{value || value === 0 ? value : "-"}</div>
+      <div className="dpft-flabel">{label}</div>
+      <div className="dpft-fvalue">{value || value === 0 ? value : "-"}</div>
     </Col>
   );
 
   const Section = ({ title, icon, children }) => (
-    <Card className="mb-3">
-      <Card.Header className="d-flex align-items-center">
-        <Icon name={icon} className="me-2 text-primary" />
-        <span className="fw-bold">{title}</span>
+    <Card className="dpft-section">
+      <Card.Header>
+        <span className="dpft-chip">
+          <Icon name={icon} />
+        </span>
+        <span>{title}</span>
       </Card.Header>
       <Card.Body>
         <Row>{children}</Row>
@@ -186,38 +236,43 @@ function DbtPaymentFailedTicketDetails() {
 
   return (
     <Layout title="Ticket Details">
-      <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">
-              Ticket {ticket.ticketArn || ticket.ticketNumber}{" "}
-              {ticket.ticketStatus === "Closed" ? (
-                <Badge bg="secondary">Closed</Badge>
-              ) : (
-                <Badge bg="primary">Open</Badge>
-              )}
-            </Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">Home</Link>
-                </li>
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/dbt-payment-failed-tickets">Payment Failed Tickets</Link>
-                </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  Details
-                </li>
-              </ol>
-            </nav>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <div className="d-flex gap-2">
-              <Button variant="outline-secondary" onClick={() => navigate(-1)}>
+      <style>{dpftStyles}</style>
+
+      <Block>
+        <div className="dpft-hero">
+          <div className="dpft-hero-row">
+            <div>
+              <div className="dpft-hero-eyebrow">
+                <Icon name="file-text" className="me-1" /> Payment Failed Ticket
+              </div>
+              <div className="dpft-hero-title">
+                Ticket {ticket.ticketArn || ticket.ticketNumber}{" "}
+                {ticket.ticketStatus === "Closed" ? (
+                  <span className="dpft-pill dpft-pill-closed">Closed</span>
+                ) : (
+                  <span className="dpft-pill dpft-pill-open">Open</span>
+                )}
+              </div>
+              <nav>
+                <ol className="breadcrumb breadcrumb-arrow mb-0 dpft-hero-crumb">
+                  <li className="breadcrumb-item">
+                    <Link to="/seriui/">Home</Link>
+                  </li>
+                  <li className="breadcrumb-item">
+                    <Link to="/seriui/dbt-payment-failed-tickets">Payment Failed Tickets</Link>
+                  </li>
+                  <li className="breadcrumb-item active" aria-current="page">
+                    Details
+                  </li>
+                </ol>
+              </nav>
+            </div>
+            <div className="d-flex gap-2 flex-wrap">
+              <Button variant="light" onClick={() => navigate(-1)}>
                 <Icon name="arrow-left" className="me-1" />
                 Back
               </Button>
-              <Button variant="outline-primary" onClick={refreshStatus}>
+              <Button variant="light" onClick={refreshStatus}>
                 <Icon name="reload" className="me-1" />
                 Refresh Status
               </Button>
@@ -226,16 +281,17 @@ function DbtPaymentFailedTicketDetails() {
                 Close Ticket
               </Button>
             </div>
-          </Block.HeadContent>
-        </Block.HeadBetween>
-      </Block.Head>
+          </div>
+        </div>
+      </Block>
 
       {!canClose && ticket.ticketStatus !== "Closed" && (
-        <Block>
-          <div className="alert alert-warning d-flex align-items-center" role="alert">
-            <Icon name="alert-circle" className="me-2" />
-            This ticket cannot be closed until the DBT payment is successful. Use “Refresh Status” to
-            fetch the latest payment state.
+        <Block className="mt-3">
+          <div className="dpft-alert d-flex align-items-center" role="alert">
+            <Icon name="alert-circle" className="me-2" style={{ fontSize: "18px" }} />
+            <span>
+              {CANNOT_CLOSE_MSG} Use “Refresh Status” to fetch the latest payment state.
+            </span>
           </div>
         </Block>
       )}
@@ -246,6 +302,7 @@ function DbtPaymentFailedTicketDetails() {
           <Field label="Beneficiary Type" value={ticket.beneficiaryType} />
           <Field label="Farmer ID" value={ticket.farmerId} />
           <Field label="Beneficiary ID" value={ticket.beneficiaryId} />
+          <Field label="FRUITS ID" value={ticket.fruitsId} />
           <Field label="Mobile Number" value={ticket.mobileNumber} />
         </Section>
 
