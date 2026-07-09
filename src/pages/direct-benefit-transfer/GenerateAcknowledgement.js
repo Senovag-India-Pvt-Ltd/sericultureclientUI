@@ -149,7 +149,7 @@ function GenerateAcknowledgement() {
       api
         .post(
           baseURLDBT +
-            `service/getSanctionOrderNumbers?financialYearId=${addressDetails.financialYearId}&schemeId=${addressDetails.scSchemeDetailsId}&subSchemeId=${addressDetails.subSchemeId}&componentId=${addressDetails.componentId}&categoryId=${addressDetails.scCategoryId}&fruitsId=${addressDetails.fruitsId || ""}`
+            `service/getAcknowledgementArnNumbers?financialYearId=${addressDetails.financialYearId}&schemeId=${addressDetails.scSchemeDetailsId}&subSchemeId=${addressDetails.subSchemeId}&componentId=${addressDetails.componentId}&categoryId=${addressDetails.scCategoryId}&fruitsId=${addressDetails.fruitsId || ""}`
         )
         .then((res) => {
           if (res.data && res.data.content)

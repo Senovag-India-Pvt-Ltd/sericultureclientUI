@@ -14,6 +14,11 @@ import { useNavigate } from "react-router-dom";
 import { createTheme } from "react-data-table-component";
 
 import api from "../../../../src/services/auth/api";
+import {
+  getFinancialYearMonths,
+  getMonthPeriodByValue,
+  parseMonthYear,
+} from "../../../utilities/monthlyFrequency";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
@@ -45,8 +50,12 @@ function ApplicationFormEdit() {
     hectareId: "",
     periodFrom: "",
     periodTo: "",
+    monthYear: "",
     userMasterId: "",
   });
+
+  // True when the selected sub scheme is configured with monthlyFrequency.
+  const [isMonthlyFrequency, setIsMonthlyFrequency] = useState(false);
 
   const [developedLand, setDevelopedLand] = useState({
     dbtFarmerLandDetailsId: "",
@@ -233,6 +242,9 @@ useEffect(() => {
           spacingId: datas.spacingId,
           periodFrom: datas.periodFrom ? new Date(datas.periodFrom) : null,
           periodTo: datas.periodTo ? new Date(datas.periodTo) : null,
+          // A monthly-frequency month is stored as "APRIL 2026"; PSF ranges
+          // ("APRIL-MAY") and other values fail to parse and are left blank.
+          monthYear: parseMonthYear(datas.month) ? datas.month : "",
           userMasterId: datas.userMasterId || "",
         }));
 
@@ -498,6 +510,23 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     setData({ ...data, [type]: date });
   };
 
+  // Monthly Frequency: selecting a month auto-populates Period From / Period To.
+  const handleMonthlyFrequencyMonthChange = (e) => {
+    const value = e.target.value;
+    const { periodFrom, periodTo } = getMonthPeriodByValue(value);
+    setData((prev) => ({
+      ...prev,
+      monthYear: value,
+      periodFrom: periodFrom || prev.periodFrom,
+      periodTo: periodTo || prev.periodTo,
+    }));
+  };
+
+  // Show the Month field when the sub scheme is configured monthly OR the record
+  // already has a saved month-year (e.g. "APRIL 2026") — guarantees the field appears
+  // for already-saved monthly applications regardless of the config fetch timing.
+  const showMonthField = isMonthlyFrequency || !!parseMonthYear(data.monthYear);
+
   console.log("hehehehehe", data);
 
   const [isDisabled, setIsDisabled] = useState(true);
@@ -721,6 +750,9 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       (fy) => String(fy.financialYearMasterId) === String(data.financialYearMasterId)
     );
     if (!match || !match.financialYear) return;
+    // Monthly-frequency schemes (or records already carrying a saved month) derive the
+    // period from the selected month — don't clobber the loaded per-month dates.
+    if (isMonthlyFrequency || parseMonthYear(data.monthYear)) return;
     const parts = String(match.financialYear).trim().split("-");
     if (parts.length !== 2) return;
     const startYear = parseInt(parts[0].trim(), 10);
@@ -732,7 +764,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       periodFrom: new Date(startYear, 3, 1),     // April 1
       periodTo: new Date(endYear, 2, 31),        // March 31
     }));
-  }, [data.financialYearMasterId, financialyearListData]);
+  }, [data.financialYearMasterId, financialyearListData, isMonthlyFrequency, data.monthYear]);
 
   // to get sc-sub-scheme-details by sc-scheme-details
   const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
@@ -758,6 +790,25 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       getSchemeQuotaList(data.scSchemeDetailsId);
     }
   }, [data.scSchemeDetailsId]);
+
+  // Fetch the sub scheme's monthlyFrequency flag (same master-data source the
+  // create form uses) once both scheme and sub scheme are known.
+  useEffect(() => {
+    if (data.scSchemeDetailsId && data.scSubSchemeDetailsId) {
+      api
+        .get(
+          baseURLMasterData +
+            `scSubSchemeDetails/get-by-scheme-and-sub-scheme-details-id/${data.scSchemeDetailsId}/${data.scSubSchemeDetailsId}`
+        )
+        .then((response) => {
+          const list = response.data?.content?.scSubSchemeDetails;
+          setIsMonthlyFrequency(list?.[0]?.monthlyFrequency === true);
+        })
+        .catch(() => setIsMonthlyFrequency(false));
+    } else {
+      setIsMonthlyFrequency(false);
+    }
+  }, [data.scSchemeDetailsId, data.scSubSchemeDetailsId]);
 
   
 
@@ -948,7 +999,12 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
   const handleInputs = (e) => {
     name = e.target.name;
     value = e.target.value;
-    setData({ ...data, [name]: value });
+    // Changing the financial year invalidates any selected month (FY-specific list).
+    setData({
+      ...data,
+      [name]: value,
+      ...(name === "financialYearMasterId" ? { monthYear: "" } : {}),
+    });
 
     if (name === "fruitsId" && (value.length < 16 || value.length > 16)) {
       e.target.classList.add("is-invalid");
@@ -995,6 +1051,16 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     }
     event.preventDefault();
 
+    // Monthly Frequency: Month is mandatory for monthly-frequency sub schemes.
+    if (showMonthField && !data.monthYear) {
+      Swal.fire({
+        icon: "warning",
+        title: "Month Required",
+        text: "Please select a Month.",
+      });
+      return;
+    }
+
     // Equipment line-item flow is NOT part of the V2 edit endpoint contract,
     // so route it through the legacy endpoint until line-item edit is migrated.
     if (data.equordev === "equipment") {
@@ -1014,6 +1080,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         description: equipment.description,
         periodFrom: formatDate(data.periodFrom),
         periodTo: formatDate(data.periodTo),
+        month: data.monthYear || null,
         applicationFormLineItemRequestList: [
           {
             unitTypeMasterId: equipment.unitType,
@@ -1109,6 +1176,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       sanctionNo: toNum(data.sanctionNumber),
       periodFrom: data.periodFrom ? formatDate(data.periodFrom) : null,
       periodTo: data.periodTo ? formatDate(data.periodTo) : null,
+      month: data.monthYear || null,
       landRows,
     };
 
@@ -2579,6 +2647,39 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                             </div>
                           </Form.Group>
                         </Col> */}
+
+                        {showMonthField && (
+                          <Col lg="2">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="monthYear">
+                                {t("Month")}
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  id="monthYear"
+                                  name="monthYear"
+                                  value={data.monthYear || ""}
+                                  onChange={handleMonthlyFrequencyMonthChange}
+                                  required
+                                >
+                                  <option value="">{t("Select Month")}</option>
+                                  {getFinancialYearMonths(
+                                    financialyearListData.find(
+                                      (f) =>
+                                        String(f.financialYearMasterId) ===
+                                        String(data.financialYearMasterId)
+                                    )?.financialYear
+                                  ).map((m) => (
+                                    <option key={m.value} value={m.value}>
+                                      {m.label}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        )}
 
                         <Col lg="2">
                           <Form.Group className="form-group mt-n3">

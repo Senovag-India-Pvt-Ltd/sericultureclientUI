@@ -29,6 +29,15 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
+const titleCase = (s) => (s ? s.charAt(0) + s.slice(1).toLowerCase() : s);
+// Display a saved saf.month value nicely: "APRIL-MAY" -> "April - May",
+// "APRIL 2026" -> "April 2026", "APRIL" -> "April".
+const formatMonthLabel = (m) =>
+  String(m)
+    .split("-")
+    .map((part) => part.trim().split(/\s+/).map(titleCase).join(" "))
+    .join(" - ");
+
 function MultipleSanctionOrder() {
   const { id } = useParams();
   const { t } = useTranslation();
@@ -53,6 +62,7 @@ function MultipleSanctionOrder() {
     tscId: "",
     machineTypeId: "",
     raceId: "",
+    month: "",
   });
 
   let name, value;
@@ -112,6 +122,9 @@ function MultipleSanctionOrder() {
 //   }
 // };
 const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState("");
+// Month filter options for Silk Incentive-PSF — populated from distinct saf.month
+// values actually saved for the selected scheme/sub-scheme/component/sub-component.
+const [monthOptions, setMonthOptions] = useState([]);
 
 
 const handleInputs = (e) => {
@@ -138,6 +151,8 @@ const handleInputs = (e) => {
     setIsRowSelectable(false);
     setSelectedRows([]);
     setIsSubmitEnabled(false);
+    // Context changed → any previously selected month is no longer valid.
+    setData((prev) => (prev.month ? { ...prev, month: "" } : prev));
   }
 
   // 👉 When Component is selected, pick sanctionOrderForScheme & subSchemeType
@@ -157,6 +172,47 @@ const handleInputs = (e) => {
 };
 
 
+
+  // Load the distinct saved months for the Month filter once the full
+  // Silk Incentive-PSF context (scheme/sub-scheme/component/sub-component) is chosen.
+  useEffect(() => {
+    const ready =
+      sanctionOrderForScheme === "Silk Incentive-PSF" &&
+      data.schemeId > 0 &&
+      data.subSchemeId > 0 &&
+      data.scComponentId > 0 &&
+      data.scCategoryId > 0;
+
+    if (!ready) {
+      setMonthOptions([]);
+      return;
+    }
+
+    api
+      .post(
+        baseURLDBT + `service/multipleSanctionMonths`,
+        {},
+        {
+          params: {
+            userId: localStorage.getItem("userMasterId"),
+            schemeId: data.schemeId,
+            subSchemeId: data.subSchemeId,
+            componentId: data.scComponentId,
+            scCategoryId: data.scCategoryId,
+          },
+        }
+      )
+      .then((response) => {
+        setMonthOptions(response.data.content || []);
+      })
+      .catch(() => setMonthOptions([]));
+  }, [
+    sanctionOrderForScheme,
+    data.schemeId,
+    data.subSchemeId,
+    data.scComponentId,
+    data.scCategoryId,
+  ]);
 
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
   const [isRowSelectable, setIsRowSelectable] = useState(false);
@@ -336,6 +392,15 @@ const enableSanctionIfRequired = async () => {
   return;
 }
 
+  if (isMachineTypeRequired && !data.month) {
+  Swal.fire({
+    icon: "warning",
+    title: "Month Required",
+    text: "Please select Month",
+  });
+  return;
+}
+
 
   // Reset
   setSelectedRows([]);
@@ -358,6 +423,10 @@ const enableSanctionIfRequired = async () => {
           tscId: data.tscId > 0 ? data.tscId : null,
           machineTypeId: data.machineTypeId > 0 ? data.machineTypeId : null,
           raceId: data.raceId > 0 ? data.raceId : null,
+          month:
+            sanctionOrderForScheme === "Silk Incentive-PSF" && data.month
+              ? data.month
+              : null,
 
         },
       }
@@ -2502,6 +2571,27 @@ const saveRejectSuccess = (message) => {
                                   </option>
                                 ))
                               : ""}
+                          </Form.Select>
+                        </div>
+                      </Col>
+
+                      <Form.Label column sm={1}>
+                        {t("Month")}
+                      </Form.Label>
+
+                      <Col sm={2}>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="month"
+                            value={data.month}
+                            onChange={handleInputs}
+                          >
+                            <option value="">{t("Select Month")}</option>
+                            {monthOptions.map((m) => (
+                              <option key={m} value={m}>
+                                {formatMonthLabel(m)}
+                              </option>
+                            ))}
                           </Form.Select>
                         </div>
                       </Col>

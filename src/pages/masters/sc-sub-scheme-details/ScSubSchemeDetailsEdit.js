@@ -113,6 +113,7 @@ function ScSubSchemeDetailsEdit() {
         withLand: false,
         allowMultipleSanction: false,
         sanctionForReeling: false,
+        monthlyFrequency: false,
         schemeCodeForSanctionOrder: "",
     });
   };
@@ -133,6 +134,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
   withLand: !!content.withLand,
   allowMultipleSanction: !!content.allowMultipleSanction,
   sanctionForReeling: !!content.sanctionForReeling,
+  monthlyFrequency: !!content.monthlyFrequency,
 
   subSchemeStartDate: safeDate(content.subSchemeStartDate),
   subSchemeEndDate: safeDate(content.subSchemeEndDate),
@@ -203,6 +205,13 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
     setData((prev) => ({
       ...prev,
       sanctionForReeling: e.target.checked,
+    }));
+  };
+
+  const handleMonthlyFrequencyCheckBox = (e) => {
+    setData((prev) => ({
+      ...prev,
+      monthlyFrequency: e.target.checked,
     }));
   };
 
@@ -1043,6 +1052,19 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
   </Form.Label>
 </Col>
 
+                        {/* Monthly Frequency */}
+                        <Col sm={2} className="d-flex align-items-center">
+                          <Form.Check
+                            type="checkbox"
+                            id="monthlyFrequency"
+                            checked={!!data.monthlyFrequency}
+                            onChange={handleMonthlyFrequencyCheckBox}
+                            className="me-2"
+                          />
+                          <Form.Label htmlFor="monthlyFrequency" className="mb-0">
+                            {t("Monthly Frequency")}
+                          </Form.Label>
+                        </Col>
                       </Row>
 
                   </Row>

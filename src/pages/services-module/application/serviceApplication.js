@@ -14,6 +14,10 @@ import { createTheme } from "react-data-table-component";
 import ReactSelect from "react-select";
 import api from "../../../../src/services/auth/api";
 import React, { useMemo } from "react";
+import {
+  getFinancialYearMonths,
+  getMonthPeriodByValue,
+} from "../../../utilities/monthlyFrequency";
 
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -148,6 +152,7 @@ const generateFinalReport = async (selectedRows) => {
     month: "",
     fromMonth: "",
     toMonth: "",
+    monthYear: "",
     machineQuantity: "",
     machineTypeId: "",
     imcbTable: "",
@@ -2055,7 +2060,9 @@ const isSDP =
       const { periodFrom, periodTo } = getFinancialYearPeriod(
         selectedFY?.financialYear
       );
-      setData({ ...data, [name]: value, periodFrom, periodTo });
+      // Changing the financial year invalidates any previously selected month
+      // (the month list is FY-specific), so reset it back to the full-FY period.
+      setData({ ...data, [name]: value, periodFrom, periodTo, monthYear: "" });
     } else {
       setData({ ...data, [name]: value });
     }
@@ -2089,6 +2096,20 @@ const isSDP =
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
+  };
+
+  // Monthly Frequency: selecting a month auto-populates Period From / Period To with
+  // the first and last day of that month (leap-year safe). Used only when the selected
+  // sub scheme has monthlyFrequency === true.
+  const handleMonthlyFrequencyMonthChange = (e) => {
+    const value = e.target.value;
+    const { periodFrom, periodTo } = getMonthPeriodByValue(value);
+    setData((prev) => ({
+      ...prev,
+      monthYear: value,
+      periodFrom: periodFrom || prev.periodFrom,
+      periodTo: periodTo || prev.periodTo,
+    }));
   };
 
   const handleDevelopedLandInputs = (e) => {
@@ -4720,6 +4741,9 @@ const isUserValid = React.useMemo(() => {
       const missingFields = [];
       if (!data.equordev.includes("land")) {
         missingFields.push("Land Wise Details (please check the Land Wise checkbox)");
+      // }
+      } else if (landDetailsIds.length === 0) {
+        missingFields.push("Land Wise Details (Please check at least one land from the Land Wise table.)");
       }
       if (!data.equordev.includes("constructedArea")) {
         missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
@@ -5240,6 +5264,17 @@ const isUserValid = React.useMemo(() => {
       }
     }
 
+    // Monthly Frequency: Month is mandatory when the selected sub scheme is configured
+    // with monthlyFrequency === true.
+    if (getIncentiveAndBonusData?.[0]?.monthlyFrequency === true && !data.monthYear) {
+      Swal.fire({
+        icon: "warning",
+        title: "Month Required",
+        text: "Please select a Month.",
+      });
+      return;
+    }
+
     const formattedDates = {
       periodFrom: formatDate(data.periodFrom),
       periodTo: formatDate(data.periodTo),
@@ -5360,9 +5395,12 @@ const isUserValid = React.useMemo(() => {
       description: equipment.description,
       l1Rate: equipment.l1Rate,
       loggedInUserId: localStorage.getItem("userMasterId"),
-      month: getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF" && data.fromMonth && data.toMonth
-        ? `${data.fromMonth}-${data.toMonth}`
-        : data.month,
+      month:
+        getIncentiveAndBonusData?.[0]?.monthlyFrequency === true && data.monthYear
+          ? data.monthYear
+          : getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF" && data.fromMonth && data.toMonth
+          ? `${data.fromMonth}-${data.toMonth}`
+          : data.month,
       machineQuantity: data.machineQuantity,
       machineTypeId: data.machineTypeId,
       imcbTable: data.imcbTable,
@@ -8424,9 +8462,15 @@ const fetchReelerDetails = () => {
                                         <option value="1-Table(2 ಬೇಸಿನ್‌)">1-Table(2 ಬೇಸಿನ್‌)</option>
                                         <option value="2-Table(4 ಬೇಸಿನ್‌)">2-Table(4 ಬೇಸಿನ್‌)</option>
                                         <option value="3-Table(6 ಬೇಸಿನ್‌)">3-Table(6 ಬೇಸಿನ್‌)</option>
+                                        <option value="1 ಬೇಸಿನ್‌">1 ಬೇಸಿನ್‌</option>
+                                        <option value="2 ಬೇಸಿನ್‌">2 ಬೇಸಿನ್‌</option>
                                         <option value="3 ಬೇಸಿನ್‌">3 ಬೇಸಿನ್‌</option>
+                                        <option value="4 ಬೇಸಿನ್‌">4 ಬೇಸಿನ್‌</option>
                                         <option value="5 ಬೇಸಿನ್‌">5 ಬೇಸಿನ್‌</option>
                                         <option value="6 ಬೇಸಿನ್‌">6 ಬೇಸಿನ್‌</option>
+                                        <option value="7 ಬೇಸಿನ್‌">7 ಬೇಸಿನ್‌</option>
+                                        <option value="8 ಬೇಸಿನ್‌">8 ಬೇಸಿನ್‌</option>
+                                        <option value="9 ಬೇಸಿನ್‌">9 ಬೇಸಿನ್‌</option>
                                         <option value="10 ಬೇಸಿನ್‌">10 ಬೇಸಿನ್‌</option>
                                         <option value="36 ends">36 ends</option>
                                         <option value="48 ends">48 ends</option>
@@ -9533,6 +9577,39 @@ const fetchReelerDetails = () => {
                               </Form.Control.Feedback>
                           </Col>
                         )} */}
+
+                        {getIncentiveAndBonusData?.[0]?.monthlyFrequency === true && (
+                          <Col lg="2">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="monthYear">
+                                {t("Month")}
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  id="monthYear"
+                                  name="monthYear"
+                                  value={data.monthYear || ""}
+                                  onChange={handleMonthlyFrequencyMonthChange}
+                                  required
+                                >
+                                  <option value="">{t("Select Month")}</option>
+                                  {getFinancialYearMonths(
+                                    financialyearListData.find(
+                                      (f) =>
+                                        String(f.financialYearMasterId) ===
+                                        String(data.financialYearMasterId)
+                                    )?.financialYear
+                                  ).map((m) => (
+                                    <option key={m.value} value={m.value}>
+                                      {m.label}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        )}
 
                         <Col lg="2">
                           <Form.Group className="form-group mt-n3">

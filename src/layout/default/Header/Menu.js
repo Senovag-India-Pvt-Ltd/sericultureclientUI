@@ -139,6 +139,7 @@ function MenuList({ className, ...props }) {
   return <ul className={compClass}>{props.children}</ul>;
 }
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const _header = {
   "Content-Type": "application/json",
   accept: "*/*",
@@ -194,6 +195,17 @@ function Menu() {
   useEffect(() => {
     getRoleMenuList(roleId);
   }, [roleId]);
+
+  // Role-based visibility for the "DBT Failed Tickets" menu — driven by the
+  // dbt allowed-users list (payment-failed-tickets/access-check). Users who are
+  // not in that list never see the menu item.
+  const [dbtTicketsAllowed, setDbtTicketsAllowed] = useState(false);
+  useEffect(() => {
+    api
+      .get(baseURLDBT + `payment-failed-tickets/access-check`)
+      .then((res) => setDbtTicketsAllowed(res?.data?.content?.allowed === true))
+      .catch(() => setDbtTicketsAllowed(false));
+  }, []);
 
   console.log(data);
 
@@ -3435,9 +3447,9 @@ function Menu() {
         </MenuItem>
       ) : null}
 
-      {showMenu.Helpdesk ? (
+      {showMenu.Helpdesk || dbtTicketsAllowed ? (
         <MenuItem sub>
-          {showMenu.Helpdesk ? (
+          {showMenu.Helpdesk || dbtTicketsAllowed ? (
             <MenuItemLink
               text={t("helpdesk")}
               onClick={menuToggle}
@@ -3446,6 +3458,14 @@ function Menu() {
             />
           ) : null}
           <MenuSub>
+            {dbtTicketsAllowed ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("DBT Failed Tickets")}
+                  to="/seriui/dbt-payment-failed-tickets"
+                />
+              </MenuItem>
+            ) : null}
             {showMenu.Helpdesk_Raise_a_Ticket ? (
               <MenuItem>
                 <MenuItemLink

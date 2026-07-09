@@ -1468,7 +1468,7 @@ const getFinancialDefaultDetails = () => {
       hide: "md",
     },
     {
-      name: t("farmer_name"),
+      name: t("beneficiary_name"),
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
       sortable: true,

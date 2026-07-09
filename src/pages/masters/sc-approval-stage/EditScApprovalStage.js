@@ -59,6 +59,7 @@ function EditScApprovalStage() {
       pushToDbt: data.pushToDbt,
       financialDelegation: data.financialDelegation,
       directlyToFruits:data.directlyToFruits,
+      directApplication:data.directApplication,
       sanctionForReeling: data.sanctionForReeling,
       allowMultipleSanction:data.allowMultipleSanction,
     };
@@ -87,6 +88,7 @@ function EditScApprovalStage() {
               pushToDbt:"",
               financialDelegation:"",
               directlyToFruits:"",
+              directApplication:"",
               allowMultipleSanction:"",
               sanctionForReeling:""
             });
@@ -114,6 +116,7 @@ function EditScApprovalStage() {
       pushToDbt:"",
       financialDelegation:"",
       directlyToFruits:"",
+      directApplication:"",
       allowMultipleSanction:"",
       sanctionForReeling:""
     });
@@ -366,6 +369,23 @@ function EditScApprovalStage() {
                       </Form.Label>
                     </Form.Group>
                     </Col>
+
+                  <Col lg="2">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="directApplication"
+                          checked={data.directApplication}
+                          id="directApplication"
+                          onChange={handleCheckBox}
+                        />
+                      </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                      {t("Direct Application")}
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
 
                   <Col lg="2">
                     <Form.Group as={Row} className="form-group mt-4">

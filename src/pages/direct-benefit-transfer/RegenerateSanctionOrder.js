@@ -32,6 +32,9 @@ function RegenerateSanctionOrder() {
   const [allApplicationIds, setAllApplicationIds] = useState([]);
   const [subSchemeType, setSubSchemeType] = useState(null);
   const [listData, setListData] = useState([]);
+  // Farmer vs Company — only affects schemes whose sanction report branches by
+  // recipient (Boiler/IMCB/ICB/HRU/Generators/Solar Heater/Rearing Equipment SS/PMKSY/PDMC).
+  const [recipientType, setRecipientType] = useState("farmer");
 
   // ── fetch the record for the selected sanction order ──
   const search = (details = addressDetails) => {
@@ -183,21 +186,90 @@ function RegenerateSanctionOrder() {
       )
       .then((res) => openPdf(res.data));
 
-  // Single-application schemes — keyed off a single applicationFormId + category
-  const reportBySingleApplication = (endpoint, selectedSanctionOrder) =>
-    api
-      .post(
-        baseURLReport + endpoint,
-        {
-          schemeId: addressDetails.scSchemeDetailsId,
-          subSchemeId: addressDetails.subSchemeId,
-          categoryId: addressDetails.scCategoryId,
-          applicationFormId: applicationFormId,
-          sanctionOrderNumber: selectedSanctionOrder,
-        },
-        { responseType: "blob" }
-      )
+  // Dashboard-Report-List schemes — regenerate using the EXACT same endpoint, payload
+  // and farmer/company branching as the original generation flow
+  // (mirrors DashboardReportList.generateSanctionOrderAcknowledgment) so the regenerated
+  // PDF matches what was first produced.
+  const runGeneratorAligned = (schemeType, recipient) => {
+    const userId = localStorage.getItem("userMasterId");
+    const schemeId = addressDetails.scSchemeDetailsId;
+    const subSchemeId = addressDetails.subSchemeId;
+    const categoryId = addressDetails.scCategoryId;
+
+    let endpoint;
+    if (schemeType === "Silk Samagra State" || schemeType === "Silk Samagra Central") {
+      endpoint = `getSanctionOrderRH`;
+    } else if (schemeType === "SS Construction Of Low Cost Shed to Permanent Rearing House") {
+      endpoint = `getSanctionOrderRHSSConstruction`;
+    } else if (schemeType === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House") {
+      endpoint = `getSanctionOrderRHSDPConstruction`;
+    } else if (schemeType === "Rearing Equipment SS") {
+      endpoint = recipient === "company" ? `RearingEquipmentSSCompany` : `RearingEquipmentSSBeneficiary`;
+    } else if (schemeType === "Reeling Shed-PSF") {
+      endpoint = `sanction-psfa-reeling-shed`;
+    } else if (schemeType === "MERM-PSF") {
+      endpoint = `getMERMSanction`;
+    } else if (schemeType === "Adopting Boiler-PSF") {
+      endpoint = recipient === "company" ? `getBoilerSDPCompany` : `getBoilerSDPBeneficiary`;
+    } else if (schemeType === "IMCB-PSF") {
+      endpoint = recipient === "company" ? `getIMCBCompany` : `getIMCBBeneficiary`;
+    } else if (schemeType === "ICB-PSF") {
+      endpoint = recipient === "company" ? `getICBCompany` : `getICBBeneficiary`;
+    } else if (schemeType === "Adopting Heat Recovery Unit-PSF") {
+      endpoint = recipient === "company" ? `getHRUCompany` : `getHRUBeneficiary`;
+    } else if (schemeType === "Adopting Silent Generator") {
+      endpoint = recipient === "company" ? `getSilentGeneratorCompany` : `getSilentGeneratorBeneficiary`;
+    } else if (schemeType === "Adopting Solar power Generator") {
+      endpoint = recipient === "company" ? `getSolarPowerGeneratorCompany` : `getSolarPowerGeneratorBeneficiary`;
+    } else if (schemeType === "Adopting Solar Water Heater") {
+      endpoint = recipient === "company" ? `getSolarWaterHeaterCompany` : `getSolarWaterHeaterBeneficiary`;
+    } else if (schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy") {
+      endpoint = `PrivateCRCSanction`;
+    } else if (schemeType === "SDP RH 225") {
+      endpoint = `getSanctionOrderRHSDP225`;
+    } else if (schemeType === "SDP Low Cost Shed") {
+      endpoint = `getSanctionOrderRHSDPLowCostShed`;
+    } else {
+      // PMKSY / PDMC
+      if (recipient === "company") {
+        endpoint = schemeType === "PMKSY" ? `getSanctionOrderPmksyCompany` : `getSanctionOrderPDMCCompany`;
+      } else {
+        endpoint = schemeType === "PMKSY" ? `getSanctionOrderPmksy` : `getSanctionOrderPDMC`;
+      }
+    }
+
+    let payload;
+    if (
+      schemeType === "Silk Samagra State" ||
+      schemeType === "Silk Samagra Central" ||
+      schemeType === "Rearing Equipment SS" ||
+      schemeType === "Registered Private Bivoltine Chawki Rearing Center Subsidy" ||
+      schemeType === "SS Construction Of Low Cost Shed to Permanent Rearing House"
+    ) {
+      payload = { applicationFormIds: allApplicationIds, schemeId, subSchemeId, categoryId, userId };
+    } else if (
+      schemeType === "Reeling Shed-PSF" ||
+      schemeType === "Adopting Heat Recovery Unit-PSF" ||
+      schemeType === "Adopting Boiler-PSF" ||
+      schemeType === "ICB-PSF" ||
+      schemeType === "IMCB-PSF" ||
+      schemeType === "Adopting Silent Generator" ||
+      schemeType === "Adopting Solar power Generator" ||
+      schemeType === "Adopting Solar Water Heater" ||
+      schemeType === "MERM-PSF" ||
+      schemeType === "SDP RH 225" ||
+      schemeType === "SDP Low Cost Shed" ||
+      schemeType === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
+    ) {
+      payload = { applicationFormId: applicationFormId, schemeId, subSchemeId, categoryId, userId };
+    } else {
+      payload = { applicationFormId: applicationFormId, schemeId };
+    }
+
+    return api
+      .post(baseURLReport + endpoint, payload, { responseType: "blob" })
       .then((res) => openPdf(res.data));
+  };
 
   const runBivoltineBonus = (selectedSanctionOrder) => {
     const type = Number(subSchemeType);
@@ -212,6 +284,14 @@ function RegenerateSanctionOrder() {
     switch (sanctionOrderForScheme) {
       case "Bivoltine Bonus":
         return runBivoltineBonus(selectedSanctionOrder);
+      case "Bonus PM":
+        return reportByApplicationIds(`get-BonusPM`, selectedSanctionOrder);
+      case "Bonus BV":
+        return reportByApplicationIds(`get-Bonus`, selectedSanctionOrder);
+      case "Incentive PM":
+        return reportByApplicationIds(`get-Incentive`, selectedSanctionOrder);
+      case "Incentive BV":
+        return reportByApplicationIds(`get-IncentiveBV`, selectedSanctionOrder);
       case "Incentive For Bivoltine Cocoons-30/kg-PSF":
         return reportByApplicationIds(`get-PriceStabilizationIncentive`, selectedSanctionOrder);
       case "North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP":
@@ -222,14 +302,30 @@ function RegenerateSanctionOrder() {
         return reportByApplicationIds(`get-MscSeedChawki1000`, selectedSanctionOrder);
       case "Silk Incentive-PSF":
         return reportByApplicationIds(`sanction-silk-incentive`, selectedSanctionOrder);
-      case "Reeling Shed-PSF":
-        return reportBySingleApplication(`sanction-psfa-reeling-shed`, selectedSanctionOrder);
-      case "Adopting Heat Recovery Unit-PSF":
-        return reportBySingleApplication(`sanction-heat-unit`, selectedSanctionOrder);
-      case "Registered Private Bivoltine Chawki Rearing Center Subsidy":
-        return reportBySingleApplication(`getChawkiSanctionOrderPdf`, selectedSanctionOrder);
+
+      // ── Dashboard Report List schemes — aligned to the generator (exact endpoint,
+      //     payload and farmer/company branching via the recipient toggle) ──
+      case "Silk Samagra State":
+      case "Silk Samagra Central":
+      case "SS Construction Of Low Cost Shed to Permanent Rearing House":
+      case "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House":
       case "Rearing Equipment SS":
-        return reportBySingleApplication(`getSanctionOrderRHEquipment`, selectedSanctionOrder);
+      case "Reeling Shed-PSF":
+      case "MERM-PSF":
+      case "Adopting Boiler-PSF":
+      case "IMCB-PSF":
+      case "ICB-PSF":
+      case "Adopting Heat Recovery Unit-PSF":
+      case "Adopting Silent Generator":
+      case "Adopting Solar power Generator":
+      case "Adopting Solar Water Heater":
+      case "Registered Private Bivoltine Chawki Rearing Center Subsidy":
+      case "SDP RH 225":
+      case "SDP Low Cost Shed":
+      case "PMKSY":
+      case "PDMC":
+        return runGeneratorAligned(sanctionOrderForScheme, recipientType);
+
       default:
         showSchemeError("No report is configured for the selected Sanction Order scheme.");
         return Promise.resolve();
@@ -410,6 +506,16 @@ function RegenerateSanctionOrder() {
                     const val = typeof num === "object" ? num.sanctionOrderNumber : num;
                     return <option key={index} value={val}>{val}</option>;
                   })}
+                </Form.Select>
+              </Col>
+              <Col md={4} style={fieldGroupStyle}>
+                <label style={labelStyle}>
+                  Recipient
+                  <span style={{ color: "#a0aec0", fontWeight: 400 }}> (Farmer/Company schemes only)</span>
+                </label>
+                <Form.Select value={recipientType} onChange={(e) => setRecipientType(e.target.value)} style={selectStyle}>
+                  <option value="farmer">Farmer / Beneficiary</option>
+                  <option value="company">Company</option>
                 </Form.Select>
               </Col>
             </Row>

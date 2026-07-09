@@ -998,7 +998,7 @@ useEffect(() => {
       hide: "md",
     },
     {
-      name: "Farmer Name",
+      name: "Beneficiary Name",
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
       sortable: true,
@@ -1374,7 +1374,7 @@ useEffect(() => {
                   <td>{viewDetailsData?.applicationDetails?.[0]?.fruitsId || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Farmer Name:</td>
+                  <td style={styles.ctstyle}>Beneficiary Name:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.farmerFirstName || 'N/A'}</td>
                 </tr>
                 <tr>
