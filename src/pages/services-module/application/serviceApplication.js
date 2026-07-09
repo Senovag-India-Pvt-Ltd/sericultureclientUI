@@ -4930,12 +4930,9 @@ const isUserValid = React.useMemo(() => {
       }
     }
 
-    // MERM-PSF: validate Kanesh Land Details, Constructed Area and Equipment Purchase
+    // MERM-PSF: validate Constructed Area and Equipment Purchase
     if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "MERM-PSF") {
       const missingFields = [];
-      if (data.addKaneshLand !== "yes") {
-        missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
-      }
       if (!data.equordev.includes("constructedArea")) {
         missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
       }
@@ -7028,9 +7025,9 @@ const search = (event) => {
 
   setDisable(true);
 
-  // Step 1: Try fetching Farmer Details first
+  // Step 1: Try fetching Farmer Details first (checks local DB before calling FRUITS API)
   api
-    .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
+    .post(baseURLFarmerServer + `farmer/get-farmer-details-by-fruits-id`, {
       fruitsId: data.fruitsId,
     })
     .then((response) => {
@@ -7038,6 +7035,7 @@ const search = (event) => {
       if (
         response.data &&
         response.data.content &&
+        !response.data.content.error &&
         response.data.content.farmerResponse
       ) {
         // ✅ Farmer details found
