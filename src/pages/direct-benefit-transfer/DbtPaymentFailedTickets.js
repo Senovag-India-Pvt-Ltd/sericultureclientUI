@@ -369,6 +369,28 @@ function DbtPaymentFailedTickets() {
       });
   };
 
+  // Beautiful "cannot close" popup that highlights the failure remark in bold.
+  const cannotCloseSwal = (remarks, message = CANNOT_CLOSE_MSG) => {
+    SwalStyled.fire({
+      icon: "error",
+      title: "Cannot close ticket",
+      html: `
+        <div style="text-align:left;color:#5b6b7f;font-size:13.5px;line-height:1.65;margin-top:2px">
+          ${message}
+          ${
+            remarks
+              ? `<div style="margin-top:15px;background:linear-gradient(135deg,#fff0f0,#ffe3e3);border:1px solid #ffc9c9;border-left:5px solid #e03131;border-radius:13px;padding:13px 15px">
+                   <div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#c92a2a;margin-bottom:5px">⚠️ Reason / Remarks</div>
+                   <div style="font-weight:800;color:#b02020;font-size:15.5px;line-height:1.4">${remarks}</div>
+                 </div>`
+              : ""
+          }
+        </div>`,
+      confirmButtonColor: "#e03131",
+      confirmButtonText: "OK",
+    });
+  };
+
   // Validate the LATEST DBT payment status before closing. If the payment is
   // still in Failure status the ticket stays Open and the user sees the
   // mandated message — the UI is never marked as "Ticket Closed".
@@ -389,10 +411,10 @@ function DbtPaymentFailedTickets() {
         .then((res) => {
           const latest = res?.data?.content;
           if (!latest?.canClose) {
-            // Still failed → keep Open, show mandated message, reflect latest status.
+            // Still failed → keep Open, show mandated message + remark, reflect latest status.
             getList(page, perPage, sortBy, sortDir, filters);
             getDashboard();
-            SwalStyled.fire({ icon: "error", title: "Cannot close ticket", text: CANNOT_CLOSE_MSG });
+            cannotCloseSwal(latest?.remarks);
             return;
           }
           api
@@ -404,11 +426,7 @@ function DbtPaymentFailedTickets() {
             })
             .catch((err) => {
               const msg = extractError(err);
-              SwalStyled.fire({
-                icon: "error",
-                title: "Cannot close ticket",
-                text: /success/i.test(msg) ? CANNOT_CLOSE_MSG : msg,
-              });
+              cannotCloseSwal(latest?.remarks, /success/i.test(msg) ? CANNOT_CLOSE_MSG : msg);
             });
         })
         .catch((err) => {

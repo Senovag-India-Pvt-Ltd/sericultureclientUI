@@ -92,6 +92,28 @@ function DbtPaymentFailedTicketDetails() {
     }
   };
 
+  // Beautiful "cannot close" popup that highlights the failure remark in bold.
+  const cannotCloseSwal = (remarks, message = CANNOT_CLOSE_MSG) => {
+    SwalStyled.fire({
+      icon: "error",
+      title: "Cannot close ticket",
+      html: `
+        <div style="text-align:left;color:#5b6b7f;font-size:13.5px;line-height:1.65;margin-top:2px">
+          ${message}
+          ${
+            remarks
+              ? `<div style="margin-top:15px;background:linear-gradient(135deg,#fff0f0,#ffe3e3);border:1px solid #ffc9c9;border-left:5px solid #e03131;border-radius:13px;padding:13px 15px">
+                   <div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#c92a2a;margin-bottom:5px;display:flex;align-items:center;gap:6px">⚠️ Reason / Remarks</div>
+                   <div style="font-weight:800;color:#b02020;font-size:15.5px;line-height:1.4">${remarks}</div>
+                 </div>`
+              : ""
+          }
+        </div>`,
+      confirmButtonColor: "#e03131",
+      confirmButtonText: "OK",
+    });
+  };
+
   const loadTicket = () => {
     setLoading(true);
     api
@@ -152,8 +174,8 @@ function DbtPaymentFailedTicketDetails() {
           const latest = res?.data?.content;
           setTicket((prev) => ({ ...prev, ...latest }));
           if (!latest?.canClose) {
-            // Still Failure → keep the ticket Open, show the mandated message.
-            SwalStyled.fire({ icon: "error", title: "Cannot close ticket", text: CANNOT_CLOSE_MSG });
+            // Still Failure → keep the ticket Open, show the mandated message + remark.
+            cannotCloseSwal(latest?.remarks);
             return;
           }
           api
@@ -164,11 +186,7 @@ function DbtPaymentFailedTicketDetails() {
             })
             .catch((err) => {
               const msg = extractError(err);
-              SwalStyled.fire({
-                icon: "error",
-                title: "Cannot close ticket",
-                text: /success/i.test(msg) ? CANNOT_CLOSE_MSG : msg,
-              });
+              cannotCloseSwal(latest?.remarks, /success/i.test(msg) ? CANNOT_CLOSE_MSG : msg);
             });
         })
         .catch((err) => SwalStyled.fire({ icon: "error", title: "Error", text: extractError(err) }));
@@ -330,14 +348,14 @@ function DbtPaymentFailedTicketDetails() {
         </Block>
       )}
 
-      {(ticket.dbtFailureReason || ticket.acknowledgementFailureReason) && (
+      {(ticket.remarks || ticket.dbtFailureReason || ticket.acknowledgementFailureReason) && (
         <Block className="mt-3">
           <div className="dpft-failbox">
             <div className="dpft-failbox-label">
-              <Icon name="alert-circle" className="me-1" /> Failure Reason
+              <Icon name="alert-circle" className="me-1" /> Failure Reason / Remarks
             </div>
             <div className="dpft-failbox-text">
-              {ticket.dbtFailureReason || ticket.acknowledgementFailureReason}
+              {ticket.remarks || ticket.dbtFailureReason || ticket.acknowledgementFailureReason}
             </div>
           </div>
         </Block>
@@ -414,6 +432,7 @@ function DbtPaymentFailedTicketDetails() {
         </Section>
 
         <Section title="Failure Reason" icon="alert-circle">
+          <Field label="Remarks" value={ticket.remarks} />
           <Field label="DBT Failure Reason" value={ticket.dbtFailureReason} />
           <Field label="Acknowledgement Failure Reason" value={ticket.acknowledgementFailureReason} />
         </Section>
