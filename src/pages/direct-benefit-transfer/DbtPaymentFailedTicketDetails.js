@@ -35,6 +35,16 @@ const dpftStyles = `
 .dpft-alert{border:none;border-radius:14px;background:#fff6e9;color:#8a5a12;box-shadow:0 4px 16px rgba(242,153,74,.14);border-left:5px solid #f2994a;padding:14px 18px;}
 .dpft-swal.swal2-popup{border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.22);}
 .dpft-hero .btn-light{font-weight:600;}
+.dpft-failbox{background:linear-gradient(135deg,#fff0f0,#ffe3e3);border:1px solid #ffc9c9;border-left:6px solid #e03131;border-radius:16px;padding:18px 22px;box-shadow:0 6px 20px rgba(224,49,49,.10);}
+.dpft-failbox-label{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#c92a2a;display:flex;align-items:center;margin-bottom:6px;}
+.dpft-failbox-text{font-size:23px;font-weight:800;color:#b02020;line-height:1.35;word-break:break-word;}
+.dpft-contact{display:flex;align-items:center;gap:14px;background:#f6faff;border:1px solid #e4eef8;border-radius:14px;padding:14px 16px;height:100%;}
+.dpft-contact-av{width:46px;height:46px;flex:0 0 46px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:17px;background:linear-gradient(135deg,#0d3b66,#2f9bd8);}
+.dpft-contact-name{font-weight:700;color:#1f2d3d;font-size:15px;}
+.dpft-contact-role{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#93a0b3;font-weight:700;}
+.dpft-callbtn{display:inline-flex;align-items:center;gap:6px;margin-top:5px;font-weight:800;color:#0b7a3b;text-decoration:none;font-size:15px;}
+.dpft-callbtn:hover{color:#095e2e;text-decoration:underline;}
+.dpft-nomobile{font-size:13px;color:#adb5bd;font-style:italic;margin-top:4px;}
 `;
 
 function DbtPaymentFailedTicketDetails() {
@@ -186,6 +196,30 @@ function DbtPaymentFailedTicketDetails() {
     </Card>
   );
 
+  const ContactCard = ({ role, name, username, mobile }) => {
+    const display = name || username;
+    const initial = (display || "?").trim().charAt(0).toUpperCase();
+    return (
+      <Col md="6" className="mb-3">
+        <div className="dpft-contact">
+          <div className="dpft-contact-av">{initial}</div>
+          <div className="flex-grow-1">
+            <div className="dpft-contact-role">{role}</div>
+            <div className="dpft-contact-name">{display || "-"}</div>
+            {username && name ? <div className="text-muted small">@{username}</div> : null}
+            {mobile ? (
+              <a className="dpft-callbtn" href={`tel:${mobile}`}>
+                <Icon name="call" /> {mobile}
+              </a>
+            ) : (
+              <div className="dpft-nomobile">No mobile number on record</div>
+            )}
+          </div>
+        </div>
+      </Col>
+    );
+  };
+
   if (forbidden) {
     return (
       <Layout title="Ticket Details">
@@ -238,7 +272,7 @@ function DbtPaymentFailedTicketDetails() {
     <Layout title="Ticket Details">
       <style>{dpftStyles}</style>
 
-      <Block>
+      <Block className="mt-2 pt-5">
         <div className="dpft-hero">
           <div className="dpft-hero-row">
             <div>
@@ -296,7 +330,35 @@ function DbtPaymentFailedTicketDetails() {
         </Block>
       )}
 
+      {(ticket.dbtFailureReason || ticket.acknowledgementFailureReason) && (
+        <Block className="mt-3">
+          <div className="dpft-failbox">
+            <div className="dpft-failbox-label">
+              <Icon name="alert-circle" className="me-1" /> Failure Reason
+            </div>
+            <div className="dpft-failbox-text">
+              {ticket.dbtFailureReason || ticket.acknowledgementFailureReason}
+            </div>
+          </div>
+        </Block>
+      )}
+
       <Block>
+        <Section title="Follow-up Contacts — call until payment succeeds" icon="headphone">
+          <ContactCard
+            role="Application Created By"
+            name={ticket.applicationCreatedByName}
+            username={ticket.applicationCreatedBy}
+            mobile={ticket.applicationCreatedByMobile}
+          />
+          <ContactCard
+            role="Application Modified By"
+            name={ticket.applicationModifiedByName}
+            username={ticket.applicationModifiedBy}
+            mobile={ticket.applicationModifiedByMobile}
+          />
+        </Section>
+
         <Section title="Beneficiary Details" icon="user">
           <Field label="Farmer / Beneficiary Name" value={ticket.farmerName} />
           <Field label="Beneficiary Type" value={ticket.beneficiaryType} />

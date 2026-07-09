@@ -592,7 +592,7 @@ function DbtPaymentFailedTickets() {
     <Layout title="DBT Payment Failed Tickets">
       <style>{dpftStyles}</style>
 
-      <Block>
+      <Block className="mt-2 pt-5">
         <div className="dpft-hero">
           <div className="dpft-hero-row">
             <div>
