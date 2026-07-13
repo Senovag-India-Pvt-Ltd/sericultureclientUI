@@ -3230,23 +3230,36 @@ if (
   let maxNoOfCocoonsPerKg;
 
   if (calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF") {
-    const avgYield = parseFloat(data.averageYield || 0);
-    const noOfDfls = parseFloat(data.lotWeight || 0);
+    const avgYield      = parseFloat(data.averageYield || 0);
+    const noOfDfls      = parseFloat(data.lotWeight || 0);
+    const minAvgYield   = bonusAmountData[0]?.minAverageYield;
+    const maxCocoonsPKg = bonusAmountData[0]?.maxNoOfCocoonsPerKg;
 
-    // Case 3: Average Yield < 60 — block, do not calculate subsidy
-    if (avgYield < 60) {
+    if (minAvgYield == null || maxCocoonsPKg == null) {
       Swal.fire({
-        icon: "warning",
-        title: "Validation Error",
-        text: "Average Yield Should be Above 60%",
+        icon: "error",
+        title: "Configuration Not Found",
+        text: "Min Average Yield and Max No. of Cocoons Per Kg are not configured. Please configure them in the Configure Bivoltine Amount page.",
       });
       return;
     }
 
-    // Case 1: Average Yield > 90 — calculate subsidy using DFLs × 90/100, cap
-    // both Average Yield and the transacted weight (kg) to the eligible amount
-    if (avgYield > 90) {
-      const eligibleCocoons = parseFloat((noOfDfls * 90 / 100).toFixed(2));
+    const minAvgYieldVal   = parseFloat(minAvgYield);
+    const maxCocoonsPKgVal = parseFloat(maxCocoonsPKg);
+
+    // Case 3: Average Yield < minAverageYield — block, do not calculate subsidy
+    if (avgYield < minAvgYieldVal) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: `Average Yield Should be Above ${minAvgYieldVal}%`,
+      });
+      return;
+    }
+
+    // Case 1: Average Yield > maxNoOfCocoonsPerKg — calculate subsidy on capped quantity
+    if (avgYield > maxCocoonsPKgVal) {
+      const eligibleCocoons = parseFloat((noOfDfls * maxCocoonsPKgVal / 100).toFixed(2));
       const amountPerKg     = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
       const roundedAmount   = Math.round(eligibleCocoons * amountPerKg);
 
@@ -3254,7 +3267,7 @@ if (
       setData((prev) => ({
         ...prev,
         expectedAmount: roundedAmount,
-        averageYield: 90,
+        averageYield: maxCocoonsPKgVal,
         cocoonsWeight: eligibleCocoons,
       }));
       setUnitPriceCalculated(true);
@@ -3262,12 +3275,12 @@ if (
       Swal.fire({
         icon: "info",
         title: "Subsidy Calculated on Eligible Quantity",
-        text: `Average Yield exceeds 90%. Subsidy is calculated on eligible quantity: ${eligibleCocoons} kg (${noOfDfls} × 90/100). Average Yield and Cocoons Transacted (kg) have both been set to the eligible values.`,
+        text: `Average Yield exceeds ${maxCocoonsPKgVal}%. Subsidy is calculated on eligible quantity: ${eligibleCocoons} kg (${noOfDfls} × ${maxCocoonsPKgVal}/100). Average Yield and Cocoons Transacted (kg) have both been set to the eligible values.`,
       });
       return;
     }
 
-    // Case 2: 60 ≤ averageYield ≤ 90 — proceed with normal calculation below
+    // Case 2: minAvgYieldVal ≤ averageYield ≤ maxCocoonsPKgVal — proceed with normal calculation below
   }
 
   // 7. If all validations pass, calculate the bonus
