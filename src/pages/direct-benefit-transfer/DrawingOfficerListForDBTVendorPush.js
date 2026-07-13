@@ -1318,6 +1318,38 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
     navigate(`/seriui/application-form-edit/${_id}`);
   };
 
+  const NON_DELETABLE_STATUSES = [
+    "ACKNOWLEDGEMENT FAILED",
+    "ACKNOWLEDGEMENT SUCCESS",
+    "DBT PUSHED",
+    "PAYMENT SUCCESS IN DBT",
+  ];
+
+  const deleteApplicationConfirm = (_id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This will permanently delete the application from all records!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        api
+          .post(baseURLDBT + `service/deleteApplicationForm/${_id}`)
+          .then(() => {
+            Swal.fire("Deleted!", "Application has been deleted successfully.", "success");
+            getList();
+          })
+          .catch(() => {
+            Swal.fire("Error!", "Failed to delete the application. Please try again.", "error");
+          });
+      }
+    });
+  };
+
   const deleteError = () => {
     Swal.fire({
       icon: "error",
@@ -1737,6 +1769,17 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
       >
         <Icon name="edit" />
         <span>{t("Edit")}</span>
+      </Button>
+      <Button
+        variant="danger"
+        size="sm"
+        disabled={NON_DELETABLE_STATUSES.includes(row.applicationStatus)}
+        onClick={() => deleteApplicationConfirm(row.scApplicationFormServiceId)}
+        className="d-inline-flex align-items-center flex-shrink-0"
+        style={{ gap: "0.3rem", whiteSpace: "nowrap" }}
+      >
+        <Icon name="trash" />
+        <span>{t("Delete")}</span>
       </Button>
     </div>
   ),

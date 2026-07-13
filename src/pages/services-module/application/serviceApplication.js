@@ -3243,20 +3243,26 @@ if (
       return;
     }
 
-    // Case 1: Average Yield > 90 — calculate subsidy using DFLs × 90/100, set Average Yield to 90
+    // Case 1: Average Yield > 90 — calculate subsidy using DFLs × 90/100, cap
+    // both Average Yield and the transacted weight (kg) to the eligible amount
     if (avgYield > 90) {
       const eligibleCocoons = parseFloat((noOfDfls * 90 / 100).toFixed(2));
       const amountPerKg     = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
       const roundedAmount   = Math.round(eligibleCocoons * amountPerKg);
 
       setAmountValue((prev) => ({ ...prev, unitPrice: amountPerKg }));
-      setData((prev) => ({ ...prev, expectedAmount: roundedAmount, averageYield: 90 }));
+      setData((prev) => ({
+        ...prev,
+        expectedAmount: roundedAmount,
+        averageYield: 90,
+        cocoonsWeight: eligibleCocoons,
+      }));
       setUnitPriceCalculated(true);
 
       Swal.fire({
         icon: "info",
         title: "Subsidy Calculated on Eligible Quantity",
-        text: `Average Yield exceeds 90%. Subsidy is calculated on eligible quantity: ${eligibleCocoons} kg (${noOfDfls} × 90/100). Average Yield set to 90%.`,
+        text: `Average Yield exceeds 90%. Subsidy is calculated on eligible quantity: ${eligibleCocoons} kg (${noOfDfls} × 90/100). Average Yield and Cocoons Transacted (kg) have both been set to the eligible values.`,
       });
       return;
     }
