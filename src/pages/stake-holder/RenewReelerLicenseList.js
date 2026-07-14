@@ -1,32 +1,29 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { createTheme } from "react-data-table-component";
+import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DataTable from "react-data-table-component";
-import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
+
+const ACCENT_HEADER = "linear-gradient(135deg,#1a5f9e 0%,#2c8fd4 60%,#38b2ac 100%)";
+const ACCENT_TABLE  = "linear-gradient(135deg,#1a5f9e,#2c8fd4)";
+const CTRL_H = "44px";
+const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom: "3px", display: "block" };
+const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function RenewReelerLicenseList() {
   const { t } = useTranslation();
-  const [listData, setListData] = useState({});
-  const [listFarmerData, setListFarmerData] = useState({});
+  const [listData, setListData] = useState([]);
   const [page, setPage] = useState(0);
   const countPerPage = 25;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage } };
-
-  const [isActive, setIsActive] = useState(false);
 
   const [data, setData] = useState({
     districtId: "",
@@ -37,386 +34,196 @@ function RenewReelerLicenseList() {
     expiryDate: null,
   });
 
-  const [hobliData, setHobliData] = useState({
-    hobliId: "",
-  });
+  const [hobliData, setHobliData] = useState({ hobliId: "" });
 
-  // Search
-  const search = (e) => {
+  const handleInputs = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+
+  const handleHobliInputs = (e) => {
+    const { name, value } = e.target;
+    setHobliData({ ...hobliData, [name]: value });
+  };
+
+  // ── Search ───────────────────────────────────────────────────────────────
+  const search = () => {
+    setLoading(true);
     api
-      .post(
-        baseURLFarmer + `reeler/primaryReelerForRenewalLicense`,
-        {},
-        {
-          params: {
-            districtId: data.districtId || 0,
-            talukId: data.talukId || 0,
-            villageId: data.villageId || 0,
-            marketId: data.marketId || 0,
-            renewalDate: data.renewalDate ? data.renewalDate : null,
-            expiryDate: data.expiryDate ? data.expiryDate : null,
-            pageNumber: page,
-            pageSize: countPerPage,
-          },
-        }
-      )
+      .post(baseURLFarmer + `reeler/primaryReelerForRenewalLicense`, {}, {
+        params: {
+          districtId: data.districtId || 0,
+          talukId: data.talukId || 0,
+          villageId: data.villageId || 0,
+          marketId: data.marketId || 0,
+          renewalDate: data.renewalDate ? data.renewalDate : null,
+          expiryDate: data.expiryDate ? data.expiryDate : null,
+          pageNumber: page,
+          pageSize: countPerPage,
+        },
+      })
       .then((response) => {
         setListData(response.data.content);
         setTotalRows(response.data.totalRecords);
       })
-      .catch((err) => {
-        setListData([]);
-      });
+      .catch(() => setListData([]))
+      .finally(() => setLoading(false));
   };
 
-  const exportCsv = (e) => {
+  // ── Export XLSX ──────────────────────────────────────────────────────────
+  const exportCsv = () => {
     api
-      .post(
-        baseURLFarmer + `reeler/renewal-reeler-report`,
-        {},
-        {
-          params: {
-            districtId: data.districtId || 0,
-            talukId: data.talukId || 0,
-            villageId: data.villageId || 0,
-            marketId: data.marketId || 0,
-            renewalDate: data.renewalDate ? data.renewalDate : null,
-            expiryDate: data.expiryDate ? data.expiryDate : null,
-          },
-          responseType: 'blob',
-          headers: {
-            accept: "text/csv",
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      .post(baseURLFarmer + `reeler/renewal-reeler-report`, {}, {
+        params: {
+          districtId: data.districtId || 0,
+          talukId: data.talukId || 0,
+          villageId: data.villageId || 0,
+          marketId: data.marketId || 0,
+          renewalDate: data.renewalDate ? data.renewalDate : null,
+          expiryDate: data.expiryDate ? data.expiryDate : null,
+        },
+        responseType: "blob",
+        headers: {
+          accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "Content-Type": "application/json",
+        },
+      })
       .then((response) => {
-        const blob = new Blob([response.data], { type: "text/csv" });
+        const blob = new Blob([response.data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = `reeler_report.csv`;
+        link.download = `renewal_reeler_report${new Date().toLocaleDateString("en-GB").replace(/\//g,"-")}.xlsx`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(link.href);
       })
-      .catch((err) => {
-        Swal.fire({
-          icon: "warning",
-          title: "No record found!!!",
-        });
+      .catch(() => {
+        Swal.fire({ icon: "warning", title: "No record found!!!" });
       });
-};
+  };
 
-  const getReelerList = (e) => {
+  // ── Initial load + page change ───────────────────────────────────────────
+  const getReelerList = () => {
+    setLoading(true);
     api
-      .post(
-        baseURLFarmer + `reeler/primaryReelerForRenewalLicense`,
-        {},
-        {
-          params: {
-            districtId: data.districtId || 0,
-            talukId: data.talukId || 0,
-            villageId: data.villageId || 0,
-            marketId: data.marketId || 0,
-            renewalDate: data.renewalDate ? data.renewalDate : null,
-            expiryDate: data.expiryDate ? data.expiryDate : null,
-            pageNumber: page,
-            pageSize: countPerPage,
-          },
-        }
-      )
+      .post(baseURLFarmer + `reeler/primaryReelerForRenewalLicense`, {}, {
+        params: {
+          districtId: data.districtId || 0,
+          talukId: data.talukId || 0,
+          villageId: data.villageId || 0,
+          marketId: data.marketId || 0,
+          renewalDate: data.renewalDate ? data.renewalDate : null,
+          expiryDate: data.expiryDate ? data.expiryDate : null,
+          pageNumber: page,
+          pageSize: countPerPage,
+        },
+      })
       .then((response) => {
         setListData(response.data.content);
         setTotalRows(response.data.totalRecords);
       })
-      .catch((err) => {
-        setListData([]);
-      });
+      .catch(() => setListData([]))
+      .finally(() => setLoading(false));
   };
 
-  useEffect(() => {
-    getReelerList();
-  }, [page]);
+  useEffect(() => { getReelerList(); }, [page]); // eslint-disable-line
 
-  const handleInputs = (e) => {
-    // debugger;
-    let { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
-
-  const handleHobliInputs = (e) => {
-    // debugger;
-    let { name, value } = e.target;
-    setHobliData({ ...hobliData, [name]: value });
-  };
-
-  // to get State
+  // ── Dropdowns ────────────────────────────────────────────────────────────
   const [districtListData, setDistrictListData] = useState([]);
-
-  const getList = () => {
-    const response = api
-      .get(baseURL + `district/get-all`)
-      .then((response) => {
-        if (response.data.content.district) {
-          setDistrictListData(response.data.content.district);
-        }
-      })
-      .catch((err) => {
-        setDistrictListData([]);
-      });
-  };
-
   useEffect(() => {
-    getList();
+    api.get(baseURL + `district/get-all`)
+      .then((r) => setDistrictListData(r.data.content.district || []))
+      .catch(() => setDistrictListData([]));
   }, []);
 
-  // to get taluk
   const [talukListData, setTalukListData] = useState([]);
-
-  const getTalukList = (_id) => {
-    const response = api
-      .get(baseURL + `taluk/get-by-district-id/${_id}`)
-      .then((response) => {
-        if (response.data.content.taluk) {
-          setTalukListData(response.data.content.taluk);
-        }
-      })
-      .catch((err) => {
-        setTalukListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
   useEffect(() => {
     if (data.districtId) {
-      getTalukList(data.districtId);
+      api.get(baseURL + `taluk/get-by-district-id/${data.districtId}`)
+        .then((r) => setTalukListData(r.data.content.taluk || []))
+        .catch(() => setTalukListData([]));
     }
   }, [data.districtId]);
 
-  // to get hobli
   const [hobliListData, setHobliListData] = useState([]);
-
-  const getHobliList = (_id) => {
-    const response = api
-      .get(baseURL + `hobli/get-by-taluk-id/${_id}`)
-      .then((response) => {
-        if (response.data.content.hobli) {
-          setHobliListData(response.data.content.hobli);
-        }
-      })
-      .catch((err) => {
-        setHobliListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
   useEffect(() => {
     if (data.talukId) {
-      getHobliList(data.talukId);
+      api.get(baseURL + `hobli/get-by-taluk-id/${data.talukId}`)
+        .then((r) => setHobliListData(r.data.content.hobli || []))
+        .catch(() => setHobliListData([]));
     }
   }, [data.talukId]);
 
-  // to get Village
   const [villageListData, setVillageListData] = useState([]);
-
-  const getVillageList = (_id) => {
-    api
-      .get(baseURL + `village/get-by-hobli-id/${_id}`)
-      .then((response) => {
-        setVillageListData(response.data.content.village);
-      })
-      .catch((err) => {
-        setVillageListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
-  };
-
   useEffect(() => {
     if (hobliData.hobliId) {
-      getVillageList(hobliData.hobliId);
+      api.get(baseURL + `village/get-by-hobli-id/${hobliData.hobliId}`)
+        .then((r) => setVillageListData(r.data.content.village || []))
+        .catch(() => setVillageListData([]));
     }
   }, [hobliData.hobliId]);
 
-  // to get District Implementing Officer
   const [marketListData, setMarketListData] = useState([]);
-
-  const getMarketList = (districtId) => {
-    api
-      .post(baseURL + `marketMaster/get-market-by-districtId`, {
-        districtId: districtId,
-      })
-      .then((response) => {
-        setMarketListData(response.data.content.marketMaster);
-      })
-      .catch((err) => {
-        setMarketListData([]);
-      });
-  };
-
   useEffect(() => {
     if (data.districtId) {
-      // getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
-      getMarketList(data.districtId);
+      api.post(baseURL + `marketMaster/get-market-by-districtId`, { districtId: data.districtId })
+        .then((r) => setMarketListData(r.data.content.marketMaster || []))
+        .catch(() => setMarketListData([]));
     }
   }, [data.districtId]);
 
- 
-  
-  createTheme(
-    "solarized",
-    {
-      text: {
-        primary: "#004b8e",
-        secondary: "#2aa198",
-      },
-      background: {
-        default: "#fff",
-      },
-      context: {
-        background: "#cb4b16",
-        text: "#FFFFFF",
-      },
-      divider: {
-        default: "#d3d3d3",
-      },
-      action: {
-        button: "rgba(0,0,0,.54)",
-        hover: "rgba(0,0,0,.02)",
-        disabled: "rgba(0,0,0,.12)",
-      },
-    },
-    "light"
-  );
-
+  // ── Table styles ─────────────────────────────────────────────────────────
   const customStyles = {
-    rows: {
-      style: {
-        minHeight: "30px", // override the row height
-      },
-    },
+    headRow: { style: { minHeight: "52px", height: "auto" } },
     headCells: {
       style: {
-        // '&:not(:last-of-type)': {
-        backgroundColor: "#1e67a8",
-        color: "#fff",
-        borderStyle: "solid",
-        bordertWidth: "1px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        background: ACCENT_TABLE, color: "#fff", fontWeight: 700, fontSize: "13px",
+        padding: "10px 8px", borderRight: "1px solid rgba(255,255,255,0.5)",
+        borderBottom: "2px solid rgba(255,255,255,0.6)", whiteSpace: "normal",
+        wordBreak: "break-word", overflowWrap: "break-word", overflow: "visible",
+        lineHeight: "1.4", minHeight: "52px", height: "auto",
+        verticalAlign: "middle", justifyContent: "center", textAlign: "center",
+      },
+    },
+    rows: {
+      style: {
+        minHeight: "32px",
+        "&:nth-of-type(odd)":  { background: "#fff" },
+        "&:nth-of-type(even)": { background: "#f7fafd" },
       },
     },
     cells: {
       style: {
-        // '&:not(:last-of-type)': {
-        borderStyle: "solid",
-        borderWidth: "1px",
-        paddingTop: "3px",
-        paddingBottom: "3px",
-        paddingLeft: "8px",
-        paddingRight: "8px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        borderRight: "1px solid #eef2f7", borderBottom: "1px solid #e8edf5",
+        paddingTop: "4px", paddingBottom: "4px", paddingLeft: "8px", paddingRight: "8px",
+        color: "#2d3748", fontSize: "13px", justifyContent: "center", textAlign: "center",
       },
     },
   };
 
-  const ReelerDataColumns = [
-    {
-      name: "Sl.No",
-      selector: (row) => row.serialNumber,
-      cell: (row) => <span>{row.serialNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
+  const colHeader = (label) => (
+    <div style={{ whiteSpace: "normal", wordBreak: "break-word", textAlign: "center", lineHeight: "1.4", width: "100%", padding: "2px 0" }}>
+      {label}
+    </div>
+  );
 
-    {
-      name: "First Name",
-      selector: (row) => row.firstName,
-      cell: (row) => <span>{row.firstName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Father Name",
-      selector: (row) => row.fatherName,
-      cell: (row) => <span>{row.fatherName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Fruits Id",
-      selector: (row) => row.fruitsId,
-      cell: (row) => <span>{row.fruitsId}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-        name: "Reeler License Number",
-        selector: (row) => row.reelerLicenseNumber,
-        cell: (row) => <span>{row.reelerLicenseNumber}</span>,
-        sortable: true,
-        hide: "md",
-      },
-    {
-      name: "Reeler Number",
-      selector: (row) => row.reelerNumber,
-      cell: (row) => <span>{row.reelerNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Mobile Number",
-      selector: (row) => row.reelerMobileNumber,
-      cell: (row) => <span>{row.reelerMobileNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    
-    {
-      name: "Passbook Number",
-      selector: (row) => row.passbookNumber,
-      cell: (row) => <span>{row.passbookNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "District Name",
-      selector: (row) => row.districtName,
-      cell: (row) => <span>{row.districtName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Taluk  Name",
-      selector: (row) => row.talukName,
-      cell: (row) => <span>{row.talukName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Village Name",
-      selector: (row) => row.villageName,
-      cell: (row) => <span>{row.villageName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Renew License Date",
-      selector: (row) => row.renewalDate,
-      cell: (row) => <span>{row.renewalDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Expiration Date",
-      selector: (row) => row.expiryDate,
-      cell: (row) => <span>{row.expiryDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
+  const ReelerDataColumns = [
+    { name: colHeader("Sl.No"),                selector: (row) => row.serialNumber,        cell: (row) => <span>{row.serialNumber}</span>,        sortable: true },
+    { name: colHeader("First Name"),           selector: (row) => row.firstName,            cell: (row) => <span>{row.firstName}</span>,            sortable: true },
+    { name: colHeader("Father Name"),          selector: (row) => row.fatherName,           cell: (row) => <span>{row.fatherName}</span>,           sortable: true },
+    { name: colHeader("Fruits Id"),            selector: (row) => row.fruitsId,             cell: (row) => <span>{row.fruitsId}</span>,             sortable: true },
+    { name: colHeader("Reeler License No."),   selector: (row) => row.reelerLicenseNumber,  cell: (row) => <span>{row.reelerLicenseNumber}</span>,  sortable: true },
+    { name: colHeader("Reeler Number"),        selector: (row) => row.reelerNumber,         cell: (row) => <span>{row.reelerNumber}</span>,         sortable: true },
+    { name: colHeader("Mobile Number"),        selector: (row) => row.reelerMobileNumber,   cell: (row) => <span>{row.reelerMobileNumber}</span>,   sortable: true },
+   // { name: colHeader("Passbook Number"),      selector: (row) => row.passbookNumber,       cell: (row) => <span>{row.passbookNumber}</span>,       sortable: true },
+    { name: colHeader("District Name"),        selector: (row) => row.districtName,         cell: (row) => <span>{row.districtName}</span>,         sortable: true },
+    { name: colHeader("Taluk Name"),           selector: (row) => row.talukName,            cell: (row) => <span>{row.talukName}</span>,            sortable: true },
+    { name: colHeader("Village Name"),         selector: (row) => row.villageName,          cell: (row) => <span>{row.villageName}</span>,          sortable: true },
+    { name: colHeader("Renew License Date"),   selector: (row) => row.renewalDate,          cell: (row) => <span>{row.renewalDate}</span>,          sortable: true },
+    { name: colHeader("Expiration Date"),      selector: (row) => row.expiryDate,           cell: (row) => <span>{row.expiryDate}</span>,           sortable: true },
   ];
 
   return (
@@ -431,210 +238,104 @@ function RenewReelerLicenseList() {
       </Block.Head>
 
       <Block className="mt-n4">
-        <Card className="mt-1">
-          <Row className="m-4">
-            <Col sm={2}>
-              <Form.Group className="form-group mt-n4">
-                <Form.Label>{t("District")}</Form.Label>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="districtId"
-                    value={data.districtId}
-                    onChange={handleInputs}
-                    onBlur={() => handleInputs}
-                    isInvalid={
-                      data.districtId === undefined || data.districtId === "0"
-                    }
-                  >
-                    <option value="">{t("Select District")}</option>
-                    {districtListData && districtListData.length
-                      ? districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))
-                      : ""}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {t("District Name is required")}
-                  </Form.Control.Feedback>
-                </div>
-              </Form.Group>
-            </Col>
+        {/* Filter Card */}
+        <Card style={{ borderRadius: "12px", border: "none", boxShadow: "0 2px 16px rgba(30,103,168,0.10)", backgroundColor: "#fff" }}>
+          <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
+            <span style={{ fontSize: "20px" }}>🔄</span>
+            <div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Renewal of Reeler License Report</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export renewal license data</div>
+            </div>
+          </div>
 
-            <Col sm={2}>
-              <Form.Group className="form-group mt-n4">
-                <Form.Label>{t("Taluk")}</Form.Label>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="talukId"
-                    value={data.talukId}
-                    onChange={handleInputs}
-                    onBlur={() => handleInputs}
-                    isInvalid={
-                      data.talukId === undefined || data.talukId === "0"
-                    }
-                  >
-                    <option value="">{t("Select Taluk")}</option>
-                    {talukListData && talukListData.length
-                      ? talukListData.map((list) => (
-                          <option key={list.talukId} value={list.talukId}>
-                            {list.talukName}
-                          </option>
-                        ))
-                      : ""}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {t("Taluk Name is required")}
-                  </Form.Control.Feedback>
-                </div>
-              </Form.Group>
-            </Col>
+          <Card.Body className="pb-2">
+            {/* Row 1 — All 7 filters in one line */}
+            <Row className="g-2 mb-2 align-items-end flex-nowrap">
+              <Col>
+                <label style={lbl}>{t("District")}</label>
+                <Form.Select name="districtId" value={data.districtId} onChange={handleInputs} style={sel}>
+                  <option value="">{t("Select District")}</option>
+                  {districtListData.map((d) => (
+                    <option key={d.districtId} value={d.districtId}>{d.districtName}</option>
+                  ))}
+                </Form.Select>
+              </Col>
 
-            <Col sm={2}>
-              <Form.Group className="form-group mt-n4">
-                <Form.Label>{t("Hobli")}</Form.Label>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="hobliId"
-                    value={hobliData.hobliId}
-                    onChange={handleHobliInputs}
-                    onBlur={() => handleHobliInputs}
-                    isInvalid={
-                      hobliData.hobliId === undefined ||
-                      hobliData.hobliId === "0"
-                    }
-                  >
-                    <option value="">{t("Select hobli")}</option>
-                    {hobliListData && hobliListData.length
-                      ? hobliListData.map((list) => (
-                          <option key={list.hobliId} value={list.hobliId}>
-                            {list.hobliName}
-                          </option>
-                        ))
-                      : ""}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {t("Hobli Name is required")}
-                  </Form.Control.Feedback>
-                </div>
-              </Form.Group>
-            </Col>
+              <Col>
+                <label style={lbl}>{t("Taluk")}</label>
+                <Form.Select name="talukId" value={data.talukId} onChange={handleInputs} style={sel}>
+                  <option value="">{t("Select Taluk")}</option>
+                  {talukListData.map((tk) => (
+                    <option key={tk.talukId} value={tk.talukId}>{tk.talukName}</option>
+                  ))}
+                </Form.Select>
+              </Col>
 
-            <Col sm={2}>
-              <Form.Group className="form-group mt-n4">
-                <Form.Label>{t("Village")}</Form.Label>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="villageId"
-                    value={data.villageId}
-                    onChange={handleInputs}
-                    onBlur={() => handleInputs}
-                    isInvalid={
-                      data.villageId === undefined || data.villageId === "0"
-                    }
-                  >
-                    <option value="">{t("Select village")}</option>
-                    {villageListData && villageListData.length
-                      ? villageListData.map((list) => (
-                          <option key={list.villageId} value={list.villageId}>
-                            {list.villageName}
-                          </option>
-                        ))
-                      : ""}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {t("Village Name is required")}
-                  </Form.Control.Feedback>
-                </div>
-              </Form.Group>
-            </Col>
+              <Col>
+                <label style={lbl}>{t("Hobli")}</label>
+                <Form.Select name="hobliId" value={hobliData.hobliId} onChange={handleHobliInputs} style={sel}>
+                  <option value="">{t("Select Hobli")}</option>
+                  {hobliListData.map((h) => (
+                    <option key={h.hobliId} value={h.hobliId}>{h.hobliName}</option>
+                  ))}
+                </Form.Select>
+              </Col>
 
-            <Col sm={2}>
-              <Form.Group className="form-group mt-n4">
-                <Form.Label>{t("Market")}</Form.Label>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="marketId"
-                    value={data.marketId}
-                    onChange={handleInputs}
-                    onBlur={() => handleInputs}
-                    isInvalid={
-                      data.marketId === undefined || data.marketId === "0"
-                    }
-                  >
-                    <option value="">{t("Select Market")}</option>
-                    {marketListData && marketListData.length
-                      ? marketListData.map((list) => (
-                          <option
-                            key={list.marketMasterId}
-                            value={list.marketMasterId}
-                          >
-                            {list.marketMasterName}
-                          </option>
-                        ))
-                      : ""}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {t("Market is required")}
-                  </Form.Control.Feedback>
-                </div>
-              </Form.Group>
-            </Col>
+              <Col>
+                <label style={lbl}>{t("Village")}</label>
+                <Form.Select name="villageId" value={data.villageId} onChange={handleInputs} style={sel}>
+                  <option value="">{t("Select Village")}</option>
+                  {villageListData.map((v) => (
+                    <option key={v.villageId} value={v.villageId}>{v.villageName}</option>
+                  ))}
+                </Form.Select>
+              </Col>
 
-            <Col sm={2}>
-    <Form.Group className="form-group mt-n4">
-      <Form.Label>{t("Renewal Date")}</Form.Label>
-      <div className="form-control-wrap">
-        <Form.Control
-          type="date"
-          name="renewalDate"
-          value={data.renewalDate || ""}
-          onChange={handleInputs}
-        />
-      </div>
-    </Form.Group>
-  </Col>
+              <Col>
+                <label style={lbl}>{t("Market")}</label>
+                <Form.Select name="marketId" value={data.marketId} onChange={handleInputs} style={sel}>
+                  <option value="">{t("Select Market")}</option>
+                  {marketListData.map((m) => (
+                    <option key={m.marketMasterId} value={m.marketMasterId}>{m.marketMasterName}</option>
+                  ))}
+                </Form.Select>
+              </Col>
 
-  {/* <Col sm={2}>
-    <Form.Group className="form-group mt-n4">
-      <Form.Label>Expiry Date</Form.Label>
-      <div className="form-control-wrap">
-        <Form.Control
-          type="date"
-          name="expiryDate"
-          value={data.expiryDate || ""}
-          onChange={handleInputs}
-        />
-      </div>
-    </Form.Group>
-  </Col> */}
+              <Col>
+                <label style={lbl}>{t("Renewal Date")}</label>
+                <Form.Control type="date" name="renewalDate" value={data.renewalDate || ""} onChange={handleInputs} style={sel} />
+              </Col>
 
-  <Col sm={2}>
-  <Form.Group className="mb-3" controlId="expiryDate">
-    <Form.Label className="form-label">Expiry Date</Form.Label>
-    <div className="form-control-wrap">
-      <Form.Control
-        type="date"
-        name="expiryDate"
-        value={data.expiryDate || ""}
-        onChange={handleInputs}
-      />
-    </div>
-  </Form.Group>
-</Col>
+              <Col>
+                <label style={lbl}>{t("Expiry Date")}</label>
+                <Form.Control type="date" name="expiryDate" value={data.expiryDate || ""} onChange={handleInputs} style={sel} />
+              </Col>
+            </Row>
 
-            <Col sm={1}>
-              <Button type="button" variant="primary" onClick={search}>
-                {t("Search")}
-              </Button>
-            </Col>
-            <Col sm={1}>
-              <Button type="button" variant="primary" onClick={exportCsv}>
-                {t("Export")}
-              </Button>
-            </Col>
-          </Row>
+            {/* Row 2 — Buttons */}
+            <Row className="g-2 mt-1">
+              <Col xs="auto">
+                <button
+                  onClick={search}
+                  style={{ height: CTRL_H, padding: "0 20px", background: ACCENT_TABLE, color: "#fff", border: "none", borderRadius: "6px", fontWeight: 600, fontSize: "13px", cursor: "pointer" }}
+                >
+                  {t("Search")}
+                </button>
+              </Col>
+              <Col xs="auto">
+                <button
+                  onClick={exportCsv}
+                  style={{ height: CTRL_H, padding: "0 20px", background: "linear-gradient(135deg,#2d7a2d,#38a838)", color: "#fff", border: "none", borderRadius: "6px", fontWeight: 600, fontSize: "13px", cursor: "pointer" }}
+                >
+                  {t("Export")}
+                </button>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
+
+        {/* Table Card */}
+        <Card className="mt-3" style={{ borderRadius: "12px", border: "none", boxShadow: "0 2px 16px rgba(30,103,168,0.08)" }}>
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={ReelerDataColumns}
@@ -644,12 +345,9 @@ function RenewReelerLicenseList() {
             paginationServer
             paginationTotalRows={totalRows}
             paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
+            paginationComponentOptions={{ noRowsPerPage: true }}
             onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}
-            theme="solarized"
             customStyles={customStyles}
           />
         </Card>

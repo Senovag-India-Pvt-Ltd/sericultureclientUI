@@ -1,16 +1,18 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { createTheme } from "react-data-table-component";
+import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DataTable from "react-data-table-component";
-import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
+
+const ACCENT_HEADER = "linear-gradient(135deg,#1a5f9e 0%,#2c8fd4 60%,#38b2ac 100%)";
+const ACCENT_TABLE  = "linear-gradient(135deg,#1a5f9e,#2c8fd4)";
+const CTRL_H = "44px";
+const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom: "3px", display: "block" };
+const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -76,16 +78,16 @@ const _params = { params: { pageNumber: page, pageSize: countPerPage } };
           },
           responseType: 'blob',
           headers: {
-            accept: "text/csv",
+            accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             "Content-Type": "application/json",
           },
         }
       )
       .then((response) => {
-        const blob = new Blob([response.data], { type: "text/csv" });
+        const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = `external_registration_report.csv`;
+        link.download = `external_unit_report${new Date().toLocaleDateString("en-GB").replace(/\//g,"-")}.xlsx`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -314,234 +316,138 @@ const handleInputs = (e) => {
     getRaceList();
   }, []);
   
-  createTheme(
-    "solarized",
-    {
-      text: {
-        primary: "#004b8e",
-        secondary: "#2aa198",
-      },
-      background: {
-        default: "#fff",
-      },
-      context: {
-        background: "#cb4b16",
-        text: "#FFFFFF",
-      },
-      divider: {
-        default: "#d3d3d3",
-      },
-      action: {
-        button: "rgba(0,0,0,.54)",
-        hover: "rgba(0,0,0,.02)",
-        disabled: "rgba(0,0,0,.12)",
-      },
-    },
-    "light"
-  );
-
   const customStyles = {
-    rows: {
-      style: {
-        minHeight: "30px", // override the row height
-      },
-    },
+    headRow: { style: { minHeight: "52px", height: "auto" } },
     headCells: {
       style: {
-        // '&:not(:last-of-type)': {
-        backgroundColor: "#1e67a8",
-        color: "#fff",
-        borderStyle: "solid",
-        bordertWidth: "1px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        background: ACCENT_TABLE, color: "#fff", fontWeight: 700, fontSize: "13px",
+        padding: "10px 8px", borderRight: "1px solid rgba(255,255,255,0.5)",
+        borderBottom: "2px solid rgba(255,255,255,0.6)", whiteSpace: "normal",
+        wordBreak: "break-word", overflowWrap: "break-word", overflow: "visible",
+        lineHeight: "1.4", minHeight: "52px", height: "auto",
+        verticalAlign: "middle", justifyContent: "center", textAlign: "center",
+      },
+    },
+    rows: {
+      style: {
+        minHeight: "32px",
+        "&:nth-of-type(odd)":  { background: "#fff" },
+        "&:nth-of-type(even)": { background: "#f7fafd" },
       },
     },
     cells: {
       style: {
-        // '&:not(:last-of-type)': {
-        borderStyle: "solid",
-        borderWidth: "1px",
-        paddingTop: "3px",
-        paddingBottom: "3px",
-        paddingLeft: "8px",
-        paddingRight: "8px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        borderRight: "1px solid #eef2f7", borderBottom: "1px solid #e8edf5",
+        paddingTop: "4px", paddingBottom: "4px", paddingLeft: "8px", paddingRight: "8px",
+        color: "#2d3748", fontSize: "13px", justifyContent: "center", textAlign: "center",
       },
     },
   };
 
-  const ReelerDataColumns = [
-    {
-      name: t("Serial No"),
-      selector: (row) => row.serialNumber,
-      cell: (row) => <span>{row.serialNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("External Unit"),
-      selector: (row) => row.externalUnitTypeName,
-      cell: (row) => <span>{row.externalUnitTypeName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Race"),
-      selector: (row) => row.raceMasterName,
-      cell: (row) => <span>{row.raceMasterName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Name of the Unit"),
-      selector: (row) => row.name,
-      cell: (row) => <span>{row.name}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("address"),
-      selector: (row) => row.address,
-      cell: (row) => <span>{row.address}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Name of the Owner/Organisation"),
-      selector: (row) => row.organisationName,
-      cell: (row) => <span>{row.organisationName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("License/Registration Number"),
-      selector: (row) => row.licenseNumber,
-      cell: (row) => <span>{row.licenseNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("External Units ID"),
-      selector: (row) => row.externalUnitNumber,
-      cell: (row) => <span>{row.externalUnitNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
+  const colHeader = (label) => (
+    <div style={{ whiteSpace: "normal", wordBreak: "break-word", textAlign: "center", lineHeight: "1.4", width: "100%", padding: "2px 0" }}>
+      {label}
+    </div>
+  );
 
-    {
-      name: t("Virtual Account Number"),
-      selector: (row) => row.virtualAccountNumber,
-      cell: (row) => <span>{row.virtualAccountNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Branch Name"),
-      selector: (row) => row.branchName,
-      cell: (row) => <span>{row.branchName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("IFSC Code"),
-      selector: (row) => row.ifscCode,
-      cell: (row) => <span>{row.ifscCode}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    
+  const ReelerDataColumns = [
+    { name: colHeader("Serial No"),                      selector: (row) => row.serialNumber,       cell: (row) => <span>{row.serialNumber}</span>,       sortable: true },
+    { name: colHeader("External Unit"),                  selector: (row) => row.externalUnitTypeName, cell: (row) => <span>{row.externalUnitTypeName}</span>, sortable: true },
+    { name: colHeader("Race"),                           selector: (row) => row.raceMasterName,     cell: (row) => <span>{row.raceMasterName}</span>,     sortable: true },
+    { name: colHeader("Name of the Unit"),               selector: (row) => row.name,               cell: (row) => <span>{row.name}</span>,               sortable: true },
+    { name: colHeader("Address"),                        selector: (row) => row.address,            cell: (row) => <span>{row.address}</span>,            sortable: true },
+    { name: colHeader("Name of Owner/Organisation"),     selector: (row) => row.organisationName,   cell: (row) => <span>{row.organisationName}</span>,   sortable: true },
+    { name: colHeader("License/Registration Number"),    selector: (row) => row.licenseNumber,      cell: (row) => <span>{row.licenseNumber}</span>,      sortable: true },
+    { name: colHeader("External Units ID"),              selector: (row) => row.externalUnitNumber, cell: (row) => <span>{row.externalUnitNumber}</span>, sortable: true },
+    // { name: colHeader("Virtual Account Number"),         selector: (row) => row.virtualAccountNumber, cell: (row) => <span>{row.virtualAccountNumber}</span>, sortable: true },
+    // { name: colHeader("Branch Name"),                    selector: (row) => row.branchName,         cell: (row) => <span>{row.branchName}</span>,         sortable: true },
+    // { name: colHeader("IFSC Code"),                      selector: (row) => row.ifscCode,           cell: (row) => <span>{row.ifscCode}</span>,           sortable: true },
   ];
 
 
 
-return (
-  <Layout title={t("RSP/ CRC/ NSSO Registration Report")}>
-    <Block.Head>
-      <Block.HeadBetween>
-        <Block.HeadContent>
-          <Block.Title tag="h2">{t("RSP/ CRC/ NSSO Registration Report")}</Block.Title>
-        </Block.HeadContent>
-      </Block.HeadBetween>
-    </Block.Head>
+  return (
+    <Layout title={t("RSP/ CRC/ NSSO Registration Report")}>
+      <Block.Head>
+        <Block.HeadBetween>
+          <Block.HeadContent>
+            <Block.Title tag="h2">{t("RSP/ CRC/ NSSO Registration Report")}</Block.Title>
+          </Block.HeadContent>
+          <Block.HeadContent></Block.HeadContent>
+        </Block.HeadBetween>
+      </Block.Head>
 
-    <Block className="mt-n4">
-      <Card className="mt-1">
-        {/* ✅ Race + External Unit Type + Search + Export all in one row */}
-        <Row className="m-4 g-3 align-items-end">
-  {/* Race Dropdown */}
-  <Col lg={3}>
-    <Form.Group className="form-group">
-      <Form.Label>{t("Race")}</Form.Label>
-      <Form.Select
-        name="raceMasterId"
-        value={data.raceMasterId}
-        onChange={handleInputs}
-      >
-        <option value="">{t("Select Race")}</option>
-        {raceListData?.map((list) => (
-          <option key={list.raceMasterId} value={list.raceMasterId}>
-            {list.raceMasterName}
-          </option>
-        ))}
-      </Form.Select>
-    </Form.Group>
-  </Col>
+      <Block className="mt-n4">
+        {/* Filter Card */}
+        <Card style={{ borderRadius: "12px", border: "none", boxShadow: "0 2px 16px rgba(30,103,168,0.10)", backgroundColor: "#fff" }}>
+          <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
+            <span style={{ fontSize: "20px" }}>🏭</span>
+            <div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>RSP / CRC / NSSO Registration Report</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export external unit registration data</div>
+            </div>
+          </div>
 
-  {/* External Unit Type Dropdown */}
-  <Col lg={3}>
-    <Form.Group className="form-group">
-      <Form.Label>{t("External Unit Type")}</Form.Label>
-      <Form.Select
-        name="externalUnitTypeId"
-        value={data.externalUnitTypeId}
-        onChange={handleInputs}
-      >
-        <option value="">{t("Select External Unit Type")}</option>
-        {externalUnitTypeListData?.map((list) => (
-          <option key={list.externalUnitTypeId} value={list.externalUnitTypeId}>
-            {list.externalUnitTypeName}
-          </option>
-        ))}
-      </Form.Select>
-    </Form.Group>
-  </Col>
+          <Card.Body className="pb-2">
+            <Row className="g-2 mb-2 align-items-end">
+              <Col lg={3}>
+                <label style={lbl}>{t("Race")}</label>
+                <Form.Select name="raceMasterId" value={data.raceMasterId} onChange={handleInputs} style={sel}>
+                  <option value="">{t("Select Race")}</option>
+                  {raceListData?.map((list) => (
+                    <option key={list.raceMasterId} value={list.raceMasterId}>{list.raceMasterName}</option>
+                  ))}
+                </Form.Select>
+              </Col>
 
-  {/* Buttons (Search + Export in same col, side by side) */}
-  <Col lg={3} className="d-flex gap-2">
-    <Button type="button" variant="primary" onClick={search}>
-      {t("Search")}
-    </Button>
-    <Button type="button" variant="primary" onClick={exportCsv}>
-      {t("Export")}
-    </Button>
-  </Col>
-</Row>
+              <Col lg={3}>
+                <label style={lbl}>{t("External Unit Type")}</label>
+                <Form.Select name="externalUnitTypeId" value={data.externalUnitTypeId} onChange={handleInputs} style={sel}>
+                  <option value="">{t("Select External Unit Type")}</option>
+                  {externalUnitTypeListData?.map((list) => (
+                    <option key={list.externalUnitTypeId} value={list.externalUnitTypeId}>{list.externalUnitTypeName}</option>
+                  ))}
+                </Form.Select>
+              </Col>
 
+              <Col xs="auto" style={{ paddingTop: "20px" }}>
+                <button
+                  onClick={search}
+                  style={{ height: CTRL_H, padding: "0 20px", background: ACCENT_TABLE, color: "#fff", border: "none", borderRadius: "6px", fontWeight: 600, fontSize: "13px", cursor: "pointer", marginRight: "8px" }}
+                >
+                  {t("Search")}
+                </button>
+                <button
+                  onClick={exportCsv}
+                  style={{ height: CTRL_H, padding: "0 20px", background: "linear-gradient(135deg,#2d7a2d,#38a838)", color: "#fff", border: "none", borderRadius: "6px", fontWeight: 600, fontSize: "13px", cursor: "pointer" }}
+                >
+                  {t("Export")}
+                </button>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
 
-        {/* ✅ Data Table */}
-        <DataTable
-          tableClassName="data-table-head-light table-responsive"
-          columns={ReelerDataColumns}
-          data={listData}
-          highlightOnHover
-          pagination
-          paginationServer
-          paginationTotalRows={totalRows}
-          paginationPerPage={countPerPage}
-          paginationComponentOptions={{ noRowsPerPage: true }}
-          onChangePage={(page) => setPage(page - 1)}
-          progressPending={loading}
-          theme="solarized"
-          customStyles={customStyles}
-        />
-      </Card>
-    </Block>
-  </Layout>
-);
+        {/* Table Card */}
+        <Card className="mt-3" style={{ borderRadius: "12px", border: "none", boxShadow: "0 2px 16px rgba(30,103,168,0.08)" }}>
+          <DataTable
+            tableClassName="data-table-head-light table-responsive"
+            columns={ReelerDataColumns}
+            data={listData}
+            highlightOnHover
+            pagination
+            paginationServer
+            paginationTotalRows={totalRows}
+            paginationPerPage={countPerPage}
+            paginationComponentOptions={{ noRowsPerPage: true }}
+            onChangePage={(page) => setPage(page - 1)}
+            progressPending={loading}
+            customStyles={customStyles}
+          />
+        </Card>
+      </Block>
+    </Layout>
+  );
 }
 
 export default ExternalRegistrationListReport;

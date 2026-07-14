@@ -1,16 +1,18 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { createTheme } from "react-data-table-component";
+import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DataTable from "react-data-table-component";
-import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
+
+const ACCENT_HEADER = "linear-gradient(135deg,#1a5f9e 0%,#2c8fd4 60%,#38b2ac 100%)";
+const ACCENT_TABLE  = "linear-gradient(135deg,#1a5f9e,#2c8fd4)";
+const CTRL_H = "44px";
+const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom: "3px", display: "block" };
+const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -79,16 +81,16 @@ const _params = { params: { pageNumber: page, pageSize: countPerPage } };
           },
           responseType: 'blob',
           headers: {
-            accept: "text/csv",
+            accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             "Content-Type": "application/json",
           },
         }
       )
       .then((response) => {
-        const blob = new Blob([response.data], { type: "text/csv" });
+        const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = `trader_license_report.csv`;
+        link.download = `trader_license_report${new Date().toLocaleDateString("en-GB").replace(/\//g,"-")}.xlsx`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -284,496 +286,130 @@ const handleInputs = (e) => {
 
  
   
-  createTheme(
-    "solarized",
-    {
-      text: {
-        primary: "#004b8e",
-        secondary: "#2aa198",
-      },
-      background: {
-        default: "#fff",
-      },
-      context: {
-        background: "#cb4b16",
-        text: "#FFFFFF",
-      },
-      divider: {
-        default: "#d3d3d3",
-      },
-      action: {
-        button: "rgba(0,0,0,.54)",
-        hover: "rgba(0,0,0,.02)",
-        disabled: "rgba(0,0,0,.12)",
-      },
-    },
-    "light"
-  );
-
   const customStyles = {
-    rows: {
-      style: {
-        minHeight: "30px", // override the row height
-      },
-    },
+    headRow: { style: { minHeight: "52px", height: "auto" } },
     headCells: {
       style: {
-        // '&:not(:last-of-type)': {
-        backgroundColor: "#1e67a8",
-        color: "#fff",
-        borderStyle: "solid",
-        bordertWidth: "1px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        background: ACCENT_TABLE, color: "#fff", fontWeight: 700, fontSize: "13px",
+        padding: "10px 8px", borderRight: "1px solid rgba(255,255,255,0.5)",
+        borderBottom: "2px solid rgba(255,255,255,0.6)", whiteSpace: "normal",
+        wordBreak: "break-word", overflowWrap: "break-word", overflow: "visible",
+        lineHeight: "1.4", minHeight: "52px", height: "auto",
+        verticalAlign: "middle", justifyContent: "center", textAlign: "center",
+      },
+    },
+    rows: {
+      style: {
+        minHeight: "32px",
+        "&:nth-of-type(odd)":  { background: "#fff" },
+        "&:nth-of-type(even)": { background: "#f7fafd" },
       },
     },
     cells: {
       style: {
-        // '&:not(:last-of-type)': {
-        borderStyle: "solid",
-        borderWidth: "1px",
-        paddingTop: "3px",
-        paddingBottom: "3px",
-        paddingLeft: "8px",
-        paddingRight: "8px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        borderRight: "1px solid #eef2f7", borderBottom: "1px solid #e8edf5",
+        paddingTop: "4px", paddingBottom: "4px", paddingLeft: "8px", paddingRight: "8px",
+        color: "#2d3748", fontSize: "13px", justifyContent: "center", textAlign: "center",
       },
     },
   };
 
+  const colHeader = (label) => (
+    <div style={{ whiteSpace: "normal", wordBreak: "break-word", textAlign: "center", lineHeight: "1.4", width: "100%", padding: "2px 0" }}>
+      {label}
+    </div>
+  );
+
   const ReelerDataColumns = [
-    {
-      name: "Sl.No",
-      selector: (row) => row.serialNumber,
-      cell: (row) => <span>{row.serialNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-   {
-      name: t("ARN Number"),
-      selector: (row) => row.arnNumber,
-      cell: (row) => <span>{row.arnNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Trader Type"),
-      selector: (row) => row.traderTypeMasterName,
-      cell: (row) => <span>{row.traderTypeMasterName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Name of the Applicant"),
-      selector: (row) => row.firstName,
-      cell: (row) => <span>{row.firstName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("mobile_number"),
-      selector: (row) => row.mobileNumber,
-      cell: (row) => <span>{row.mobileNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("address"),
-      selector: (row) => row.address,
-      cell: (row) => <span>{row.address}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("District Name"),
-      selector: (row) => row.districtName,
-      cell: (row) => <span>{row.districtName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: t("Silk Type"),
-      selector: (row) => row.silkType,
-      cell: (row) => <span>{row.silkType}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    
-    {
-      name: t("Trader License Number"),
-      selector: (row) => row.traderLicenseNumber,
-      cell: (row) => <span>{row.traderLicenseNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Virtual Account Number"),
-      selector: (row) => row.virtualAccountNumber,
-      cell: (row) => <span>{row.virtualAccountNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Branch Name"),
-      selector: (row) => row.branchName,
-      cell: (row) => <span>{row.branchName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("IFSC Code"),
-      selector: (row) => row.ifscCode,
-      cell: (row) => <span>{row.ifscCode}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Market"),
-      selector: (row) => row.marketMasterName,
-      cell: (row) => <span>{row.marketMasterName}</span>,
-      sortable: true,
-      hide: "md",
-    },
+    { name: colHeader("Sl.No"),                   selector: (row) => row.serialNumber,        cell: (row) => <span>{row.serialNumber}</span>,        sortable: true },
+    { name: colHeader("ARN Number"),              selector: (row) => row.arnNumber,            cell: (row) => <span>{row.arnNumber}</span>,            sortable: true },
+    { name: colHeader("Trader Type"),             selector: (row) => row.traderTypeMasterName, cell: (row) => <span>{row.traderTypeMasterName}</span>, sortable: true },
+    { name: colHeader("Name of the Applicant"),   selector: (row) => row.firstName,            cell: (row) => <span>{row.firstName}</span>,            sortable: true },
+    { name: colHeader("Mobile Number"),           selector: (row) => row.mobileNumber,         cell: (row) => <span>{row.mobileNumber}</span>,         sortable: true },
+    { name: colHeader("Address"),                 selector: (row) => row.address,              cell: (row) => <span>{row.address}</span>,              sortable: true },
+    { name: colHeader("District Name"),           selector: (row) => row.districtName,         cell: (row) => <span>{row.districtName}</span>,         sortable: true },
+    { name: colHeader("Silk Type"),               selector: (row) => row.silkType,             cell: (row) => <span>{row.silkType}</span>,             sortable: true },
+    { name: colHeader("Trader License Number"),   selector: (row) => row.traderLicenseNumber,  cell: (row) => <span>{row.traderLicenseNumber}</span>,  sortable: true },
+   // { name: colHeader("Virtual Account Number"),  selector: (row) => row.virtualAccountNumber, cell: (row) => <span>{row.virtualAccountNumber}</span>, sortable: true },
+    //{ name: colHeader("Branch Name"),             selector: (row) => row.branchName,           cell: (row) => <span>{row.branchName}</span>,           sortable: true },
+   // { name: colHeader("IFSC Code"),               selector: (row) => row.ifscCode,             cell: (row) => <span>{row.ifscCode}</span>,             sortable: true },
+    { name: colHeader("Market"),                  selector: (row) => row.marketMasterName,     cell: (row) => <span>{row.marketMasterName}</span>,     sortable: true },
   ];
 
-//   return (
-//     <Layout title={t("Renewal of Reeler License Report")}>
-//       <Block.Head>
-//         <Block.HeadBetween>
-//           <Block.HeadContent>
-//             <Block.Title tag="h2">{t("Renewal of Reeler License Report")}</Block.Title>
-//           </Block.HeadContent>
-//           <Block.HeadContent></Block.HeadContent>
-//         </Block.HeadBetween>
-//       </Block.Head>
-
-//       <Block className="mt-n4">
-//         <Card className="mt-1">
-//           {/* <Row className="m-4"> */}
-//             {/* <Col sm={2}>
-//               <Form.Group className="form-group mt-n4">
-//                 <Form.Label>{t("District")}</Form.Label>
-//                 <div className="form-control-wrap">
-//                   <Form.Select
-//                     name="districtId"
-//                     value={data.districtId}
-//                     onChange={handleInputs}
-//                     onBlur={() => handleInputs}
-//                     isInvalid={
-//                       data.districtId === undefined || data.districtId === "0"
-//                     }
-//                   >
-//                     <option value="">{t("Select District")}</option>
-//                     {districtListData && districtListData.length
-//                       ? districtListData.map((list) => (
-//                           <option key={list.districtId} value={list.districtId}>
-//                             {list.districtName}
-//                           </option>
-//                         ))
-//                       : ""}
-//                   </Form.Select>
-//                   <Form.Control.Feedback type="invalid">
-//                     {t("District Name is required")}
-//                   </Form.Control.Feedback>
-//                 </div>
-//               </Form.Group>
-//             </Col>
-
-//            <Form.Group className="form-group">
-//                       <Form.Label>
-//                         {t("Trader Type")}<span className="text-danger">*</span>
-//                       </Form.Label>
-//                       <div className="form-control-wrap">
-//                         <Form.Select
-//                           name="traderTypeMasterId"
-//                           value={data.traderTypeMasterId}
-//                           onChange={handleInputs}
-//                           onBlur={() => handleInputs}
-//                           required
-//                           isInvalid={
-//                             data.traderTypeMasterId === undefined ||
-//                             data.traderTypeMasterId === "0"
-//                           }
-//                         >
-//                           <option value="">{t("Select Trader Type")}</option>
-//                           {traderTypeListData.map((list) => (
-//                             <option
-//                               key={list.traderTypeMasterId}
-//                               value={list.traderTypeMasterId}
-//                             >
-//                               {list.traderTypeMasterName}
-//                             </option>
-//                           ))}
-//                         </Form.Select>
-//                         <Form.Control.Feedback type="invalid">
-//                           {t("Trader Type is required")}
-//                         </Form.Control.Feedback>
-//                       </div>
-//                     </Form.Group>
-
-
-            
-
-//             <Col lg="6">
-//                                 <Form.Group className="form-group">
-//                                     <Form.Label>{t("Silk Type")}</Form.Label>
-//                                     <div className="form-control-wrap">
-//                                       <Form.Select
-//                                         name="silkType"
-//                                         value={data.silkType}
-//                                         onChange={handleInputs}
-//                                       >
-//                                         <option value="">{t("Select Silk Type")}</option>
-//                                         <option value="Raw Silk">Raw Silk</option>
-//                                         <option value="Twisted">Twisted</option>
-//                                         <option value="Dupion">Dupion</option>
-//                                       </Form.Select>
-//                                     </div>
-//                                   </Form.Group>
-//                               </Col> */}
-
-//                               {/* ✅ Put all three dropdowns inside a single Row */}
-// <Row className="m-4">
-//   {/* District Dropdown */}
-//   <Col sm={4}>
-//     <Form.Group className="form-group">
-//       <Form.Label>{t("District")}</Form.Label>
-//       <div className="form-control-wrap">
-//         <Form.Select
-//           name="districtId"
-//           value={data.districtId}
-//           onChange={handleInputs}
-//           isInvalid={data.districtId === undefined || data.districtId === "0"}
-//         >
-//           <option value="">{t("Select District")}</option>
-//           {districtListData && districtListData.length
-//             ? districtListData.map((list) => (
-//                 <option key={list.districtId} value={list.districtId}>
-//                   {list.districtName}
-//                 </option>
-//               ))
-//             : ""}
-//         </Form.Select>
-//         <Form.Control.Feedback type="invalid">
-//           {t("District Name is required")}
-//         </Form.Control.Feedback>
-//       </div>
-//     </Form.Group>
-//   </Col>
-
-//   {/* Trader Type Dropdown */}
-//   <Col sm={4}>
-//     <Form.Group className="form-group">
-//       <Form.Label>
-//         {t("Trader Type")} <span className="text-danger">*</span>
-//       </Form.Label>
-//       <div className="form-control-wrap">
-//         <Form.Select
-//           name="traderTypeMasterId"
-//           value={data.traderTypeMasterId}
-//           onChange={handleInputs}
-//           required
-//           isInvalid={
-//             data.traderTypeMasterId === undefined ||
-//             data.traderTypeMasterId === "0"
-//           }
-//         >
-//           <option value="">{t("Select Trader Type")}</option>
-//           {traderTypeListData.map((list) => (
-//             <option
-//               key={list.traderTypeMasterId}
-//               value={list.traderTypeMasterId}
-//             >
-//               {list.traderTypeMasterName}
-//             </option>
-//           ))}
-//         </Form.Select>
-//         <Form.Control.Feedback type="invalid">
-//           {t("Trader Type is required")}
-//         </Form.Control.Feedback>
-//       </div>
-//     </Form.Group>
-//   </Col>
-
-//   {/* Silk Type Dropdown */}
-//   <Col sm={4}>
-//     <Form.Group className="form-group">
-//       <Form.Label>{t("Silk Type")}</Form.Label>
-//       <div className="form-control-wrap">
-//         <Form.Select
-//           name="silkType"
-//           value={data.silkType}
-//           onChange={handleInputs}
-//         >
-//           <option value="">{t("Select Silk Type")}</option>
-//           <option value="Raw Silk">Raw Silk</option>
-//           <option value="Twisted">Twisted</option>
-//           <option value="Dupion">Dupion</option>
-//         </Form.Select>
-//       </div>
-//     </Form.Group>
-//   </Col>
-// </Row>
-
-
-            
-//             <Col sm={1}>
-//               <Button type="button" variant="primary" onClick={search}>
-//                 {t("Search")}
-//               </Button>
-//             </Col>
-//             <Col sm={1}>
-//               <Button type="button" variant="primary" onClick={exportCsv}>
-//                 {t("Export")}
-//               </Button>
-//             </Col>
-//           </Row>
-//           <DataTable
-//             tableClassName="data-table-head-light table-responsive"
-//             columns={ReelerDataColumns}
-//             data={listData}
-//             highlightOnHover
-//             pagination
-//             paginationServer
-//             paginationTotalRows={totalRows}
-//             paginationPerPage={countPerPage}
-//             paginationComponentOptions={{
-//               noRowsPerPage: true,
-//             }}
-//             onChangePage={(page) => setPage(page - 1)}
-//             progressPending={loading}
-//             theme="solarized"
-//             customStyles={customStyles}
-//           />
-//         </Card>
-//       </Block>
-//     </Layout>
-//   );
-// }
-
-// export default TraderLicenseListReport;
-
-return (
+  return (
     <Layout title={t("Trader License Report")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">
-              {t("Trader License Report")}
-            </Block.Title>
+            <Block.Title tag="h2">{t("Trader License Report")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent></Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
 
       <Block className="mt-n4">
-        <Card className="mt-1">
-          {/* ✅ All dropdowns & buttons in a single Row */}
-          <Row className="m-4">
-            {/* District Dropdown */}
-            <Col sm={3}>
-              <Form.Group className="form-group">
-                <Form.Label>{t("District")}</Form.Label>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="districtId"
-                    value={data.districtId}
-                    onChange={handleInputs}
-                    isInvalid={
-                      data.districtId === undefined || data.districtId === "0"
-                    }
-                  >
-                    <option value="">{t("Select District")}</option>
-                    {districtListData && districtListData.length
-                      ? districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))
-                      : ""}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {t("District Name is required")}
-                  </Form.Control.Feedback>
-                </div>
-              </Form.Group>
-            </Col>
+        {/* Filter Card */}
+        <Card style={{ borderRadius: "12px", border: "none", boxShadow: "0 2px 16px rgba(30,103,168,0.10)", backgroundColor: "#fff" }}>
+          <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
+            <span style={{ fontSize: "20px" }}>📋</span>
+            <div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Trader License Report</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export trader license data</div>
+            </div>
+          </div>
 
-            {/* Trader Type Dropdown */}
-            <Col sm={3}>
-              <Form.Group className="form-group">
-                <Form.Label>
-                  {t("Trader Type")} <span className="text-danger">*</span>
-                </Form.Label>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="traderTypeMasterId"
-                    value={data.traderTypeMasterId}
-                    onChange={handleInputs}
-                    required
-                    isInvalid={
-                      data.traderTypeMasterId === undefined ||
-                      data.traderTypeMasterId === "0"
-                    }
-                  >
-                    <option value="">{t("Select Trader Type")}</option>
-                    {traderTypeListData.map((list) => (
-                      <option
-                        key={list.traderTypeMasterId}
-                        value={list.traderTypeMasterId}
-                      >
-                        {list.traderTypeMasterName}
-                      </option>
-                    ))}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {t("Trader Type is required")}
-                  </Form.Control.Feedback>
-                </div>
-              </Form.Group>
-            </Col>
+          <Card.Body className="pb-2">
+            <Row className="g-2 mb-2 align-items-end">
+              <Col lg={3}>
+                <label style={lbl}>{t("District")}</label>
+                <Form.Select name="districtId" value={data.districtId} onChange={handleInputs} style={sel}>
+                  <option value="">{t("Select District")}</option>
+                  {districtListData?.map((list) => (
+                    <option key={list.districtId} value={list.districtId}>{list.districtName}</option>
+                  ))}
+                </Form.Select>
+              </Col>
 
-            {/* Silk Type Dropdown */}
-            <Col sm={3}>
-              <Form.Group className="form-group">
-                <Form.Label>{t("Silk Type")}</Form.Label>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="silkType"
-                    value={data.silkType}
-                    onChange={handleInputs}
-                  >
-                    <option value="">{t("Select Silk Type")}</option>
-                    <option value="Raw Silk">Raw Silk</option>
-                    <option value="Twisted">Twisted</option>
-                    <option value="Dupion">Dupion</option>
-                  </Form.Select>
-                </div>
-              </Form.Group>
-            </Col>
+              <Col lg={3}>
+                <label style={lbl}>{t("Trader Type")}</label>
+                <Form.Select name="traderTypeMasterId" value={data.traderTypeMasterId} onChange={handleInputs} style={sel}>
+                  <option value="">{t("Select Trader Type")}</option>
+                  {traderTypeListData?.map((list) => (
+                    <option key={list.traderTypeMasterId} value={list.traderTypeMasterId}>{list.traderTypeMasterName}</option>
+                  ))}
+                </Form.Select>
+              </Col>
 
-            {/* Search Button */}
-            <Col sm={1} className="d-flex align-items-end">
-              <Button type="button" variant="primary" onClick={search}>
-                {t("Search")}
-              </Button>
-            </Col>
+              <Col lg={3}>
+                <label style={lbl}>{t("Silk Type")}</label>
+                <Form.Select name="silkType" value={data.silkType} onChange={handleInputs} style={sel}>
+                  <option value="">{t("Select Silk Type")}</option>
+                  <option value="Raw Silk">Raw Silk</option>
+                  <option value="Twisted">Twisted</option>
+                  <option value="Dupion">Dupion</option>
+                </Form.Select>
+              </Col>
 
-            {/* Export Button */}
-            <Col sm={1} className="d-flex align-items-end">
-              <Button type="button" variant="primary" onClick={exportCsv}>
-                {t("Export")}
-              </Button>
-            </Col>
-          </Row>
+              <Col xs="auto" style={{ paddingTop: "20px" }}>
+                <button
+                  onClick={search}
+                  style={{ height: CTRL_H, padding: "0 20px", background: ACCENT_TABLE, color: "#fff", border: "none", borderRadius: "6px", fontWeight: 600, fontSize: "13px", cursor: "pointer", marginRight: "8px" }}
+                >
+                  {t("Search")}
+                </button>
+                <button
+                  onClick={exportCsv}
+                  style={{ height: CTRL_H, padding: "0 20px", background: "linear-gradient(135deg,#2d7a2d,#38a838)", color: "#fff", border: "none", borderRadius: "6px", fontWeight: 600, fontSize: "13px", cursor: "pointer" }}
+                >
+                  {t("Export")}
+                </button>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
 
-          {/* ✅ Data Table */}
+        {/* Table Card */}
+        <Card className="mt-3" style={{ borderRadius: "12px", border: "none", boxShadow: "0 2px 16px rgba(30,103,168,0.08)" }}>
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={ReelerDataColumns}
@@ -783,12 +419,9 @@ return (
             paginationServer
             paginationTotalRows={totalRows}
             paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
+            paginationComponentOptions={{ noRowsPerPage: true }}
             onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}
-            theme="solarized"
             customStyles={customStyles}
           />
         </Card>
