@@ -6,6 +6,7 @@ import { Card, Form, Row, Col } from "react-bootstrap";
 import DataTable, { defaultThemes } from "react-data-table-component";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
+import SearchableSelect from "../../components/SearchableSelect/SearchableSelect";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -935,24 +936,19 @@ useEffect(() => {
             <Row className="align-items-end">
               <Col md={5} style={fieldGroupStyle}>
                 <label style={labelStyle}>Sanction Order Number</label>
-                <Form.Select
+                <SearchableSelect
                   name="sanctionOrderNumber"
                   value={addressDetails.sanctionOrderNumber}
-                  onChange={handleSanctionOrderChange}
-                  style={selectStyle}
-                >
-                  <option value="">— Select Sanction Order —</option>
-                  {sanctionOrderNumbers && sanctionOrderNumbers.length
-                    ? sanctionOrderNumbers.map((num, index) => {
-                        const val = typeof num === "object" ? num.sanctionOrderNumber : num;
-                        return (
-                          <option key={index} value={val}>
-                            {val}
-                          </option>
-                        );
-                      })
-                    : ""}
-                </Form.Select>
+                  onChange={(val) =>
+                    handleSanctionOrderChange({
+                      target: { name: "sanctionOrderNumber", value: val },
+                    })
+                  }
+                  placeholder="— Select Sanction Order —"
+                  options={(sanctionOrderNumbers || []).map((num) =>
+                    typeof num === "object" ? num.sanctionOrderNumber : num
+                  )}
+                />
                 {!securityKey && addressDetails.sanctionOrderNumber && (
                   <small style={{ color: "#e53e3e", fontSize: "12px", marginTop: "4px" }}>
                     No pre-generated file found for this order.

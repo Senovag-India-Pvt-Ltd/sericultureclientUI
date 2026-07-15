@@ -207,6 +207,17 @@ function Menu() {
       .catch(() => setDbtTicketsAllowed(false));
   }, []);
 
+  // Role-based visibility for the "Helpdesk Dashboard" menu — driven by the
+  // helpdesk_dashboard_allowed_user list (helpdesk-dashboard/access-check).
+  // Users not in that list never see the menu item.
+  const [helpdeskDashboardAllowed, setHelpdeskDashboardAllowed] = useState(false);
+  useEffect(() => {
+    api
+      .get(baseURLDBT + `helpdesk-dashboard/access-check`)
+      .then((res) => setHelpdeskDashboardAllowed(res?.data?.content?.allowed === true))
+      .catch(() => setHelpdeskDashboardAllowed(false));
+  }, []);
+
   console.log(data);
 
   const [showMenu, setShowMenu] = useState({
@@ -3447,9 +3458,9 @@ function Menu() {
         </MenuItem>
       ) : null}
 
-      {showMenu.Helpdesk || dbtTicketsAllowed ? (
+      {showMenu.Helpdesk || dbtTicketsAllowed || helpdeskDashboardAllowed ? (
         <MenuItem sub>
-          {showMenu.Helpdesk || dbtTicketsAllowed ? (
+          {showMenu.Helpdesk || dbtTicketsAllowed || helpdeskDashboardAllowed ? (
             <MenuItemLink
               text={t("helpdesk")}
               onClick={menuToggle}
@@ -3474,7 +3485,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Helpdesk_Dashboard ? (
+            {helpdeskDashboardAllowed ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Helpdesk Dashboard")}

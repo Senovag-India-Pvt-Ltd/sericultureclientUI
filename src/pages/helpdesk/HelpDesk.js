@@ -160,18 +160,31 @@ if (data.contactNumber.length !== 10) {
       setIsSubmitting(true);
       api
         .post(baseURL2 + `hdTicket/add`, data)
-        .then((response) => {
-          if (response.data.content.hdTicketId) {
-            const hdAttach = response.data.content.hdTicketId;
-            handleAttachFileUpload(hdAttach);
-          }
+        .then(async (response) => {
           if (response.data.content.error) {
             saveError(response.data.content.error_description);
             setIsSubmitting(false);
-          } else {
-            saveSuccess(response.data.content.ticketArn);
-            // Keep button disabled — page will reload from the SweetAlert OK
+            return;
           }
+          // Upload the attachment BEFORE showing success / reloading the page.
+          // The upload endpoint re-stores hdAttachFiles as the real S3 key
+          // (helpdesk_hd_ticket/<id>_<uuid>.<ext>). If we don't wait for it, the
+          // page can reload while the DB still holds the raw file name, leaving
+          // the view page unable to fetch the file (stuck on "Loading file…").
+          if (response.data.content.hdTicketId && attachFiles) {
+            try {
+              await handleAttachFileUpload(response.data.content.hdTicketId);
+            } catch (uploadErr) {
+              console.error("Attachment upload failed:", uploadErr);
+              saveError(
+                "Ticket was created but the attachment could not be uploaded. Please open the ticket and re-attach the file."
+              );
+              setIsSubmitting(false);
+              return;
+            }
+          }
+          saveSuccess(response.data.content.ticketArn);
+          // Keep button disabled — page will reload from the SweetAlert OK
         })
         .catch((err) => {
           if (err?.response?.data?.validationErrors && Object.keys(err.response.data.validationErrors).length > 0) {
@@ -441,25 +454,20 @@ const handleAttachFileUpload = async (hdTicketId) => {
     return;
   }
 
-  try {
-    const formData = new FormData();
-    formData.append("multipartFile", attachFiles); // matches @RequestParam("multipartFile")
-    formData.append("hdTicketId", hdTicketId);     // matches @RequestParam("hdTicketId")
+  const formData = new FormData();
+  formData.append("multipartFile", attachFiles); // matches @RequestParam("multipartFile")
+  formData.append("hdTicketId", hdTicketId);     // matches @RequestParam("hdTicketId")
 
-    const response = await api.post(
-      `${baseURL2}hdTicket/hd-attach-files`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+  // NOTE: do NOT set Content-Type manually. Axios auto-adds the correct
+  // "multipart/form-data; boundary=..." header when the body is FormData;
+  // hard-coding it without a boundary makes the server reject the upload.
+  const response = await api.post(
+    `${baseURL2}hdTicket/hd-attach-files`,
+    formData
+  );
 
-    console.log("✅ File upload response:", response.data);
-  } catch (error) {
-    console.error("❌ Error uploading file:", error);
-  }
+  console.log("✅ File upload response:", response.data);
+  return response.data;
 };
 
 

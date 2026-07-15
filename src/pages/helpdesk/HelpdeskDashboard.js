@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_HELPDESK;
 const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 // import {
 //     Image,
@@ -36,6 +37,24 @@ function HelpdeskDashboard() {
   const [loading, setLoading] = useState(false);
   // const _params = { params: { pageNumber: page, size: countPerPage } };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
+
+  // Access guard — the Helpdesk Dashboard is restricted to allow-listed users
+  // (helpdesk_dashboard_allowed_user). Others get an Access Denied screen, which
+  // also blocks direct-URL navigation, not just the hidden menu item.
+  const [allowed, setAllowed] = useState(false);
+  const [accessChecked, setAccessChecked] = useState(false);
+  useEffect(() => {
+    api
+      .get(baseURLDBT + `helpdesk-dashboard/access-check`)
+      .then((res) => {
+        setAllowed(res?.data?.content?.allowed === true);
+        setAccessChecked(true);
+      })
+      .catch(() => {
+        setAllowed(false);
+        setAccessChecked(true);
+      });
+  }, []);
 
   const [data, setData] = useState({
     text: "",
@@ -661,6 +680,28 @@ function HelpdeskDashboard() {
     }
     navigate(`/seriui/raise-ticket-view/${_id}`);
   };
+
+  if (accessChecked && !allowed) {
+    return (
+      <Layout title="Help desk Dashboard">
+        <Block className="mt-3">
+          <Card>
+            <Card.Body className="text-center py-5">
+              <Icon name="shield-off" style={{ fontSize: "48px" }} className="text-danger mb-3" />
+              <h4>Access Denied</h4>
+              <p className="text-muted">
+                You are not authorized to view the Helpdesk Dashboard. Please contact the
+                administrator if you believe this is an error.
+              </p>
+              <Link to="/seriui/" className="btn btn-primary">
+                Back to Home
+              </Link>
+            </Card.Body>
+          </Card>
+        </Block>
+      </Layout>
+    );
+  }
 
   return (
     <Layout title="Help desk Dashboard">

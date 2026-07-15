@@ -5,6 +5,7 @@ import Block from "../../components/Block/Block";
 import { Card, Form, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
+import SearchableSelect from "../../components/SearchableSelect/SearchableSelect";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -500,13 +501,20 @@ function RegenerateSanctionOrder() {
                     <span style={{ marginLeft: "8px", fontSize: "11px", color: "#1e67a8", fontWeight: 500 }}>({sanctionOrderNumbers.length} found)</span>
                   )}
                 </label>
-                <Form.Select name="sanctionOrderNumber" value={addressDetails.sanctionOrderNumber} onChange={handleSanctionOrderChange} style={selectStyle} disabled={!filtersReady}>
-                  <option value="">{filtersReady ? "— Select Sanction Order —" : "— Fill filters above first —"}</option>
-                  {sanctionOrderNumbers.map((num, index) => {
-                    const val = typeof num === "object" ? num.sanctionOrderNumber : num;
-                    return <option key={index} value={val}>{val}</option>;
-                  })}
-                </Form.Select>
+                <SearchableSelect
+                  name="sanctionOrderNumber"
+                  value={addressDetails.sanctionOrderNumber}
+                  onChange={(val) =>
+                    handleSanctionOrderChange({
+                      target: { name: "sanctionOrderNumber", value: val },
+                    })
+                  }
+                  isDisabled={!filtersReady}
+                  placeholder={filtersReady ? "— Select Sanction Order —" : "— Fill filters above first —"}
+                  options={(sanctionOrderNumbers || []).map((num) =>
+                    typeof num === "object" ? num.sanctionOrderNumber : num
+                  )}
+                />
               </Col>
               <Col md={4} style={fieldGroupStyle}>
                 <label style={labelStyle}>

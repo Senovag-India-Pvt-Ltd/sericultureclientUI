@@ -142,9 +142,11 @@ const [HelpDesks, setHelpDesks] = useState({});
       // To get Photo
       const [selectedFile, setSelectedFile] = useState(null);
       const [selectedFileMime, setSelectedFileMime] = useState("");
+      const [fileLoadError, setFileLoadError] = useState(false);
 
       const getFile = async (file) => {
         if (!file) return;
+        setFileLoadError(false);
 
         // If hdAttachFiles is already a full S3/HTTP URL, use it directly
         if (file.startsWith("http://") || file.startsWith("https://")) {
@@ -163,6 +165,7 @@ const [HelpDesks, setHelpDesks] = useState({});
 
           if (!response.data || response.data.byteLength === 0) {
             console.warn("S3 download returned empty data for:", file);
+            setFileLoadError(true);
             return;
           }
 
@@ -173,6 +176,7 @@ const [HelpDesks, setHelpDesks] = useState({});
           setSelectedFileMime(mime);
         } catch (error) {
           console.error("Error fetching file from S3:", error);
+          setFileLoadError(true);
         }
       };
 
@@ -181,7 +185,7 @@ const [HelpDesks, setHelpDesks] = useState({});
       }, [id]);
 
       const downloadFile = async (file) => {
-        const parameters = `fileName=${file}`;
+        const parameters = `fileName=${encodeURIComponent(file)}`;
         try {
           const response = await api.get(
             baseURL + `api/s3/download?${parameters}`,
@@ -713,10 +717,37 @@ const [HelpDesks, setHelpDesks] = useState({});
                       }}
                     >
                       {!selectedFile ? (
-                        <div style={{ color: "#5a7299", fontSize: "13px", display: "flex", alignItems: "center", gap: "8px" }}>
-                          <Icon name="loader" style={{ fontSize: "16px" }}></Icon>
-                          {t("Loading file…")}
-                        </div>
+                        fileLoadError ? (
+                          <div style={{ textAlign: "center", padding: "20px" }}>
+                            <div
+                              style={{
+                                width: "64px",
+                                height: "64px",
+                                borderRadius: "16px",
+                                background: "linear-gradient(135deg, #fdecea 0%, #fcdbd6 100%)",
+                                color: "#c0392b",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                boxShadow: "0 4px 12px rgba(192, 57, 43, 0.18)",
+                                marginBottom: "10px",
+                              }}
+                            >
+                              <Icon name="alert-circle" style={{ fontSize: "28px" }}></Icon>
+                            </div>
+                            <div style={{ color: "#b02a1f", fontWeight: 600, fontSize: "13.5px" }}>
+                              {t("The attached file could not be found")}
+                            </div>
+                            <div style={{ color: "#5a7299", fontSize: "12px", marginTop: "4px", wordBreak: "break-all" }}>
+                              {displayFileName}
+                            </div>
+                          </div>
+                        ) : (
+                          <div style={{ color: "#5a7299", fontSize: "13px", display: "flex", alignItems: "center", gap: "8px" }}>
+                            <Icon name="loader" style={{ fontSize: "16px" }}></Icon>
+                            {t("Loading file…")}
+                          </div>
+                        )
                       ) : attachedFileKind === "image" ? (
                         <img
                           src={selectedFile}
