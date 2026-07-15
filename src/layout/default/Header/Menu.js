@@ -15,6 +15,7 @@ import { Icon, Media, MediaText, MediaGroup, Image } from "../../../components";
 
 import { headerModulesData } from "../../../store/module/HeaderModuleData";
 import api from "../../../../src/services/auth/api";
+import { isHelpdeskDashboardUser } from "../../../../src/services/access/helpdeskDashboardUsers";
 
 import {
   modulesData,
@@ -207,16 +208,9 @@ function Menu() {
       .catch(() => setDbtTicketsAllowed(false));
   }, []);
 
-  // Role-based visibility for the "Helpdesk Dashboard" menu — driven by the
-  // helpdesk_dashboard_allowed_user list (helpdesk-dashboard/access-check).
-  // Users not in that list never see the menu item.
-  const [helpdeskDashboardAllowed, setHelpdeskDashboardAllowed] = useState(false);
-  useEffect(() => {
-    api
-      .get(baseURLDBT + `helpdesk-dashboard/access-check`)
-      .then((res) => setHelpdeskDashboardAllowed(res?.data?.content?.allowed === true))
-      .catch(() => setHelpdeskDashboardAllowed(false));
-  }, []);
+  // Visibility for the "Helpdesk Dashboard" menu — restricted to an allow-list of
+  // usernames (frontend gate, no backend call, so it can't break on a UI-only deploy).
+  const helpdeskDashboardAllowed = isHelpdeskDashboardUser();
 
   console.log(data);
 
