@@ -229,6 +229,28 @@ function ScApprovalStageList() {
       sortable: true,
       hide: "md",
     },
+    {
+      name: t("ARM Stage Config"),
+      selector: (row) => row.armStageConfig,
+      cell: (row) => {
+        const labels = {
+          ESCROW_BANK:       "Escrow Bank Account Card",
+          PROFORMA_INVOICE:  "Proforma Invoice Table",
+          CSTRI_1:           "CSTRI (First Release)",
+          CSTRI_2:           "CSTRI (Final Release)",
+          ADVANCE_PAYMENT:   "Advance Payment Letter",
+          FIRST_RELEASE:     "First Release Letter",
+          SECOND_RELEASE:    "Second Release Letter",
+        };
+        return row.armStageConfig
+          ? <span style={{ background: "#e3f0fb", color: "#1e67a8", padding: "2px 8px", borderRadius: 4, fontSize: 12, fontWeight: 600 }}>
+              {labels[row.armStageConfig] || row.armStageConfig}
+            </span>
+          : <span style={{ color: "#aaa" }}>—</span>;
+      },
+      sortable: true,
+      hide: "md",
+    },
   ];
 
   return (

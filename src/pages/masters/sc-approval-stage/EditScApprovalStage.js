@@ -62,6 +62,8 @@ function EditScApprovalStage() {
       directApplication:data.directApplication,
       sanctionForReeling: data.sanctionForReeling,
       allowMultipleSanction:data.allowMultipleSanction,
+      armStageConfig: data.armStageConfig || "",
+      armFlow: data.armFlow || false,
     };
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -118,7 +120,8 @@ function EditScApprovalStage() {
       directlyToFruits:"",
       directApplication:"",
       allowMultipleSanction:"",
-      sanctionForReeling:""
+      sanctionForReeling:"",
+      armStageConfig:""
     });
   };
 
@@ -435,10 +438,7 @@ function EditScApprovalStage() {
                           name="allowMultipleSanction"
                           checked={data.allowMultipleSanction}
                           id="weighmentTripletGeneration"
-                          // checked={data.weighmentTripletGeneration}
                           onChange={handleCheckBox}
-                          // Optional: disable the checkbox in view mode
-                          // defaultChecked
                         />
                       </Col>
                       <Form.Label column sm={8} className="mt-n2">
@@ -446,6 +446,47 @@ function EditScApprovalStage() {
                       </Form.Label>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="2">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="armFlow"
+                          checked={data.armFlow || false}
+                          id="armFlow"
+                          onChange={handleCheckBox}
+                        />
+                      </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                      {t("ARM Flow")}
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+                    </Row>
+                    <Row className="g-gs mt-2">
+                      <Col lg="6">
+                        <Form.Group className="form-group">
+                          <Form.Label>{t("ARM Stage Config")}</Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select
+                              name="armStageConfig"
+                              value={data.armStageConfig || ""}
+                              onChange={handleInputs}
+                            >
+                              <option value="">{t("-- None (Not an ARM Stage) --")}</option>
+                              <option value="ESCROW_BANK">{t("Escrow Bank Account Card")}</option>
+                              <option value="PROFORMA_INVOICE">{t("Proforma Invoice Table")}</option>
+                              <option value="CSTRI_1">{t("CSTRI Letter No. & Date (First Release)")}</option>
+                              <option value="CSTRI_2">{t("CSTRI Letter No. & Date (Final Release)")}</option>
+                              <option value="ADVANCE_PAYMENT">{t("Advance Payment Letter")}</option>
+                              <option value="FIRST_RELEASE">{t("First Release Letter")}</option>
+                              <option value="SECOND_RELEASE">{t("Second Release Letter")}</option>
+                              <option value="SELECTION_LETTER">{t("ARM Beneficiary Selection Letter")}</option>
+                            </Form.Select>
+                          </div>
+                        </Form.Group>
+                      </Col>
                     </Row>
                   </>
                 )}
