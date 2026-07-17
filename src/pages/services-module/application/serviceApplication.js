@@ -132,6 +132,7 @@ const generateFinalReport = async (selectedRows) => {
     periodFrom: getCurrentFinancialYearPeriod().periodFrom,
     periodTo: getCurrentFinancialYearPeriod().periodTo,
     cocoonsWeight:"",
+    actualCocoonsTransacted: null,
     availBonus:"",
     // availBonus: true,
     lotWeight:"",
@@ -3257,7 +3258,13 @@ if (
       return;
     }
 
-    // Case 1: Average Yield > maxNoOfCocoonsPerKg — calculate subsidy on capped quantity
+    // Case 1: Average Yield > maxNoOfCocoonsPerKg — Cocoons Transacted and Average Yield are
+    // shown on screen as the eligible/capped figures (what Calculate produces), but the actual
+    // Cocoons Transacted saved to the DB must stay the real, raw transacted quantity. So the
+    // raw cocoonsWeight is captured into actualCocoonsTransacted BEFORE it's overwritten for
+    // display — the save payload reads actualCocoonsTransacted instead of cocoonsWeight when
+    // this scheme has been capped. Average Yield has no such split: it is shown and saved as
+    // the capped value.
     if (avgYield > maxCocoonsPKgVal) {
       const eligibleCocoons = parseFloat((noOfDfls * maxCocoonsPKgVal / 100).toFixed(2));
       const amountPerKg     = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
@@ -3268,6 +3275,7 @@ if (
         ...prev,
         expectedAmount: roundedAmount,
         averageYield: maxCocoonsPKgVal,
+        actualCocoonsTransacted: prev.cocoonsWeight,
         cocoonsWeight: eligibleCocoons,
       }));
       setUnitPriceCalculated(true);
@@ -3275,12 +3283,14 @@ if (
       Swal.fire({
         icon: "info",
         title: "Subsidy Calculated on Eligible Quantity",
-        text: `Average Yield exceeds ${maxCocoonsPKgVal}%. Subsidy is calculated on eligible quantity: ${eligibleCocoons} kg (${noOfDfls} × ${maxCocoonsPKgVal}/100). Average Yield and Cocoons Transacted (kg) have both been set to the eligible values.`,
+        text: `Average Yield exceeds ${maxCocoonsPKgVal}%. Subsidy is calculated on eligible quantity: ${eligibleCocoons} kg (${noOfDfls} × ${maxCocoonsPKgVal}/100). Average Yield and Cocoons Transacted (kg) shown here reflect the eligible values; the actual transacted quantity is still saved to the record.`,
       });
       return;
     }
 
-    // Case 2: minAvgYieldVal ≤ averageYield ≤ maxCocoonsPKgVal — proceed with normal calculation below
+    // Case 2: minAvgYieldVal ≤ averageYield ≤ maxCocoonsPKgVal — no capping applies this time,
+    // clear out any capped-raw value left over from a previous Calculate click.
+    setData((prev) => ({ ...prev, actualCocoonsTransacted: null }));
   }
 
   // 7. If all validations pass, calculate the bonus
@@ -4799,26 +4809,12 @@ const isUserValid = React.useMemo(() => {
       }
     }
 
-    // Incentive For Bivoltine Cocoons-30/kg-PSF: block save if Average Yield < 60 or > 90
-    if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Incentive For Bivoltine Cocoons-30/kg-PSF") {
-      const avgYield = parseFloat(data.averageYield || 0);
-      if (avgYield < 60) {
-        Swal.fire({
-          icon: "warning",
-          title: "Validation Error",
-          text: "Average Yield Should be Above 60%",
-        });
-        return;
-      }
-      if (avgYield > 90) {
-        Swal.fire({
-          icon: "error",
-          title: "Validation Error",
-          text: "Average Yield cannot exceed 90%. Please click Calculate Unit Price before saving.",
-        });
-        return;
-      }
-    }
+    // Incentive For Bivoltine Cocoons-30/kg-PSF: the min-yield gate (using the configured
+    // minAverageYield, not a hardcoded number) already runs inside "Calculate Unit Price"
+    // (see Case 3 above), and unitPriceCalculated already blocks save until Calculate has
+    // run — so no separate hardcoded 60/90 recheck is needed here. Yield above the
+    // configured max slab is the normal case Calculate already handles by capping the
+    // eligible quantity, not by rejecting the save.
 
     // ARM: validate all Reeler Land Details fields are filled
     if (getIncentiveAndBonusData?.[0]?.unitForScheme === "Automatic Reeling Machine Unit") {
@@ -5393,7 +5389,7 @@ const isUserValid = React.useMemo(() => {
       vendorId: getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS" ? data.vendorId : equipment.vendorId,
       spacingId: data.spacingId,
       hectareId: data.hectareId,
-      cocoonsWeight: data.cocoonsWeight,
+      cocoonsWeight: data.actualCocoonsTransacted ?? data.cocoonsWeight,
       lotNo: data.lotNo,
       lotWeight: data.lotWeight,
       kaneshDistrictId: data.kaneshDistrictId,

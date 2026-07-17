@@ -4531,7 +4531,13 @@ const allowedSchemes = [
         armUserMasterId: actionData.armUserMasterId || null,
       };
     } else {
-      // get the first row's selected userId
+      // ARM queue routing: the "Application List" pending-action queue is keyed off a single
+      // sc_application_form_service.user_master_id (saf.user_master_id), not the per-row
+      // Scheme Details officer. For ARM, prefer whichever officer was picked on the first
+      // Scheme Details split row (sendResponse) so the application actually lands in that
+      // officer's queue -- falling back to the separate ARM User Master field, then to the
+      // current user, only when no split row has been picked yet.
+      const armSplitRowUserId = sendResponse?.[0]?.userId || null;
 
       sendPost = {
         proposalDate: actionData.proposalDate,
@@ -4542,7 +4548,7 @@ const allowedSchemes = [
         workOrderNumber: actionData.workOrderNumber,
         sanctionOrderNumber: actionData.sanctionOrderNumber,
         userId: actionFarmerData[0]?.armFlow
-          ? (actionData.armUserMasterId || localStorage.getItem("userMasterId"))
+          ? (armSplitRowUserId || actionData.armUserMasterId || localStorage.getItem("userMasterId"))
           : actionData.userId,
         stepId: actionData.stepId,
         sanctionNo: actionData.sanctionNo,
