@@ -5,6 +5,7 @@ import Block from "../../components/Block/Block";
 import { Card, Form, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
+import SearchableSelect from "../../components/SearchableSelect/SearchableSelect";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -581,17 +582,19 @@ function GenerateAcknowledgement() {
             <Row className="align-items-end">
               <Col md={5} style={fieldGroupStyle}>
                 <label style={labelStyle}>ARN</label>
-                <Form.Select name="sanctionOrderNumber" value={addressDetails.sanctionOrderNumber} onChange={handleSanctionOrderChange} style={selectStyle}>
-                  <option value="">— Select ARN —</option>
-                  {sanctionOrderNumbers && sanctionOrderNumbers.length
-                    ? sanctionOrderNumbers.map((num, index) => {
-                        const val = typeof num === "object" ? num.arn : num;
-                        return (
-                          <option key={index} value={val}>{val}</option>
-                        );
-                      })
-                    : ""}
-                </Form.Select>
+                <SearchableSelect
+                  name="sanctionOrderNumber"
+                  value={addressDetails.sanctionOrderNumber}
+                  onChange={(val) =>
+                    handleSanctionOrderChange({
+                      target: { name: "sanctionOrderNumber", value: val },
+                    })
+                  }
+                  placeholder="— Select ARN —"
+                  options={(sanctionOrderNumbers || []).map((num) =>
+                    typeof num === "object" ? num.arn : num
+                  )}
+                />
               </Col>
 
               <Col md={7} className="d-flex gap-3 flex-wrap pb-1">

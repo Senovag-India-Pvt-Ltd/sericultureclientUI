@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
+import SearchableSelect from "../../components/SearchableSelect/SearchableSelect";
 import { Icon } from "../../components";
 import { useTranslation } from "react-i18next";
 
@@ -178,6 +179,14 @@ function SaleDisposalofDFLseggs() {
 
   const postData = (event) => {
   const form = event.currentTarget;
+  // TSC uses a searchable (react-select) control, which native form validity does
+  // not cover — enforce its required rule explicitly for the farmer branch.
+  if (data.userType === "farmer" && (!data.tsc || data.tsc === "0")) {
+    event.preventDefault();
+    event.stopPropagation();
+    setValidated(true);
+    return;
+  }
   if (form.checkValidity() === false) {
     event.preventDefault();
     event.stopPropagation();
@@ -1088,29 +1097,33 @@ function SaleDisposalofDFLseggs() {
                           {t("tsc")}<span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
-                            <Form.Select
+                            <SearchableSelect
                               name="tsc"
                               value={data.tsc}
-                              onChange={handleInputs}
-                              onBlur={() => handleInputs}
-                              required
-                              isInvalid={
-                                data.tsc === undefined || data.tsc === "0"
+                              onChange={(val) =>
+                                handleInputs({ target: { name: "tsc", value: val } })
                               }
-                            >
-                              <option value="">{t("select_tsc")}</option>
-                              {chawkiListData.map((list) => (
-                                <option
-                                  key={list.tscMasterId}
-                                  value={list.tscMasterId}
-                                >
-                                  {list.name}
-                                </option>
-                              ))}
-                            </Form.Select>
-                            <Form.Control.Feedback type="invalid">
-                            {t("tsc_is_required")}
-                            </Form.Control.Feedback>
+                              placeholder={t("select_tsc")}
+                              isClearable={false}
+                              isInvalid={
+                                validated && (!data.tsc || data.tsc === "0")
+                              }
+                              options={chawkiListData.map((list) => ({
+                                value: list.tscMasterId,
+                                label: list.name,
+                              }))}
+                            />
+                            {validated && (!data.tsc || data.tsc === "0") && (
+                              <div
+                                style={{
+                                  color: "#dc3545",
+                                  fontSize: "0.875em",
+                                  marginTop: "0.25rem",
+                                }}
+                              >
+                                {t("tsc_is_required")}
+                              </div>
+                            )}
                           </div>
                         </Form.Group>
                       </Col>

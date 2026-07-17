@@ -1,21 +1,22 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { createTheme } from "react-data-table-component";
+import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DataTable from "react-data-table-component";
-import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
 import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
-import { format } from "date-fns";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
+
+const ACCENT_HEADER = "linear-gradient(135deg,#1a5f9e 0%,#2c8fd4 60%,#38b2ac 100%)";
+const ACCENT_TABLE  = "linear-gradient(135deg,#1a5f9e,#2c8fd4)";
+const CTRL_H = "44px";
+const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom: "3px", display: "block" };
+const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function PreparationOfEggsDFLsReport() {
   const { t } = useTranslation();
@@ -33,8 +34,6 @@ function PreparationOfEggsDFLsReport() {
     lineNameId: "",
     raceId: "",
   });
-
-
 
   // Search
   const search = (e) => {
@@ -72,16 +71,15 @@ function PreparationOfEggsDFLsReport() {
           },
           responseType: 'blob',
           headers: {
-            accept: "text/csv",
-            "Content-Type": "application/json",
+            Accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
           },
         }
       )
       .then((response) => {
-        const blob = new Blob([response.data], { type: "text/csv" });
+        const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = `preparation_of_eggs_lots_report.csv`;
+        link.download = `preparation_of_eggs_lots_report.xlsx`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -93,7 +91,7 @@ function PreparationOfEggsDFLsReport() {
           title: "No record found!!!",
         });
       });
-};
+  };
 
   const getFarmerList = (e) => {
     api
@@ -128,7 +126,6 @@ function PreparationOfEggsDFLsReport() {
     setData({ ...data, [name]: value });
   };
 
-  
   // to get farm
   const [farmListData, setFarmListData] = useState([]);
 
@@ -146,221 +143,125 @@ function PreparationOfEggsDFLsReport() {
   useEffect(() => {
     getFarmList();
   }, []);
-     // to get Line Year
-   const [lineYearListData, setLineYearListData] = useState([]);
 
-   const getLineYearList = () => {
-     const response = api
-       .get(baseURL + `lineNameMaster/get-all`)
-       .then((response) => {
-         setLineYearListData(response.data.content.lineNameMaster);
-       })
-       .catch((err) => {
+  // to get Line Year
+  const [lineYearListData, setLineYearListData] = useState([]);
+
+  const getLineYearList = () => {
+    const response = api
+      .get(baseURL + `lineNameMaster/get-all`)
+      .then((response) => {
+        setLineYearListData(response.data.content.lineNameMaster);
+      })
+      .catch((err) => {
         setLineYearListData([]);
-       });
-   };
- 
-   useEffect(() => {
-     getLineYearList();
-   }, []);
+      });
+  };
 
-     // to get Race
-     const [raceListData, setRaceListData] = useState([]);
-   
-     const getRaceList = () => {
-       const response = api
-         .get(baseURL + `raceMaster/get-all`)
-         .then((response) => {
-           setRaceListData(response.data.content.raceMaster);
-         })
-         .catch((err) => {
-           setRaceListData([]);
-         });
-     };
-   
-     useEffect(() => {
-       getRaceList();
-     }, []);
+  useEffect(() => {
+    getLineYearList();
+  }, []);
 
-     // to get Grainage
-       const [grainageListData, setGrainageListData] = useState([]);
-     
-       const getGrainageList = () => {
-         const response = api
-           .get(baseURL + `grainageMaster/get-all`)
-           .then((response) => {
-             setGrainageListData(response.data.content.grainageMaster);
-           })
-           .catch((err) => {
-             setGrainageListData([]);
-           });
-       };
-     
-       useEffect(() => {
-         getGrainageList();
-       }, []);
+  // to get Race
+  const [raceListData, setRaceListData] = useState([]);
 
-         // to get tsc
-         const [tscListData, setTscListData] = useState([]);
-       
-         const getTscList = () => {
-           const response = api
-             .get(baseURL + `tscMaster/get-all`)
-             .then((response) => {
-               setTscListData(response.data.content.tscMaster);
-             })
-             .catch((err) => {
-               setTscListData([]);
-             });
-         };
-       
-         useEffect(() => {
-           getTscList();
-         }, []);
-     
+  const getRaceList = () => {
+    const response = api
+      .get(baseURL + `raceMaster/get-all`)
+      .then((response) => {
+        setRaceListData(response.data.content.raceMaster);
+      })
+      .catch((err) => {
+        setRaceListData([]);
+      });
+  };
 
+  useEffect(() => {
+    getRaceList();
+  }, []);
 
-  createTheme(
-    "solarized",
-    {
-      text: {
-        primary: "#004b8e",
-        secondary: "#2aa198",
-      },
-      background: {
-        default: "#fff",
-      },
-      context: {
-        background: "#cb4b16",
-        text: "#FFFFFF",
-      },
-      divider: {
-        default: "#d3d3d3",
-      },
-      action: {
-        button: "rgba(0,0,0,.54)",
-        hover: "rgba(0,0,0,.02)",
-        disabled: "rgba(0,0,0,.12)",
-      },
-    },
-    "light"
-  );
+  // to get Grainage
+  const [grainageListData, setGrainageListData] = useState([]);
+
+  const getGrainageList = () => {
+    const response = api
+      .get(baseURL + `grainageMaster/get-all`)
+      .then((response) => {
+        setGrainageListData(response.data.content.grainageMaster);
+      })
+      .catch((err) => {
+        setGrainageListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getGrainageList();
+  }, []);
+
+  // to get tsc
+  const [tscListData, setTscListData] = useState([]);
+
+  const getTscList = () => {
+    const response = api
+      .get(baseURL + `tscMaster/get-all`)
+      .then((response) => {
+        setTscListData(response.data.content.tscMaster);
+      })
+      .catch((err) => {
+        setTscListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getTscList();
+  }, []);
 
   const customStyles = {
-    rows: {
-      style: {
-        minHeight: "30px", // override the row height
-      },
-    },
+    headRow: { style: { minHeight: "52px", height: "auto" } },
     headCells: {
       style: {
-        // '&:not(:last-of-type)': {
-        backgroundColor: "#1e67a8",
-        color: "#fff",
-        borderStyle: "solid",
-        bordertWidth: "1px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        background: ACCENT_TABLE, color: "#fff", fontWeight: 700, fontSize: "13px",
+        padding: "10px 8px", borderRight: "1px solid rgba(255,255,255,0.5)",
+        borderBottom: "2px solid rgba(255,255,255,0.6)", whiteSpace: "normal",
+        wordBreak: "break-word", overflowWrap: "break-word", overflow: "visible",
+        lineHeight: "1.4", minHeight: "52px", height: "auto",
+        verticalAlign: "middle", justifyContent: "center", textAlign: "center",
+      },
+    },
+    rows: {
+      style: {
+        minHeight: "32px",
+        "&:nth-of-type(odd)":  { background: "#fff" },
+        "&:nth-of-type(even)": { background: "#f7fafd" },
       },
     },
     cells: {
       style: {
-        // '&:not(:last-of-type)': {
-        borderStyle: "solid",
-        borderWidth: "1px",
-        paddingTop: "3px",
-        paddingBottom: "3px",
-        paddingLeft: "8px",
-        paddingRight: "8px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        borderRight: "1px solid #eef2f7", borderBottom: "1px solid #e8edf5",
+        paddingTop: "4px", paddingBottom: "4px", paddingLeft: "8px", paddingRight: "8px",
+        color: "#2d3748", fontSize: "13px", justifyContent: "center", textAlign: "center",
       },
     },
   };
 
-  const FarmerDataColumns = [
-    {
-      name: "Sl.No",
-      selector: (row) => row.serialNumber,
-      cell: (row) => <span>{row.serialNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Lot Number",
-      selector: (row) => row.preparationEggsLotNumber,
-      cell: (row) => <span>{row.preparationEggsLotNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Number Of Cocoons",
-      selector: (row) => row.numberOfCocoonscb,
-      cell: (row) => <span>{row.numberOfCocoonscb}</span>,
-      sortable: true,
-      hide: "md",
-    },
+  const colHeader = (label) => (
+    <div style={{ whiteSpace: "normal", wordBreak: "break-word", textAlign: "center", lineHeight: "1.4", width: "100%", padding: "2px 0" }}>
+      {label}
+    </div>
+  );
 
-    {
-      name: "Line Name",
-      selector: (row) => row.lineName,
-      cell: (row) => <span>{row.lineName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Race",
-      selector: (row) => row.raceName,
-      cell: (row) => <span>{row.raceName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Date Of Moth Emergence",
-      selector: (row) => row.lotDateOfMothEmergence,
-      cell: (row) => <span>{row.lotDateOfMothEmergence}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    
-    {
-      name: "Laid On Date",
-      selector: (row) => row.lotLaidOnDate,
-      cell: (row) => <span>{row.lotLaidOnDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Egg Sheet Serial number",
-      selector: (row) => row.lotEggSheetSerialNumber,
-      cell: (row) => <span>{row.lotEggSheetSerialNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "DFLs Obtained",
-      selector: (row) => row.lotDflsObtained,
-      cell: (row) => <span>{row.lotDflsObtained}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Egg Recovery Percentage",
-      selector: (row) => row.lotEggRecoveryPercentage,
-      cell: (row) => <span>{row.lotEggRecoveryPercentage}</span>,
-      sortable: true,
-      hide: "md",
-    },
-     {
-      name: "Remaining DFLs",
-      selector: (row) => row.lotRemainingDfls,
-      cell: (row) => <span>{row.lotRemainingDfls}</span>,
-      sortable: true,
-      hide: "md",
-    },
- 
+  const FarmerDataColumns = [
+    { name: colHeader("Sl.No"),                    selector: (row) => row.serialNumber,               cell: (row) => <span>{row.serialNumber}</span>,               sortable: true },
+    { name: colHeader("Lot Number"),               selector: (row) => row.preparationEggsLotNumber,   cell: (row) => <span>{row.preparationEggsLotNumber}</span>,   sortable: true },
+    { name: colHeader("Number Of Cocoons"),        selector: (row) => row.numberOfCocoonscb,          cell: (row) => <span>{row.numberOfCocoonscb}</span>,          sortable: true },
+    { name: colHeader("Line Name"),                selector: (row) => row.lineName,                   cell: (row) => <span>{row.lineName}</span>,                   sortable: true },
+    { name: colHeader("Race"),                     selector: (row) => row.raceName,                   cell: (row) => <span>{row.raceName}</span>,                   sortable: true },
+    { name: colHeader("Date Of Moth Emergence"),   selector: (row) => row.lotDateOfMothEmergence,     cell: (row) => <span>{row.lotDateOfMothEmergence}</span>,     sortable: true },
+    { name: colHeader("Laid On Date"),             selector: (row) => row.lotLaidOnDate,              cell: (row) => <span>{row.lotLaidOnDate}</span>,              sortable: true },
+    { name: colHeader("Egg Sheet Serial Number"),  selector: (row) => row.lotEggSheetSerialNumber,    cell: (row) => <span>{row.lotEggSheetSerialNumber}</span>,    sortable: true },
+    { name: colHeader("DFLs Obtained"),            selector: (row) => row.lotDflsObtained,            cell: (row) => <span>{row.lotDflsObtained}</span>,            sortable: true },
+    { name: colHeader("Egg Recovery Percentage"),  selector: (row) => row.lotEggRecoveryPercentage,   cell: (row) => <span>{row.lotEggRecoveryPercentage}</span>,   sortable: true },
+    { name: colHeader("Remaining DFLs"),           selector: (row) => row.lotRemainingDfls,           cell: (row) => <span>{row.lotRemainingDfls}</span>,           sortable: true },
   ];
 
   return (
@@ -375,115 +276,51 @@ function PreparationOfEggsDFLsReport() {
       </Block.Head>
 
       <Block className="mt-n4">
-        <Card className="mt-1">
-          <Row className="m-4">
-            {/* <Col sm={2}>
-              <Form.Group className="form-group mt-n4">
-                <Form.Label>{t("District")}</Form.Label>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="districtId"
-                    value={data.districtId}
-                    onChange={handleInputs}
-                    onBlur={() => handleInputs}
-                    isInvalid={
-                      data.districtId === undefined || data.districtId === "0"
-                    }
-                  >
-                    <option value="">{t("Select District")}</option>
-                    {districtListData && districtListData.length
-                      ? districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))
-                      : ""}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {t("District Name is required")}
-                  </Form.Control.Feedback>
-                </div>
-              </Form.Group>
-            </Col> */}
-
-            <Col sm={2}>
-            <Form.Group className="form-group mt-n4">
-            <Form.Label>
-                {t("Line")}
-                {/* <span className="text-danger">*</span> */}
-            </Form.Label>
-            <Col>
-                <div className="form-control-wrap">
-                <Form.Select
-                    name="lineNameId"
-                    value={data.lineNameId}
-                    onChange={handleInputs}
-                //   onBlur={() => handleInputs}
-                    // required
-                >
-                    <option value="">{t("Select Line Details")}</option>
-                    {lineYearListData && lineYearListData.length?(lineYearListData.map((list) => (
-                    <option
-                        key={list.lineNameId}
-                        value={list.lineNameId}
-                    >
-                        {list.lineName}
+        <Card style={{ borderRadius: "12px", border: "none", boxShadow: "0 2px 16px rgba(30,103,168,0.10)", backgroundColor: "#fff" }}>
+          <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
+            <span style={{ fontSize: "20px" }}>🥚</span>
+            <div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Added DFLs Details Report</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export added DFLs details data</div>
+            </div>
+          </div>
+          <Card.Body className="pb-2">
+            <Row className="g-2 mb-2 align-items-end">
+              <Col lg={3}>
+                <label style={lbl}>{t("Line")}</label>
+                <Form.Select name="lineNameId" value={data.lineNameId} onChange={handleInputs} style={sel}>
+                  <option value="">{t("Select Line Details")}</option>
+                  {lineYearListData && lineYearListData.length ? lineYearListData.map((list) => (
+                    <option key={list.lineNameId} value={list.lineNameId}>
+                      {list.lineName}
                     </option>
-                    ))):""}
+                  )) : ""}
                 </Form.Select>
-                {/* <Form.Control.Feedback type="invalid">
-                    Line Details is required
-                </Form.Control.Feedback> */}
-                </div>
-            </Col>
-            </Form.Group>
-        </Col>
-
-             
-            <Col sm={2}>
-            <Form.Group className="form-group mt-n4">
-            <Form.Label>
-                {t("Race")}
-                {/* <span className="text-danger">*</span> */}
-            </Form.Label>
-            <Col>
-                <div className="form-control-wrap">
-                <Form.Select
-                    name="raceId"
-                    value={data.raceId}
-                    onChange={handleInputs}
-                //   onBlur={() => handleInputs}
-                    // required
-                >
-                    <option value="">{t("Select Race")}</option>
-                    {raceListData.map((list) => (
-                    <option
-                        key={list.raceMasterId}
-                        value={list.raceMasterId}
-                    >
-                        {list.raceMasterName}
+              </Col>
+              <Col lg={3}>
+                <label style={lbl}>{t("Race")}</label>
+                <Form.Select name="raceId" value={data.raceId} onChange={handleInputs} style={sel}>
+                  <option value="">{t("Select Race")}</option>
+                  {raceListData.map((list) => (
+                    <option key={list.raceMasterId} value={list.raceMasterId}>
+                      {list.raceMasterName}
                     </option>
-                    ))}
+                  ))}
                 </Form.Select>
-                {/* <Form.Control.Feedback type="invalid">
-                    Race is required
-                </Form.Control.Feedback> */}
-                </div>
-            </Col>
-            </Form.Group>
-        </Col>
-                 
-            <Col sm={1}>
-              <Button type="button" variant="primary" onClick={search}>
-                {t("Search")}
-              </Button>
-            </Col>
-            <Col sm={1}>
-              <Button type="button" variant="primary" onClick={exportCsv}>
-                {t("Export")}
-              </Button>
-            </Col>
-          </Row>
+              </Col>
+              <Col xs="auto" style={{ paddingTop: "20px" }}>
+                <button onClick={search} style={{ height: CTRL_H, padding: "0 20px", background: ACCENT_TABLE, color: "#fff", border: "none", borderRadius: "6px", fontWeight: 600, fontSize: "13px", cursor: "pointer", marginRight: "8px" }}>
+                  {t("Search")}
+                </button>
+                <button onClick={exportCsv} style={{ height: CTRL_H, padding: "0 20px", background: "linear-gradient(135deg,#2d7a2d,#38a838)", color: "#fff", border: "none", borderRadius: "6px", fontWeight: 600, fontSize: "13px", cursor: "pointer" }}>
+                  {t("Export")}
+                </button>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
+
+        <Card className="mt-3" style={{ borderRadius: "12px", border: "none", boxShadow: "0 2px 16px rgba(30,103,168,0.08)" }}>
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={FarmerDataColumns}
@@ -493,12 +330,9 @@ function PreparationOfEggsDFLsReport() {
             paginationServer
             paginationTotalRows={totalRows}
             paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
+            paginationComponentOptions={{ noRowsPerPage: true }}
             onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}
-            theme="solarized"
             customStyles={customStyles}
           />
         </Card>
@@ -507,12 +341,4 @@ function PreparationOfEggsDFLsReport() {
   );
 }
 
-export default PreparationOfEggsDFLsReport
-
-
-
-
-
-
-
-;
+export default PreparationOfEggsDFLsReport;

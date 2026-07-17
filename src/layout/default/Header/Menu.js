@@ -15,6 +15,7 @@ import { Icon, Media, MediaText, MediaGroup, Image } from "../../../components";
 
 import { headerModulesData } from "../../../store/module/HeaderModuleData";
 import api from "../../../../src/services/auth/api";
+import { isHelpdeskDashboardUser } from "../../../../src/services/access/helpdeskDashboardUsers";
 
 import {
   modulesData,
@@ -206,6 +207,10 @@ function Menu() {
       .then((res) => setDbtTicketsAllowed(res?.data?.content?.allowed === true))
       .catch(() => setDbtTicketsAllowed(false));
   }, []);
+
+  // Visibility for the "Helpdesk Dashboard" menu — restricted to an allow-list of
+  // usernames (frontend gate, no backend call, so it can't break on a UI-only deploy).
+  const helpdeskDashboardAllowed = isHelpdeskDashboardUser();
 
   console.log(data);
 
@@ -3447,9 +3452,9 @@ function Menu() {
         </MenuItem>
       ) : null}
 
-      {showMenu.Helpdesk || dbtTicketsAllowed ? (
+      {showMenu.Helpdesk || dbtTicketsAllowed || helpdeskDashboardAllowed ? (
         <MenuItem sub>
-          {showMenu.Helpdesk || dbtTicketsAllowed ? (
+          {showMenu.Helpdesk || dbtTicketsAllowed || helpdeskDashboardAllowed ? (
             <MenuItemLink
               text={t("helpdesk")}
               onClick={menuToggle}
@@ -3474,7 +3479,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Helpdesk_Dashboard ? (
+            {helpdeskDashboardAllowed ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Helpdesk Dashboard")}

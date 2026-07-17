@@ -5,6 +5,7 @@ import Block from "../../components/Block/Block";
 import { Card, Form, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
+import SearchableSelect from "../../components/SearchableSelect/SearchableSelect";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -634,22 +635,20 @@ function GenerateWorkOrder() {
                     </span>
                   )}
                 </label>
-                <Form.Select
+                <SearchableSelect
                   name="sanctionOrderNumber"
                   value={addressDetails.sanctionOrderNumber}
-                  onChange={handleWorkOrderChange}
-                  style={selectStyle}
-                  disabled={!filtersReady}
-                >
-                  <option value="">
-                    {filtersReady ? "— Select Work Order —" : "— Fill filters above first —"}
-                  </option>
-                  {workOrderNumbers.map((item, index) => (
-                    <option key={index} value={item.workOrderNumber}>
-                      {item.workOrderNumber}
-                    </option>
-                  ))}
-                </Form.Select>
+                  onChange={(val) =>
+                    handleWorkOrderChange({
+                      target: { name: "sanctionOrderNumber", value: val },
+                    })
+                  }
+                  isDisabled={!filtersReady}
+                  placeholder={filtersReady ? "— Select Work Order —" : "— Fill filters above first —"}
+                  options={(workOrderNumbers || []).map((item) =>
+                    typeof item === "object" ? item.workOrderNumber : item
+                  )}
+                />
               </Col>
 
             </Row>
