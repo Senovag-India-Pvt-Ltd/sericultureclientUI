@@ -112,20 +112,6 @@ function DashboardReportList() {
   const handleCloseModal = () => {
     setShowModal(false);
     setDisplaySubmit(true);
-    setEscrowBankData({
-      escrowBankName: "", escrowBankAddress: "", escrowBankIfsc: "",
-      escrowBankMicr: "", escrowAccountNumber: "", escrowBankLetterDate: "",
-      escrowBankManagerName: "",
-    });
-    setProformaVendor1(emptyVendor());
-    setProformaVendor2(emptyVendor());
-    setProformaComponents([]);
-    setVendor1Open(false);
-    setVendor2Open(false);
-    setComponentDetailsOpen(true);
-    setAdvancePayment("");
-    setFirstRelease("");
-    setFinalRelease("");
 
     if (timeoutIdRef.current) {
       clearTimeout(timeoutIdRef.current);
@@ -615,11 +601,6 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
   const [sanctionOrderNumber, setSanctionOrderNumber] = useState(null);
   const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
 
-  // ARM Beneficiary Selection Letter — 3 inline fields
-  const [armGovtApprovalDate, setArmGovtApprovalDate] = useState("");
-  const [armEOfficeFileNo, setArmEOfficeFileNo] = useState("");
-  const [armSelectionProceedingsDate, setArmSelectionProceedingsDate] = useState("");
-
   
 
   const [userId, setId] = useState(localStorage.getItem("userMasterId"));
@@ -651,96 +632,9 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
     empanelledVendorApprovedBy: "",
     letterNo: "",
     empanelledVendorDate: "",
-    armUserMasterId: "",
   });
 
   const [allowAnyUser, setAllowAnyUser] = useState(false);
-
-  // ARM Stage — Escrow Bank Account Card fields
-  const [escrowBankData, setEscrowBankData] = useState({
-    escrowBankName: "",
-    escrowBankAddress: "",
-    escrowBankIfsc: "",
-    escrowBankMicr: "",
-    escrowAccountNumber: "",
-    escrowBankLetterDate: "",
-    escrowBankManagerName: "",
-  });
-  const handleEscrowBankInput = (e) => {
-    const { name, value } = e.target;
-    setEscrowBankData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // ARM Stage — Proforma Invoice Table state
-  const emptyVendor = () => ({
-    vendorName: "", vendorAddress: "", mfrAddress: "",
-    bankName: "", bankAddress: "", accountNo: "", micrCode: "",
-    invoiceNo: "", invoiceDate: "",
-  });
-  const [proformaVendor1, setProformaVendor1] = useState(emptyVendor());
-  const [proformaVendor2, setProformaVendor2] = useState(emptyVendor());
-  const [proformaComponents, setProformaComponents] = useState([]);
-  const [proformaLoading, setProformaLoading] = useState(false);
-  const [vendor1Open, setVendor1Open] = useState(false);
-  const [vendor2Open, setVendor2Open] = useState(false);
-  const [componentDetailsOpen, setComponentDetailsOpen] = useState(true);
-  const [advancePayment, setAdvancePayment] = useState("");
-  const [firstRelease, setFirstRelease] = useState("");
-  const [finalRelease, setFinalRelease] = useState("");
-
-  const handleVendorInput = (setter) => (e) => {
-    const { name, value } = e.target;
-    setter((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleInvoiceRowChange = (idx, field, value) => {
-    setProformaComponents((prev) => {
-      const updated = [...prev];
-      updated[idx] = { ...updated[idx], [field]: value };
-      const qty  = parseFloat(updated[idx].invoiceQty      || 0);
-      const rate = parseFloat(updated[idx].invoiceUnitRate || 0);
-      updated[idx].invoiceTotal = (qty * rate).toFixed(2);
-      const guidelineTotal  = parseFloat(updated[idx].guidelineTotal || 0);
-      const eligibleBase    = Math.min(guidelineTotal, parseFloat(updated[idx].invoiceTotal));
-      const subsidyPct      = parseFloat(updated[idx].centralPercentage || 0) +
-                              parseFloat(updated[idx].statePercentage   || 0);
-      updated[idx].eligibleAmount = (eligibleBase * (subsidyPct / 100)).toFixed(2);
-      return updated;
-    });
-  };
-
-  const loadArmProformaComponents = async (componentName, categoryId) => {
-    if (!componentName || !categoryId) return;
-    // Derive arm_ends from component name: "120 Ends Automatic Reeling Machine" → "120 Ends"
-    const armEnds = componentName.split(" ").slice(0, 2).join(" ");
-    setProformaLoading(true);
-    try {
-      const res = await api.get(
-        baseURLMasterData + `armCalculation/get-by-arm-ends-and-category`,
-        { params: { armEnds, scCategoryId: categoryId } }
-      );
-      const rows = (res.data.content?.armCalculation || []).map((c) => ({
-        armCalculationId:  c.armCalculationId,
-        componentId:       c.componentId,
-        componentTypeId:   c.componentTypeId,
-        componentName:     c.equipmentName,
-        guidelineQty:      parseFloat(c.quantity || 0),
-        guidelineUnitRate: parseFloat(c.unitRate || 0),
-        guidelineTotal:    parseFloat(c.unitCost || 0),
-        centralPercentage: parseFloat(c.centralPercentage || 0),
-        statePercentage:   parseFloat(c.statePercentage || 0),
-        invoiceQty:        "",
-        invoiceUnitRate:   parseFloat(c.unitRate || 0),
-        invoiceTotal:      "",
-        eligibleAmount:    "",
-      }));
-      setProformaComponents(rows);
-    } catch (err) {
-      console.error("Failed to load ARM components:", err);
-    } finally {
-      setProformaLoading(false);
-    }
-  };
 
   //  to get data from api
   const getIdList = () => {
@@ -1149,11 +1043,6 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
         const data = response.data.content;
         const recordData = data[0];
         setActionFarmerData(data);
-        // Load ARM proforma components when stage is PROFORMA_INVOICE
-        if (recordData.armStageConfig === "PROFORMA_INVOICE" &&
-            recordData.workOrderForScheme === "Automatic Reeling Machine Unit") {
-          loadArmProformaComponents(recordData.componentName, recordData.categoryId);
-        }
         setAllowDbtPush(recordData.allowDbtPush === true);
         if (recordData.pushToDbt) {
           setFieldsDisabled(recordData.pushToDbt);
@@ -1879,8 +1768,7 @@ const callWorkOrderAcknowledgment = async (
     generateWorkOrderRHSDPLowCostShed(applicationFormId, workOrderSchemeId, subSchemeId, categoryId);
 
     } else if (workOrderForScheme === "Automatic Reeling Machine Unit") {
-    generateSelectionARM(applicationFormId, workOrderSchemeId, subSchemeId, categoryId,
-      armGovtApprovalDate, armEOfficeFileNo, armSelectionProceedingsDate);
+    generateSelectionARM(applicationFormId, workOrderSchemeId, subSchemeId, categoryId);
 
   }
 };
@@ -2455,69 +2343,8 @@ const generateWorkOrderOrderIMCB= async (applicationFormId, schemeId,subSchemeId
   }
 };
 
-const generateSelectionARM = async (applicationFormId, schemeId, subSchemeId, categoryId,
-    inlineGovtDate, inlineEOfficeNo, inlineProcDate) => {
-
-  // Use inline page values if provided; otherwise fall back to SweetAlert popup
-  let formValues, isConfirmed;
-  if (inlineGovtDate || inlineEOfficeNo || inlineProcDate) {
-    formValues = {
-      dateOfGovtApproval:            inlineGovtDate  || "",
-      eOfficeFileNo:                  inlineEOfficeNo || "",
-      dateOfArmSelectionProceedings:  inlineProcDate  || "",
-    };
-    isConfirmed = true;
-  } else {
-    const result = await SwalStyled.fire({
-      title: "ARM Selection Letter Details",
-      html: `
-        <div style="text-align:left; font-size:13px;">
-          <label style="display:block;margin-bottom:4px;font-weight:600;">
-            Date of Government Approval of Beneficiary Selection
-          </label>
-          <input id="swal-govt-date" type="date" class="swal2-input" style="margin:0 0 12px;width:100%;" />
-
-          <label style="display:block;margin-bottom:4px;font-weight:600;">
-            E-Office File No.
-          </label>
-          <input id="swal-efile-no" type="text" class="swal2-input"
-            placeholder="Enter E-Office File No."
-            style="margin:0 0 12px;width:100%;" />
-
-          <label style="display:block;margin-bottom:4px;font-weight:600;">
-            Date of ARM Beneficiary Selection Proceedings
-          </label>
-          <input id="swal-proc-date" type="date" class="swal2-input" style="margin:0;width:100%;" />
-        </div>`,
-      focusConfirm: false,
-      showCancelButton: true,
-      confirmButtonText: "Generate PDF",
-      cancelButtonText: "Cancel",
-      preConfirm: () => ({
-        dateOfGovtApproval: document.getElementById("swal-govt-date").value,
-        eOfficeFileNo: document.getElementById("swal-efile-no").value,
-        dateOfArmSelectionProceedings: document.getElementById("swal-proc-date").value,
-      }),
-    });
-    formValues = result.value;
-    isConfirmed = result.isConfirmed;
-  }
-
-  if (!isConfirmed) return;
-
+const generateSelectionARM = async (applicationFormId, schemeId, subSchemeId, categoryId) => {
   try {
-    // Save the 3 admin fields to sc_application_form_service
-    const params = new URLSearchParams({ applicationFormId });
-    if (formValues.dateOfGovtApproval)
-      params.append("dateOfGovtApproval", formValues.dateOfGovtApproval);
-    if (formValues.eOfficeFileNo)
-      params.append("eOfficeFileNo", formValues.eOfficeFileNo);
-    if (formValues.dateOfArmSelectionProceedings)
-      params.append("dateOfArmSelectionProceedings", formValues.dateOfArmSelectionProceedings);
-
-    await api.post(baseURLDBT + `service/updateArmSelectionFields?${params.toString()}`);
-
-    // Generate the PDF
     const response = await api.post(
       baseURLReport + `selection-arm`,
       {
@@ -2526,160 +2353,18 @@ const generateSelectionARM = async (applicationFormId, schemeId, subSchemeId, ca
         subSchemeId: subSchemeId,
         categoryId: categoryId,
       },
-      { responseType: "blob" }
+      {
+        responseType: "blob",
+      }
     );
     const file = new Blob([response.data], { type: "application/pdf" });
     const fileURL = URL.createObjectURL(file);
     window.open(fileURL);
   } catch (error) {
     console.error("Error generating ARM selection letter:", error);
-    Swal.fire("Error", "Failed to generate ARM selection letter.", "error");
   }
 };
 
-
-const handleArmStageAction = async (armStageConfig, applicationFormId, schemeId, subSchemeId, categoryId) => {
-  if (!armStageConfig || !applicationFormId) return;
-
-  const openArmReportPdf = async (endpoint, errorTitle) => {
-    try {
-      const response = await api.post(
-        baseURLReport + endpoint,
-        { applicationFormId, schemeId, subSchemeId, categoryId },
-        { responseType: "blob" }
-      );
-      const file = new Blob([response.data], { type: "application/pdf" });
-      window.open(URL.createObjectURL(file));
-    } catch (error) {
-      console.error(`Error generating ${errorTitle}:`, error);
-      Swal.fire("Error", `Failed to generate ${errorTitle}.`, "error");
-    }
-  };
-
-  if (armStageConfig === "ESCROW_BANK") {
-    const { value: fields, isConfirmed } = await SwalStyled.fire({
-      title: "Escrow Bank Account Card",
-      html: `
-        <div style="text-align:left;font-size:13px;">
-          <label style="display:block;margin-bottom:4px;font-weight:600;">Name of the Bank</label>
-          <input id="swal-escrow-bank-name" type="text" class="swal2-input" style="margin:0 0 10px;width:100%;" placeholder="Enter Bank Name"/>
-          <label style="display:block;margin-bottom:4px;font-weight:600;">Address of Branch</label>
-          <input id="swal-escrow-bank-address" type="text" class="swal2-input" style="margin:0 0 10px;width:100%;" placeholder="Enter Branch Address"/>
-          <label style="display:block;margin-bottom:4px;font-weight:600;">IFSC Code</label>
-          <input id="swal-escrow-ifsc" type="text" class="swal2-input" style="margin:0 0 10px;width:100%;" placeholder="Enter IFSC Code"/>
-          <label style="display:block;margin-bottom:4px;font-weight:600;">MICR Code</label>
-          <input id="swal-escrow-micr" type="text" class="swal2-input" style="margin:0 0 10px;width:100%;" placeholder="Enter MICR Code"/>
-          <label style="display:block;margin-bottom:4px;font-weight:600;">Bank Account Number</label>
-          <input id="swal-escrow-acc-no" type="text" class="swal2-input" style="margin:0 0 10px;width:100%;" placeholder="Enter Account Number"/>
-          <label style="display:block;margin-bottom:4px;font-weight:600;">Bank Letter Date</label>
-          <input id="swal-escrow-letter-date" type="date" class="swal2-input" style="margin:0 0 10px;width:100%;"/>
-          <label style="display:block;margin-bottom:4px;font-weight:600;">Designation of Bank Manager</label>
-          <input id="swal-escrow-manager" type="text" class="swal2-input" style="margin:0;width:100%;" placeholder="Enter Bank Manager Designation"/>
-        </div>`,
-      focusConfirm: false,
-      showCancelButton: true,
-      confirmButtonText: "Save",
-      cancelButtonText: "Cancel",
-      preConfirm: () => ({
-        escrowBankName:        document.getElementById("swal-escrow-bank-name").value,
-        escrowBankAddress:     document.getElementById("swal-escrow-bank-address").value,
-        escrowBankIfsc:        document.getElementById("swal-escrow-ifsc").value,
-        escrowBankMicr:        document.getElementById("swal-escrow-micr").value,
-        escrowAccountNumber:   document.getElementById("swal-escrow-acc-no").value,
-        escrowBankLetterDate:  document.getElementById("swal-escrow-letter-date").value,
-        escrowBankManagerName: document.getElementById("swal-escrow-manager").value,
-      }),
-    });
-    if (!isConfirmed) return;
-    try {
-      const params = new URLSearchParams({ applicationFormId });
-      Object.entries(fields).forEach(([k, v]) => { if (v) params.append(k, v); });
-      await api.post(baseURLDBT + `service/updateEscrowBankDetails?${params.toString()}`);
-      Swal.fire("Saved", "Escrow Bank details saved successfully.", "success");
-    } catch (err) {
-      console.error("Error saving escrow bank details:", err);
-      Swal.fire("Error", "Failed to save Escrow Bank details.", "error");
-    }
-
-  } else if (armStageConfig === "CSTRI_1") {
-    const { value: fields, isConfirmed } = await SwalStyled.fire({
-      title: "CSTRI Letter Details (First Release)",
-      html: `
-        <div style="text-align:left;font-size:13px;">
-          <label style="display:block;margin-bottom:4px;font-weight:600;">CSTRI Letter No.</label>
-          <input id="swal-cstri1-no" type="text" class="swal2-input" style="margin:0 0 12px;width:100%;" placeholder="Enter CSTRI Letter No."/>
-          <label style="display:block;margin-bottom:4px;font-weight:600;">CSTRI Letter Date</label>
-          <input id="swal-cstri1-date" type="date" class="swal2-input" style="margin:0;width:100%;"/>
-        </div>`,
-      focusConfirm: false,
-      showCancelButton: true,
-      confirmButtonText: "Save",
-      cancelButtonText: "Cancel",
-      preConfirm: () => ({
-        cstriLetterNo:   document.getElementById("swal-cstri1-no").value,
-        cstriLetterDate: document.getElementById("swal-cstri1-date").value,
-      }),
-    });
-    if (!isConfirmed) return;
-    try {
-      const params = new URLSearchParams({ applicationFormId, releaseType: "FIRST" });
-      if (fields.cstriLetterNo)   params.append("cstriLetterNo",   fields.cstriLetterNo);
-      if (fields.cstriLetterDate) params.append("cstriLetterDate", fields.cstriLetterDate);
-      await api.post(baseURLDBT + `service/updateCstriDetails?${params.toString()}`);
-      Swal.fire("Saved", "CSTRI details saved successfully.", "success");
-    } catch (err) {
-      console.error("Error saving CSTRI details:", err);
-      Swal.fire("Error", "Failed to save CSTRI details.", "error");
-    }
-
-  } else if (armStageConfig === "CSTRI_2") {
-    const { value: fields, isConfirmed } = await SwalStyled.fire({
-      title: "CSTRI Letter Details (Final Release)",
-      html: `
-        <div style="text-align:left;font-size:13px;">
-          <label style="display:block;margin-bottom:4px;font-weight:600;">CSTRI Letter No. 1</label>
-          <input id="swal-cstri2-no" type="text" class="swal2-input" style="margin:0 0 12px;width:100%;" placeholder="Enter CSTRI Letter No. 1"/>
-          <label style="display:block;margin-bottom:4px;font-weight:600;">CSTRI Letter Date 1</label>
-          <input id="swal-cstri2-date" type="date" class="swal2-input" style="margin:0;width:100%;"/>
-        </div>`,
-      focusConfirm: false,
-      showCancelButton: true,
-      confirmButtonText: "Save",
-      cancelButtonText: "Cancel",
-      preConfirm: () => ({
-        cstriLetterNo:   document.getElementById("swal-cstri2-no").value,
-        cstriLetterDate: document.getElementById("swal-cstri2-date").value,
-      }),
-    });
-    if (!isConfirmed) return;
-    try {
-      const params = new URLSearchParams({ applicationFormId, releaseType: "FINAL" });
-      if (fields.cstriLetterNo)   params.append("cstriLetterNo",   fields.cstriLetterNo);
-      if (fields.cstriLetterDate) params.append("cstriLetterDate", fields.cstriLetterDate);
-      await api.post(baseURLDBT + `service/updateCstriDetails?${params.toString()}`);
-      Swal.fire("Saved", "CSTRI details saved successfully.", "success");
-    } catch (err) {
-      console.error("Error saving CSTRI details:", err);
-      Swal.fire("Error", "Failed to save CSTRI details.", "error");
-    }
-
-  } else if (armStageConfig === "PROFORMA_INVOICE") {
-    Swal.fire({
-      icon: "info",
-      title: "Proforma Invoice Table",
-      text: "Proforma Invoice data entry will open on the next screen.",
-    });
-
-  } else if (armStageConfig === "ADVANCE_PAYMENT") {
-    await openArmReportPdf("arm-advance-payment", "ARM Advance Payment letter");
-
-  } else if (armStageConfig === "FIRST_RELEASE") {
-    await openArmReportPdf("arm-first-release", "ARM First Release letter");
-
-  } else if (armStageConfig === "SECOND_RELEASE") {
-    await openArmReportPdf("arm-final-release", "ARM Final Release letter");
-  }
-};
 
   // const handleGenerateSanctionOrder = (applicationFormId) => {
   //   SwalStyled.fire({
@@ -2766,14 +2451,8 @@ const handleGenerateSanctionOrderClick = async () => {
   }
 
   // ✅ Allowed → continue
-  // For ARM, getArmSanctionDetails queries sc_application_form_service by its PK (applicationFormId state).
-  // applicationId holds sc_application_form.id (wrong for ARM) — always use applicationFormId for ARM.
-  const effectiveAppId =
-    actionFarmerData[0]?.workOrderForScheme === "Automatic Reeling Machine Unit"
-      ? applicationFormId
-      : (applicationId ?? applicationFormId);
   handleGenerateSanctionOrder(
-    effectiveAppId,
+    applicationId,
     actionFarmerData[0]?.schemeId,
     actionFarmerData[0]?.subSchemeId,
     actionFarmerData[0]?.categoryId,
@@ -3020,17 +2699,6 @@ const handleGenerateSanctionOrderClick = async () => {
           );
         }
 
-        else if (schemeType === "Automatic Reeling Machine Unit") {
-          generateSanctionOrderAcknowledgment(
-            applicationFormId,
-            schemeId,
-            "farmer",
-            schemeType,
-            subSchemeId,
-            categoryId
-          );
-        }
-
         else {
           console.error("Unknown scheme type for farmer sanction order.");
         }
@@ -3249,17 +2917,6 @@ const handleGenerateSanctionOrderClick = async () => {
           );
         }
 
-        else if (schemeType === "Automatic Reeling Machine Unit") {
-          generateSanctionOrderAcknowledgment(
-            applicationFormId,
-            schemeId,
-            "farmer",
-            schemeType,
-            subSchemeId,
-            categoryId
-          );
-        }
-
         else {
           console.error("Unknown Scheme type for company sanction order.");
         }
@@ -3461,10 +3118,9 @@ else if (
     else if (schemeType === "SDP Low Cost Shed") {
       endpoint = baseURLReport + `getSanctionOrderRHSDPLowCostShed`;
     }
-
-    else if (schemeType === "Automatic Reeling Machine Unit") {
-      endpoint = baseURLReport + `sanction-arm`;
-    }
+    // else if (schemeType === "Rearing Equipment SS") {
+    //   endpoint = baseURLReport + `getSanctionOrderRHEquipment`;
+    // }
     // -------------------------------
     // 3️⃣ PMKSY / PDMC (farmer/company)
     // -------------------------------
@@ -3542,9 +3198,8 @@ else if (
             schemeType === "Adopting Solar Water Heater" ||
             schemeType === "MERM-PSF" ||
             schemeType === "SDP RH 225" ||
-            schemeType === "SDP Low Cost Shed" ||
-            schemeType === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House" ||
-            schemeType === "Automatic Reeling Machine Unit"
+            schemeType === "SDP Low Cost Shed"||
+            schemeType === "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
           ) {
             payload = {
               applicationFormId: applicationId,
@@ -3580,7 +3235,7 @@ const allowedSchemes = [
   "IMCB-PSF",
   "ICB-PSF",
   "MERM-PSF",
-  "Automatic Reeling Machine Unit",
+  "Atomatic Reeling Machine",
   "Adopting Heat Recovery Unit-PSF",
   "Adopting Boiler-PSF",
   "Adopting Silent Generator",
@@ -4516,7 +4171,7 @@ const allowedSchemes = [
         sanctionNo: actionData.sanctionNo,
         proposalDate: actionData.proposalDate,
         userId: actionData.userId,
-        // userId: selectedUserId,
+        // userId: selectedUserId, 
         stepId: actionData.stepId,
         selectionLetterDate: actionData.selectionLetterDate,
         rejectedReasonId: actionData.rejectReasonWorkflowMasterId,
@@ -4528,16 +4183,9 @@ const allowedSchemes = [
         componentId: actionFarmerData[0]?.componentId,
         schemeId: actionFarmerData[0]?.schemeId,
         componentType: actionFarmerData[0]?.componentType,
-        armUserMasterId: actionData.armUserMasterId || null,
       };
     } else {
-      // ARM queue routing: the "Application List" pending-action queue is keyed off a single
-      // sc_application_form_service.user_master_id (saf.user_master_id), not the per-row
-      // Scheme Details officer. For ARM, prefer whichever officer was picked on the first
-      // Scheme Details split row (sendResponse) so the application actually lands in that
-      // officer's queue -- falling back to the separate ARM User Master field, then to the
-      // current user, only when no split row has been picked yet.
-      const armSplitRowUserId = sendResponse?.[0]?.userId || null;
+      // get the first row's selected userId
 
       sendPost = {
         proposalDate: actionData.proposalDate,
@@ -4547,9 +4195,8 @@ const allowedSchemes = [
         applicationFormId: applicationFormId,
         workOrderNumber: actionData.workOrderNumber,
         sanctionOrderNumber: actionData.sanctionOrderNumber,
-        userId: actionFarmerData[0]?.armFlow
-          ? (armSplitRowUserId || actionData.armUserMasterId || localStorage.getItem("userMasterId"))
-          : actionData.userId,
+        userId: actionData.userId,
+        // userId: selectedUserId, 
         stepId: actionData.stepId,
         sanctionNo: actionData.sanctionNo,
         eligibleAmount: actionData.eligibleAmount,
@@ -4557,7 +4204,6 @@ const allowedSchemes = [
         letterNo: actionData.letterNo,
         empanelledVendorDate: actionData.empanelledVendorDate,
         pushToDBTRequestList: sendResponse,
-        armUserMasterId: actionData.armUserMasterId || null,
       };
     }
 
@@ -4675,15 +4321,8 @@ const allowedSchemes = [
                 (item) => item.applicationFormId
               ) || [];
               setApplicationId(response.data.applicationFormId);
-              // For ARM: getArmSanctionDetails queries sc_application_form_service by its PK.
-              // response.data.applicationFormId is the sc_application_form row PK (wrong for ARM).
-              // Use applicationFormId state (sc_application_form_service PK) for ARM instead.
-              const sanctionFormId =
-                actionFarmerData[0]?.workOrderForScheme === "Automatic Reeling Machine Unit"
-                  ? applicationFormId
-                  : response.data.applicationFormId;
               handleGenerateSanctionOrder(
-                sanctionFormId,
+                response.data.applicationFormId,
                 schemeId,
                 actionFarmerData[0]?.subSchemeId,
                 actionFarmerData[0]?.categoryId,
@@ -4786,71 +4425,6 @@ const allowedSchemes = [
 
               }
 
-            }
-
-            // ARM stage-specific data entry (only for Automatic Reeling Machine Unit)
-            if (
-              actionFarmerData[0]?.armStageConfig &&
-              actionFarmerData[0]?.workOrderForScheme === "Automatic Reeling Machine Unit"
-            ) {
-              if (actionFarmerData[0].armStageConfig === "ESCROW_BANK") {
-                // Save inline escrow bank fields
-                const params = new URLSearchParams({ applicationFormId });
-                Object.entries(escrowBankData).forEach(([k, v]) => { if (v) params.append(k, v); });
-                api.post(baseURLDBT + `service/updateEscrowBankDetails?${params.toString()}`)
-                  .catch((err) => console.error("Escrow bank save failed:", err));
-              } else if (actionFarmerData[0].armStageConfig === "PROFORMA_INVOICE") {
-                // Save proforma invoice vendor details + per-component rows
-                const _isIbr = (name) => (name || "").toLowerCase().includes("ibr boiler");
-                const _totalEligible = proformaComponents.reduce(
-                  (s, r) => s + (parseFloat(r.eligibleAmount) || 0), 0
-                );
-                api.post(
-                  baseURLDBT + `armProformaInvoice/save`,
-                  {
-                    scApplicationFormId: applicationFormId,
-                    totalEligibleAmount: _totalEligible,
-                    vendor1Name:        proformaVendor1.vendorName,
-                    vendor1Address:     proformaVendor1.vendorAddress,
-                    vendor1MfrAddress:  proformaVendor1.mfrAddress,
-                    vendor1BankName:    proformaVendor1.bankName,
-                    vendor1BankAddress: proformaVendor1.bankAddress,
-                    vendor1AccountNo:   proformaVendor1.accountNo,
-                    vendor1MicrCode:    proformaVendor1.micrCode,
-                    vendor1InvoiceNo:   proformaVendor1.invoiceNo,
-                    vendor1InvoiceDate: proformaVendor1.invoiceDate || null,
-                    vendor2Name:        proformaVendor2.vendorName,
-                    vendor2Address:     proformaVendor2.vendorAddress,
-                    vendor2MfrAddress:  proformaVendor2.mfrAddress,
-                    vendor2BankName:    proformaVendor2.bankName,
-                    vendor2BankAddress: proformaVendor2.bankAddress,
-                    vendor2AccountNo:   proformaVendor2.accountNo,
-                    vendor2MicrCode:    proformaVendor2.micrCode,
-                    vendor2InvoiceNo:   proformaVendor2.invoiceNo,
-                    vendor2InvoiceDate: proformaVendor2.invoiceDate || null,
-                    components: proformaComponents.map((c) => ({
-                      armCalculationId:  c.armCalculationId,
-                      componentName:     c.componentName,
-                      isIbrBoiler:       _isIbr(c.componentName),
-                      guidelineQty:      parseFloat(c.guidelineQty)      || 0,
-                      guidelineUnitRate: parseFloat(c.guidelineUnitRate) || 0,
-                      guidelineTotal:    parseFloat(c.guidelineTotal)    || 0,
-                      invoiceQty:        parseFloat(c.invoiceQty)        || 0,
-                      invoiceUnitRate:   parseFloat(c.invoiceUnitRate)   || 0,
-                      invoiceTotal:      parseFloat(c.invoiceTotal)      || 0,
-                      eligibleAmount:    parseFloat(c.eligibleAmount)    || 0,
-                    })),
-                  }
-                ).catch((err) => console.error("Proforma invoice save failed:", err));
-              } else {
-                handleArmStageAction(
-                  actionFarmerData[0].armStageConfig,
-                  applicationFormId,
-                  workOrderSchemeId,
-                  actionFarmerData[0]?.subSchemeId,
-                  actionFarmerData[0]?.categoryId
-                );
-              }
             }
 
             saveSuccess();
@@ -5149,18 +4723,6 @@ const allowedSchemes = [
   // }, []);
 
   const _btnBase = { border: "none", borderRadius: "5px", padding: "5px 11px", fontWeight: "600", fontSize: "11.5px", cursor: "pointer", whiteSpace: "nowrap" };
-
-  const thStyle = { padding: "8px 10px", border: "none", borderBottom: "2px solid #b8d4ee", fontWeight: 700, fontSize: "11px", whiteSpace: "nowrap", letterSpacing: "0.4px", textTransform: "uppercase" };
-  const tdStyle = { padding: "8px 10px", border: "none", borderBottom: "1px solid #eef2f8", fontSize: "12.5px", verticalAlign: "middle" };
-  const vendorSectionHeader = (label, icon) => (
-    <div style={{
-      display: "flex", alignItems: "center", gap: "10px",
-      background: "linear-gradient(90deg, #dbeafe 0%, #f0f6ff 100%)",
-      borderLeft: "4px solid #2563eb", borderRadius: "0 8px 8px 0",
-      padding: "9px 16px", marginBottom: "16px", marginTop: "4px",
-      fontWeight: 700, color: "#1e3a6e", fontSize: "13px", letterSpacing: "0.3px",
-    }}>{icon} {label}</div>
-  );
 
   const ApplicationDataColumns = [
     {
@@ -5659,12 +5221,12 @@ const allowedSchemes = [
       </Block.Head>
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
-        <Modal.Header closeButton style={{ background: "linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)", padding: "16px 24px", borderBottom: "none" }}>
-          <Modal.Title style={{ color: "white", fontWeight: 700, fontSize: "1.1rem", letterSpacing: "0.4px", display: "flex", alignItems: "center", gap: "8px" }}>
-            📋 Application Action Details
+        <Modal.Header closeButton style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", padding: "14px 22px" }}>
+          <Modal.Title style={{ color: "white", fontWeight: 700, fontSize: "1.1rem", letterSpacing: "0.3px" }}>
+            &#128203; Application Action Details
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ background: "#f1f5f9", padding: "20px" }}>
+        <Modal.Body style={{ background: "#f8faff" }}>
           {loading ? (
             <div className="d-flex justify-content-center align-items-center py-5">
               <div className="spinner-border text-primary me-2" role="status" style={{ width: "2rem", height: "2rem" }} />
@@ -5687,16 +5249,27 @@ const allowedSchemes = [
                             boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
                           }}
                         > */}
-                        <Card.Body style={{ padding: "12px 16px" }}>
-                          <div style={{
-                            display: "inline-flex", alignItems: "center", gap: "8px",
-                            background: "linear-gradient(135deg, #fff1f2, #ffe4e6)",
-                            border: "1px solid #fca5a5", borderRadius: "10px",
-                            padding: "8px 18px", fontWeight: 700, fontSize: "14px",
-                            color: "#b91c1c", letterSpacing: "0.2px",
-                          }}>
-                            ℹ️ {(actionFarmerData.length > 0 && actionFarmerData[0].schemeWiseAction) || "N/A"}
-                          </div>
+                        <Card.Body>
+                          <table
+                            className="table small table-bordered"
+                            style={{ width: "100%" }}
+                          >
+                            <tbody>
+                              <tr>
+                                <td
+                                  style={{
+                                    color: "red",
+                                    fontWeight: "bold",
+                                    fontSize: "1.1rem",
+                                  }}
+                                >
+                                  {(actionFarmerData.length > 0 &&
+                                    actionFarmerData[0].schemeWiseAction) ||
+                                    "N/A"}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </Card.Body>
                         {/* </Card> */}
                       </Block>
@@ -5721,42 +5294,69 @@ const allowedSchemes = [
                 </Card.Header> */}
                           <Card.Header
                             style={{
-                              background: "linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)",
+                              background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)",
                               fontWeight: 700,
-                              fontSize: "13.5px",
-                              padding: "11px 18px",
+                              fontSize: "1rem",
+                              padding: "10px 16px",
                               color: "white",
-                              letterSpacing: "0.5px",
-                              textTransform: "uppercase",
-                              borderBottom: "none",
+                              letterSpacing: "0.3px",
                             }}
                           >
-                            👤 Beneficiary Details
+                            &#128100; Beneficiary Details
                           </Card.Header>
 
-                          <Card.Body style={{ padding: "16px" }}>
-                            <div style={{ overflowX: "auto", borderRadius: "10px", border: "1px solid #dbeafe", overflow: "hidden" }}>
-                              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
-                                <thead>
-                                  <tr style={{ background: "linear-gradient(135deg, #1e3c72 0%, #2563eb 100%)" }}>
-                                    {["Fruits Id","Name","Middle Name","Mobile Number","District","Taluk"].map((h) => (
-                                      <th key={h} style={{ padding: "10px 14px", color: "white", fontWeight: 600, fontSize: "12px", letterSpacing: "0.5px", textTransform: "uppercase", whiteSpace: "nowrap" }}>{h}</th>
+                          <Card.Body>
+                            <div style={{ overflowX: "auto" }}>
+                              <table
+                                className="table small table-bordered table-hover"
+                                style={{ tableLayout: "fixed" }}
+                              >
+                                <thead style={{ background: "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)" }}>
+                                  <tr>
+                                    {[
+                                      "Fruits Id",
+                                      "Name",
+                                      "Middle Name",
+                                      "Mobile Number",
+                                      "District",
+                                      "Taluk",
+                                    ].map((header) => (
+                                      <th
+                                        key={header}
+                                        style={{ width: "10%", color: "white", fontWeight: 600, fontSize: "0.82rem" }}
+                                      >
+                                        {header}
+                                      </th>
                                     ))}
                                   </tr>
                                 </thead>
                                 <tbody>
                                   {actionFarmerData?.length > 0 ? (
                                     actionFarmerData.map((action, index) => (
-                                      <tr key={index} style={{ background: index % 2 === 0 ? "#f8faff" : "#ffffff" }}>
-                                        {["fruitsId","farmerFirstName","farmerMiddleName","mobileNumber","districtName","talukName"].map((key) => (
-                                          <td key={key} style={{ padding: "9px 14px", borderBottom: "1px solid #e8f0fb", color: "#1e293b", fontWeight: key === "fruitsId" ? 600 : 400 }}>
-                                            {action[key] || <span style={{ color: "#94a3b8", fontStyle: "italic" }}>N/A</span>}
+                                      <tr key={index}>
+                                        {[
+                                          "fruitsId",
+                                          "farmerFirstName",
+                                          "farmerMiddleName",
+                                          "mobileNumber",
+                                          "districtName",
+                                          "talukName",
+                                        ].map((key) => (
+                                          <td
+                                            key={key}
+                                            style={{ wordBreak: "break-word" }}
+                                          >
+                                            {action[key] || "N/A"}
                                           </td>
                                         ))}
                                       </tr>
                                     ))
                                   ) : (
-                                    <tr><td colSpan="6" style={{ padding: "20px", textAlign: "center", color: "#94a3b8" }}>No Details Available</td></tr>
+                                    <tr>
+                                      <td colSpan="10" className="text-center">
+                                        No Details Available
+                                      </td>
+                                    </tr>
                                   )}
                                 </tbody>
                               </table>
@@ -5948,22 +5548,21 @@ const allowedSchemes = [
                         >
                           <Card.Header
                             style={{
-                              background: "linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)",
+                              background: "linear-gradient(135deg, #0F6CBE, #0a4f8e)",
                               color: "#fff",
-                              padding: "11px 18px",
+                              padding: "12px 20px",
                               display: "flex",
                               alignItems: "center",
                               gap: "8px",
-                              fontWeight: 700,
-                              fontSize: "13.5px",
-                              letterSpacing: "0.5px",
-                              textTransform: "uppercase",
-                              borderBottom: "none",
+                              fontWeight: "600",
+                              fontSize: "15px",
+                              letterSpacing: "0.4px",
+                              borderRadius: "10px 10px 0 0",
                             }}
                           >
                             📋 Action Details
                           </Card.Header>
-                          <Card.Body style={{ background: "#f8faff", padding: "20px", overflow: "visible" }}>
+                          <Card.Body style={{ background: "#f0f6ff", padding: "20px", overflow: "visible" }}>
                             <Row>
                               <Col lg="6">
                                 <Form.Group className="form-group">
@@ -6207,7 +5806,7 @@ const allowedSchemes = [
                                       </Form.Group>
                                     </Col>
 
-                                    {showDefaultUserField && !actionFarmerData[0]?.armFlow && (
+                                    {showDefaultUserField && (
                                     <Col lg="6">
                                       <Form.Group className="form-group">
                                         <Form.Label>
@@ -6321,7 +5920,7 @@ const allowedSchemes = [
                                       </Form.Group>
                                     </Col>
 
-                                  {showDefaultUserField && !actionFarmerData[0]?.armFlow && (
+                                  {showDefaultUserField && (
                                     <Col lg="6">
                                       <Form.Group className="form-group">
                                         <Form.Label>
@@ -6399,7 +5998,7 @@ const allowedSchemes = [
                                     </Form.Group>
                                   </Col>
 
-                              {showDefaultUserField && !actionFarmerData[0]?.armFlow && (
+                              {showDefaultUserField && (
                                   <Col lg="6">
                                     <Form.Group className="form-group">
                                       <Form.Label>
@@ -6481,39 +6080,6 @@ const allowedSchemes = [
                                 </Col>
                               )}
 
-                              {actionFarmerData[0]?.armFlow === true && (
-                                <Col lg="6">
-                                  <Form.Group className="form-group">
-                                    <Form.Label>ARM User Master</Form.Label>
-                                    <ReactSelect
-                                      options={userFromDistrictData.map((u) => ({
-                                        value: u.userId,
-                                        label: u.userName,
-                                      }))}
-                                      isSearchable
-                                      placeholder={t("Select ARM User")}
-                                      value={
-                                        userFromDistrictData
-                                          .map((u) => ({
-                                            value: u.userId,
-                                            label: u.userName,
-                                          }))
-                                          .find((opt) => opt.value === actionData.armUserMasterId) || null
-                                      }
-                                      onChange={(selectedOption) => {
-                                        setActionData((prev) => ({
-                                          ...prev,
-                                          armUserMasterId: selectedOption?.value || "",
-                                        }));
-                                      }}
-                                      menuPortalTarget={document.body}
-                                      menuPosition="fixed"
-                                      styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-                                    />
-                                  </Form.Group>
-                                </Col>
-                              )}
-
                               <Col lg="6">
                                 <Form.Group className="form-group">
                                   <Form.Label>
@@ -6546,55 +6112,6 @@ const allowedSchemes = [
                     </Accordion.Body>
                   </Accordion.Item>
 
-                  {/* ARM Beneficiary Selection Letter — 3 fields (always visible for ARM scheme) */}
-                  {actionFarmerData.length > 0 &&
-                    actionFarmerData[0]?.armStageConfig === "SELECTION_LETTER" && (
-                    <div style={{ background: "#f0f6ff", border: "1px solid #b8d4f0", borderRadius: "8px", padding: "16px", marginBottom: "12px" }}>
-                      <div style={{ fontWeight: "700", fontSize: "13px", color: "#0F6CBE", marginBottom: "14px", borderBottom: "1px solid #cde", paddingBottom: "6px" }}>
-                        ARM Beneficiary Selection Letter Details
-                      </div>
-                      <Row className="g-3">
-                        <Col lg="4">
-                          <Form.Group className="form-group">
-                            <Form.Label style={{ fontWeight: "bold", fontSize: "12px" }}>
-                              Date of Govt. Approval of Beneficiary Selection
-                            </Form.Label>
-                            <Form.Control
-                              type="date"
-                              value={armGovtApprovalDate}
-                              onChange={(e) => setArmGovtApprovalDate(e.target.value)}
-                            />
-                          </Form.Group>
-                        </Col>
-                        <Col lg="4">
-                          <Form.Group className="form-group">
-                            <Form.Label style={{ fontWeight: "bold", fontSize: "12px" }}>
-                              E-Office File No.
-                            </Form.Label>
-                            <Form.Control
-                              type="text"
-                              placeholder="Enter E-Office File No."
-                              value={armEOfficeFileNo}
-                              onChange={(e) => setArmEOfficeFileNo(e.target.value)}
-                            />
-                          </Form.Group>
-                        </Col>
-                        <Col lg="4">
-                          <Form.Group className="form-group">
-                            <Form.Label style={{ fontWeight: "bold", fontSize: "12px" }}>
-                              Date of ARM Beneficiary Selection Proceedings
-                            </Form.Label>
-                            <Form.Control
-                              type="date"
-                              value={armSelectionProceedingsDate}
-                              onChange={(e) => setArmSelectionProceedingsDate(e.target.value)}
-                            />
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                    </div>
-                  )}
-
                   {/* Work Order Details Accordion */}
                   {actionFarmerData.length > 0 &&
   !actionFarmerData[0].workOrderNumber &&
@@ -6614,7 +6131,7 @@ const allowedSchemes = [
                             <Form.Label style={{ fontWeight: "bold" }}>
                               Selection Letter/Work Order Date <span className="text-danger">*</span>
                             </Form.Label>
-
+              
                             <DatePicker
                               selected={parseDate(actionData.selectionLetterDate)}
                               onChange={(date) => handleDateForPropasalChange(date, "selectionLetterDate")}
@@ -6629,7 +6146,7 @@ const allowedSchemes = [
                             />
                           </Form.Group>
                         </Col>
-
+                          
                         </Accordion.Body>
                       </Accordion.Item>
                     )}
@@ -6936,319 +6453,6 @@ const allowedSchemes = [
                       </Accordion.Item>
                     )}
                 </Accordion>
-
-                {/* ── ARM: Escrow Bank Account Card (ESCROW_BANK stage, ARM only) ── */}
-                {actionFarmerData[0]?.armStageConfig === "ESCROW_BANK" &&
-                  actionFarmerData[0]?.workOrderForScheme === "Automatic Reeling Machine Unit" && (
-                  <Block className="mt-3">
-                    <Card className="mb-3">
-                      <Card.Header style={{
-                        background: "linear-gradient(135deg, #1e67a8, #0d4f8a)",
-                        color: "#fff", fontWeight: 700, padding: "10px 16px",
-                        fontSize: "14px",
-                      }}>
-                        🏦 Escrow Bank Account Card
-                      </Card.Header>
-                      <Card.Body>
-                        <Row className="g-gs">
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label><strong>Name of the Bank</strong></Form.Label>
-                              <Form.Control
-                                type="text"
-                                name="escrowBankName"
-                                value={escrowBankData.escrowBankName}
-                                onChange={handleEscrowBankInput}
-                                placeholder="Enter Bank Name"
-                              />
-                            </Form.Group>
-                          </Col>
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label><strong>Address of Branch</strong></Form.Label>
-                              <Form.Control
-                                type="text"
-                                name="escrowBankAddress"
-                                value={escrowBankData.escrowBankAddress}
-                                onChange={handleEscrowBankInput}
-                                placeholder="Enter Branch Address"
-                              />
-                            </Form.Group>
-                          </Col>
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label><strong>IFSC Code</strong></Form.Label>
-                              <Form.Control
-                                type="text"
-                                name="escrowBankIfsc"
-                                value={escrowBankData.escrowBankIfsc}
-                                onChange={handleEscrowBankInput}
-                                placeholder="Enter IFSC Code"
-                              />
-                            </Form.Group>
-                          </Col>
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label><strong>MICR Code</strong></Form.Label>
-                              <Form.Control
-                                type="text"
-                                name="escrowBankMicr"
-                                value={escrowBankData.escrowBankMicr}
-                                onChange={handleEscrowBankInput}
-                                placeholder="Enter MICR Code"
-                              />
-                            </Form.Group>
-                          </Col>
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label><strong>Bank Account Number</strong></Form.Label>
-                              <Form.Control
-                                type="text"
-                                name="escrowAccountNumber"
-                                value={escrowBankData.escrowAccountNumber}
-                                onChange={handleEscrowBankInput}
-                                placeholder="Enter Account Number"
-                              />
-                            </Form.Group>
-                          </Col>
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label><strong>Bank Letter Date</strong></Form.Label>
-                              <Form.Control
-                                type="date"
-                                name="escrowBankLetterDate"
-                                value={escrowBankData.escrowBankLetterDate}
-                                onChange={handleEscrowBankInput}
-                              />
-                            </Form.Group>
-                          </Col>
-                          <Col lg="4">
-                            <Form.Group className="form-group">
-                              <Form.Label><strong>Designation of Bank Manager</strong></Form.Label>
-                              <Form.Control
-                                type="text"
-                                name="escrowBankManagerName"
-                                value={escrowBankData.escrowBankManagerName}
-                                onChange={handleEscrowBankInput}
-                                placeholder="Enter Bank Manager Designation"
-                              />
-                            </Form.Group>
-                          </Col>
-                        </Row>
-                      </Card.Body>
-                    </Card>
-                  </Block>
-                )}
-
-                {/* ── ARM: Proforma Invoice Table (PROFORMA_INVOICE stage, ARM only) ── */}
-                {actionFarmerData[0]?.armStageConfig === "PROFORMA_INVOICE" &&
-                  actionFarmerData[0]?.workOrderForScheme === "Automatic Reeling Machine Unit" && (
-                  <Block className="mt-3">
-                    <Card className="mb-3" style={{ border: "1px solid #bfdbfe", borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 20px rgba(30,103,168,0.10)" }}>
-                      <Card.Header style={{ background: "linear-gradient(135deg, #1e40af, #2563eb)", color: "#fff", fontWeight: 700, padding: "12px 20px", fontSize: "14px", letterSpacing: "0.4px" }}>
-                        📋 Proforma Invoice Table
-                      </Card.Header>
-                      <Card.Body style={{ padding: "20px" }}>
-                        {/* ── Vendor 1 (collapsible) ── */}
-                        <div
-                          onClick={() => setVendor1Open((o) => !o)}
-                          style={{
-                            display: "flex", alignItems: "center", justifyContent: "space-between",
-                            background: "linear-gradient(90deg, #dbeafe 0%, #f0f6ff 100%)",
-                            borderLeft: "4px solid #2563eb", borderRadius: "0 8px 8px 0",
-                            padding: "9px 16px", marginBottom: vendor1Open ? "0" : "16px", marginTop: "4px",
-                            fontWeight: 700, color: "#1e3a6e", fontSize: "13px", letterSpacing: "0.3px",
-                            cursor: "pointer", userSelect: "none",
-                          }}
-                        >
-                          <span>🏪 Vendor 1</span>
-                          <span style={{ fontSize: "16px", color: "#2563eb", transition: "transform 0.2s", display: "inline-block", transform: vendor1Open ? "rotate(180deg)" : "rotate(0deg)" }}>▾</span>
-                        </div>
-                        {vendor1Open && (
-                          <div style={{ border: "1px solid #dbeafe", borderTop: "none", borderRadius: "0 0 8px 8px", padding: "16px", marginBottom: "16px", background: "#fafcff" }}>
-                            <Row className="g-gs">
-                              {[
-                                ["vendorName","Vendor Name","text"],["vendorAddress","Vendor Address","text"],
-                                ["mfrAddress","Manufacturer Address","text"],["bankName","Bank Name","text"],
-                                ["bankAddress","Bank Address","text"],["accountNo","Bank Account Number","text"],
-                                ["micrCode","MICR Code","text"],["invoiceNo","Tax Invoice No","text"],
-                                ["invoiceDate","Tax Invoice Date","date"],
-                              ].map(([field, label, type]) => (
-                                <Col lg="4" key={`v1-${field}`}>
-                                  <Form.Group className="form-group">
-                                    <Form.Label><strong>{label}</strong></Form.Label>
-                                    <Form.Control type={type} name={field} value={proformaVendor1[field]} onChange={handleVendorInput(setProformaVendor1)} placeholder={type === "date" ? undefined : `Enter ${label}`} />
-                                  </Form.Group>
-                                </Col>
-                              ))}
-                            </Row>
-                          </div>
-                        )}
-
-                        {/* ── Vendor 2 (collapsible) ── */}
-                        <div
-                          onClick={() => setVendor2Open((o) => !o)}
-                          style={{
-                            display: "flex", alignItems: "center", justifyContent: "space-between",
-                            background: "linear-gradient(90deg, #dbeafe 0%, #f0f6ff 100%)",
-                            borderLeft: "4px solid #2563eb", borderRadius: "0 8px 8px 0",
-                            padding: "9px 16px", marginBottom: vendor2Open ? "0" : "16px", marginTop: "4px",
-                            fontWeight: 700, color: "#1e3a6e", fontSize: "13px", letterSpacing: "0.3px",
-                            cursor: "pointer", userSelect: "none",
-                          }}
-                        >
-                          <span>🏬 Vendor 2</span>
-                          <span style={{ fontSize: "16px", color: "#2563eb", transition: "transform 0.2s", display: "inline-block", transform: vendor2Open ? "rotate(180deg)" : "rotate(0deg)" }}>▾</span>
-                        </div>
-                        {vendor2Open && (
-                          <div style={{ border: "1px solid #dbeafe", borderTop: "none", borderRadius: "0 0 8px 8px", padding: "16px", marginBottom: "16px", background: "#fafcff" }}>
-                            <Row className="g-gs">
-                              {[
-                                ["vendorName","Vendor Name","text"],["vendorAddress","Vendor Address","text"],
-                                ["mfrAddress","Manufacturer Address","text"],["bankName","Bank Name","text"],
-                                ["bankAddress","Bank Address","text"],["accountNo","Bank Account Number","text"],
-                                ["micrCode","MICR Code","text"],["invoiceNo","Tax Invoice No","text"],
-                                ["invoiceDate","Tax Invoice Date","date"],
-                              ].map(([field, label, type]) => (
-                                <Col lg="4" key={`v2-${field}`}>
-                                  <Form.Group className="form-group">
-                                    <Form.Label><strong>{label}</strong></Form.Label>
-                                    <Form.Control type={type} name={field} value={proformaVendor2[field]} onChange={handleVendorInput(setProformaVendor2)} placeholder={type === "date" ? undefined : `Enter ${label}`} />
-                                  </Form.Group>
-                                </Col>
-                              ))}
-                            </Row>
-                          </div>
-                        )}
-
-                        {/* ── Component Details (collapsible) ── */}
-                        <div
-                          onClick={() => setComponentDetailsOpen((o) => !o)}
-                          style={{
-                            display: "flex", alignItems: "center", justifyContent: "space-between",
-                            background: "linear-gradient(90deg, #dbeafe 0%, #f0f6ff 100%)",
-                            borderLeft: "4px solid #2563eb", borderRadius: "0 8px 8px 0",
-                            padding: "9px 16px", marginBottom: componentDetailsOpen ? "0" : "4px", marginTop: "4px",
-                            fontWeight: 700, color: "#1e3a6e", fontSize: "13px", letterSpacing: "0.3px",
-                            cursor: "pointer", userSelect: "none",
-                          }}
-                        >
-                          <span>📦 Component Details</span>
-                          <span style={{ fontSize: "16px", color: "#2563eb", transition: "transform 0.2s", display: "inline-block", transform: componentDetailsOpen ? "rotate(180deg)" : "rotate(0deg)" }}>▾</span>
-                        </div>
-                        {componentDetailsOpen && <div style={{ border: "1px solid #dbeafe", borderTop: "none", borderRadius: "0 0 8px 8px", padding: "12px 0 4px", marginBottom: "8px" }}>
-                        {proformaLoading ? (
-                          <div style={{ textAlign: "center", padding: "30px", color: "#2563eb", fontWeight: 600 }}>
-                            <div className="spinner-border spinner-border-sm me-2" role="status" />
-                            Loading components...
-                          </div>
-                        ) : (() => {
-                          const isIbr = (name) => (name || "").toLowerCase().includes("ibr boiler");
-                          const mainEntries = proformaComponents.map((r, i) => ({ r, i })).filter(({ r }) => !isIbr(r.componentName));
-                          const ibrEntries  = proformaComponents.map((r, i) => ({ r, i })).filter(({ r }) =>  isIbr(r.componentName));
-
-                          const sumField = (entries, field) => entries.reduce((s, { r }) => s + (parseFloat(r[field]) || 0), 0);
-
-                          const renderProformaTable = (entries, sectionLabel) => (
-                            <div style={{ marginBottom: "14px" }}>
-                              {sectionLabel && (
-                                <div style={{
-                                  background: "linear-gradient(90deg, #e0e7ff 0%, #f5f3ff 100%)",
-                                  borderLeft: "4px solid #4f46e5", borderRadius: "0 6px 6px 0",
-                                  padding: "6px 14px", marginBottom: "8px",
-                                  fontWeight: 700, color: "#3730a3", fontSize: "12.5px",
-                                }}>{sectionLabel}</div>
-                              )}
-                              <div style={{ overflowX: "auto", borderRadius: "10px", border: "1px solid #dbeafe", overflow: "hidden" }}>
-                                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12.5px" }}>
-                                  <thead>
-                                    <tr>
-                                      <th rowSpan={2} style={{ ...thStyle, background: "#1e40af", color: "#fff", padding: "10px 12px", width: "28%" }}>Name of Component</th>
-                                      <th colSpan={3} style={{ ...thStyle, textAlign: "center", background: "#2563eb", color: "#fff", borderBottom: "none" }}>As per Guidelines (excl. GST)</th>
-                                      <th colSpan={3} style={{ ...thStyle, textAlign: "center", background: "#059669", color: "#fff", borderBottom: "none" }}>As per Tax Invoice (excl. GST)</th>
-                                      <th rowSpan={2} style={{ ...thStyle, background: "#d97706", color: "#fff", textAlign: "center", padding: "10px 12px" }}>Eligible Amount (₹)</th>
-                                    </tr>
-                                    <tr>
-                                      <th style={{ ...thStyle, background: "#dbeafe", color: "#1e40af" }}>Qty</th>
-                                      <th style={{ ...thStyle, background: "#dbeafe", color: "#1e40af" }}>Unit Rate (₹)</th>
-                                      <th style={{ ...thStyle, background: "#dbeafe", color: "#1e40af" }}>Total (₹)</th>
-                                      <th style={{ ...thStyle, background: "#d1fae5", color: "#065f46" }}>Qty</th>
-                                      <th style={{ ...thStyle, background: "#d1fae5", color: "#065f46" }}>Unit Rate (₹)</th>
-                                      <th style={{ ...thStyle, background: "#d1fae5", color: "#065f46" }}>Total (₹)</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {entries.length === 0 ? (
-                                      <tr><td colSpan={8} style={{ textAlign: "center", padding: "24px", color: "#94a3b8", fontStyle: "italic" }}>No components found</td></tr>
-                                    ) : entries.map(({ r: row, i: idx }, localIdx) => (
-                                      <tr key={idx} style={{ background: localIdx % 2 === 0 ? "#f8faff" : "#ffffff" }}>
-                                        <td style={{ ...tdStyle, fontWeight: 600, color: "#1e293b" }}>{row.componentName}</td>
-                                        <td style={{ ...tdStyle, textAlign: "center", background: localIdx % 2 === 0 ? "#eff6ff" : "#f0f9ff" }}>{row.guidelineQty}</td>
-                                        <td style={{ ...tdStyle, textAlign: "right", background: localIdx % 2 === 0 ? "#eff6ff" : "#f0f9ff", fontVariantNumeric: "tabular-nums" }}>{Number(row.guidelineUnitRate).toLocaleString("en-IN")}</td>
-                                        <td style={{ ...tdStyle, textAlign: "right", fontWeight: 600, background: localIdx % 2 === 0 ? "#eff6ff" : "#f0f9ff", color: "#1e40af", fontVariantNumeric: "tabular-nums" }}>{Number(row.guidelineTotal).toLocaleString("en-IN")}</td>
-                                        <td style={{ ...tdStyle, background: localIdx % 2 === 0 ? "#f0fdf4" : "#f7fdf9" }}>
-                                          <Form.Control size="sm" type="number" min="0" value={row.invoiceQty} onChange={(e) => handleInvoiceRowChange(idx, "invoiceQty", e.target.value)} style={{ width: "70px", borderColor: "#6ee7b7", borderRadius: "6px", textAlign: "center" }} />
-                                        </td>
-                                        <td style={{ ...tdStyle, background: localIdx % 2 === 0 ? "#f0fdf4" : "#f7fdf9" }}>
-                                          <Form.Control size="sm" type="number" min="0" value={row.invoiceUnitRate} disabled style={{ width: "110px", background: "#ecfdf5", borderColor: "#a7f3d0", color: "#065f46", fontWeight: 600, cursor: "not-allowed", borderRadius: "6px" }} />
-                                        </td>
-                                        <td style={{ ...tdStyle, textAlign: "right", fontWeight: 600, background: localIdx % 2 === 0 ? "#f0fdf4" : "#f7fdf9", color: "#065f46", fontVariantNumeric: "tabular-nums" }}>{row.invoiceTotal ? Number(row.invoiceTotal).toLocaleString("en-IN") : <span style={{ color: "#cbd5e1" }}>—</span>}</td>
-                                        <td style={{ ...tdStyle, textAlign: "right", fontWeight: 700, color: "#ffffff", background: row.eligibleAmount ? "linear-gradient(135deg, #059669, #047857)" : "#f1f5f9", borderRadius: "6px", padding: "6px 10px", fontVariantNumeric: "tabular-nums" }}>
-                                          {row.eligibleAmount ? `₹ ${Number(row.eligibleAmount).toLocaleString("en-IN")}` : <span style={{ color: "#94a3b8" }}>—</span>}
-                                        </td>
-                                      </tr>
-                                    ))}
-                                  </tbody>
-                                  <tfoot>
-                                    <tr style={{ background: "#e8f0fe", borderTop: "2px solid #bfdbfe" }}>
-                                      <td colSpan={3} style={{ ...tdStyle, fontWeight: 700, color: "#1e40af", textAlign: "right" }}>Sub Total</td>
-                                      <td style={{ ...tdStyle, textAlign: "right", fontWeight: 800, color: "#1e40af", fontVariantNumeric: "tabular-nums" }}>{Number(sumField(entries, "guidelineTotal")).toLocaleString("en-IN")}</td>
-                                      <td colSpan={2} />
-                                      <td style={{ ...tdStyle, textAlign: "right", fontWeight: 800, color: "#065f46", fontVariantNumeric: "tabular-nums" }}>{sumField(entries, "invoiceTotal") ? Number(sumField(entries, "invoiceTotal")).toLocaleString("en-IN") : "—"}</td>
-                                      <td style={{ ...tdStyle, textAlign: "right", fontWeight: 800, color: "#065f46", background: "#d1fae5", fontVariantNumeric: "tabular-nums" }}>{sumField(entries, "eligibleAmount") ? `₹ ${Number(sumField(entries, "eligibleAmount")).toLocaleString("en-IN")}` : "—"}</td>
-                                    </tr>
-                                  </tfoot>
-                                </table>
-                              </div>
-                            </div>
-                          );
-
-                          const grandGuidTotal     = sumField(mainEntries, "guidelineTotal") + sumField(ibrEntries, "guidelineTotal");
-                          const grandInvoiceTotal  = sumField(mainEntries, "invoiceTotal")   + sumField(ibrEntries, "invoiceTotal");
-                          const grandEligibleTotal = sumField(mainEntries, "eligibleAmount") + sumField(ibrEntries, "eligibleAmount");
-
-                          return (
-                            <div>
-                              {renderProformaTable(mainEntries, mainEntries.length > 0 ? "1. Component Details" : null)}
-                              {ibrEntries.length > 0 && renderProformaTable(ibrEntries, "2. IBR Boiler")}
-                              {ibrEntries.length > 0 && mainEntries.length > 0 && (
-                                <div style={{ background: "linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)", borderRadius: "8px", padding: "10px 18px", display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "4px" }}>
-                                  <span style={{ color: "#fff", fontWeight: 700, fontSize: "13px" }}>Grand Total</span>
-                                  <div style={{ display: "flex", gap: "36px" }}>
-                                    <div style={{ textAlign: "right" }}>
-                                      <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "10px" }}>Guidelines Total</div>
-                                      <div style={{ color: "#93c5fd", fontWeight: 800, fontSize: "14px", fontVariantNumeric: "tabular-nums" }}>₹ {Number(grandGuidTotal).toLocaleString("en-IN")}</div>
-                                    </div>
-                                    <div style={{ textAlign: "right" }}>
-                                      <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "10px" }}>Invoice Total</div>
-                                      <div style={{ color: "#6ee7b7", fontWeight: 800, fontSize: "14px", fontVariantNumeric: "tabular-nums" }}>₹ {Number(grandInvoiceTotal).toLocaleString("en-IN")}</div>
-                                    </div>
-                                    <div style={{ textAlign: "right" }}>
-                                      <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "10px" }}>Eligible Total</div>
-                                      <div style={{ color: "#fbbf24", fontWeight: 800, fontSize: "14px", fontVariantNumeric: "tabular-nums" }}>₹ {Number(grandEligibleTotal).toLocaleString("en-IN")}</div>
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })()}
-                        </div>}
-
-                      </Card.Body>
-                    </Card>
-                  </Block>
-                )}
 
                 <Col lg="12">
                   <div style={{
