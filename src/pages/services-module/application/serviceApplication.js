@@ -7042,7 +7042,7 @@ const search = (event) => {
 
   // Step 1: Try fetching Farmer Details first (checks local DB before calling FRUITS API)
   api
-    .post(baseURLFarmerServer + `farmer/get-farmer-details-by-fruits-id`, {
+    .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
       fruitsId: data.fruitsId,
     })
     .then((response) => {
