@@ -1,22 +1,20 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { createTheme } from "react-data-table-component";
+import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DataTable from "react-data-table-component";
-import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
-import ChawkiManagement from "../chawki-management/ChawkiManagement";
-import DispatchofCocoonstoP4Grainage from "../seed-and-dfl-managment/DispatchofCocoonstoP4Grainage";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
-const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
-// const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
+
+const ACCENT_HEADER = "linear-gradient(135deg,#1a5f9e 0%,#2c8fd4 60%,#38b2ac 100%)";
+const ACCENT_TABLE  = "linear-gradient(135deg,#1a5f9e,#2c8fd4)";
+const CTRL_H = "44px";
+const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom: "3px", display: "block" };
+const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function UserMasterDetailsReport() {
   const { t } = useTranslation();
@@ -101,7 +99,7 @@ function UserMasterDetailsReport() {
           title: "No record found!!!",
         });
       });
-};
+  };
 
   const getUserMastersList = (e) => {
     api
@@ -134,7 +132,6 @@ function UserMasterDetailsReport() {
   }, [page]);
 
   const handleInputs = (e) => {
-    // debugger;
     let { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
@@ -158,199 +155,90 @@ function UserMasterDetailsReport() {
   }, []);
 
   // to get district
-    const [districtListData, setDistrictListData] = useState([]);
-  
-    const getDistrictList = (_id) => {
-      const response = api
-        .get(baseURL + `district/get-all`)
-        .then((response) => {
-          setDistrictListData(response.data.content.district);
-        })
-        .catch((err) => {
-          setDistrictListData([]);
-          // alert(err.response.data.errorMessages[0].message[0].message);
-        });
-    };
-  
-    useEffect(() => {
-    //   if (data.stateId) {
-        getDistrictList();
-    //   }
-    }, []);
-  
-    // to get taluk
-    const [talukListData, setTalukListData] = useState([]);
-  
-    const getTalukList = (_id) => {
-      const response = api
-        .get(baseURL + `taluk/get-by-district-id/${_id}`)
-        .then((response) => {
-          setTalukListData(response.data.content.taluk);
-        })
-        .catch((err) => {
-          setTalukListData([]);
-          // alert(err.response.data.errorMessages[0].message[0].message);
-        });
-    };
-  
-    useEffect(() => {
-      if (data.districtId) {
-        getTalukList(data.districtId);
-      }
-    }, [data.districtId]);
+  const [districtListData, setDistrictListData] = useState([]);
 
-  
+  const getDistrictList = (_id) => {
+    const response = api
+      .get(baseURL + `district/get-all`)
+      .then((response) => {
+        setDistrictListData(response.data.content.district);
+      })
+      .catch((err) => {
+        setDistrictListData([]);
+      });
+  };
 
+  useEffect(() => {
+    getDistrictList();
+  }, []);
 
-  createTheme(
-    "solarized",
-    {
-      text: {
-        primary: "#004b8e",
-        secondary: "#2aa198",
-      },
-      background: {
-        default: "#fff",
-      },
-      context: {
-        background: "#cb4b16",
-        text: "#FFFFFF",
-      },
-      divider: {
-        default: "#d3d3d3",
-      },
-      action: {
-        button: "rgba(0,0,0,.54)",
-        hover: "rgba(0,0,0,.02)",
-        disabled: "rgba(0,0,0,.12)",
-      },
-    },
-    "light"
-  );
+  // to get taluk
+  const [talukListData, setTalukListData] = useState([]);
+
+  const getTalukList = (_id) => {
+    const response = api
+      .get(baseURL + `taluk/get-by-district-id/${_id}`)
+      .then((response) => {
+        setTalukListData(response.data.content.taluk);
+      })
+      .catch((err) => {
+        setTalukListData([]);
+      });
+  };
+
+  useEffect(() => {
+    if (data.districtId) {
+      getTalukList(data.districtId);
+    }
+  }, [data.districtId]);
 
   const customStyles = {
-    rows: {
-      style: {
-        minHeight: "30px", // override the row height
-      },
-    },
+    headRow: { style: { minHeight: "52px", height: "auto" } },
     headCells: {
       style: {
-        // '&:not(:last-of-type)': {
-        backgroundColor: "#1e67a8",
-        color: "#fff",
-        borderStyle: "solid",
-        bordertWidth: "1px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        background: ACCENT_TABLE, color: "#fff", fontWeight: 700, fontSize: "13px",
+        padding: "10px 8px", borderRight: "1px solid rgba(255,255,255,0.5)",
+        borderBottom: "2px solid rgba(255,255,255,0.6)", whiteSpace: "normal",
+        wordBreak: "break-word", overflowWrap: "break-word", overflow: "visible",
+        lineHeight: "1.4", minHeight: "52px", height: "auto",
+        verticalAlign: "middle", justifyContent: "center", textAlign: "center",
+      },
+    },
+    rows: {
+      style: {
+        minHeight: "32px",
+        "&:nth-of-type(odd)":  { background: "#fff" },
+        "&:nth-of-type(even)": { background: "#f7fafd" },
       },
     },
     cells: {
       style: {
-        // '&:not(:last-of-type)': {
-        borderStyle: "solid",
-        borderWidth: "1px",
-        paddingTop: "3px",
-        paddingBottom: "3px",
-        paddingLeft: "8px",
-        paddingRight: "8px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        borderRight: "1px solid #eef2f7", borderBottom: "1px solid #e8edf5",
+        paddingTop: "4px", paddingBottom: "4px", paddingLeft: "8px", paddingRight: "8px",
+        color: "#2d3748", fontSize: "13px", justifyContent: "center", textAlign: "center",
       },
     },
   };
 
+  const colHeader = (label) => (
+    <div style={{ whiteSpace: "normal", wordBreak: "break-word", textAlign: "center", lineHeight: "1.4", width: "100%", padding: "2px 0" }}>
+      {label}
+    </div>
+  );
+
   const DispatchOfCocoonsDataColumns = [
-    {
-      name: "Sl.No",
-      selector: (row) => row.serialNumber,
-      cell: (row) => <span>{row.serialNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: "First Name",
-      selector: (row) => row.firstName,
-      cell: (row) => <span>{row.firstName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: "Last Name",
-      selector: (row) => row.lastName,
-      cell: (row) => <span>{row.lastName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "User Name",
-      selector: (row) => row.username,
-      cell: (row) => <span>{row.username}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Designation",
-      selector: (row) => row.designationName,
-      cell: (row) => <span>{row.designationName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "District",
-      selector: (row) => row.districtName,
-      cell: (row) => <span>{row.districtName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Taluk",
-      selector: (row) => row.talukName,
-      cell: (row) => <span>{row.talukName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "TSC",
-      selector: (row) => row.tscName,
-      cell: (row) => <span>{row.tscName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Mobile Number",
-      selector: (row) => row.phoneNumber,
-      cell: (row) => <span>{row.phoneNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "DDO Code",
-      selector: (row) => row.ddoCode,
-      cell: (row) => <span>{row.ddoCode || "—"}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Email",
-      selector: (row) => row.emailId,
-      cell: (row) => <span>{row.emailId}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Working Institution",
-      selector: (row) => row.workingInstitutionName,
-      cell: (row) => <span>{row.workingInstitutionName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    
+    { name: colHeader("Sl.No"),                  selector: (row) => row.serialNumber,             cell: (row) => <span>{row.serialNumber}</span>,             sortable: true, hide: "md" },
+    { name: colHeader("First Name"),             selector: (row) => row.firstName,               cell: (row) => <span>{row.firstName}</span>,               sortable: true, hide: "md" },
+    { name: colHeader("Last Name"),              selector: (row) => row.lastName,                cell: (row) => <span>{row.lastName}</span>,                sortable: true, hide: "md" },
+    { name: colHeader("User Name"),              selector: (row) => row.username,                cell: (row) => <span>{row.username}</span>,                sortable: true, hide: "md" },
+    { name: colHeader("Designation"),            selector: (row) => row.designationName,         cell: (row) => <span>{row.designationName}</span>,         sortable: true, hide: "md" },
+    { name: colHeader("District"),               selector: (row) => row.districtName,            cell: (row) => <span>{row.districtName}</span>,            sortable: true, hide: "md" },
+    { name: colHeader("Taluk"),                  selector: (row) => row.talukName,               cell: (row) => <span>{row.talukName}</span>,               sortable: true, hide: "md" },
+    { name: colHeader("TSC"),                    selector: (row) => row.tscName,                 cell: (row) => <span>{row.tscName}</span>,                 sortable: true, hide: "md" },
+    { name: colHeader("Mobile Number"),          selector: (row) => row.phoneNumber,             cell: (row) => <span>{row.phoneNumber}</span>,             sortable: true, hide: "md" },
+    { name: colHeader("DDO Code"),               selector: (row) => row.ddoCode,                 cell: (row) => <span>{row.ddoCode || "—"}</span>,          sortable: true, hide: "md" },
+    { name: colHeader("Email"),                  selector: (row) => row.emailId,                 cell: (row) => <span>{row.emailId}</span>,                 sortable: true, hide: "md" },
+    { name: colHeader("Working Institution"),    selector: (row) => row.workingInstitutionName,  cell: (row) => <span>{row.workingInstitutionName}</span>,  sortable: true, hide: "md" },
   ];
 
   return (
@@ -365,139 +253,92 @@ function UserMasterDetailsReport() {
       </Block.Head>
 
       <Block className="mt-n4">
-        <Card className="mt-1">
-          <Row className="m-4">
-           
+        <Card style={{ borderRadius: "12px", border: "none", boxShadow: "0 2px 16px rgba(30,103,168,0.10)", backgroundColor: "#fff" }}>
+          <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
+            <span style={{ fontSize: "20px" }}>👤</span>
+            <div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>User Master Details Report</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export user master data</div>
+            </div>
+          </div>
+          <Card.Body className="pb-2">
+            <Row className="g-2 mb-2 align-items-end">
+              <Col lg={2}>
+                <label style={lbl}>{t("Designation")}</label>
+                <Form.Select name="designationId" value={data.designationId} onChange={handleInputs} style={sel}>
+                  <option value="">{t("Select Designation")}</option>
+                  {designationListData && designationListData.length
+                    ? designationListData.map((list) => (
+                        <option key={list.designationId} value={list.designationId}>
+                          {list.name}
+                        </option>
+                      ))
+                    : ""}
+                </Form.Select>
+              </Col>
+              <Col lg={2}>
+                <label style={lbl}>{t("district")}</label>
+                <Form.Select name="districtId" value={data.districtId} onChange={handleInputs} style={sel}>
+                  <option value="">{t("select_district")}</option>
+                  {districtListData && districtListData.length
+                    ? districtListData.map((list) => (
+                        <option key={list.districtId} value={list.districtId}>
+                          {list.districtName}
+                        </option>
+                      ))
+                    : ""}
+                </Form.Select>
+              </Col>
+              <Col lg={2}>
+                <label style={lbl}>{t("taluk")}</label>
+                <Form.Select name="talukId" value={data.talukId} onChange={handleInputs} style={sel}>
+                  <option value="">{t("select_taluk")}</option>
+                  {talukListData && talukListData.length
+                    ? talukListData.map((list) => (
+                        <option key={list.talukId} value={list.talukId}>
+                          {list.talukName}
+                        </option>
+                      ))
+                    : ""}
+                </Form.Select>
+              </Col>
+              <Col lg={2}>
+                <label style={lbl}>{t("Mobile Number")}</label>
+                <Form.Control
+                  id="mobileNumber"
+                  name="mobileNumber"
+                  value={data.mobileNumber || ""}
+                  onChange={handleInputs}
+                  type="text"
+                  placeholder={t("Enter Mobile Number")}
+                  style={{ height: CTRL_H, fontSize: "14px" }}
+                />
+              </Col>
+              <Col lg={2}>
+                <label style={lbl}>{t("User Name")}</label>
+                <Form.Control
+                  id="username"
+                  name="username"
+                  value={data.username || ""}
+                  onChange={handleInputs}
+                  type="text"
+                  placeholder={t("Enter User Name")}
+                  style={{ height: CTRL_H, fontSize: "14px" }}
+                />
+              </Col>
+              <Col xs="auto" style={{ paddingTop: "20px" }}>
+                <button onClick={search} style={{ height: CTRL_H, padding: "0 20px", background: ACCENT_TABLE, color: "#fff", border: "none", borderRadius: "6px", fontWeight: 600, fontSize: "13px", cursor: "pointer", marginRight: "8px" }}>
+                  {t("Search")}
+                </button>
+                <button onClick={exportCsv} style={{ height: CTRL_H, padding: "0 20px", background: "linear-gradient(135deg,#2d7a2d,#38a838)", color: "#fff", border: "none", borderRadius: "6px", fontWeight: 600, fontSize: "13px", cursor: "pointer" }}>
+                  {t("Export")}
+                </button>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
 
-           <Col sm={2}>
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          {t("Designation")}
-                        </Form.Label>
-                        <Col>
-                          <div className="form-control-wrap">
-                            <Form.Select
-                              name="designationId"
-                              value={data.designationId}
-                              onChange={handleInputs}
-                            >
-                              <option value="">{t("Select Designation")}</option>
-                               {designationListData && designationListData.length
-                            ? designationListData.map((list) => (
-                                <option
-                                  key={list.designationId}
-                                  value={list.designationId}
-                                >
-                                  {list.name}
-                                </option>
-                              ))
-                            : ""}
-                            </Form.Select>
-                            
-                          </div>
-                        </Col>
-                      </Form.Group>
-                    </Col>
-
-                     <Col sm={2}>
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          {t("district")}
-                        </Form.Label>
-                        <Col>
-                          <div className="form-control-wrap">
-                            <Form.Select
-                              name="districtId"
-                              value={data.districtId}
-                              onChange={handleInputs}
-                            >
-                              <option value="">{t("select_district")}</option>
-                               {districtListData && districtListData.length
-                            ? districtListData.map((list) => (
-                                <option
-                                  key={list.districtId}
-                                  value={list.districtId}
-                                >
-                                  {list.districtName}
-                                </option>
-                              ))
-                            : ""}
-                            </Form.Select>
-                            
-                          </div>
-                         </Col>
-                      </Form.Group>
-                    </Col>
-
-                        <Col sm={2}>
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label>
-                          {t("taluk")}
-                        </Form.Label>
-                        <Col>
-                          <div className="form-control-wrap">
-                            <Form.Select
-                              name="talukId"
-                              value={data.talukId}
-                              onChange={handleInputs}
-                            >
-                              <option value="">{t("select_taluk")}</option>
-                               {talukListData && talukListData.length
-                            ? talukListData.map((list) => (
-                                <option key={list.talukId} value={list.talukId}>
-                                  {list.talukName}
-                                </option>
-                              ))
-                            : ""}
-                            </Form.Select>
-                            
-                          </div>
-                        </Col>
-                      </Form.Group>
-                    </Col>
-
-                        
-                    <Form.Label column sm={1}>
-                            {t("Mobile Number")}
-                        </Form.Label>
-                        <Col sm={2}>
-                            <Form.Control
-                            id="mobileNumber"
-                            name="mobileNumber"
-                            value={data.mobileNumber || ""}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder={t("Enter Mobile Number")}
-                            />
-                        </Col>
-
-            
-                        <Form.Label column sm={1}>
-                            {t("User Name")}
-                        </Form.Label>
-                        <Col sm={2}>
-                            <Form.Control
-                            id="username"
-                            name="username"
-                            value={data.username || ""}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder={t("Enter User Name")}
-                            />
-                        </Col>
-
-           
-            <Col sm={1}>
-              <Button type="button" variant="primary" onClick={search}>
-                {t("Search")}
-              </Button>
-            </Col>
-            <Col sm={1}>
-              <Button type="button" variant="primary" onClick={exportCsv}>
-                {t("Export")}
-              </Button>
-            </Col>
-          </Row>
+        <Card className="mt-3" style={{ borderRadius: "12px", border: "none", boxShadow: "0 2px 16px rgba(30,103,168,0.08)" }}>
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={DispatchOfCocoonsDataColumns}
@@ -507,12 +348,9 @@ function UserMasterDetailsReport() {
             paginationServer
             paginationTotalRows={totalRows}
             paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
+            paginationComponentOptions={{ noRowsPerPage: true }}
             onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}
-            theme="solarized"
             customStyles={customStyles}
           />
         </Card>

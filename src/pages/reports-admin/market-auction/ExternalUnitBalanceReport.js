@@ -73,6 +73,10 @@ function ExternalUnitBalanceReport() {
       Swal.fire("Please select Market");
       return;
     }
+    if (!reportData || reportData.length === 0) {
+      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      return;
+    }
 
     setLoading(true);
 
@@ -174,7 +178,7 @@ function ExternalUnitBalanceReport() {
                     variant="primary"
                     size="lg"
                     onClick={downloadReport}
-                    disabled={!data.marketId || loading}
+                    disabled={!data.marketId || loading || !reportData || reportData.length === 0}
                     style={{
                       borderRadius: "10px",
                     }}

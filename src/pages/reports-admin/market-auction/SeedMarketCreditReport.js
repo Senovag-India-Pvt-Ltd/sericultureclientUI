@@ -73,7 +73,14 @@ function SeedMarketCreditReport() {
         )
         .then((response) => {
           if (response.data.errorCode !== -1) {
-            setSeedMarketCreditData(response.data.content);
+            const content = response.data.content || [];
+            setSeedMarketCreditData(content);
+            if (!content || content.length === 0) {
+              Swal.fire({
+                icon: "info",
+                title: "No Data Found",
+              });
+            }
           } else {
             Swal.fire({
               icon: "warning",
@@ -99,6 +106,10 @@ function SeedMarketCreditReport() {
   };
 
   const downloadExcel = () => {
+    if (!seedMarketCreditData || seedMarketCreditData.length === 0) {
+      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      return;
+    }
     const sendData = {
       marketId: localStorage.getItem("marketId"),
 
@@ -200,6 +211,7 @@ function SeedMarketCreditReport() {
                         type="button"
                         variant="success"
                         onClick={downloadExcel}
+                        disabled={!seedMarketCreditData || seedMarketCreditData.length === 0}
                       >
                         Download
                       </Button>
@@ -210,6 +222,13 @@ function SeedMarketCreditReport() {
             </Card.Body>
           </Card>
         </Form>
+
+        {/* NO DATA */}
+        {seedMarketCreditData && seedMarketCreditData.length === 0 && validatedDisplay && (
+          <div className="text-center py-4 text-muted" style={{ fontSize: "15px" }}>
+            No Data Found
+          </div>
+        )}
 
         {/* TABLE */}
         {seedMarketCreditData && seedMarketCreditData.length > 0 && (

@@ -72,6 +72,10 @@ function SeedMFReports() {
   };
 
   const downloadExcel = () => {
+    if (!counterData || counterData.length === 0) {
+      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      return;
+    }
     const { marketId, fromDate, toDate, licenseNumber } = data;
 
     const formatDate = (d) =>
@@ -195,6 +199,7 @@ function SeedMFReports() {
                         type="button"
                         onClick={downloadExcel}
                         className="w-100 mt-2"
+                        disabled={!counterData || counterData.length === 0}
                       >
                         Generate Excel
                       </Button>

@@ -123,7 +123,6 @@ function TscMonthlyP1ChawkiLotwiseReport() {
   const [districtList, setDistrictList] = useState([]);
   const [talukList, setTalukList] = useState([]);
   const [search, setSearch] = useState("");
-  const [weekFilter, setWeekFilter] = useState("");
   const [dataRows, setDataRows] = useState([]);
   const [hasReport, setHasReport] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -136,7 +135,7 @@ function TscMonthlyP1ChawkiLotwiseReport() {
     api.get(baseURL + `taluk/get-by-district-id/${filter.districtId}`).then((r) => setTalukList(r.data.content.taluk || [])).catch(() => setTalukList([]));
   }, [filter.districtId]);
 
-  const reset = () => { setHasReport(false); setDataRows([]); setSearch(""); setWeekFilter(""); };
+  const reset = () => { setHasReport(false); setDataRows([]); setSearch(""); };
   const validate = () => {
     if (!filter.districtId) return "Please select a District.";
     if (!filter.talukId)    return "Please select a Taluk.";
@@ -205,48 +204,48 @@ function TscMonthlyP1ChawkiLotwiseReport() {
   const monthLabel   = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthKn      = MONTH_KN[Number(filter.month)] || "";
 
+  // When searching, show only matching DATA rows (hide subtotal/note/total);
+  // otherwise show the full assembled list (data + weekly subtotals + grand total).
   const filteredRows = useMemo(() => {
-    let rows = dataRows;
-    if (weekFilter) rows = rows.filter((r) => String(r.week_no) === String(weekFilter));
-    if (!search.trim()) return rows;
+    if (!search.trim()) return dataRows;
     const q = search.trim().toLowerCase();
-    return rows.filter((r) =>
-      [r.tsc_name, r.farmer_name, r.village, r.lot_number, r.bco].some((v) => String(v ?? "").toLowerCase().includes(q))
+    return dataRows.filter((r) =>
+      r.row_type === "data" &&
+      [r.zone, r.tsc_name, r.farmer_name, r.village, r.lot_number, r.race].some((v) => String(v ?? "").toLowerCase().includes(q))
     );
-  }, [dataRows, search, weekFilter]);
+  }, [dataRows, search]);
 
   const kpis = useMemo(() => {
-    let totalDfls = 0, pctSum = 0, pctCount = 0;
+    let totalDfls = 0, pctSum = 0, pctCount = 0, events = 0;
     const farmers = new Set(), villages = new Set(), tscs = new Set(), lots = new Set();
-    const byWeek = { 1: 0, 2: 0, 3: 0, 4: 0 };
     const byRace = {};
+    const byWeek = { 1: 0, 2: 0, 3: 0, 4: 0 };
     dataRows.forEach((r) => {
-      const d = numOrZero(r.dfls);
-      totalDfls += d;
+      if (r.row_type === "subtotal") {
+        // farmer_name like "1ನೇ ವಾರದ ಒಟ್ಟು (...)" -> pull leading digit
+        const m = String(r.farmer_name || "").match(/^(\d)/);
+        if (m) byWeek[Number(m[1])] = numOrZero(r.dfls);
+        return;
+      }
+      if (r.row_type !== "data") return;
+      events++;
+      totalDfls += numOrZero(r.dfls);
       const p = numOrZero(r.chawki_pct);
       if (p > 0) { pctSum += p; pctCount++; }
       if (r.farmer_name) farmers.add(r.farmer_name);
       if (r.village)     villages.add(r.village);
       if (r.tsc_name)    tscs.add(r.tsc_name);
       if (r.lot_number)  lots.add(r.lot_number);
-      const wk = Number(r.week_no);
-      if (wk >= 1 && wk <= 4) byWeek[wk] += d;
-      const rc = r.bco || "—";
-      byRace[rc] = (byRace[rc] || 0) + d;
+      const rc = r.race || "—";
+      byRace[rc] = (byRace[rc] || 0) + numOrZero(r.dfls);
     });
     const avgPct = pctCount > 0 ? pctSum / pctCount : 0;
     const top    = Object.entries(byRace).sort((a, b) => b[1] - a[1])[0] || ["—", 0];
     return {
-      events: dataRows.length, totalDfls, avgPct,
+      events, totalDfls, avgPct,
       farmers: farmers.size, villages: villages.size, tscs: tscs.size, lots: lots.size,
       byWeek, topRace: top[0], topRaceDfls: top[1],
     };
-  }, [dataRows]);
-
-  const distinctWeeks = useMemo(() => {
-    const set = new Set();
-    dataRows.forEach((r) => { if (r.week_no) set.add(String(r.week_no)); });
-    return Array.from(set).sort();
   }, [dataRows]);
 
   return (
@@ -330,27 +329,9 @@ function TscMonthlyP1ChawkiLotwiseReport() {
               </Row>
               {hasReport && (
                 <Row className="g-2 mt-2 align-items-end">
-                  <Col md={5}>
-                    <label style={lbl}>Quick Search (TSC, Farmer, Village, Lot, Race)</label>
+                  <Col md={8}>
+                    <label style={lbl}>Quick Search (ವಲಯ, TSC, Farmer, Village, Lot, Race)</label>
                     <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Type to filter…" style={{ ...sel, padding: "8px 12px" }} />
-                  </Col>
-                  <Col md={3}>
-                    <label style={lbl}>Filter by Week</label>
-                    <div className="d-flex gap-1 flex-wrap">
-                      {[
-                        { v: "",  label: "All" },
-                        ...distinctWeeks.map((w) => ({ v: w, label: WEEK_TONES[Number(w)]?.label || `Wk ${w}` })),
-                      ].map((opt) => (
-                        <button key={opt.v} type="button" onClick={() => setWeekFilter(opt.v)}
-                          style={{
-                            padding: "6px 12px", borderRadius: "9px", border: "none",
-                            background: weekFilter === opt.v ? "linear-gradient(135deg,#0f766e,#14b8a6)" : "#f1f5f9",
-                            color: weekFilter === opt.v ? "#fff" : "#475569",
-                            fontWeight: 700, fontSize: "11.5px", cursor: "pointer",
-                            boxShadow: weekFilter === opt.v ? "0 2px 6px rgba(15,118,110,.30)" : "none",
-                          }}>{opt.label}</button>
-                      ))}
-                    </div>
                   </Col>
                   <Col md={4}>
                     <div className="d-flex gap-2 flex-wrap justify-content-md-end">
@@ -417,38 +398,35 @@ function TscMonthlyP1ChawkiLotwiseReport() {
             </div>
 
             <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 6px 28px rgba(13,78,72,.12)", overflow: "hidden" }}>
-              <div style={{ background: "linear-gradient(135deg,#134e4a,#0f766e 50%,#5b57ac)", color: "#fff", padding: "16px 22px", fontWeight: 800, fontSize: "15px", textAlign: "center" }}>
-                Sheet 14 · ದ್ವಿತಳಿ ಪಿ1 ಚಾಕಿಯ ಕುಳುವಾರು ವರದಿ — {talukName} — {monthKn} {filter.year}
+              <div style={{ background: "linear-gradient(135deg,#134e4a,#0f766e 50%,#5b57ac)", color: "#fff", padding: "16px 22px", fontWeight: 800, fontSize: "14.5px", textAlign: "center", lineHeight: 1.5 }}>
+                ತಾಂತ್ರಿಕ ಸೇವಾ ಕೇಂದ್ರ {talukName} {monthKn} – {filter.year} ನೇ ಮಾಹೆಯ ದ್ವಿತಳಿ ಪಿ1 ಚಾಕಿಯ ಕುಳುವಾರು ವರದಿ
                 <div style={{ fontSize: "12px", fontWeight: 600, opacity: .9, marginTop: "4px" }}>
-                  Bivoltine P1 Chawki Lot-wise · per-farmer brushing events · {monthLabel} {filter.year}
+                  {districtName} · Bivoltine P1 Chawki Lot-wise · {monthLabel} {filter.year}
                 </div>
               </div>
 
-              <div className="tscp1chk-scroll" style={{ overflowX: "auto", maxHeight: "70vh", overflowY: "auto" }}>
+              <div className="tscp1chk-scroll" style={{ overflowX: "auto", maxHeight: "72vh", overflowY: "auto" }}>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px", minWidth: "1500px" }}>
                   <thead>
                     <tr>
                       {[
-                        { kn: "ಕ್ರ.ಸಂ.",       en: "Sl",            w: 55,  bg: "linear-gradient(135deg,#1e293b,#36506b)", align: "center" },
-                        { kn: "ವಾರ",          en: "Week",          w: 90,  bg: "linear-gradient(135deg,#5b21b6,#7c3aed)", align: "center" },
-                        { kn: "ತಾಂ.ಸೇ.ಕೇ",   en: "TSC",           w: 160, bg: "linear-gradient(135deg,#334155,#475569)", align: "left" },
-                        { kn: "ರೈತರ ಹೆಸರು",  en: "Farmer",        w: 200, bg: "linear-gradient(135deg,#0f766e,#14b8a6)", align: "left" },
-                        { kn: "ಗ್ರಾಮ",       en: "Village",       w: 140, bg: "linear-gradient(135deg,#0e7490,#06b6d4)", align: "left" },
-                        { kn: "ತಂಡ ಸಂಖ್ಯೆ",   en: "Lot No",        w: 120, bg: "linear-gradient(135deg,#1d4ed8,#3b82f6)", align: "center" },
-                        { kn: "ಬಿಕೋ / ತಳಿ",  en: "BCO / Race",    w: 160, bg: "linear-gradient(135deg,#a16207,#ca8a04)", align: "center" },
-                        { kn: "ಮೊಟ್ಟೆ",      en: "DFLs",          w: 110, bg: "linear-gradient(135deg,#15803d,#22c55e)", align: "right" },
-                        { kn: "ಚಾಕಿ ದಿನಾಂಕ",  en: "Brushing Date", w: 140, bg: "linear-gradient(135deg,#9d174d,#db2777)", align: "center" },
-                        { kn: "ಶೇ ಚಾಕಿ",     en: "% Chawki",      w: 160, bg: "linear-gradient(135deg,#a16207,#fbbf24)", align: "center" },
+                        { kn: "ಕ್ರ.ಸಂ.",                  w: 55,  bg: "linear-gradient(135deg,#1e293b,#36506b)", align: "center" },
+                        { kn: "ವಾರ",                     w: 90,  bg: "linear-gradient(135deg,#5b21b6,#7c3aed)", align: "center" },
+                        { kn: "ತಾಂ.ಸೇ.ಕೇ",              w: 150, bg: "linear-gradient(135deg,#334155,#475569)", align: "left" },
+                        { kn: "ರೈತರ ಹೆಸರು / ತಂದೆಯ ಹೆಸರು", w: 220, bg: "linear-gradient(135deg,#0f766e,#14b8a6)", align: "left" },
+                        { kn: "ಗ್ರಾಮ",                   w: 140, bg: "linear-gradient(135deg,#0e7490,#06b6d4)", align: "left" },
+                        { kn: "ತಂಡ ಸಂಖ್ಯೆ",              w: 120, bg: "linear-gradient(135deg,#1d4ed8,#3b82f6)", align: "center" },
+                        { kn: "ಬಿಕೋ",                    w: 150, bg: "linear-gradient(135deg,#a16207,#ca8a04)", align: "center" },
+                        { kn: "ಮೊಟ್ಟೆ",                  w: 110, bg: "linear-gradient(135deg,#15803d,#22c55e)", align: "right" },
+                        { kn: "ಚಾಕಿ ದಿನಾಂಕ",             w: 140, bg: "linear-gradient(135deg,#9d174d,#db2777)", align: "center" },
+                        { kn: "ಶೇ ಚಾಕಿ",                 w: 150, bg: "linear-gradient(135deg,#a16207,#fbbf24)", align: "center" },
                       ].map((c, i) => (
                         <th key={i} style={{
                           background: c.bg, color: "#fff",
-                          padding: "10px 10px", textAlign: c.align === "left" ? "left" : "center",
+                          padding: "11px 10px", textAlign: c.align === "left" ? "left" : "center",
                           border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, minWidth: c.w,
-                          position: "sticky", top: 0, zIndex: 2,
-                        }}>
-                          <div style={{ fontSize: "12px" }}>{c.kn}</div>
-                          <div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85, marginTop: "2px" }}>{c.en}</div>
-                        </th>
+                          position: "sticky", top: 0, zIndex: 2, fontSize: "12px",
+                        }}>{c.kn}</th>
                       ))}
                     </tr>
                   </thead>
@@ -457,29 +435,74 @@ function TscMonthlyP1ChawkiLotwiseReport() {
                       <tr><td colSpan={10} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>{dataRows.length === 0 ? "ಯಾವುದೇ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ / No records found." : `No matches for the current filters.`}</td></tr>
                     )}
                     {filteredRows.map((row, ri) => {
+                      const cb = { padding: "9px 10px", borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #eef2f6", fontSize: "12px", verticalAlign: "middle", whiteSpace: "nowrap" };
+                      const rt = row.row_type;
+
+                      // Weekly subtotal (yellow): label spans left, DFL total in the ಮೊಟ್ಟೆ column
+                      if (rt === "subtotal") {
+                        return (
+                          <tr key={`sub-${ri}`}>
+                            <td colSpan={7} style={{ ...cb, textAlign: "right", paddingRight: "14px", background: "#fff4b8", color: "#5c4400", fontWeight: 800, whiteSpace: "normal" }}>
+                              {row.farmer_name}
+                            </td>
+                            <td className="tscp1chk-num" style={{ ...cb, textAlign: "right", paddingRight: "16px", background: "#ffec99", color: "#5c4400", fontWeight: 900 }}>
+                              {fmtInt(row.dfls)}
+                            </td>
+                            <td colSpan={2} style={{ ...cb, background: "#fff4b8" }} />
+                          </tr>
+                        );
+                      }
+                      // Empty-week note (yellow strip across the full width)
+                      if (rt === "note") {
+                        return (
+                          <tr key={`note-${ri}`}>
+                            <td colSpan={10} style={{ ...cb, textAlign: "center", background: "#fff4b8", color: "#5c4400", fontWeight: 800, whiteSpace: "normal" }}>
+                              {row.farmer_name}
+                            </td>
+                          </tr>
+                        );
+                      }
+                      // Green summary matrix: header (1ನೇ..4ನೇ ವಾರ + ಒಟ್ಟು) then ಮೊಟ್ಟೆ / ಬೆಳೆ rows
+                      if (rt === "matrix_head" || rt === "matrix_dfls" || rt === "matrix_crop") {
+                        const head = rt === "matrix_head";
+                        const cellG = { ...cb, textAlign: "center", background: "#cdeeb0", color: "#1c4532", fontWeight: head ? 800 : 900, whiteSpace: "normal" };
+                        return (
+                          <tr key={`mx-${ri}`}>
+                            <td colSpan={2} style={{ ...cb, background: "#cdeeb0" }} />
+                            <td style={{ ...cellG, fontWeight: 900 }}>{row.tsc_name}</td>
+                            <td style={cellG}>{head ? row.farmer_name : fmtInt(row.farmer_name)}</td>
+                            <td style={cellG}>{head ? row.village     : fmtInt(row.village)}</td>
+                            <td style={cellG}>{head ? row.lot_number  : fmtInt(row.lot_number)}</td>
+                            <td style={cellG}>{head ? row.race        : fmtInt(row.race)}</td>
+                            <td className="tscp1chk-num" style={cellG}>{head ? row.dfls : fmtInt(row.dfls)}</td>
+                            <td colSpan={2} style={{ ...cb, background: "#cdeeb0" }} />
+                          </tr>
+                        );
+                      }
+
+                      // Normal data row
                       const rowBg = ri % 2 === 1 ? "#f8fafc" : "#ffffff";
-                      const wk = Number(row.week_no);
-                      const wkTone = WEEK_TONES[wk] || { bg: "#e2e8f0", color: "#334155", label: `Wk ${row.week_no}` };
-                      const rTone = raceTone(row.bco);
+                      const rTone = raceTone(row.race);
                       const dfls = numOrZero(row.dfls);
                       const pct  = numOrZero(row.chawki_pct);
                       const pctClamped = Math.min(100, pct);
-                      const cb = { padding: "9px 10px", borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #eef2f6", fontSize: "12px", verticalAlign: "middle", whiteSpace: "nowrap" };
                       return (
                         <tr key={`${row.sl_no}-${ri}`} className="tscp1chk-tr" style={{ background: rowBg }}>
                           <td style={{ ...cb, textAlign: "center", borderRight: "1px solid #e2e8f0", color: "#475569", fontWeight: 700 }}>
                             <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: "26px", height: "26px", borderRadius: "50%", background: "linear-gradient(135deg,#e2e8f0,#cbd5e1)", color: "#1e293b", fontWeight: 800, fontSize: "11px" }}>{row.sl_no}</span>
                           </td>
                           <td style={{ ...cb, textAlign: "center" }}>
-                            <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: "12px", background: wkTone.bg, color: wkTone.color, fontWeight: 800, fontSize: "11px" }}>{wkTone.label}</span>
+                            {row.zone ? (
+                              <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: "12px", background: "linear-gradient(135deg,#ede9fe,#ddd6fe)", color: "#5b21b6", fontWeight: 800, fontSize: "11.5px", whiteSpace: "nowrap" }}>{row.zone}</span>
+                            ) : <span style={{ color: "#cbd5e0" }}>—</span>}
                           </td>
-                          <td style={{ ...cb, textAlign: "left", paddingLeft: "12px", color: "#0f172a", fontWeight: 700 }}>
+                          <td style={{ ...cb, textAlign: "left", paddingLeft: "12px", color: "#0f172a", fontWeight: 700, whiteSpace: "normal" }}>
                             {row.tsc_name || "—"}
                           </td>
-                          <td style={{ ...cb, textAlign: "left", paddingLeft: "12px", color: "#0f172a", fontWeight: 700 }}>
+                          <td style={{ ...cb, textAlign: "left", paddingLeft: "12px", color: "#0f172a", fontWeight: 700, whiteSpace: "normal" }}>
                             👤 {row.farmer_name || "—"}
                           </td>
-                          <td style={{ ...cb, textAlign: "left", paddingLeft: "12px", color: "#0f172a" }}>
+                          <td style={{ ...cb, textAlign: "left", paddingLeft: "12px", color: "#0f172a", whiteSpace: "normal" }}>
                             🏘 {row.village || "—"}
                           </td>
                           <td style={{ ...cb, textAlign: "center" }}>
@@ -489,9 +512,9 @@ function TscMonthlyP1ChawkiLotwiseReport() {
                               </span>
                             ) : <span style={{ color: "#cbd5e0" }}>—</span>}
                           </td>
-                          <td style={{ ...cb, textAlign: "center" }}>
-                            {row.bco ? (
-                              <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: "12px", background: rTone.bg, color: rTone.color, fontWeight: 800, fontSize: "11.5px" }}>{row.bco}</span>
+                          <td style={{ ...cb, textAlign: "center", whiteSpace: "normal" }}>
+                            {row.race ? (
+                              <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: "12px", background: rTone.bg, color: rTone.color, fontWeight: 800, fontSize: "11.5px" }}>{row.race}</span>
                             ) : <span style={{ color: "#cbd5e0" }}>—</span>}
                           </td>
                           <td className="tscp1chk-num" style={{

@@ -15,6 +15,7 @@ import { Icon, Media, MediaText, MediaGroup, Image } from "../../../components";
 
 import { headerModulesData } from "../../../store/module/HeaderModuleData";
 import api from "../../../../src/services/auth/api";
+import { isHelpdeskDashboardUser } from "../../../../src/services/access/helpdeskDashboardUsers";
 
 import {
   modulesData,
@@ -139,6 +140,7 @@ function MenuList({ className, ...props }) {
   return <ul className={compClass}>{props.children}</ul>;
 }
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const _header = {
   "Content-Type": "application/json",
   accept: "*/*",
@@ -194,6 +196,21 @@ function Menu() {
   useEffect(() => {
     getRoleMenuList(roleId);
   }, [roleId]);
+
+  // Role-based visibility for the "DBT Failed Tickets" menu — driven by the
+  // dbt allowed-users list (payment-failed-tickets/access-check). Users who are
+  // not in that list never see the menu item.
+  const [dbtTicketsAllowed, setDbtTicketsAllowed] = useState(false);
+  useEffect(() => {
+    api
+      .get(baseURLDBT + `payment-failed-tickets/access-check`)
+      .then((res) => setDbtTicketsAllowed(res?.data?.content?.allowed === true))
+      .catch(() => setDbtTicketsAllowed(false));
+  }, []);
+
+  // Visibility for the "Helpdesk Dashboard" menu — restricted to an allow-list of
+  // usernames (frontend gate, no backend call, so it can't break on a UI-only deploy).
+  const helpdeskDashboardAllowed = isHelpdeskDashboardUser();
 
   console.log(data);
 
@@ -415,6 +432,7 @@ function Menu() {
     Admin_Master_Service: false,
     Admin_Master_Service_Document: false,
     Admin_Master_Service_Department: false,
+    Admin_Master_Service_Sericulture_Table: false,
     Admin_Master_Service_Reject_Reason_WorkFlow: false,
     Admin_Master_Service_Reject_Reason: false,
     Admin_Master_Service_Silk_Exchange: false,
@@ -458,6 +476,7 @@ function Menu() {
     Admin_Master_Service_Calculation_Bonus: false,
     Admin_Master_Service_Calculation_RH_Amount: false,
     Admin_Master_Service_Calculation_Registered_Private_Chawki: false,
+    Admin_Master_Service_Calculation_ARM: true,
     
 
     Admin_Master_Training: false,
@@ -665,6 +684,10 @@ function Menu() {
 
     Reports_Export_Report_Admin: false,
     Reports_Export_Report_Admin_User_Details_Report: false,
+
+    ManualEntry: false,
+    ManualEntry_Crop_Details_Seed_Market: false,
+    ManualEntry_Crop_Details_Commercial_Market: false,
 
 
     // Reports_Pendency_Report: false,
@@ -1068,6 +1091,13 @@ function Menu() {
     if (data.includes("Reports_Export_Report_Admin")) {
       Object.keys(updatedShowMenu).forEach((key) => {
         if (key.startsWith("Reports_Export_Report_Admin_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
+    if (data.includes("ManualEntry")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("ManualEntry_")) {
           updatedShowMenu[key] = true;
         }
       });
@@ -1603,6 +1633,16 @@ function Menu() {
         Reports: true,
         Reports_Export_Report: true,
         Reports_Export_Report_Admin: true,
+      }));
+    }
+
+    const hasManualEntry = data.some((item) =>
+      item.startsWith("ManualEntry_")
+    );
+    if (hasManualEntry) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        ManualEntry: true,
       }));
     }
 
@@ -3416,9 +3456,9 @@ function Menu() {
         </MenuItem>
       ) : null}
 
-      {showMenu.Helpdesk ? (
+      {showMenu.Helpdesk || dbtTicketsAllowed || helpdeskDashboardAllowed ? (
         <MenuItem sub>
-          {showMenu.Helpdesk ? (
+          {showMenu.Helpdesk || dbtTicketsAllowed || helpdeskDashboardAllowed ? (
             <MenuItemLink
               text={t("helpdesk")}
               onClick={menuToggle}
@@ -3427,6 +3467,14 @@ function Menu() {
             />
           ) : null}
           <MenuSub>
+            {dbtTicketsAllowed ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("DBT Failed Tickets")}
+                  to="/seriui/dbt-payment-failed-tickets"
+                />
+              </MenuItem>
+            ) : null}
             {showMenu.Helpdesk_Raise_a_Ticket ? (
               <MenuItem>
                 <MenuItemLink
@@ -3435,7 +3483,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {showMenu.Helpdesk_Dashboard ? (
+            {helpdeskDashboardAllowed ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Helpdesk Dashboard")}
@@ -4048,6 +4096,15 @@ function Menu() {
                           </MenuItem>
                         ) : null}
 
+                        {showMenu.Admin_Master_Service_Calculation_ARM ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("ARM Calculation")}
+                              to="/seriui/arm-calculation-list"
+                            />
+                          </MenuItem>
+                        ) : null}
+
                         </MenuSub>
                       </MenuItem>
                     ) : null}
@@ -4247,6 +4304,15 @@ function Menu() {
                             <MenuItemLink
                               text={t("Scheme Wise Document")}
                               to="/seriui/scheme-document"
+                            />
+                          </MenuItem>
+                        ) : null}
+
+                        {showMenu.Admin_Master_Service_Sericulture_Table ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Sericulture Table")}
+                              to="/seriui/sericulture-table"
                             />
                           </MenuItem>
                         ) : null}
@@ -5993,6 +6059,15 @@ function Menu() {
                               </MenuItem>
                             ) : null}
 
+                            {showMenu.Reports_Format_Reports_WorkOrder ? (
+                              <MenuItem>
+                                <MenuItemLink
+                                  text={t("Regenerate Work Order")}
+                                  to="/seriui/regenerate-work-order"
+                                />
+                              </MenuItem>
+                            ) : null}
+
                             {showMenu.Reports_Format_Reports_Selection_Letters ? (
                               <MenuItem>
                                 <MenuItemLink
@@ -6007,6 +6082,15 @@ function Menu() {
                                 <MenuItemLink
                                   text={t("Sanction Orders")}
                                   to="/seriui/generate-sanction-order"
+                                />
+                              </MenuItem>
+                            ) : null}
+
+                            {showMenu.Reports_Format_Reports_Sanction_Order ? (
+                              <MenuItem>
+                                <MenuItemLink
+                                  text={t("Regenerate Sanction Order")}
+                                  to="/seriui/regenerate-sanction-order"
                                 />
                               </MenuItem>
                             ) : null}
@@ -6963,6 +7047,18 @@ function Menu() {
                       blank={true}
                     />
                   </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Pendency Dashboard")}
+                      to="/seriui/pendency-dashboard"
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <MenuItemLink
+                      text={t("Cumulative Report")}
+                      to="/seriui/cumulative-report"
+                    />
+                  </MenuItem>
                 </MenuSub>
               </MenuItem>
             ) : null}
@@ -7027,28 +7123,36 @@ function Menu() {
         </MenuItem>
       ) : null}
 
-      <MenuItem sub>
-        <MenuItemLink
-          text={t("Manual Entry")}
-          onClick={menuToggle}
-          onMouseEnter={menuHover}
-          sub
-        />
-        <MenuSub>
-          <MenuItem>
+      {showMenu.ManualEntry ? (
+        <MenuItem sub>
+          {showMenu.ManualEntry ? (
             <MenuItemLink
-              text={t("Crop Details-Seed Market")}
-              to="/seriui/crop-details-seed-market"
+              text={t("Manual Entry")}
+              onClick={menuToggle}
+              onMouseEnter={menuHover}
+              sub
             />
-          </MenuItem>
-          <MenuItem>
-            <MenuItemLink
-              text={t("Crop Details-Commercial Market")}
-              to="/seriui/crop-details-commercial-market"
-            />
-          </MenuItem>
-        </MenuSub>
-      </MenuItem>
+          ) : null}
+          <MenuSub>
+            {showMenu.ManualEntry_Crop_Details_Seed_Market ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Crop Details-Seed Market")}
+                  to="/seriui/crop-details-seed-market"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.ManualEntry_Crop_Details_Commercial_Market ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Crop Details-Commercial Market")}
+                  to="/seriui/crop-details-commercial-market"
+                />
+              </MenuItem>
+            ) : null}
+          </MenuSub>
+        </MenuItem>
+      ) : null}
 
       {/* Hard Code Menu with mapcode End */}
     </MenuList>

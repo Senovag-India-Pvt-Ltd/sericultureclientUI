@@ -1,289 +1,402 @@
-import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import DataTable from "react-data-table-component";
-import { useNavigate } from "react-router-dom";
 import React from "react";
-import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import api from "../../../../src/services/auth/api";
-import { useTranslation } from "react-i18next"; 
+import { useTranslation } from "react-i18next";
 import "./CumulativeReport.css";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
-const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function CumulativeReport() {
   const { t } = useTranslation();
-  const [listData, setListData] = useState({});
-  const [listFarmerData, setListFarmerData] = useState({});
+
+  const [data, setData] = useState({ financialYearId: "" });
+  const [viewType, setViewType] = useState("SCHEME"); // SCHEME | CONSOLIDATED
+  const [hovered, setHovered] = useState(null);
+
+  // ---------- Scheme-wise root (server paginated) ----------
+  const [listData, setListData] = useState([]);
   const [page, setPage] = useState(0);
   const countPerPage = 25;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, size: countPerPage } };
 
-  const [isActive, setIsActive] = useState(false);
+  // ---------- Sub-scheme ----------
+  const [selectedScheme, setSelectedScheme] = useState(null);
+  const [selectedSubScheme, setSelectedSubScheme] = useState(null);
+  const [subSchemeData, setSubSchemeData] = useState([]);
+  const [showSubScheme, setShowSubScheme] = useState(false);
+  const [subSchemeLoading, setSubSchemeLoading] = useState(false);
 
-  const [data, setData] = useState({
-    schemeId: "",
-    subSchemeId: "",
-    financialYearId: "",
-  });
+  // financial year carried through the scheme-wise drill (from the clicked row's year)
+  const [drillYearId, setDrillYearId] = useState(0);
 
+  // ---------- Geo drill (Division -> District -> Taluk) ----------
+  const [geoOpen, setGeoOpen] = useState(false);
+  const [geoLevel, setGeoLevel] = useState("DIVISION"); // DIVISION | DISTRICT | TALUK
+  const [geoDivision, setGeoDivision] = useState(null);
+  const [geoDistrict, setGeoDistrict] = useState(null);
+  const [geoRows, setGeoRows] = useState([]);
+  const [geoLoading, setGeoLoading] = useState(false);
 
-const [viewType, setViewType] = useState("SCHEME"); // default Scheme Wise
+  // ---------- Application details modal ----------
+  const [detailOpen, setDetailOpen] = useState(false);
+  const [detailRows, setDetailRows] = useState([]);
+  const [detailLoading, setDetailLoading] = useState(false);
+  const [detailTitle, setDetailTitle] = useState("");
 
+  const [financialyearListData, setFinancialyearListData] = useState([]);
+
+  // ============================ DATA LOADERS ============================
+  // effective financial year for the current drill:
+  //  - scheme-wise: the year of the row the user drilled from (falls back to the top filter)
+  //  - consolidated: the top filter
+  const effYear = () =>
+    viewType === "SCHEME"
+      ? drillYearId || data.financialYearId || 0
+      : data.financialYearId || 0;
 
   const getSchemeWiseList = () => {
-  api
-    .post(
-      baseURLDBT + `service/getSchemeWiseDashboardCount`,
-      {},
-      {
-        params: {
-          financialYearId: data.financialYearId || 0,
-          pageNumber: page,
-          pageSize: countPerPage,
-        },
-      }
-    )
-    .then((response) => {
-      setListData(response.data.content);
-      setTotalRows(response.data.totalRecords);
-    })
-    .catch(() => {
-      setListData([]);
-    });
-};
-
-
-//  useEffect(() => {
-//   if (viewType === "SCHEME") {
-//     getSchemeWiseList();
-//   } 
-// //   else 
-// //     {
-// //     getDistrictWiseFarmerList();
-// //   }
-// }, [viewType, page]);
-useEffect(() => {
-  if (viewType === "SCHEME") {
-    getSchemeWiseList();
-  }
-  // else {
-  //   getDistrictWiseFarmerList();
-  // }
-}, [viewType, page, data.financialYearId]);
-
-const getSubSchemeWiseList = (schemeId) => {
-  setSubSchemeLoading(true);
-
-  api
-    .post(
-      baseURLDBT + "service/getSubSchemeWiseDashboardCount",
-      {},
-      {
-        params: {
-          schemeId: schemeId,
-          financialYearId: data.financialYearId || 0,
-        },
-      }
-    )
-    .then((response) => {
-      setSubSchemeData(response.data.content || []);
-      setShowSubSchemeTable(true);
-    })
-    .catch(() => {
-      setSubSchemeData([]);
-    })
-    .finally(() => {
-      setSubSchemeLoading(false);
-    });
-};
-
-useEffect(() => {
-  if (showSubSchemeTable && selectedScheme?.schemeId) {
-    getSubSchemeWiseList(selectedScheme.schemeId);
-  }
-}, [data.financialYearId]);
-
-
-
-const exportCsv = (e) => {
+    setLoading(true);
     api
       .post(
-        baseURLFarmer + `farmer/farmer-report`,
+        baseURLDBT + `service/getSchemeWiseApplicationCount`,
+        {},
+        { params: { financialYearId: data.financialYearId || 0 } }
+      )
+      .then((response) => {
+        setListData(response.data.content || []);
+        setTotalRows((response.data.content || []).length);
+      })
+      .catch(() => setListData([]))
+      .finally(() => setLoading(false));
+  };
+
+  const getSubSchemeWiseList = (schemeId, yearId) => {
+    setSubSchemeLoading(true);
+    api
+      .post(
+        baseURLDBT + "service/getSubSchemeWiseApplicationCount",
         {},
         {
           params: {
-            districtId: data.districtId || 0,
-            talukId: data.talukId || 0,
-            villageId: data.villageId || 0,
-            tscMasterId: data.tscMasterId || 0,
-            casteId: data.casteId || 0,
-            landFilter: data.landFilter || null,
-          },
-          responseType: 'blob',
-          headers: {
-            accept: "text/csv",
-            "Content-Type": "application/json",
+            schemeId: schemeId,
+            financialYearId: yearId || 0,
           },
         }
       )
       .then((response) => {
-        const blob = new Blob([response.data], { type: "text/csv" });
-        const link = document.createElement("a");
-        link.href = window.URL.createObjectURL(blob);
-        link.download = `farmer_report.csv`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(link.href);
+        setSubSchemeData(response.data.content || []);
+        setShowSubScheme(true);
       })
-      .catch((err) => {
-        Swal.fire({
-          icon: "warning",
-          title: "No record found!!!",
-        });
-      });
-};
-
-
-  const handleInputs = (e) => {
-  const { name, value } = e.target;
-
-  setData((prev) => ({
-    ...prev,
-    [name]: value,
-  }));
-
-  if (name === "financialYearId") {
-    setPage(0); // reset to first page on filter change
-  }
-};
-
-
-  
-
-  // to get State
-  const [districtListData, setDistrictListData] = useState([]);
-
-  const getList = () => {
-    const response = api
-      .get(baseURL + `district/get-all`)
-      .then((response) => {
-        if (response.data.content.district) {
-          setDistrictListData(response.data.content.district);
-        }
-      })
-      .catch((err) => {
-        setDistrictListData([]);
-      });
+      .catch(() => setSubSchemeData([]))
+      .finally(() => setSubSchemeLoading(false));
   };
 
+  // current scheme/sub-scheme context for the geo queries
+  const currentCtx = () => ({
+    schemeId: viewType === "SCHEME" ? selectedScheme?.schemeId || 0 : 0,
+    subSchemeId: viewType === "SCHEME" ? selectedSubScheme?.subSchemeId || 0 : 0,
+  });
+
+  const loadDivisions = (ctx, yearId) => {
+    setGeoLoading(true);
+    api
+      .post(
+        baseURLDBT + "service/getDivisionWiseDashboardCount",
+        {},
+        {
+          params: {
+            financialYearId: yearId != null ? yearId : effYear(),
+            schemeId: ctx.schemeId || 0,
+            subSchemeId: ctx.subSchemeId || 0,
+          },
+        }
+      )
+      .then((r) => setGeoRows(r.data.content || []))
+      .catch(() => setGeoRows([]))
+      .finally(() => setGeoLoading(false));
+  };
+
+  const loadDistricts = (divisionId, ctx, yearId) => {
+    setGeoLoading(true);
+    api
+      .post(
+        baseURLDBT + "service/getDistrictWiseDashboardCount",
+        {},
+        {
+          params: {
+            divisionId: divisionId,
+            financialYearId: yearId != null ? yearId : effYear(),
+            schemeId: ctx.schemeId || 0,
+            subSchemeId: ctx.subSchemeId || 0,
+          },
+        }
+      )
+      .then((r) => setGeoRows(r.data.content || []))
+      .catch(() => setGeoRows([]))
+      .finally(() => setGeoLoading(false));
+  };
+
+  const loadTaluks = (districtId, ctx, yearId) => {
+    setGeoLoading(true);
+    api
+      .post(
+        baseURLDBT + "service/getTalukWiseDashboardCount",
+        {},
+        {
+          params: {
+            districtId: districtId,
+            financialYearId: yearId != null ? yearId : effYear(),
+            schemeId: ctx.schemeId || 0,
+            subSchemeId: ctx.subSchemeId || 0,
+          },
+        }
+      )
+      .then((r) => setGeoRows(r.data.content || []))
+      .catch(() => setGeoRows([]))
+      .finally(() => setGeoLoading(false));
+  };
+
+  const getFinancialYearList = () => {
+    api
+      .get(baseURL + `financialYearMaster/get-all`)
+      .then((response) => {
+        setFinancialyearListData(response.data.content.financialYearMaster);
+      })
+      .catch(() => setFinancialyearListData([]));
+  };
+
+  // default financial year (pre-selected on load; user can change it)
+  const getDefaultFinancialYear = () => {
+    api
+      .get(baseURL + `financialYearMaster/get-is-default`)
+      .then((response) => {
+        const id = response.data.content?.financialYearMasterId;
+        if (id) setData((prev) => ({ ...prev, financialYearId: id }));
+      })
+      .catch(() => {});
+  };
+
+  // ============================ EFFECTS ============================
   useEffect(() => {
-    getList();
+    getFinancialYearList();
+    getDefaultFinancialYear();
   }, []);
 
-  
+  useEffect(() => {
+    if (viewType === "SCHEME" && !showSubScheme && !geoOpen) {
+      getSchemeWiseList();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewType, page, data.financialYearId, showSubScheme, geoOpen]);
 
-  // to get taluk
-  const [talukListData, setTalukListData] = useState([]);
+  // when the top financial-year filter changes, reset the drill to a clean top level
+  const didMountYear = React.useRef(false);
+  useEffect(() => {
+    if (!didMountYear.current) {
+      didMountYear.current = true;
+      return;
+    }
+    setDrillYearId(0);
+    setSelectedScheme(null);
+    setSelectedSubScheme(null);
+    setShowSubScheme(false);
+    setGeoDivision(null);
+    setGeoDistrict(null);
+    if (viewType === "CONSOLIDATED") {
+      setGeoLevel("DIVISION");
+      setGeoOpen(true);
+      loadDivisions({ schemeId: 0, subSchemeId: 0 }, data.financialYearId || 0);
+    } else {
+      setGeoOpen(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.financialYearId]);
 
-  const getTalukList = (_id) => {
-    const response = api
-      .get(baseURL + `taluk/get-by-district-id/${_id}`)
-      .then((response) => {
-        if (response.data.content.taluk) {
-          setTalukListData(response.data.content.taluk);
-        }
-      })
-      .catch((err) => {
-        setTalukListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
+  const handleInputs = (e) => {
+    const { name, value } = e.target;
+    setData((prev) => ({ ...prev, [name]: value }));
+    if (name === "financialYearId") setPage(0);
   };
 
-  useEffect(() => {
-    if (data.districtId) {
-      getTalukList(data.districtId);
-    }
-  }, [data.districtId]);
-
-  // to get hobli
-  const [hobliListData, setHobliListData] = useState([]);
-
-  const getHobliList = (_id) => {
-    const response = api
-      .get(baseURL + `hobli/get-by-taluk-id/${_id}`)
-      .then((response) => {
-        if (response.data.content.hobli) {
-          setHobliListData(response.data.content.hobli);
-        }
-      })
-      .catch((err) => {
-        setHobliListData([]);
-        // alert(err.response.data.errorMessages[0].message[0].message);
-      });
+  // ============================ NAVIGATION ============================
+  const openSchemeRoot = () => {
+    setViewType("SCHEME");
+    setPage(0);
+    setDrillYearId(0);
+    setShowSubScheme(false);
+    setGeoOpen(false);
+    setSelectedScheme(null);
+    setSelectedSubScheme(null);
+    setGeoDivision(null);
+    setGeoDistrict(null);
   };
 
-  useEffect(() => {
-    if (data.talukId) {
-      getHobliList(data.talukId);
+  const openConsolidated = () => {
+    setViewType("CONSOLIDATED");
+    setDrillYearId(0);
+    setShowSubScheme(false);
+    setSelectedScheme(null);
+    setSelectedSubScheme(null);
+    setGeoDivision(null);
+    setGeoDistrict(null);
+    setGeoLevel("DIVISION");
+    setGeoOpen(true);
+    loadDivisions({ schemeId: 0, subSchemeId: 0 }, data.financialYearId || 0);
+  };
+
+  const openSchemeRow = (row) => {
+    const yearId = row.financialYearMasterId || data.financialYearId || 0;
+    setDrillYearId(yearId);
+    setSelectedScheme(row);
+    setSelectedSubScheme(null);
+    getSubSchemeWiseList(row.schemeId, yearId);
+  };
+
+  const openSubSchemeRow = (row) => {
+    const yearId = row.financialYearMasterId || drillYearId || data.financialYearId || 0;
+    setDrillYearId(yearId);
+    setSelectedSubScheme(row);
+    setGeoDivision(null);
+    setGeoDistrict(null);
+    setGeoLevel("DIVISION");
+    setGeoOpen(true);
+    loadDivisions(
+      {
+        schemeId: selectedScheme?.schemeId || 0,
+        subSchemeId: row.subSchemeId || 0,
+      },
+      yearId
+    );
+  };
+
+  const goSubSchemeTable = () => {
+    setGeoOpen(false);
+    setShowSubScheme(true);
+    setGeoDivision(null);
+    setGeoDistrict(null);
+  };
+
+  const drillToDistrict = (divisionRow) => {
+    setGeoDivision(divisionRow);
+    setGeoDistrict(null);
+    setGeoLevel("DISTRICT");
+    loadDistricts(divisionRow.divisionId, currentCtx());
+  };
+
+  const drillToTaluk = (districtRow) => {
+    setGeoDistrict(districtRow);
+    setGeoLevel("TALUK");
+    loadTaluks(districtRow.districtId, currentCtx());
+  };
+
+  const geoBack = (level) => {
+    const ctx = currentCtx();
+    if (level === "DIVISION") {
+      setGeoDivision(null);
+      setGeoDistrict(null);
+      setGeoLevel("DIVISION");
+      loadDivisions(ctx);
+    } else if (level === "DISTRICT") {
+      setGeoDistrict(null);
+      setGeoLevel("DISTRICT");
+      loadDistricts(geoDivision?.divisionId, ctx);
     }
-  }, [data.talukId]);
+  };
 
- 
+  // ============================ DETAILS ============================
+  const STATUS_LABEL = {
+    RECEIVED: t("Applications Received"),
+    PROCESSED: t("Applications Processed"),
+    REJECTED: t("Applications Rejected"),
+    ACK_FAILED: t("Acknowledgement Failed"),
+    PAYMENT_FAILED: t("Payment Failed in DBT"),
+    PENDING: t("Pending Applications"),
+  };
 
-  // to get District Implementing Officer
-  const [tscListData, setTscListData] = useState([]);
-
-  const getTscList = (districtId, talukId) => {
+  const fetchDetails = (params, title) => {
+    setDetailTitle(title);
+    setDetailRows([]);
+    setDetailLoading(true);
+    setDetailOpen(true);
     api
-      .post(baseURL + `tscMaster/get-by-districtId-and-talukId`, {
-        districtId: districtId,
-        talukId: talukId,
-      })
-      .then((response) => {
-        setTscListData(response.data.content.tscMaster);
-      })
-      .catch((err) => {
-        setTscListData([]);
-      });
+      .post(baseURLDBT + "service/getApplicationDetailsByGeo", {}, { params })
+      .then((r) => setDetailRows(r.data.content || []))
+      .catch(() => setDetailRows([]))
+      .finally(() => setDetailLoading(false));
   };
 
-  useEffect(() => {
-    if (data.districtId && data.talukId) {
-      // getComponentList(data.scSchemeDetailsId, data.scSubSchemeDetailsId);
-      getTscList(data.districtId, data.talukId);
+  const baseDetailParams = (statusType, yearId) => ({
+    statusType,
+    financialYearId: yearId != null ? yearId : effYear(),
+    schemeId: 0,
+    subSchemeId: 0,
+    divisionId: 0,
+    districtId: 0,
+    talukId: 0,
+  });
+
+  // number clicked on the SCHEME root table (scope to that row's year)
+  const onSchemeNum = (statusType, row) => {
+    const yearId = row.financialYearMasterId || data.financialYearId || 0;
+    fetchDetails(
+      { ...baseDetailParams(statusType, yearId), schemeId: row.schemeId || 0 },
+      `${STATUS_LABEL[statusType]} — ${row.schemeName || ""}`
+    );
+  };
+
+  // number clicked on the SUB-SCHEME table (scope to that row's year)
+  const onSubSchemeNum = (statusType, row) => {
+    const yearId = row.financialYearMasterId || drillYearId || data.financialYearId || 0;
+    fetchDetails(
+      {
+        ...baseDetailParams(statusType, yearId),
+        schemeId: selectedScheme?.schemeId || 0,
+        subSchemeId: row.subSchemeId || 0,
+      },
+      `${STATUS_LABEL[statusType]} — ${row.subSchemeName || ""}`
+    );
+  };
+
+  // number clicked inside the GEO drill (division / district / taluk)
+  const onGeoNum = (statusType, row) => {
+    const ctx = currentCtx();
+    const p = {
+      ...baseDetailParams(statusType),
+      schemeId: ctx.schemeId || 0,
+      subSchemeId: ctx.subSchemeId || 0,
+    };
+    let name = "";
+    if (geoLevel === "DIVISION") {
+      p.divisionId = row.divisionId || 0;
+      name = row.divisionName;
+    } else if (geoLevel === "DISTRICT") {
+      p.divisionId = geoDivision?.divisionId || 0;
+      p.districtId = row.districtId || 0;
+      name = row.districtName;
+    } else {
+      p.divisionId = geoDivision?.divisionId || 0;
+      p.districtId = geoDistrict?.districtId || 0;
+      p.talukId = row.talukId || 0;
+      name = row.talukName;
     }
-  }, [data.districtId, data.talukId]);
+    fetchDetails(p, `${STATUS_LABEL[statusType]} — ${name || ""}`);
+  };
 
-  const navigate = useNavigate();
- 
-
+  // ============================ TABLE THEME / STYLES ============================
   createTheme(
     "solarized",
     {
-      text: {
-        primary: "#004b8e",
-        secondary: "#2aa198",
-      },
-      background: {
-        default: "#fff",
-      },
-      context: {
-        background: "#cb4b16",
-        text: "#FFFFFF",
-      },
-      divider: {
-        default: "#d3d3d3",
-      },
+      text: { primary: "#004b8e", secondary: "#2aa198" },
+      background: { default: "#fff" },
+      context: { background: "#cb4b16", text: "#FFFFFF" },
+      divider: { default: "#d3d3d3" },
       action: {
         button: "rgba(0,0,0,.54)",
         hover: "rgba(0,0,0,.02)",
@@ -293,1287 +406,928 @@ const exportCsv = (e) => {
     "light"
   );
 
- const customStyles = {
-  table: {
-    style: {
-      backgroundColor: "transparent",
-      borderRadius: "16px",
+  const customStyles = {
+    table: { style: { backgroundColor: "transparent" } },
+    responsiveWrapper: { style: { borderRadius: "16px" } },
+    headRow: {
+      style: {
+        background: "linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)",
+        borderRadius: "14px",
+        minHeight: "56px",
+        marginBottom: "10px",
+        boxShadow: "0 8px 20px rgba(37,99,235,0.22)",
+        borderBottom: "none",
+      },
     },
-  },
+    headCells: {
+      style: {
+        color: "#EFF6FF",
+        fontSize: "11px",
+        fontWeight: "800",
+        textTransform: "uppercase",
+        letterSpacing: "0.075em",
+        justifyContent: "center",
+      },
+    },
+    rows: {
+      style: {
+        backgroundColor: "#ffffff",
+        borderRadius: "14px",
+        minHeight: "60px",
+        marginBottom: "10px",
+        boxShadow: "0 2px 10px rgba(15,23,42,0.05)",
+        border: "1px solid #EFF2F7",
+        transition: "transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease",
+      },
+      highlightOnHoverStyle: {
+        transform: "translateY(-3px) scale(1.004)",
+        boxShadow: "0 14px 30px rgba(37,99,235,0.16)",
+        backgroundColor: "#F5F9FF",
+        borderColor: "#DBE7FF",
+        cursor: "pointer",
+        outline: "none",
+      },
+    },
+    cells: {
+      style: {
+        padding: "15px 16px",
+        fontSize: "13.5px",
+        fontWeight: "500",
+        color: "#334155",
+        justifyContent: "center",
+      },
+    },
+    pagination: {
+      style: {
+        borderTop: "none",
+        marginTop: "8px",
+        padding: "12px",
+        backgroundColor: "transparent",
+        color: "#475569",
+        fontWeight: 600,
+      },
+    },
+  };
 
-  headRow: {
-    style: {
-      background: "linear-gradient(135deg, #0f6cbe, #0f6cbe)",
-      borderRadius: "16px 16px 0 0",
-      minHeight: "54px",
-      backdropFilter: "blur(6px)",
-    },
-  },
-
-  headCells: {
-    style: {
-      color: "#f8fafc",
-      fontSize: "12px",
-      fontWeight: "700",
-      textTransform: "uppercase",
-      letterSpacing: "0.08em",
-      justifyContent: "center",
-    },
-  },
-
-  rows: {
-    style: {
-      backgroundColor: "#ffffff",
-      borderRadius: "12px",
-      marginBottom: "10px",
-      boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
-      border: "1px solid #e5e7eb",
-      transition: "all 0.25s ease",
-    },
-    highlightOnHoverStyle: {
-      transform: "translateY(-2px)",
-      boxShadow: "0 12px 32px rgba(37,99,235,0.15)",
-      backgroundColor: "#f8fafc",
+  const radioToggleStyles = {
+    pillBase: {
+      display: "flex",
+      alignItems: "center",
+      gap: "8px",
+      padding: "10px 18px",
+      fontWeight: 600,
+      fontSize: "13.5px",
+      color: "#475569",
       cursor: "pointer",
+      borderRadius: "12px",
+      transition: "all 0.22s ease",
+      userSelect: "none",
     },
-  },
-
-  cells: {
-    style: {
-      padding: "14px 16px",
-      fontSize: "14px",
-      fontWeight: "500",
-      color: "#1f2937",
-      justifyContent: "center",
+    pillHover: { color: "#2563EB" },
+    pillActive: {
+      background: "linear-gradient(135deg, #2563EB, #1D4ED8)",
+      color: "#ffffff",
+      boxShadow: "0 8px 18px rgba(37,99,235,0.35)",
     },
-  },
+    icon: { fontSize: "16px" },
+  };
 
-  pagination: {
-    style: {
-      borderTop: "none",
-      marginTop: "16px",
-      padding: "12px",
-      backgroundColor: "#ffffff",
-      borderRadius: "0 0 16px 16px",
-      boxShadow: "0 8px 24px rgba(0,0,0,0.05)",
-    },
-  },
-};
-
-
-
-
-
-  const viewCardStyles = {
-  base: {
-    backgroundColor: "#ffffff",
-    borderRadius: "16px",
-    padding: "22px 18px",
-    textAlign: "center",
-    cursor: "pointer",
-    border: "2px solid transparent",
-    transition: "all 0.25s ease",
-    boxShadow: "0 6px 18px rgba(0, 0, 0, 0.06)",
-    height: "100%",
-  },
-
-  hover: {
-    transform: "translateY(-4px)",
-    boxShadow: "0 12px 28px rgba(0, 0, 0, 0.12)",
-  },
-
-  active: {
-    borderColor: "#0d6efd",
-    background: "linear-gradient(135deg, #f4f8ff, #ffffff)",
-    boxShadow: "0 10px 30px rgba(13, 110, 253, 0.25)",
-  },
-
-  icon: {
-    fontSize: "34px",
-    marginBottom: "10px",
-  },
-
-  title: {
-    fontWeight: 700,
-    fontSize: "16px",
-    color: "#212529",
-  },
-
-  subtitle: {
-    fontSize: "13px",
-    color: "#6c757d",
-    marginTop: "4px",
-  },
-};
-
-const radioToggleStyles = {
-  container: {
-    display: "flex",
-    backgroundColor: "#f1f3f5",
-    borderRadius: "14px",
-    padding: "6px",
-    width: "fit-content",
-    boxShadow: "inset 0 2px 6px rgba(0, 0, 0, 0.08)",
-  },
-
-  pillBase: {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-    padding: "10px 18px",
-    fontWeight: 600,
-    fontSize: "14px",
-    color: "#495057",
-    cursor: "pointer",
-    borderRadius: "12px",
-    transition: "all 0.25s ease",
-    userSelect: "none",
-  },
-
-  pillHover: {
-    color: "#0d6efd",
-  },
-
-  pillActive: {
-    backgroundColor: "#ffffff",
-    color: "#0d6efd",
-    boxShadow: "0 6px 18px rgba(13, 110, 253, 0.25)",
-  },
-
-  icon: {
-    fontSize: "18px",
-  },
-};
-
-const getRadioPillStyle = (type) => ({
-  ...radioToggleStyles.pillBase,
-  ...(hovered === type ? radioToggleStyles.pillHover : {}),
-  ...(viewType === type ? radioToggleStyles.pillActive : {}),
-});
-
-const filterStyles = {
-  row: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: "16px",
-    flexWrap: "wrap",
-  },
-
-  yearWrapper: {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-    background: "#f8f9fa",
-    padding: "6px 10px",
-    borderRadius: "12px",
-    boxShadow: "inset 0 2px 6px rgba(0,0,0,0.08)",
-  },
-
-  yearLabel: {
-    fontSize: "13px",
-    fontWeight: 600,
-    color: "#495057",
-    whiteSpace: "nowrap",
-  },
-
-  yearSelect: {
-    border: "none",
-    outline: "none",
-    background: "#ffffff",
-    padding: "8px 14px",
-    borderRadius: "10px",
-    fontSize: "14px",
-    fontWeight: 500,
-    cursor: "pointer",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-    minWidth: "140px",
-  },
-};
-
-
-
-const [hovered, setHovered] = useState(null);
-
-const getCardStyle = (type) => ({
-    ...viewCardStyles.base,
-    ...(hovered === type ? viewCardStyles.hover : {}),
-    ...(viewType === type ? viewCardStyles.active : {}),
+  const getRadioPillStyle = (type) => ({
+    ...radioToggleStyles.pillBase,
+    ...(hovered === type ? radioToggleStyles.pillHover : {}),
+    ...(viewType === type ? radioToggleStyles.pillActive : {}),
   });
 
-  const [financialyearListData, setFinancialyearListData] = useState([]);
-  
-    const getFinancialYearList = () => {
-      api
-        .get(baseURL + `financialYearMaster/get-all`)
-        .then((response) => {
-          setFinancialyearListData(response.data.content.financialYearMaster);
-        })
-        .catch((err) => {
-          setFinancialyearListData([]);
-        });
-    };
-  
-    useEffect(() => {
-      getFinancialYearList();
-    }, []);
+  // ============================ COLUMNS ============================
+  const nfmt = (v) => (v == null ? 0 : v).toLocaleString("en-IN");
 
-    const [selectedScheme, setSelectedScheme] = useState(null);
-const [subSchemeData, setSubSchemeData] = useState([]);
-const [showSubSchemeTable, setShowSubSchemeTable] = useState(false);
-const [subSchemeLoading, setSubSchemeLoading] = useState(false);
-
-const [showDivisionTable, setShowDivisionTable] = useState(false);
-const [divisionData, setDivisionData] = useState([]);
-const [selectedSubScheme, setSelectedSubScheme] = useState(null);
-
-const [showDistrictTable, setShowDistrictTable] = useState(false);
-const [districtData, setDistrictData] = useState([]);
-const [selectedDivision, setSelectedDivision] = useState(null);
-
-const [showTscTable, setShowTscTable] = useState(false);
-const [tscData, setTscData] = useState([]);
-const [selectedDistrict, setSelectedDistrict] = useState(null);
-
-const tscMasterList = [
-  "Test", "Devanahalli", "Yaliyur", "Chintamani", "Ronuru",
-  "Honganur", "Vijayapura R", "Kodambali", "Hosakote", "Nandagudi",
-  "Thittamaranahalli", "Doddalahalli", "Doddaballapur", "Kanakpur",
-  "Tubagere", "Santekodihalli", "Nelamangala", "Kanakapur R",
-  "Bannikuppe", "Ramanagara R", "Lakshmipur", "Cikkajala",
-  "Yalahanka", "Chikkaballapur", "Kengeri", "Kaiwara", "K R Pete",
-  "Bookanakere", "Yagavakote", "Kikkeri", "Shidlaghatta",
-  "Shidlaghatta R", "Gauribidanur", "Darinayakanapalya", "Bagepally",
-  "Cheluru", "Gudibande", "Byadagi", "Nagamangala", "Hangal",
-  "Hirekerur", "Chinya", "Baburayanakoppal", "Ranebennur",
-  "Savanur", "Mandya", "Keragodu", "Koppa", "Belakavadi",
-  "Byrakur", "Yeldur", "Kolar", "Vemagal", "Chitradurga",
-  "Chitradurga R", "Hosadurga", "Holakere", "Heriyur",
-  "Challakere", "Parashrampura", "Molakalmoor", "Bellary R",
-  "Hagari bommanahalli", "Kaluburgi", "Afjalpura", "Bhadravathi",
-  "Hosanagra", "Chikkaballapura", "Nandhi", "Kaivara",
-  "Chintamani R", "Gowribidanur", "Bagepalli", "Yelduru",
-  "Kasaba", "Rayalpad", "Muthakapalli", "Bevur", "Jadigenahalli",
-  "Sulibele", "Doddamaralavadi", "Harohalli", "Mayaganahalli",
-  "Shanubhoganahalli", "Nandi", "Andarlahalli", "Enigadele",
-  "Dibburuhalli", "Sheelanere", "Melur", "Jangamkote",
-  "Varthur", "Anekal", "Pandavapura", "Bellale", "Haveri",
-  "Shiggaon", "Doddagarudanahalli", "Mandya R", "K M Doddi",
-  "Toreshettyhalli", "Malavalli", "Halaguru", "Halasahalli",
-  "Purigali", "H H Koppalu", "Mulbagilu", "Tayalur",
-  "Srinivasapura", "Gownipalli", "Holoor", "Vakkaleri",
-  "Kolar R", "Bangarpet", "Kamasamudra", "Bethamangala",
-  "Malur", "Masti", "Tekal", "Suliya", "Kaluburgi R",
-  "Alanda", "Madanahepparaga", "Hoovenahadagali", "Hosapet",
-  "Kudligi", "Hosahalli", "Sandoor", "Jevargi",
-  "S N Hipparaga", "Shikaripura", "Shivamoga", "Haranahalli",
-  "Miloor", "Chelur", "Harave", "Kuderu", "ChIlakavadi",
-  "Hanooru", "Kamagere", "Palya", "Ramapura",
-  "Chamarajanagra", "Vedeyarapalya", "Kollegala Reeling",
-  "Honnuru", "Davanagere", "Yalanduru", "Jagalur",
-  "Channagiri", "Tumakur", "Tumakur Reeling", "Madhugiri",
-  "KodIgenahalli", "Holuvanahalli", "Koratgere", "Pavagada",
-  "Y N Hosakote", "Chikkanayakanahalli", "Baraguru",
-  "Tipturu", "Chikkamagaluru", "Kaduru", "Narshimhapura",
-  "Aluru", "Beluru", "Arsikere", "Holenarasipura",
-  "Hallymysore", "Shilanare", "Kadakola", "Bannur", "Muguru"
-];
-
-const TscDataColumns = [
-  {
+  const slNoColumn = {
     name: "Sl.No",
     selector: (row) => row.serialNo,
-    width: "100px",
+    width: "90px",
     center: true,
-  },
-  {
-    name: "TSC Name",
-    selector: (row) => row.tscName,
-    sortable: true,
-  },
-  {
-    name: "Total Applications Received",
-    selector: (row) => row.count,
-    cell: (row) => (
-      <span className="stat-pill stat-primary">{row.count}</span>
-    ),
-  },
-  {
-    name: "Total Applications Processed",
-    selector: (row) => row.dbtPushedCount,
-    cell: (row) => (
-      <span className="stat-pill stat-success">{row.dbtPushedCount}</span>
-    ),
-  },
-  {
-    name: "Total Applications Rejected",
-    selector: (row) => row.dbtRejectedCount,
-    cell: (row) => (
-      <span className="stat-pill stat-danger">{row.dbtRejectedCount}</span>
-    ),
-  },
-  {
-    name: "Pendency After Due Date",
-    selector: (row) => row.pendencyAfterDueDate,
-    cell: (row) => (
-      <span className="stat-pill stat-warning">
-        {row.pendencyAfterDueDate}
-      </span>
-    ),
-  },
-];
+  };
 
-const getTscDataByDistrict = (districtRow) => {
-  return tscMasterList.map((name, index) => {
-    // realistic dummy numbers
-    const total = Math.floor(Math.random() * 40) + 20; // 20–60
-    const processed = Math.floor(total * (0.6 + Math.random() * 0.3)); // 60–90%
-    const rejected = Math.floor((total - processed) * 0.3); // some rejected
-    const pending = total - processed - rejected;
-
-    return {
-      serialNo: index + 1,
-      tscName: name,
-
-      count: total,
-      dbtPushedCount: processed,
-      dbtRejectedCount: rejected,
-      pendencyAfterDueDate: pending,
-    };
-  });
-};
-
-
-
-
-const divisionDistrictMap = {
-  BANGALORE: [
-    "Bengaluru Urban",
-    "Bengaluru Rural",
-    "Ramanagara",
-    "Kolar",
-    "Chikkaballapur",
-  ],
-  BELAGAVI: [
-    "Belagavi",
-    "Bagalkot",
-    "Vijayapura",
-    "Gadag",
-    "Dharwad",
-    "Haveri",
-  ],
-  MYSORE: [
-    "Mysuru",
-    "Mandya",
-    "Hassan",
-    "Kodagu",
-    "Chamarajanagar",
-  ],
-  KALABURAGI: [
-    "Kalaburagi",
-    "Bidar",
-    "Yadgir",
-    "Raichur",
-    "Koppal",
-    "Ballari",
-    "Vijayanagara",
-  ],
-  "MYSORE SEED AREA": [
-    "Mysuru Seed Area – 1",
-    "Mysuru Seed Area – 2",
-  ],
-};
-
-const getDistrictWiseDataByDivision = (divisionRow) => {
-  const districts = divisionDistrictMap[divisionRow.divisionName] || [];
-
-  const districtCount = districts.length || 1;
-
-  return districts.map((district, index) => ({
-    serialNo: index + 1,
-    districtName: district,
-
-    // distribute division counts (simple split)
-    count: Math.floor(divisionRow.count / districtCount),
-    dbtPushedCount: Math.floor(divisionRow.dbtPushedCount / districtCount),
-    dbtRejectedCount: Math.floor(divisionRow.dbtRejectedCount / districtCount),
-    pendencyAfterDueDate: Math.floor(
-      divisionRow.pendencyAfterDueDate / districtCount
-    ),
-  }));
-};
-
-
-
-const getDivisionWiseHardcodedData = () => {
-  return [
+  // metric cells are clickable -> open application details
+  const metricColumns = (onNum) => [
     {
-      serialNo: 1,
-      divisionName: "BANGALORE",
-      count: 120,
-      dbtPushedCount: 90,
-      dbtRejectedCount: 20,
-      pendencyAfterDueDate: 10,
+      name: "Total Applications Received",
+      selector: (row) => row.count,
+      cell: (row) => (
+        <span
+          className="stat-pill stat-primary num-clickable"
+          title="View applications"
+          onClick={() => onNum("RECEIVED", row)}
+        >
+          {nfmt(row.count)}
+        </span>
+      ),
+      center: true,
     },
     {
-      serialNo: 2,
-      divisionName: "BELAGAVI",
-      count: 80,
-      dbtPushedCount: 60,
-      dbtRejectedCount: 10,
-      pendencyAfterDueDate: 10,
+      name: "Total Applications Processed",
+      selector: (row) => row.dbtPushedCount,
+      cell: (row) => (
+        <span
+          className="stat-pill stat-success num-clickable"
+          title="View applications"
+          onClick={() => onNum("PROCESSED", row)}
+        >
+          {nfmt(row.dbtPushedCount)}
+        </span>
+      ),
+      center: true,
     },
     {
-      serialNo: 3,
-      divisionName: "MYSORE",
-      count: 70,
-      dbtPushedCount: 55,
-      dbtRejectedCount: 5,
-      pendencyAfterDueDate: 10,
+      name: "Total Applications Rejected",
+      selector: (row) => row.dbtRejectedCount,
+      cell: (row) => (
+        <span
+          className="stat-pill stat-danger num-clickable"
+          title="View applications"
+          onClick={() => onNum("REJECTED", row)}
+        >
+          {nfmt(row.dbtRejectedCount)}
+        </span>
+      ),
+      center: true,
     },
     {
-      serialNo: 4,
-      divisionName: "KALABURAGI",
-      count: 65,
-      dbtPushedCount: 40,
-      dbtRejectedCount: 15,
-      pendencyAfterDueDate: 10,
+      name: "Acknowledgement Failed",
+      selector: (row) => row.ackFailedCount,
+      cell: (row) => (
+        <span
+          className="stat-pill stat-ack num-clickable"
+          title="View applications"
+          onClick={() => onNum("ACK_FAILED", row)}
+        >
+          {nfmt(row.ackFailedCount)}
+        </span>
+      ),
+      center: true,
     },
     {
-      serialNo: 5,
-      divisionName: "MYSORE SEED AREA",
-      count: 50,
-      dbtPushedCount: 35,
-      dbtRejectedCount: 5,
-      pendencyAfterDueDate: 10,
+      name: "Payment Failed in DBT",
+      selector: (row) => row.paymentFailedCount,
+      cell: (row) => (
+        <span
+          className="stat-pill stat-payfail num-clickable"
+          title="View applications"
+          onClick={() => onNum("PAYMENT_FAILED", row)}
+        >
+          {nfmt(row.paymentFailedCount)}
+        </span>
+      ),
+      center: true,
+    },
+    {
+      name: "Pending",
+      selector: (row) => row.pendencyAfterDueDate,
+      cell: (row) => (
+        <span
+          className="stat-pill stat-warning num-clickable"
+          title="View applications"
+          onClick={() => onNum("PENDING", row)}
+        >
+          {nfmt(row.pendencyAfterDueDate)}
+        </span>
+      ),
+      center: true,
     },
   ];
-};
 
-
-
-  const FarmerDataColumns = [
-    {
-      name: "Sl.No",
-      selector: (row) => row.serialNo,
-      cell: (row) => <span>{row.serialNo}</span>,
-      sortable: true,
-      hide: "md",
-      width: "100px",        // 👈 control column space
-      center: true,         // optional: center content
-    },
-
+  const SchemeColumns = [
+    { ...slNoColumn, sortable: true, hide: "md" },
     {
       name: "Fin-Year",
       selector: (row) => row.financialYear,
-      cell: (row) => <span>{row.financialYear}</span>,
-      sortable: true,
       hide: "md",
-      width: "150px", 
+      width: "140px",
     },
-
-    // {
-    //   name: "Scheme Name",
-    //   selector: (row) => row.schemeName,
-    //   cell: (row) => <span>{row.schemeName}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
     {
       name: "Scheme Name",
       selector: (row) => row.schemeName,
       cell: (row) => (
-        // <span
-        //   style={{
-        //     color: "#0F6CBE",
-        //     cursor: "pointer",
-        //     fontWeight: 600,
-        //     textDecoration: "underline",
-        //   }}
-        //   onClick={() => {
-        //     setSelectedScheme(row);
-        //     getSubSchemeWiseList(row.schemeId);
-        //   }}
-        // >
-        //   {row.schemeName}
-        // </span>
-        <span
-          className="scheme-link"
-          onClick={() => {
-            setSelectedScheme(row);
-            getSubSchemeWiseList(row.schemeId);
-          }}
-        >
+        <span className="scheme-link" onClick={() => openSchemeRow(row)}>
           {row.schemeName}
         </span>
       ),
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Total Applications Received",
-      selector: (row) => row.count,
-      cell: (row) => <span className="stat-pill stat-primary">{row.count}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Total Applications Processed",
-      selector: (row) => row.dbtPushedCount,
-      cell: (row) => <span className="stat-pill stat-success">{row.dbtPushedCount}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    
-    {
-      name: "Total Applications Rejected",
-      selector: (row) => row.dbtRejectedCount,
-      cell: (row) => <span className="stat-pill stat-danger">{row.dbtRejectedCount}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: "Pendency After Due Date",
-      selector: (row) => row.pendencyAfterDueDate,
-      cell: (row) => <span className="stat-pill stat-warning">{row.pendencyAfterDueDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    
+    ...metricColumns(onSchemeNum).map((c) => ({ ...c, hide: "md" })),
   ];
 
-  const DistrictDataColumns = [
-  {
-    name: "Sl.No",
-    selector: (row) => row.serialNo,
-    width: "100px",
-    center: true,
-  },
-  {
-  name: "District Name",
-  selector: (row) => row.districtName,
-  cell: (row) => (
-    <span
-      className="scheme-link"
-      onClick={() => {
-        setSelectedDistrict(row);
-        setTscData(getTscDataByDistrict(row));
-        setShowTscTable(true);
-        setShowDistrictTable(false);
-      }}
-    >
-      {row.districtName}
-    </span>
-  ),
-},
-  {
-    name: "Total Applications Received",
-    selector: (row) => row.count,
-    cell: (row) => <span className="stat-pill stat-primary">{row.count}</span>,
-  },
-  {
-    name: "Total Applications Processed",
-    selector: (row) => row.dbtPushedCount,
-    cell: (row) => <span className="stat-pill stat-success">{row.dbtPushedCount}</span>,
-  },
-  {
-    name: "Total Applications Rejected",
-    selector: (row) => row.dbtRejectedCount,
-    cell: (row) => <span className="stat-pill stat-danger">{row.dbtRejectedCount}</span>,
-  },
-  {
-    name: "Pendency After Due Date",
-    selector: (row) => row.pendencyAfterDueDate,
-    cell: (row) => <span className="stat-pill stat-warning">{row.pendencyAfterDueDate}</span>,
-  },
-];
-
-
-  const SubSchemeDataColumns = [
-    {
-      name: "Sl.No",
-      selector: (row) => row.serialNo,
-      cell: (row) => <span>{row.serialNo}</span>,
-      sortable: true,
-      hide: "md",
-      width: "100px",        // 👈 control column space
-      center: true,         // optional: center content
-    },
+  const SubSchemeColumns = [
+    { ...slNoColumn, sortable: true, hide: "md" },
     {
       name: "Fin-Year",
       selector: (row) => row.financialYear,
-      cell: (row) => <span>{row.financialYear}</span>,
-      sortable: true,
       hide: "md",
-      width: "150px", 
+      width: "140px",
     },
-
-    // {
-    //   name: "Sub Scheme Name",
-    //   selector: (row) => row.subSchemeName,
-    //   cell: (row) => <span>{row.subSchemeName}</span>,
-    //   sortable: true,
-    //   hide: "md",
-    // },
     {
-        name: "Sub Scheme Name",
-        selector: (row) => row.subSchemeName,
-        cell: (row) => (
-          <span
-            className="scheme-link"
-            onClick={() => {
-              resetAllTables();  
-              setSelectedSubScheme(row);
-              setDivisionData(getDivisionWiseHardcodedData());
-              setShowDivisionTable(true);
-              setShowSubSchemeTable(false);
-            }}
-          >
-            {row.subSchemeName}
-          </span>
-        ),
-        sortable: true,
-        hide: "md",
-      },
-    {
-      name: "Total Applications Received",
-      selector: (row) => row.count,
-      cell: (row) => <span className="stat-pill stat-primary">{row.count}</span>,
+      name: "Sub Scheme Name",
+      selector: (row) => row.subSchemeName,
+      cell: (row) => (
+        <span className="scheme-link" onClick={() => openSubSchemeRow(row)}>
+          {row.subSchemeName}
+        </span>
+      ),
       sortable: true,
       hide: "md",
     },
-    {
-      name: "Total Applications Processed",
-      selector: (row) => row.dbtPushedCount,
-      cell: (row) => <span className="stat-pill stat-success">{row.dbtPushedCount}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    
-    {
-      name: "Total Applications Rejected",
-      selector: (row) => row.dbtRejectedCount,
-      cell: (row) => <span className="stat-pill stat-danger">{row.dbtRejectedCount}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: "Pendency After Due Date",
-      selector: (row) => row.pendencyAfterDueDate,
-      cell: (row) => <span className="stat-pill stat-warning">{row.pendencyAfterDueDate}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    
+    ...metricColumns(onSubSchemeNum).map((c) => ({ ...c, hide: "md" })),
   ];
 
-  const DivisionDataColumns = [
-  {
-    name: "Sl.No",
-    selector: (row) => row.serialNo,
-    width: "100px",
-    center: true,
-  },
-  {
-  name: "Division Name",
-  selector: (row) => row.divisionName,
-  cell: (row) => (
-    <span
-      className="scheme-link"
-      onClick={() => {
-        setSelectedDivision(row);
-        setDistrictData(getDistrictWiseDataByDivision(row));
-        setShowDistrictTable(true);
-        setShowDivisionTable(false);
-      }}
-    >
-      {row.divisionName}
-    </span>
-  ),
-},
-  {
-    name: "Total Applications Received",
-    selector: (row) => row.count,
-    cell: (row) => <span className="stat-pill stat-primary">{row.count}</span>,
-  },
-  {
-    name: "Total Applications Processed",
-    selector: (row) => row.dbtPushedCount,
-    cell: (row) => <span className="stat-pill stat-success">{row.dbtPushedCount}</span>,
-  },
-  {
-    name: "Total Applications Rejected",
-    selector: (row) => row.dbtRejectedCount,
-    cell: (row) => <span className="stat-pill stat-danger">{row.dbtRejectedCount}</span>,
-  },
-  {
-    name: "Pendency After Due Date",
-    selector: (row) => row.pendencyAfterDueDate,
-    cell: (row) => <span className="stat-pill stat-warning">{row.pendencyAfterDueDate}</span>,
-  },
-];
+  const geoColumns = () => {
+    if (geoLevel === "DIVISION") {
+      return [
+        slNoColumn,
+        {
+          name: "Division Name",
+          selector: (row) => row.divisionName,
+          cell: (row) => (
+            <span className="scheme-link" onClick={() => drillToDistrict(row)}>
+              {row.divisionName}
+            </span>
+          ),
+        },
+        ...metricColumns(onGeoNum),
+      ];
+    }
+    if (geoLevel === "DISTRICT") {
+      return [
+        slNoColumn,
+        {
+          name: "District Name",
+          selector: (row) => row.districtName,
+          cell: (row) => (
+            <span className="scheme-link" onClick={() => drillToTaluk(row)}>
+              {row.districtName}
+            </span>
+          ),
+        },
+        ...metricColumns(onGeoNum),
+      ];
+    }
+    return [
+      slNoColumn,
+      { name: "Taluk Name", selector: (row) => row.talukName },
+      ...metricColumns(onGeoNum),
+    ];
+  };
 
-const resetAllTables = () => {
-  setShowSubSchemeTable(false);
-  setShowDivisionTable(false);
-  setShowDistrictTable(false);
-  setShowTscTable(false);
-  setShowDistrictWiseTable(false);
-  setShowDistrictSubSchemeTable(false);
-};
+  const statusBadge = (s) => {
+    const v = (s || "").toUpperCase();
+    let cls = "stat-warning";
+    if (v === "PAYMENT SUCCESS IN DBT" || v === "DBT PUSHED") cls = "stat-success";
+    else if (v === "APPLICATION REJECTED") cls = "stat-danger";
+    else if (v === "ACKNOWLEDGEMENT FAILED") cls = "stat-ack";
+    else if (v === "PAYMENT FAILED IN DBT") cls = "stat-payfail";
+    else if (v.indexOf("SUCCESS") >= 0) cls = "stat-primary";
+    return <span className={`stat-pill ${cls}`}>{s || t("Pending")}</span>;
+  };
 
+  const money = (v) => (v == null ? "—" : Number(v).toLocaleString("en-IN"));
 
-
-const [districtWiseData, setDistrictWiseData] = useState([]);
-const [showDistrictWiseTable, setShowDistrictWiseTable] = useState(false);
-
-const [districtSubSchemeData, setDistrictSubSchemeData] = useState([]);
-const [showDistrictSubSchemeTable, setShowDistrictSubSchemeTable] = useState(false);
-const [selectedDistrictWise, setSelectedDistrictWise] = useState(null);
-
-
-const loadDistrictWiseData = () => {
-  setDistrictWiseData([
+  const DetailColumns = [
+    { name: "#", selector: (r) => r.serialNo, width: "60px", center: true },
+    { name: "ARN", selector: (r) => r.arn, sortable: true, wrap: true, width: "140px" },
+    { name: "Beneficiary ID", selector: (r) => r.beneficiaryId, wrap: true, width: "160px" },
+    { name: "Farmer Name", selector: (r) => r.farmerName, sortable: true, wrap: true },
+    { name: "Mobile", selector: (r) => r.mobileNumber, width: "120px" },
+    { name: "Scheme", selector: (r) => r.schemeName, wrap: true },
+    { name: "Sub-Scheme", selector: (r) => r.subSchemeName, wrap: true },
+    { name: "District", selector: (r) => r.districtName, width: "120px" },
+    { name: "Taluk", selector: (r) => r.talukName, width: "120px" },
     {
-      serialNo: 1,
-      districtName: "Bengaluru Urban",
-      count: 500,
-      dbtPushedCount: 380,
-      dbtRejectedCount: 70,
-      pendencyAfterDueDate: 50,
+      name: "Date",
+      selector: (r) => r.createdDate,
+      cell: (r) => (r.createdDate ? String(r.createdDate).substring(0, 10) : "—"),
+      width: "110px",
     },
     {
-      serialNo: 2,
-      districtName: "Bengaluru Rural",
-      count: 360,
-      dbtPushedCount: 260,
-      dbtRejectedCount: 50,
-      pendencyAfterDueDate: 50,
+      name: "Scheme Amount",
+      selector: (r) => r.schemeAmount,
+      cell: (r) => money(r.schemeAmount),
+      width: "130px",
+      right: true,
     },
     {
-      serialNo: 3,
-      districtName: "Mysuru",
-      count: 420,
-      dbtPushedCount: 300,
-      dbtRejectedCount: 60,
-      pendencyAfterDueDate: 60,
+      name: "Eligible Amount",
+      selector: (r) => r.amount,
+      cell: (r) => money(r.amount),
+      width: "130px",
+      right: true,
     },
     {
-      serialNo: 4,
-      districtName: "Mandya",
-      count: 310,
-      dbtPushedCount: 220,
-      dbtRejectedCount: 40,
-      pendencyAfterDueDate: 50,
+      name: "Status",
+      selector: (r) => r.applicationStatus,
+      cell: (r) => statusBadge(r.applicationStatus),
+      width: "180px",
+      center: true,
     },
-    {
-      serialNo: 5,
-      districtName: "Tumakuru",
-      count: 340,
-      dbtPushedCount: 240,
-      dbtRejectedCount: 45,
-      pendencyAfterDueDate: 55,
-    },
-    {
-      serialNo: 6,
-      districtName: "Hassan",
-      count: 330,
-      dbtPushedCount: 235,
-      dbtRejectedCount: 40,
-      pendencyAfterDueDate: 55,
-    },
-    {
-      serialNo: 7,
-      districtName: "Shivamogga",
-      count: 295,
-      dbtPushedCount: 210,
-      dbtRejectedCount: 35,
-      pendencyAfterDueDate: 50,
-    },
-    {
-      serialNo: 8,
-      districtName: "Davanagere",
-      count: 280,
-      dbtPushedCount: 200,
-      dbtRejectedCount: 30,
-      pendencyAfterDueDate: 50,
-    },
-    {
-      serialNo: 9,
-      districtName: "Belagavi",
-      count: 390,
-      dbtPushedCount: 280,
-      dbtRejectedCount: 50,
-      pendencyAfterDueDate: 60,
-    },
-    {
-      serialNo: 10,
-      districtName: "Vijayapura",
-      count: 260,
-      dbtPushedCount: 180,
-      dbtRejectedCount: 35,
-      pendencyAfterDueDate: 45,
-    },
-    {
-      serialNo: 11,
-      districtName: "Ballari",
-      count: 275,
-      dbtPushedCount: 195,
-      dbtRejectedCount: 35,
-      pendencyAfterDueDate: 45,
-    },
-    {
-      serialNo: 12,
-      districtName: "Kalaburagi",
-      count: 300,
-      dbtPushedCount: 200,
-      dbtRejectedCount: 40,
-      pendencyAfterDueDate: 60,
-    },
-    {
-      serialNo: 13,
-      districtName: "Raichur",
-      count: 245,
-      dbtPushedCount: 165,
-      dbtRejectedCount: 30,
-      pendencyAfterDueDate: 50,
-    },
-    {
-      serialNo: 14,
-      districtName: "Koppal",
-      count: 230,
-      dbtPushedCount: 155,
-      dbtRejectedCount: 25,
-      pendencyAfterDueDate: 50,
-    },
-    {
-      serialNo: 15,
-      districtName: "Chitradurga",
-      count: 255,
-      dbtPushedCount: 175,
-      dbtRejectedCount: 30,
-      pendencyAfterDueDate: 50,
-    },
-  ]);
-};
+  ];
 
+  // ============================ BREADCRUMB ============================
+  const buildCrumbs = () => {
+    const crumbs = [];
+    if (viewType === "SCHEME") {
+      crumbs.push({
+        label: `📑 ${t("Schemes")}`,
+        onClick: openSchemeRoot,
+        active: !showSubScheme && !geoOpen,
+      });
+      if (selectedScheme) {
+        crumbs.push({
+          label: selectedScheme.schemeName,
+          onClick: () => {
+            setShowSubScheme(true);
+            setGeoOpen(false);
+            setSelectedSubScheme(null);
+            setGeoDivision(null);
+            setGeoDistrict(null);
+          },
+          active: showSubScheme && !geoOpen,
+        });
+      }
+      if (selectedSubScheme && geoOpen) {
+        crumbs.push({
+          label: selectedSubScheme.subSchemeName,
+          onClick: () => geoBack("DIVISION"),
+          active: geoLevel === "DIVISION",
+        });
+      }
+    } else {
+      crumbs.push({
+        label: `🗂️ ${t("Divisions")}`,
+        onClick: () => geoBack("DIVISION"),
+        active: geoLevel === "DIVISION",
+      });
+    }
 
-const DistrictWiseColumns = [
-  {
-    name: "Sl.No",
-    selector: (row) => row.serialNo,
-    width: "80px",
-    center: true,
-  },
-  {
-    name: "District Name",
-    selector: (row) => row.districtName,
-    cell: (row) => (
-      <span
-        className="scheme-link"
-       onClick={() => {
-      resetAllTables(); // 🔥 IMPORTANT
+    if (geoOpen && geoDivision) {
+      crumbs.push({
+        label: geoDivision.divisionName,
+        onClick: () => geoBack("DISTRICT"),
+        active: geoLevel === "DISTRICT",
+      });
+    }
+    if (geoOpen && geoDistrict) {
+      crumbs.push({
+        label: geoDistrict.districtName,
+        onClick: null,
+        active: geoLevel === "TALUK",
+      });
+    }
+    return crumbs;
+  };
 
-      setSelectedDistrictWise(row);
-      setDistrictSubSchemeData(getSubSchemeDataForDistrict(row));
+  const Crumbs = () => {
+    const crumbs = buildCrumbs();
+    return (
+      <div className="cr-crumbs">
+        {crumbs.map((c, i) => (
+          <React.Fragment key={i}>
+            {i > 0 && <span className="cr-sep">›</span>}
+            <span
+              className={`cr-crumb ${c.active ? "active" : ""}`}
+              onClick={() => !c.active && c.onClick && c.onClick()}
+            >
+              {c.label}
+            </span>
+          </React.Fragment>
+        ))}
+      </div>
+    );
+  };
 
-      setShowDistrictSubSchemeTable(true); // 🔥 only this stays
-    }}
-      >
-        {row.districtName}
-      </span>
-    ),
-  },
-  {
-    name: "Total Applications Received",
-    selector: (row) => row.count,
-    cell: (row) => <span className="stat-pill stat-primary">{row.count}</span>,
-  },
-  {
-    name: "Total Applications Processed",
-    selector: (row) => row.dbtPushedCount,
-    cell: (row) => <span className="stat-pill stat-success">{row.dbtPushedCount}</span>,
-  },
-  {
-    name: "Total Applications Rejected",
-    selector: (row) => row.dbtRejectedCount,
-    cell: (row) => <span className="stat-pill stat-danger">{row.dbtRejectedCount}</span>,
-  },
-  {
-    name: "Pendency After Due Date",
-    selector: (row) => row.pendencyAfterDueDate,
-    cell: (row) => <span className="stat-pill stat-warning">{row.pendencyAfterDueDate}</span>,
-  },
-];
+  const KpiStrip = ({ rows }) => {
+    const list = Array.isArray(rows) ? rows : [];
+    const totals = list.reduce(
+      (a, r) => ({
+        c: a.c + (Number(r.count) || 0),
+        p: a.p + (Number(r.dbtPushedCount) || 0),
+        rj: a.rj + (Number(r.dbtRejectedCount) || 0),
+        af: a.af + (Number(r.ackFailedCount) || 0),
+        pf: a.pf + (Number(r.paymentFailedCount) || 0),
+        pn: a.pn + (Number(r.pendencyAfterDueDate) || 0),
+      }),
+      { c: 0, p: 0, rj: 0, af: 0, pf: 0, pn: 0 }
+    );
+    const kpis = [
+      { k: "c", label: t("Received"), value: totals.c, icon: "📥", cls: "kpi-primary" },
+      { k: "p", label: t("Processed"), value: totals.p, icon: "✅", cls: "kpi-success" },
+      { k: "rj", label: t("Rejected"), value: totals.rj, icon: "⛔", cls: "kpi-danger" },
+      { k: "af", label: t("Ack. Failed"), value: totals.af, icon: "📄", cls: "kpi-ack" },
+      { k: "pf", label: t("Payment Failed"), value: totals.pf, icon: "💳", cls: "kpi-payfail" },
+      { k: "pn", label: t("Pending"), value: totals.pn, icon: "⏳", cls: "kpi-warning" },
+    ];
+    return (
+      <div className="cr-kpis">
+        {kpis.map((k) => (
+          <div key={k.k} className={`cr-kpi ${k.cls}`}>
+            <div className="cr-kpi-icon">{k.icon}</div>
+            <div className="cr-kpi-body">
+              <span className="cr-kpi-num">{k.value.toLocaleString("en-IN")}</span>
+              <span className="cr-kpi-label">{k.label}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
 
-const subSchemeMasterList = [
-  "Subsidy For Construction of Rearing House (1000 sq ft)",
-  "NA",
-  "Per Drop More Crop (PDMC)",
-  "Central State Mandatory",
-  "Bonus for BIVOLTINE/Bivoltine Cocoons",
-  "Incentive for Bivoltine Cocoons",
-  "North Karnataka Cocoon Transportation lncentive",
-  "Pure Mysore Bonus - Rs.225 Per Kg",
-  "Rearing Equipment SDP",
-  "Rearing Equipment SS",
-  "Rearing House",
-  "Reeling Shed SDP",
-  "Reeling Shed PSF",
-  "Subsidy For Construction of Rearing House (600 sq ft)",
-  "Multi End Reeling Machinery MERM",
-  "Multi End Reeling Machinery MERM-SDP",
-  "Improved Cottage Basin (ICB)-SDP",
-  "Subsidy for Adopting Boiler-SDP",
-  "Subsidy For Adopting Boiler-PSF",
-  "Adopting Silent Generator-PSF",
-  "Adopting Solar power Generator-SDP",
-  "Adopting Solar Water Heater-PSF",
-  "Adopting Heat Recovery Unit-PSF",
-  "Silk Incentive-PSF",
-  "Silk Incentive-SDP",
-  "Silk Incentive",
-  "Bivoltine Chawki Incentive",
-  "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500",
-  "Registered Private Bivoltine Chawki Rearing Center Subsidy",
-  "Drip Irrigation State Top Up (PMKSY)",
-  "Incentive for MSC Cocoons Rs 120 per Kg",
-  "Rearing House SS",
-  "Improved Cottage Basin (ICB)-PSF",
-  "Italian Model Cottage Basin (IMCB)-SDP",
-  "Italian Model Cottage Basin (IMCB)-PSF",
-  "Multi End Reeling Machinery MERM-PSF",
-];
+  const geoMeta = {
+    DIVISION: { icon: "🗂️", title: t("Division-wise") },
+    DISTRICT: { icon: "🏙️", title: t("District-wise") },
+    TALUK: { icon: "🏘️", title: t("Taluk-wise") },
+  };
 
-const getSubSchemeDataForDistrict = (districtRow) => {
-  const size = subSchemeMasterList.length;
-
-  return subSchemeMasterList.map((name, index) => ({
-    serialNo: index + 1,
-    subSchemeName: name,
-    count: Math.floor(districtRow.count / size),
-    dbtPushedCount: Math.floor(districtRow.dbtPushedCount / size),
-    dbtRejectedCount: Math.floor(districtRow.dbtRejectedCount / size),
-    pendencyAfterDueDate: Math.floor(
-      districtRow.pendencyAfterDueDate / size
-    ),
-  }));
-};
-
-
+  // ============================ RENDER ============================
   return (
     <Layout title={t("Cumulative Report")}>
+      <style>{`
+        @keyframes crFadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        body {
+          background-image: none !important;
+          background:
+            radial-gradient(900px 380px at 12% -8%, #E0ECFF 0%, rgba(224,236,255,0) 60%),
+            radial-gradient(720px 360px at 100% 0%, #EDE9FE 0%, rgba(237,233,254,0) 55%),
+            #EEF2F9 !important;
+        }
+
+        .cr-header {
+          position: relative; overflow: hidden;
+          background: linear-gradient(120deg, #172554 0%, #1E40AF 45%, #2563EB 78%, #3B82F6 100%);
+          border-radius: 20px; padding: 24px 28px; color: #fff;
+          box-shadow: 0 18px 40px rgba(30,64,175,0.32);
+          display: flex; align-items: center; justify-content: space-between;
+          flex-wrap: wrap; gap: 14px;
+          animation: crFadeUp .45s ease both;
+        }
+        .cr-header::before {
+          content: ""; position: absolute; top: -60%; right: -6%;
+          width: 340px; height: 340px; border-radius: 50%;
+          background: radial-gradient(circle, rgba(255,255,255,.20) 0%, rgba(255,255,255,0) 70%);
+          pointer-events: none;
+        }
+        .cr-header::after {
+          content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+          background: linear-gradient(90deg, #38BDF8, #818CF8, #C084FC);
+        }
+        .cr-header h2 { color: #fff; font-weight: 800; margin: 0; font-size: 24px; letter-spacing: .2px; }
+        .cr-header .cr-sub { color: #C7D9FF; font-size: 13px; margin-top: 5px; }
+        .cr-header-icon {
+          width: 56px; height: 56px; border-radius: 16px;
+          background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.28);
+          display: flex; align-items: center; justify-content: center;
+          font-size: 27px; backdrop-filter: blur(6px);
+          box-shadow: 0 8px 20px rgba(0,0,0,.15);
+        }
+
+        .cr-panel {
+          background: #ffffff; border: 1px solid #EAEFF6; border-radius: 18px;
+          box-shadow: 0 10px 30px rgba(15,23,42,0.07);
+          animation: crFadeUp .45s ease both;
+        }
+
+        .cr-toolbar {
+          display: flex; align-items: flex-end; gap: 18px; flex-wrap: wrap;
+          padding: 4px 4px 14px; margin-bottom: 6px;
+          border-bottom: 1px solid #EEF2F7;
+        }
+        .cr-year-wrap { display: flex; flex-direction: column; gap: 6px; }
+        .cr-year-label {
+          font-size: 11.5px; font-weight: 800; color: #64748B;
+          text-transform: uppercase; letter-spacing: .07em;
+        }
+        .cr-year-select {
+          border: 1px solid #E2E8F0; outline: none; background: #fff;
+          padding: 10px 16px; border-radius: 12px; font-size: 14px;
+          font-weight: 600; color: #1E293B; cursor: pointer; min-width: 180px;
+          box-shadow: 0 2px 8px rgba(15,23,42,0.05);
+          transition: border-color .15s ease, box-shadow .15s ease;
+        }
+        .cr-year-select:focus { border-color: #2563EB; box-shadow: 0 0 0 3px rgba(37,99,235,.16); }
+        .cr-toggle {
+          display: flex; gap: 6px; background: #EEF2F7;
+          border-radius: 14px; padding: 5px;
+          box-shadow: inset 0 2px 6px rgba(15,23,42,0.07);
+        }
+
+        .cr-crumbs { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; margin-bottom: 16px; }
+        .cr-crumb {
+          display: inline-flex; align-items: center; gap: 6px;
+          padding: 7px 14px; border-radius: 999px;
+          font-size: 13px; font-weight: 600; color: #475569;
+          background: #F1F5F9; border: 1px solid #E2E8F0;
+          cursor: pointer; transition: all .18s ease;
+        }
+        .cr-crumb:hover { background: #E0ECFF; color: #1D4ED8; }
+        .cr-crumb.active {
+          background: linear-gradient(135deg,#2563EB,#1D4ED8);
+          color: #fff; border-color: transparent;
+          box-shadow: 0 6px 16px rgba(37,99,235,0.28); cursor: default;
+        }
+        .cr-crumb.active:hover { background: linear-gradient(135deg,#2563EB,#1D4ED8); color:#fff; }
+        .cr-sep { color: #94A3B8; font-weight: 700; padding: 0 2px; }
+
+        .cr-level-title {
+          display: flex; align-items: center; gap: 10px;
+          font-size: 16px; font-weight: 700; color: #0F172A; margin: 0;
+        }
+        .cr-level-title small { color: #64748B; font-weight: 500; font-size: 13px; }
+
+        .scheme-link {
+          color: #2563EB; font-weight: 600; cursor: pointer;
+          border-bottom: 1px dashed rgba(37,99,235,.45); transition: all .15s ease;
+        }
+        .scheme-link:hover { color: #1D4ED8; border-bottom-color: #1D4ED8; }
+
+        .stat-pill {
+          display: inline-block; min-width: 52px; text-align: center;
+          padding: 5px 14px; border-radius: 999px;
+          font-size: 12.5px; font-weight: 800; line-height: 1.4;
+          box-shadow: inset 0 0 0 1px rgba(15,23,42,0.05);
+        }
+        .stat-primary { background: #E0ECFF; color: #1D4ED8; }
+        .stat-success { background: #DCFCE7; color: #15803D; }
+        .stat-danger  { background: #FEE2E2; color: #B91C1C; }
+        .stat-warning { background: #FEF3C7; color: #B45309; }
+        .stat-ack     { background: #FFEDD5; color: #C2410C; }
+        .stat-payfail { background: #F3E8FF; color: #7E22CE; }
+        .num-clickable { cursor: pointer; transition: transform .15s ease, box-shadow .15s ease, filter .15s ease; }
+        .num-clickable:hover { filter: brightness(0.97); transform: translateY(-1px); box-shadow: inset 0 0 0 1px rgba(15,23,42,0.05), 0 5px 12px rgba(15,23,42,0.14); }
+
+        .cr-back-btn {
+          border: 1px solid #E2E8F0; background: #fff; color: #475569;
+          border-radius: 10px; font-weight: 600; font-size: 13px; padding: 6px 14px;
+        }
+        .cr-back-btn:hover { background: #F1F5F9; color: #1D4ED8; border-color:#CBD5E1; }
+
+        .cr-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 18px; }
+        @media (max-width: 768px) { .cr-kpis { grid-template-columns: repeat(2, 1fr); } }
+        .cr-kpi {
+          position: relative; overflow: hidden;
+          display: flex; align-items: center; gap: 14px;
+          padding: 17px 18px; border-radius: 16px;
+          border: 1px solid #EEF2F7; background: #fff;
+          box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+          transition: transform .2s ease, box-shadow .2s ease;
+          animation: crFadeUp .5s ease both;
+        }
+        .cr-kpi::after {
+          content: ""; position: absolute; right: -22px; top: -22px;
+          width: 74px; height: 74px; border-radius: 50%; opacity: .10;
+        }
+        .cr-kpi:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(15,23,42,0.13); }
+        .cr-kpi-icon {
+          width: 48px; height: 48px; border-radius: 13px; flex: 0 0 48px;
+          display: flex; align-items: center; justify-content: center; font-size: 22px;
+          box-shadow: inset 0 0 0 1px rgba(15,23,42,0.04);
+        }
+        .cr-kpi-body { display: flex; flex-direction: column; line-height: 1.1; }
+        .cr-kpi-num { font-size: 24px; font-weight: 800; color: #0F172A; letter-spacing: -.5px; }
+        .cr-kpi-label {
+          font-size: 11.5px; font-weight: 700; color: #64748B;
+          text-transform: uppercase; letter-spacing: .06em; margin-top: 3px;
+        }
+        .cr-kpi.kpi-primary .cr-kpi-icon { background: #E0ECFF; }
+        .cr-kpi.kpi-primary { border-top: 3px solid #2563EB; }
+        .cr-kpi.kpi-success .cr-kpi-icon { background: #DCFCE7; }
+        .cr-kpi.kpi-success { border-top: 3px solid #16A34A; }
+        .cr-kpi.kpi-danger .cr-kpi-icon { background: #FEE2E2; }
+        .cr-kpi.kpi-danger { border-top: 3px solid #DC2626; }
+        .cr-kpi.kpi-warning .cr-kpi-icon { background: #FEF3C7; }
+        .cr-kpi.kpi-warning { border-top: 3px solid #D97706; }
+        .cr-kpi.kpi-ack .cr-kpi-icon { background: #FFEDD5; }
+        .cr-kpi.kpi-ack { border-top: 3px solid #EA580C; }
+        .cr-kpi.kpi-payfail .cr-kpi-icon { background: #F3E8FF; }
+        .cr-kpi.kpi-payfail { border-top: 3px solid #9333EA; }
+
+        .cr-kpi.kpi-primary::after { background: #2563EB; }
+        .cr-kpi.kpi-success::after { background: #16A34A; }
+        .cr-kpi.kpi-danger::after  { background: #DC2626; }
+        .cr-kpi.kpi-warning::after { background: #D97706; }
+        .cr-kpi.kpi-ack::after     { background: #EA580C; }
+        .cr-kpi.kpi-payfail::after { background: #9333EA; }
+
+        @keyframes crModalIn {
+          from { opacity: 0; transform: translateY(10px) scale(.97); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .cr-modal .modal-content {
+          border: none; border-radius: 22px; overflow: hidden;
+          background: #FFFFFF;
+          box-shadow: 0 36px 84px rgba(17,24,39,0.40);
+          animation: crModalIn .26s cubic-bezier(.16,1,.3,1) both;
+        }
+        .cr-modal .modal-header {
+          position: relative; overflow: hidden;
+          background: linear-gradient(120deg, #172554 0%, #1E40AF 45%, #2563EB 78%, #3B82F6 100%);
+          color: #fff; border: none; padding: 14px 22px; align-items: center;
+        }
+        .cr-modal .modal-header::before {
+          content: ""; position: absolute; top: -90%; right: -4%;
+          width: 240px; height: 240px; border-radius: 50%;
+          background: radial-gradient(circle, rgba(255,255,255,.18) 0%, rgba(255,255,255,0) 70%);
+          pointer-events: none;
+        }
+        .cr-modal .modal-header::after {
+          content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+          background: linear-gradient(90deg, #38BDF8, #818CF8, #C084FC);
+        }
+        .cr-modal-head { display: flex; align-items: center; gap: 12px; width: 100%; position: relative; z-index: 1; }
+        .cr-modal-badge {
+          width: 40px; height: 40px; border-radius: 11px; flex: 0 0 40px;
+          background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.30);
+          color: #fff; display: flex; align-items: center; justify-content: center;
+          backdrop-filter: blur(6px); box-shadow: 0 6px 14px rgba(0,0,0,.16);
+        }
+        .cr-modal-badge svg { width: 20px; height: 20px; }
+        .cr-modal .modal-title { font-weight: 800; font-size: 17px; line-height: 1.2; color: #fff; letter-spacing: .2px; }
+        .cr-modal-sub {
+          font-size: 12px; font-weight: 600; color: #C7D9FF; margin-top: 2px;
+          letter-spacing: normal; text-transform: none;
+        }
+        .cr-modal-close {
+          margin-left: auto; width: 34px; height: 34px; border-radius: 10px; flex: 0 0 34px;
+          border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: #fff;
+          display: flex; align-items: center; justify-content: center;
+          cursor: pointer; transition: all .2s ease; backdrop-filter: blur(4px);
+        }
+        .cr-modal-close:hover { background: rgba(255,255,255,.26); transform: rotate(90deg); }
+        .cr-modal-close:focus-visible { outline: 3px solid rgba(255,255,255,.6); outline-offset: 2px; }
+        .cr-modal .modal-body { background: #F8FAFC; padding: 24px 28px 28px; }
+        .cr-modal-table {
+          border-radius: 16px; overflow: hidden;
+          border: 1px solid #E5E7EB; background: #FFFFFF;
+          box-shadow: 0 8px 24px rgba(17,24,39,0.06);
+        }
+        .cr-empty {
+          display: flex; flex-direction: column; align-items: center; gap: 12px;
+          text-align: center; color: #6B7280; padding: 56px 0; font-weight: 600;
+        }
+        .cr-empty-icon {
+          font-size: 44px; opacity: .5;
+        }
+        .swal2-popup { border-radius: 16px !important; }
+      `}</style>
+
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Cumulative Report")}</Block.Title>
+            <div className="cr-header">
+              <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                <div className="cr-header-icon">📊</div>
+                <div>
+                  <h2>{t("Cumulative Report")}</h2>
+                  <div className="cr-sub">
+                    {t("Scheme performance & consolidated drill-down across the state")}
+                  </div>
+                </div>
+              </div>
+            </div>
           </Block.HeadContent>
-          <Block.HeadContent></Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
 
-      <Block className="mt-n4">
-  <Card className="mt-1 p-3">
-   <Row className="mb-4">
-  <Col md={12}>
-    <div
-      style={{
-        display: "flex",
-        alignItems: "flex-end", // 🔥 key line
-        gap: "16px",
-        flexWrap: "wrap",
-      }}
-    >
-      {/* 📅 Financial Year */}
-      <div style={filterStyles.yearWrapper}>
-        <span style={filterStyles.yearLabel}>
-          {t("Financial Year")}
-        </span>
+      <Block className="mt-3">
+        <Card className="cr-panel p-3">
+          <Row className="mb-2">
+            <Col md={12}>
+              <div className="cr-toolbar">
+                <div className="cr-year-wrap">
+                  <span className="cr-year-label">{t("Financial Year")}</span>
+                  <Form.Select
+                    name="financialYearId"
+                    value={data.financialYearId || ""}
+                    onChange={handleInputs}
+                    className="cr-year-select"
+                  >
+                    <option value="">{t("Select Year")}</option>
+                    {financialyearListData.map((list) => (
+                      <option
+                        key={list.financialYearMasterId}
+                        value={list.financialYearMasterId}
+                      >
+                        {list.financialYear}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </div>
 
-        <Form.Select
-          name="financialYearId"
-          value={data.financialYearId || ""}
-          onChange={handleInputs}
-          style={filterStyles.yearSelect}
-        >
-          <option value="">{t("Select Year")}</option>
-          {financialyearListData.map((list) => (
-            <option
-              key={list.financialYearMasterId}
-              value={list.financialYearMasterId}
+                <div className="cr-toggle">
+                  <div
+                    style={getRadioPillStyle("SCHEME")}
+                    onMouseEnter={() => setHovered("SCHEME")}
+                    onMouseLeave={() => setHovered(null)}
+                    onClick={openSchemeRoot}
+                  >
+                    <span style={radioToggleStyles.icon}>📑</span>
+                    {t("Scheme Wise")}
+                  </div>
+                  <div
+                    style={getRadioPillStyle("CONSOLIDATED")}
+                    onMouseEnter={() => setHovered("CONSOLIDATED")}
+                    onMouseLeave={() => setHovered(null)}
+                    onClick={openConsolidated}
+                  >
+                    <span style={radioToggleStyles.icon}>📍</span>
+                    {t("All Schemes Consolidated")}
+                  </div>
+                </div>
+              </div>
+            </Col>
+          </Row>
+
+          {/* Scheme-wise root table */}
+          {viewType === "SCHEME" && !showSubScheme && !geoOpen && (
+            <>
+              <KpiStrip rows={listData} />
+              <DataTable
+                tableClassName="data-table-head-light table-responsive"
+                columns={SchemeColumns}
+                data={listData}
+                highlightOnHover
+                pagination
+                paginationPerPage={countPerPage}
+                progressPending={loading}
+                theme="solarized"
+                customStyles={customStyles}
+              />
+            </>
+          )}
+        </Card>
+
+        {/* Sub-scheme table */}
+        {viewType === "SCHEME" && showSubScheme && !geoOpen && (
+          <Card className="cr-panel mt-4 p-3">
+            <Crumbs />
+            <KpiStrip rows={subSchemeData} />
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h5 className="cr-level-title">
+                📌 <span>{t("Sub-Scheme Details")}</span>
+                <small>({selectedScheme?.schemeName})</small>
+              </h5>
+              <Button className="cr-back-btn" size="sm" onClick={openSchemeRoot}>
+                ✖ {t("Close")}
+              </Button>
+            </div>
+            <DataTable
+              columns={SubSchemeColumns}
+              data={subSchemeData}
+              highlightOnHover
+              pagination
+              progressPending={subSchemeLoading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </Card>
+        )}
+
+        {/* Geo drill (Division -> District -> Taluk) */}
+        {geoOpen && (
+          <Card className="cr-panel mt-4 p-3">
+            <Crumbs />
+            <KpiStrip rows={geoRows} />
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h5 className="cr-level-title">
+                {geoMeta[geoLevel].icon} <span>{geoMeta[geoLevel].title} {t("Details")}</span>
+                {geoLevel === "DISTRICT" && geoDivision && (
+                  <small>({geoDivision.divisionName})</small>
+                )}
+                {geoLevel === "TALUK" && geoDistrict && (
+                  <small>({geoDistrict.districtName})</small>
+                )}
+              </h5>
+              {geoLevel !== "DIVISION" ? (
+                <Button
+                  className="cr-back-btn"
+                  size="sm"
+                  onClick={() => geoBack(geoLevel === "TALUK" ? "DISTRICT" : "DIVISION")}
+                >
+                  ⬅ {t("Back")}
+                </Button>
+              ) : (
+                viewType === "SCHEME" && (
+                  <Button className="cr-back-btn" size="sm" onClick={goSubSchemeTable}>
+                    ⬅ {t("Back")}
+                  </Button>
+                )
+              )}
+            </div>
+            <DataTable
+              columns={geoColumns()}
+              data={geoRows}
+              highlightOnHover
+              pagination
+              progressPending={geoLoading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </Card>
+        )}
+      </Block>
+
+      {/* Application details modal */}
+      <Modal
+        show={detailOpen}
+        onHide={() => setDetailOpen(false)}
+        size="xl"
+        centered
+        dialogClassName="cr-modal"
+        scrollable
+      >
+        <Modal.Header>
+          <div className="cr-modal-head">
+            <div className="cr-modal-badge">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="4" y="3" width="16" height="18" rx="2" />
+                <path d="M8 8h8M8 12h8M8 16h5" />
+              </svg>
+            </div>
+            <div>
+              <Modal.Title>{detailTitle}</Modal.Title>
+              <div className="cr-modal-sub">
+                {detailLoading
+                  ? t("Loading applications…")
+                  : `${detailRows.length.toLocaleString("en-IN")} ${t(
+                      "application(s)"
+                    )}`}
+              </div>
+            </div>
+            <button
+              type="button"
+              className="cr-modal-close"
+              aria-label={t("Close")}
+              onClick={() => setDetailOpen(false)}
             >
-              {list.financialYear}
-            </option>
-          ))}
-        </Form.Select>
-      </div>
-
-      {/* 🔘 Scheme / District Toggle */}
-      <div
-        style={{
-          display: "flex",
-          gap: "8px",
-        }}
-      >
-        <div
-          style={getRadioPillStyle("SCHEME")}
-          onMouseEnter={() => setHovered("SCHEME")}
-          onMouseLeave={() => setHovered(null)}
-          onClick={() => {
-          setViewType("SCHEME");
-          setPage(0);
-
-          // 🔥 RESET DISTRICT FLOW
-          setShowDistrictWiseTable(false);
-          setShowDistrictSubSchemeTable(false);
-          setSelectedDistrictWise(null);
-
-          // Scheme table will show by default
-        }}
-
-        >
-          <span style={radioToggleStyles.icon}>📑</span>
-          Scheme Wise
-        </div>
-
-        <div
-          style={getRadioPillStyle("DISTRICT")}
-          onMouseEnter={() => setHovered("DISTRICT")}
-          onMouseLeave={() => setHovered(null)}
-          onClick={() => {
-            setViewType("DISTRICT");
-            setPage(0);
-        resetAllTables(); // 🔥
-
-          setShowDistrictWiseTable(true);
-          loadDistrictWiseData();
-                  }}
-
-        >
-          <span style={radioToggleStyles.icon}>📍</span>
-          All Schemes Consolidated
-        </div>
-      </div>
-    </div>
-  </Col>
-</Row>
-
-
-    {/* 📊 Data Table */}
-    {viewType === "SCHEME" &&
- !showSubSchemeTable &&
- !showDivisionTable &&
- !showDistrictTable &&
- !showTscTable && (
-    <DataTable
-      tableClassName="data-table-head-light table-responsive"
-      columns={FarmerDataColumns}
-      data={listData}
-      highlightOnHover
-      pagination
-      paginationServer
-      paginationTotalRows={totalRows}
-      paginationPerPage={countPerPage}
-      paginationComponentOptions={{ noRowsPerPage: true }}
-      onChangePage={(page) => setPage(page - 1)}
-      progressPending={loading}
-      theme="solarized"
-      customStyles={customStyles}
-    />
-    )}
-  </Card>
-
-  {showSubSchemeTable && (
-  <Card className="mt-4 p-3 border-primary">
-    <div className="d-flex justify-content-between align-items-center mb-3">
-      {/* <h5 className="fw-bold text-primary">
-        📌 Sub-Scheme Details – {selectedScheme?.schemeName}
-      </h5> */}
-      <h5 className="fw-bold text-primary d-flex align-items-center gap-2">
-        📌 <span>Sub-Scheme Details</span>
-        <span className="text-muted fs-6">
-          ({selectedScheme?.schemeName})
-        </span>
-      </h5>
-
-      <Button
-        variant="outline-secondary"
-        size="sm"
-        onClick={() => {
-          setShowSubSchemeTable(false);
-          setSubSchemeData([]);
-          setSelectedScheme(null);
-        }}
-      >
-        ✖ Close
-      </Button>
-    </div>
-
-    <DataTable
-      columns={SubSchemeDataColumns}
-      data={subSchemeData}
-      highlightOnHover
-      pagination
-      progressPending={subSchemeLoading}
-      theme="solarized"
-      customStyles={customStyles}
-    />
-  </Card>
-)}
-
-{showDivisionTable && (
-  <Card className="mt-4 p-3 border-success">
-    <div className="d-flex justify-content-between align-items-center mb-3">
-      <h5 className="fw-bold text-success">
-        📍 Division Details
-        <span className="text-muted fs-6">
-          {" "}({selectedSubScheme?.subSchemeName})
-        </span>
-      </h5>
-
-      <Button
-        variant="outline-secondary"
-        size="sm"
-        onClick={() => {
-          setShowDivisionTable(false);
-          setDivisionData([]);
-          setShowSubSchemeTable(true);
-        }}
-      >
-        ⬅ Back
-      </Button>
-    </div>
-
-    <DataTable
-      columns={DivisionDataColumns}
-      data={divisionData}
-      highlightOnHover
-      pagination
-      theme="solarized"
-      customStyles={customStyles}
-    />
-  </Card>
-)}
-
-{showDistrictTable && (
-  <Card className="mt-4 p-3 border-info">
-    <div className="d-flex justify-content-between align-items-center mb-3">
-      <h5 className="fw-bold text-info">
-        🏙️ District Details
-        <span className="text-muted fs-6">
-          {" "}({selectedDivision?.divisionName})
-        </span>
-      </h5>
-
-      <Button
-        variant="outline-secondary"
-        size="sm"
-        onClick={() => {
-          setShowDistrictTable(false);
-          setDistrictData([]);
-          setShowDivisionTable(true);
-        }}
-      >
-        ⬅ Back
-      </Button>
-    </div>
-
-    <DataTable
-      columns={DistrictDataColumns}
-      data={districtData}
-      highlightOnHover
-      pagination
-      theme="solarized"
-      customStyles={customStyles}
-    />
-  </Card>
-)}
-
-{showTscTable && (
-  <Card className="mt-4 p-3 border-dark">
-    <div className="d-flex justify-content-between align-items-center mb-3">
-      <h5 className="fw-bold">
-        🧵 TSC Details
-        <span className="text-muted fs-6">
-          {" "}({selectedDistrict?.districtName})
-        </span>
-      </h5>
-
-      <Button
-        variant="outline-secondary"
-        size="sm"
-        onClick={() => {
-          setShowTscTable(false);
-          setTscData([]);
-
-          // show District back
-          setShowDistrictTable(true);
-        }}
-      >
-        ⬅ Back
-      </Button>
-    </div>
-
-    <DataTable
-      columns={TscDataColumns}
-      data={tscData}
-      highlightOnHover
-      pagination
-      theme="solarized"
-      customStyles={customStyles}
-    />
-  </Card>
-)}
-
-{showDistrictSubSchemeTable && (
-  <Card className="mt-4 p-3 border-primary">
-    <div className="d-flex justify-content-between mb-3">
-      <h5 className="fw-bold text-primary">
-        📌 Sub-Scheme Details
-        <span className="text-muted fs-6">
-          {" "}({selectedDistrictWise?.districtName})
-        </span>
-      </h5>
-
-      <Button
-        size="sm"
-        variant="outline-secondary"
-        onClick={() => {
-          setShowDistrictSubSchemeTable(false);
-          setShowDistrictWiseTable(true);
-        }}
-      >
-        ⬅ Back
-      </Button>
-    </div>
-
-    <DataTable
-      columns={SubSchemeDataColumns}
-      data={districtSubSchemeData}
-      pagination
-      highlightOnHover
-      theme="solarized"
-      customStyles={customStyles}
-    />
-  </Card>
-)}
-
-{viewType === "DISTRICT" && showDistrictWiseTable && (
-  <DataTable
-    columns={DistrictWiseColumns}
-    data={districtWiseData}
-    pagination
-    highlightOnHover
-    theme="solarized"
-    customStyles={customStyles}
-  />
-)}
-
-
-</Block>
-
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M18 6 6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </Modal.Header>
+        <Modal.Body>
+          {!detailLoading && detailRows.length === 0 ? (
+            <div className="cr-empty">
+              <div className="cr-empty-icon">
+                <svg
+                  width="46"
+                  height="46"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M22 12h-6l-2 3h-4l-2-3H2" />
+                  <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+                </svg>
+              </div>
+              {t("No applications found")}
+            </div>
+          ) : (
+            <div className="cr-modal-table">
+              <DataTable
+                columns={DetailColumns}
+                data={detailRows}
+                progressPending={detailLoading}
+                pagination
+                paginationPerPage={10}
+                paginationRowsPerPageOptions={[10, 25, 50, 100]}
+                highlightOnHover
+                dense
+                theme="solarized"
+                customStyles={customStyles}
+              />
+            </div>
+          )}
+        </Modal.Body>
+      </Modal>
     </Layout>
   );
 }

@@ -87,28 +87,6 @@ const yearOptions = (() => {
   return arr;
 })();
 
-const raceTone = (raceRaw) => {
-  const r = String(raceRaw || "").toUpperCase();
-  if (r.includes(" X ") || r.includes("CROSS") || r.includes("BVDH") || r.includes("CB ") || r.includes("HYBRID"))
-    return { bg: "linear-gradient(135deg,#ede9fe,#ddd6fe)", color: "#5b21b6" };
-  if (r.includes("CSR")) return { bg: "linear-gradient(135deg,#dbeafe,#bfdbfe)", color: "#1e40af" };
-  if (r.includes("SK"))  return { bg: "linear-gradient(135deg,#cffafe,#a5f3fc)", color: "#0c4a6e" };
-  if (r === "PM" || r.includes("PURE MYSORE")) return { bg: "linear-gradient(135deg,#fed7aa,#fdba74)", color: "#7c2d12" };
-  if (r.includes("FC"))  return { bg: "linear-gradient(135deg,#bbf7d0,#86efac)", color: "#14532d" };
-  return { bg: "linear-gradient(135deg,#e2e8f0,#cbd5e1)", color: "#334155" };
-};
-
-const sourceTone = (srcRaw) => {
-  const r = String(srcRaw || "").toUpperCase();
-  if (r.includes("NSSP") || r.includes("GOVT") || r.includes("GOVERNMENT"))
-    return { bg: "linear-gradient(135deg,#dbeafe,#bfdbfe)", color: "#1e40af", label: "Govt" };
-  if (r.includes("PRIVATE") || r.includes("PVT"))
-    return { bg: "linear-gradient(135deg,#fef3c7,#fde68a)", color: "#854d0e", label: "Private" };
-  if (r.includes("MYSORE") || r.includes("RAMNAGARA") || r.includes("KOLAR"))
-    return { bg: "linear-gradient(135deg,#cffafe,#a5f3fc)", color: "#155e75", label: "Govt" };
-  return { bg: "linear-gradient(135deg,#e2e8f0,#cbd5e1)", color: "#334155", label: "Other" };
-};
-
 function TscMonthlyCrcBrushingReport() {
   const { t } = useTranslation();
 
@@ -199,45 +177,34 @@ function TscMonthlyCrcBrushingReport() {
   const talukName    = talukList.find((tk) => String(tk.talukId) === String(filter.talukId))?.talukName || "—";
   const monthLabel   = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthKn      = MONTH_KN[Number(filter.month)] || "";
+  const fyLabel      = (() => {
+    const m = Number(filter.month), y = Number(filter.year);
+    const fyStart = m >= 4 ? y : y - 1;
+    return `${fyStart}-${String((fyStart + 1) % 100).padStart(2, "0")}`;
+  })();
+
+  const isTotalRow = (r) => String(r?.crc_name ?? "").trim() === "ಒಟ್ಟು";
 
   const filteredRows = useMemo(() => {
     if (!search.trim()) return dataRows;
     const q = search.trim().toLowerCase();
+    // keep the totals row always visible
     return dataRows.filter((r) =>
-      [r.crc_name, r.race, r.source].some((v) => String(v ?? "").toLowerCase().includes(q))
+      isTotalRow(r) || String(r.crc_name ?? "").toLowerCase().includes(q)
     );
   }, [dataRows, search]);
 
-  // Sl-merge groups
-  const slMerges = useMemo(() => {
-    const merges = []; let i = 0;
-    while (i < filteredRows.length) {
-      const sn = String(filteredRows[i].sl_no ?? "");
-      let j = i + 1;
-      while (j < filteredRows.length && String(filteredRows[j].sl_no ?? "") === sn) j++;
-      merges.push({ start: i, count: j - i });
-      i = j;
-    }
-    return merges;
-  }, [filteredRows]);
-  const firstRowOfGroup = useMemo(() => { const set = new Set(); slMerges.forEach((m) => set.add(m.start)); return set; }, [slMerges]);
-  const groupSizeAt     = useMemo(() => { const map = new Map(); slMerges.forEach((m) => map.set(m.start, m.count)); return map; }, [slMerges]);
-  const groupIdxAt      = useMemo(() => { const map = new Map(); slMerges.forEach((m, gi) => { for (let k = m.start; k < m.start + m.count; k++) map.set(k, gi); }); return map; }, [slMerges]);
-
   const kpis = useMemo(() => {
-    let totalMo = 0, totalMe = 0, govMe = 0, pvtMe = 0;
-    const crcs = new Set(), races = new Set(), sources = new Set();
+    let moMix = 0, moBiv = 0, meMix = 0, meBiv = 0, benMe = 0;
+    const crcs = new Set();
     dataRows.forEach((r) => {
-      totalMo += numOrZero(r.mo_dfls);
-      totalMe += numOrZero(r.me_dfls);
-      const tone = sourceTone(r.source);
-      if (tone.label === "Govt")    govMe += numOrZero(r.me_dfls);
-      if (tone.label === "Private") pvtMe += numOrZero(r.me_dfls);
+      if (isTotalRow(r)) return;
+      moMix += numOrZero(r.mo_tm); moBiv += numOrZero(r.mo_tb);
+      meMix += numOrZero(r.me_tm); meBiv += numOrZero(r.me_tb);
+      benMe += numOrZero(r.me_bm) + numOrZero(r.me_bb);
       if (r.crc_name) crcs.add(r.crc_name);
-      if (r.race)     races.add(r.race);
-      if (r.source)   sources.add(r.source);
     });
-    return { totalMo, totalMe, govMe, pvtMe, crcs: crcs.size, races: races.size, sources: sources.size };
+    return { moMix, moBiv, meMix, meBiv, benMe, crcs: crcs.size };
   }, [dataRows]);
 
   return (
@@ -349,103 +316,112 @@ function TscMonthlyCrcBrushingReport() {
                 <span style={{ fontSize: "13px", color: "#1a202c", fontWeight: 700, marginTop: "2px" }}>{districtName} · {talukName}</span>
               </div>
               <div style={{ background: "linear-gradient(135deg,#dbeafe,#eff6ff)", border: "1.5px solid #93c5fd", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "200px" }}>
-                <span style={{ fontSize: "11px", color: "#1d4ed8", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>ME · Total DFLs</span>
-                <span className="tsccrc-num" style={{ fontSize: "16px", color: "#1e3a8a", fontWeight: 800, marginTop: "2px" }}>{fmtInt(kpis.totalMe)}</span>
-                <span className="tsccrc-num" style={{ fontSize: "11px", color: "#1e40af", marginTop: "2px" }}>Mo: {fmtInt(kpis.totalMo)}</span>
+                <span style={{ fontSize: "11px", color: "#1d4ed8", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>ಅಂತ್ಯಕ್ಕೆ · ದ್ವಿತಳಿ (DFLs)</span>
+                <span className="tsccrc-num" style={{ fontSize: "16px", color: "#1e3a8a", fontWeight: 800, marginTop: "2px" }}>{fmtInt(kpis.meBiv)}</span>
+                <span className="tsccrc-num" style={{ fontSize: "11px", color: "#1e40af", marginTop: "2px" }}>ಮಾಹೆ: {fmtInt(kpis.moBiv)}</span>
+              </div>
+              <div style={{ background: "linear-gradient(135deg,#fef3c7,#fef9ec)", border: "1.5px solid #fcd34d", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "200px" }}>
+                <span style={{ fontSize: "11px", color: "#92400e", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>ಅಂತ್ಯಕ್ಕೆ · ಮಿಶ್ರ (DFLs)</span>
+                <span className="tsccrc-num" style={{ fontSize: "16px", color: "#78350f", fontWeight: 800, marginTop: "2px" }}>{fmtInt(kpis.meMix)}</span>
+                <span className="tsccrc-num" style={{ fontSize: "11px", color: "#a16207", marginTop: "2px" }}>ಮಾಹೆ: {fmtInt(kpis.moMix)}</span>
               </div>
               <div style={{ background: "linear-gradient(135deg,#cffafe,#ecfeff)", border: "1.5px solid #67e8f9", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "180px" }}>
-                <span style={{ fontSize: "11px", color: "#0e7490", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>ME · Govt Source</span>
-                <span className="tsccrc-num" style={{ fontSize: "14px", color: "#155e75", fontWeight: 800, marginTop: "2px" }}>{fmtInt(kpis.govMe)} DFLs</span>
+                <span style={{ fontSize: "11px", color: "#0e7490", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>ಅಂತ್ಯಕ್ಕೆ · ಫಲಾನುಭವಿಗಳು</span>
+                <span className="tsccrc-num" style={{ fontSize: "16px", color: "#155e75", fontWeight: 800, marginTop: "2px" }}>{fmtInt(kpis.benMe)}</span>
               </div>
-              <div style={{ background: "linear-gradient(135deg,#fef3c7,#fef9ec)", border: "1.5px solid #fcd34d", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "180px" }}>
-                <span style={{ fontSize: "11px", color: "#92400e", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>ME · Private Source</span>
-                <span className="tsccrc-num" style={{ fontSize: "14px", color: "#78350f", fontWeight: 800, marginTop: "2px" }}>{fmtInt(kpis.pvtMe)} DFLs</span>
-              </div>
-              <div style={{ background: "linear-gradient(135deg,#ede9fe,#f5f3ff)", border: "1.5px solid #c4b5fd", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "200px" }}>
-                <span style={{ fontSize: "11px", color: "#7c3aed", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>CRCs / Races / Sources</span>
-                <span className="tsccrc-num" style={{ fontSize: "14px", color: "#4c1d95", fontWeight: 800, marginTop: "2px" }}>{kpis.crcs} / {kpis.races} / {kpis.sources}</span>
+              <div style={{ background: "linear-gradient(135deg,#ede9fe,#f5f3ff)", border: "1.5px solid #c4b5fd", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "140px" }}>
+                <span style={{ fontSize: "11px", color: "#7c3aed", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>ಚಾಕಿ ಕೇಂದ್ರಗಳು</span>
+                <span className="tsccrc-num" style={{ fontSize: "16px", color: "#4c1d95", fontWeight: 800, marginTop: "2px" }}>{kpis.crcs}</span>
               </div>
             </div>
 
             <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 6px 28px rgba(13,78,72,.12)", overflow: "hidden" }}>
-              <div style={{ background: "linear-gradient(135deg,#134e4a,#0f766e 50%,#5b57ac)", color: "#fff", padding: "16px 22px", fontWeight: 800, fontSize: "15px", textAlign: "center" }}>
-                Sheet-8 · ಸರ್ಕಾರಿ + ಖಾಸಗಿ ಚಾಕಿ ಸಾಕಾಣಿಕೆ ಕೇಂದ್ರಗಳ — {talukName} — {monthKn} {filter.year}
-                <div style={{ fontSize: "12px", fontWeight: 600, opacity: .9, marginTop: "4px" }}>Combined CRC Brushing (Govt + Private) · {monthLabel} {filter.year}</div>
+              <div style={{ background: "linear-gradient(135deg,#134e4a,#0f766e 50%,#5b57ac)", color: "#fff", padding: "16px 22px", fontWeight: 800, fontSize: "14.5px", textAlign: "center", lineHeight: 1.5 }}>
+                {fyLabel} ನೇ ಸಾಲಿನ {monthKn} – {filter.year} ರ ಮಾಹೆಯ {talukName} ತಾಲ್ಲೂಕಿನ ಖಾಸಗಿ ಮತ್ತು ಸರ್ಕಾರಿ ಚಾಕಿ ಸಾಕಾಣಿಕಾ ಕೇಂದ್ರಗಳ ಮಿಶ್ರ ಮತ್ತು ದ್ವಿತಳಿ ರೇಷ್ಮೆ ಮೊಟ್ಟೆ ಚಾಕಿ ವರದಿ
+                <div style={{ fontSize: "12px", fontWeight: 600, opacity: .9, marginTop: "4px" }}>CRC Brushing Report (Private + Government) · {districtName} · {monthLabel} {filter.year}</div>
               </div>
 
-              <div className="tsccrc-scroll" style={{ overflowX: "auto", maxHeight: "70vh", overflowY: "auto" }}>
-                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px", minWidth: "1200px" }}>
-                  <thead>
-                    <tr>
-                      {[
-                        { kn: "ಕ್ರ.ಸಂ.",     en: "Sl",        w: 60,  bg: "linear-gradient(135deg,#1e293b,#36506b)", align: "center" },
-                        { kn: "ಚಾಕಿ ಕೇಂದ್ರ", en: "CRC",       w: 240, bg: "linear-gradient(135deg,#334155,#475569)", align: "left" },
-                        { kn: "ಹಿಪ್ಪು ವಿಸ್ತೀರ್ಣ", en: "Mul Area", w: 130, bg: "linear-gradient(135deg,#0e7490,#06b6d4)", align: "right" },
-                        { kn: "ಮೂಲ",        en: "Source",     w: 200, bg: "linear-gradient(135deg,#1d4ed8,#3b82f6)", align: "left" },
-                        { kn: "ತಳಿ",        en: "Race",       w: 200, bg: "linear-gradient(135deg,#a16207,#ca8a04)", align: "left" },
-                        { kn: "ಚಾಕಿ ಮಾಹೆ",  en: "Mo (DFLs)", w: 130, bg: "linear-gradient(135deg,#0f766e,#14b8a6)", align: "right" },
-                        { kn: "ಚಾಕಿ ಅಂತ್ಯ", en: "ME (DFLs)", w: 130, bg: "linear-gradient(135deg,#15803d,#22c55e)", align: "right" },
-                      ].map((c, i) => (
-                        <th key={i} style={{
-                          background: c.bg, color: "#fff",
-                          padding: "10px 10px", textAlign: c.align === "left" ? "left" : "center",
-                          border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, minWidth: c.w,
-                          position: "sticky", top: 0, zIndex: 2,
-                        }}>
-                          <div style={{ fontSize: "11.5px" }}>{c.kn}</div>
-                          <div style={{ fontSize: "9px", fontWeight: 600, opacity: .85, marginTop: "2px" }}>{c.en}</div>
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
+              <div className="tsccrc-scroll" style={{ overflowX: "auto", maxHeight: "72vh", overflowY: "auto" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "11.5px", minWidth: "2100px" }}>
+                  {(() => {
+                    const sticky0 = { position: "sticky", top: 0, zIndex: 3 };
+                    const hcell = (bg) => ({ background: bg, color: "#fff", padding: "7px 6px", textAlign: "center", border: "1px solid rgba(255,255,255,.2)", fontWeight: 800, ...sticky0 });
+                    const moBg = "linear-gradient(135deg,#0f766e,#14b8a6)";
+                    const meBg = "linear-gradient(135deg,#1d4ed8,#3b82f6)";
+                    const benBg = "linear-gradient(135deg,#7c3aed,#a855f7)";
+                    const idBg = "linear-gradient(135deg,#334155,#475569)";
+                    // source sub-band + leaf labels (shared by Mo and ME blocks)
+                    const SRC = [
+                      { kn: "ರಾಜ್ಯ ಸರ್ಕಾರಿ", leaves: ["ಮಿಶ್ರ", "ದ್ವಿತಳಿ(ಪಿ1)"] },
+                      { kn: "ಖಾಸಗಿ",         leaves: ["ಮಿಶ್ರ", "ದ್ವಿತಳಿ"] },
+                      { kn: "ಕೇಂದ್ರ ರೇಷ್ಮೆ ಮಂಡಳಿ", leaves: ["ಮಿಶ್ರ", "ದ್ವಿತಳಿ(ಹೈಬ್ರಿಡ್)"] },
+                      { kn: "ಒಟ್ಟು",        leaves: ["ಮಿಶ್ರ", "ದ್ವಿತಳಿ"] },
+                    ];
+                    return (
+                      <thead>
+                        {/* Row 1 — top group bands */}
+                        <tr>
+                          <th rowSpan={3} style={{ ...hcell(idBg), minWidth: 46 }}>ಕ್ರ.<br />ಸಂ.</th>
+                          <th rowSpan={3} style={{ ...hcell(idBg), minWidth: 230, textAlign: "left" }}>ಚಾಕಿ ಸಾಕಾಣಿಕೆ ಕೇಂದ್ರದ ಹೆಸರು / ವಿಲಾಸ ಮತ್ತು ಮಾಲೀಕರ ಹೆಸರು</th>
+                          <th rowSpan={3} style={{ ...hcell(idBg), minWidth: 130 }}>ನೋಂದಣಿ ಸಂಖ್ಯೆ ಮತ್ತು ಹಿಪ್ಪುನೇರಳೆ ವಿಸ್ತೀರ್ಣ (ಹೆ.)</th>
+                          <th colSpan={8} style={hcell(moBg)}>ಮಾಹೆಯಲ್ಲಿ ಚಾಕಿ ಮಾಡಿದ ಮೊಟ್ಟೆಗಳು</th>
+                          <th colSpan={2} rowSpan={2} style={hcell(benBg)}>ಮಾಹೆಯಲ್ಲಿ ಚಾಕಿ ವಿತರಣೆಯಾದ ಫಲಾನುಭವಿಗಳ ಸಂಖ್ಯೆ</th>
+                          <th colSpan={8} style={hcell(meBg)}>ಮಾಹೆಯ ಅಂತ್ಯಕ್ಕೆ ಚಾಕಿ ಮಾಡಿದ ಮೊಟ್ಟೆಗಳು</th>
+                          <th colSpan={2} rowSpan={2} style={hcell(benBg)}>ಮಾಹೆಯ ಅಂತ್ಯಕ್ಕೆ ಚಾಕಿ ವಿತರಣೆಯಾದ ಫಲಾನುಭವಿಗಳ ಸಂಖ್ಯೆ</th>
+                        </tr>
+                        {/* Row 2 — source sub-bands */}
+                        <tr>
+                          {SRC.map((s, i) => <th key={`mo-${i}`} colSpan={2} style={hcell(moBg)}>{s.kn}</th>)}
+                          {SRC.map((s, i) => <th key={`me-${i}`} colSpan={2} style={hcell(meBg)}>{s.kn}</th>)}
+                        </tr>
+                        {/* Row 3 — leaf labels */}
+                        <tr>
+                          {SRC.map((s, i) => s.leaves.map((lf, j) => <th key={`mol-${i}-${j}`} style={{ ...hcell(moBg), minWidth: 70 }}>{lf}</th>))}
+                          {["ಮಿಶ್ರ", "ದ್ವಿತಳಿ"].map((lf, j) => <th key={`mob-${j}`} style={{ ...hcell(benBg), minWidth: 70 }}>{lf}</th>)}
+                          {SRC.map((s, i) => s.leaves.map((lf, j) => <th key={`mel-${i}-${j}`} style={{ ...hcell(meBg), minWidth: 70 }}>{lf}</th>))}
+                          {["ಮಿಶ್ರ", "ದ್ವಿತಳಿ"].map((lf, j) => <th key={`meb-${j}`} style={{ ...hcell(benBg), minWidth: 70 }}>{lf}</th>)}
+                        </tr>
+                      </thead>
+                    );
+                  })()}
                   <tbody>
                     {filteredRows.length === 0 && (
-                      <tr><td colSpan={7} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>{dataRows.length === 0 ? "ಯಾವುದೇ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ / No records found." : `No matches for "${search}".`}</td></tr>
+                      <tr><td colSpan={23} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>{dataRows.length === 0 ? "ಯಾವುದೇ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ / No records found." : `No matches for "${search}".`}</td></tr>
                     )}
                     {filteredRows.map((row, ri) => {
-                      const isFirstInGroup = firstRowOfGroup.has(ri);
-                      const groupSize = isFirstInGroup ? groupSizeAt.get(ri) : 0;
-                      const groupIdx = groupIdxAt.get(ri) || 0;
-                      const rowBg = groupIdx % 2 === 1 ? "#f8fafc" : "#ffffff";
-                      const rTone = raceTone(row.race);
-                      const sTone = sourceTone(row.source);
-                      const moHas = numOrZero(row.mo_dfls) > 0;
-                      const meHas = numOrZero(row.me_dfls) > 0;
-                      const cb = { padding: "9px 10px", borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #eef2f6", fontSize: "12px", verticalAlign: "middle" };
+                      const tot = isTotalRow(row);
+                      const NUMK = ["mo_sm","mo_sb","mo_pm","mo_pb","mo_cm","mo_cb","mo_tm","mo_tb","mo_bm","mo_bb",
+                                    "me_sm","me_sb","me_pm","me_pb","me_cm","me_cb","me_tm","me_tb","me_bm","me_bb"];
+                      const rowBg = tot ? "linear-gradient(135deg,#fff7ed,#ffedd5)" : (ri % 2 === 1 ? "#f8fafc" : "#ffffff");
+                      const cb = { padding: "8px 8px", borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #eef2f6", fontSize: "11.5px", verticalAlign: "middle" };
+                      // highlight total columns (mo_tm/mo_tb=idx6,7 ; me_tm/me_tb=idx16,17)
+                      const isTotCol = (k) => k === "mo_tm" || k === "mo_tb" || k === "me_tm" || k === "me_tb";
                       return (
-                        <tr key={`${row.sl_no}-${row.race}-${row.source}-${ri}`} className="tsccrc-tr" style={{ background: rowBg }}>
-                          {isFirstInGroup ? (
-                            <td rowSpan={groupSize} style={{ ...cb, textAlign: "center", borderRight: "1px solid #e2e8f0", color: "#475569", fontWeight: 700, background: groupIdx % 2 === 1 ? "#f1f5f9" : "#f8fafc" }}>
-                              <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: "26px", height: "26px", borderRadius: "50%", background: "linear-gradient(135deg,#e2e8f0,#cbd5e1)", color: "#1e293b", fontWeight: 800, fontSize: "11px" }}>{row.sl_no}</span>
-                            </td>
-                          ) : null}
-                          {isFirstInGroup ? (
-                            <td rowSpan={groupSize} style={{ ...cb, textAlign: "left", paddingLeft: "14px", color: "#0f172a", fontWeight: 800, borderRight: "2px solid #e2e8f0", background: groupIdx % 2 === 1 ? "#f1f5f9" : "#f8fafc" }}>
-                              👤 {row.crc_name || "—"}
-                            </td>
-                          ) : null}
-                          {isFirstInGroup ? (
-                            <td rowSpan={groupSize} className="tsccrc-num" style={{ ...cb, textAlign: "right", paddingRight: "14px", color: "#155e75", fontWeight: 700, background: groupIdx % 2 === 1 ? "#f1f5f9" : "#f8fafc" }}>
-                              {row.mulberry_area && String(row.mulberry_area).trim() !== "" ? row.mulberry_area : <span style={{ color: "#cbd5e0" }}>—</span>}
-                            </td>
-                          ) : null}
-                          <td style={{ ...cb, textAlign: "left", paddingLeft: "14px" }}>
-                            <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: "12px", background: sTone.bg, color: sTone.color, fontWeight: 800, fontSize: "11.5px" }}>
-                              {row.source && String(row.source).trim() !== "" ? row.source : "—"}
-                            </span>
-                            <span style={{ marginLeft: "6px", fontSize: "9.5px", color: "#94a3b8", fontWeight: 700 }}>{sTone.label}</span>
+                        <tr key={`${row.sl_no}-${ri}`} className="tsccrc-tr" style={{ background: rowBg, fontWeight: tot ? 800 : 400 }}>
+                          <td style={{ ...cb, textAlign: "center", color: "#475569", fontWeight: 700 }}>
+                            {tot ? "" : (
+                              <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: "24px", height: "24px", borderRadius: "50%", background: "linear-gradient(135deg,#e2e8f0,#cbd5e1)", color: "#1e293b", fontWeight: 800, fontSize: "10.5px" }}>{row.sl_no}</span>
+                            )}
                           </td>
-                          <td style={{ ...cb, textAlign: "left", paddingLeft: "14px" }}>
-                            <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: "12px", background: rTone.bg, color: rTone.color, fontWeight: 800, fontSize: "11.5px" }}>
-                              {row.race || "—"}
-                            </span>
+                          <td style={{ ...cb, textAlign: "left", paddingLeft: "12px", color: tot ? "#9a3412" : "#0f172a", fontWeight: 800 }}>
+                            {tot ? "ಒಟ್ಟು" : <>👤 {row.crc_name || "—"}</>}
                           </td>
-                          <td className="tsccrc-num" style={{ ...cb, textAlign: "right", paddingRight: "16px", background: moHas ? "#f0fdfa" : "transparent", color: moHas ? "#115e59" : "#cbd5e0", fontWeight: 700 }}>
-                            {moHas ? fmtInt(row.mo_dfls) : "—"}
+                          <td className="tsccrc-num" style={{ ...cb, textAlign: "right", paddingRight: "12px", color: "#155e75", fontWeight: 700 }}>
+                            {!tot && row.reg_area && String(row.reg_area).trim() !== "" ? row.reg_area : <span style={{ color: "#cbd5e0" }}>—</span>}
                           </td>
-                          <td className="tsccrc-num" style={{ ...cb, textAlign: "right", paddingRight: "16px", background: meHas ? "linear-gradient(135deg,#dcfce7,#bbf7d0)" : "transparent", color: meHas ? "#14532d" : "#cbd5e0", fontWeight: 800 }}>
-                            {meHas ? fmtInt(row.me_dfls) : "—"}
-                          </td>
+                          {NUMK.map((k) => {
+                            const v = numOrZero(row[k]);
+                            return (
+                              <td key={k} className="tsccrc-num" style={{
+                                ...cb, textAlign: "right", paddingRight: "12px",
+                                background: isTotCol(k) ? (tot ? "transparent" : "#f0fdfa") : "transparent",
+                                color: v > 0 ? (isTotCol(k) ? "#115e59" : "#1e293b") : "#cbd5e0",
+                                fontWeight: isTotCol(k) || tot ? 800 : 600,
+                              }}>
+                                {fmtInt(row[k])}
+                              </td>
+                            );
+                          })}
                         </tr>
                       );
                     })}

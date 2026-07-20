@@ -276,7 +276,8 @@ function TscP2BrushedDflsReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const tscDisplay = selectedTsc?.name || "—";
+  const tscDisplay = selectedTsc?.nameInKannada || selectedTsc?.name || "—";
+  const fyLabel    = fyStartYear ? `${fyStartYear}-${String(fyStartYear + 1).slice(-2)}` : "";
 
   // Summary stats — counts per stage and total DFLs
   const stats = useMemo(() => {
@@ -345,7 +346,7 @@ function TscP2BrushedDflsReport() {
                 <Col md={3}>
                   <label style={lbl}>TSC <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
-                    options={tscList.map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.name }))}
+                    options={tscList.map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.nameInKannada || tsc.name }))}
                     placeholder="— Search TSC —"
                     isSearchable
                     isClearable
@@ -355,7 +356,7 @@ function TscP2BrushedDflsReport() {
                     styles={tscSelectStyles}
                     value={
                       tscList
-                        .map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.name }))
+                        .map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.nameInKannada || tsc.name }))
                         .find((o) => o.value === String(filter.tscId)) || null
                     }
                     onChange={(opt) => {
@@ -441,10 +442,7 @@ function TscP2BrushedDflsReport() {
                 fontWeight: 800, fontSize: "15px", letterSpacing: ".02em",
                 textAlign: "center",
               }}>
-                ನಮೂನೆ-10ಎ · ತಾಂತ್ರಿಕ ಸೇವಾ ಕೇಂದ್ರ {tscDisplay} — {monthKn} {monthYear || ""} ಚಾಕಿ ಮಾಡಿದ ಪಿ2 ಮೊಟ್ಟೆಗಳ ಬೆಳೆಗಳವಾರು ವರದಿ
-                <div style={{ fontSize: "12px", fontWeight: 600, opacity: .9, marginTop: "4px" }}>
-                  Form-10A · P2 Brushed DFLs — Crop-wise listing &nbsp;·&nbsp; {monthLabel} {monthYear || ""}
-                </div>
+                ನಮೂನೆ-10ಎ ತಾಂತ್ರಿಕ ಸೇವಾ ಕೇಂದ್ರ {tscDisplay} {fyLabel ? `${fyLabel} ನೇ ಸಾಲಿನ ` : ""}{monthKn}-{monthYear || ""} ರ ಮಾಹೆಯಲ್ಲಿ ಚಾಕಿ ಮಾಡಿದ ಪಿ2 ಮೊಟ್ಟೆಗಳ ಬೆಳೆಗಳವಾರು ವರದಿ
               </div>
 
               <div className="tscbd-scroll" style={{ overflowX: "auto" }}>

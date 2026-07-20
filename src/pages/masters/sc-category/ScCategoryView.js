@@ -97,7 +97,16 @@ function ScCategoryView() {
                         <td style={styles.ctstyle}>{t("ID")}</td>
                         <td>{ScCategory.scCategoryId}</td>
                       </tr>
-            
+
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Scheme Name")}</td>
+                        <td>{ScCategory.schemeName || "-"}</td>
+                      </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Sub Scheme Name")}</td>
+                        <td>{ScCategory.subSchemeName || "-"}</td>
+                      </tr>
+
                       <tr>
                         <td style={styles.ctstyle}>{t("Sub Component")}</td>
                         <td>{ScCategory.categoryName}</td>

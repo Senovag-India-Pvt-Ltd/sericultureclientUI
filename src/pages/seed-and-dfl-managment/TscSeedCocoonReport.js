@@ -270,7 +270,7 @@ function TscSeedCocoonReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const tscDisplay = selectedTsc?.name || "—";
+  const tscDisplay = selectedTsc?.nameInKannada || selectedTsc?.name || "—";
 
   // section / sub / total / dash classification
   const enrichedRows = useMemo(() => {
@@ -337,7 +337,7 @@ function TscSeedCocoonReport() {
                 ತಾಂತ್ರಿಕ ಸೇವಾ ಕೇಂದ್ರ — ಬಿತ್ತನೆ ಗೂಡು ಉತ್ಪಾದನೆ ಮತ್ತು ವಿಲೇವಾರಿ ವಿವರಗಳು
                 <span style={{ background: "rgba(255,255,255,.22)", padding: "2px 9px", borderRadius: "12px", marginLeft: "8px", fontSize: "10.5px", fontWeight: 800 }}>TSC</span>
               </div>
-              <div style={{ color: "rgba(255,255,255,.85)", fontSize: "11px", marginTop: "2px" }}>Part-4 · Seed Cocoon — Target / Achievement / Yield / Disposal / Reeling / Total / Out-of-market</div>
+              <div style={{ color: "rgba(255,255,255,.85)", fontSize: "11px", marginTop: "2px" }}>ಭಾಗ-4 · ಬಿತ್ತನೆ ಗೂಡು — ಗುರಿ / ಸಾಧನೆ / ಸರಾಸರಿ ಇಳುವರಿ / ಗೂಡುಗಳ ವಿಲೇವಾರಿ / ನೂಲು ಬಿಚ್ಚಲು / ಒಟ್ಟು / ಮಾರುಕಟ್ಟೆ ಹೊರಗೆ ವಿಲೇವಾರಿ</div>
             </div>
             {hasReport && (
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
@@ -352,9 +352,9 @@ function TscSeedCocoonReport() {
             <Form onSubmit={handleView}>
               <Row className="g-2 align-items-end">
                 <Col md={3}>
-                  <label style={lbl}>TSC <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>ತಾಂತ್ರಿಕ ಸೇವಾ ಕೇಂದ್ರ (TSC) <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
-                    options={tscList.map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.name }))}
+                    options={tscList.map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.nameInKannada || tsc.name }))}
                     placeholder="— Search TSC —"
                     isSearchable
                     isClearable
@@ -364,7 +364,7 @@ function TscSeedCocoonReport() {
                     styles={tscSelectStyles}
                     value={
                       tscList
-                        .map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.name }))
+                        .map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.nameInKannada || tsc.name }))
                         .find((o) => o.value === String(filter.tscId)) || null
                     }
                     onChange={(opt) => {
@@ -376,7 +376,7 @@ function TscSeedCocoonReport() {
                   />
                 </Col>
                 <Col md={3}>
-                  <label style={lbl}>Grainage <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>ಗ್ರೈನೇಜ್ (Grainage) <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
                     options={grainageList.map((g) => ({
                       value: String(g.grainageMasterId),
@@ -406,7 +406,7 @@ function TscSeedCocoonReport() {
                   />
                 </Col>
                 <Col md={2}>
-                  <label style={lbl}>Financial Year <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>ಆರ್ಥಿಕ ವರ್ಷ (Financial Year) <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="financialYearMasterId" value={filter.financialYearMasterId} onChange={handleChange} style={sel}>
                     <option value="">— Select Year —</option>
                     {financialYearList.map((f) => (
@@ -415,11 +415,11 @@ function TscSeedCocoonReport() {
                   </Form.Select>
                 </Col>
                 <Col md={2}>
-                  <label style={lbl}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>ಮಾಹೆ (Month) <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="month" value={filter.month} onChange={handleChange} style={sel}>
-                    <option value="">— Month —</option>
+                    <option value="">— ಮಾಹೆ / Month —</option>
                     {MONTHS.map((m) => (
-                      <option key={m.value} value={m.value}>{m.label}</option>
+                      <option key={m.value} value={m.value}>{MONTH_KN[m.value]} · {m.label}</option>
                     ))}
                   </Form.Select>
                 </Col>

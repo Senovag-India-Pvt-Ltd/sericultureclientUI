@@ -80,6 +80,8 @@ const reactSelectStyles = {
 const numOrZero = (v) => { const n = parseFloat(String(v ?? "").replace(/[^\d.\-]/g, "")); return isNaN(n) ? 0 : n; };
 const fmtInt = (v) => { const s = String(v ?? "").trim(); if (!s) return ""; const n = parseFloat(s); if (isNaN(n)) return s; return Math.round(n).toLocaleString(); };
 const fmtDec = (v) => { const s = String(v ?? "").trim(); if (!s) return ""; const n = parseFloat(s); if (isNaN(n)) return s; return n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+// Parameterised decimal formatter so UI precision matches the query/PDF/Excel exactly.
+const fmtDecN = (v, d) => { const s = String(v ?? "").trim(); if (!s) return ""; const n = parseFloat(s); if (isNaN(n)) return s; return n.toLocaleString(undefined, { minimumFractionDigits: d, maximumFractionDigits: d }); };
 const fmtPct = (v) => numOrZero(v).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "%";
 
 const yearOptions = (() => {
@@ -289,7 +291,10 @@ export function DdMulberryAreaReport() {
   const rpt = useDdReport("dd-report/mulberry-area", "dd_27a_mulberry_area", "DD Form 27A · Mulberry Area");
   const [search, setSearch] = useState("");
   const [hideTotals, setHideTotals] = useState(false);
-  const fyEndLabel = `31-03-${rpt.filter.year}`;
+  // FY-end snapshot date is dynamic: 31-03 of the financial-year start year
+  // (months Apr–Dec → this year; Jan–Mar → previous year). Never hardcoded.
+  const fyEndYear = (Number(rpt.filter.month) >= 4 ? Number(rpt.filter.year) : Number(rpt.filter.year) - 1) || rpt.filter.year;
+  const fyEndLabel = `31-03-${fyEndYear}`;
 
   const filteredRows = useMemo(() => {
     let rows = rpt.dataRows;
@@ -386,15 +391,15 @@ export function DdMulberryAreaReport() {
 
             <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 6px 28px rgba(13,78,72,.12)", overflow: "hidden" }}>
               <div style={{ background: "linear-gradient(135deg,#134e4a,#0f766e 50%,#5b57ac)", color: "#fff", padding: "16px 22px", fontWeight: 800, fontSize: "15px", textAlign: "center" }}>
-                ನಮೂನೆ-27ಎ · ಹಿಪ್ಪುನೇರಳೆ ವಿಸ್ತೀರ್ಣದ ಪ್ರಗತಿ — {rpt.districtName} — {rpt.monthKn} {rpt.filter.year}
+                {rpt.districtName} ಜಿಲ್ಲೆಯ ಹಿಪ್ಪುನೇರಳೆ ವಿಸ್ತೀರ್ಣದ ಪ್ರಗತಿ ವರದಿ · ನಮೂನೆ-27ಎ — {rpt.monthKn} {rpt.filter.year}
               </div>
               <div className="dd-scroll" style={{ overflowX: "auto", maxHeight: "70vh", overflowY: "auto" }}>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px", minWidth: "1500px" }}>
                   <thead><tr>
                     {[
                       { kn: "ಕ್ರ.ಸಂ.", en: "Sl",            w: 55,  bg: "linear-gradient(135deg,#1e293b,#36506b)", align: "center" },
-                      { kn: "ತಾಲ್ಲೂಕು", en: "Taluk",         w: 170, bg: "linear-gradient(135deg,#334155,#475569)", align: "left" },
-                      { kn: fyEndLabel, en: "FY-end Total", w: 130, bg: "linear-gradient(135deg,#0e7490,#06b6d4)", align: "right" },
+                      { kn: "ತಾಂತ್ರಿಕ ಸೇವಾ ಕೇಂದ್ರ ಹೆಸರು/ತಾಲ್ಲೂಕು", en: "TSC / Taluk", w: 200, bg: "linear-gradient(135deg,#334155,#475569)", align: "left" },
+                      { kn: `ದಿ:${fyEndLabel} ನೀರಾ`, en: "FY-end Area (Irrigated)", w: 150, bg: "linear-gradient(135deg,#0e7490,#06b6d4)", align: "right" },
                       { kn: "ವಾರ್ಷಿಕ", en: "Annual Tgt",    w: 120, bg: "linear-gradient(135deg,#a16207,#ca8a04)", align: "right" },
                       { kn: "ಮಾಸ ಗುರಿ", en: "Mo Target",    w: 120, bg: "linear-gradient(135deg,#1d4ed8,#3b82f6)", align: "right" },
                       { kn: "ಅಂತ್ಯ ಗುರಿ", en: "ME Target",   w: 120, bg: "linear-gradient(135deg,#1d4ed8,#3b82f6)", align: "right" },
@@ -402,7 +407,10 @@ export function DdMulberryAreaReport() {
                       { kn: "ಅಂತ್ಯ ಸಾಧನೆ", en: "ME Ach",     w: 120, bg: "linear-gradient(135deg,#15803d,#22c55e)", align: "right" },
                       { kn: "% ಮಾಸ",   en: "% Mo",          w: 130, bg: "linear-gradient(135deg,#a16207,#ca8a04)", align: "center" },
                       { kn: "% ಅಂತ್ಯ",  en: "% ME",          w: 130, bg: "linear-gradient(135deg,#a16207,#fbbf24)", align: "center" },
-                      { kn: "ಹಾಲಿ ಒಟ್ಟು", en: "Cur Total",   w: 130, bg: "linear-gradient(135deg,#7c3aed,#a78bfa)", align: "right" },
+                      { kn: "ಕಡ್ಡಿ ಕಿತ್ತ ವಿಸ್ತೀರ್ಣ", en: "Uprooted",   w: 120, bg: "linear-gradient(135deg,#b91c1c,#ef4444)", align: "right" },
+                      { kn: "ಕಡ್ಡಿ ಕಿತ್ತ ರೈತರು",   en: "Upr Farmers", w: 110, bg: "linear-gradient(135deg,#b91c1c,#f87171)", align: "right" },
+                      { kn: "ಪ್ರಾರಂಭದಿಂದ ಸಾಧನೆ",  en: "Inception (Irrigated)", w: 140, bg: "linear-gradient(135deg,#7c3aed,#a78bfa)", align: "right" },
+                      { kn: "ರೈತರ ಸಂಖ್ಯೆ",        en: "Farmers",     w: 110, bg: "linear-gradient(135deg,#7c3aed,#c4b5fd)", align: "right" },
                     ].map((c, i) => (
                       <th key={i} style={{ background: c.bg, color: "#fff", padding: "10px 8px", textAlign: c.align === "left" ? "left" : c.align === "right" ? "right" : "center", border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, minWidth: c.w, position: "sticky", top: 0, zIndex: 2 }}>
                         <div style={{ fontSize: "11.5px" }}>{c.kn}</div>
@@ -411,7 +419,7 @@ export function DdMulberryAreaReport() {
                     ))}
                   </tr></thead>
                   <tbody>
-                    {filteredRows.length === 0 && <tr><td colSpan={11} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0" }}>{rpt.dataRows.length === 0 ? "No records found." : `No matches for "${search}".`}</td></tr>}
+                    {filteredRows.length === 0 && <tr><td colSpan={14} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0" }}>{rpt.dataRows.length === 0 ? "No records found." : `No matches for "${search}".`}</td></tr>}
                     {filteredRows.map((row, ri) => {
                       const isTotal = isTotalRow(row);
                       const rowBg = isTotal ? "linear-gradient(135deg,#fffbeb,#fef3c7)" : (ri % 2 === 1 ? "#f8fafc" : "#ffffff");
@@ -419,6 +427,10 @@ export function DdMulberryAreaReport() {
                       const numCell = (v, palBg, palText, isStrong = false) => {
                         const n = numOrZero(v); const has = n !== 0;
                         return <td className="dd-num" style={{ ...cb, textAlign: "right", paddingRight: "12px", background: isTotal ? "linear-gradient(135deg,#fde68a,#fcd34d)" : (has ? palBg : "transparent"), color: isTotal ? "#78350f" : (has ? palText : "#cbd5e0"), fontWeight: isTotal ? 900 : (isStrong ? 800 : 700) }}>{has ? fmtDec(v) : "—"}</td>;
+                      };
+                      const intCell = (v) => {
+                        const n = numOrZero(v); const has = n !== 0;
+                        return <td className="dd-num" style={{ ...cb, textAlign: "right", paddingRight: "12px", background: isTotal ? "linear-gradient(135deg,#fde68a,#fcd34d)" : (has ? "#faf5ff" : "transparent"), color: isTotal ? "#78350f" : (has ? "#6b21a8" : "#cbd5e0"), fontWeight: isTotal ? 900 : 700 }}>{has ? Math.round(n).toLocaleString() : "—"}</td>;
                       };
                       const pctCell = (p) => (
                         <td className="dd-num" style={{ ...cb, textAlign: "center", background: isTotal ? "linear-gradient(135deg,#fde68a,#fcd34d)" : "transparent", color: isTotal ? "#78350f" : pctColor(p), fontWeight: isTotal ? 900 : 800 }}>
@@ -441,7 +453,10 @@ export function DdMulberryAreaReport() {
                           {numCell(row.me_ach,        "linear-gradient(135deg,#dcfce7,#bbf7d0)", "#14532d", true)}
                           {pctCell(numOrZero(row.pct_mo))}
                           {pctCell(numOrZero(row.pct_me))}
+                          {numCell(row.uprooted,         "#fef2f2", "#991b1b")}
+                          {intCell(row.uprooted_farmers)}
                           {numCell(row.cur_total,     "linear-gradient(135deg,#ede9fe,#ddd6fe)", "#4c1d95", true)}
+                          {intCell(row.farmer_count)}
                         </tr>
                       );
                     })}
@@ -490,7 +505,7 @@ export function DdCropYieldReport() {
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              {t("ನಮೂನೆ-27ಬಿ · ರೇಷ್ಮೆ ಬೆಳೆಗಳ ವಿವರ")}
+              {t("ನಮೂನೆ-27ಬಿ · ರೇಷ್ಮೆ ಬೆಳೆಗಳ ವಿವರ ಹಾಗೂ ಪಡೆದ ಇಳುವರಿ ಬಗೆಗಿನ ವಿವರ")}
               <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", background: "linear-gradient(135deg,#dcfce7,#bbf7d0)", color: "#14532d", padding: "2px 10px", borderRadius: "20px", fontSize: "10.5px", fontWeight: 800, marginLeft: "8px", border: "1px solid #86efac", verticalAlign: "middle" }}>
                 DD · Form 27B
               </span>
@@ -521,21 +536,23 @@ export function DdCropYieldReport() {
           <div className="dd-wrap mt-4">
             <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 6px 28px rgba(13,78,72,.12)", overflow: "hidden" }}>
               <div style={{ background: "linear-gradient(135deg,#134e4a,#0f766e 50%,#5b57ac)", color: "#fff", padding: "16px 22px", fontWeight: 800, fontSize: "15px", textAlign: "center" }}>
-                ನಮೂನೆ-27ಬಿ · ರೇಷ್ಮೆ ಬೆಳೆಗಳ ವಿವರ — {rpt.districtName} — {rpt.monthKn} {rpt.filter.year}
+                {rpt.districtName} ಜಿಲ್ಲೆ · ನಮೂನೆ-27ಬಿ · ರೇಷ್ಮೆ ಬೆಳೆಗಳ ವಿವರ ಹಾಗೂ ಪಡೆದ ಇಳುವರಿ ಬಗೆಗಿನ ವಿವರ — {rpt.monthKn} {rpt.filter.year}
               </div>
               <div className="dd-scroll" style={{ overflowX: "auto", maxHeight: "70vh", overflowY: "auto" }}>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "11.5px", minWidth: "1700px" }}>
                   <thead>
                     <tr>
                       <th rowSpan={2} style={{ background: "linear-gradient(135deg,#1e293b,#36506b)", color: "#fff", padding: "10px 6px", textAlign: "center", border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, width: "55px", position: "sticky", top: 0, zIndex: 2 }}>ಕ್ರ.ಸಂ.<div style={{ fontSize: "9px", opacity: .85 }}>Sl.</div></th>
-                      <th rowSpan={2} style={{ background: "linear-gradient(135deg,#334155,#475569)", color: "#fff", padding: "10px 14px", textAlign: "left", border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, minWidth: "160px", position: "sticky", top: 0, zIndex: 2 }}>ತಾಲ್ಲೂಕು<div style={{ fontSize: "9px", opacity: .85, marginTop: "2px" }}>Taluk</div></th>
+                      <th rowSpan={2} style={{ background: "linear-gradient(135deg,#334155,#475569)", color: "#fff", padding: "10px 14px", textAlign: "left", border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, minWidth: "160px", position: "sticky", top: 0, zIndex: 2 }}>ವಲಯದ ಹೆಸರು<div style={{ fontSize: "9px", opacity: .85, marginTop: "2px" }}>Zone</div></th>
                       <th rowSpan={2} style={{ background: "linear-gradient(135deg,#a16207,#ca8a04)", color: "#fff", padding: "10px 14px", textAlign: "left", border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, minWidth: "140px", position: "sticky", top: 0, zIndex: 2 }}>ತಳಿ<div style={{ fontSize: "9px", opacity: .85, marginTop: "2px" }}>Race</div></th>
                       {[
-                        { kn: "ಚಾಕಿ",       en: "Brushed",       tone: "linear-gradient(135deg,#1d4ed8,#3b82f6)" },
-                        { kn: "ವಿಫಲ",       en: "Failed",        tone: "linear-gradient(135deg,#b91c1c,#dc2626)" },
-                        { kn: "ಯಶಸ್ವಿ",      en: "Successful",    tone: "linear-gradient(135deg,#15803d,#22c55e)" },
-                        { kn: "ಗೂಡು",       en: "Cocoon (MT)",   tone: "linear-gradient(135deg,#a16207,#fbbf24)" },
-                        { kn: "ಸರಾಸರಿ",     en: "Avg (kg/100)",  tone: "linear-gradient(135deg,#4338ca,#6366f1)" },
+                        { kn: "ಚಾಕಿ ಕಟ್ಟಿದ ಮೊಟ್ಟೆಗಳ ಸಂಖ್ಯೆ", en: "Brushed",      tone: "linear-gradient(135deg,#1d4ed8,#3b82f6)" },
+                        { kn: "ಕಡಿಮೆ ಇಳುವರಿ ನೀಡಿದ ಮೊಟ್ಟೆ",  en: "Low Yield",    tone: "linear-gradient(135deg,#c2410c,#ea580c)" },
+                        { kn: "ವಿಫಲವಾದ ಮೊಟ್ಟೆಗಳು",       en: "Failed",        tone: "linear-gradient(135deg,#b91c1c,#dc2626)" },
+                        { kn: "ಯಶಸ್ವಿ ಕಟಾವಾದ ಮೊಟ್ಟೆಗಳು",  en: "Successful",    tone: "linear-gradient(135deg,#15803d,#22c55e)" },
+                        { kn: "ಒಟ್ಟು ಕಟಾವಾದ ಮೊಟ್ಟೆಗಳು",   en: "Total Harvested", tone: "linear-gradient(135deg,#0f766e,#14b8a6)" },
+                        { kn: "ಕಟಾವಾದ ಗೂಡು (ಮೆ.ಟನ್)",   en: "Cocoon (MT)",   tone: "linear-gradient(135deg,#a16207,#fbbf24)" },
+                        { kn: "ಸರಾಸರಿ ಇಳುವರಿ (ಕೆ.ಜಿ.)",  en: "Avg (kg/100)",  tone: "linear-gradient(135deg,#4338ca,#6366f1)" },
                       ].map((g, gi) => (
                         <th key={gi} colSpan={2} style={{ background: g.tone, color: "#fff", padding: "10px 8px", textAlign: "center", border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, position: "sticky", top: 0, zIndex: 2 }}>
                           <div style={{ fontSize: "11.5px" }}>{g.kn}</div>
@@ -544,16 +561,17 @@ export function DdCropYieldReport() {
                       ))}
                     </tr>
                     <tr>
-                      {[0, 1, 2, 3, 4].flatMap((gi) => {
+                      {[0, 1, 2, 3, 4, 5, 6].flatMap((gi) => {
                         const tones = [
-                          "linear-gradient(180deg,#93c5fd,#60a5fa)", "linear-gradient(180deg,#fca5a5,#f87171)",
-                          "linear-gradient(180deg,#86efac,#4ade80)", "linear-gradient(180deg,#fde68a,#fcd34d)",
+                          "linear-gradient(180deg,#93c5fd,#60a5fa)", "linear-gradient(180deg,#fdba74,#fb923c)",
+                          "linear-gradient(180deg,#fca5a5,#f87171)", "linear-gradient(180deg,#86efac,#4ade80)",
+                          "linear-gradient(180deg,#5eead4,#2dd4bf)", "linear-gradient(180deg,#fde68a,#fcd34d)",
                           "linear-gradient(180deg,#a5b4fc,#818cf8)"
                         ];
-                        const texts = ["#1e3a8a", "#7f1d1d", "#14532d", "#78350f", "#3730a3"];
+                        const texts = ["#1e3a8a", "#7c2d12", "#7f1d1d", "#14532d", "#0f766e", "#78350f", "#3730a3"];
                         return [
-                          { en: "Mo", tone: tones[gi], text: texts[gi] },
-                          { en: "ME", tone: tones[gi], text: texts[gi], strong: true },
+                          { en: "ಮಾಹೆ", tone: tones[gi], text: texts[gi] },
+                          { en: "ಅಂತ್ಯ", tone: tones[gi], text: texts[gi], strong: true },
                         ];
                       }).map((c, i) => (
                         <th key={i} style={{ background: c.tone, color: c.text, padding: "7px 4px", textAlign: "center", border: "1px solid rgba(255,255,255,.18)", fontWeight: c.strong ? 800 : 700, minWidth: "85px", position: "sticky", top: "44px", zIndex: 2 }}>
@@ -563,7 +581,7 @@ export function DdCropYieldReport() {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredRows.length === 0 && <tr><td colSpan={13} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0" }}>{rpt.dataRows.length === 0 ? "No records found." : `No matches for "${search}".`}</td></tr>}
+                    {filteredRows.length === 0 && <tr><td colSpan={17} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0" }}>{rpt.dataRows.length === 0 ? "No records found." : `No matches for "${search}".`}</td></tr>}
                     {filteredRows.map((row, ri) => {
                       const isFirst = firstOfGroup.has(ri);
                       const size = isFirst ? sizeAt.get(ri) : 0;
@@ -586,9 +604,11 @@ export function DdCropYieldReport() {
                       };
                       return (
                         <tr key={ri} className="dd-tr" style={{ background: rowBg }}>
-                          <td style={{ ...cb, textAlign: "center", borderRight: "1px solid #e2e8f0", color: "#475569", fontWeight: 700 }}>
-                            <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: "24px", height: "24px", borderRadius: "50%", background: "linear-gradient(135deg,#e2e8f0,#cbd5e1)", color: "#1e293b", fontWeight: 800, fontSize: "10.5px" }}>{row.sl_no}</span>
-                          </td>
+                          {isFirst ? (
+                            <td rowSpan={size} style={{ ...cb, textAlign: "center", borderRight: "1px solid #e2e8f0", color: "#475569", fontWeight: 700, verticalAlign: "middle" }}>
+                              {row.sl_no ? <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: "24px", height: "24px", borderRadius: "50%", background: "linear-gradient(135deg,#e2e8f0,#cbd5e1)", color: "#1e293b", fontWeight: 800, fontSize: "10.5px" }}>{row.sl_no}</span> : null}
+                            </td>
+                          ) : null}
                           {isFirst ? (
                             <td rowSpan={size} style={{ ...cb, textAlign: "left", paddingLeft: "12px", color: "#0f172a", fontWeight: 800, borderRight: "2px solid #e2e8f0", background: gIdx % 2 === 1 ? "#f1f5f9" : "#f8fafc" }}>
                               📍 {row.taluk_name || "—"}
@@ -601,10 +621,14 @@ export function DdCropYieldReport() {
                           </td>
                           {numCell(row.brushed_mo, "#eff6ff", "#1e40af")}
                           {numCell(row.brushed_me, "linear-gradient(135deg,#dbeafe,#bfdbfe)", "#1e3a8a", true)}
+                          {numCell(row.low_mo,     "#fff7ed", "#9a3412")}
+                          {numCell(row.low_me,     "linear-gradient(135deg,#ffedd5,#fed7aa)", "#7c2d12", true)}
                           {numCell(row.fail_mo,    "#fef2f2", "#991b1b")}
                           {numCell(row.fail_me,    "linear-gradient(135deg,#fee2e2,#fecaca)", "#7f1d1d", true)}
                           {numCell(row.succ_mo,    "#f0fdf4", "#166534")}
                           {numCell(row.succ_me,    "linear-gradient(135deg,#dcfce7,#bbf7d0)", "#14532d", true)}
+                          {numCell(row.tot_mo,     "#f0fdfa", "#115e59")}
+                          {numCell(row.tot_me,     "linear-gradient(135deg,#ccfbf1,#99f6e4)", "#0f766e", true)}
                           {numCell(row.kg_mo,      "#fffbeb", "#854d0e", false, true)}
                           {numCell(row.kg_me,      "linear-gradient(135deg,#fef3c7,#fde68a)", "#78350f", true, true)}
                           {numCell(row.avg_mo,     "#eef2ff", "#4338ca", false, true)}
@@ -650,6 +674,11 @@ function DdCYPYReport({ config }) {
   const sizeAt = useMemo(() => { const m = new Map(); merges.forEach((g) => m.set(g.start, g.count)); return m; }, [merges]);
   const idxAt = useMemo(() => { const m = new Map(); merges.forEach((g, gi) => { for (let k = g.start; k < g.start + g.count; k++) m.set(k, gi); }); return m; }, [merges]);
 
+  // Dynamic financial-year labels (e.g. 2025-2026) shown on the CY/PY column bands.
+  const cyStart = (Number(rpt.filter.month) >= 4 ? Number(rpt.filter.year) : Number(rpt.filter.year) - 1) || rpt.filter.year;
+  const cyLabel = `${cyStart}-${cyStart + 1}`;
+  const pyLabel = `${cyStart - 1}-${cyStart}`;
+  const dec = config.decimals ?? 2;   // decimal precision (32=MT→3, 28=DFLs→2) kept consistent with query/PDF/Excel
   return (
     <Layout title={t(config.layoutTitle)}>
       <Block.Head>
@@ -696,8 +725,8 @@ function DdCYPYReport({ config }) {
                       <th rowSpan={2} style={{ background: "linear-gradient(135deg,#1e293b,#36506b)", color: "#fff", padding: "10px 6px", textAlign: "center", border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, width: "50px", position: "sticky", top: 0, zIndex: 2 }}>ಕ್ರ.ಸಂ.<div style={{ fontSize: "9px", opacity: .85 }}>Sl.</div></th>
                       <th rowSpan={2} style={{ background: "linear-gradient(135deg,#334155,#475569)", color: "#fff", padding: "10px 14px", textAlign: "left", border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, minWidth: "140px", position: "sticky", top: 0, zIndex: 2 }}>ತಾಲ್ಲೂಕು<div style={{ fontSize: "9px", opacity: .85, marginTop: "2px" }}>Taluk</div></th>
                       <th rowSpan={2} style={{ background: "linear-gradient(135deg,#a16207,#ca8a04)", color: "#fff", padding: "10px 14px", textAlign: "left", border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, minWidth: "130px", position: "sticky", top: 0, zIndex: 2 }}>ತಳಿ<div style={{ fontSize: "9px", opacity: .85, marginTop: "2px" }}>Race</div></th>
-                      <th colSpan={7} style={{ background: "linear-gradient(135deg,#0f766e,#14b8a6)", color: "#fff", padding: "10px 8px", textAlign: "center", border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, position: "sticky", top: 0, zIndex: 2 }}>ಪ್ರಸಕ್ತ ವರ್ಷ · CY</th>
-                      <th colSpan={7} style={{ background: "linear-gradient(135deg,#5b21b6,#7c3aed)", color: "#fff", padding: "10px 8px", textAlign: "center", border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, position: "sticky", top: 0, zIndex: 2 }}>ಹಿಂದಿನ ವರ್ಷ · PY</th>
+                      <th colSpan={7} style={{ background: "linear-gradient(135deg,#0f766e,#14b8a6)", color: "#fff", padding: "10px 8px", textAlign: "center", border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, position: "sticky", top: 0, zIndex: 2 }}>{cyLabel}ನೇ ಸಾಲು · CY</th>
+                      <th colSpan={7} style={{ background: "linear-gradient(135deg,#5b21b6,#7c3aed)", color: "#fff", padding: "10px 8px", textAlign: "center", border: "1px solid rgba(255,255,255,.18)", fontWeight: 800, position: "sticky", top: 0, zIndex: 2 }}>{pyLabel}ನೇ ಸಾಲು · PY</th>
                     </tr>
                     <tr>
                       {[
@@ -741,7 +770,7 @@ function DdCYPYReport({ config }) {
                           background: isRaceTotal ? "linear-gradient(135deg,#fde68a,#fcd34d)" : (has ? palBg : "transparent"),
                           color: isRaceTotal ? "#78350f" : (has ? palText : "#cbd5e0"),
                           fontWeight: isRaceTotal ? 900 : (isStrong ? 800 : 700) }}>
-                          {has ? fmtDec(v) : "—"}
+                          {has ? fmtDecN(v, dec) : "—"}
                         </td>;
                       };
                       const pctCell = (p, extra = {}) => (
@@ -800,13 +829,13 @@ export function DdChawkiProgressReport() {
     endpointKey: "dd-report/chawki-progress", filenamePrefix: "dd_28_chawki_progress",
     friendlyTitle: "DD Form 28 · Chawki Progress",
     layoutTitle:  "DD Report — Form 28 Chawki Progress",
-    pageTitleKn:  "ನಮೂನೆ-28 · ದ್ವಿತಳಿ ಮೊಟ್ಟೆಗಳ ಚಾಕಿ ಪ್ರಗತಿ",
+    pageTitleKn:  "ನಮೂನೆ-28 · ದ್ವಿತಳಿ ಮೊಟ್ಟೆಗಳ ಚಾಕಿ ಪ್ರಗತಿ ವರದಿ",
     formNo: "Form 28", icon: "🥚",
     gradient: "linear-gradient(135deg,#1d4ed8 0%,#3b82f6 50%,#7c3aed 100%)",
     headerKn: "ದ್ವಿತಳಿ ಮೊಟ್ಟೆಗಳ ಚಾಕಿ ಪ್ರಗತಿ", headerEn: "Bivoltine DFL Brushing Progress · Taluk × Race",
     subtitle: "Race buckets — Pure · FC1 · Cross · Total · CY vs PY (DFLs)",
-    titleKn: "ನಮೂನೆ-28 · ದ್ವಿತಳಿ ಮೊಟ್ಟೆಗಳ ಚಾಕಿ ಪ್ರಗತಿ",
-    metricUnit: "DFLs",
+    titleKn: "ನಮೂನೆ-28 · ದ್ವಿತಳಿ ಮೊಟ್ಟೆಗಳ ಚಾಕಿ ಪ್ರಗತಿ ವರದಿ",
+    metricUnit: "DFLs", decimals: 2,
   }} />;
 }
 
@@ -816,12 +845,12 @@ export function DdCocoonProgressReport() {
     endpointKey: "dd-report/cocoon-progress", filenamePrefix: "dd_32_cocoon_progress",
     friendlyTitle: "DD Form 32 · Cocoon Production",
     layoutTitle:  "DD Report — Form 32 Cocoon Production",
-    pageTitleKn:  "ನಮೂನೆ-32 · ದ್ವಿತಳಿ ಗೂಡು ಉತ್ಪಾದನಾ ಪ್ರಗತಿ",
+    pageTitleKn:  "ನಮೂನೆ-32 · ದ್ವಿತಳಿ ಗೂಡು ಉತ್ಪಾದನಾ ಪ್ರಗತಿ ವರದಿ",
     formNo: "Form 32", icon: "🪺",
     gradient: "linear-gradient(135deg,#a16207 0%,#ca8a04 50%,#0f766e 100%)",
     headerKn: "ದ್ವಿತಳಿ ಗೂಡು ಉತ್ಪಾದನಾ ಪ್ರಗತಿ", headerEn: "Bivoltine Cocoon Production · Taluk × Race",
     subtitle: "Race buckets — Pure · FC1 · Cross · Total · CY vs PY (MT)",
-    titleKn: "ನಮೂನೆ-32 · ದ್ವಿತಳಿ ಗೂಡು ಉತ್ಪಾದನಾ ಪ್ರಗತಿ",
-    metricUnit: "MT (cocoon)",
+    titleKn: "ನಮೂನೆ-32 · ದ್ವಿತಳಿ ಗೂಡು ಉತ್ಪಾದನಾ ಪ್ರಗತಿ ವರದಿ",
+    metricUnit: "MT (cocoon)", decimals: 3,
   }} />;
 }

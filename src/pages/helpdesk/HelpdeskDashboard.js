@@ -18,6 +18,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../layout/default";
 import api from "../../services/auth/api";
+import { isHelpdeskDashboardUser } from "../../services/access/helpdeskDashboardUsers";
 import { Icon } from "../../components";
 import { useTranslation } from "react-i18next";
 
@@ -36,6 +37,12 @@ function HelpdeskDashboard() {
   const [loading, setLoading] = useState(false);
   // const _params = { params: { pageNumber: page, size: countPerPage } };
   const _header = { "Content-Type": "application/json", accept: "*/*" };
+
+  // Access guard — the Helpdesk Dashboard is restricted to an allow-list of usernames
+  // (frontend gate, no backend call). Others get an Access Denied screen, which also
+  // blocks direct-URL navigation, not just the hidden menu item.
+  const allowed = isHelpdeskDashboardUser();
+  const accessChecked = true;
 
   const [data, setData] = useState({
     text: "",
@@ -661,6 +668,28 @@ function HelpdeskDashboard() {
     }
     navigate(`/seriui/raise-ticket-view/${_id}`);
   };
+
+  if (accessChecked && !allowed) {
+    return (
+      <Layout title="Help desk Dashboard">
+        <Block className="mt-3">
+          <Card>
+            <Card.Body className="text-center py-5">
+              <Icon name="shield-off" style={{ fontSize: "48px" }} className="text-danger mb-3" />
+              <h4>Access Denied</h4>
+              <p className="text-muted">
+                You are not authorized to view the Helpdesk Dashboard. Please contact the
+                administrator if you believe this is an error.
+              </p>
+              <Link to="/seriui/" className="btn btn-primary">
+                Back to Home
+              </Link>
+            </Card.Body>
+          </Card>
+        </Block>
+      </Layout>
+    );
+  }
 
   return (
     <Layout title="Help desk Dashboard">

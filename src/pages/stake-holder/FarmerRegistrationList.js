@@ -16,6 +16,9 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
+const ACCENT_HEADER = "linear-gradient(135deg,#1a5f9e 0%,#2c8fd4 60%,#38b2ac 100%)";
+const ACCENT_TABLE  = "linear-gradient(135deg,#1a5f9e,#2c8fd4)";
+
 function FarmerRegistrationList() {
   const { t } = useTranslation();
   const [listData, setListData] = useState({});
@@ -27,6 +30,7 @@ function FarmerRegistrationList() {
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
   const [isActive, setIsActive] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
   const [data, setData] = useState({
     districtId: "",
@@ -70,6 +74,15 @@ function FarmerRegistrationList() {
   };
 
   const exportCsv = (e) => {
+    if (isExporting) return;
+    if (!data.districtId) {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select a District before exporting",
+      });
+      return;
+    }
+    setIsExporting(true);
     api
       .post(
         baseURLFarmer + `farmer/farmer-report`,
@@ -85,16 +98,16 @@ function FarmerRegistrationList() {
           },
           responseType: "blob",
           headers: {
-            accept: "text/csv",
+            accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             "Content-Type": "application/json",
           },
         },
       )
       .then((response) => {
-        const blob = new Blob([response.data], { type: "text/csv" });
+        const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = `farmer_report.csv`;
+        link.download = `farmer_report${new Date().toLocaleDateString("en-GB").replace(/\//g,"-")}.xlsx`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -105,6 +118,9 @@ function FarmerRegistrationList() {
           icon: "warning",
           title: "No record found!!!",
         });
+      })
+      .finally(() => {
+        setIsExporting(false);
       });
   };
 
@@ -355,197 +371,217 @@ function FarmerRegistrationList() {
   );
 
   const customStyles = {
-    rows: {
-      style: {
-        minHeight: "30px", // override the row height
-      },
+    headRow: {
+      style: { minHeight: "52px", height: "auto" },
     },
     headCells: {
       style: {
-        // '&:not(:last-of-type)': {
-        backgroundColor: "#1e67a8",
+        background: ACCENT_TABLE,
         color: "#fff",
-        borderStyle: "solid",
-        bordertWidth: "1px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        fontWeight: 700,
+        fontSize: "13px",
+        padding: "10px 8px",
+        borderRight: "1px solid rgba(255,255,255,0.5)",
+        borderBottom: "2px solid rgba(255,255,255,0.6)",
+        whiteSpace: "normal",
+        wordBreak: "break-word",
+        overflowWrap: "break-word",
+        overflow: "visible",
+        lineHeight: "1.4",
+        minHeight: "52px",
+        height: "auto",
+        verticalAlign: "middle",
+        justifyContent: "center",
+        textAlign: "center",
+      },
+    },
+    rows: {
+      style: {
+        minHeight: "32px",
+        "&:nth-of-type(odd)": { background: "#fff" },
+        "&:nth-of-type(even)": { background: "#f7fafd" },
       },
     },
     cells: {
       style: {
-        // '&:not(:last-of-type)': {
-        borderStyle: "solid",
-        borderWidth: "1px",
-        paddingTop: "3px",
-        paddingBottom: "3px",
+        borderRight: "1px solid #eef2f7",
+        borderBottom: "1px solid #e8edf5",
+        paddingTop: "4px",
+        paddingBottom: "4px",
         paddingLeft: "8px",
         paddingRight: "8px",
-        // borderColor: defaultThemes.default.divider.default,
-        borderColor: "black",
-        // },
+        color: "#2d3748",
+        fontSize: "13px",
+        justifyContent: "center",
+        textAlign: "center",
       },
     },
   };
 
+  const colHeader = (label) => (
+    <div style={{ whiteSpace: "normal", wordBreak: "break-word", textAlign: "center", lineHeight: "1.4", width: "100%", padding: "2px 0" }}>
+      {label}
+    </div>
+  );
+
   const FarmerDataColumns = [
     {
-      name: "Sl.No",
+      name: colHeader("Sl.No"),
       selector: (row) => row.serialNumber,
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
       hide: "md",
     },
-
     {
-      name: "First Name",
+      name: colHeader("First Name"),
       selector: (row) => row.firstName,
       cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farmer Middle Name",
+      name: colHeader("Middle Name"),
       selector: (row) => row.middleName,
       cell: (row) => <span>{row.middleName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Fruits Id",
+      name: colHeader("Fruits Id"),
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
+    // {
+    //   name: colHeader("Farmer Number"),
+    //   selector: (row) => row.farmerNumber,
+    //   cell: (row) => <span>{row.farmerNumber}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: "Land Status",
+    //   selector: (row) => row.landStatus,
+    //   cell: (row) => <span>{row.landStatus}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
-      name: "Farmer Number",
-      selector: (row) => row.farmerNumber,
-      cell: (row) => <span>{row.farmerNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Land Status", // 🆕 CHANGE
-      selector: (row) => row.landStatus, // Backend must send mapped field if needed
-      cell: (row) => <span>{row.landStatus}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: "Father Name",
+      name: colHeader("Father Name"),
       selector: (row) => row.fatherName,
       cell: (row) => <span>{row.fatherName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Caste",
+      name: colHeader("Caste"),
       selector: (row) => row.caste,
       cell: (row) => <span>{row.caste}</span>,
       sortable: true,
       hide: "md",
     },
+    // {
+    //   name: colHeader("Passbook Number"),
+    //   selector: (row) => row.passbookNumber,
+    //   cell: (row) => <span>{row.passbookNumber}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
-      name: "Passbook Number",
-      selector: (row) => row.passbookNumber,
-      cell: (row) => <span>{row.passbookNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "District Name",
+      name: colHeader("District Name"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk  Name",
+      name: colHeader("Taluk Name"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
+    // {
+    //   name: colHeader("Village Name"),
+    //   selector: (row) => row.villageName,
+    //   cell: (row) => <span>{row.villageName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: colHeader("Mulberry Area"),
+    //   selector: (row) => row.mulberryArea,
+    //   cell: (row) => <span>{row.mulberryArea}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: colHeader("Owner Name"),
+    //   selector: (row) => row.ownerName,
+    //   cell: (row) => <span>{row.ownerName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: colHeader("Survey Number"),
+    //   selector: (row) => row.surveyNumber,
+    //   cell: (row) => <span>{row.surveyNumber}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: colHeader("Spacing"),
+    //   selector: (row) => row.spacing,
+    //   cell: (row) => <span>{row.spacing}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: colHeader("Hissa"),
+    //   selector: (row) => row.hissa,
+    //   cell: (row) => <span>{row.hissa}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
+    // {
+    //   name: colHeader("Rearing House Details"),
+    //   selector: (row) => row.rearingHouseDetails,
+    //   cell: (row) => <span>{row.rearingHouseDetails}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
-      name: "Village Name",
-      selector: (row) => row.villageName,
-      cell: (row) => <span>{row.villageName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    // 🆕 New Land + Mulberry Variety Columns
-    {
-      name: "Mulberry Area",
-      selector: (row) => row.mulberryArea,
-      cell: (row) => <span>{row.mulberryArea}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Owner Name",
-      selector: (row) => row.ownerName,
-      cell: (row) => <span>{row.ownerName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Survey Number",
-      selector: (row) => row.surveyNumber,
-      cell: (row) => <span>{row.surveyNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Spacing",
-      selector: (row) => row.spacing,
-      cell: (row) => <span>{row.spacing}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Hissa",
-      selector: (row) => row.hissa,
-      cell: (row) => <span>{row.hissa}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Rearing House Details",
-      selector: (row) => row.rearingHouseDetails,
-      cell: (row) => <span>{row.rearingHouseDetails}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Land Address",
+      name: colHeader("Land Address"),
       selector: (row) => row.landAddress,
       cell: (row) => <span>{row.landAddress}</span>,
       sortable: true,
       hide: "md",
     },
+    // {
+    //   name: colHeader("Mulberry Variety"),
+    //   selector: (row) => row.mulberryVarietyName,
+    //   cell: (row) => <span>{row.mulberryVarietyName}</span>,
+    //   sortable: true,
+    //   hide: "md",
+    // },
     {
-      name: "Mulberry Variety",
-      selector: (row) => row.mulberryVarietyName,
-      cell: (row) => <span>{row.mulberryVarietyName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Mobile Number",
+      name: colHeader("Mobile Number"),
       selector: (row) => row.mobileNumber,
       cell: (row) => <span>{row.mobileNumber}</span>,
       sortable: true,
     },
-
     {
-      name: "TSC Name",
+      name: colHeader("TSC Name"),
       selector: (row) => row.tscName,
       cell: (row) => <span>{row.tscName}</span>,
       sortable: true,
     },
   ];
+
+  const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom: "3px", display: "block" };
+  const CTRL_H = "44px";
+  const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
   return (
     <Layout title={t("Farmer Wise Report")}>
@@ -554,207 +590,119 @@ function FarmerRegistrationList() {
           <Block.HeadContent>
             <Block.Title tag="h2">{t("Farmer Wise Report")}</Block.Title>
           </Block.HeadContent>
-          <Block.HeadContent></Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
 
       <Block className="mt-n4">
-        <Card className="mt-1">
-          <Row className="m-4">
-            <Col sm={2}>
-              <Form.Group className="form-group mt-n4">
-                <Form.Label>{t("District")}</Form.Label>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="districtId"
-                    value={data.districtId}
-                    onChange={handleInputs}
-                    onBlur={() => handleInputs}
-                    isInvalid={
-                      data.districtId === undefined || data.districtId === "0"
-                    }
-                  >
-                    <option value="">{t("Select District")}</option>
-                    {districtListData && districtListData.length
-                      ? districtListData.map((list) => (
-                          <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
-                          </option>
-                        ))
-                      : ""}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {t("District Name is required")}
-                  </Form.Control.Feedback>
-                </div>
-              </Form.Group>
-            </Col>
 
-            <Col sm={2}>
-              <Form.Group className="form-group mt-n4">
-                <Form.Label>{t("Taluk")}</Form.Label>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="talukId"
-                    value={data.talukId}
-                    onChange={handleInputs}
-                    onBlur={() => handleInputs}
-                    isInvalid={
-                      data.talukId === undefined || data.talukId === "0"
-                    }
-                  >
-                    <option value="">{t("Select Taluk")}</option>
-                    {talukListData && talukListData.length
-                      ? talukListData.map((list) => (
-                          <option key={list.talukId} value={list.talukId}>
-                            {list.talukName}
-                          </option>
-                        ))
-                      : ""}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {t("Taluk Name is required")}
-                  </Form.Control.Feedback>
-                </div>
-              </Form.Group>
-            </Col>
-
-            <Col sm={2}>
-              <Form.Group className="form-group mt-n4">
-                <Form.Label>{t("Hobli")}</Form.Label>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="hobliId"
-                    value={hobliData.hobliId}
-                    onChange={handleHobliInputs}
-                    onBlur={() => handleHobliInputs}
-                    isInvalid={
-                      hobliData.hobliId === undefined ||
-                      hobliData.hobliId === "0"
-                    }
-                  >
-                    <option value="">{t("Select hobli")}</option>
-                    {hobliListData && hobliListData.length
-                      ? hobliListData.map((list) => (
-                          <option key={list.hobliId} value={list.hobliId}>
-                            {list.hobliName}
-                          </option>
-                        ))
-                      : ""}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {t("Hobli Name is required")}
-                  </Form.Control.Feedback>
-                </div>
-              </Form.Group>
-            </Col>
-
-            <Col sm={2}>
-              <Form.Group className="form-group mt-n4">
-                <Form.Label>{t("Village")}</Form.Label>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="villageId"
-                    value={data.villageId}
-                    onChange={handleInputs}
-                    onBlur={() => handleInputs}
-                    isInvalid={
-                      data.villageId === undefined || data.villageId === "0"
-                    }
-                  >
-                    <option value="">{t("Select village")}</option>
-                    {villageListData && villageListData.length
-                      ? villageListData.map((list) => (
-                          <option key={list.villageId} value={list.villageId}>
-                            {list.villageName}
-                          </option>
-                        ))
-                      : ""}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {t("Village Name is required")}
-                  </Form.Control.Feedback>
-                </div>
-              </Form.Group>
-            </Col>
-
-            <Col sm={2}>
-              <Form.Group className="form-group mt-n4">
-                <Form.Label>{t("tsc")}</Form.Label>
-                <div className="form-control-wrap">
-                  <Form.Select
-                    name="tscMasterId"
-                    value={data.tscMasterId}
-                    onChange={handleInputs}
-                    onBlur={() => handleInputs}
-                    isInvalid={
-                      data.tscMasterId === undefined || data.tscMasterId === "0"
-                    }
-                  >
-                    <option value="">{t("Select TSC")}</option>
-                    {tscListData && tscListData.length
-                      ? tscListData.map((list) => (
-                          <option
-                            key={list.tscMasterId}
-                            value={list.tscMasterId}
-                          >
-                            {list.name}
-                          </option>
-                        ))
-                      : ""}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {t("TSC is required")}
-                  </Form.Control.Feedback>
-                </div>
-              </Form.Group>
-            </Col>
-
-            <Col sm={3} className="d-flex align-items-end gap-2">
-              <Form.Group className="w-100 mb-0">
-                <Form.Label>{t("Caste")}</Form.Label>
-                <Form.Select
-                  name="casteId"
-                  value={data.casteId}
-                  onChange={handleInputs}
-                >
-                  <option value="0">{t("Select Caste")}</option>
-                  {casteListData.map((list) => (
-                    <option key={list.id} value={list.id}>
-                      {list.title}
-                    </option>
+        {/* ── Filter Card ── */}
+        <Card style={{ borderRadius: "12px", border: "none", boxShadow: "0 2px 16px rgba(30,103,168,0.10)", backgroundColor: "#fff" }}>
+          <div style={{
+            background: ACCENT_HEADER, padding: "11px 18px",
+            display: "flex", alignItems: "center", gap: "10px",
+            borderRadius: "12px 12px 0 0",
+          }}>
+            <span style={{ fontSize: "20px" }}>🌾</span>
+            <div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Farmer Wise Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export farmer registration data")}</div>
+            </div>
+          </div>
+          <Card.Body style={{ padding: "14px 18px 16px" }}>
+            {/* Row 1 — All filters */}
+            <Row className="g-2 mb-2">
+              <Col md={2}>
+                <label style={lbl}>{t("District")} <span style={{ color: "red" }}>*</span></label>
+                <Form.Select name="districtId" value={data.districtId} onChange={handleInputs} style={sel}>
+                  <option value="">{t("Select District")}</option>
+                  {districtListData && districtListData.map((list) => (
+                    <option key={list.districtId} value={list.districtId}>{list.districtName}</option>
                   ))}
                 </Form.Select>
-              </Form.Group>
-
-              <Col sm={4}>
-                <Form.Group className="form-group mt-n4">
-                  <Form.Label>{t("Land Filter")}</Form.Label>
-                  <div className="form-control-wrap">
-                    <Form.Select
-                      name="landFilter" // 🆕 CHANGE
-                      value={data.landFilter}
-                      onChange={handleInputs}
-                    >
-                      <option value="">{t("All Farmers")}</option>{" "}
-                      {/* default = null */}
-                      <option value="WITH">{t("With Land")}</option> {/* 🆕 */}
-                      <option value="WITHOUT">{t("Without Land")}</option>{" "}
-                      {/* 🆕 */}
-                    </Form.Select>
-                  </div>
-                </Form.Group>
               </Col>
+              <Col md={2}>
+                <label style={lbl}>{t("Taluk")}</label>
+                <Form.Select name="talukId" value={data.talukId} onChange={handleInputs} style={sel}>
+                  <option value="">{t("Select Taluk")}</option>
+                  {talukListData && talukListData.map((list) => (
+                    <option key={list.talukId} value={list.talukId}>{list.talukName}</option>
+                  ))}
+                </Form.Select>
+              </Col>
+              <Col md={2}>
+                <label style={lbl}>{t("Hobli")}</label>
+                <Form.Select name="hobliId" value={hobliData.hobliId} onChange={handleHobliInputs} style={sel}>
+                  <option value="">{t("Select Hobli")}</option>
+                  {hobliListData && hobliListData.map((list) => (
+                    <option key={list.hobliId} value={list.hobliId}>{list.hobliName}</option>
+                  ))}
+                </Form.Select>
+              </Col>
+              <Col md={2}>
+                <label style={lbl}>{t("Village")}</label>
+                <Form.Select name="villageId" value={data.villageId} onChange={handleInputs} style={sel}>
+                  <option value="">{t("Select Village")}</option>
+                  {villageListData && villageListData.map((list) => (
+                    <option key={list.villageId} value={list.villageId}>{list.villageName}</option>
+                  ))}
+                </Form.Select>
+              </Col>
+              <Col md={2}>
+                <label style={lbl}>{t("TSC")}</label>
+                <Form.Select name="tscMasterId" value={data.tscMasterId} onChange={handleInputs} style={sel}>
+                  <option value="">{t("Select TSC")}</option>
+                  {tscListData && tscListData.map((list) => (
+                    <option key={list.tscMasterId} value={list.tscMasterId}>{list.name}</option>
+                  ))}
+                </Form.Select>
+              </Col>
+              <Col md={2}>
+                <label style={lbl}>{t("Caste")}</label>
+                <Form.Select name="casteId" value={data.casteId} onChange={handleInputs} style={sel}>
+                  <option value="0">{t("Select Caste")}</option>
+                  {casteListData.map((list) => (
+                    <option key={list.id} value={list.id}>{list.title}</option>
+                  ))}
+                </Form.Select>
+              </Col>
+              {/* <Col md={2}>
+                <label style={lbl}>{t("Land Filter")}</label>
+                <Form.Select name="landFilter" value={data.landFilter} onChange={handleInputs} style={sel}>
+                  <option value="">{t("All Farmers")}</option>
+                  <option value="WITH">{t("With Land")}</option>
+                  <option value="WITHOUT">{t("Without Land")}</option>
+                </Form.Select>
+              </Col> */}
+            </Row>
+            {/* Row 2 — Buttons */}
+            <Row className="g-2 mt-1">
+              <Col md="auto">
+                <button type="button" onClick={search} style={{
+                  background: "linear-gradient(135deg,#1a5f9e,#2c8fd4)", border: "none", borderRadius: "8px",
+                  height: CTRL_H, padding: "0 20px", fontWeight: 700, fontSize: "13px", color: "#fff", cursor: "pointer",
+                  boxShadow: "0 3px 10px rgba(26,95,158,0.30)", display: "inline-flex", alignItems: "center", gap: "6px",
+                }}>
+                  🔍 {t("Search")}
+                </button>
+              </Col>
+              <Col md="auto">
+                <button type="button" onClick={exportCsv} disabled={isExporting || !data.districtId} style={{
+                  background: "linear-gradient(135deg,#c53030,#e53e3e)", border: "none", borderRadius: "8px",
+                  height: CTRL_H, padding: "0 20px", fontWeight: 700, fontSize: "13px", color: "#fff",
+                  cursor: (isExporting || !data.districtId) ? "not-allowed" : "pointer", opacity: (isExporting || !data.districtId) ? 0.6 : 1,
+                  boxShadow: "0 3px 10px rgba(197,48,48,0.28)", display: "inline-flex", alignItems: "center", gap: "6px",
+                }}
+                  title={!data.districtId ? t("Select a District to enable Export") : undefined}
+                >
+                  📥 {isExporting ? t("Exporting...") : t("Export")}
+                </button>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
 
-              <Button type="button" variant="primary" onClick={search}>
-                {t("Search")}
-              </Button>
-
-              <Button type="button" variant="primary" onClick={exportCsv}>
-                {t("Export")}
-              </Button>
-            </Col>
-          </Row>
+        {/* ── Data Table ── */}
+        <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 4px 24px rgba(30,103,168,0.10)", overflow: "hidden", marginTop: "16px" }}>
           <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={FarmerDataColumns}
@@ -764,15 +712,14 @@ function FarmerRegistrationList() {
             paginationServer
             paginationTotalRows={totalRows}
             paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
+            paginationComponentOptions={{ noRowsPerPage: true }}
             onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}
             theme="solarized"
             customStyles={customStyles}
           />
         </Card>
+
       </Block>
     </Layout>
   );

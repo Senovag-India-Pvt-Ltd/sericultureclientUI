@@ -5,6 +5,7 @@ import Block from "../../components/Block/Block";
 import { Card, Form, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
+import SearchableSelect from "../../components/SearchableSelect/SearchableSelect";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -144,13 +145,12 @@ function GenerateAcknowledgement() {
       addressDetails.scSchemeDetailsId &&
       addressDetails.subSchemeId &&
       addressDetails.componentId &&
-      addressDetails.scCategoryId &&
-      addressDetails.fruitsId
+      addressDetails.scCategoryId
     ) {
       api
         .post(
           baseURLDBT +
-            `service/getSanctionOrderNumbers?financialYearId=${addressDetails.financialYearId}&schemeId=${addressDetails.scSchemeDetailsId}&subSchemeId=${addressDetails.subSchemeId}&componentId=${addressDetails.componentId}&categoryId=${addressDetails.scCategoryId}&fruitsId=${addressDetails.fruitsId || ""}`
+            `service/getAcknowledgementArnNumbers?financialYearId=${addressDetails.financialYearId}&schemeId=${addressDetails.scSchemeDetailsId}&subSchemeId=${addressDetails.subSchemeId}&componentId=${addressDetails.componentId}&categoryId=${addressDetails.scCategoryId}&fruitsId=${addressDetails.fruitsId || ""}`
         )
         .then((res) => {
           if (res.data && res.data.content)
@@ -166,8 +166,7 @@ function GenerateAcknowledgement() {
       addressDetails.scSchemeDetailsId &&
       addressDetails.subSchemeId &&
       addressDetails.componentId &&
-      addressDetails.scCategoryId &&
-      addressDetails.fruitsId
+      addressDetails.scCategoryId
     ) {
       loadSanctionOrderNumbers(addressDetails);
     }
@@ -583,17 +582,19 @@ function GenerateAcknowledgement() {
             <Row className="align-items-end">
               <Col md={5} style={fieldGroupStyle}>
                 <label style={labelStyle}>ARN</label>
-                <Form.Select name="sanctionOrderNumber" value={addressDetails.sanctionOrderNumber} onChange={handleSanctionOrderChange} style={selectStyle}>
-                  <option value="">— Select ARN —</option>
-                  {sanctionOrderNumbers && sanctionOrderNumbers.length
-                    ? sanctionOrderNumbers.map((num, index) => {
-                        const val = typeof num === "object" ? num.arn : num;
-                        return (
-                          <option key={index} value={val}>{val}</option>
-                        );
-                      })
-                    : ""}
-                </Form.Select>
+                <SearchableSelect
+                  name="sanctionOrderNumber"
+                  value={addressDetails.sanctionOrderNumber}
+                  onChange={(val) =>
+                    handleSanctionOrderChange({
+                      target: { name: "sanctionOrderNumber", value: val },
+                    })
+                  }
+                  placeholder="— Select ARN —"
+                  options={(sanctionOrderNumbers || []).map((num) =>
+                    typeof num === "object" ? num.arn : num
+                  )}
+                />
               </Col>
 
               <Col md={7} className="d-flex gap-3 flex-wrap pb-1">

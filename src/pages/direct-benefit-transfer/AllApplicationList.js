@@ -646,41 +646,34 @@ function AllApplicationList() {
     // navigate("/seriui/district");
   };
 
-  const deleteError = () => {
-    Swal.fire({
-      icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
-    });
-  };
+  const NON_DELETABLE_STATUSES = [
+    "ACKNOWLEDGEMENT FAILED",
+    "ACKNOWLEDGEMENT SUCCESS",
+    "DBT PUSHED",
+    "PAYMENT SUCCESS IN DBT",
+  ];
 
-  const deleteConfirm = (_id) => {
+  const deleteApplicationConfirm = (_id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "It will delete permanently!",
+      text: "This will permanently delete the application from all records!",
       icon: "warning",
       showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
       confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
     }).then((result) => {
-      if (result.value) {
-        const response = api
-          .delete(baseURL + `marketMaster/delete/${_id}`)
+      if (result.isConfirmed) {
+        api
+          .post(baseURLDBT + `service/deleteApplicationForm/${_id}`)
           .then((response) => {
-            // deleteConfirm(_id);
+            Swal.fire("Deleted!", "Application has been deleted successfully.", "success");
             getList();
-            Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
-              "success"
-            );
           })
           .catch((err) => {
-            deleteError();
+            Swal.fire("Error!", "Failed to delete the application. Please try again.", "error");
           });
-        // Swal.fire("Deleted", "You successfully deleted this record", "success");
-      } else {
-        console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
       }
     });
   };
@@ -894,14 +887,15 @@ function AllApplicationList() {
           >
             {t("Edit")}
           </Button>
-          {/* <Button
+          <Button
             variant="danger"
             size="sm"
-            onClick={() => deleteConfirm(row.marketMasterId)}
             className="ms-2"
+            disabled={NON_DELETABLE_STATUSES.includes(row.applicationStatus)}
+            onClick={() => deleteApplicationConfirm(row.scApplicationFormId)}
           >
-            Delete
-          </Button> */}
+            {t("Delete")}
+          </Button>
         </div>
       ),
       sortable: false,

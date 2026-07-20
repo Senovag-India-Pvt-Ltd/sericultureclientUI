@@ -1767,6 +1767,9 @@ const callWorkOrderAcknowledgment = async (
     } else if (workOrderForScheme === "SDP Low Cost Shed") {
     generateWorkOrderRHSDPLowCostShed(applicationFormId, workOrderSchemeId, subSchemeId, categoryId);
 
+    } else if (workOrderForScheme === "Automatic Reeling Machine Unit") {
+    generateSelectionARM(applicationFormId, workOrderSchemeId, subSchemeId, categoryId);
+
   }
 };
 
@@ -1864,6 +1867,14 @@ const handleDownloadWorkOrder = async (viewDetailsData) => {
 
     } else if (viewDetailsData.workOrderForScheme === "SDP Low Cost Shed") {
       generateWorkOrderRHSDPLowCostShed(
+        viewDetailsData.applicationFormId,
+        viewDetailsData.workOrderSchemeId,
+        viewDetailsData.subSchemeId,
+        viewDetailsData.categoryId
+      );
+
+    } else if (viewDetailsData.workOrderForScheme === "Automatic Reeling Machine Unit") {
+      generateSelectionARM(
         viewDetailsData.applicationFormId,
         viewDetailsData.workOrderSchemeId,
         viewDetailsData.subSchemeId,
@@ -2329,6 +2340,28 @@ const generateWorkOrderOrderIMCB= async (applicationFormId, schemeId,subSchemeId
     window.open(fileURL);
   } catch (error) {
     console.error("Error generating work order acknowledgment:", error);
+  }
+};
+
+const generateSelectionARM = async (applicationFormId, schemeId, subSchemeId, categoryId) => {
+  try {
+    const response = await api.post(
+      baseURLReport + `selection-arm`,
+      {
+        applicationFormId: applicationFormId,
+        schemeId: schemeId,
+        subSchemeId: subSchemeId,
+        categoryId: categoryId,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+    const file = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  } catch (error) {
+    console.error("Error generating ARM selection letter:", error);
   }
 };
 

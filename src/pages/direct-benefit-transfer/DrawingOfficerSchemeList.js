@@ -909,7 +909,7 @@ function DrawingOfficerSchemeList() {
       button: true,
     },
     {
-      name: "Farmer Name",
+      name: "Beneficiary Name",
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
       sortable: true,

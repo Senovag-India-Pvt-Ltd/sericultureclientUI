@@ -257,7 +257,7 @@ function TscFarmerStatisticsReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const tscDisplay = selectedTsc?.name || "—";
+  const tscDisplay = selectedTsc?.nameInKannada || selectedTsc?.name || "—";
 
   // KPI snapshot — pull plain (no sub_label) rows by serial_number
   const kpis = useMemo(() => {
@@ -349,7 +349,7 @@ function TscFarmerStatisticsReport() {
                 <Col md={3}>
                   <label style={lbl}>TSC <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
-                    options={tscList.map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.name }))}
+                    options={tscList.map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.nameInKannada || tsc.name }))}
                     placeholder="— Search TSC —"
                     isSearchable
                     isClearable
@@ -359,7 +359,7 @@ function TscFarmerStatisticsReport() {
                     styles={tscSelectStyles}
                     value={
                       tscList
-                        .map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.name }))
+                        .map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.nameInKannada || tsc.name }))
                         .find((o) => o.value === String(filter.tscId)) || null
                     }
                     onChange={(opt) => {

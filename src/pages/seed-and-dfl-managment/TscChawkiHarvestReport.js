@@ -271,7 +271,7 @@ function TscChawkiHarvestReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const tscDisplay = selectedTsc?.name || "—";
+  const tscDisplay = selectedTsc?.nameInKannada || selectedTsc?.name || "—";
 
   // Classify rows: section (sub_label='') / sub (sub_label numeric) / total (sub_label='∑')
   const enrichedRows = useMemo(() => {
@@ -335,7 +335,7 @@ function TscChawkiHarvestReport() {
                 ತಾಂತ್ರಿಕ ಸೇವಾ ಕೇಂದ್ರ — ಚಾಕಿ ಮಾಡಿದ ಮತ್ತು ಕಟಾವಾದ ಮೊಟ್ಟೆಗಳ ವಿವರಗಳು
                 <span style={{ background: "rgba(255,255,255,.22)", padding: "2px 9px", borderRadius: "12px", marginLeft: "8px", fontSize: "10.5px", fontWeight: 800 }}>TSC</span>
               </div>
-              <div style={{ color: "rgba(255,255,255,.85)", fontSize: "11px", marginTop: "2px" }}>Part-3 · Chawki Programme + Harvest — by P1/P2, target/achievement, success/low-yield/failed</div>
+              <div style={{ color: "rgba(255,255,255,.85)", fontSize: "11px", marginTop: "2px" }}>ಭಾಗ-3 · ಚಾಕಿ ಕಾರ್ಯಕ್ರಮ ಗುರಿ / ಸಾಧನೆ · ಯಶಸ್ವಿ ಕಟಾವು / ಕಡಿಮೆ ಇಳುವರಿ / ವಿಫಲವಾದ ಮೊಟ್ಟೆ · ಒಟ್ಟು ಕಟಾವು</div>
             </div>
             {hasReport && (
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
@@ -350,9 +350,9 @@ function TscChawkiHarvestReport() {
             <Form onSubmit={handleView}>
               <Row className="g-2 align-items-end">
                 <Col md={3}>
-                  <label style={lbl}>TSC <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>ತಾಂತ್ರಿಕ ಸೇವಾ ಕೇಂದ್ರ (TSC) <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
-                    options={tscList.map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.name }))}
+                    options={tscList.map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.nameInKannada || tsc.name }))}
                     placeholder="— Search TSC —"
                     isSearchable
                     isClearable
@@ -362,7 +362,7 @@ function TscChawkiHarvestReport() {
                     styles={tscSelectStyles}
                     value={
                       tscList
-                        .map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.name }))
+                        .map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.nameInKannada || tsc.name }))
                         .find((o) => o.value === String(filter.tscId)) || null
                     }
                     onChange={(opt) => {
@@ -374,7 +374,7 @@ function TscChawkiHarvestReport() {
                   />
                 </Col>
                 <Col md={3}>
-                  <label style={lbl}>Grainage <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>ಗ್ರೈನೇಜ್ (Grainage) <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
                     options={grainageList.map((g) => ({
                       value: String(g.grainageMasterId),
@@ -404,7 +404,7 @@ function TscChawkiHarvestReport() {
                   />
                 </Col>
                 <Col md={2}>
-                  <label style={lbl}>Financial Year <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>ಆರ್ಥಿಕ ವರ್ಷ (Financial Year) <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="financialYearMasterId" value={filter.financialYearMasterId} onChange={handleChange} style={sel}>
                     <option value="">— Select Year —</option>
                     {financialYearList.map((f) => (
@@ -413,11 +413,11 @@ function TscChawkiHarvestReport() {
                   </Form.Select>
                 </Col>
                 <Col md={2}>
-                  <label style={lbl}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>ಮಾಹೆ (Month) <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="month" value={filter.month} onChange={handleChange} style={sel}>
-                    <option value="">— Month —</option>
+                    <option value="">— ಮಾಹೆ / Month —</option>
                     {MONTHS.map((m) => (
-                      <option key={m.value} value={m.value}>{m.label}</option>
+                      <option key={m.value} value={m.value}>{MONTH_KN[m.value]} · {m.label}</option>
                     ))}
                   </Form.Select>
                 </Col>
@@ -478,10 +478,7 @@ function TscChawkiHarvestReport() {
                 fontWeight: 800, fontSize: "15px", letterSpacing: ".02em",
                 textAlign: "center",
               }}>
-                ಭಾಗ-3 ತಾಂತ್ರಿಕ ಸೇವಾ ಕೇಂದ್ರ {tscDisplay} — {monthKn} {monthYear || ""} ಚಾಕಿ ಮಾಡಿದ ಮೊಟ್ಟೆಗಳ ಮತ್ತು ಕಟಾವಾದ ಮೊಟ್ಟೆಗಳ ವಿವರಗಳು
-                <div style={{ fontSize: "12px", fontWeight: 600, opacity: .9, marginTop: "4px" }}>
-                  Part-3 · Chawki &amp; Harvest DFLs &nbsp;·&nbsp; {monthLabel} {monthYear || ""}
-                </div>
+                ಭಾಗ-3 ತಾಂತ್ರಿಕ ಸೇವಾ ಕೇಂದ್ರ {tscDisplay} {fyStartYear ? `${fyStartYear}-${String(fyStartYear + 1).slice(-2)} ನೇ ಸಾಲಿನ ` : ""}{monthKn}-{monthYear || ""} ನೇ ಮಾಹೆಯಲ್ಲಿ ಚಾಕಿ ಮಾಡಿದ ಮೊಟ್ಟೆಗಳ ಮತ್ತು ಕಟಾವಾದ ಮೊಟ್ಟೆಗಳ ವಿವರಗಳು
               </div>
 
               <div className="tscch-scroll" style={{ overflowX: "auto" }}>

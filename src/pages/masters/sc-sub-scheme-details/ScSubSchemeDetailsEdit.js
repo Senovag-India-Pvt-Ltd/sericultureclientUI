@@ -113,6 +113,7 @@ function ScSubSchemeDetailsEdit() {
         withLand: false,
         allowMultipleSanction: false,
         sanctionForReeling: false,
+        monthlyFrequency: false,
         schemeCodeForSanctionOrder: "",
     });
   };
@@ -133,6 +134,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
   withLand: !!content.withLand,
   allowMultipleSanction: !!content.allowMultipleSanction,
   sanctionForReeling: !!content.sanctionForReeling,
+  monthlyFrequency: !!content.monthlyFrequency,
 
   subSchemeStartDate: safeDate(content.subSchemeStartDate),
   subSchemeEndDate: safeDate(content.subSchemeEndDate),
@@ -203,6 +205,13 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
     setData((prev) => ({
       ...prev,
       sanctionForReeling: e.target.checked,
+    }));
+  };
+
+  const handleMonthlyFrequencyCheckBox = (e) => {
+    setData((prev) => ({
+      ...prev,
+      monthlyFrequency: e.target.checked,
     }));
   };
 
@@ -470,7 +479,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             <option value="IMCB-PSF">IMCB-PSF</option>
                             <option value="ICB-PSF">ICB-PSF</option>
                             <option value="MERM-PSF">MERM-PSF</option>
-                            <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
+                            <option value="Automatic Reeling Machine">Automatic Reeling Machine</option>
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
@@ -487,6 +496,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
                             <option value="SDP RH 225">SDP RH 225</option>
                               <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
+                              <option value="Automatic Reeling Machine Unit">Automatic Reeling Machine Unit</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -529,7 +539,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             <option value="IMCB-PSF">IMCB-PSF</option>
                             <option value="ICB-PSF">ICB-PSF</option>
                             <option value="MERM-PSF">MERM-PSF</option>
-                            <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
+                            <option value="Automatic Reeling Machine">Automatic Reeling Machine</option>
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
@@ -546,6 +556,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                              <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
                              <option value="SDP RH 225">SDP RH 225</option>
                               <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
+                              <option value="Automatic Reeling Machine Unit">Automatic Reeling Machine Unit</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -588,7 +599,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             <option value="IMCB-PSF">IMCB-PSF</option>
                             <option value="ICB-PSF">ICB-PSF</option>
                             <option value="MERM-PSF">MERM-PSF</option>
-                            <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
+                            <option value="Automatic Reeling Machine">Automatic Reeling Machine</option>
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
@@ -605,6 +616,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                              <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
                              <option value="SDP RH 225">SDP RH 225</option>
                               <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
+                              <option value="Automatic Reeling Machine Unit">Automatic Reeling Machine Unit</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -647,7 +659,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             <option value="IMCB-PSF">IMCB-PSF</option>
                             <option value="ICB-PSF">ICB-PSF</option>
                             <option value="MERM-PSF">MERM-PSF</option>
-                            <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
+                            <option value="Automatic Reeling Machine">Automatic Reeling Machine</option>
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
@@ -663,6 +675,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
                             <option value="SDP RH 225">SDP RH 225</option>
                               <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
+                              <option value="Automatic Reeling Machine Unit">Automatic Reeling Machine Unit</option>
 
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
@@ -671,7 +684,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                         </div>
                       </Form.Group>
                     </Col>
-  
+
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
@@ -706,7 +719,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             <option value="IMCB-PSF">IMCB-PSF</option>
                             <option value="ICB-PSF">ICB-PSF</option>
                             <option value="MERM-PSF">MERM-PSF</option>
-                            <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
+                            <option value="Automatic Reeling Machine">Automatic Reeling Machine</option>
                             <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
                             <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
                             <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
@@ -723,6 +736,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                              <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
                              <option value="SDP RH 225">SDP RH 225</option>
                               <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
+                              <option value="Automatic Reeling Machine Unit">Automatic Reeling Machine Unit</option>
                           </Form.Select>
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
@@ -1038,6 +1052,19 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
   </Form.Label>
 </Col>
 
+                        {/* Monthly Frequency */}
+                        <Col sm={2} className="d-flex align-items-center">
+                          <Form.Check
+                            type="checkbox"
+                            id="monthlyFrequency"
+                            checked={!!data.monthlyFrequency}
+                            onChange={handleMonthlyFrequencyCheckBox}
+                            className="me-2"
+                          />
+                          <Form.Label htmlFor="monthlyFrequency" className="mb-0">
+                            {t("Monthly Frequency")}
+                          </Form.Label>
+                        </Col>
                       </Row>
 
                   </Row>

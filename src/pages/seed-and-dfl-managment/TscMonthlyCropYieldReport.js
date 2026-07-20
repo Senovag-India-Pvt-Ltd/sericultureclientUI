@@ -136,8 +136,8 @@ const METRIC_GROUPS = [
   { key: "brushed", kn: "ಚಾಕಿ",         en: "Brushed",        suffix: "brushed", tone: "blue",   fmt: "int" },
   { key: "low",     kn: "ಕಡಿಮೆ ಇಳುವರಿ", en: "Low Yield",      suffix: "low",     tone: "amber",  fmt: "int" },
   { key: "fail",    kn: "ವಿಫಲ",        en: "Failed",         suffix: "fail",    tone: "red",    fmt: "int" },
-  { key: "succ",    kn: "ಯಶಸ್ವಿ ಕಟಾವು", en: "Successful",     suffix: "succ",    tone: "green",  fmt: "int" },
-  { key: "total",   kn: "ಒಟ್ಟು ಕಟಾವು",   en: "Total Harvest",  suffix: "total",   tone: "teal",   fmt: "int", strong: true },
+  { key: "succ",    kn: "ಯಶಸ್ವಿ ಕಟಾವಾದ", en: "Successful",     suffix: "succ",    tone: "green",  fmt: "int" },
+  { key: "total",   kn: "ಒಟ್ಟು ಬೆಳೆ",    en: "Total Crops",    suffix: "total",   tone: "teal",   fmt: "int", strong: true },
   { key: "kg",      kn: "ಗೂಡು ಕೆ.ಜಿ",    en: "Cocoon (kg)",    suffix: "kg",      tone: "purple", fmt: "dec" },
   { key: "avg",     kn: "ಸರಾಸರಿ ಇಳುವರಿ", en: "Avg Yield (kg/100 DFLs)", suffix: "avg", tone: "indigo", fmt: "dec", strong: true },
 ];
@@ -545,7 +545,7 @@ function TscMonthlyCropYieldReport() {
                 fontWeight: 800, fontSize: "15px", letterSpacing: ".02em",
                 textAlign: "center",
               }}>
-                ನಮೂನೆ-27ಬಿ · ತಳಿವಾರು ಬೆಳೆ ಇಳುವರಿ ವಿವರ — {talukName} — {monthKn} {filter.year}
+                {districtName} ಜಿಲ್ಲೆಯ {talukName} ತಾಲ್ಲೂಕಿನ {monthKn} – {filter.year} ರ ಮಾಹೆಯ ತಳಿವಾರು ಬೆಳೆದ ರೇಷ್ಮೆ ಬೆಳೆಗಳ ವಿವರ ಹಾಗೂ ಪಡೆದ ಇಳುವರಿ (ನಮೂನೆ-27ಬಿ)
                 <div style={{ fontSize: "12px", fontWeight: 600, opacity: .9, marginTop: "4px" }}>
                   Form 27B · TSC × Race Crop Yield Detail · {monthLabel} {filter.year}
                 </div>
@@ -616,11 +616,11 @@ function TscMonthlyCropYieldReport() {
                         };
                         return [
                           <th key={`${g.key}-mo`} style={cellSt}>
-                            <div style={{ fontSize: "10px" }}>ಮಾಸ</div>
+                            <div style={{ fontSize: "10px" }}>ಮಾಹೆ</div>
                             <div style={{ fontSize: "8.5px", opacity: .8 }}>Mo</div>
                           </th>,
                           <th key={`${g.key}-me`} style={{ ...cellSt, fontWeight: g.strong ? 800 : 700 }}>
-                            <div style={{ fontSize: "10px" }}>ಅಂತ್ಯ</div>
+                            <div style={{ fontSize: "10px" }}>ಅಂತ್ಯಕ್ಕೆ</div>
                             <div style={{ fontSize: "8.5px", opacity: .8 }}>ME</div>
                           </th>,
                         ];

@@ -14,6 +14,10 @@ import { createTheme } from "react-data-table-component";
 import ReactSelect from "react-select";
 import api from "../../../../src/services/auth/api";
 import React, { useMemo } from "react";
+import {
+  getFinancialYearMonths,
+  getMonthPeriodByValue,
+} from "../../../utilities/monthlyFrequency";
 
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -128,6 +132,7 @@ const generateFinalReport = async (selectedRows) => {
     periodFrom: getCurrentFinancialYearPeriod().periodFrom,
     periodTo: getCurrentFinancialYearPeriod().periodTo,
     cocoonsWeight:"",
+    actualCocoonsTransacted: null,
     availBonus:"",
     // availBonus: true,
     lotWeight:"",
@@ -148,6 +153,7 @@ const generateFinalReport = async (selectedRows) => {
     month: "",
     fromMonth: "",
     toMonth: "",
+    monthYear: "",
     machineQuantity: "",
     machineTypeId: "",
     imcbTable: "",
@@ -185,6 +191,18 @@ const generateFinalReport = async (selectedRows) => {
     eligibleForIncentive: "",
     eligibleForIncentive: "",
     quantityOfSeedCocoons: "",
+    armEnds: "",
+    armUnitName: "",
+    armUnitAddress: "",
+    armLandType: "",
+    armDistrictId: "",
+    armTalukId: "",
+    armHobliId: "",
+    armVillageId: "",
+    armAddress: "",
+    armOwnerName: "",
+    armSurveyNo: "",
+    armAssessmentNo: "",
 
   });
   const formatAuctionDate = (auctionDate) => {
@@ -739,6 +757,10 @@ const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
  // State to store incentive and bonus data
 const [getIncentiveAndBonusData, setIncentiveAndBonusData] = useState([]);
 const [isSanctionForReeling, setIsSanctionForReeling] = useState(false);
+const [armCalculationData, setArmCalculationData] = useState([]);
+const [armTalukListData, setArmTalukListData] = useState([]);
+const [armHobliListData, setArmHobliListData] = useState([]);
+const [armVillageListData, setArmVillageListData] = useState([]);
 
 // // Function to fetch incentive/bonus data
 // const getIncentiveAndBonusList = (scSchemeDetailsId, scSubSchemeDetailsId) => {
@@ -1533,7 +1555,11 @@ if (
         }
       )
       .then((response) => {
-        if (response.data.content.unitCost) {
+        if (
+          response.data.content.unitCost &&
+          getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Automatic Reeling Machine" &&
+          getIncentiveAndBonusData?.[0]?.unitForScheme !== "Automatic Reeling Machine Unit"
+        ) {
           const unitCost = response.data.content.unitCost;
           setScHeadAccountListData(unitCost);
           setAmountValue((prev) => ({
@@ -1784,6 +1810,58 @@ if (
            }
          }, [data.kaneshHobliId]);
 
+        // ARM land details cascade
+        useEffect(() => {
+          if (data.armDistrictId) {
+            api.get(baseURLMasterData + `taluk/get-by-district-id/${data.armDistrictId}`)
+              .then(r => setArmTalukListData(r.data.content?.taluk || []))
+              .catch(() => setArmTalukListData([]));
+          } else { setArmTalukListData([]); }
+        }, [data.armDistrictId]);
+
+        useEffect(() => {
+          if (data.armTalukId) {
+            api.get(baseURLMasterData + `hobli/get-by-taluk-id/${data.armTalukId}`)
+              .then(r => setArmHobliListData(r.data.content?.hobli || []))
+              .catch(() => setArmHobliListData([]));
+          } else { setArmHobliListData([]); }
+        }, [data.armTalukId]);
+
+        useEffect(() => {
+          if (data.armHobliId) {
+            api.get(baseURLMasterData + `village/get-by-hobli-id/${data.armHobliId}`)
+              .then(r => setArmVillageListData(r.data.content?.village || []))
+              .catch(() => setArmVillageListData([]));
+          } else { setArmVillageListData([]); }
+        }, [data.armHobliId]);
+
+        // Fetch ARM unit price when armEnds + category changes
+        useEffect(() => {
+          if (data.armEnds && data.scCategoryId) {
+            api.get(baseURLMasterData + "armCalculation/get-unit-price", {
+              params: { armEnds: data.armEnds, scCategoryId: data.scCategoryId }
+            })
+              .then(r => {
+                const result = r.data.content;
+                if (result && !result.error && result.totalUnitCost) {
+                  // Wrap into a single-element array so all existing consumers work unchanged
+                  setArmCalculationData([{
+                    unitCost:          result.totalUnitCost,
+                    centralPercentage: result.centralPercentage,
+                    statePercentage:   result.statePercentage,
+                    subsidyAmount:     result.subsidyAmount,
+                    componentCount:    result.componentCount,
+                  }]);
+                } else {
+                  setArmCalculationData([]);
+                }
+              })
+              .catch(() => setArmCalculationData([]));
+          } else {
+            setArmCalculationData([]);
+          }
+        }, [data.armEnds, data.scCategoryId]);
+
   // to get User Master
   // const [userListData, setUserListData] = useState([]);
 
@@ -1983,7 +2061,9 @@ const isSDP =
       const { periodFrom, periodTo } = getFinancialYearPeriod(
         selectedFY?.financialYear
       );
-      setData({ ...data, [name]: value, periodFrom, periodTo });
+      // Changing the financial year invalidates any previously selected month
+      // (the month list is FY-specific), so reset it back to the full-FY period.
+      setData({ ...data, [name]: value, periodFrom, periodTo, monthYear: "" });
     } else {
       setData({ ...data, [name]: value });
     }
@@ -2017,6 +2097,20 @@ const isSDP =
 
   const handleDateChange = (date, type) => {
     setData({ ...data, [type]: date });
+  };
+
+  // Monthly Frequency: selecting a month auto-populates Period From / Period To with
+  // the first and last day of that month (leap-year safe). Used only when the selected
+  // sub scheme has monthlyFrequency === true.
+  const handleMonthlyFrequencyMonthChange = (e) => {
+    const value = e.target.value;
+    const { periodFrom, periodTo } = getMonthPeriodByValue(value);
+    setData((prev) => ({
+      ...prev,
+      monthYear: value,
+      periodFrom: periodFrom || prev.periodFrom,
+      periodTo: periodTo || prev.periodTo,
+    }));
   };
 
   const handleDevelopedLandInputs = (e) => {
@@ -2129,6 +2223,12 @@ const getCalculateAmountForRH = () => {
   const { scSchemeDetailsId, scComponentId, scCategoryId } = data;
 
   if (!scSchemeDetailsId || !scComponentId || !scCategoryId) return;
+
+  // ARM: unit cost comes from ARM Calculation Master, not this API
+  if (
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Automatic Reeling Machine" ||
+    getIncentiveAndBonusData?.[0]?.unitForScheme === "Automatic Reeling Machine Unit"
+  ) return;
 
   setLoading(true);
 
@@ -2348,49 +2448,13 @@ const [totalSubsidy, setTotalSubsidy] = useState(0);
 //   });
 // };
 
-const calculateBonusAmount = ({ calcType, maxNoOfCocoonsPerKg,minAverageYield } = {}) => {
+const calculateBonusAmount = ({ calcType, maxNoOfCocoonsPerKg, minAverageYield } = {}) => {
   const cocoonsWeight = parseFloat(data.cocoonsWeight || 0);
-  const amountPerKg = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
-  const avgYield = parseFloat(data.averageYield || 0);
-  const noOfDFLs = parseFloat(data.lotWeight || 0);
+  const amountPerKg   = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
 
-  // let baseQuantity;
-  let baseQuantity = cocoonsWeight;
-
-  // ⭐ Special rule:
-  // If calcType is Bivoltine incentive AND averageYield > maxNoOfCocoonsPerKg,
-  // then calculate based on: maxNoOfCocoonsPerKg * amountPerKg
-  // if (
-  //   calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF" &&
-  //   maxNoOfCocoonsPerKg &&
-  //   avgYield > parseFloat(maxNoOfCocoonsPerKg)
-  // ) {
-  //   if (noOfDFLs < 100) {
-  //     // 🔥 BELOW 100 DFLs RULE
-  //     baseQuantity = (noOfDFLs * maxNoOfCocoonsPerKg) / 100;
-  //   } else {
-  //     // 🔥 100 OR MORE DFLs RULE
-  //     baseQuantity = maxNoOfCocoonsPerKg;
-  //   }
-  // }
-  if (calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF") {
-
-    // ❌ Below minimum → should already be blocked before calling this
-    if (avgYield < minAverageYield) return;
-
-    // 🔥 If avgYield exceeds max → LIMIT the cocoons weight
-    if (avgYield > maxNoOfCocoonsPerKg) {
-      baseQuantity = (noOfDFLs / 100) * maxNoOfCocoonsPerKg;
-    }
-    // else → use actual cocoonsWeight (no change)
-  }
-
-  const calculatedAmount = baseQuantity * amountPerKg;
-
-  // Round to 2 decimals
-  // const roundedAmount = Math.round(calculatedAmount * 100) / 100;
-
-  const roundedAmount = Math.round(calculatedAmount);
+  // Original formula: Total = Cocoons Transacted × Rate per kg
+  const calculatedAmount = cocoonsWeight * amountPerKg;
+  const roundedAmount    = Math.round(calculatedAmount);
 
   setAmountValue((prev) => ({
     ...prev,
@@ -2718,6 +2782,32 @@ const calculateEquipmentRow = (item, sharePerc) => {
 
 
 const handleCalculateUnitPrice = () => {
+
+  // ARM: calculate unit cost directly from ARM Calculation Master data
+  if (
+    getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Automatic Reeling Machine" ||
+    getIncentiveAndBonusData?.[0]?.unitForScheme === "Automatic Reeling Machine Unit"
+  ) {
+    if (armCalculationData.length > 0) {
+      const totalUnitCost = armCalculationData.reduce(
+        (s, r) => s + (parseFloat(r.unitCost) || 0), 0
+      );
+      const centralPct = parseFloat(armCalculationData[0]?.centralPercentage) || 0;
+      const statePct   = parseFloat(armCalculationData[0]?.statePercentage)   || 0;
+      const subsidyAmt = Math.round(totalUnitCost * (centralPct + statePct) / 100);
+      setAmountValue(prev => ({ ...prev, unitPrice: totalUnitCost }));
+      setData(prev => ({ ...prev, expectedAmount: subsidyAmt }));
+      setUnitPriceCalculated(true);
+    } else {
+      Swal.fire({
+        icon: "warning",
+        title: "ARM Ends & Category Required",
+        text: "Please select ARM Ends and Category to load the unit cost from ARM Calculation Master.",
+        confirmButtonColor: "#f0a500",
+      });
+    }
+    return;
+  }
 
   const incentiveCalcBasedOn = getIncentiveAndBonusData?.[0]?.calculationBasedOn;
 
@@ -3141,23 +3231,66 @@ if (
   let maxNoOfCocoonsPerKg;
 
   if (calcType === "Incentive For Bivoltine Cocoons-30/kg-PSF") {
-    const { minAverageYield, maxNoOfCocoonsPerKg: maxCocoons } = bonusAmountData[0];
-    maxNoOfCocoonsPerKg = maxCocoons;
+    const avgYield      = parseFloat(data.averageYield || 0);
+    const noOfDfls      = parseFloat(data.lotWeight || 0);
+    const minAvgYield   = bonusAmountData[0]?.minAverageYield;
+    const maxCocoonsPKg = bonusAmountData[0]?.maxNoOfCocoonsPerKg;
 
-    // 5. Check min Average Yield (still blocked if less than min)
-    if (parseFloat(data.averageYield) < parseFloat(minAverageYield)) {
+    if (minAvgYield == null || maxCocoonsPKg == null) {
       Swal.fire({
-        icon: "warning",
-        title: "Validation Error",
-        text: `Average Yield cannot be less than the minimum required value (${minAverageYield}).`,
+        icon: "error",
+        title: "Configuration Not Found",
+        text: "Min Average Yield and Max No. of Cocoons Per Kg are not configured. Please configure them in the Configure Bivoltine Amount page.",
       });
       return;
     }
 
-    // ⚠️ IMPORTANT:
-    // If Average Yield > maxNoOfCocoonsPerKg -> DO NOT block.
-    // We'll handle it inside calculateBonusAmount by using
-    // maxNoOfCocoonsPerKg for the calculation.
+    const minAvgYieldVal   = parseFloat(minAvgYield);
+    const maxCocoonsPKgVal = parseFloat(maxCocoonsPKg);
+
+    // Case 3: Average Yield < minAverageYield — block, do not calculate subsidy
+    if (avgYield < minAvgYieldVal) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: `Average Yield Should be Above ${minAvgYieldVal}%`,
+      });
+      return;
+    }
+
+    // Case 1: Average Yield > maxNoOfCocoonsPerKg — Cocoons Transacted and Average Yield are
+    // shown on screen as the eligible/capped figures (what Calculate produces), but the actual
+    // Cocoons Transacted saved to the DB must stay the real, raw transacted quantity. So the
+    // raw cocoonsWeight is captured into actualCocoonsTransacted BEFORE it's overwritten for
+    // display — the save payload reads actualCocoonsTransacted instead of cocoonsWeight when
+    // this scheme has been capped. Average Yield has no such split: it is shown and saved as
+    // the capped value.
+    if (avgYield > maxCocoonsPKgVal) {
+      const eligibleCocoons = parseFloat((noOfDfls * maxCocoonsPKgVal / 100).toFixed(2));
+      const amountPerKg     = parseFloat(bonusAmountData[0]?.amountPerKg || 0);
+      const roundedAmount   = Math.round(eligibleCocoons * amountPerKg);
+
+      setAmountValue((prev) => ({ ...prev, unitPrice: amountPerKg }));
+      setData((prev) => ({
+        ...prev,
+        expectedAmount: roundedAmount,
+        averageYield: maxCocoonsPKgVal,
+        actualCocoonsTransacted: prev.cocoonsWeight,
+        cocoonsWeight: eligibleCocoons,
+      }));
+      setUnitPriceCalculated(true);
+
+      Swal.fire({
+        icon: "info",
+        title: "Subsidy Calculated on Eligible Quantity",
+        text: `Average Yield exceeds ${maxCocoonsPKgVal}%. Subsidy is calculated on eligible quantity: ${eligibleCocoons} kg (${noOfDfls} × ${maxCocoonsPKgVal}/100). Average Yield and Cocoons Transacted (kg) shown here reflect the eligible values; the actual transacted quantity is still saved to the record.`,
+      });
+      return;
+    }
+
+    // Case 2: minAvgYieldVal ≤ averageYield ≤ maxCocoonsPKgVal — no capping applies this time,
+    // clear out any capped-raw value left over from a previous Calculate click.
+    setData((prev) => ({ ...prev, actualCocoonsTransacted: null }));
   }
 
   // 7. If all validations pass, calculate the bonus
@@ -4628,14 +4761,18 @@ const isUserValid = React.useMemo(() => {
       return;
     }
 
-    // Silk Samagra State / Silk Samagra Central: validate Land Wise Constructed Area
+    // Silk Samagra State / Silk Samagra Central: validate Land Wise Constructed Area (skip for ARM)
     if (
-      schemeDetails.calculationBasedOn === "Silk Samagra State" ||
-      schemeDetails.calculationBasedOn === "Silk Samagra Central"
+      (schemeDetails.calculationBasedOn === "Silk Samagra State" ||
+      schemeDetails.calculationBasedOn === "Silk Samagra Central") &&
+      getIncentiveAndBonusData?.[0]?.unitForScheme !== "Automatic Reeling Machine Unit"
     ) {
       const missingFields = [];
       if (!data.equordev.includes("land")) {
         missingFields.push("Land Wise Details (please check the Land Wise checkbox)");
+      // }
+      } else if (landDetailsIds.length === 0) {
+        missingFields.push("Land Wise Details (Please check at least one land from the Land Wise table.)");
       }
       if (!data.equordev.includes("constructedArea")) {
         missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
@@ -4658,6 +4795,57 @@ const isUserValid = React.useMemo(() => {
               line-height:2;
             ">
               ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
+            </ul>
+          `,
+          confirmButtonText: "OK, Got it!",
+          confirmButtonColor: "#f0a500",
+          background: "#fff8f0",
+          customClass: {
+            title: "swal-title-style",
+            popup: "swal-popup-style",
+          },
+        });
+        return;
+      }
+    }
+
+    // Incentive For Bivoltine Cocoons-30/kg-PSF: the min-yield gate (using the configured
+    // minAverageYield, not a hardcoded number) already runs inside "Calculate Unit Price"
+    // (see Case 3 above), and unitPriceCalculated already blocks save until Calculate has
+    // run — so no separate hardcoded 60/90 recheck is needed here. Yield above the
+    // configured max slab is the normal case Calculate already handles by capping the
+    // eligible quantity, not by rejecting the save.
+
+    // ARM: validate all Reeler Land Details fields are filled
+    if (getIncentiveAndBonusData?.[0]?.unitForScheme === "Automatic Reeling Machine Unit") {
+      const armMissingFields = [];
+      if (!data.armLandType)    armMissingFields.push("Land Type");
+      if (!data.armDistrictId)  armMissingFields.push("District");
+      if (!data.armTalukId)     armMissingFields.push("Taluk");
+      if (!data.armHobliId)     armMissingFields.push("Hobli");
+      if (!data.armVillageId)   armMissingFields.push("Village");
+      if (!data.armAddress)     armMissingFields.push("Address");
+      if (!data.armOwnerName)   armMissingFields.push("Owner Name");
+      if (!data.armSurveyNo)    armMissingFields.push("Survey No. / Property No.");
+      if (!data.armAssessmentNo) armMissingFields.push("Assessment No.");
+      if (armMissingFields.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "⚠️ Missing Reeler Land Details",
+          html: `
+            <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
+              Please fill in all required Reeler Land Details before saving:
+            </div>
+            <ul style="
+              text-align:left;
+              padding-left:20px;
+              margin:0 auto;
+              display:inline-block;
+              font-size:14px;
+              color:#333;
+              line-height:2;
+            ">
+              ${armMissingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
             </ul>
           `,
           confirmButtonText: "OK, Got it!",
@@ -4757,12 +4945,9 @@ const isUserValid = React.useMemo(() => {
       }
     }
 
-    // MERM-PSF: validate Kanesh Land Details, Constructed Area and Equipment Purchase
+    // MERM-PSF: validate Constructed Area and Equipment Purchase
     if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "MERM-PSF") {
       const missingFields = [];
-      if (data.addKaneshLand !== "yes") {
-        missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
-      }
       if (!data.equordev.includes("constructedArea")) {
         missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
       }
@@ -5094,6 +5279,17 @@ const isUserValid = React.useMemo(() => {
       }
     }
 
+    // Monthly Frequency: Month is mandatory when the selected sub scheme is configured
+    // with monthlyFrequency === true.
+    if (getIncentiveAndBonusData?.[0]?.monthlyFrequency === true && !data.monthYear) {
+      Swal.fire({
+        icon: "warning",
+        title: "Month Required",
+        text: "Please select a Month.",
+      });
+      return;
+    }
+
     const formattedDates = {
       periodFrom: formatDate(data.periodFrom),
       periodTo: formatDate(data.periodTo),
@@ -5193,7 +5389,7 @@ const isUserValid = React.useMemo(() => {
       vendorId: getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS" ? data.vendorId : equipment.vendorId,
       spacingId: data.spacingId,
       hectareId: data.hectareId,
-      cocoonsWeight: data.cocoonsWeight,
+      cocoonsWeight: data.actualCocoonsTransacted ?? data.cocoonsWeight,
       lotNo: data.lotNo,
       lotWeight: data.lotWeight,
       kaneshDistrictId: data.kaneshDistrictId,
@@ -5214,9 +5410,12 @@ const isUserValid = React.useMemo(() => {
       description: equipment.description,
       l1Rate: equipment.l1Rate,
       loggedInUserId: localStorage.getItem("userMasterId"),
-      month: getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF" && data.fromMonth && data.toMonth
-        ? `${data.fromMonth}-${data.toMonth}`
-        : data.month,
+      month:
+        getIncentiveAndBonusData?.[0]?.monthlyFrequency === true && data.monthYear
+          ? data.monthYear
+          : getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF" && data.fromMonth && data.toMonth
+          ? `${data.fromMonth}-${data.toMonth}`
+          : data.month,
       machineQuantity: data.machineQuantity,
       machineTypeId: data.machineTypeId,
       imcbTable: data.imcbTable,
@@ -5283,6 +5482,19 @@ const isUserValid = React.useMemo(() => {
     newFinancialYear: data.newFinancialYear,
     year: data.year,
     taxAmount: data.taxAmount,
+    // ARM Unit fields (Automatic Reeling Machine Unit)
+    armEnds: data.armEnds || null,
+    armUnitName: data.armUnitName || null,
+    armUnitAddress: data.armUnitAddress || null,
+    armLandType: data.armLandType || null,
+    armLandDistrictId: data.armDistrictId || null,
+    armLandTalukId: data.armTalukId || null,
+    armLandHobliId: data.armHobliId || null,
+    armLandVillageId: data.armVillageId || null,
+    armLandAddress: data.armAddress || null,
+    armLandOwnerName: data.armOwnerName || null,
+    armLandSurveyNo: data.armSurveyNo || null,
+    armLandAssessmentNo: data.armAssessmentNo || null,
       chawkiSanctionOrderList: chawkiSanctionOrderList
     };
 
@@ -5327,6 +5539,27 @@ const isUserValid = React.useMemo(() => {
     unitPrice: "",
     fullPrice: false,
   });
+
+  // ARM: Auto-fill Unit Cost + Subsidy Amount when armCalculationData changes
+  useEffect(() => {
+    if (armCalculationData.length > 0) {
+      const totalUnitCost = armCalculationData.reduce(
+        (s, item) => s + (parseFloat(item.unitCost) || 0), 0
+      );
+      const centralPct = parseFloat(armCalculationData[0]?.centralPercentage) || 0;
+      const statePct   = parseFloat(armCalculationData[0]?.statePercentage)   || 0;
+      const subsidyAmt = Math.round(totalUnitCost * (centralPct + statePct) / 100);
+      if (totalUnitCost > 0) {
+        setAmountValue(prev => ({ ...prev, unitPrice: totalUnitCost }));
+        setData(prev => ({ ...prev, expectedAmount: subsidyAmt }));
+        setUnitPriceCalculated(true);
+      }
+    } else if (armCalculationData.length === 0 && data.armEnds) {
+      setAmountValue(prev => ({ ...prev, unitPrice: "" }));
+      setData(prev => ({ ...prev, expectedAmount: "" }));
+      setUnitPriceCalculated(false);
+    }
+  }, [armCalculationData]);
 
   // Compute Total Subsidy based on rhSqft for SDP RH 225 / SDP Low Cost Shed
   useEffect(() => {
@@ -5392,11 +5625,12 @@ const isUserValid = React.useMemo(() => {
             // }
             // console.log(response);
             const unitCostMaster = response.data.content.unitCostMaster || [];
-            const totalSharePerc = unitCostMaster.reduce(
-              (sum, item) => sum + Number(item.shareInPercentage || 0), 0
-            );
-            if (totalSharePerc > 0) {
-              setSharePercentage(totalSharePerc);
+            // Take share percentage from the first (matching) row only — NOT sum of all rows.
+            // Production has multiple rows per category (one per designation) which summed
+            // incorrectly (e.g. 75+75+75 = 225 instead of correct 75).
+            const singleSharePerc = Number(unitCostMaster[0]?.shareInPercentage || 0);
+            if (singleSharePerc > 0) {
+              setSharePercentage(singleSharePerc);
             }
             setAmountValue((prev) => ({
               ...prev,
@@ -5993,6 +6227,27 @@ const isUserValid = React.useMemo(() => {
       const fileURL = URL.createObjectURL(file);
       window.open(fileURL);
     } catch (error) {}
+  };
+
+  const generateAcknowledgmentARM = async (applicationFormId, schemeId, subSchemeId) => {
+    try {
+      const response = await api.post(
+        baseURLReport + `getAckARM`,
+        {
+          applicationFormId: applicationFormId,
+          schemeId: schemeId,
+          subSchemeId: subSchemeId,
+        },
+        {
+          responseType: "blob",
+        }
+      );
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    } catch (error) {
+      Swal.fire({ icon: "error", title: "Acknowledgement Error", text: "Could not generate ARM acknowledgement. Please try again." });
+    }
   };
 
   const generateAcknowledgmentHRU = async (applicationFormId,schemeId,subSchemeId) => {
@@ -6646,6 +6901,12 @@ const callAcknowledgmentFunction = (
   } else if (acknowledgementForScheme === "SDP Low Cost Shed") {
     generateAcknowledgmentRHSDPLowCostShed(applicationFormId, schemeId, subSchemeId);
 
+  } else if (
+    acknowledgementForScheme === "Automatic Reeling Machine" ||
+    acknowledgementForScheme === "Automatic Reeling Machine Unit"
+  ) {
+    generateAcknowledgmentARM(applicationFormId, schemeId, subSchemeId);
+
   }
 
 
@@ -6779,7 +7040,7 @@ const search = (event) => {
 
   setDisable(true);
 
-  // Step 1: Try fetching Farmer Details first
+  // Step 1: Try fetching Farmer Details first (checks local DB before calling FRUITS API)
   api
     .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
       fruitsId: data.fruitsId,
@@ -6789,6 +7050,7 @@ const search = (event) => {
       if (
         response.data &&
         response.data.content &&
+        !response.data.content.error &&
         response.data.content.farmerResponse
       ) {
         // ✅ Farmer details found
@@ -7926,7 +8188,8 @@ const fetchReelerDetails = () => {
                           (getIncentiveAndBonusData[0]?.sanctionForReeling &&
                             getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Silk Incentive-PSF" &&
                             getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Reeling Shed-PSF")
-                        ) && (
+                        ) &&
+                        getIncentiveAndBonusData?.[0]?.unitForScheme !== "Automatic Reeling Machine Unit" && (
                           <>
                             <Col lg="6">
                               <Form.Group className="form-group mt-n3">
@@ -8001,6 +8264,59 @@ const fetchReelerDetails = () => {
                           </>
                         )}
 
+
+                        {/* ── ARM Unit Fields (Automatic Reeling Machine Unit) ───────── */}
+                        {getIncentiveAndBonusData?.[0]?.unitForScheme === "Automatic Reeling Machine Unit" && (
+                          <>
+                            <Col lg="4">
+                              <Form.Group className="form-group mt-n4">
+                                <Form.Label>{t("ARM Ends")} <span className="text-danger">*</span></Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Select name="armEnds" value={data.armEnds} onChange={handleInputs} required>
+                                    <option value="">{t("-- Select ARM Ends --")}</option>
+                                    <option value="120 Ends">120 Ends</option>
+                                    <option value="200 Ends">200 Ends</option>
+                                    <option value="400 Ends">400 Ends</option>
+                                  </Form.Select>
+                                  <Form.Control.Feedback type="invalid">{t("ARM Ends is required")}</Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col>
+
+                            <Col lg="4">
+                              <Form.Group className="form-group mt-n4">
+                                <Form.Label>{t("Name of the ARM Unit")} <span className="text-danger">*</span></Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    type="text"
+                                    name="armUnitName"
+                                    value={data.armUnitName}
+                                    onChange={handleInputs}
+                                    placeholder={t("Enter Name of ARM Unit")}
+                                    required
+                                  />
+                                  <Form.Control.Feedback type="invalid">{t("Name of ARM Unit is required")}</Form.Control.Feedback>
+                                </div>
+                              </Form.Group>
+                            </Col>
+
+                            <Col lg="4">
+                              <Form.Group className="form-group mt-n4">
+                                <Form.Label>{t("Address of ARM Unit")}</Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    type="text"
+                                    name="armUnitAddress"
+                                    value={data.armUnitAddress}
+                                    onChange={handleInputs}
+                                    placeholder={t("Enter Address of ARM Unit")}
+                                  />
+                                </div>
+                              </Form.Group>
+                            </Col>
+
+                          </>
+                        )}
 
                         {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF" && (
                             <>
@@ -8161,9 +8477,15 @@ const fetchReelerDetails = () => {
                                         <option value="1-Table(2 ಬೇಸಿನ್‌)">1-Table(2 ಬೇಸಿನ್‌)</option>
                                         <option value="2-Table(4 ಬೇಸಿನ್‌)">2-Table(4 ಬೇಸಿನ್‌)</option>
                                         <option value="3-Table(6 ಬೇಸಿನ್‌)">3-Table(6 ಬೇಸಿನ್‌)</option>
+                                        <option value="1 ಬೇಸಿನ್‌">1 ಬೇಸಿನ್‌</option>
+                                        <option value="2 ಬೇಸಿನ್‌">2 ಬೇಸಿನ್‌</option>
                                         <option value="3 ಬೇಸಿನ್‌">3 ಬೇಸಿನ್‌</option>
+                                        <option value="4 ಬೇಸಿನ್‌">4 ಬೇಸಿನ್‌</option>
                                         <option value="5 ಬೇಸಿನ್‌">5 ಬೇಸಿನ್‌</option>
                                         <option value="6 ಬೇಸಿನ್‌">6 ಬೇಸಿನ್‌</option>
+                                        <option value="7 ಬೇಸಿನ್‌">7 ಬೇಸಿನ್‌</option>
+                                        <option value="8 ಬೇಸಿನ್‌">8 ಬೇಸಿನ್‌</option>
+                                        <option value="9 ಬೇಸಿನ್‌">9 ಬೇಸಿನ್‌</option>
                                         <option value="10 ಬೇಸಿನ್‌">10 ಬೇಸಿನ್‌</option>
                                         <option value="36 ends">36 ends</option>
                                         <option value="48 ends">48 ends</option>
@@ -8195,6 +8517,8 @@ const fetchReelerDetails = () => {
                                       <option value="7.50">7.50</option>
                                       <option value="B-Grade">B-Grade</option>
                                       <option value="2 A-Grade">2 A-Grade</option>
+                         <option value="2 B-Grade">2 B-Grade</option>
+                          <option value="3 A-Grade">3 A-Grade</option>
                                     </Form.Select>
                                     <Form.Control.Feedback type="invalid">
                                       {t("Renditta/Grade is required")}
@@ -9268,6 +9592,39 @@ const fetchReelerDetails = () => {
                               </Form.Control.Feedback>
                           </Col>
                         )} */}
+
+                        {getIncentiveAndBonusData?.[0]?.monthlyFrequency === true && (
+                          <Col lg="2">
+                            <Form.Group className="form-group mt-n3">
+                              <Form.Label htmlFor="monthYear">
+                                {t("Month")}
+                                <span className="text-danger">*</span>
+                              </Form.Label>
+                              <div className="form-control-wrap">
+                                <Form.Select
+                                  id="monthYear"
+                                  name="monthYear"
+                                  value={data.monthYear || ""}
+                                  onChange={handleMonthlyFrequencyMonthChange}
+                                  required
+                                >
+                                  <option value="">{t("Select Month")}</option>
+                                  {getFinancialYearMonths(
+                                    financialyearListData.find(
+                                      (f) =>
+                                        String(f.financialYearMasterId) ===
+                                        String(data.financialYearMasterId)
+                                    )?.financialYear
+                                  ).map((m) => (
+                                    <option key={m.value} value={m.value}>
+                                      {m.label}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                              </div>
+                            </Form.Group>
+                          </Col>
+                        )}
 
                         <Col lg="2">
                           <Form.Group className="form-group mt-n3">
@@ -11145,16 +11502,13 @@ const fetchReelerDetails = () => {
                     <Row className="g-gs">
                     <div className="gap-col">
                       <ul className="d-flex align-items-left justify-content-left gap g-3">
-                      
+
+                        {getIncentiveAndBonusData?.[0]?.unitForScheme !== "Automatic Reeling Machine Unit" && (
                         <li>
-                          {/* <Button type="button" variant="secondary" onClick={handleCalculateUnitPrice}>
-                            Calculate Unit Price
-                          </Button> */}
                           <Button
                             type="button"
                             variant="secondary"
                             onClick={handleCalculateUnitPrice}
-                            // disabled={!schemeDetails.calculationBasedOn}
                             disabled={
                             !(
                               schemeDetails.calculationBasedOn ||
@@ -11165,27 +11519,7 @@ const fetchReelerDetails = () => {
                             {t("Calculate Unit Price")}
                           </Button>
                           </li>
-
-                          {/* <li>
-                          <Button
-                            type="button"
-                            variant="secondary"
-                            onClick={() => setShowModal2(true)}
-                          >
-                            Select Transaction Details
-                          </Button>
-                        </li> */}
-                        {/* <li>
-                          {showButton && ( // Conditionally render the button
-                            <Button
-                              type="button"
-                              variant="secondary"
-                              onClick={() => setShowModal2(true)}
-                            >
-                              {t("Select Transaction Details")}
-                            </Button>
-                          )}
-                        </li> */}
+                        )}
                       </ul>
                     </div>
                     <div className="gap-col">
@@ -11222,7 +11556,28 @@ const fetchReelerDetails = () => {
                         </Form.Group>
                       </Col>
 
-                      
+                      {/* ARM: Subsidy Amount = unitCost × (central% + state%) — auto calculated */}
+                      {getIncentiveAndBonusData?.[0]?.unitForScheme === "Automatic Reeling Machine Unit" && (
+                        <Col lg="4">
+                          <Form.Group className="form-group mt-n5">
+                            <Form.Label htmlFor="armSubsidyAmount">
+                              {t("Subsidy Amount")}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Control
+                                id="armSubsidyAmount"
+                                type="text"
+                                name="expectedAmount"
+                                value={data.expectedAmount}
+                                readOnly
+                                placeholder={t("Auto Calculated")}
+                              />
+                            </div>
+                          </Form.Group>
+                        </Col>
+                      )}
+
+
 
                       {/* <Col lg="4">
                         <Form.Group className="form-group mt-n5">
@@ -11247,10 +11602,11 @@ const fetchReelerDetails = () => {
                         </Form.Group>
                       </Col> */}
 
-                      {/* IF NOT sanctionForReeling → Show normal field */}
+                      {/* IF NOT sanctionForReeling → Show normal field (not for ARM) */}
                     {!getIncentiveAndBonusData[0]?.sanctionForReeling &&
                       getIncentiveAndBonusData?.[0]?.calculationBasedOn !==
-                        "Registered Private Bivoltine Chawki Rearing Center Subsidy" && (
+                        "Registered Private Bivoltine Chawki Rearing Center Subsidy" &&
+                      getIncentiveAndBonusData?.[0]?.unitForScheme !== "Automatic Reeling Machine Unit" && (
                         <Col lg="4">
                           <Form.Group className="form-group mt-n5">
                             <Form.Label htmlFor="expectedAmount">
@@ -11279,7 +11635,8 @@ const fetchReelerDetails = () => {
                         {/* Subsidy Amount for Silk Samagra State: centralAmount + stateAmount */}
                         {schemeDetails.calculationBasedOn === "Silk Samagra State" &&
                           getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Rearing Equipment SS" &&
-                          getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Registered Private Bivoltine Chawki Rearing Center Subsidy" && (
+                          getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Registered Private Bivoltine Chawki Rearing Center Subsidy" &&
+                          getIncentiveAndBonusData?.[0]?.unitForScheme !== "Automatic Reeling Machine Unit" && (
                           <Col lg="4">
                             <Form.Group className="form-group mt-n5">
                               <Form.Label htmlFor="silkSamagraSubsidyAmount">
@@ -11417,7 +11774,8 @@ const fetchReelerDetails = () => {
                     )} */}
                     {(getIncentiveAndBonusData[0]?.sanctionForReeling ||
                     getIncentiveAndBonusData?.[0]?.calculationBasedOn ===
-                      "Registered Private Bivoltine Chawki Rearing Center Subsidy") && (
+                      "Registered Private Bivoltine Chawki Rearing Center Subsidy") &&
+                    getIncentiveAndBonusData?.[0]?.unitForScheme !== "Automatic Reeling Machine Unit" && (
                     <Col lg="4">
                       <Form.Group className="form-group mt-n5">
                         <Form.Label htmlFor="totalExpectedAmount">
@@ -11444,7 +11802,8 @@ const fetchReelerDetails = () => {
                         getIncentiveAndBonusData?.[0]?.calculationBasedOn !==
                           "SS Construction Of Low Cost Shed to Permanent Rearing House" &&
                         getIncentiveAndBonusData?.[0]?.calculationBasedOn !==
-                          "Silk Incentive-PSF" && (
+                          "Silk Incentive-PSF" &&
+                        getIncentiveAndBonusData?.[0]?.unitForScheme !== "Automatic Reeling Machine Unit" && (
                         <Col lg="4">
                           <Form.Group className="form-group mt-n5">
                             <Form.Label>
@@ -11845,6 +12204,134 @@ const fetchReelerDetails = () => {
                   </Card>
                 </Block>
               )}
+
+            {/* ── Reeler Land Details (ARM only) ─────────────────────── */}
+            {getIncentiveAndBonusData?.[0]?.unitForScheme === "Automatic Reeling Machine Unit" && (
+              <Block className="mt-3">
+                <Card className="mb-4">
+                  <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", fontWeight: 700, color: "white", padding: "10px 16px" }}>
+                    {t("Reeler Land Details")}
+                  </Card.Header>
+                  <Card.Body>
+                    <Row className="g-gs">
+                      <Col lg="4">
+                        <Form.Group className="form-group">
+                          <Form.Label>{t("Land Type")} <span className="text-danger">*</span></Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select name="armLandType" value={data.armLandType} onChange={handleInputs} required>
+                              <option value="">{t("-- Own / Lease --")}</option>
+                              <option value="Own">{t("Own")}</option>
+                              <option value="Lease">{t("Lease")}</option>
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">{t("Land Type is required")}</Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      <Col lg="4">
+                        <Form.Group className="form-group">
+                          <Form.Label>{t("District")} <span className="text-danger">*</span></Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select name="armDistrictId" value={data.armDistrictId} onChange={handleInputs} required>
+                              <option value="">{t("Select District")}</option>
+                              {districtListData && districtListData.map(d => (
+                                <option key={d.districtId} value={d.districtId}>{d.districtName}</option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">{t("District is required")}</Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      <Col lg="4">
+                        <Form.Group className="form-group">
+                          <Form.Label>{t("Taluk")} <span className="text-danger">*</span></Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select name="armTalukId" value={data.armTalukId} onChange={handleInputs} required>
+                              <option value="">{t("Select Taluk")}</option>
+                              {armTalukListData.map(d => (
+                                <option key={d.talukId} value={d.talukId}>{d.talukName}</option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">{t("Taluk is required")}</Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      <Col lg="4">
+                        <Form.Group className="form-group">
+                          <Form.Label>{t("Hobli")} <span className="text-danger">*</span></Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select name="armHobliId" value={data.armHobliId} onChange={handleInputs} required>
+                              <option value="">{t("Select Hobli")}</option>
+                              {armHobliListData.map(d => (
+                                <option key={d.hobliId} value={d.hobliId}>{d.hobliName}</option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">{t("Hobli is required")}</Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      <Col lg="4">
+                        <Form.Group className="form-group">
+                          <Form.Label>{t("Village")} <span className="text-danger">*</span></Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Select name="armVillageId" value={data.armVillageId} onChange={handleInputs} required>
+                              <option value="">{t("Select Village")}</option>
+                              {armVillageListData.map(d => (
+                                <option key={d.villageId} value={d.villageId}>{d.villageName}</option>
+                              ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">{t("Village is required")}</Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      <Col lg="4">
+                        <Form.Group className="form-group">
+                          <Form.Label>{t("Address")} <span className="text-danger">*</span></Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control type="text" name="armAddress" value={data.armAddress} onChange={handleInputs} placeholder={t("Enter Address")} required />
+                            <Form.Control.Feedback type="invalid">{t("Address is required")}</Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      <Col lg="4">
+                        <Form.Group className="form-group">
+                          <Form.Label>{t("Owner Name")} <span className="text-danger">*</span></Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control type="text" name="armOwnerName" value={data.armOwnerName} onChange={handleInputs} placeholder={t("Enter Owner Name")} required />
+                            <Form.Control.Feedback type="invalid">{t("Owner Name is required")}</Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      <Col lg="4">
+                        <Form.Group className="form-group">
+                          <Form.Label>{t("Survey No. / Property No.")} <span className="text-danger">*</span></Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control type="text" name="armSurveyNo" value={data.armSurveyNo} onChange={handleInputs} placeholder={t("Enter Survey No. / Property No.")} required />
+                            <Form.Control.Feedback type="invalid">{t("Survey No. is required")}</Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+
+                      <Col lg="4">
+                        <Form.Group className="form-group">
+                          <Form.Label>{t("Assessment No.")} <span className="text-danger">*</span></Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control type="text" name="armAssessmentNo" value={data.armAssessmentNo} onChange={handleInputs} placeholder={t("Enter Assessment No.")} required />
+                            <Form.Control.Feedback type="invalid">{t("Assessment No. is required")}</Form.Control.Feedback>
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card>
+              </Block>
+            )}
 
             <Block className="mt-3">
               <Card className="mb-4">

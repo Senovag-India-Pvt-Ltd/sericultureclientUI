@@ -917,7 +917,7 @@ const getFinancialDefaultDetails = () => {
       hide: "md",
     },
     {
-      name: t("farmer_name"),
+      name: t("beneficiary_name"),
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
       sortable: true,
@@ -1702,7 +1702,7 @@ const getFinancialDefaultDetails = () => {
                           <td>{detail.fruitsId}</td>
                         </tr>
                         <tr>
-                          <td style={styles.ctstyle}>Farmer Name:</td>
+                          <td style={styles.ctstyle}>Beneficiary Name:</td>
                           <td>{detail.farmerFirstName}</td>
                         </tr>
                         <tr>
@@ -1867,7 +1867,7 @@ const getFinancialDefaultDetails = () => {
                   <td>{viewDetailsData?.applicationDetails?.[0]?.fruitsId || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>{t("farmer_name")}</td>
+                  <td style={styles.ctstyle}>{t("beneficiary_name")}</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.farmerFirstName || 'N/A'}</td>
                 </tr>
                 <tr>

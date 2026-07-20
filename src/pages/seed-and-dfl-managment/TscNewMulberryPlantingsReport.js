@@ -269,16 +269,20 @@ function TscNewMulberryPlantingsReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const tscDisplay = selectedTsc?.name || "—";
+  const tscDisplay = selectedTsc?.nameInKannada || selectedTsc?.name || "—";
+  const fyLabel    = fyStartYear ? `${fyStartYear}-${String(fyStartYear + 1).slice(-2)}` : "";
 
-  // Summary stats: total area, total entries, irrigated vs rain-fed
+  // Summary stats: total area, total entries, irrigated vs rain-fed.
+  // Rain-fed = no real irrigation source (backend emits "ಮಳೆ ಆಶ್ರಿತ"); everything
+  // else is irrigated. Every record falls in exactly one bucket so the totals
+  // always reconcile: irrigated + rainFed === count.
   const stats = useMemo(() => {
     let area = 0, irrigated = 0, rainFed = 0;
     dataRows.forEach((r) => {
       area += numOrZero(r.area);
       const irr = String(r.irrigation_source || "").trim();
-      if (irr === "ನೀರಾವರಿ") irrigated += 1;
-      else if (irr) rainFed += 1;
+      if (irr === "" || irr === "ಮಳೆ ಆಶ್ರಿತ") rainFed += 1;
+      else irrigated += 1;
     });
     return {
       count:     dataRows.length,
@@ -343,7 +347,7 @@ function TscNewMulberryPlantingsReport() {
                 <Col md={3}>
                   <label style={lbl}>TSC <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
-                    options={tscList.map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.name }))}
+                    options={tscList.map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.nameInKannada || tsc.name }))}
                     placeholder="— Search TSC —"
                     isSearchable
                     isClearable
@@ -353,7 +357,7 @@ function TscNewMulberryPlantingsReport() {
                     styles={tscSelectStyles}
                     value={
                       tscList
-                        .map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.name }))
+                        .map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.nameInKannada || tsc.name }))
                         .find((o) => o.value === String(filter.tscId)) || null
                     }
                     onChange={(opt) => {
@@ -439,10 +443,7 @@ function TscNewMulberryPlantingsReport() {
                 fontWeight: 800, fontSize: "15px", letterSpacing: ".02em",
                 textAlign: "center",
               }}>
-                ನಮೂನೆ-10 · ತಾಂತ್ರಿಕ ಸೇವಾ ಕೇಂದ್ರ {tscDisplay} — {monthKn} {monthYear || ""} ಹೊಸದಾಗಿ ನಾಟಿ ಮಾಡಿದ ಹಿಪ್ಪುನೇರಳೆ ವಿಸ್ತೀರ್ಣದ ಕುಳುವಾರು ವರದಿ
-                <div style={{ fontSize: "12px", fontWeight: 600, opacity: .9, marginTop: "4px" }}>
-                  Form-10 · Newly Planted Mulberry — Farmer-wise &nbsp;·&nbsp; {monthLabel} {monthYear || ""}
-                </div>
+                ನಮೂನೆ-10 ತಾಂತ್ರಿಕ ಸೇವಾ ಕೇಂದ್ರ {tscDisplay} {fyLabel ? `${fyLabel} ನೇ ಸಾಲಿನ ` : ""}{monthKn}-{monthYear || ""} ರ ಮಾಹೆಯಲ್ಲಿನ ಹೊಸದಾಗಿ ನಾಟಿ ಮಾಡಿದ ಹಿಪ್ಪುನೇರಳೆ ವಿಸ್ತೀರ್ಣದ ಕುಳುವಾರು ವರದಿ
               </div>
 
               <div className="tscnm-scroll" style={{ overflowX: "auto" }}>
@@ -479,7 +480,7 @@ function TscNewMulberryPlantingsReport() {
                     {dataRows.map((row, ri) => {
                       const alt = ri % 2 === 1;
                       const irrigation = String(row.irrigation_source || "").trim();
-                      const isIrrigated = irrigation === "ನೀರಾವರಿ";
+                      const isIrrigated = irrigation !== "" && irrigation !== "ಮಳೆ ಆಶ್ರಿತ";
                       return (
                         <tr key={`${row.sl_no}-${ri}`} className="tscnm-tr" style={{ background: alt ? "#f8fafc" : "#ffffff" }}>
                           {COLUMNS.map((c) => {

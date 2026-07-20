@@ -263,7 +263,8 @@ function TscMulberryAreaReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const tscDisplay = selectedTsc?.name || "—";
+  const fyLabel    = fyStartYear ? `${fyStartYear}-${String(fyStartYear + 1).slice(-2)}` : "";
+  const tscDisplay = selectedTsc?.nameInKannada || selectedTsc?.name || "—";
 
   // Classify each row: section (sub_label='') / variety (sub_label='1'..'5') / total (sub_label='∑')
   const enrichedRows = useMemo(() => {
@@ -343,7 +344,7 @@ function TscMulberryAreaReport() {
                 <Col md={3}>
                   <label style={lbl}>TSC <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
-                    options={tscList.map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.name }))}
+                    options={tscList.map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.nameInKannada || tsc.name }))}
                     placeholder="— Search TSC —"
                     isSearchable
                     isClearable
@@ -353,7 +354,7 @@ function TscMulberryAreaReport() {
                     styles={tscSelectStyles}
                     value={
                       tscList
-                        .map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.name }))
+                        .map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.nameInKannada || tsc.name }))
                         .find((o) => o.value === String(filter.tscId)) || null
                     }
                     onChange={(opt) => {
@@ -439,7 +440,7 @@ function TscMulberryAreaReport() {
                 fontWeight: 800, fontSize: "15px", letterSpacing: ".02em",
                 textAlign: "center",
               }}>
-                ಭಾಗ-2 ತಾಂತ್ರಿಕ ಸೇವಾ ಕೇಂದ್ರ {tscDisplay} — {monthKn} {monthYear || ""} ಹಿಪ್ಪುನೇರಳೆ ವಿಸ್ತೀರ್ಣದ ಅಂಕಿ ಅಂಶಗಳು (ಹೆಕ್ಟೇರ್‌ಗಳಲ್ಲಿ)
+                ಭಾಗ-2 ತಾಂತ್ರಿಕ ಸೇವಾ ಕೇಂದ್ರ {tscDisplay} — {fyLabel} ನೇ ಸಾಲಿನ {monthKn}-{monthYear || ""} ನೇ ಮಾಹೆಯ ಹಿಪ್ಪುನೇರಳೆ ವಿಸ್ತೀರ್ಣದ ಅಂಕಿ ಅಂಶಗಳು (ಹೆಕ್ಟೇರ್‌ಗಳಲ್ಲಿ)
                 <div style={{ fontSize: "12px", fontWeight: 600, opacity: .9, marginTop: "4px" }}>
                   Part-2 · Mulberry Area Statistics in Hectares &nbsp;·&nbsp; {monthLabel} {monthYear || ""}
                 </div>

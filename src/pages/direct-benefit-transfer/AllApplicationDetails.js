@@ -11,9 +11,8 @@ import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
-import DataTable, { defaultThemes } from "react-data-table-component";
+import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
-import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import DatePicker from "react-datepicker";
@@ -28,6 +27,12 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+
+const ACCENT_HEADER = "linear-gradient(135deg,#1a5f9e 0%,#2c8fd4 60%,#38b2ac 100%)";
+const ACCENT_TABLE  = "linear-gradient(135deg,#1a5f9e,#2c8fd4)";
+const CTRL_H = "44px";
+const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom: "3px", display: "block" };
+const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function AllApplicationDetails() {
 
@@ -58,7 +63,7 @@ function AllApplicationDetails() {
     year2: "",
   });
 
-  const [listData, setListData] = useState({});
+  const [listData, setListData] = useState([]);
   const [page, setPage] = useState(0);
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -350,7 +355,7 @@ useEffect(() => {
           setLoading(false);
         })
         .catch((err) => {
-          setListData({});
+          setListData([]);
           setLoading(false);
         });
     }
@@ -498,7 +503,7 @@ useEffect(() => {
         setLoading(false);
       })
       .catch((err) => {
-        setListData({});
+        setListData([]);
         setLoading(false);
       });
   };
@@ -683,62 +688,39 @@ useEffect(() => {
     });
   };
 
-  createTheme(
-    "solarized",
-    {
-      text: {
-        primary: "#004b8e",
-        secondary: "#2aa198",
-      },
-      background: {
-        default: "#fff",
-      },
-      context: {
-        background: "#cb4b16",
-        text: "#FFFFFF",
-      },
-      divider: {
-        default: "#d3d3d3",
-      },
-      action: {
-        button: "rgba(0,0,0,.54)",
-        hover: "rgba(0,0,0,.02)",
-        disabled: "rgba(0,0,0,.12)",
-      },
-    },
-    "light"
-  );
-
-  
   const customStyles = {
-    rows: {
-      style: {
-        minHeight: "30px", // Row height
-      },
-    },
+    headRow: { style: { minHeight: "52px", height: "auto" } },
     headCells: {
       style: {
-        backgroundColor: "#1e67a8", // Header background color
-        color: "#fff", // Header text color
-        borderStyle: "solid",
-        borderWidth: "1px",
-        borderColor: "black", // Header cell border color
-        paddingLeft: "8px",
-        paddingRight: "8px",
+        background: ACCENT_TABLE, color: "#fff", fontWeight: 700, fontSize: "13px",
+        padding: "10px 8px", borderRight: "1px solid rgba(255,255,255,0.5)",
+        borderBottom: "2px solid rgba(255,255,255,0.6)", whiteSpace: "normal",
+        wordBreak: "break-word", overflowWrap: "break-word", overflow: "visible",
+        lineHeight: "1.4", minHeight: "52px", height: "auto",
+        verticalAlign: "middle", justifyContent: "center", textAlign: "center",
+      },
+    },
+    rows: {
+      style: {
+        minHeight: "32px",
+        "&:nth-of-type(odd)":  { background: "#fff" },
+        "&:nth-of-type(even)": { background: "#f7fafd" },
       },
     },
     cells: {
       style: {
-        borderStyle: "solid",
-        borderWidth: "1px",
-        borderColor: "black", // Data cell border color
-        paddingTop: "3px",
-        paddingBottom: "3px",
-        paddingLeft: "8px",
-        paddingRight: "8px",
+        borderRight: "1px solid #eef2f7", borderBottom: "1px solid #e8edf5",
+        paddingTop: "4px", paddingBottom: "4px", paddingLeft: "8px", paddingRight: "8px",
+        color: "#2d3748", fontSize: "13px", justifyContent: "center", textAlign: "center",
       },
     },
   };
+
+  const colHeader = (label) => (
+    <div style={{ whiteSpace: "normal", wordBreak: "break-word", textAlign: "center", lineHeight: "1.4", width: "100%", padding: "2px 0" }}>
+      {label}
+    </div>
+  );
 
   const styles = {
     ctstyle: {
@@ -755,107 +737,19 @@ useEffect(() => {
   };
 
   const ApplicationDataColumns = [
-    
-    {
-      name: t("Sl.No"),
-      selector: (row) => row.scApplicationFormId,
-      cell: (row, i) => <span>{i + 1}</span>,
-      sortable: true,
-      width: "80px",
-      hide: "md",
-    },
-    {
-      name: t("FRUITS ID"),
-      selector: (row) => row.fruitsId,
-      cell: (row) => <span>{row.fruitsId}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Beneficiary ID"),
-      selector: (row) => row.beneficiaryId,
-      cell: (row) => <span>{row.beneficiaryId}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("farmer_name"),
-      selector: (row) => row.farmerFirstName,
-      cell: (row) => <span>{row.farmerFirstName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("district"),
-      selector: (row) => row.districtName,
-      cell: (row) => <span>{row.districtName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("taluk"),
-      selector: (row) => row.talukName,
-      cell: (row) => <span>{row.talukName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: t("village"),
-      selector: (row) => row.villageName,
-      cell: (row) => <span>{row.villageName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Component Type"),
-      selector: (row) => row.subSchemeName,
-      cell: (row) => <span>{row.subSchemeName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Component"),
-      selector: (row) => row.scComponentName,
-      cell: (row) => <span>{row.scComponentName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Category"),
-      selector: (row) => row.categoryName,
-      cell: (row) => <span>{row.categoryName}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: t("Sanction Number"),
-      selector: (row) => row.sanctionNumber,
-      cell: (row) => <span>{row.sanctionNumber}</span>,
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: t("Subsidy Amount"),
-      selector: (row) => row.actualAmount,
-      cell: (row) => <span>{row.actualAmount}</span>,
-      sortable: true,
-      hide: "md",
-    },
-
-    {
-      name: t("Application Status"),
-      selector: (row) => row.applicationStatus,
-      cell: (row) => (
-        <span style={{ color: "green", fontWeight: "bold" }}>
-          {row.applicationStatus}
-        </span>
-      ),
-      sortable: true,
-      hide: "md",
-    },
-    
+    { name: colHeader(t("Sl.No")),             selector: (row) => row.scApplicationFormId, cell: (row, i) => <span>{i + 1}</span>,                                                         sortable: true, width: "80px", hide: "md" },
+    { name: colHeader(t("FRUITS ID")),         selector: (row) => row.fruitsId,            cell: (row) => <span>{row.fruitsId}</span>,            sortable: true, hide: "md" },
+    { name: colHeader(t("Beneficiary ID")),    selector: (row) => row.beneficiaryId,       cell: (row) => <span>{row.beneficiaryId}</span>,       sortable: true, hide: "md" },
+    { name: colHeader(t("beneficiary_name")),  selector: (row) => row.farmerFirstName,     cell: (row) => <span>{row.farmerFirstName}</span>,     sortable: true, hide: "md" },
+    { name: colHeader(t("district")),          selector: (row) => row.districtName,        cell: (row) => <span>{row.districtName}</span>,        sortable: true, hide: "md" },
+    { name: colHeader(t("taluk")),             selector: (row) => row.talukName,           cell: (row) => <span>{row.talukName}</span>,           sortable: true, hide: "md" },
+    { name: colHeader(t("village")),           selector: (row) => row.villageName,         cell: (row) => <span>{row.villageName}</span>,         sortable: true, hide: "md" },
+    { name: colHeader(t("Component Type")),    selector: (row) => row.subSchemeName,       cell: (row) => <span>{row.subSchemeName}</span>,       sortable: true, hide: "md" },
+    { name: colHeader(t("Component")),         selector: (row) => row.scComponentName,     cell: (row) => <span>{row.scComponentName}</span>,     sortable: true, hide: "md" },
+    { name: colHeader(t("Category")),          selector: (row) => row.categoryName,        cell: (row) => <span>{row.categoryName}</span>,        sortable: true, hide: "md" },
+    { name: colHeader(t("Sanction Number")),   selector: (row) => row.sanctionNumber,      cell: (row) => <span>{row.sanctionNumber}</span>,      sortable: true, hide: "md" },
+    { name: colHeader(t("Subsidy Amount")),    selector: (row) => row.actualAmount,        cell: (row) => <span>{row.actualAmount}</span>,        sortable: true, hide: "md" },
+    { name: colHeader(t("Application Status")),selector: (row) => row.applicationStatus,   cell: (row) => <span style={{ color: "green", fontWeight: "bold" }}>{row.applicationStatus}</span>, sortable: true, hide: "md" },
   ];
 
    return (
@@ -869,234 +763,151 @@ useEffect(() => {
     </Block.Head>
 
     <Block className="mt-n4">
-      <Card className="mt-1">
-        {/* First Row: Search By and District/Taluk */}
-        <Row className="m-4">
-          {/* Search By */}
-          {/* Search By */}
-<Col sm={3}>
-  <Form.Group className="form-group mt-n4">
-    <Form.Label>{t("Search By")}</Form.Label>
-    <Form.Select
-      name="type"
-      value={searchData.type}
-      onChange={handleInputsSearch}
-    >
-      <option value="2">{t("FRUITS ID")}</option>
-      <option value="4">{t("Beneficiary ID")}</option>
-      <option value="5">{t("Financial Year")}</option>
-      <option value="6">{t("Component")}</option>
-      <option value="7">{t("Component Type")}</option>
-    </Form.Select>
-  </Form.Group>
-</Col>
-
-{/* Conditional Input / Select */}
-<Col sm={3}>
-  <Form.Group className="form-group mt-n4">
-    <Form.Label>&nbsp;</Form.Label>
-    <div className="form-control-wrap">
-      {(() => {
-        switch (Number(searchData.type)) {
-          case 5:
-            return (
-              <Form.Select
-                name="text"
-                value={searchData.text}
-                onChange={handleInputsSearch}
-              >
-                <option value="">{t("Select Year")}</option>
-                {memoizedFinancialYears.map((list) => (
-                  <option
-                    key={list.financialYearMasterId}
-                    value={list.financialYearMasterId}
-                  >
-                    {list.financialYear}
-                  </option>
-                ))}
-              </Form.Select>
-            );
-          case 6:
-            return (
-              <Form.Select
-                name="text"
-                value={searchData.text}
-                onChange={handleInputsSearch}
-              >
-                <option value="">{t("Select Component")}</option>
-                {memoizedComponents.map((list) => (
-                  <option key={list.scComponentId} value={list.scComponentId}>
-                    {list.scComponentName}
-                  </option>
-                ))}
-              </Form.Select>
-            );
-          case 7:
-            return (
-              <Form.Select
-                name="text"
-                value={searchData.text}
-                onChange={handleInputsSearch}
-              >
-                <option value="">{t("Select Component Type")}</option>
-                {memoizedComponentTypes.map((list) => (
-                  <option
-                    key={list.scSubSchemeDetailsId}
-                    value={list.scSubSchemeDetailsId}
-                  >
-                    {list.subSchemeName}
-                  </option>
-                ))}
-              </Form.Select>
-            );
-          default:
-            return (
-              <Form.Control
-                id="searchInput"
-                name="text"
-                value={searchData.text}
-                onChange={handleInputsSearch}
-                type="text"
-                placeholder="Search"
-              />
-            );
-        }
-      })()}
-    </div>
-  </Form.Group>
-</Col>
-
-
-          {/* District */}
-          <Col sm={3}>
-            <Form.Group className="form-group mt-n4">
-              <Form.Label>{t("District")}</Form.Label>
-              <Form.Select
-                name="districtId"
-                value={addressDetails.districtId}
-                onChange={handleInputsaddress}
-              >
-                <option value="0">{t("select_district")}</option>
-                {districtListData.map((list) => (
-                  <option key={list.districtId} value={list.districtId}>
-                    {list.districtName}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-          </Col>
-
-          {/* Taluk */}
-          <Col sm={3}>
-            <Form.Group className="form-group mt-n4">
-              <Form.Label>{t("Taluk")}</Form.Label>
-              <Form.Select
-                name="talukId"
-                value={addressDetails.talukId}
-                onChange={handleInputsaddress}
-              >
-                <option value="0">{t("select_taluk")}</option>
-                {talukListData.map((list) => (
-                  <option key={list.talukId} value={list.talukId}>
-                    {list.talukName}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-          </Col>
-        </Row>
-
-        {/* Second Row: Hobli, Village, Sub Component, Search & Export */}
-        <Row className="m-4 mt-2">
-          <Col sm={3}>
-            <Form.Group className="form-group mt-n4">
-              <Form.Label>{t("Hobli")}</Form.Label>
-              <Form.Select
-                name="hobliId"
-                value={addressDetails.hobliId}
-                onChange={handleInputsaddress}
-              >
-                <option value="0">{t("select_hobli")}</option>
-                {hobliListData.map((list) => (
-                  <option key={list.hobliId} value={list.hobliId}>
-                    {list.hobliName}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-          </Col>
-
-          <Col sm={3}>
-            <Form.Group className="form-group mt-n4">
-              <Form.Label>{t("Village")}</Form.Label>
-              <Form.Select
-                name="villageId"
-                value={addressDetails.villageId}
-                onChange={handleInputsaddress}
-              >
-                <option value="0">{t("select_village")}</option>
-                {villageListData.map((list) => (
-                  <option key={list.villageId} value={list.villageId}>
-                    {list.villageName}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-          </Col>
-
-       <Col sm={3}>
-  <Form.Group className="form-group mt-n4">
-    <Form.Label>{t("Sub Component")}</Form.Label>
-    <Form.Select
-      name="scCategoryId"
-      value={searchData.scCategoryId} // ✅ Use searchData instead of data
-      onChange={handleInputsSearch}  // ✅ Update searchData
-      // Remove the red border by not using isInvalid
-      // isInvalid={
-      //   searchData.scCategoryId === undefined || searchData.scCategoryId === "0"
-      // }
-    >
-      <option value="">{t("Select Category")}</option>
-      {scCategoryListData.map((list) => (
-        <option key={list.scCategoryId} value={list.scCategoryId}>
-          {list.categoryName}
-        </option>
-      ))}
-    </Form.Select>
-  </Form.Group>
-</Col>
-
-
-          {/* Search & Export Buttons */}
-          <Col sm={3} className="d-flex align-items-end gap-2 mt-n4">
-            <Button type="button" variant="primary" onClick={search}>
-              {t("Search")}
-            </Button>
-            <Button type="button" variant="primary" onClick={exportCsv}>
-              {t("Export")}
-            </Button>
-          </Col>
-        </Row>
+      <Card style={{ borderRadius: "12px", border: "none", boxShadow: "0 2px 16px rgba(30,103,168,0.10)", backgroundColor: "#fff" }}>
+        <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
+          <span style={{ fontSize: "20px" }}>📋</span>
+          <div>
+            <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>All Application Details</div>
+            <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to search and export application data</div>
+          </div>
+        </div>
+        <Card.Body className="pb-2">
+          <Row className="g-2 align-items-end">
+            <Col xs={6} sm={4} lg>
+              <Form.Group className="form-group">
+                <label style={lbl}>{t("Search By")}</label>
+                <Form.Select name="type" value={searchData.type} onChange={handleInputsSearch} style={sel}>
+                  <option value="2">{t("FRUITS ID")}</option>
+                  <option value="4">{t("Beneficiary ID")}</option>
+                  <option value="5">{t("Financial Year")}</option>
+                  <option value="6">{t("Component")}</option>
+                  <option value="7">{t("Component Type")}</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col xs={6} sm={4} lg>
+              <Form.Group className="form-group">
+                <label style={lbl}>&nbsp;</label>
+                {(() => {
+                  switch (Number(searchData.type)) {
+                    case 5:
+                      return (
+                        <Form.Select name="text" value={searchData.text} onChange={handleInputsSearch} style={sel}>
+                          <option value="">{t("Select Year")}</option>
+                          {memoizedFinancialYears.map((list) => (
+                            <option key={list.financialYearMasterId} value={list.financialYearMasterId}>{list.financialYear}</option>
+                          ))}
+                        </Form.Select>
+                      );
+                    case 6:
+                      return (
+                        <Form.Select name="text" value={searchData.text} onChange={handleInputsSearch} style={sel}>
+                          <option value="">{t("Select Component")}</option>
+                          {memoizedComponents.map((list) => (
+                            <option key={list.scComponentId} value={list.scComponentId}>{list.scComponentName}</option>
+                          ))}
+                        </Form.Select>
+                      );
+                    case 7:
+                      return (
+                        <Form.Select name="text" value={searchData.text} onChange={handleInputsSearch} style={sel}>
+                          <option value="">{t("Select Component Type")}</option>
+                          {memoizedComponentTypes.map((list) => (
+                            <option key={list.scSubSchemeDetailsId} value={list.scSubSchemeDetailsId}>{list.subSchemeName}</option>
+                          ))}
+                        </Form.Select>
+                      );
+                    default:
+                      return (
+                        <Form.Control id="searchInput" name="text" value={searchData.text} onChange={handleInputsSearch} type="text" placeholder="Search" style={sel} />
+                      );
+                  }
+                })()}
+              </Form.Group>
+            </Col>
+            <Col xs={6} sm={4} lg>
+              <Form.Group className="form-group">
+                <label style={lbl}>{t("District")}</label>
+                <Form.Select name="districtId" value={addressDetails.districtId} onChange={handleInputsaddress} style={sel}>
+                  <option value="0">{t("select_district")}</option>
+                  {districtListData.map((list) => (
+                    <option key={list.districtId} value={list.districtId}>{list.districtName}</option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col xs={6} sm={4} lg>
+              <Form.Group className="form-group">
+                <label style={lbl}>{t("Taluk")}</label>
+                <Form.Select name="talukId" value={addressDetails.talukId} onChange={handleInputsaddress} style={sel}>
+                  <option value="0">{t("select_taluk")}</option>
+                  {talukListData.map((list) => (
+                    <option key={list.talukId} value={list.talukId}>{list.talukName}</option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col xs={6} sm={4} lg>
+              <Form.Group className="form-group">
+                <label style={lbl}>{t("Hobli")}</label>
+                <Form.Select name="hobliId" value={addressDetails.hobliId} onChange={handleInputsaddress} style={sel}>
+                  <option value="0">{t("select_hobli")}</option>
+                  {hobliListData.map((list) => (
+                    <option key={list.hobliId} value={list.hobliId}>{list.hobliName}</option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col xs={6} sm={4} lg>
+              <Form.Group className="form-group">
+                <label style={lbl}>{t("Village")}</label>
+                <Form.Select name="villageId" value={addressDetails.villageId} onChange={handleInputsaddress} style={sel}>
+                  <option value="0">{t("select_village")}</option>
+                  {villageListData.map((list) => (
+                    <option key={list.villageId} value={list.villageId}>{list.villageName}</option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col xs={6} sm={4} lg>
+              <Form.Group className="form-group">
+                <label style={lbl}>{t("Sub Component")}</label>
+                <Form.Select name="scCategoryId" value={searchData.scCategoryId} onChange={handleInputsSearch} style={sel}>
+                  <option value="">{t("Select Category")}</option>
+                  {scCategoryListData.map((list) => (
+                    <option key={list.scCategoryId} value={list.scCategoryId}>{list.categoryName}</option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row className="g-2 mt-2">
+            <Col xs="auto">
+              <button type="button" onClick={search} style={{ height: CTRL_H, padding: "0 20px", background: ACCENT_TABLE, color: "#fff", border: "none", borderRadius: "6px", fontWeight: 600, fontSize: "13px", cursor: "pointer", marginRight: "8px" }}>
+                {t("Search")}
+              </button>
+              <button type="button" onClick={exportCsv} style={{ height: CTRL_H, padding: "0 20px", background: "linear-gradient(135deg,#2d7a2d,#38a838)", color: "#fff", border: "none", borderRadius: "6px", fontWeight: 600, fontSize: "13px", cursor: "pointer" }}>
+                {t("Export")}
+              </button>
+            </Col>
+          </Row>
+        </Card.Body>
       </Card>
     </Block>
-  {/* </Layout>
-); */}
 
 
 
       <Block className="mt-3">
-        <Card>
+        <Card style={{ borderRadius: "12px", border: "none", boxShadow: "0 2px 16px rgba(30,103,168,0.08)" }}>
           <DataTable
-            //  title="Market List"
             tableClassName="data-table-head-light table-responsive"
             columns={ApplicationDataColumns}
             data={listData}
             highlightOnHover
             progressPending={loading}
-            theme="solarized"
             customStyles={customStyles}
           />
-        </Card>       
+        </Card>
       </Block>
 
       <Modal show={showModal} onHide={handleCloseModal} size="xl">
@@ -1133,7 +944,7 @@ useEffect(() => {
                         </td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>{t("farmer_name")}</td>
+                        <td style={styles.ctstyle}>{t("beneficiary_name")}</td>
                         <td>
                           {viewDetailsData?.applicationDetails?.[0]
                             ?.farmerFirstName || "N/A"}

@@ -200,14 +200,19 @@ function DashboardReport() {
       .then((response) => {
         if (response.data.content && response.data.errorCode === 0) {
           // debugger
-          setDashboardList(response.data.content.dashboardReportInfoList);
+          const list = response.data.content.dashboardReportInfoList || [];
+          setDashboardList(list);
           setStatus({
             auctionStarted: response.data.content.auctionStarted,
             acceptanceStarted: response.data.content.acceptanceStarted,
             marketName: response.data.content.marketName,
           });
+          if (list.length === 0) {
+            Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+          }
         } else {
-          // saveSuccess(arnNumber);
+          setDashboardList([]);
+          Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
         }
       })
       .catch((err) => {
@@ -611,7 +616,9 @@ function DashboardReport() {
                 </Card.Body>
               </Card>
             ) : (
-              ""
+              <div className="text-center py-5 text-muted" style={{ fontSize: "15px" }}>
+                {t("No Data Found")}
+              </div>
             )}
           </Col>
         </Row>

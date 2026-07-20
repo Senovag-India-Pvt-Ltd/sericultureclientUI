@@ -105,6 +105,10 @@ function SeedMarketBiddingReport() {
 
   // GENERATE EXCEL
   const generateReport = () => {
+    if (!reportList || reportList.length === 0) {
+      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      return;
+    }
 
     const newDate = new Date(data.reportFromDate);
 
@@ -225,6 +229,7 @@ function SeedMarketBiddingReport() {
                           type="button"
                           variant="success"
                           onClick={generateReport}
+                          disabled={!reportList || reportList.length === 0}
                         >
                           {t("Generate Report")}
                         </Button>
