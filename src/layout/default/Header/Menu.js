@@ -6991,6 +6991,7 @@ function Menu() {
                   sub
                 />
                 <MenuSub>
+                  {/* Old dashboard hidden
                   <MenuItem>
                     <MenuItemLink
                       text={t("Old")}
@@ -6998,16 +6999,17 @@ function Menu() {
                       blank={true}
                     />
                   </MenuItem>
+                  */}
                   <MenuItem>
                     <MenuItemLink
-                      text={t("New")}
+                      text={t("Dashboard")}
                       to="https://app.powerbi.com/view?r=eyJrIjoiYTFmMjJiMTctMDk2Yi00M2U0LTk2NTAtZmIzYjQ0ODE2YWM2IiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9"
                       blank={true}
                     />
                   </MenuItem>
                   <MenuItem>
                     <MenuItemLink
-                      text={t("Pendency Dashboard")}
+                      text={t("Pendency Statistics")}
                       to="/seriui/pendency-dashboard"
                     />
                   </MenuItem>

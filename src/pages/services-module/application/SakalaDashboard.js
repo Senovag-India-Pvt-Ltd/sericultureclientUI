@@ -1,6 +1,6 @@
 import { Row, Col, Card, Form, Spinner } from "react-bootstrap";
 import Block from "../../../components/Block/Block";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../../layout/default";
 import { Icon } from "../../../components";
@@ -59,7 +59,6 @@ function FilterBar({ district, component, fruitsId, onDistrictChange, onComponen
         </span>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ color: "#111827", fontWeight: 700, fontSize: "0.98rem" }}>Filters</div>
-          <div style={{ color: "#6B7280", fontSize: "0.76rem" }}>Refine dashboard results</div>
         </div>
         {active && (
           <span style={{ background: "#EFF6FF", color: "#2563EB", fontSize: "0.66rem", fontWeight: 700, borderRadius: "20px", padding: "3px 11px", border: "1px solid #BFDBFE" }}>
@@ -207,6 +206,10 @@ function SakalaDashboard() {
   const [filterComponent, setFilterComponent] = useState(null);
   const [filterFruitsId,  setFilterFruitsId]  = useState("");
 
+  // Financial year — defaults to the master "is-default" year; user can change it.
+  const [financialYearId,   setFinancialYearId]   = useState("");
+  const [financialYearList, setFinancialYearList] = useState([]);
+
   const [schemeNames,    setSchemeNames]    = useState({});
   const [subSchemeNames, setSubSchemeNames] = useState({});
   const [componentNames, setComponentNames] = useState({});
@@ -233,6 +236,18 @@ function SakalaDashboard() {
     api.get(baseURLMaster + `district/get-all`)
       .then((r) => setDistricts(r.data.content?.district || []))
       .catch(() => {});
+
+    api.get(baseURLMaster + `financialYearMaster/get-all`)
+      .then((r) => setFinancialYearList(r.data.content?.financialYearMaster || []))
+      .catch(() => setFinancialYearList([]));
+
+    // Pre-select the default financial year (user can change it afterwards).
+    api.get(baseURLMaster + `financialYearMaster/get-is-default`)
+      .then((r) => {
+        const id = r.data.content?.financialYearMasterId;
+        if (id) setFinancialYearId(id);
+      })
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -246,29 +261,34 @@ function SakalaDashboard() {
   }, [selectedScheme]);
 
   // ── Level 0 total ────────────────────────────────────────────────────────────
+  // Total Applications stays real (from the API).
   const fetchTotal = useCallback(() => {
-    load(() => api.get(baseURLDBT + `service/sakala/pending-count`)
+    load(() => api.get(baseURLDBT + `service/sakala/pending-count`, {
+        params: financialYearId ? { financialYearId } : {},
+      })
       .then((r) => setTotalPending(r.data?.totalPending ?? 0)).catch(() => {}));
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [financialYearId]);
 
   useEffect(() => { fetchTotal(); }, [fetchTotal]);
 
-  // Aggregate the SLA split (Within / Outside / Pending) for the overview cards
-  // from the scheme-wise endpoint, so Level 0 shows real numbers, not just labels.
+  // SLA split (Within / Outside / Pending) for the overview cards.
+  // TEMP: hardcoded to 0 for now (per request). Total Applications above stays real.
+  // To restore real SLA numbers, un-comment the block below and remove the hardcoded 0s.
   useEffect(() => {
-    api.get(baseURLDBT + `service/sakala/scheme-wise-sla`)
-      .then((r) => {
-        const rows = r.data || [];
-        const sum = rows.reduce((a, x) => ({
-          within:  a.within  + (x.withinSla    || 0),
-          outside: a.outside + (x.outsideSla   || 0),
-          pending: a.pending + (x.pendingCount || 0),
-          total:   a.total   + (x.totalCount   || 0),
-        }), { within: 0, outside: 0, pending: 0, total: 0 });
-        setSlaSummary(sum);
-      })
-      .catch(() => {});
+    setSlaSummary({ within: 0, outside: 0, pending: 0, total: 0 });
+    // api.get(baseURLDBT + `service/sakala/scheme-wise-sla`)
+    //   .then((r) => {
+    //     const rows = r.data || [];
+    //     const sum = rows.reduce((a, x) => ({
+    //       within:  a.within  + (x.withinSla    || 0),
+    //       outside: a.outside + (x.outsideSla   || 0),
+    //       pending: a.pending + (x.pendingCount || 0),
+    //       total:   a.total   + (x.totalCount   || 0),
+    //     }), { within: 0, outside: 0, pending: 0, total: 0 });
+    //     setSlaSummary(sum);
+    //   })
+    //   .catch(() => {});
   }, []);
 
   // ── Fetchers ─────────────────────────────────────────────────────────────────
@@ -276,17 +296,24 @@ function SakalaDashboard() {
     ...(dId != null       && { districtId:  dId }),
     ...(cId != null       && { componentId: cId }),
     ...(fId && fId.trim() && { fruitsId: fId.trim() }),
+    ...(financialYearId   && { financialYearId }),
   });
+
+  // TEMP: SLA counts hardcoded to 0 for now (per request). The scheme / sub-scheme
+  // application totals stay real — only Within/Outside/Pending are zeroed.
+  // To restore real SLA numbers, remove the zeroSla() wrappers below.
+  const zeroSla = (rows) =>
+    (rows || []).map((x) => ({ ...x, withinSla: 0, outsideSla: 0, pendingCount: 0 }));
 
   const fetchSchemeWiseSla = (dId, cId, fId) =>
     load(() => api.get(baseURLDBT + `service/sakala/scheme-wise-sla`, { params: buildFilterParams(dId, cId, fId) })
-      .then((r) => setSchemeWiseSla(r.data || [])).catch(() => setSchemeWiseSla([])));
+      .then((r) => setSchemeWiseSla(zeroSla(r.data))).catch(() => setSchemeWiseSla([])));
 
   const fetchSubSchemeWiseSla = (sid, dId, cId, fId) =>
     load(() => api.get(baseURLDBT + `service/sakala/subscheme-wise-sla`, {
         params: { schemeId: sid, ...buildFilterParams(dId, cId, fId) },
       })
-      .then((r) => setSubSchemeWiseSla(r.data || [])).catch(() => setSubSchemeWiseSla([])));
+      .then((r) => setSubSchemeWiseSla(zeroSla(r.data))).catch(() => setSubSchemeWiseSla([])));
 
   // ── Filter apply / clear ─────────────────────────────────────────────────────
   const applyFilters = () => {
@@ -334,11 +361,21 @@ function SakalaDashboard() {
     if (li === 2 && selectedScheme) { setSelectedStatus(null); fetchSubSchemeWiseSla(selectedScheme.schemeId, filterDistrict, filterComponent, filterFruitsId); }
   };
 
+  // Re-fetch the current drill level when the financial year changes
+  // (level 0 total is refreshed by fetchTotal's own effect).
+  const didMountFy = useRef(false);
+  useEffect(() => {
+    if (!didMountFy.current) { didMountFy.current = true; return; }
+    if (level === 1) fetchSchemeWiseSla(filterDistrict, filterComponent, filterFruitsId);
+    else if (level === 2 && selectedScheme) fetchSubSchemeWiseSla(selectedScheme.schemeId, filterDistrict, filterComponent, filterFruitsId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [financialYearId]);
+
   const activeFilterCount = [filterDistrict, filterComponent, filterFruitsId && filterFruitsId.trim()].filter(Boolean).length;
 
   // ── Render ────────────────────────────────────────────────────────────────────
   return (
-    <Layout title="Application Pendency Dashboard">
+    <Layout title="Pendency Statistics">
       <style>{`
         /* Clean enterprise surface — light background scoped to this page only
            (React removes this <style> on navigate-away, so other pages keep the leaf). */
@@ -369,6 +406,14 @@ function SakalaDashboard() {
         .sak-h-desc { font-size: clamp(0.74rem, 1vw, 0.84rem); color: #6B7280; margin: 3px 0 0; }
         .sak-h-crumb { font-size: clamp(0.68rem, 1vw, 0.76rem); color: #9CA3AF; margin-top: 5px; }
         .sak-h-crumb a { color: #2563EB; text-decoration: none; font-weight: 600; }
+
+        /* Financial-year selector */
+        .sak-fy { display: flex; flex-direction: column; gap: 4px; }
+        .sak-fy-lbl { font-size: 0.62rem; font-weight: 700; color: #6B7280; text-transform: uppercase; letter-spacing: 0.05em; }
+        .sak-fy-sel { border: 1px solid #E5E7EB; background: #fff; color: #111827; font-weight: 600;
+          font-size: 0.86rem; border-radius: 10px; padding: 8px 14px; min-width: 150px; cursor: pointer;
+          box-shadow: 0 1px 2px rgba(16,24,40,0.05); transition: border-color .15s ease, box-shadow .15s ease; }
+        .sak-fy-sel:focus { outline: none; border-color: #2563EB; box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
 
         /* Panel/section titles */
         .sak-panel-title { font-weight: 700; color: #111827; font-size: clamp(0.95rem, 1.3vw, 1.05rem); margin: 0; }
@@ -438,22 +483,31 @@ function SakalaDashboard() {
                 <Icon name="bar-chart-2" style={{ color: "#fff", fontSize: 22 }} />
               </span>
               <div style={{ minWidth: 0 }}>
-                <h4 className="sak-h-title">{t("Application Pendency Dashboard")}</h4>
-                <div className="sak-h-crumb">
-                  <a href="/seriui/">Home</a>
-                  <span style={{ margin: "0 6px", color: "#D1D5DB" }}>›</span>
-                  <span style={{ fontWeight: 600, color: "#6B7280" }}>
-                    {level === 0 ? "Application Pendency Dashboard" : (level === 1 ? "Schemes" : (selectedScheme?.schemeName || "Sub-Schemes"))}
-                  </span>
-                </div>
+                <h4 className="sak-h-title">{t("Pendency Statistics")}</h4>
               </div>
             </div>
-            {level > 0 && (
-              <button type="button" className="sak-btn sak-btn-primary" onClick={() => navigateTo(level - 1)}>
-                <Icon name="arrow-long-left" />
-                <span>{level === 2 ? "Back to Schemes" : "Back to Dashboard"}</span>
-              </button>
-            )}
+            <div className="d-flex align-items-center gap-2" style={{ flexWrap: "wrap" }}>
+              <div className="sak-fy">
+                <span className="sak-fy-lbl">{t("Financial Year")}</span>
+                <select
+                  className="sak-fy-sel"
+                  value={financialYearId || ""}
+                  onChange={(e) => setFinancialYearId(e.target.value ? Number(e.target.value) : "")}
+                >
+                  {financialYearList.map((fy) => (
+                    <option key={fy.financialYearMasterId} value={fy.financialYearMasterId}>
+                      {fy.financialYear}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {level > 0 && (
+                <button type="button" className="sak-btn sak-btn-primary" onClick={() => navigateTo(level - 1)}>
+                  <Icon name="arrow-long-left" />
+                  <span>{level === 2 ? "Back to Schemes" : "Back to Dashboard"}</span>
+                </button>
+              )}
+            </div>
           </div>
         </Card>
       </Block.Head>
@@ -579,8 +633,7 @@ function SakalaDashboard() {
                       <span className="sak-kpi-icon mb-3" style={{ width: 52, height: 52, background: "#EFF6FF", color: "#2563EB" }}>
                         <Icon name="bar-chart-2" style={{ fontSize: 24 }} />
                       </span>
-                      <h6 className="sak-panel-title">Scheme-wise Breakdown</h6>
-                      <p className="sak-panel-sub mb-3">Drill into each scheme to view SLA status and open the application lists.</p>
+                      <h6 className="sak-panel-title mb-3">Scheme-wise Breakdown</h6>
                       <button type="button" className="sak-btn sak-btn-primary" style={{ alignSelf: "flex-start" }} onClick={goSchemes}>
                         <Icon name="bar-chart-2" /> View Scheme-wise Breakdown
                       </button>

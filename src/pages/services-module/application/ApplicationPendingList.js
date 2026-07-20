@@ -319,7 +319,7 @@ export default function ApplicationPendingList() {
                 <div className="apl-h-crumb">
                   <a href="/seriui/">Home</a>
                   <span style={{ margin: "0 6px", color: "#D1D5DB" }}>›</span>
-                  <span className="apl-link" onClick={() => navigate("/seriui/pendency-dashboard")}>Pendency Dashboard</span>
+                  <span className="apl-link" onClick={() => navigate("/seriui/pendency-dashboard")}>Pendency Statistics</span>
                   <span style={{ margin: "0 6px", color: "#D1D5DB" }}>›</span>
                   <span style={{ fontWeight: 600, color: "#6B7280" }}>{meta.label}</span>
                 </div>

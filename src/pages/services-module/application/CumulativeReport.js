@@ -18,6 +18,7 @@ function CumulativeReport() {
   const [data, setData] = useState({ financialYearId: "" });
   const [viewType, setViewType] = useState("SCHEME"); // SCHEME | CONSOLIDATED
   const [hovered, setHovered] = useState(null);
+  const [downloading, setDownloading] = useState(null); // 'excel' | 'pdf' | null
 
   // ---------- Scheme-wise root (server paginated) ----------
   const [listData, setListData] = useState([]);
@@ -49,6 +50,7 @@ function CumulativeReport() {
   const [detailRows, setDetailRows] = useState([]);
   const [detailLoading, setDetailLoading] = useState(false);
   const [detailTitle, setDetailTitle] = useState("");
+  const [detailParams, setDetailParams] = useState(null);
 
   const [financialyearListData, setFinancialyearListData] = useState([]);
 
@@ -103,6 +105,55 @@ function CumulativeReport() {
     schemeId: viewType === "SCHEME" ? selectedScheme?.schemeId || 0 : 0,
     subSchemeId: viewType === "SCHEME" ? selectedSubScheme?.subSchemeId || 0 : 0,
   });
+
+  // ---------- Styled report download (matches the currently-shown table) ----------
+  const currentExportContext = () => {
+    const ctx = currentCtx(); // { schemeId, subSchemeId }
+    if (geoOpen) {
+      const base = {
+        level: geoLevel, // DIVISION | DISTRICT | TALUK
+        financialYearId: effYear(),
+        schemeId: ctx.schemeId || 0,
+        subSchemeId: ctx.subSchemeId || 0,
+      };
+      if (geoLevel === "DISTRICT") base.divisionId = geoDivision?.divisionId || 0;
+      if (geoLevel === "TALUK") base.districtId = geoDistrict?.districtId || 0;
+      return base;
+    }
+    if (viewType === "SCHEME" && showSubScheme) {
+      return {
+        level: "SUBSCHEME",
+        schemeId: selectedScheme?.schemeId || 0,
+        financialYearId: drillYearId || data.financialYearId || 0,
+      };
+    }
+    return { level: "SCHEME", financialYearId: data.financialYearId || 0 };
+  };
+
+  const downloadReport = (format) => {
+    const params = currentExportContext();
+    setDownloading(format);
+    api
+      .post(baseURLDBT + `service/cumulative-report/${format}`, {}, { params, responseType: "blob" })
+      .then((res) => {
+        const type =
+          format === "pdf"
+            ? "application/pdf"
+            : "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        const url = URL.createObjectURL(new Blob([res.data], { type }));
+        if (format === "pdf") {
+          window.open(url);
+        } else {
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `cumulative_report_${String(params.level).toLowerCase()}.xlsx`;
+          a.click();
+        }
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
+      })
+      .catch(() => {})
+      .finally(() => setDownloading(null));
+  };
 
   const loadDivisions = (ctx, yearId) => {
     setGeoLoading(true);
@@ -322,6 +373,7 @@ function CumulativeReport() {
 
   const fetchDetails = (params, title) => {
     setDetailTitle(title);
+    setDetailParams(params);
     setDetailRows([]);
     setDetailLoading(true);
     setDetailOpen(true);
@@ -330,6 +382,36 @@ function CumulativeReport() {
       .then((r) => setDetailRows(r.data.content || []))
       .catch(() => setDetailRows([]))
       .finally(() => setDetailLoading(false));
+  };
+
+  // Styled download of the application-details list currently shown in the modal.
+  const downloadDetails = (format) => {
+    if (!detailParams) return;
+    setDownloading(format);
+    api
+      .post(
+        baseURLDBT + `service/application-details/${format}`,
+        {},
+        { params: { ...detailParams, reportTitle: detailTitle }, responseType: "blob" }
+      )
+      .then((res) => {
+        const type =
+          format === "pdf"
+            ? "application/pdf"
+            : "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        const url = URL.createObjectURL(new Blob([res.data], { type }));
+        if (format === "pdf") {
+          window.open(url);
+        } else {
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "application_details.xlsx";
+          a.click();
+        }
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
+      })
+      .catch(() => {})
+      .finally(() => setDownloading(null));
   };
 
   const baseDetailParams = (statusType, yearId) => ({
@@ -918,6 +1000,33 @@ function CumulativeReport() {
           box-shadow: inset 0 2px 6px rgba(15,23,42,0.07);
         }
 
+        .cr-dl-group { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+        .cr-dl {
+          display: inline-flex; align-items: center; gap: 7px;
+          border: none; color: #fff; cursor: pointer;
+          padding: 10px 18px; border-radius: 12px;
+          font-size: 13.5px; font-weight: 700; letter-spacing: .2px;
+          transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+        }
+        .cr-dl:disabled { opacity: .6; cursor: not-allowed; }
+        .cr-dl:not(:disabled):hover { transform: translateY(-2px); filter: brightness(1.03); }
+        .cr-dl-pdf { background: linear-gradient(135deg,#b91c1c,#dc2626); box-shadow: 0 6px 16px rgba(185,28,28,.30); }
+        .cr-dl-xls { background: linear-gradient(135deg,#15803d,#16a34a); box-shadow: 0 6px 16px rgba(21,128,61,.30); }
+
+        .cr-modal-dl { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+        .cr-mdl-btn {
+          display: inline-flex; align-items: center; gap: 6px;
+          border: 1px solid rgba(255,255,255,.28); color: #fff; cursor: pointer;
+          padding: 7px 13px; border-radius: 10px;
+          font-size: 12.5px; font-weight: 700; letter-spacing: .2px;
+          backdrop-filter: blur(4px);
+          transition: transform .16s ease, filter .16s ease, box-shadow .16s ease;
+        }
+        .cr-mdl-btn:disabled { opacity: .5; cursor: not-allowed; }
+        .cr-mdl-btn:not(:disabled):hover { transform: translateY(-1px); filter: brightness(1.06); box-shadow: 0 6px 16px rgba(0,0,0,.18); }
+        .cr-mdl-pdf { background: linear-gradient(135deg,#dc2626,#ef4444); }
+        .cr-mdl-xls { background: linear-gradient(135deg,#16a34a,#22c55e); }
+
         .cr-crumbs { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; margin-bottom: 16px; }
         .cr-crumb {
           display: inline-flex; align-items: center; gap: 6px;
@@ -1085,9 +1194,6 @@ function CumulativeReport() {
                 <div className="cr-header-icon">📊</div>
                 <div>
                   <h2>{t("Cumulative Report")}</h2>
-                  <div className="cr-sub">
-                    {t("Scheme performance & consolidated drill-down across the state")}
-                  </div>
                 </div>
               </div>
             </div>
@@ -1139,6 +1245,27 @@ function CumulativeReport() {
                     <span style={radioToggleStyles.icon}>📍</span>
                     {t("All Schemes Consolidated")}
                   </div>
+                </div>
+
+                <div className="cr-dl-group">
+                  <button
+                    type="button"
+                    className="cr-dl cr-dl-pdf"
+                    disabled={!!downloading}
+                    onClick={() => downloadReport("pdf")}
+                    title={t("Download the current view as a styled PDF")}
+                  >
+                    {downloading === "pdf" ? `⏳ ${t("Preparing…")}` : `📄 ${t("PDF")}`}
+                  </button>
+                  <button
+                    type="button"
+                    className="cr-dl cr-dl-xls"
+                    disabled={!!downloading}
+                    onClick={() => downloadReport("excel")}
+                    title={t("Download the current view as a styled Excel")}
+                  >
+                    {downloading === "excel" ? `⏳ ${t("Preparing…")}` : `📊 ${t("Excel")}`}
+                  </button>
                 </div>
               </div>
             </Col>
@@ -1269,9 +1396,30 @@ function CumulativeReport() {
                     )}`}
               </div>
             </div>
+            <div className="cr-modal-dl">
+              <button
+                type="button"
+                className="cr-mdl-btn cr-mdl-pdf"
+                disabled={!!downloading || detailLoading || detailRows.length === 0}
+                onClick={() => downloadDetails("pdf")}
+                title={t("Download as PDF")}
+              >
+                {downloading === "pdf" ? `⏳ ${t("Preparing…")}` : `📄 ${t("PDF")}`}
+              </button>
+              <button
+                type="button"
+                className="cr-mdl-btn cr-mdl-xls"
+                disabled={!!downloading || detailLoading || detailRows.length === 0}
+                onClick={() => downloadDetails("excel")}
+                title={t("Download as Excel")}
+              >
+                {downloading === "excel" ? `⏳ ${t("Preparing…")}` : `📊 ${t("Excel")}`}
+              </button>
+            </div>
             <button
               type="button"
               className="cr-modal-close"
+              style={{ marginLeft: "10px" }}
               aria-label={t("Close")}
               onClick={() => setDetailOpen(false)}
             >
