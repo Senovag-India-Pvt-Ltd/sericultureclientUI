@@ -30,6 +30,7 @@ function FarmerRegistrationList() {
   const _params = { params: { pageNumber: page, size: countPerPage } };
 
   const [isActive, setIsActive] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
   const [data, setData] = useState({
     districtId: "",
@@ -73,6 +74,15 @@ function FarmerRegistrationList() {
   };
 
   const exportCsv = (e) => {
+    if (isExporting) return;
+    if (!data.districtId) {
+      Swal.fire({
+        icon: "warning",
+        title: "Please select a District before exporting",
+      });
+      return;
+    }
+    setIsExporting(true);
     api
       .post(
         baseURLFarmer + `farmer/farmer-report`,
@@ -108,6 +118,9 @@ function FarmerRegistrationList() {
           icon: "warning",
           title: "No record found!!!",
         });
+      })
+      .finally(() => {
+        setIsExporting(false);
       });
   };
 
@@ -599,7 +612,7 @@ function FarmerRegistrationList() {
             {/* Row 1 — All filters */}
             <Row className="g-2 mb-2">
               <Col md={2}>
-                <label style={lbl}>{t("District")}</label>
+                <label style={lbl}>{t("District")} <span style={{ color: "red" }}>*</span></label>
                 <Form.Select name="districtId" value={data.districtId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select District")}</option>
                   {districtListData && districtListData.map((list) => (
@@ -673,12 +686,15 @@ function FarmerRegistrationList() {
                 </button>
               </Col>
               <Col md="auto">
-                <button type="button" onClick={exportCsv} style={{
+                <button type="button" onClick={exportCsv} disabled={isExporting || !data.districtId} style={{
                   background: "linear-gradient(135deg,#c53030,#e53e3e)", border: "none", borderRadius: "8px",
-                  height: CTRL_H, padding: "0 20px", fontWeight: 700, fontSize: "13px", color: "#fff", cursor: "pointer",
+                  height: CTRL_H, padding: "0 20px", fontWeight: 700, fontSize: "13px", color: "#fff",
+                  cursor: (isExporting || !data.districtId) ? "not-allowed" : "pointer", opacity: (isExporting || !data.districtId) ? 0.6 : 1,
                   boxShadow: "0 3px 10px rgba(197,48,48,0.28)", display: "inline-flex", alignItems: "center", gap: "6px",
-                }}>
-                  📥 {t("Export")}
+                }}
+                  title={!data.districtId ? t("Select a District to enable Export") : undefined}
+                >
+                  📥 {isExporting ? t("Exporting...") : t("Export")}
                 </button>
               </Col>
             </Row>

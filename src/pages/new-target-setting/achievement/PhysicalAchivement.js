@@ -22,12 +22,19 @@ function PhysicalAchievement() {
     financialYearMasterId: "",
     districtId: "",
     talukId: "",
+    clusterId: "",
+    megaClusterId: "",
     month: "",
     targetType: "",
     value: "",
     raceMasterId: "",
     tscMasterId: "",
     userMasterId: "",
+    noOfSericulturists: "",
+    noOfDflsFailed: "",
+    successfullyHarvestedDfls: "",
+    averageRate: "",
+    poorCocoon: "",
   });
 
   const [districtWiseProductionMonth,setDistrictWiseProductionMonth] = useState({
@@ -296,6 +303,42 @@ const [listViewTargetData, setViewTargetListData] = useState([]);
 
   useEffect(() => {
     getDistrictList();
+  }, []);
+
+  // to get Mega Cluster
+  const [megaClusterListData, setMegaClusterListData] = useState([]);
+
+  const getMegaClusterList = () => {
+    api
+      .get(baseURLTargetSetting + `megaCluster/get-all`)
+      .then((response) => {
+        setMegaClusterListData(response.data.content.megaCluster);
+      })
+      .catch((err) => {
+        setMegaClusterListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getMegaClusterList();
+  }, []);
+
+  // to get Cluster
+  const [clusterListData, setClusterListData] = useState([]);
+
+  const getClusterList = () => {
+    api
+      .get(baseURLTargetSetting + `cluster/get-all`)
+      .then((response) => {
+        setClusterListData(response.data.content.cluster);
+      })
+      .catch((err) => {
+        setClusterListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getClusterList();
   }, []);
 
   // to get Race
@@ -805,12 +848,19 @@ const [listViewTargetData, setViewTargetListData] = useState([]);
       financialYearMasterId: "",
       districtId: "",
       talukId: "",
+      clusterId: "",
+      megaClusterId: "",
       month: "",
       targetType: "",
       value: "",
       raceMasterId: "",
       tscMasterId: "",
       userMasterId: "",
+      noOfSericulturists: "",
+      noOfDflsFailed: "",
+      successfullyHarvestedDfls: "",
+      averageRate: "",
+      poorCocoon: "",
     });
     setSearchData({
       districtId: "",
@@ -1915,6 +1965,78 @@ useEffect(() => {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
+                              {t("Mega Cluster")}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="megaClusterId"
+                                value={data.megaClusterId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.megaClusterId === undefined ||
+                                  data.megaClusterId === "0"
+                                }
+                              >
+                                <option value="">{t("Select Mega Cluster")}</option>
+                                {megaClusterListData && megaClusterListData.length
+                                ?megaClusterListData.map((list) => (
+                                  <option
+                                    key={list.megaClusterId}
+                                    value={list.megaClusterId}
+                                  >
+                                    {list.name}
+                                  </option>
+                                ))
+                                : ""}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {t("Mega Cluster is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              {t("Cluster")}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="clusterId"
+                                value={data.clusterId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.clusterId === undefined ||
+                                  data.clusterId === "0"
+                                }
+                              >
+                                <option value="">{t("Select Cluster")}</option>
+                                {clusterListData && clusterListData.length
+                                ?clusterListData.map((list) => (
+                                  <option
+                                    key={list.clusterId}
+                                    value={list.clusterId}
+                                  >
+                                    {list.name}
+                                  </option>
+                                ))
+                                : ""}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {t("Cluster is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
                               {t("Taluk")}
                               {/* <span className="text-danger">*</span> */}
                             </Form.Label>
@@ -2079,6 +2201,97 @@ required
     </div>
   </Form.Group>
 </Col>
+
+<Col lg="6">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label htmlFor="noOfSericulturists">
+      {t("No of Sericulturists")}
+    </Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        id="noOfSericulturists"
+        name="noOfSericulturists"
+        value={data.noOfSericulturists}
+        onChange={handleInputs}
+        type="text"
+        placeholder={t("Enter No of Sericulturists")}
+      />
+    </div>
+  </Form.Group>
+</Col>
+
+<Col lg="6">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label htmlFor="noOfDflsFailed">
+      {t("No of DFLs Failed")}
+    </Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        id="noOfDflsFailed"
+        name="noOfDflsFailed"
+        value={data.noOfDflsFailed}
+        onChange={handleInputs}
+        type="text"
+        placeholder={t("Enter No of DFLs Failed")}
+      />
+    </div>
+  </Form.Group>
+</Col>
+
+<Col lg="6">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label htmlFor="successfullyHarvestedDfls">
+      {t("Successfully Harvested DFLs")}
+    </Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        id="successfullyHarvestedDfls"
+        name="successfullyHarvestedDfls"
+        value={data.successfullyHarvestedDfls}
+        onChange={handleInputs}
+        type="text"
+        placeholder={t("Enter Successfully Harvested DFLs")}
+      />
+    </div>
+  </Form.Group>
+</Col>
+
+<Col lg="6">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label htmlFor="averageRate">
+      {t("Average Rate")}
+    </Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        id="averageRate"
+        name="averageRate"
+        value={data.averageRate}
+        onChange={handleInputs}
+        type="text"
+        placeholder={t("Enter Average Rate")}
+      />
+    </div>
+  </Form.Group>
+</Col>
+
+<Col lg="6">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label htmlFor="poorCocoon">
+      {t("Poor Cocoon")}
+    </Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        id="poorCocoon"
+        name="poorCocoon"
+        value={data.poorCocoon}
+        onChange={handleInputs}
+        type="text"
+        placeholder={t("Enter Poor Cocoon")}
+      />
+    </div>
+  </Form.Group>
+</Col>
+
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>

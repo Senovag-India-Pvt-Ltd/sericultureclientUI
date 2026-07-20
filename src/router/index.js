@@ -212,6 +212,10 @@ import Education from "../pages/masters/education/Education";
 import Relationship from "../pages/masters/relationship/Relationship";
 import State from "../pages/masters/state/State";
 import District from "../pages/masters/district/District";
+import Cluster from "../pages/masters/cluster/Cluster";
+import MegaCluster from "../pages/masters/mega-cluster/MegaCluster";
+import DistrictWiseCluster from "../pages/masters/district-wise-cluster/DistrictWiseCluster";
+import DistrictWiseMegaCluster from "../pages/masters/district-wise-mega-cluster/DistrictWiseMegaCluster";
 import Taluk from "../pages/masters/taluk/Taluk";
 import Hobli from "../pages/masters/hobli/Hobli";
 import Village from "../pages/masters/village/Village";
@@ -236,6 +240,14 @@ import StateList from "../pages/masters/state/StateList";
 import StateView from "../pages/masters/state/StateView";
 import DistrictList from "../pages/masters/district/DistrictList";
 import DistrictView from "../pages/masters/district/DistrictView";
+import ClusterList from "../pages/masters/cluster/ClusterList";
+import ClusterView from "../pages/masters/cluster/ClusterView";
+import MegaClusterList from "../pages/masters/mega-cluster/MegaClusterList";
+import MegaClusterView from "../pages/masters/mega-cluster/MegaClusterView";
+import DistrictWiseClusterList from "../pages/masters/district-wise-cluster/DistrictWiseClusterList";
+import DistrictWiseClusterView from "../pages/masters/district-wise-cluster/DistrictWiseClusterView";
+import DistrictWiseMegaClusterList from "../pages/masters/district-wise-mega-cluster/DistrictWiseMegaClusterList";
+import DistrictWiseMegaClusterView from "../pages/masters/district-wise-mega-cluster/DistrictWiseMegaClusterView";
 import TalukList from "../pages/masters/taluk/TalukList";
 import TalukView from "../pages/masters/taluk/TalukView";
 import HobliList from "../pages/masters/hobli/HobliList";
@@ -302,6 +314,10 @@ import MachineTypeEdit from "../pages/masters/machine-type/MachineTypeEdit";
 import ReasonLotCancellationEdit from "../pages/masters/reason-lot-cancellation/ReasonLotCancellationEdit";
 import ReasonBidRejectionEdit from "../pages/masters/reason-bid-rejection/ReasonBidRejectionEdit";
 import DistrictEdit from "../pages/masters/district/DistrictEdit";
+import ClusterEdit from "../pages/masters/cluster/ClusterEdit";
+import MegaClusterEdit from "../pages/masters/mega-cluster/MegaClusterEdit";
+import DistrictWiseClusterEdit from "../pages/masters/district-wise-cluster/DistrictWiseClusterEdit";
+import DistrictWiseMegaClusterEdit from "../pages/masters/district-wise-mega-cluster/DistrictWiseMegaClusterEdit";
 import TalukEdit from "../pages/masters/taluk/TalukEdit";
 import HobliEdit from "../pages/masters/hobli/HobliEdit";
 import VillageEdit from "../pages/masters/village/VillageEdit";
@@ -1054,6 +1070,7 @@ import TscMonthlyS4SummaryReport from "../pages/seed-and-dfl-managment/TscMonthl
 import TscMonthlyP1ChawkiLotwiseReport from "../pages/seed-and-dfl-managment/TscMonthlyP1ChawkiLotwiseReport";
 import TscMonthlyP1CocoonLotwiseReport from "../pages/seed-and-dfl-managment/TscMonthlyP1CocoonLotwiseReport";
 import TscMonthlySourceGrainageChawkiReport from "../pages/seed-and-dfl-managment/TscMonthlySourceGrainageChawkiReport";
+import TscClusterWiseReport from "../pages/seed-and-dfl-managment/TscClusterWiseReport";
 import TscMonthlySubdivisionProgressReport from "../pages/seed-and-dfl-managment/TscMonthlySubdivisionProgressReport";
 import TscMonthlyFarmerCategoryDetailReport from "../pages/seed-and-dfl-managment/TscMonthlyFarmerCategoryDetailReport";
 import TscMonthlyNregaProgressReport from "../pages/seed-and-dfl-managment/TscMonthlyNregaProgressReport";
@@ -2333,6 +2350,7 @@ function Router() {
             <Route path="tsc-monthly-p1-chawki-lotwise-report" element={<TscMonthlyP1ChawkiLotwiseReport />} />
             <Route path="tsc-monthly-p1-cocoon-lotwise-report" element={<TscMonthlyP1CocoonLotwiseReport />} />
             <Route path="tsc-monthly-source-grainage-chawki-report" element={<TscMonthlySourceGrainageChawkiReport />} />
+            <Route path="tsc-cluster-wise-report" element={<TscClusterWiseReport />} />
             <Route path="tsc-monthly-subdivision-progress-report" element={<TscMonthlySubdivisionProgressReport />} />
             <Route path="tsc-monthly-farmer-category-detail-report" element={<TscMonthlyFarmerCategoryDetailReport />} />
             <Route path="tsc-monthly-nrega-progress-report" element={<TscMonthlyNregaProgressReport />} />
@@ -3360,6 +3378,22 @@ function Router() {
             <Route path="district-list" element={<DistrictList />} />
             <Route path="district-view/:id" element={<DistrictView />} />
             <Route path="district-edit/:id" element={<DistrictEdit />} />
+            <Route path="cluster" element={<Cluster />} />
+            <Route path="cluster-list" element={<ClusterList />} />
+            <Route path="cluster-view/:id" element={<ClusterView />} />
+            <Route path="cluster-edit/:id" element={<ClusterEdit />} />
+            <Route path="mega-cluster" element={<MegaCluster />} />
+            <Route path="mega-cluster-list" element={<MegaClusterList />} />
+            <Route path="mega-cluster-view/:id" element={<MegaClusterView />} />
+            <Route path="mega-cluster-edit/:id" element={<MegaClusterEdit />} />
+            <Route path="district-wise-cluster" element={<DistrictWiseCluster />} />
+            <Route path="district-wise-cluster-list" element={<DistrictWiseClusterList />} />
+            <Route path="district-wise-cluster-view/:id" element={<DistrictWiseClusterView />} />
+            <Route path="district-wise-cluster-edit/:id" element={<DistrictWiseClusterEdit />} />
+            <Route path="district-wise-mega-cluster" element={<DistrictWiseMegaCluster />} />
+            <Route path="district-wise-mega-cluster-list" element={<DistrictWiseMegaClusterList />} />
+            <Route path="district-wise-mega-cluster-view/:id" element={<DistrictWiseMegaClusterView />} />
+            <Route path="district-wise-mega-cluster-edit/:id" element={<DistrictWiseMegaClusterEdit />} />
             <Route path="taluk" element={<Taluk />} />
             <Route path="taluk-list" element={<TalukList />} />
             <Route path="taluk-view/:id" element={<TalukView />} />
