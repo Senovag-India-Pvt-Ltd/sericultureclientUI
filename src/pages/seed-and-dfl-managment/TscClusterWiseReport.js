@@ -551,50 +551,50 @@ function TscClusterWiseReport() {
                         <div>ಕ್ರ.ಸಂ</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>Sl.</div>
                       </th>
                       <th rowSpan={2} style={{ ...groupHead(HEADER_BG), textAlign: "left", minWidth: "150px" }}>
-                        <div>ಜಿಲ್ಲೆಯ ಹೆಸರು</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>District</div>
+                        <div>ಜಿಲ್ಲೆ</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>District</div>
                       </th>
                       <th rowSpan={2} style={{ ...groupHead(HEADER_BG), textAlign: "left", minWidth: "160px" }}>
-                        <div>ಮೆಗಾ ಕ್ಲಸ್ಟರ್ ಹೆಸರು</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>Mega Cluster</div>
+                        <div>ಮೆಗಾ ಕ್ಲಸ್ಟರ್ ಹೆಸರು</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>Name of the Mega Cluster</div>
                       </th>
                       <th rowSpan={2} style={{ ...groupHead(HEADER_BG), textAlign: "left", minWidth: "170px" }}>
-                        <div>ಕ್ಲಸ್ಟರ್ ಹೆಸರು</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>Cluster</div>
+                        <div>ಕ್ಲಸ್ಟರ್ ಹೆಸರು</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}> Name of the Cluster</div>
                       </th>
                       <th rowSpan={2} style={groupHead(HEADER_BG)}>
-                        <div>ಮಾಹೆ/ಮಾ.ಅಂ</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>Month/Cum.</div>
+                        <div>ಮಾಹೆ/ಮಾ.ಅಂ</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>DM/UEM</div>
                       </th>
                       <th colSpan={5} style={groupHead(HEADER_BG)}>
-                        <div>ಚಾಕಿ ಇವರಗಳು (ಲಕ್ಷಗಳಲ್ಲಿ)</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>Chawki Rearers (in Lakhs)</div>
+                        <div>ಚಾಕಿ ವಿವರಗಳು (ಲಕ್ಷಗಳಲ್ಲಿ)</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>Chawki Rearers (in Lakhs)</div>
                       </th>
                       <th rowSpan={2} style={groupHead(HEADER_BG)}>
-                        <div>ವಿಫಲವಾದ ಮೊಟ್ಟೆಗಳು</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>Failed Eggs</div>
+                        <div>ವಿಫಲವಾದ ಮೊಟ್ಟೆಗಳು (ಲಕ್ಷಗಳಲ್ಲಿ)</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>No of DFL's Failed (in lakhs)</div>
                       </th>
                       <th rowSpan={2} style={groupHead(HEADER_BG)}>
-                        <div>ಬೆಳೆಯಾದ ಮೊಟ್ಟೆಗಳು</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>Reared Eggs</div>
+                        <div>ಬೆಳೆಯಾದ ಮೊಟ್ಟೆಗಳು (ಲಕ್ಷಗಳಲ್ಲಿ)</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>No of DFL's Harvested (in lakhs)</div>
                       </th>
                       <th colSpan={4} style={groupHead(HEADER_BG)}>
-                        <div>ಗೂಡಿನ ಅಂದಾಜನೆ (ಮೆ.ಟನ್ ಗಳಲ್ಲಿ)</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>Cocoon Estimation (in MT)</div>
+                        <div>ಗೂಡಿನ ಉತ್ಪಾದನೆ (ಮೆ.ಟನ್ ಗಳಲ್ಲಿ)</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>Cocoon Production (in MT)</div>
                       </th>
                       <th rowSpan={2} style={groupHead(HEADER_BG)}>
-                        <div>ಸರಾಸರಿ ಇಳುವರಿ</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>Avg Yield</div>
+                        <div>ಸರಾಸರಿ ಇಳುವರಿ (ಕೆಜಿಗಳಲ್ಲಿ)</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>Avg Yield (in Kg's)</div>
                       </th>
                       <th rowSpan={2} style={groupHead(HEADER_BG)}>
-                        <div>ಸರಾಸರಿ ದರ (ರೂ.ಗಳಲ್ಲಿ)</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>Avg Rate (Rs)</div>
+                        <div>ಸರಾಸರಿ ದರ (ರೂ.ಗಳಲ್ಲಿ)</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>Avg Rate (in Rs)</div>
                       </th>
                       <th rowSpan={2} style={groupHead(HEADER_BG)}>
-                        <div>ಕಳಪೆ ಗೂಡು (ಶೇ)</div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>Poor Cocoon (%)</div>
+                        <div>ಶೇ.ಕಳಪೆ ಗೂಡು </div><div style={{ fontSize: "9.5px", fontWeight: 600, opacity: .85 }}>% Defective Cocoons</div>
                       </th>
                     </tr>
                     <tr>
                       <th style={leafHead(LEAF_BG, LEAF_TEXT)}><div>ವಾರ್ಷಿಕ ಗುರಿ</div><div style={{ fontSize: "8.5px", opacity: .8 }}>Annual Target</div></th>
                       <th style={leafHead(LEAF_BG, LEAF_TEXT)}><div>ಗುರಿ</div><div style={{ fontSize: "8.5px", opacity: .8 }}>Target</div></th>
-                      <th style={leafHead(LEAF_BG, LEAF_TEXT)}><div>ಸಾಧನೆ</div><div style={{ fontSize: "8.5px", opacity: .8 }}>Achv.</div></th>
-                      <th style={leafHead(LEAF_BG, LEAF_TEXT)}><div>ಶೇ. ಸಾಧನೆ</div><div style={{ fontSize: "8.5px", opacity: .8 }}>% Achv.</div></th>
-                      <th style={leafHead(LEAF_BG, LEAF_TEXT)}><div>ಬೆಳೆಗಾರರ ಸಂಖ್ಯೆ</div><div style={{ fontSize: "8.5px", opacity: .8 }}>Rearers No.</div></th>
+                      <th style={leafHead(LEAF_BG, LEAF_TEXT)}><div>ಸಾಧನೆ</div><div style={{ fontSize: "8.5px", opacity: .8 }}>Achievement</div></th>
+                      <th style={leafHead(LEAF_BG, LEAF_TEXT)}><div>ಶೇ. ಸಾಧನೆ</div><div style={{ fontSize: "8.5px", opacity: .8 }}>% Achievement</div></th>
+                      <th style={leafHead(LEAF_BG, LEAF_TEXT)}><div>ಬೆಳೆಗಾರರ ಸಂಖ್ಯೆ</div><div style={{ fontSize: "8.5px", opacity: .8 }}> </div></th>
 
                       <th style={leafHead(LEAF_BG, LEAF_TEXT)}><div>ವಾರ್ಷಿಕ ಗುರಿ</div><div style={{ fontSize: "8.5px", opacity: .8 }}>Annual Target</div></th>
                       <th style={leafHead(LEAF_BG, LEAF_TEXT)}><div>ಗುರಿ</div><div style={{ fontSize: "8.5px", opacity: .8 }}>Target</div></th>
-                      <th style={leafHead(LEAF_BG, LEAF_TEXT)}><div>ಸಾಧನೆ</div><div style={{ fontSize: "8.5px", opacity: .8 }}>Achv.</div></th>
-                      <th style={leafHead(LEAF_BG, LEAF_TEXT)}><div>ಶೇ. ಸಾಧನೆ</div><div style={{ fontSize: "8.5px", opacity: .8 }}>% Achv.</div></th>
+                      <th style={leafHead(LEAF_BG, LEAF_TEXT)}><div>ಸಾಧನೆ</div><div style={{ fontSize: "8.5px", opacity: .8 }}>Achievement</div></th>
+                      <th style={leafHead(LEAF_BG, LEAF_TEXT)}><div>ಶೇ. ಸಾಧನೆ</div><div style={{ fontSize: "8.5px", opacity: .8 }}>% Achievement</div></th>
                     </tr>
                   </thead>
                   <tbody>
