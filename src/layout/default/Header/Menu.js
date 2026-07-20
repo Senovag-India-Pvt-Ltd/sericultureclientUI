@@ -386,6 +386,10 @@ function Menu() {
     Admin_Master_Registration_Taluk: false,
     Admin_Master_Registration_Hobli: false,
     Admin_Master_Registration_Village: false,
+    Admin_Master_Registration_Cluster: false,
+    Admin_Master_Registration_Mega_Cluster: false,
+    Admin_Master_Registration_District_Wise_Cluster: false,
+    Admin_Master_Registration_District_Wise_Mega_Cluster: false,
     Admin_Master_Registration_Trader_Type: false,
     Admin_Master_Registration_Farmer_Type: false,
     Admin_Master_Registration_Working_Institution: false,
@@ -3739,6 +3743,38 @@ function Menu() {
                             />
                           </MenuItem>
                         ) : null}
+                        {showMenu.Admin_Master_Registration_Cluster ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Cluster")}
+                              to="/seriui/cluster"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_Mega_Cluster ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("Mega Cluster")}
+                              to="/seriui/mega-cluster"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_District_Wise_Cluster ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("District Wise Cluster")}
+                              to="/seriui/district-wise-cluster"
+                            />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Registration_District_Wise_Mega_Cluster ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text={t("District Wise Mega Cluster")}
+                              to="/seriui/district-wise-mega-cluster"
+                            />
+                          </MenuItem>
+                        ) : null}
                         {showMenu.Admin_Master_Registration_Trader_Type ? (
                           <MenuItem>
                             <MenuItemLink
@@ -6847,6 +6883,12 @@ function Menu() {
                                   <MenuItemLink
                                     text={t("TSC Monthly Source-Grainage Chawki (Sheet 16)")}
                                     to="/seriui/tsc-monthly-source-grainage-chawki-report"
+                                  />
+                                </MenuItem>
+                                <MenuItem>
+                                  <MenuItemLink
+                                    text={t("Bivoltine Cluster Wise Report")}
+                                    to="/seriui/tsc-cluster-wise-report"
                                   />
                                 </MenuItem>
                               </MenuSub>

@@ -22,6 +22,8 @@ function TSCWiseProductionPhysicalTargetSetting() {
     financialYearMasterId: "",
     districtId: "",
     talukId: "",
+    clusterId: "",
+    megaClusterId: "",
     month: "",
     targetType: "",
     value: "",
@@ -274,6 +276,42 @@ const [listViewTargetData, setViewTargetListData] = useState([]);
 
   useEffect(() => {
     getDistrictList();
+  }, []);
+
+  // to get Cluster
+  const [clusterListData, setClusterListData] = useState([]);
+
+  const getClusterList = () => {
+    api
+      .get(baseURLTargetSetting + `cluster/get-all`)
+      .then((response) => {
+        setClusterListData(response.data.content.cluster);
+      })
+      .catch((err) => {
+        setClusterListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getClusterList();
+  }, []);
+
+  // to get Mega Cluster
+  const [megaClusterListData, setMegaClusterListData] = useState([]);
+
+  const getMegaClusterList = () => {
+    api
+      .get(baseURLTargetSetting + `megaCluster/get-all`)
+      .then((response) => {
+        setMegaClusterListData(response.data.content.megaCluster);
+      })
+      .catch((err) => {
+        setMegaClusterListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getMegaClusterList();
   }, []);
 
   // to get Race
@@ -731,6 +769,8 @@ const [listViewTargetData, setViewTargetListData] = useState([]);
       financialYearMasterId: "",
       districtId: "",
       talukId: "",
+      clusterId: "",
+      megaClusterId: "",
       month: "",
       targetType: "",
       value: "",
@@ -1957,6 +1997,78 @@ useEffect(() => {
                               </Form.Select>
                               <Form.Control.Feedback type="invalid">
                                 {t("District is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              {t("Mega Cluster")}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="megaClusterId"
+                                value={data.megaClusterId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.megaClusterId === undefined ||
+                                  data.megaClusterId === "0"
+                                }
+                              >
+                                <option value="">{t("Select Mega Cluster")}</option>
+                                {megaClusterListData && megaClusterListData.length
+                                ?megaClusterListData.map((list) => (
+                                  <option
+                                    key={list.megaClusterId}
+                                    value={list.megaClusterId}
+                                  >
+                                    {list.name}
+                                  </option>
+                                ))
+                                : ""}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {t("Mega Cluster is required")}
+                              </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n4">
+                            <Form.Label>
+                              {t("Cluster")}<span className="text-danger">*</span>
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="clusterId"
+                                value={data.clusterId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                                required
+                                isInvalid={
+                                  data.clusterId === undefined ||
+                                  data.clusterId === "0"
+                                }
+                              >
+                                <option value="">{t("Select Cluster")}</option>
+                                {clusterListData && clusterListData.length
+                                ?clusterListData.map((list) => (
+                                  <option
+                                    key={list.clusterId}
+                                    value={list.clusterId}
+                                  >
+                                    {list.name}
+                                  </option>
+                                ))
+                                : ""}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {t("Cluster is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
