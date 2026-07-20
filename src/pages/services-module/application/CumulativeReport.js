@@ -7,6 +7,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import api from "../../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
+import Swal from "sweetalert2";
 import "./CumulativeReport.css";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -130,29 +131,64 @@ function CumulativeReport() {
     return { level: "SCHEME", financialYearId: data.financialYearId || 0 };
   };
 
+  // A blocked request (WAF / auth / server error) comes back as an HTML or JSON
+  // page instead of the binary file. Detect that so we never save a broken file.
+  const isErrorBlob = async (blob) => {
+    if (!blob) return true;
+    const type = (blob.type || "").toLowerCase();
+    if (type.includes("pdf") || type.includes("spreadsheet") || type.includes("octet-stream")) return false;
+    if (type.includes("html") || type.includes("text") || type.includes("json") || type.includes("xml")) return true;
+    // Unknown/empty content-type: sniff the magic bytes (%PDF… or PK.. for xlsx/zip).
+    try {
+      const head = await blob.slice(0, 5).text();
+      return !(head.startsWith("%PDF") || head.startsWith("PK"));
+    } catch {
+      return false;
+    }
+  };
+
+  // Single, robust path for every styled download. Query params are kept strictly
+  // numeric/ASCII (no free-text titles) so upstream security filters never block them.
+  const downloadReportFile = async (endpoint, params, format, fileBase) => {
+    setDownloading(format);
+    try {
+      const res = await api.post(baseURLDBT + endpoint, {}, { params, responseType: "blob" });
+      if (await isErrorBlob(res.data)) throw new Error("invalid-file");
+
+      const type =
+        format === "pdf"
+          ? "application/pdf"
+          : "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+      const url = URL.createObjectURL(new Blob([res.data], { type }));
+      if (format === "pdf") {
+        window.open(url);
+      } else {
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${fileBase}.xlsx`;
+        a.click();
+      }
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+    } catch (e) {
+      Swal.fire({
+        icon: "error",
+        title: t("Download failed"),
+        text: t("The report could not be generated. Please try again."),
+        confirmButtonColor: "#2563EB",
+      });
+    } finally {
+      setDownloading(null);
+    }
+  };
+
   const downloadReport = (format) => {
     const params = currentExportContext();
-    setDownloading(format);
-    api
-      .post(baseURLDBT + `service/cumulative-report/${format}`, {}, { params, responseType: "blob" })
-      .then((res) => {
-        const type =
-          format === "pdf"
-            ? "application/pdf"
-            : "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-        const url = URL.createObjectURL(new Blob([res.data], { type }));
-        if (format === "pdf") {
-          window.open(url);
-        } else {
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = `cumulative_report_${String(params.level).toLowerCase()}.xlsx`;
-          a.click();
-        }
-        setTimeout(() => URL.revokeObjectURL(url), 4000);
-      })
-      .catch(() => {})
-      .finally(() => setDownloading(null));
+    downloadReportFile(
+      `service/cumulative-report/${format}`,
+      params,
+      format,
+      `cumulative_report_${String(params.level).toLowerCase()}`
+    );
   };
 
   const loadDivisions = (ctx, yearId) => {
@@ -384,34 +420,17 @@ function CumulativeReport() {
       .finally(() => setDetailLoading(false));
   };
 
-  // Styled download of the application-details list currently shown in the modal.
+  // Styled download of the application-details list shown in the modal.
+  // Only the numeric/ASCII query params are sent — the backend builds the report
+  // title itself from statusType, so no free-text (Kannada) ever hits the URL.
   const downloadDetails = (format) => {
     if (!detailParams) return;
-    setDownloading(format);
-    api
-      .post(
-        baseURLDBT + `service/application-details/${format}`,
-        {},
-        { params: { ...detailParams, reportTitle: detailTitle }, responseType: "blob" }
-      )
-      .then((res) => {
-        const type =
-          format === "pdf"
-            ? "application/pdf"
-            : "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-        const url = URL.createObjectURL(new Blob([res.data], { type }));
-        if (format === "pdf") {
-          window.open(url);
-        } else {
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = "application_details.xlsx";
-          a.click();
-        }
-        setTimeout(() => URL.revokeObjectURL(url), 4000);
-      })
-      .catch(() => {})
-      .finally(() => setDownloading(null));
+    downloadReportFile(
+      `service/application-details/${format}`,
+      detailParams,
+      format,
+      "application_details"
+    );
   };
 
   const baseDetailParams = (statusType, yearId) => ({

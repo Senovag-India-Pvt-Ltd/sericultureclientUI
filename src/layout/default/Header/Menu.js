@@ -7044,7 +7044,7 @@ function Menu() {
                   */}
                   <MenuItem>
                     <MenuItemLink
-                      text={t("Dashboard")}
+                      text={t("Dashboards")}
                       to="https://app.powerbi.com/view?r=eyJrIjoiYTFmMjJiMTctMDk2Yi00M2U0LTk2NTAtZmIzYjQ0ODE2YWM2IiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9"
                       blank={true}
                     />
