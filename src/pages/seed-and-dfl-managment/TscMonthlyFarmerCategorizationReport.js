@@ -265,7 +265,9 @@ function TscMonthlyFarmerCategorizationReport() {
     let sc = 0, st = 0, min = 0, dis = 0;
     let women = 0, men = 0;
     let lt1 = 0, gt10 = 0;
-    dataRows.forEach((r) => {
+    // Exclude the API's grand-total row (tsc_name === "ಒಟ್ಟು") so per-TSC rows are
+    // not double-counted against the total row it already aggregates.
+    dataRows.filter((r) => String(r.tsc_name || "").trim() !== "ಒಟ್ಟು").forEach((r) => {
       totalRain += numOrZero(r.size_total_rain);
       totalIrr  += numOrZero(r.size_total_irr);
       sc        += numOrZero(r.sc_rain)  + numOrZero(r.sc_irr);

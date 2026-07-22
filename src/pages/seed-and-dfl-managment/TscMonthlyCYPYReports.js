@@ -265,7 +265,8 @@ function TscMonthlyCYPYReport({ config }) {
   const kpis = useMemo(() => {
     let cyAnnual = 0, cyTgtMo = 0, cyTgtMe = 0, cyAchMo = 0, cyAchMe = 0;
     let pyAnnual = 0,                pyTgtMe = 0,             pyAchMe = 0;
-    dataRows.forEach((r) => {
+    // Exclude the API grand-total row (tsc_name === "ಒಟ್ಟು") to avoid double-counting.
+    dataRows.filter((r) => String(r.tsc_name || "").trim() !== "ಒಟ್ಟು" && String(r.race || "").trim() !== "ಒಟ್ಟು").forEach((r) => {
       cyAnnual += numOrZero(r.cy_annual);
       cyTgtMo  += numOrZero(r.cy_target_mo);
       cyTgtMe  += numOrZero(r.cy_target_me);
