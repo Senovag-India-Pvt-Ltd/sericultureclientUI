@@ -1,9 +1,10 @@
-import { Card, Button, Form, Dropdown } from "react-bootstrap";
+import { Card, Button, Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { createTheme } from "react-data-table-component";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
+import SearchableSelect from "../../../components/SearchableSelect/SearchableSelect";
 // import DataTable from "../../../components/DataTable/DataTable";
 import DataTable from "react-data-table-component";
 import StateDatas from "../../../store/masters/state/StateData";
@@ -313,25 +314,12 @@ function ScApprovalStageList() {
               >
                 {t("Approval Stage")}
               </label>
-              <Form.Select
-                style={{
-                  fontSize: "13px",
-                  border: "1.5px solid #1e67a8",
-                  borderRadius: "6px",
-                  color: "#004b8e",
-                  background: "#fff",
-                  padding: "5px 10px",
-                  boxShadow: "none",
-                  cursor: "pointer",
-                }}
+              <SearchableSelect
+                options={stageOptions}
                 value={stageFilter}
-                onChange={(e) => setStageFilter(e.target.value)}
-              >
-                <option value="">All Stages</option>
-                {stageOptions.map((name, i) => (
-                  <option key={i} value={name}>{name}</option>
-                ))}
-              </Form.Select>
+                onChange={setStageFilter}
+                placeholder="All Stages"
+              />
             </div>
 
             {/* Dropdown 2: Filter by Checkbox/Action flags */}
