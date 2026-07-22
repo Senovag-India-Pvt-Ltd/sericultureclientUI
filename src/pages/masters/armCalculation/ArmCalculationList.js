@@ -31,7 +31,7 @@ function ArmCalculationList() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [saving, setSaving]           = useState(false);
   const [newRowType, setNewRowType]   = useState("Component Details");
-  const emptyRow = { equipmentName: "", quantity: "", unitRate: "", unitCost: "", centralPercentage: "", statePercentage: "" };
+  const emptyRow = { equipmentName: "", quantity: "", unitRate: "", unitCost: "", centralPercentage: "", statePercentage: "", advancePercentage: "", firstPayment: "", finalPayment: "" };
   const [newRow, setNewRow] = useState(emptyRow);
 
   const loadAll = () => {
@@ -82,6 +82,9 @@ function ArmCalculationList() {
       scCategoryId:       activeCatId,
       centralPercentage:  parseFloat(newRow.centralPercentage) || 0,
       statePercentage:    parseFloat(newRow.statePercentage)   || 0,
+      advancePercentage:  parseFloat(newRow.advancePercentage) || 0,
+      firstPayment:       parseFloat(newRow.firstPayment)      || 0,
+      finalPayment:       parseFloat(newRow.finalPayment)      || 0,
       active:             true,
     })
       .then(() => {
@@ -252,6 +255,9 @@ function ArmCalculationList() {
                             <th style={{ ...thStyle, textAlign: "right" }}>{t("Unit Cost")}</th>
                             <th style={{ ...thStyle, textAlign: "center", width: 90 }}>{t("Central %")}</th>
                             <th style={{ ...thStyle, textAlign: "center", width: 80 }}>{t("State %")}</th>
+                            <th style={{ ...thStyle, textAlign: "center", width: 90 }}>{t("Advance %")}</th>
+                            <th style={{ ...thStyle, textAlign: "center", width: 90 }}>{t("First Payment %")}</th>
+                            <th style={{ ...thStyle, textAlign: "center", width: 90 }}>{t("Final Payment %")}</th>
                             <th style={{ ...thStyle, textAlign: "center", width: 160 }}>{t("Actions")}</th>
                           </tr>
                         </thead>
@@ -273,6 +279,15 @@ function ArmCalculationList() {
                                   {r.statePercentage != null ? <Badge bg="primary" style={{ fontSize: "12px" }}>{r.statePercentage}%</Badge> : "—"}
                                 </td>
                                 <td style={{ ...tdStyle, textAlign: "center" }}>
+                                  {r.advancePercentage != null ? <Badge bg="secondary" style={{ fontSize: "12px", background: "#9333ea" }}>{r.advancePercentage}%</Badge> : "—"}
+                                </td>
+                                <td style={{ ...tdStyle, textAlign: "center" }}>
+                                  {r.firstPayment != null ? <Badge bg="secondary" style={{ fontSize: "12px", background: "#c2410c" }}>{r.firstPayment}%</Badge> : "—"}
+                                </td>
+                                <td style={{ ...tdStyle, textAlign: "center" }}>
+                                  {r.finalPayment != null ? <Badge bg="secondary" style={{ fontSize: "12px", background: "#0f766e" }}>{r.finalPayment}%</Badge> : "—"}
+                                </td>
+                                <td style={{ ...tdStyle, textAlign: "center" }}>
                                   <div className="d-flex gap-1 justify-content-center">
                                     <Button variant="outline-secondary" size="sm" onClick={() => navigate(`/seriui/arm-calculation-view/${r.armCalculationId}`)}>{t("View")}</Button>
                                     <Button variant="primary" size="sm" onClick={() => navigate(`/seriui/arm-calculation-edit/${r.armCalculationId}`)}>{t("Edit")}</Button>
@@ -289,7 +304,7 @@ function ArmCalculationList() {
                               {t("Sub Total")} ({mainRows.length} {t("components")}):
                             </td>
                             <td style={{ ...tdStyle, textAlign: "right", fontWeight: 800, fontSize: "15px", color: "#004b8e" }}>{fmt(mainUnitCost)}</td>
-                            <td colSpan={3} />
+                            <td colSpan={6} />
                           </tr>
                         </tfoot>
                       </Table>
@@ -315,6 +330,9 @@ function ArmCalculationList() {
                             <th style={{ ...thStyle, textAlign: "right" }}>{t("Unit Cost")}</th>
                             <th style={{ ...thStyle, textAlign: "center", width: 90 }}>{t("Central %")}</th>
                             <th style={{ ...thStyle, textAlign: "center", width: 80 }}>{t("State %")}</th>
+                            <th style={{ ...thStyle, textAlign: "center", width: 90 }}>{t("Advance %")}</th>
+                            <th style={{ ...thStyle, textAlign: "center", width: 90 }}>{t("First Payment %")}</th>
+                            <th style={{ ...thStyle, textAlign: "center", width: 90 }}>{t("Final Payment %")}</th>
                             <th style={{ ...thStyle, textAlign: "center", width: 160 }}>{t("Actions")}</th>
                           </tr>
                         </thead>
@@ -336,6 +354,15 @@ function ArmCalculationList() {
                                   {r.statePercentage != null ? <Badge bg="primary" style={{ fontSize: "12px" }}>{r.statePercentage}%</Badge> : "—"}
                                 </td>
                                 <td style={{ ...tdStyle, textAlign: "center" }}>
+                                  {r.advancePercentage != null ? <Badge bg="secondary" style={{ fontSize: "12px", background: "#9333ea" }}>{r.advancePercentage}%</Badge> : "—"}
+                                </td>
+                                <td style={{ ...tdStyle, textAlign: "center" }}>
+                                  {r.firstPayment != null ? <Badge bg="secondary" style={{ fontSize: "12px", background: "#c2410c" }}>{r.firstPayment}%</Badge> : "—"}
+                                </td>
+                                <td style={{ ...tdStyle, textAlign: "center" }}>
+                                  {r.finalPayment != null ? <Badge bg="secondary" style={{ fontSize: "12px", background: "#0f766e" }}>{r.finalPayment}%</Badge> : "—"}
+                                </td>
+                                <td style={{ ...tdStyle, textAlign: "center" }}>
                                   <div className="d-flex gap-1 justify-content-center">
                                     <Button variant="outline-secondary" size="sm" onClick={() => navigate(`/seriui/arm-calculation-view/${r.armCalculationId}`)}>{t("View")}</Button>
                                     <Button variant="primary" size="sm" onClick={() => navigate(`/seriui/arm-calculation-edit/${r.armCalculationId}`)}>{t("Edit")}</Button>
@@ -352,7 +379,7 @@ function ArmCalculationList() {
                               {t("IBR Boiler Sub Total")}:
                             </td>
                             <td style={{ ...tdStyle, textAlign: "right", fontWeight: 800, fontSize: "15px", color: "#92400e" }}>{fmt(ibrUnitCost)}</td>
-                            <td colSpan={3} />
+                            <td colSpan={6} />
                           </tr>
                         </tfoot>
                       </Table>
@@ -424,7 +451,7 @@ function ArmCalculationList() {
                           </span>
                         )}
                       </div>
-                      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr 1fr", gap: "10px", alignItems: "end" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr", gap: "10px", alignItems: "end" }}>
                         <div>
                           <label style={{ fontSize: "11px", fontWeight: 600, color: "#374151", marginBottom: "4px", display: "block" }}>{t("Equipment Name")} *</label>
                           <Form.Control
@@ -483,6 +510,36 @@ function ArmCalculationList() {
                             value={newRow.statePercentage}
                             onChange={(e) => handleNewRowChange("statePercentage", e.target.value)}
                             style={{ borderColor: "#93c5fd", borderRadius: "6px" }}
+                          />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: "11px", fontWeight: 600, color: "#374151", marginBottom: "4px", display: "block" }}>{t("Advance %")}</label>
+                          <Form.Control
+                            size="sm" type="number" min="0" max="100"
+                            placeholder="0"
+                            value={newRow.advancePercentage}
+                            onChange={(e) => handleNewRowChange("advancePercentage", e.target.value)}
+                            style={{ borderColor: "#d8b4fe", borderRadius: "6px" }}
+                          />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: "11px", fontWeight: 600, color: "#374151", marginBottom: "4px", display: "block" }}>{t("First Payment %")}</label>
+                          <Form.Control
+                            size="sm" type="number" min="0" max="100"
+                            placeholder="0"
+                            value={newRow.firstPayment}
+                            onChange={(e) => handleNewRowChange("firstPayment", e.target.value)}
+                            style={{ borderColor: "#fdba74", borderRadius: "6px" }}
+                          />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: "11px", fontWeight: 600, color: "#374151", marginBottom: "4px", display: "block" }}>{t("Final Payment %")}</label>
+                          <Form.Control
+                            size="sm" type="number" min="0" max="100"
+                            placeholder="0"
+                            value={newRow.finalPayment}
+                            onChange={(e) => handleNewRowChange("finalPayment", e.target.value)}
+                            style={{ borderColor: "#5eead4", borderRadius: "6px" }}
                           />
                         </div>
                       </div>

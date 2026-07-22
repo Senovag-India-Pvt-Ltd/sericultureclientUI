@@ -34,6 +34,9 @@ function ScSubSchemeDetails() {
     sanctionOrderForScheme: "",
     unitForScheme: "",
     acknowledgementForScheme: "",
+    armAdvancePaymentForScheme: "",
+    armFirstReleaseForScheme: "",
+    armFinalReleaseForScheme: "",
     admGovtOrder: "",
     schemeCircularNo: "",
     deptDelegationNo: "",
@@ -116,6 +119,9 @@ function ScSubSchemeDetails() {
         sanctionOrderForScheme: "",
         unitForScheme: "",
         acknowledgementForScheme: "",
+        armAdvancePaymentForScheme: "",
+        armFirstReleaseForScheme: "",
+        armFinalReleaseForScheme: "",
         admGovtOrder: "",
         schemeCircularNo: "",
         deptDelegationNo: "",
@@ -699,6 +705,156 @@ function ScSubSchemeDetails() {
                           {/* <Form.Control.Feedback type="invalid">
                           Test Results is required
                           </Form.Control.Feedback> */}
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Scheme For ARM Advance Payment
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="armAdvancePaymentForScheme"
+                            value={data.armAdvancePaymentForScheme}
+                            onChange={handleInputs}
+                          >
+                            <option value="">
+                              Select Scheme For ARM Advance Payment
+                            </option>
+                            <option value="PDMC">PDMC</option>
+                            <option value="PMKSY">PMKSY</option>
+                            <option value="Sericulture Development Programme">Sericulture Development Programme</option>
+                            <option value="Silk Samagra State">Silk Samagra State</option>
+                            <option value="Silk Samagra Central">Silk Samagra Central</option>
+                            <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                            <option value="Bonus PM">Bonus PM</option>
+                            <option value="Bonus BV">Bonus BV</option>
+                            <option value="Incentive PM">Incentive PM</option>
+                            <option value="Incentive BV">Incentive BV</option>
+                            <option value="Silk Incentive-PSF">Silk Incentive-PSF</option>
+                            <option value="IMCB-PSF">IMCB-PSF</option>
+                            <option value="ICB-PSF">ICB-PSF</option>
+                            <option value="MERM-PSF">MERM-PSF</option>
+                            <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
+                            <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
+                            <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
+                            <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
+                            <option value="Adopting Silent Generator">Adopting Silent Generator</option>
+                            <option value="Adopting Solar power Generator">Adopting Solar power Generator</option>
+                            <option value="Adopting Solar Water Heater">Adopting Solar Water Heater</option>
+                            <option value="Incentive For Bivoltine Cocoons-30/kg-PSF">Incentive For Bivoltine Cocoons-30/kg-PSF</option>
+                            <option value="North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP">North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP</option>
+                            <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>
+                            <option value="Incentive For Bivoltine Chawki Rearing Cost">Incentive For Bivoltine Chawki Rearing Cost</option>
+                            <option value="Registered Private Bivoltine Chawki Rearing Center Subsidy">Registered Private Bivoltine Chawki Rearing Center Subsidy</option>
+                            <option value="Rearing Equipment SS">Rearing Equipment SS</option>
+                            <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
+                            <option value="SDP RH 225">SDP RH 225</option>
+                            <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
+                            <option value="Automatic Reeling Machine Unit">Automatic Reeling Machine Unit</option>
+                          </Form.Select>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Scheme For ARM First Release
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="armFirstReleaseForScheme"
+                            value={data.armFirstReleaseForScheme}
+                            onChange={handleInputs}
+                          >
+                            <option value="">
+                              Select Scheme For ARM First Release
+                            </option>
+                            <option value="PDMC">PDMC</option>
+                            <option value="PMKSY">PMKSY</option>
+                            <option value="Sericulture Development Programme">Sericulture Development Programme</option>
+                            <option value="Silk Samagra State">Silk Samagra State</option>
+                            <option value="Silk Samagra Central">Silk Samagra Central</option>
+                            <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                            <option value="Bonus PM">Bonus PM</option>
+                            <option value="Bonus BV">Bonus BV</option>
+                            <option value="Incentive PM">Incentive PM</option>
+                            <option value="Incentive BV">Incentive BV</option>
+                            <option value="Silk Incentive-PSF">Silk Incentive-PSF</option>
+                            <option value="IMCB-PSF">IMCB-PSF</option>
+                            <option value="ICB-PSF">ICB-PSF</option>
+                            <option value="MERM-PSF">MERM-PSF</option>
+                            <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
+                            <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
+                            <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
+                            <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
+                            <option value="Adopting Silent Generator">Adopting Silent Generator</option>
+                            <option value="Adopting Solar power Generator">Adopting Solar power Generator</option>
+                            <option value="Adopting Solar Water Heater">Adopting Solar Water Heater</option>
+                            <option value="Incentive For Bivoltine Cocoons-30/kg-PSF">Incentive For Bivoltine Cocoons-30/kg-PSF</option>
+                            <option value="North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP">North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP</option>
+                            <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>
+                            <option value="Incentive For Bivoltine Chawki Rearing Cost">Incentive For Bivoltine Chawki Rearing Cost</option>
+                            <option value="Registered Private Bivoltine Chawki Rearing Center Subsidy">Registered Private Bivoltine Chawki Rearing Center Subsidy</option>
+                            <option value="Rearing Equipment SS">Rearing Equipment SS</option>
+                            <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
+                            <option value="SDP RH 225">SDP RH 225</option>
+                            <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
+                            <option value="Automatic Reeling Machine Unit">Automatic Reeling Machine Unit</option>
+                          </Form.Select>
+                        </div>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg="6">
+                      <Form.Group className="form-group mt-n4">
+                        <Form.Label>
+                          Scheme For ARM Final Release
+                        </Form.Label>
+                        <div className="form-control-wrap">
+                          <Form.Select
+                            name="armFinalReleaseForScheme"
+                            value={data.armFinalReleaseForScheme}
+                            onChange={handleInputs}
+                          >
+                            <option value="">
+                              Select Scheme For ARM Final Release
+                            </option>
+                            <option value="PDMC">PDMC</option>
+                            <option value="PMKSY">PMKSY</option>
+                            <option value="Sericulture Development Programme">Sericulture Development Programme</option>
+                            <option value="Silk Samagra State">Silk Samagra State</option>
+                            <option value="Silk Samagra Central">Silk Samagra Central</option>
+                            <option value="Bivoltine Bonus">Bivoltine Bonus</option>
+                            <option value="Bonus PM">Bonus PM</option>
+                            <option value="Bonus BV">Bonus BV</option>
+                            <option value="Incentive PM">Incentive PM</option>
+                            <option value="Incentive BV">Incentive BV</option>
+                            <option value="Silk Incentive-PSF">Silk Incentive-PSF</option>
+                            <option value="IMCB-PSF">IMCB-PSF</option>
+                            <option value="ICB-PSF">ICB-PSF</option>
+                            <option value="MERM-PSF">MERM-PSF</option>
+                            <option value="Atomatic Reeling Machine">Atomatic Reeling Machine</option>
+                            <option value="Reeling Shed-PSF">Reeling Shed-PSF</option>
+                            <option value="Adopting Heat Recovery Unit-PSF">Adopting Heat Recovery Unit-PSF</option>
+                            <option value="Adopting Boiler-PSF">Adopting Boiler-PSF</option>
+                            <option value="Adopting Silent Generator">Adopting Silent Generator</option>
+                            <option value="Adopting Solar power Generator">Adopting Solar power Generator</option>
+                            <option value="Adopting Solar Water Heater">Adopting Solar Water Heater</option>
+                            <option value="Incentive For Bivoltine Cocoons-30/kg-PSF">Incentive For Bivoltine Cocoons-30/kg-PSF</option>
+                            <option value="North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP">North Karnataka Cocoon Transportation Incentive-10/kg-PSF/SDP</option>
+                            <option value="MSC Chawki incentive Unit cost for 100 DFLs Rs.1500">MSC Chawki incentive Unit cost for 100 DFLs Rs.1500</option>
+                            <option value="Incentive For Bivoltine Chawki Rearing Cost">Incentive For Bivoltine Chawki Rearing Cost</option>
+                            <option value="Registered Private Bivoltine Chawki Rearing Center Subsidy">Registered Private Bivoltine Chawki Rearing Center Subsidy</option>
+                            <option value="Rearing Equipment SS">Rearing Equipment SS</option>
+                            <option value="SDP Construction Of  Low Cost Shed to  Permanent  Rearing House">SDP Construction Of  Low Cost Shed to  Permanent  Rearing House</option>
+                            <option value="SDP RH 225">SDP RH 225</option>
+                            <option value="SDP Low Cost Shed">SDP Low Cost Shed</option>
+                            <option value="Automatic Reeling Machine Unit">Automatic Reeling Machine Unit</option>
+                          </Form.Select>
                         </div>
                       </Form.Group>
                     </Col>

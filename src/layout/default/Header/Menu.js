@@ -6032,6 +6032,15 @@ function Menu() {
                               </MenuItem>
                             ) : null}
 
+                            {showMenu.Reports_Format_Reports_WorkOrder ? (
+                              <MenuItem>
+                                <MenuItemLink
+                                  text={t("ARM Release Letters")}
+                                  to="/seriui/generate-arm-release-letters"
+                                />
+                              </MenuItem>
+                            ) : null}
+
                             {showMenu.Reports_Format_Reports_Selection_Letters ? (
                               <MenuItem>
                                 <MenuItemLink

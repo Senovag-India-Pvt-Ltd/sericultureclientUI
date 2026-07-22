@@ -1253,6 +1253,7 @@ import SeedMarketDashboardReport from "../pages/reports-admin/market-auction/See
 import DownloadSanctionOrder from "../pages/market-and-auction/DownloadSanctionOrder";
 import GenerateAcknowledgement from "../pages/direct-benefit-transfer/GenerateAcknowledgement";
 import GenerateWorkOrder from "../pages/direct-benefit-transfer/GenerateWorkOrder";
+import GenerateArmReleaseLetters from "../pages/direct-benefit-transfer/GenerateArmReleaseLetters";
 import RegenerateWorkOrder from "../pages/direct-benefit-transfer/RegenerateWorkOrder";
 import SericultureTable from "../pages/masters/sericulture-table/SericultureTable";
 import SericultureTableList from "../pages/masters/sericulture-table/SericultureTableList";
@@ -3274,6 +3275,7 @@ function Router() {
             <Route path="regenerate-sanction-order" element={<RegenerateSanctionOrder />} />
             <Route path="generate-acknowledgement" element={<GenerateAcknowledgement />} />
             <Route path="generate-work-order" element={<GenerateWorkOrder />} />
+            <Route path="generate-arm-release-letters" element={<GenerateArmReleaseLetters />} />
             <Route path="regenerate-work-order" element={<RegenerateWorkOrder />} />
             <Route path="generate-selection-letter" element={<GenerateSelectionLetter />} />
             <Route path="crop-details-commercial-market" element={<CropDetailsForCommercialMarket />} />

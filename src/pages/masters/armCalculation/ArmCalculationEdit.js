@@ -29,6 +29,9 @@ function ArmCalculationEdit() {
     unitCost: "",
     centralPercentage: "",
     statePercentage: "",
+    advancePercentage: "",
+    firstPayment: "",
+    finalPayment: "",
   });
   const [validated, setValidated] = useState(false);
 
@@ -63,6 +66,9 @@ function ArmCalculationEdit() {
           unitCost: c.unitCost || "",
           centralPercentage: c.centralPercentage || "",
           statePercentage: c.statePercentage || "",
+          advancePercentage: c.advancePercentage || "",
+          firstPayment: c.firstPayment || "",
+          finalPayment: c.finalPayment || "",
         });
       })
       .catch(() => Swal.fire({ icon: "error", title: t("Error"), text: t("Record not found") }));
@@ -96,6 +102,9 @@ function ArmCalculationEdit() {
       unitCost: data.unitCost ? parseFloat(data.unitCost) : null,
       centralPercentage: data.centralPercentage ? parseFloat(data.centralPercentage) : null,
       statePercentage: data.statePercentage ? parseFloat(data.statePercentage) : null,
+      advancePercentage: data.advancePercentage ? parseFloat(data.advancePercentage) : null,
+      firstPayment: data.firstPayment ? parseFloat(data.firstPayment) : null,
+      finalPayment: data.finalPayment ? parseFloat(data.finalPayment) : null,
     };
 
     api.post(baseURL + "armCalculation/edit", payload)
@@ -223,6 +232,24 @@ function ArmCalculationEdit() {
                     <Form.Label style={labelStyle}>{t("State Share (%)")} <span className="text-danger">*</span></Form.Label>
                     <Form.Control type="number" name="statePercentage" value={data.statePercentage} onChange={handleInputs} min="0" max="100" step="0.01" required style={inputStyle} />
                     <Form.Control.Feedback type="invalid">{t("State percentage is required")}</Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col md={4}>
+                  <Form.Group>
+                    <Form.Label style={labelStyle}>{t("Advance Payment (%)")}</Form.Label>
+                    <Form.Control type="number" name="advancePercentage" value={data.advancePercentage} onChange={handleInputs} min="0" max="100" step="0.01" style={inputStyle} />
+                  </Form.Group>
+                </Col>
+                <Col md={4}>
+                  <Form.Group>
+                    <Form.Label style={labelStyle}>{t("First Payment (%)")}</Form.Label>
+                    <Form.Control type="number" name="firstPayment" value={data.firstPayment} onChange={handleInputs} min="0" max="100" step="0.01" style={inputStyle} />
+                  </Form.Group>
+                </Col>
+                <Col md={4}>
+                  <Form.Group>
+                    <Form.Label style={labelStyle}>{t("Final Payment (%)")}</Form.Label>
+                    <Form.Control type="number" name="finalPayment" value={data.finalPayment} onChange={handleInputs} min="0" max="100" step="0.01" style={inputStyle} />
                   </Form.Group>
                 </Col>
               </Row>

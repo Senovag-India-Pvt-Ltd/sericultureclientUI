@@ -133,6 +133,28 @@ function ArmCalculationView() {
                     </div>
                   </Col>
                 </Row>
+
+                {/* Payment Stage Percentages */}
+                <Row className="mt-3">
+                  <Col md={4}>
+                    <div style={{ background: "#fdf4ff", borderRadius: "10px", padding: "16px", border: "1px solid #e9d5ff", textAlign: "center" }}>
+                      <div style={{ fontSize: "11px", fontWeight: 700, color: "#7e22ce", textTransform: "uppercase", marginBottom: "6px" }}>{t("Advance Payment")}</div>
+                      <div style={{ fontSize: "28px", fontWeight: 800, color: "#9333ea" }}>{data.advancePercentage != null ? `${data.advancePercentage}%` : "—"}</div>
+                    </div>
+                  </Col>
+                  <Col md={4}>
+                    <div style={{ background: "#fff7ed", borderRadius: "10px", padding: "16px", border: "1px solid #fed7aa", textAlign: "center" }}>
+                      <div style={{ fontSize: "11px", fontWeight: 700, color: "#9a3412", textTransform: "uppercase", marginBottom: "6px" }}>{t("First Payment")}</div>
+                      <div style={{ fontSize: "28px", fontWeight: 800, color: "#c2410c" }}>{data.firstPayment != null ? `${data.firstPayment}%` : "—"}</div>
+                    </div>
+                  </Col>
+                  <Col md={4}>
+                    <div style={{ background: "#f0fdfa", borderRadius: "10px", padding: "16px", border: "1px solid #99f6e4", textAlign: "center" }}>
+                      <div style={{ fontSize: "11px", fontWeight: 700, color: "#115e59", textTransform: "uppercase", marginBottom: "6px" }}>{t("Final Payment")}</div>
+                      <div style={{ fontSize: "28px", fontWeight: 800, color: "#0f766e" }}>{data.finalPayment != null ? `${data.finalPayment}%` : "—"}</div>
+                    </div>
+                  </Col>
+                </Row>
               </>
             )}
           </Card.Body>

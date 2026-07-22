@@ -2798,6 +2798,28 @@ const handleCalculateUnitPrice = () => {
       setAmountValue(prev => ({ ...prev, unitPrice: totalUnitCost }));
       setData(prev => ({ ...prev, expectedAmount: subsidyAmt }));
       setUnitPriceCalculated(true);
+      Swal.fire({
+        icon: "success",
+        title: "Unit Price Calculated!",
+        html: `
+          <table style="width:100%;font-size:13px;border-collapse:collapse;">
+            <tr style="background:#f0f4ff;">
+              <td style="padding:6px 10px;color:#555;">Unit Cost</td>
+              <td style="padding:6px 10px;font-weight:600;color:#222;">₹ ${totalUnitCost.toLocaleString("en-IN")}</td>
+            </tr>
+            <tr>
+              <td style="padding:6px 10px;color:#555;">Subsidy % (Central + State)</td>
+              <td style="padding:6px 10px;font-weight:600;color:#222;">${centralPct + statePct}%</td>
+            </tr>
+            <tr style="background:#e8f5e9;">
+              <td style="padding:6px 10px;color:#2d8a4e;font-weight:600;">Subsidy Amount</td>
+              <td style="padding:6px 10px;font-weight:700;font-size:14px;color:#2d8a4e;">₹ ${subsidyAmt.toLocaleString("en-IN")}</td>
+            </tr>
+          </table>`,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#1a5fa8",
+        width: "400px",
+      });
     } else {
       Swal.fire({
         icon: "warning",
@@ -11503,7 +11525,6 @@ const fetchReelerDetails = () => {
                     <div className="gap-col">
                       <ul className="d-flex align-items-left justify-content-left gap g-3">
 
-                        {getIncentiveAndBonusData?.[0]?.unitForScheme !== "Automatic Reeling Machine Unit" && (
                         <li>
                           <Button
                             type="button"
@@ -11518,8 +11539,7 @@ const fetchReelerDetails = () => {
                           >
                             {t("Calculate Unit Price")}
                           </Button>
-                          </li>
-                        )}
+                        </li>
                       </ul>
                     </div>
                     <div className="gap-col">

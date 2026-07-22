@@ -64,6 +64,9 @@ function EditScApprovalStage() {
       allowMultipleSanction:data.allowMultipleSanction,
       armStageConfig: data.armStageConfig || "",
       armFlow: data.armFlow || false,
+      advancePaymentLetter: data.advancePaymentLetter || false,
+      firstReleaseLetter: data.firstReleaseLetter || false,
+      finalReleaseLetter: data.finalReleaseLetter || false,
     };
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -463,6 +466,57 @@ function EditScApprovalStage() {
                       </Form.Label>
                     </Form.Group>
                   </Col>
+
+                  <Col lg="2">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="advancePaymentLetter"
+                          checked={data.advancePaymentLetter || false}
+                          id="advancePaymentLetter"
+                          onChange={handleCheckBox}
+                        />
+                      </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                      {t("Advance Payment Letter")}
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="2">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="firstReleaseLetter"
+                          checked={data.firstReleaseLetter || false}
+                          id="firstReleaseLetter"
+                          onChange={handleCheckBox}
+                        />
+                      </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                      {t("First Release Letter")}
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="2">
+                    <Form.Group as={Row} className="form-group mt-4">
+                      <Col sm={1}>
+                        <Form.Check
+                          type="checkbox"
+                          name="finalReleaseLetter"
+                          checked={data.finalReleaseLetter || false}
+                          id="finalReleaseLetter"
+                          onChange={handleCheckBox}
+                        />
+                      </Col>
+                      <Form.Label column sm={8} className="mt-n2">
+                      {t("Final Release Letter")}
+                      </Form.Label>
+                    </Form.Group>
+                  </Col>
                     </Row>
                     <Row className="g-gs mt-2">
                       <Col lg="6">
@@ -483,6 +537,7 @@ function EditScApprovalStage() {
                               <option value="FIRST_RELEASE">{t("First Release Letter")}</option>
                               <option value="SECOND_RELEASE">{t("Second Release Letter")}</option>
                               <option value="SELECTION_LETTER">{t("ARM Beneficiary Selection Letter")}</option>
+                              <option value="ARM User Master">{t("ARM User Master")}</option>
                             </Form.Select>
                           </div>
                         </Form.Group>
