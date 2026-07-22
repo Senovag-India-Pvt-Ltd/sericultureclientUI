@@ -249,7 +249,8 @@ function TscMonthlyWeeklyTriReport({ config }) {
     let m1 = 0, m2 = 0, m3 = 0;
     const races = new Set();
     const byRaceM2 = {};
-    dataRows.forEach((r) => {
+    // Exclude the API grand-total row (race === "ಒಟ್ಟು") to avoid double-counting.
+    dataRows.filter((r) => String(r.tsc_name || "").trim() !== "ಒಟ್ಟು" && String(r.race || "").trim() !== "ಒಟ್ಟು").forEach((r) => {
       m1 += numOrZero(r[config.metric1.key]);
       m2 += numOrZero(r[config.metric2.key]);
       m3 += numOrZero(r[config.metric3.key]);
@@ -486,16 +487,7 @@ function TscMonthlyWeeklyTriReport({ config }) {
                             {m1Has ? fmtVal(m1V, config.metric1.fmt) : "—"}
                           </td>
                           <td className="tscwk3-num" style={{ ...cb, textAlign: "right", paddingRight: "16px", background: m2Has ? m2OverlayBg : "transparent", color: m2Has ? m2OverlayText : "#cbd5e0", fontWeight: 800 }}>
-                            {m2Has ? (
-                              <>
-                                {fmtVal(m2V, config.metric2.fmt)}
-                                {config.variant === "chawki-plan" && m1Has && (
-                                  <div className="tscwk3-pbar-track" style={{ marginTop: "5px" }}>
-                                    <div className="tscwk3-pbar-fill" style={{ width: `${Math.min(100, (m2N * 100) / m1N)}%`, background: ((m2N * 100) / m1N) >= 100 ? PALETTES.green.solid : ((m2N * 100) / m1N) >= 60 ? PALETTES.amber.solid : PALETTES.red.solid }} />
-                                  </div>
-                                )}
-                              </>
-                            ) : "—"}
+                            {m2Has ? fmtVal(m2V, config.metric2.fmt) : "—"}
                           </td>
                           <td className="tscwk3-num" style={{
                             ...cb, textAlign: "right", paddingRight: "16px",

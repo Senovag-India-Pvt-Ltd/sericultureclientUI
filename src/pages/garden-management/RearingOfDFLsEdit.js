@@ -747,6 +747,22 @@ function RearingOfDFLsEdit() {
                   </Col>
                 ))}
 
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="remarks">{t("Notes / Remarks")}</Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="remarks"
+                        name="remarks"
+                        value={data.remarks ?? ""}
+                        onChange={handleInputs}
+                        type="text"
+                        placeholder={t("Enter Notes / Remarks")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
                 <Col lg="2">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label htmlFor="sordfl">

@@ -297,7 +297,8 @@ function TscMonthlyRaceWiseBrushingReport() {
     const races = new Set();
     const byRaceMe = {};
     const byCategoryMe = { Pure: 0, Hybrid: 0 };
-    dataRows.forEach((r) => {
+    // Exclude the API grand-total row (ಒಟ್ಟು) so per-TSC rows are not double-counted.
+    dataRows.filter((r) => String(r.tsc_name || "").trim() !== "ಒಟ್ಟು" && String(r.race || "").trim() !== "ಒಟ್ಟು").forEach((r) => {
       totalMo += numOrZero(r.mo_brushed);
       totalMe += numOrZero(r.me_brushed);
       if (r.tsc_name) tscs.add(r.tsc_name);

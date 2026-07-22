@@ -234,7 +234,8 @@ function TscMonthlyMarketCocoonReport() {
     const races = new Set(), markets = new Set();
     const byMarket = {};
     const byRace = {};
-    dataRows.forEach((r) => {
+    // Exclude the API grand-total row (race === "ಒಟ್ಟು") to avoid double-counting.
+    dataRows.filter((r) => String(r.race || "").trim() !== "ಒಟ್ಟು").forEach((r) => {
       totalMo += numOrZero(r.mo_kg);
       totalMe += numOrZero(r.me_kg);
       if (r.race)   races.add(r.race);

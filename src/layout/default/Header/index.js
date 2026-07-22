@@ -407,6 +407,7 @@ function Header({ show, ...props }) {
                     </span>
                   </div>
                 </QuickNavItem> */}
+                {/* Pending Activities bell — commented out for now, restore when needed.
                 <QuickNavItem>
                     {(() => {
                       const pendingCount =
@@ -514,6 +515,7 @@ function Header({ show, ...props }) {
                       );
                     })()}
                   </QuickNavItem>
+                */}
 
 
                   <QuickNavItem>

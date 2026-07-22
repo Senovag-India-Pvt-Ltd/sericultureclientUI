@@ -240,7 +240,8 @@ function TscMonthlyWeeklyReport({ config }) {
     const races = new Set();
     const byWeekM1 = { 1: 0, 2: 0, 3: 0, 4: 0 };
     const byRaceM1 = {};
-    dataRows.forEach((r) => {
+    // Exclude the API grand-total row (race === "ಒಟ್ಟು") to avoid double-counting.
+    dataRows.filter((r) => String(r.tsc_name || "").trim() !== "ಒಟ್ಟು" && String(r.race || "").trim() !== "ಒಟ್ಟು").forEach((r) => {
       m1 += numOrZero(r[config.metric1.key]);
       m2 += numOrZero(r[config.metric2.key]);
       if (r.race) races.add(r.race);

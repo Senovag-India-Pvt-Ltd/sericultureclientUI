@@ -510,6 +510,26 @@ function SupplyofCocoonstoGrainage() {
                     </div>
                   </Form.Group>
                 </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label htmlFor="rate">
+                      {t("Rate (₹ per kg)")}
+                    </Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="rate"
+                        name="rate"
+                        value={data.rate ?? ""}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder={t("Enter Rate (₹ per kg)")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label htmlFor="sordfl">

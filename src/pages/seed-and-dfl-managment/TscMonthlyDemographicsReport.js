@@ -252,7 +252,8 @@ function TscMonthlyDemographicsReport() {
     let totalVillages = 0, mulberryVillages = 0;
     let fyTotal = 0, meTotal = 0, meSc = 0, meSt = 0, meMin = 0, meDis = 0;
     let meWomen = 0, meMen = 0;
-    dataRows.forEach((r) => {
+    // Exclude the API grand-total row (tsc_name === "ಒಟ್ಟು") to avoid double-counting.
+    dataRows.filter((r) => String(r.tsc_name || "").trim() !== "ಒಟ್ಟು").forEach((r) => {
       totalVillages    += numOrZero(r.total_villages);
       mulberryVillages += numOrZero(r.mulberry_villages);
       fyTotal          += numOrZero(r.fy_end_total);

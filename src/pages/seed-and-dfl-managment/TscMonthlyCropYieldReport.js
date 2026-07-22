@@ -329,7 +329,8 @@ function TscMonthlyCropYieldReport() {
     let succMe = 0, failMe = 0, lowMe = 0, totalMe = 0;
     let kgMo = 0, kgMe = 0;
     const tscs = new Set(), races = new Set();
-    dataRows.forEach((r) => {
+    // Exclude the API grand-total row (ಒಟ್ಟು) so per-TSC rows are not double-counted.
+    dataRows.filter((r) => String(r.tsc_name || "").trim() !== "ಒಟ್ಟು" && String(r.race || "").trim() !== "ಒಟ್ಟು").forEach((r) => {
       brushedMo += numOrZero(r.mo_brushed);
       brushedMe += numOrZero(r.me_brushed);
       succMe    += numOrZero(r.me_succ);

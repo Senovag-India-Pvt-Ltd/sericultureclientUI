@@ -483,7 +483,10 @@ function GrainageP2WeeklyProductionReport() {
                           </td>
                           {["w1", "w2", "w3", "w4"].map((k) => {
                             const v = row[k];
-                            const has = String(v ?? "").trim() !== "" && numOrZero(v) !== 0;
+                            // Row 3 (% achievement) is a real percentage: 0% is meaningful
+                            // (under-achievement that week), not "no data" — don't hide it
+                            // like a literal-zero count would be on the other rows.
+                            const has = String(v ?? "").trim() !== "" && (isPercent || numOrZero(v) !== 0);
                             return (
                               <td key={k} className="gp2wp-num" style={{
                                 padding: "12px 12px", textAlign: "center",

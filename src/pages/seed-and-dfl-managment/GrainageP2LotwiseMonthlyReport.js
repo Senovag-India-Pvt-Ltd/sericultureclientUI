@@ -64,7 +64,10 @@ const numOrZero = (v) => {
 const fmt = (v) => {
   const s = String(v ?? "").trim();
   if (!s) return "";
-  const n = parseFloat(s);
+  // Strict numeric check: parseFloat("05/06/2025") returns 5 and would render a
+  // date as a bare number. Number(...) is NaN unless the WHOLE string is numeric,
+  // so dates / ranges / comma-lists fall through and render as-is.
+  const n = Number(s);
   if (isNaN(n)) return s;
   if (n === 0) return "0";
   if (Number.isInteger(n)) return n.toLocaleString();

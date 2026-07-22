@@ -520,7 +520,7 @@ function AdsPebrineReport() {
                         <div style={hdrEn}>Supplied</div>
                       </th>
                       <th style={hdrStyle("linear-gradient(135deg,#9a3412,#ea580c)", "120px")}>
-                        <div style={{ fontSize: "12px" }}>ವಿಂಗಡಿಸಿದ ತಂಡ</div>
+                        <div style={{ fontSize: "12px" }}>ವಿಭಜಿತ ತಂಡ</div>
                         <div style={hdrEn}>Divided Lot</div>
                       </th>
                       <th style={hdrStyle("linear-gradient(135deg,#0369a1,#0284c7)", "130px")}>

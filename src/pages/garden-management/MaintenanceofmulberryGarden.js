@@ -33,6 +33,7 @@ function MaintenanceofmulberryGarden() {
     ammoniumSulphateQuantity: "",
     superPhosphateQuantity: "",
     muriateOfPotashQuantity: "",
+    irrigationSource: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -135,6 +136,7 @@ function MaintenanceofmulberryGarden() {
               ammoniumSulphateQuantity: "",
               superPhosphateQuantity: "",
               muriateOfPotashQuantity: "",
+              irrigationSource: "",
             });
             setValidated(false);
           }
@@ -170,6 +172,7 @@ function MaintenanceofmulberryGarden() {
       ammoniumSulphateQuantity: "",
       superPhosphateQuantity: "",
       muriateOfPotashQuantity: "",
+      irrigationSource: "",
     });
   };
 
@@ -209,9 +212,24 @@ function MaintenanceofmulberryGarden() {
       });
   };
 
+  // to get Irrigation Source
+  const [irrigationSourceListData, setIrrigationSourceListData] = useState([]);
+
+  const getIrrigationSourceList = () => {
+    api
+      .get(baseURL + `irrigationSource/get-all`)
+      .then((response) => {
+        setIrrigationSourceListData(response.data.content.irrigationSource);
+      })
+      .catch((err) => {
+        setIrrigationSourceListData([]);
+      });
+  };
+
 useEffect(() => {
   getSoilTypeList();
   getVarietyList();
+  getIrrigationSourceList();
 }, []);
 
   const navigate = useNavigate();
@@ -400,6 +418,29 @@ useEffect(() => {
                         type="text"
                         placeholder={t("Enter Mulberry Spacing")}
                       />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="4">
+                  <Form.Group className="form-group mt-n4">
+                    <Form.Label>{t("Irrigation Source")}</Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        name="irrigationSource"
+                        value={data.irrigationSource}
+                        onChange={handleInputs}
+                      >
+                        <option value="">{t("Select Irrigation Source")}</option>
+                        {irrigationSourceListData.map((list) => (
+                          <option
+                            key={list.irrigationSourceId}
+                            value={list.irrigationSourceName}
+                          >
+                            {list.irrigationSourceName}
+                          </option>
+                        ))}
+                      </Form.Select>
                     </div>
                   </Form.Group>
                 </Col>

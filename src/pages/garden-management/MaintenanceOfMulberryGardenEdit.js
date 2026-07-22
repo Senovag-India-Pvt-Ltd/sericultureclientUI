@@ -31,6 +31,7 @@ function MaintenanceOfMulberryGardenEdit() {
     ammoniumSulphateQuantity: "",
     superPhosphateQuantity: "",
     muriateOfPotashQuantity: "",
+    irrigationSource: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -170,9 +171,24 @@ function MaintenanceOfMulberryGardenEdit() {
        });
    };
  
+   // to get Irrigation Source
+   const [irrigationSourceListData, setIrrigationSourceListData] = useState([]);
+
+   const getIrrigationSourceList = () => {
+     api
+       .get(baseURL + `irrigationSource/get-all`)
+       .then((response) => {
+         setIrrigationSourceListData(response.data.content.irrigationSource);
+       })
+       .catch((err) => {
+         setIrrigationSourceListData([]);
+       });
+   };
+
    useEffect(() => {
      getVarietyList();
      getSoilTypeList();
+     getIrrigationSourceList();
    }, []);
  
 
@@ -332,6 +348,29 @@ function MaintenanceOfMulberryGardenEdit() {
                           type="text"
                           placeholder={t("Enter Area(In Hectares)")}
                         />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group">
+                      <Form.Label>{t("Irrigation Source")}</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          name="irrigationSource"
+                          value={data.irrigationSource ?? ""}
+                          onChange={handleInputs}
+                        >
+                          <option value="">{t("Select Irrigation Source")}</option>
+                          {irrigationSourceListData.map((list) => (
+                            <option
+                              key={list.irrigationSourceId}
+                              value={list.irrigationSourceName}
+                            >
+                              {list.irrigationSourceName}
+                            </option>
+                          ))}
+                        </Form.Select>
                       </div>
                     </Form.Group>
                   </Col>
