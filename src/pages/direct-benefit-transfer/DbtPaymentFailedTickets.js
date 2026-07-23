@@ -12,8 +12,19 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 const CANNOT_CLOSE_MSG =
-  "This ticket cannot be closed because the DBT payment is still in Failure status. " +
-  "The ticket can only be closed after the payment is successful.";
+  "This ticket cannot be closed yet. It will become eligible to close automatically once the " +
+  "DBT payment status changes to 'Payment Success in DBT'.";
+
+// Builds a precise message naming the application's exact current status, so the user knows
+// whether it's still failing or just hasn't reached the final "Payment Success in DBT" step yet.
+const buildCannotCloseMessage = (latest) => {
+  const current = latest?.paymentStatus || latest?.acknowledgementStatus || "Unknown";
+  return (
+    `This ticket cannot be closed yet. The application's current status is <b>${current}</b>. ` +
+    `It will become eligible to close automatically once the DBT payment status changes to ` +
+    `<b>Payment Success in DBT</b>.`
+  );
+};
 
 // Consistently-styled popups so overlays match the beautified page.
 const SwalStyled = Swal.mixin({ customClass: { popup: "dpft-swal" } });
@@ -29,6 +40,9 @@ const dpftStyles = `
 .dpft-hero-fy{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;padding:8px 16px;border-radius:30px;font-weight:600;font-size:13px;white-space:nowrap;display:inline-flex;align-items:center;}
 .dpft-kpi{border:none!important;border-radius:16px!important;box-shadow:0 4px 18px rgba(20,40,80,.07)!important;transition:transform .18s ease,box-shadow .18s ease;}
 .dpft-kpi:hover{transform:translateY(-4px);box-shadow:0 16px 32px rgba(20,40,80,.14)!important;}
+.dpft-kpi-clickable{cursor:pointer;}
+.dpft-kpi-clickable:hover{transform:translateY(-4px);}
+.dpft-kpi-active{box-shadow:0 0 0 3px rgba(13,59,102,.32),0 12px 26px rgba(20,40,80,.16)!important;}
 .dpft-kpi-icon{width:52px;height:52px;flex:0 0 52px;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 6px 14px rgba(0,0,0,.14);}
 .dpft-kpi-val{font-size:26px;font-weight:800;line-height:1;color:#1f2d3d;}
 .dpft-kpi-lbl{font-size:12.5px;color:#7b899c;font-weight:600;margin-top:3px;}
@@ -41,28 +55,10 @@ const dpftStyles = `
 .dpft-swal.swal2-popup{border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.22);}
 `;
 
-// ---- Financial-year helpers (Indian FY: 1 Apr – 31 Mar) ------------------
-const fyStartYear = (date = new Date()) => {
-  const y = date.getFullYear();
-  return date.getMonth() >= 3 ? y : y - 1; // month 3 = April
-};
-const fyValue = (startYear) => `${startYear}-${startYear + 1}`;
-const fyRange = (startYear) => ({
-  fromDate: `${startYear}-04-01`,
-  toDate: `${startYear + 1}-03-31`,
-});
-const buildFyOptions = (count = 7) => {
-  const cur = fyStartYear();
-  return Array.from({ length: count }, (_, i) => {
-    const s = cur - i;
-    return { value: fyValue(s), label: fyValue(s), startYear: s };
-  });
-};
-
-const CURRENT_FY_START = fyStartYear();
-const CURRENT_FY = fyValue(CURRENT_FY_START);
-const FY_OPTIONS = buildFyOptions();
-
+// Open tickets need attention first, so the page opens on "Open" by default rather than
+// showing already-resolved Closed tickets mixed in. "All" / "Closed" are one click away.
+// financialYearId starts blank and is filled in once the real default financial year loads
+// (see the effect that fetches financialYearMaster/get-is-default).
 const defaultFilters = () => ({
   applicationNumber: "",
   mobileNumber: "",
@@ -70,9 +66,10 @@ const defaultFilters = () => ({
   schemeId: "",
   subSchemeId: "",
   failureType: "",
-  ticketStatus: "",
-  financialYear: CURRENT_FY,
-  ...fyRange(CURRENT_FY_START),
+  ticketStatus: "Open",
+  financialYearId: "",
+  fromDate: "",
+  toDate: "",
 });
 
 function DbtPaymentFailedTickets() {
@@ -101,6 +98,8 @@ function DbtPaymentFailedTickets() {
 
   const [schemeList, setSchemeList] = useState([]);
   const [subSchemeList, setSubSchemeList] = useState([]);
+  const [financialYearList, setFinancialYearList] = useState([]);
+  const [defaultFinancialYearId, setDefaultFinancialYearId] = useState("");
 
   createTheme(
     "seriTheme",
@@ -209,7 +208,9 @@ function DbtPaymentFailedTickets() {
 
   // ---- data loaders --------------------------------------------------
 
-  const checkAccess = () => {
+  // activeFilters is passed explicitly (rather than relying on the `filters` closure) so the
+  // very first load can use the just-resolved default financial year without a race condition.
+  const checkAccess = (activeFilters) => {
     api
       .get(baseURLDBT + `payment-failed-tickets/access-check`)
       .then((res) => {
@@ -217,8 +218,8 @@ function DbtPaymentFailedTickets() {
         setAllowed(isAllowed);
         setAccessChecked(true);
         if (isAllowed) {
-          getDashboard();
-          getList(0, perPage, sortBy, sortDir, filters);
+          getDashboard(activeFilters.financialYearId);
+          getList(0, perPage, sortBy, sortDir, activeFilters);
         }
       })
       .catch(() => {
@@ -227,9 +228,11 @@ function DbtPaymentFailedTickets() {
       });
   };
 
-  const getDashboard = () => {
+  const getDashboard = (financialYearId) => {
     api
-      .get(baseURLDBT + `payment-failed-tickets/dashboard-counts`)
+      .get(baseURLDBT + `payment-failed-tickets/dashboard-counts`, {
+        params: { financialYearId: financialYearId || null },
+      })
       .then((res) => {
         if (res?.data?.content) setDashboard(res.data.content);
       })
@@ -254,6 +257,7 @@ function DbtPaymentFailedTickets() {
       subSchemeId: activeFilters.subSchemeId || null,
       failureType: activeFilters.failureType || null,
       ticketStatus: activeFilters.ticketStatus || null,
+      financialYearId: activeFilters.financialYearId || null,
       fromDate: activeFilters.fromDate || null,
       toDate: activeFilters.toDate || null,
       pageNumber,
@@ -290,10 +294,32 @@ function DbtPaymentFailedTickets() {
       .catch(() => setSubSchemeList([]));
   };
 
+  const getFinancialYearList = () => {
+    api
+      .get(baseURLMasterData + `financialYearMaster/get-all`)
+      .then((res) => setFinancialYearList(res?.data?.content?.financialYearMaster || []))
+      .catch(() => setFinancialYearList([]));
+  };
+
   useEffect(() => {
-    checkAccess();
     getSchemeList();
     getSubSchemeList();
+    getFinancialYearList();
+
+    // Resolve the real default financial year FIRST, then load the page scoped to it — so the
+    // page opens on "this year's" tickets based on sc_application_form, not all-time data.
+    api
+      .get(baseURLMasterData + `financialYearMaster/get-is-default`)
+      .then((res) => {
+        const id = res?.data?.content?.financialYearMasterId || "";
+        setDefaultFinancialYearId(id);
+        const initial = { ...defaultFilters(), financialYearId: id };
+        setFilters(initial);
+        checkAccess(initial);
+      })
+      .catch(() => {
+        checkAccess(defaultFilters());
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -301,27 +327,23 @@ function DbtPaymentFailedTickets() {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setFilters((prev) => {
-      const next = { ...prev, [name]: value };
-      // Selecting a financial year auto-fills the date range.
-      if (name === "financialYear" && value) {
-        const opt = FY_OPTIONS.find((o) => o.value === value);
-        if (opt) Object.assign(next, fyRange(opt.startYear));
-      }
-      return next;
-    });
+    setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
   const search = () => {
     setPage(0);
     getList(0, perPage, sortBy, sortDir, filters);
+    getDashboard(filters.financialYearId);
   };
 
+  // Resets back to the real default financial year (not "All Years") so the page returns to
+  // the same "current year, needs attention" view it opened on.
   const reset = () => {
-    const cleared = defaultFilters();
+    const cleared = { ...defaultFilters(), financialYearId: defaultFinancialYearId };
     setFilters(cleared);
     setPage(0);
     getList(0, perPage, sortBy, sortDir, cleared);
+    getDashboard(cleared.financialYearId);
   };
 
   const handlePageChange = (newPage) => {
@@ -362,7 +384,7 @@ function DbtPaymentFailedTickets() {
           timer: 2500,
         });
         getList(page, perPage, sortBy, sortDir, filters);
-        getDashboard();
+        getDashboard(filters.financialYearId);
       })
       .catch((err) => {
         SwalStyled.fire({ icon: "error", title: "Error", text: extractError(err) });
@@ -411,10 +433,11 @@ function DbtPaymentFailedTickets() {
         .then((res) => {
           const latest = res?.data?.content;
           if (!latest?.canClose) {
-            // Still failed → keep Open, show mandated message + remark, reflect latest status.
+            // Not yet at "Payment Success in DBT" → keep Open, show the exact current status,
+            // reflect latest status in the list/dashboard.
             getList(page, perPage, sortBy, sortDir, filters);
-            getDashboard();
-            cannotCloseSwal(latest?.remarks);
+            getDashboard(filters.financialYearId);
+            cannotCloseSwal(latest?.remarks, buildCannotCloseMessage(latest));
             return;
           }
           api
@@ -422,11 +445,11 @@ function DbtPaymentFailedTickets() {
             .then(() => {
               SwalStyled.fire({ icon: "success", title: "Ticket closed", timer: 2000 });
               getList(page, perPage, sortBy, sortDir, filters);
-              getDashboard();
+              getDashboard(filters.financialYearId);
             })
             .catch((err) => {
               const msg = extractError(err);
-              cannotCloseSwal(latest?.remarks, /success/i.test(msg) ? CANNOT_CLOSE_MSG : msg);
+              cannotCloseSwal(latest?.remarks, /success/i.test(msg) ? buildCannotCloseMessage(latest) : msg);
             });
         })
         .catch((err) => {
@@ -520,6 +543,30 @@ function DbtPaymentFailedTickets() {
       width: "130px",
     },
     {
+      name: "Created By",
+      selector: (row) => row.applicationCreatedByName || row.applicationCreatedBy,
+      cell: (row) => (
+        <div>
+          <div className="fw-medium">
+            {row.applicationCreatedByName || row.applicationCreatedBy || "-"}
+          </div>
+          {row.applicationCreatedByMobile ? (
+            <a
+              className="text-decoration-none small"
+              href={`tel:${row.applicationCreatedByMobile}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Icon name="call" className="me-1" style={{ fontSize: "11px" }} />
+              {row.applicationCreatedByMobile}
+            </a>
+          ) : (
+            <span className="text-muted small">No mobile on record</span>
+          )}
+        </div>
+      ),
+      minWidth: "170px",
+    },
+    {
       name: "Created",
       selector: (row) => row.createdDate,
       sortable: true,
@@ -573,14 +620,24 @@ function DbtPaymentFailedTickets() {
 
   // ---- dashboard cards ----------------------------------------------
 
+  // Total / Open / Closed double as one-click quick filters for ticketStatus — the fastest way
+  // to jump between "needs attention" (Open) and "already resolved" (Closed) without opening
+  // the full filter panel.
   const cards = [
-    { label: "Total Tickets", value: dashboard.totalTickets, icon: "reports", grad: "linear-gradient(135deg,#0d3b66,#1d6fb8)", accent: "#0d3b66" },
-    { label: "Open Tickets", value: dashboard.openTickets, icon: "clock", grad: "linear-gradient(135deg,#2f80ed,#56ccf2)", accent: "#2f80ed" },
-    { label: "Closed Tickets", value: dashboard.closedTickets, icon: "check-circle", grad: "linear-gradient(135deg,#5b6b7f,#93a3b8)", accent: "#6b7a90" },
+    { label: "Total Tickets", value: dashboard.totalTickets, icon: "reports", grad: "linear-gradient(135deg,#0d3b66,#1d6fb8)", accent: "#0d3b66", filterValue: "" },
+    { label: "Open Tickets", value: dashboard.openTickets, icon: "clock", grad: "linear-gradient(135deg,#2f80ed,#56ccf2)", accent: "#2f80ed", filterValue: "Open" },
+    { label: "Closed Tickets", value: dashboard.closedTickets, icon: "check-circle", grad: "linear-gradient(135deg,#5b6b7f,#93a3b8)", accent: "#6b7a90", filterValue: "Closed" },
     { label: "Payment Failed", value: dashboard.paymentFailed, icon: "cross-circle", grad: "linear-gradient(135deg,#e2445c,#ff7a90)", accent: "#e2445c" },
     { label: "Ack Failed", value: dashboard.acknowledgementFailed, icon: "alert-circle", grad: "linear-gradient(135deg,#f2994a,#f9c66b)", accent: "#f2994a" },
     { label: "Today's Tickets", value: dashboard.todaysTickets, icon: "bell", grad: "linear-gradient(135deg,#1e9e6a,#4bd6a0)", accent: "#1e9e6a" },
   ];
+
+  const applyQuickFilter = (ticketStatus) => {
+    const next = { ...filters, ticketStatus };
+    setFilters(next);
+    setPage(0);
+    getList(0, perPage, sortBy, sortDir, next);
+  };
 
   // ---- render --------------------------------------------------------
 
@@ -630,30 +687,45 @@ function DbtPaymentFailedTickets() {
               </nav>
             </div>
             <span className="dpft-hero-fy">
-              <Icon name="calendar" className="me-1" /> FY {filters.financialYear}
+              <Icon name="calendar" className="me-1" />
+              {filters.financialYearId
+                ? `FY ${
+                    financialYearList.find(
+                      (fy) => String(fy.financialYearMasterId) === String(filters.financialYearId)
+                    )?.financialYear || ""
+                  }`
+                : "All Financial Years"}
             </span>
           </div>
         </div>
       </Block>
 
-      {/* Dashboard cards */}
+      {/* Dashboard cards — Total / Open / Closed are clickable quick filters */}
       <Block className="mt-3">
         <Row className="g-3">
-          {cards.map((c) => (
-            <Col sm="6" md="4" xl="2" key={c.label}>
-              <Card className="dpft-kpi h-100">
-                <Card.Body className="d-flex align-items-center">
-                  <div className="dpft-kpi-icon me-3" style={{ background: c.grad }}>
-                    <Icon name={c.icon} style={{ fontSize: "22px" }} />
-                  </div>
-                  <div>
-                    <div className="dpft-kpi-val">{c.value}</div>
-                    <div className="dpft-kpi-lbl">{c.label}</div>
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
+          {cards.map((c) => {
+            const isQuickFilter = c.filterValue !== undefined;
+            const isActive = isQuickFilter && filters.ticketStatus === c.filterValue;
+            return (
+              <Col sm="6" md="4" xl="2" key={c.label}>
+                <Card
+                  className={`dpft-kpi h-100${isQuickFilter ? " dpft-kpi-clickable" : ""}${isActive ? " dpft-kpi-active" : ""}`}
+                  onClick={isQuickFilter ? () => applyQuickFilter(c.filterValue) : undefined}
+                  title={isQuickFilter ? `Show ${c.label.toLowerCase()}` : undefined}
+                >
+                  <Card.Body className="d-flex align-items-center">
+                    <div className="dpft-kpi-icon me-3" style={{ background: c.grad }}>
+                      <Icon name={c.icon} style={{ fontSize: "22px" }} />
+                    </div>
+                    <div>
+                      <div className="dpft-kpi-val">{c.value}</div>
+                      <div className="dpft-kpi-lbl">{c.label}</div>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            );
+          })}
         </Row>
       </Block>
 
@@ -665,15 +737,23 @@ function DbtPaymentFailedTickets() {
               <Icon name="filter" />
             </span>
             <span>Filters</span>
+            <span className="text-muted small fw-normal ms-2">
+              — showing Open tickets by default; use Ticket Status below (or the cards above) to view Closed or All
+            </span>
           </Card.Header>
           <Card.Body>
             <Row className="g-3">
               <Col sm="6" lg="3">
                 <Form.Label className="small fw-semibold">Financial Year</Form.Label>
-                <Form.Select name="financialYear" value={filters.financialYear} onChange={handleFilterChange}>
-                  {FY_OPTIONS.map((o) => (
-                    <option key={o.value} value={o.value}>
-                      {o.label}
+                <Form.Select
+                  name="financialYearId"
+                  value={filters.financialYearId}
+                  onChange={handleFilterChange}
+                >
+                  <option value="">All Years</option>
+                  {financialYearList.map((fy) => (
+                    <option key={fy.financialYearMasterId} value={fy.financialYearMasterId}>
+                      {fy.financialYear}
                     </option>
                   ))}
                 </Form.Select>

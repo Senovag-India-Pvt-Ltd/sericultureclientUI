@@ -383,7 +383,16 @@ function DbtPaymentFailedTicketDetails() {
           <Field label="Farmer ID" value={ticket.farmerId} />
           <Field label="Beneficiary ID" value={ticket.beneficiaryId} />
           <Field label="FRUITS ID" value={ticket.fruitsId} />
-          <Field label="Mobile Number" value={ticket.mobileNumber} />
+          <Col md="4" className="mb-3">
+            <div className="dpft-flabel">Farmer / Beneficiary Mobile Number</div>
+            {ticket.mobileNumber ? (
+              <a className="dpft-fvalue dpft-callbtn" href={`tel:${ticket.mobileNumber}`}>
+                <Icon name="call" /> {ticket.mobileNumber}
+              </a>
+            ) : (
+              <div className="dpft-fvalue">-</div>
+            )}
+          </Col>
         </Section>
 
         <Section title="Application Details" icon="reports">

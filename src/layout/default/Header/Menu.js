@@ -3467,14 +3467,6 @@ function Menu() {
             />
           ) : null}
           <MenuSub>
-            {dbtTicketsAllowed ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("DBT Failed Tickets")}
-                  to="/seriui/dbt-payment-failed-tickets"
-                />
-              </MenuItem>
-            ) : null}
             {showMenu.Helpdesk_Raise_a_Ticket ? (
               <MenuItem>
                 <MenuItemLink
@@ -3676,6 +3668,14 @@ function Menu() {
                     />
                   </MenuItem>
                 </MenuSub>
+              </MenuItem>
+            ) : null}
+            {dbtTicketsAllowed ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("DBT Failed Tickets")}
+                  to="/seriui/dbt-payment-failed-tickets"
+                />
               </MenuItem>
             ) : null}
           </MenuSub>
