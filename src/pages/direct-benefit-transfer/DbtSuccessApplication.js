@@ -223,7 +223,7 @@ function DbtSuccessApplication() {
   const search = (e) => {
     api
       .post(
-        baseURLDBT + `service/getDbtSuccessByList`,
+        baseURLDBT + `service/getDbtSuccessReportList`,
         {},
         {
           params: {
@@ -231,7 +231,6 @@ function DbtSuccessApplication() {
             talukId: addressDetails.talukId,
             hobliId: addressDetails.hobliId,
             villageId: addressDetails.villageId,
-            userMasterId: localStorage.getItem("userMasterId"),
             text: searchData.text,
             type: searchData.type,
             scCategoryId: searchData.scCategoryId,
@@ -446,22 +445,26 @@ function DbtSuccessApplication() {
     // setAllApplicationIds([]);
   };
 
-  // Fetch default financial year details
+  // Fetch default financial year details, then load the report pre-filtered
+  // by that year. The user can still pick a different year and hit Search.
   const getFinancialDefaultDetails = () => {
     api
       .get(baseURLMasterData + `financialYearMaster/get-is-default`)
       .then((response) => {
         const year = response.data.content.financialYear;
+        const financialYearMasterId = response.data.content.financialYearMasterId;
         const [fromDate, toDate] = year.split("-");
         setData({
-          financialYearMasterId: response.data.content.financialYearMasterId,
+          financialYearMasterId,
           year1: fromDate,
           year2: toDate,
         });
         setSearchData((prev) => ({
           ...prev,
-          text: response.data.content.financialYearMasterId, // Pre-fill text with financial year
+          type: 5,
+          text: financialYearMasterId, // Pre-fill text with financial year
         }));
+        getList(financialYearMasterId);
       })
       .catch((err) => {
         setData({
@@ -469,27 +472,30 @@ function DbtSuccessApplication() {
           year1: "",
           year2: "",
         });
+        getList();
       });
   };
 
   useEffect(() => {
-  getFinancialYearList();
-  getFinancialDefaultDetails(); // ✅ Fetch default financial year on load
-}, []);
+    getFinancialYearList();
+    getFinancialDefaultDetails(); // ✅ Fetch default financial year and load the report for it
+  }, []);
 
-  const getList = () => {
+  const getList = (financialYearMasterId) => {
     setLoading(true);
+    const params = {
+      displayAllRecords: true,
+      status: "",
+    };
+    if (financialYearMasterId) {
+      params.type = 5;
+      params.text = financialYearMasterId;
+    }
     api
       .post(
-        baseURLDBT + `service/getDbtSuccessByList`,
+        baseURLDBT + `service/getDbtSuccessReportList`,
         {},
-        {
-          params: {
-            userMasterId: localStorage.getItem("userMasterId"),
-            displayAllRecords: true,
-            status: "",
-          },
-        }
+        { params }
       )
       .then((response) => {
         setListData(response.data.content);
@@ -504,11 +510,6 @@ function DbtSuccessApplication() {
         setLoading(false);
       });
   };
-
-  useEffect(() => {
-    getFinancialDefaultDetails();
-    getList();
-  }, [page]);
 
   // const exportCsv = (e) => {
   //   api
@@ -563,7 +564,6 @@ function DbtSuccessApplication() {
     talukId: addressDetails?.talukId || 0,
     hobliId: addressDetails?.hobliId || 0,
     villageId: addressDetails?.villageId || 0,
-    userMasterId: localStorage.getItem("userMasterId") || 0,
     text: searchData?.text || "", // empty string if not selected
     type: searchData?.type || 0,
     scCategoryId: searchData?.scCategoryId || 0,
@@ -572,7 +572,7 @@ function DbtSuccessApplication() {
   };
 
   api
-    .post(baseURLDBT + `service/dbt-success-list-report`, {}, {
+    .post(baseURLDBT + `service/dbt-success-report-export`, {}, {
       params,
       responseType: "blob",
       headers: {
@@ -1171,6 +1171,9 @@ return (
             highlightOnHover
             progressPending={loading}
             customStyles={customStyles}
+            pagination
+            paginationPerPage={50}
+            paginationRowsPerPageOptions={[50]}
           />
         </Card>
       </Block>

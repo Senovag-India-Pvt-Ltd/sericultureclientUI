@@ -48,7 +48,7 @@ function AllApplicationDetails() {
   const [hobliListData, setHobliListData] = useState([]);
   const [villageListData, setVillageListData] = useState([]);
 
-  const [searchData, setSearchData] = useState({ type: "2", text: "" });
+  const [searchData, setSearchData] = useState({ type: "5", text: "" });
   const [addressDetails, setAddressDetails] = useState({
     districtId: 0,
     talukId: 0,
@@ -82,6 +82,8 @@ function AllApplicationDetails() {
       .catch(() => setFinancialyearListData([]));
   };
 
+ // Fetch default financial year, then load the report pre-filtered by that
+ // year. The user can still pick a different year/search type and hit Search.
  const getFinancialDefaultDetails = () => {
   api
     .get(`${baseURLMasterData}financialYearMaster/get-is-default`)
@@ -89,11 +91,12 @@ function AllApplicationDetails() {
       const content = response.data?.content;
       if (content) {
         const year = content.financialYear ?? "";
+        const financialYearMasterId = content.financialYearMasterId ?? "";
         const [fromDate = "", toDate = ""] = year.split("-");
 
         // ✅ Set financial year state
         setData({
-          financialYearMasterId: content.financialYearMasterId ?? "",
+          financialYearMasterId,
           year1: fromDate,
           year2: toDate,
         });
@@ -101,10 +104,13 @@ function AllApplicationDetails() {
         // ✅ Set search data safely inside same scope
         setSearchData((prev) => ({
           ...prev,
-          ...(prev.type === "5"
-            ? { text: content.financialYearMasterId ?? "" }
-            : { text: "" }),
+          type: "5",
+          text: financialYearMasterId,
         }));
+
+        getList(financialYearMasterId);
+      } else {
+        getList();
       }
     })
     .catch(() => {
@@ -113,6 +119,7 @@ function AllApplicationDetails() {
         year1: "",
         year2: "",
       });
+      getList();
     });
 };
 
@@ -299,7 +306,7 @@ useEffect(() => {
   const search = (e) => {
     api
       .post(
-        baseURLDBT + `service/getDbtStatusByList`,
+        baseURLDBT + `service/getAllApplicationDetailsList`,
         {},
         {
           params: {
@@ -307,7 +314,6 @@ useEffect(() => {
             talukId: addressDetails.talukId,
             hobliId: addressDetails.hobliId,
             villageId: addressDetails.villageId,
-            userMasterId: localStorage.getItem("userMasterId"),
             text: searchData.text,
             type: searchData.type,
             scCategoryId: searchData.scCategoryId,
@@ -480,19 +486,21 @@ useEffect(() => {
   const clear = () => {
   };
 
-  const getList = () => {
+  const getList = (financialYearMasterId) => {
     setLoading(true);
+    const params = {
+      displayAllRecords: true,
+      status: "",
+    };
+    if (financialYearMasterId) {
+      params.type = 5;
+      params.text = financialYearMasterId;
+    }
     api
       .post(
-        baseURLDBT + `service/getDbtStatusByList`,
+        baseURLDBT + `service/getAllApplicationDetailsList`,
         {},
-        {
-          params: {
-            userMasterId: localStorage.getItem("userMasterId"),
-            displayAllRecords: true,
-            status: "",
-          },
-        }
+        { params }
       )
       .then((response) => {
         setListData(response.data.content);
@@ -508,15 +516,10 @@ useEffect(() => {
       });
   };
 
-  useEffect(() => {
-    getFinancialDefaultDetails();
-    getList();
-  }, [page]);
-
   const exportCsv = (e) => {
     api
       .post(
-        baseURLDBT + `service/reject-list-report`,
+        baseURLDBT + `service/all-application-details-export`,
         {},
         {
           params: {
@@ -524,7 +527,6 @@ useEffect(() => {
             talukId: addressDetails.talukId,
             hobliId: addressDetails.hobliId,
             villageId: addressDetails.villageId,
-            userMasterId: localStorage.getItem("userMasterId"),
             text: searchData.text,
             type: searchData.type,
             scCategoryId: searchData.scCategoryId,
@@ -906,6 +908,9 @@ useEffect(() => {
             highlightOnHover
             progressPending={loading}
             customStyles={customStyles}
+            pagination
+            paginationPerPage={50}
+            paginationRowsPerPageOptions={[50]}
           />
         </Card>
       </Block>

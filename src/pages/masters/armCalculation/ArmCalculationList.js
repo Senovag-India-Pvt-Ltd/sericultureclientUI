@@ -11,11 +11,11 @@ import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 const ARM_ENDS = ["120 Ends", "200 Ends", "400 Ends"];
-const CATEGORIES = [
-  { label: "General", id: 3 },
-  { label: "TSP",     id: 4 },
-  { label: "SCSP",    id: 5 },
-];
+// Category tabs are resolved by NAME (not a hardcoded scCategoryId) against the real
+// sc_category master data — the IDs are auto-generated per environment and previously
+// drifted out of sync with these labels (e.g. id 3 was actually "SCSP-422", not "General"),
+// silently mis-tagging every component added under the wrong tab.
+const CATEGORY_LABELS = ["General", "TSP", "SCSP"];
 
 const fmt = (v) =>
   v == null ? "—" : `₹ ${parseFloat(v).toLocaleString("en-IN", { minimumFractionDigits: 2 })}`;
@@ -33,6 +33,7 @@ function ArmCalculationList() {
   const [newRowType, setNewRowType]   = useState("Component Details");
   const emptyRow = { equipmentName: "", quantity: "", unitRate: "", unitCost: "", centralPercentage: "", statePercentage: "", advancePercentage: "", firstPayment: "", finalPayment: "" };
   const [newRow, setNewRow] = useState(emptyRow);
+  const [scCategoryList, setScCategoryList] = useState([]);
 
   const loadAll = () => {
     setLoading(true);
@@ -47,6 +48,21 @@ function ArmCalculationList() {
   };
 
   useEffect(() => { loadAll(); }, []);
+
+  useEffect(() => {
+    api.get(baseURL + "scCategory/get-all")
+      .then((r) => setScCategoryList((r.data.content?.scCategory || []).filter((c) => c.active !== false)))
+      .catch(() => setScCategoryList([]));
+  }, []);
+
+  // Resolve each tab's scCategoryId by matching the real, active sc_category name — never
+  // hardcode the numeric id, since it's auto-generated per environment (see note above).
+  const CATEGORIES = CATEGORY_LABELS.map((label) => {
+    const match = scCategoryList.find((c) =>
+      (c.categoryName || "").toLowerCase().startsWith(label.toLowerCase())
+    );
+    return { label, id: match ? match.scCategoryId : null };
+  });
 
   const handleNewRowChange = (field, value) => {
     setNewRow((prev) => {
