@@ -1898,7 +1898,7 @@ useEffect(() => {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              {t("Mega Cluster")}<span className="text-danger">*</span>
+                              {t("Mega Cluster")}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1906,11 +1906,6 @@ useEffect(() => {
                                 value={data.megaClusterId}
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.megaClusterId === undefined ||
-                                  data.megaClusterId === "0"
-                                }
                               >
                                 <option value="">{t("Select Mega Cluster")}</option>
                                 {megaClusterListData && megaClusterListData.length
@@ -1924,9 +1919,6 @@ useEffect(() => {
                                 ))
                                 : ""}
                               </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                {t("Mega Cluster is required")}
-                              </Form.Control.Feedback>
                             </div>
                           </Form.Group>
                         </Col>
@@ -1934,7 +1926,7 @@ useEffect(() => {
                         <Col lg="6">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label>
-                              {t("Cluster")}<span className="text-danger">*</span>
+                              {t("Cluster")}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Select
@@ -1942,11 +1934,6 @@ useEffect(() => {
                                 value={data.clusterId}
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
-                                required
-                                isInvalid={
-                                  data.clusterId === undefined ||
-                                  data.clusterId === "0"
-                                }
                               >
                                 <option value="">{t("Select Cluster")}</option>
                                 {clusterListData && clusterListData.length
@@ -1960,9 +1947,6 @@ useEffect(() => {
                                 ))
                                 : ""}
                               </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                {t("Cluster is required")}
-                              </Form.Control.Feedback>
                             </div>
                           </Form.Group>
                         </Col>
