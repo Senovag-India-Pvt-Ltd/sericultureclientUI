@@ -408,7 +408,7 @@ function StakeHolderList() {
         </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-list-wrap">
         <Card className="sh-list-card">
           <Card.Body className="pb-0">
             <Row className="g-2 align-items-end sh-search-bar">
@@ -509,40 +509,48 @@ function StakeHolderList() {
 
 const stakeHolderListStyles = `
   .sh-page-header {
-    padding: 18px 22px;
-    background: linear-gradient(135deg, #ffffff 0%, #eef4fc 100%);
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
     border-radius: 12px;
-    border: 1px solid #e3ebf6;
-    box-shadow: 0 2px 8px rgba(30, 103, 168, 0.05);
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
     margin-bottom: 22px;
   }
   .sh-page-title {
     margin-bottom: 4px;
-    color: #1e2a44;
+    color: #ffffff !important;
     font-weight: 700;
     letter-spacing: 0.2px;
   }
   .sh-page-subtitle {
-    color: #6b7a90;
+    color: rgba(255, 255, 255, 0.85);
     font-size: 13.5px;
   }
   .sh-cta-btn {
-    background: linear-gradient(135deg, #4361ee 0%, #1e67a8 100%);
+    background: #ffffff;
+    color: #1e67a8 !important;
     border: none;
-    box-shadow: 0 4px 12px rgba(30, 103, 168, 0.25);
-    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
     padding: 8px 18px;
     border-radius: 8px;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
   }
   .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(30, 103, 168, 0.35);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-list-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
   }
   .sh-list-card {
-    border: 1px solid #e3ebf6;
+    border: none;
     border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(30, 103, 168, 0.06);
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
     overflow: hidden;
   }
   .sh-search-bar {
@@ -556,13 +564,26 @@ const stakeHolderListStyles = `
     letter-spacing: 0.2px;
   }
   .sh-control {
-    border-radius: 8px !important;
-    border: 1px solid #d8e0ec !important;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    border-radius: 10px !important;
+    border: 1.5px solid #d8e0ec !important;
+    background-color: #fbfcfe !important;
+    padding: 0.62rem 0.9rem !important;
+    font-size: 13.5px;
+    color: #2b3a55;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  .sh-control::placeholder {
+    color: #a7b0c0;
+    font-weight: 400;
+  }
+  .sh-control:hover:not(:disabled) {
+    border-color: #a9c4e0 !important;
+    background-color: #ffffff !important;
   }
   .sh-control:focus {
-    border-color: #4361ee !important;
-    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.12) !important;
+    border-color: #2b7ac0 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14) !important;
   }
   .sh-search-wrap {
     position: relative;
@@ -586,15 +607,19 @@ const stakeHolderListStyles = `
     padding: 8px 16px;
     display: inline-flex;
     align-items: center;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
   .sh-search-btn {
-    background: linear-gradient(135deg, #4361ee 0%, #1e67a8 100%);
+    background: linear-gradient(135deg, #1e67a8 0%, #2b7ac0 100%);
     border: none;
     box-shadow: 0 4px 10px rgba(30, 103, 168, 0.2);
   }
   .sh-search-btn:hover {
     transform: translateY(-1px);
     box-shadow: 0 6px 14px rgba(30, 103, 168, 0.3);
+  }
+  .sh-reset-btn:hover {
+    transform: translateY(-1px);
   }
   .sh-table-wrap {
     padding: 0 4px 4px;

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
+import { Icon } from "../../../components";
 // import DatePicker from "../../../components/Form/DatePicker";
 import DatePicker from "react-datepicker";
 // import axios from "axios";
@@ -18,6 +19,32 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 function RenewReelerLicense() {
   // Translation
   const { t } = useTranslation();
+
+  const DetailGrid = ({ items, columns }) => {
+    const visible = items.filter((it) => it && it.show !== false);
+    return (
+      <div
+        className={columns === 1 ? "sh-detail-grid sh-detail-grid-1col" : "sh-detail-grid"}
+        style={columns ? { gridTemplateColumns: `repeat(${columns}, 1fr)` } : undefined}
+      >
+        {visible.map((it, i) => (
+          <div className="sh-detail-cell" key={`${it.label}-${i}`}>
+            <div className="sh-detail-label">{it.label}</div>
+            <div className="sh-detail-value">
+              {it.value !== undefined &&
+              it.value !== null &&
+              it.value !== "" ? (
+                it.value
+              ) : (
+                <span className="sh-detail-empty">—</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   const [data, setData] = useState({
     reelerId: "",
     status: 0,
@@ -232,33 +259,31 @@ const clear = () => {
     setFruitId({ ...fruitId, [name]: value });
   };
 
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-      width: "50%",
-    },
-  };
   return (
     <Layout title="Renew Reeler License">
+      <style>{renewReelerStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("Renew Reeler License")}</Block.Title>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">
+                {t("Renew Reeler License")}
+              </Block.Title>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4 sh-form-wrap">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
-            <Card>
+            <Card className="sh-search-card">
               <Card.Body>
                 <Row className="g-gs">
                   <Col lg="8">
                     <Form.Group as={Row} className="form-group">
-                      <Form.Label column sm={4}>
+                      <Form.Label column sm={4} className="sh-fruits-label">
                       {t("Reeling License Number")}
                         <span className="text-danger">*</span>
                       </Form.Label>
@@ -282,6 +307,7 @@ const clear = () => {
                           variant="primary"
                           onClick={display}
                         >
+                          <Icon name="search" className="me-1" />
                           {t("search")}
                         </Button>
                       </Col>
@@ -295,6 +321,10 @@ const clear = () => {
               <Row className="g-gs">
                 <Col lg="6">
                   <Card>
+                    <Card.Header className="sh-section-header">
+                      <Icon name="calendar" />
+                      <span>{t("Renewal Details")}</span>
+                    </Card.Header>
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
@@ -418,13 +448,15 @@ const clear = () => {
                           variant="primary"
                           onClick={postData}
                         > */}
-                        <Button type="submit" variant="primary">
-                        {t("save")}
+                        <Button type="submit" variant="primary" className="shadow-sm px-4 py-2">
+                          <Icon name="check" className="me-1" />
+                          {t("save")}
                         </Button>
                       </li>
                       <li>
-                      <Button type="button" variant="secondary" onClick={clear}>
-                      {t( "Clear")}
+                      <Button type="button" variant="secondary" className="sh-cancel-btn shadow-sm px-4 py-2" onClick={clear}>
+                        <Icon name="cross" className="me-1" />
+                        {t( "Clear")}
                   </Button>
                       </li>
                     </ul>
@@ -432,130 +464,75 @@ const clear = () => {
                 </Col>
                 <Col lg="6">
                   <Card>
-                    <Card.Header>{t("Reeler License Details")}</Card.Header>
+                    <Card.Header className="sh-section-header">
+                      <Icon name="award" />
+                      <span>{t("Reeler License Details")}</span>
+                    </Card.Header>
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="12">
-                          <table className="table small table-bordered">
-                            <tbody>
-                              {/* <tr>
-                                <td style={styles.ctstyle}>ID:</td>
-                                <td>{ReelerLicense.mulberrySourceId}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}> Source Of Mulberry:</td>
-                                <td>{SourceOfMulberry.mulberrySourceName}</td>
-                              </tr> */}
-                              <tr>
-                                <td style={styles.ctstyle}>
-                                  {" "}
-                                  {t("Reeling License Number")}
-                                </td>
-                                <td>{reeler.reelingLicenseNumber}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}> {t("Reeler Name")}</td>
-                                <td>{reeler.reelerName}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}>
-                                  {" "}
-                                  {t("Father's/Husband's Name")}
-                                </td>
-                                <td>{reeler.fatherName}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}>
-                                  {" "}
-                                  {t("License Expiry Date")}
-                                </td>
-                                <td>{reeler.licenseExpiryDate}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}>{t("address")}</td>
-                                <td>{reeler.address}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}>
-                                  {" "}
-                                  {t("Assign To Inspect")}
-                                </td>
-                                <td>{reeler.assignToInspectId}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}> {t("GPS Coordinates of reeling unit")}</td>
-                                <td>
-                                  Latitude:{reeler.chakbandiLat}, Longitude:
-                                  {reeler.chakbandiLng}
-                                </td>
-                              </tr>
-                              {/* <tr>
-                                <td style={styles.ctstyle}>
-                                  {" "}
-                                  Mahajar Details:
-                                </td>
-                                <td>{reeler.mahajarDetails}</td>
-                              </tr> */}
-                              <tr>
-                                <td style={styles.ctstyle}>
-                                  {" "}
-                                  {t("Representative/Agent name and Address")}
-                                </td>
-                                <td>{reeler.representativeNameAddress}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}> {t("Machine Type is required")}</td>
-                                <td>{reeler.machineTypeName}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}>
-                                {t("Date of Machine Installation")}
-                                </td>
-                                <td>{reeler.dateOfMachineInstallation}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}>
-                                {t("Number of Basins/Charaka")}
-                                </td>
-                                <td>{reeler.numberOfBasins}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}>
-                                {t("Electricity RR Numbers")}
-                                </td>
-                                <td>{reeler.electricityRrNumber}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}>
-                                {t("Revenue Document (e-Khata / Reeling Unit)")}
-                                </td>
-                                <td>{reeler.revenueDocument}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}>{t("district")}</td>
-                                <td>{reeler.districtName}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}>{t("taluk")}</td>
-                                <td>{reeler.talukName}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}>{t("village")}</td>
-                                <td>{reeler.villageName}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}>
-                                  {" "}
-                                  {t("Mahajar/Inspection Date")}
-                                </td>
-                                <td>{reeler.inspectionDate}</td>
-                              </tr>
-                              <tr>
-                                <td style={styles.ctstyle}>{t("Receipt Date")}</td>
-                                <td>{reeler.receiptDate}</td>
-                              </tr>
-                            </tbody>
-                          </table>
+                          <DetailGrid
+                            columns={1}
+                            items={[
+                              {
+                                label: t("Reeling License Number"),
+                                value: reeler.reelingLicenseNumber,
+                              },
+                              { label: t("Reeler Name"), value: reeler.reelerName },
+                              {
+                                label: t("Father's/Husband's Name"),
+                                value: reeler.fatherName,
+                              },
+                              {
+                                label: t("License Expiry Date"),
+                                value: reeler.licenseExpiryDate,
+                              },
+                              { label: t("address"), value: reeler.address },
+                              {
+                                label: t("Assign To Inspect"),
+                                value: reeler.assignToInspectId,
+                              },
+                              {
+                                label: t("GPS Coordinates of reeling unit"),
+                                value:
+                                  reeler.chakbandiLat || reeler.chakbandiLng
+                                    ? `Latitude: ${reeler.chakbandiLat || ""}, Longitude: ${reeler.chakbandiLng || ""}`
+                                    : "",
+                              },
+                              {
+                                label: t("Representative/Agent name and Address"),
+                                value: reeler.representativeNameAddress,
+                              },
+                              {
+                                label: t("Machine Type is required"),
+                                value: reeler.machineTypeName,
+                              },
+                              {
+                                label: t("Date of Machine Installation"),
+                                value: reeler.dateOfMachineInstallation,
+                              },
+                              {
+                                label: t("Number of Basins/Charaka"),
+                                value: reeler.numberOfBasins,
+                              },
+                              {
+                                label: t("Electricity RR Numbers"),
+                                value: reeler.electricityRrNumber,
+                              },
+                              {
+                                label: t("Revenue Document (e-Khata / Reeling Unit)"),
+                                value: reeler.revenueDocument,
+                              },
+                              { label: t("district"), value: reeler.districtName },
+                              { label: t("taluk"), value: reeler.talukName },
+                              { label: t("village"), value: reeler.villageName },
+                              {
+                                label: t("Mahajar/Inspection Date"),
+                                value: reeler.inspectionDate,
+                              },
+                              { label: t("Receipt Date"), value: reeler.receiptDate },
+                            ]}
+                          />
                         </Col>
                       </Row>
                     </Card.Body>
@@ -569,5 +546,214 @@ const clear = () => {
     </Layout>
   );
 }
+
+const renewReelerStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .sh-form-wrap .card-header {
+    border-bottom: none !important;
+  }
+  .sh-form-wrap .card-body {
+    padding: 20px !important;
+  }
+  .sh-form-wrap .form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+  .sh-form-wrap .form-control,
+  .sh-form-wrap .form-select {
+    border-radius: 10px !important;
+    border: 1.5px solid #d8e0ec !important;
+    background-color: #fbfcfe !important;
+    padding: 0.62rem 0.9rem !important;
+    font-size: 13.5px;
+    color: #2b3a55;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  .sh-form-wrap .form-control::placeholder {
+    color: #a7b0c0;
+    font-weight: 400;
+  }
+  .sh-form-wrap .form-control:hover:not(:disabled):not([readonly]),
+  .sh-form-wrap .form-select:hover:not(:disabled) {
+    border-color: #a9c4e0 !important;
+    background-color: #ffffff !important;
+  }
+  .sh-form-wrap .form-control:focus,
+  .sh-form-wrap .form-select:focus {
+    border-color: #2b7ac0 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14) !important;
+    outline: none;
+  }
+  .sh-form-wrap .form-control[readonly],
+  .sh-form-wrap .form-control:read-only,
+  .sh-form-wrap .form-select:disabled {
+    background-color: #f1f5fa !important;
+    border-color: #e4e9f2 !important;
+    color: #8a96a8 !important;
+    cursor: not-allowed;
+  }
+  .sh-form-wrap .form-control.is-invalid,
+  .sh-form-wrap .form-select.is-invalid {
+    border-color: #e3496a !important;
+    box-shadow: 0 0 0 3px rgba(227, 73, 106, 0.12) !important;
+  }
+  .sh-form-wrap .text-danger {
+    font-weight: 700;
+    margin-left: 3px;
+  }
+  .sh-search-card {
+    background: #ffffff !important;
+    border: none !important;
+    border-top: 4px solid #2b7ac0 !important;
+  }
+  .sh-fruits-label {
+    font-weight: 700 !important;
+    color: #1e67a8 !important;
+    font-size: 14px !important;
+    letter-spacing: 0.3px;
+  }
+  .sh-form-wrap .btn-primary {
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-form-wrap .btn-primary:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(30, 103, 168, 0.25);
+  }
+  .sh-cancel-btn {
+    background: #ffffff;
+    color: #e3496a;
+    border: 1.5px solid #e3496a;
+    border-radius: 8px;
+    transition: background-color 0.15s ease, color 0.15s ease,
+      transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-cancel-btn:hover:not(:disabled),
+  .sh-cancel-btn:focus:not(:disabled) {
+    background: linear-gradient(135deg, #e3496a 0%, #c43257 100%);
+    color: #ffffff;
+    border-color: transparent;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(227, 73, 106, 0.32);
+  }
+  .sh-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.3px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    color: #ffffff !important;
+    padding: 14px 20px !important;
+  }
+  .sh-section-header svg,
+  .sh-section-header .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 15px;
+  }
+  .sh-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid #e6ecf4;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .sh-detail-cell {
+    display: grid;
+    grid-template-columns: 42% 1fr;
+    border-right: 1px solid #eef2f8;
+    border-bottom: 1px solid #eef2f8;
+    min-height: 40px;
+  }
+  .sh-detail-cell:nth-child(3n) {
+    border-right: none;
+  }
+  .sh-detail-grid-1col .sh-detail-cell {
+    border-right: none !important;
+    grid-template-columns: 45% 1fr;
+  }
+  .sh-detail-label {
+    background-color: #f7faff;
+    color: #4a5568;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.1px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid #eef2f8;
+    line-height: 1.35;
+  }
+  .sh-detail-value {
+    padding: 8px 12px;
+    color: #2b3a55;
+    font-size: 13.5px;
+    display: flex;
+    align-items: center;
+    word-break: break-word;
+    line-height: 1.4;
+    transition: background-color 0.15s ease;
+  }
+  .sh-detail-cell:hover .sh-detail-value {
+    background-color: #fbfdff;
+  }
+  .sh-detail-empty {
+    color: #b0bac9;
+    font-style: italic;
+  }
+  @media (max-width: 991px) {
+    .sh-detail-grid:not(.sh-detail-grid-1col) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 575px) {
+    .sh-detail-grid:not(.sh-detail-grid-1col) {
+      grid-template-columns: 1fr;
+    }
+    .sh-detail-cell {
+      grid-template-columns: 45% 1fr;
+    }
+  }
+`;
 
 export default RenewReelerLicense;

@@ -2388,26 +2388,24 @@ function StakeHolderRegister() {
                         Fruits ID 16 Digits is required.
                       </Form.Control.Feedback>
                     </Col>
-                    <Col sm={2}>
-                      <Button type="submit" variant="primary">
-                        {t("search")}
-                      </Button>
-                    </Col>
-                    <Col sm={2}>
-                      <Button type="submit" variant="primary" onClick={clear}>
-                        {t("Clear")}
-                      </Button>
-                    </Col>
-                    <Col sm={2}>
-                      <Button
-                        type="button"
-                        variant="primary"
-                        href="https://fruits.karnataka.gov.in/OnlineUserLogin.aspx"
-                        target="_blank"
-                        // onClick={search}
-                      >
-                        {t("Generate_FRUITS_ID")}
-                      </Button>
+                    <Col sm={6}>
+                      <div className="d-flex flex-wrap gap-2">
+                        <Button type="submit" variant="primary">
+                          {t("search")}
+                        </Button>
+                        <Button type="submit" variant="primary" onClick={clear}>
+                          {t("Clear")}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="primary"
+                          href="https://fruits.karnataka.gov.in/OnlineUserLogin.aspx"
+                          target="_blank"
+                          // onClick={search}
+                        >
+                          {t("Generate_FRUITS_ID")}
+                        </Button>
+                      </div>
                     </Col>
                   </Form.Group>
                 </Col>
@@ -2420,18 +2418,9 @@ function StakeHolderRegister() {
           <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
-                <Card.Header
-                  style={{
-                    fontWeight: 700,
-                    fontSize: "1rem",
-                    letterSpacing: "0.3px",
-                    background:
-                      "linear-gradient(90deg, rgba(67, 97, 238, 0.08) 0%, rgba(67, 97, 238, 0.02) 100%)",
-                    borderLeft: "4px solid #4361ee",
-                    color: "#2b2d42",
-                  }}
-                >
-                  {t("farmer_personal_information")}
+                <Card.Header className="sh-section-header">
+                  <Icon name="user" />
+                  <span>{t("farmer_personal_information")}</span>
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
@@ -2844,7 +2833,7 @@ function StakeHolderRegister() {
                         </div>
                       </Form.Group> */}
 
-                      <Form.Group className="form-group mt-3">
+                      <Form.Group className="form-group">
                         <Form.Label>
                           {t("education")}
                           <span className="text-danger">*</span>
@@ -3001,18 +2990,9 @@ function StakeHolderRegister() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header
-                  style={{
-                    fontWeight: 700,
-                    fontSize: "1rem",
-                    letterSpacing: "0.3px",
-                    background:
-                      "linear-gradient(90deg, rgba(67, 97, 238, 0.08) 0%, rgba(67, 97, 238, 0.02) 100%)",
-                    borderLeft: "4px solid #4361ee",
-                    color: "#2b2d42",
-                  }}
-                >
-                  {t("family_members")}
+                <Card.Header className="sh-section-header">
+                  <Icon name="users" />
+                  <span>{t("family_members")}</span>
                 </Card.Header>
                 <Card.Body>
                   {/* <h3>Family Members</h3> */}
@@ -3114,18 +3094,9 @@ function StakeHolderRegister() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header
-                  style={{
-                    fontWeight: 700,
-                    fontSize: "1rem",
-                    letterSpacing: "0.3px",
-                    background:
-                      "linear-gradient(90deg, rgba(67, 97, 238, 0.08) 0%, rgba(67, 97, 238, 0.02) 100%)",
-                    borderLeft: "4px solid #4361ee",
-                    color: "#2b2d42",
-                  }}
-                >
-                  {t("address")}
+                <Card.Header className="sh-section-header">
+                  <Icon name="map-pin" />
+                  <span>{t("address")}</span>
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs mb-1">
@@ -3237,18 +3208,9 @@ function StakeHolderRegister() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header
-                  style={{
-                    fontWeight: 700,
-                    fontSize: "1rem",
-                    letterSpacing: "0.3px",
-                    background:
-                      "linear-gradient(90deg, rgba(67, 97, 238, 0.08) 0%, rgba(67, 97, 238, 0.02) 100%)",
-                    borderLeft: "4px solid #4361ee",
-                    color: "#2b2d42",
-                  }}
-                >
-                  {t("farmer_land_details")}
+                <Card.Header className="sh-section-header">
+                  <Icon name="map" />
+                  <span>{t("farmer_land_details")}</span>
                 </Card.Header>
                 <Card.Body>
                   {/* <h3>Farmers Land Details</h3> */}
@@ -3352,18 +3314,9 @@ function StakeHolderRegister() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header
-                  style={{
-                    fontWeight: 700,
-                    fontSize: "1rem",
-                    letterSpacing: "0.3px",
-                    background:
-                      "linear-gradient(90deg, rgba(67, 97, 238, 0.08) 0%, rgba(67, 97, 238, 0.02) 100%)",
-                    borderLeft: "4px solid #4361ee",
-                    color: "#2b2d42",
-                  }}
-                >
-                  {t("bank_account_details")}
+                <Card.Header className="sh-section-header">
+                  <Icon name="cc" />
+                  <span>{t("bank_account_details")}</span>
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
@@ -3581,7 +3534,10 @@ function StakeHolderRegister() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header>{t("Virtual Bank Account")}</Card.Header>
+                <Card.Header className="sh-section-header">
+                  <Icon name="wallet" />
+                  <span>{t("Virtual Bank Account")}</span>
+                </Card.Header>
                 <Card.Body>
                   <Row className="g-gs mb-1">
                     <Col lg="6"></Col>
@@ -3709,9 +3665,12 @@ function StakeHolderRegister() {
         </Form>
       </Block>
 
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+      <Modal show={showModal} onHide={handleCloseModal} size="xl" centered contentClassName="sh-modal-content">
         <Modal.Header closeButton>
-          <Modal.Title>{t("add_family_members")}</Modal.Title>
+          <Modal.Title>
+            <Icon name="users" className="me-1" />
+            {t("add_family_members")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -3781,15 +3740,17 @@ function StakeHolderRegister() {
               </Col>
 
               <Col lg="12">
-                <div className="d-flex gap g-2 justify-content-center">
+                <div className="d-flex gap g-2 justify-content-center sh-modal-footer">
                   <div className="gap-col">
                     {/* <Button variant="primary" onClick={handleAddFamilyMembers}> */}
                     <Button type="submit" variant="primary">
+                      <Icon name="plus" className="me-1" />
                       {t("add")}
                     </Button>
                   </div>
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal}>
+                      <Icon name="cross" className="me-1" />
                       {t("cancel")}
                     </Button>
                   </div>
@@ -3800,9 +3761,12 @@ function StakeHolderRegister() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModal1} onHide={handleCloseModal1} size="xl">
+      <Modal show={showModal1} onHide={handleCloseModal1} size="xl" centered contentClassName="sh-modal-content">
         <Modal.Header closeButton>
-          <Modal.Title>{t("edit")} Family Members</Modal.Title>
+          <Modal.Title>
+            <Icon name="users" className="me-1" />
+            {t("edit")} {t("family_members")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -3871,7 +3835,7 @@ function StakeHolderRegister() {
               </Col>
 
               <Col lg="12">
-                <div className="d-flex justify-content-center gap g-2 mt-3">
+                <div className="d-flex justify-content-center gap g-2 mt-3 sh-modal-footer">
                   <div className="gap-col">
                     {/* <Button
                       variant="success"
@@ -3879,6 +3843,7 @@ function StakeHolderRegister() {
                       
                     > */}
                     <Button type="submit" variant="success">
+                      <Icon name="check" className="me-1" />
                       {t("update")}
                     </Button>
                   </div>
@@ -3889,6 +3854,7 @@ function StakeHolderRegister() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal1}>
+                      <Icon name="cross" className="me-1" />
                       {t("cancel")}
                     </Button>
                   </div>
@@ -3899,9 +3865,12 @@ function StakeHolderRegister() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
+      <Modal show={showModal2} onHide={handleCloseModal2} size="xl" centered scrollable contentClassName="sh-modal-content">
         <Modal.Header closeButton>
-          <Modal.Title>{t("add_farmer_land_details")}</Modal.Title>
+          <Modal.Title>
+            <Icon name="map" className="me-1" />
+            {t("add_farmer_land_details")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -3910,6 +3879,10 @@ function StakeHolderRegister() {
             validated={validatedFarmerLand}
             onSubmit={handleAddFarmerLand}
           >
+            <div className="sh-modal-section-label">
+              <Icon name="map" />
+              Land, Mulberry &amp; Rearing Details
+            </div>
             <Row className="g-5 px-5">
               <Col lg="4">
                 {/* <Form.Group className="form-group mt-3">
@@ -3928,7 +3901,7 @@ function StakeHolderRegister() {
                   </div>
                 </Form.Group> */}
 
-                <Form.Group className="form-group mt-3">
+                <Form.Group className="form-group">
                   <Form.Label>
                     {t("land_ownership")}
                     <span className="text-danger">*</span>
@@ -4136,7 +4109,7 @@ function StakeHolderRegister() {
               </Col>
 
               <Col lg="4">
-                <Form.Group className="form-group mt-3">
+                <Form.Group className="form-group">
                   <Form.Label>
                     {t("plantation_type")}
                     <span className="text-danger">*</span>
@@ -4356,7 +4329,7 @@ function StakeHolderRegister() {
                 </Form.Group>
               </Col>
               <Col lg="4">
-                <Form.Group className="form-group mt-3">
+                <Form.Group className="form-group">
                   <Form.Label htmlFor="equipmentDetails">
                     {t("equipment_details")}
                   </Form.Label>
@@ -4554,10 +4527,13 @@ function StakeHolderRegister() {
               </Col>
 
               <Col lg="12">
-                <h3>{t("survey_details")}</h3>
+                <div className="sh-modal-section-label">
+                  <Icon name="map-pin" />
+                  {t("survey_details")}
+                </div>
                 <Row className="g-gs">
                   <Col lg="6">
-                    <Form.Group className="form-group mt-3">
+                    <Form.Group className="form-group">
                       <Form.Label htmlFor="surveyNumber">
                         {t("survey_number")}
                         <span className="text-danger">*</span>
@@ -4707,7 +4683,7 @@ function StakeHolderRegister() {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group mt-3">
+                    <Form.Group className="form-group">
                       <Form.Label htmlFor="surNoc">
                         {t("survey_noc")}
                       </Form.Label>
@@ -4787,10 +4763,11 @@ function StakeHolderRegister() {
               </Col>
 
               <Col lg="12">
-                <div className="d-flex justify-content-center gap g-2">
+                <div className="d-flex justify-content-center gap g-2 sh-modal-footer">
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleAddFarmerLand}> */}
                     <Button type="submit" variant="success">
+                      <Icon name="plus" className="me-1" />
                       {t("add")}
                     </Button>
                   </div>
@@ -4801,6 +4778,7 @@ function StakeHolderRegister() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal2}>
+                      <Icon name="cross" className="me-1" />
                       {t("cancel")}
                     </Button>
                   </div>
@@ -4811,9 +4789,12 @@ function StakeHolderRegister() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
+      <Modal show={showModal3} onHide={handleCloseModal3} size="xl" centered scrollable contentClassName="sh-modal-content">
         <Modal.Header closeButton>
-          <Modal.Title>Edit Farmer Land</Modal.Title>
+          <Modal.Title>
+            <Icon name="map" className="me-1" />
+            {t("edit")} {t("farmer_land_details")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -4822,6 +4803,10 @@ function StakeHolderRegister() {
             validated={validatedFarmerLandEdit}
             onSubmit={(e) => handleUpdateFl(e, flId, farmerLand)}
           >
+            <div className="sh-modal-section-label">
+              <Icon name="map" />
+              Land, Mulberry &amp; Rearing Details
+            </div>
             <Row className="g-5 px-5">
               <Col lg="4">
                 {/* <Form.Group className="form-group mt-3">
@@ -4840,7 +4825,7 @@ function StakeHolderRegister() {
                   </div>
                 </Form.Group> */}
 
-                <Form.Group className="form-group mt-3">
+                <Form.Group className="form-group">
                   <Form.Label>
                     {t("land_ownership")}
                     <span className="text-danger">*</span>
@@ -5055,7 +5040,7 @@ function StakeHolderRegister() {
               </Col>
 
               <Col lg="4">
-                <Form.Group className="form-group mt-3">
+                <Form.Group className="form-group">
                   <Form.Label>
                     {t("plantation_type")}
                     <span className="text-danger">*</span>
@@ -5276,7 +5261,7 @@ function StakeHolderRegister() {
                 </Form.Group>
               </Col>
               <Col lg="4">
-                <Form.Group className="form-group mt-3">
+                <Form.Group className="form-group">
                   <Form.Label htmlFor="equipmentDetails">
                     {t("equipment_details")}
                   </Form.Label>
@@ -5484,10 +5469,13 @@ function StakeHolderRegister() {
               </Col>
 
               <Col lg="12">
-                <h3>{t("survey_details")}</h3>
+                <div className="sh-modal-section-label">
+                  <Icon name="map-pin" />
+                  {t("survey_details")}
+                </div>
                 <Row className="g-gs">
                   <Col lg="6">
-                    <Form.Group className="form-group mt-3">
+                    <Form.Group className="form-group">
                       <Form.Label htmlFor="surveyNumber">
                         {t("survey_number")}
                         <span className="text-danger">*</span>
@@ -5658,7 +5646,7 @@ function StakeHolderRegister() {
                   </Col>
 
                   <Col lg="6">
-                    <Form.Group className="form-group mt-3">
+                    <Form.Group className="form-group">
                       <Form.Label htmlFor="surNoc">
                         {t("survey_noc")}
                       </Form.Label>
@@ -5738,13 +5726,14 @@ function StakeHolderRegister() {
               </Col>
 
               <Col lg="12">
-                <div className="d-flex justify-content-center gap g-2 mt-3">
+                <div className="d-flex justify-content-center gap g-2 mt-3 sh-modal-footer">
                   <div className="gap-col">
                     {/* <Button
                       variant="success"
                       onClick={() => handleUpdateFl(flId, farmerLand)}
                     > */}
                     <Button type="submit" variant="success">
+                      <Icon name="check" className="me-1" />
                       {t("update")}
                     </Button>
                   </div>
@@ -5755,6 +5744,7 @@ function StakeHolderRegister() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal3}>
+                      <Icon name="cross" className="me-1" />
                       {t("cancel")}
                     </Button>
                   </div>
@@ -5765,9 +5755,12 @@ function StakeHolderRegister() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
+      <Modal show={showModal4} onHide={handleCloseModal4} size="xl" centered scrollable contentClassName="sh-modal-content">
         <Modal.Header closeButton>
-          <Modal.Title>{t("add_address")}</Modal.Title>
+          <Modal.Title>
+            <Icon name="map-pin" className="me-1" />
+            {t("add_address")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -5776,6 +5769,10 @@ function StakeHolderRegister() {
             validated={validatedFarmerAddress}
             onSubmit={handleAddFarmerAddress}
           >
+            <div className="sh-modal-section-label">
+              <Icon name="map-pin" />
+              Location Details
+            </div>
             <Row className="g-3">
               <Col lg="6">
                 <Form.Group className="form-group">
@@ -6033,10 +6030,11 @@ function StakeHolderRegister() {
               </Col>
 
               <Col lg="12">
-                <div className="d-flex justify-content-center gap g-2 mt-3">
+                <div className="d-flex justify-content-center gap g-2 mt-3 sh-modal-footer">
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleAddFarmerAddress}> */}
                     <Button type="submit" variant="success">
+                      <Icon name="plus" className="me-1" />
                       {t("add")}
                     </Button>
                   </div>
@@ -6047,6 +6045,7 @@ function StakeHolderRegister() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal4}>
+                      <Icon name="cross" className="me-1" />
                       {t("cancel")}
                     </Button>
                   </div>
@@ -6057,9 +6056,12 @@ function StakeHolderRegister() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModal5} onHide={handleCloseModal5} size="xl">
+      <Modal show={showModal5} onHide={handleCloseModal5} size="xl" centered scrollable contentClassName="sh-modal-content">
         <Modal.Header closeButton>
-          <Modal.Title>Edit Address</Modal.Title>
+          <Modal.Title>
+            <Icon name="map-pin" className="me-1" />
+            {t("edit")} {t("address")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -6068,6 +6070,10 @@ function StakeHolderRegister() {
             validated={validatedFarmerAddressEdit}
             onSubmit={(e) => handleUpdateFa(e, faId, farmerAddress)}
           >
+            <div className="sh-modal-section-label">
+              <Icon name="map-pin" />
+              Location Details
+            </div>
             <Row className="g-3">
               <Col lg="6">
                 <Form.Group className="form-group">
@@ -6319,13 +6325,14 @@ function StakeHolderRegister() {
               </Col>
 
               <Col lg="12">
-                <div className="d-flex justify-content-center gap g-2">
+                <div className="d-flex justify-content-center gap g-2 sh-modal-footer">
                   <div className="gap-col">
                     {/* <Button
                       variant="success"
                       onClick={() => handleUpdateFa(faId, farmerAddress)}
                     > */}
                     <Button type="submit" variant="success">
+                      <Icon name="check" className="me-1" />
                       {t("update")}
                     </Button>
                   </div>
@@ -6336,6 +6343,7 @@ function StakeHolderRegister() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal5}>
+                      <Icon name="cross" className="me-1" />
                       {t("cancel")}
                     </Button>
                   </div>
@@ -6346,9 +6354,12 @@ function StakeHolderRegister() {
         </Modal.Body>
       </Modal>
       {/* Add Virtual Bank Account Modal */}
-      <Modal show={showModalVb} onHide={handleVbCloseModal} size="xl">
+      <Modal show={showModalVb} onHide={handleVbCloseModal} size="xl" centered contentClassName="sh-modal-content">
         <Modal.Header closeButton>
-          <Modal.Title>{t("Add Virtual Bank Account Details")}</Modal.Title>
+          <Modal.Title>
+            <Icon name="wallet" className="me-1" />
+            {t("Add Virtual Bank Account Details")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form noValidate validated={validatedVbAccount} onSubmit={handleVbAdd}>
@@ -6483,12 +6494,18 @@ function StakeHolderRegister() {
                 </Form.Group>
               </Col>
               <Col lg="12">
-                <div className="d-flex justify-content-center gap g-2">
+                <div className="d-flex justify-content-center gap g-2 sh-modal-footer">
                   <div className="gap-col">
-                    <Button type="submit" variant="success">{t("add")}</Button>
+                    <Button type="submit" variant="success">
+                      <Icon name="plus" className="me-1" />
+                      {t("add")}
+                    </Button>
                   </div>
                   <div className="gap-col">
-                    <Button variant="secondary" onClick={handleVbCloseModal}>{t("cancel")}</Button>
+                    <Button variant="secondary" onClick={handleVbCloseModal}>
+                      <Icon name="cross" className="me-1" />
+                      {t("cancel")}
+                    </Button>
                   </div>
                 </div>
               </Col>
@@ -6498,9 +6515,12 @@ function StakeHolderRegister() {
       </Modal>
 
       {/* Edit Virtual Bank Account Modal */}
-      <Modal show={showModalVb2} onHide={handleVbCloseModal2} size="lg">
+      <Modal show={showModalVb2} onHide={handleVbCloseModal2} size="lg" centered contentClassName="sh-modal-content">
         <Modal.Header closeButton>
-          <Modal.Title>{t("Edit Virtual Bank Account")}</Modal.Title>
+          <Modal.Title>
+            <Icon name="wallet" className="me-1" />
+            {t("Edit Virtual Bank Account")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form noValidate validated={validatedVbAccountEdit} onSubmit={(e) => handleVbUpdate(e, vbId, vbAccount)}>
@@ -6635,12 +6655,18 @@ function StakeHolderRegister() {
                 </Form.Group>
               </Col>
               <Col lg="12">
-                <div className="d-flex justify-content-center gap g-2">
+                <div className="d-flex justify-content-center gap g-2 sh-modal-footer">
                   <div className="gap-col">
-                    <Button type="submit" variant="success">{t("update")}</Button>
+                    <Button type="submit" variant="success">
+                      <Icon name="check" className="me-1" />
+                      {t("update")}
+                    </Button>
                   </div>
                   <div className="gap-col">
-                    <Button variant="secondary" onClick={handleVbCloseModal2}>{t("cancel")}</Button>
+                    <Button variant="secondary" onClick={handleVbCloseModal2}>
+                      <Icon name="cross" className="me-1" />
+                      {t("cancel")}
+                    </Button>
                   </div>
                 </div>
               </Col>
@@ -6655,46 +6681,53 @@ function StakeHolderRegister() {
 
 const stakeHolderFormStyles = `
   .sh-page-header {
-    padding: 18px 22px;
-    background: linear-gradient(135deg, #ffffff 0%, #eef4fc 100%);
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
     border-radius: 12px;
-    border: 1px solid #e3ebf6;
-    box-shadow: 0 2px 8px rgba(30, 103, 168, 0.05);
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
     margin-bottom: 22px;
   }
   .sh-page-title {
     margin-bottom: 4px;
-    color: #1e2a44;
+    color: #ffffff !important;
     font-weight: 700;
     letter-spacing: 0.2px;
   }
   .sh-page-subtitle {
-    color: #6b7a90;
+    color: rgba(255, 255, 255, 0.85);
     font-size: 13.5px;
   }
   .sh-cta-btn {
-    background: linear-gradient(135deg, #4361ee 0%, #1e67a8 100%);
+    background: #ffffff;
+    color: #1e67a8 !important;
     border: none;
-    box-shadow: 0 4px 12px rgba(30, 103, 168, 0.25);
-    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
     padding: 8px 18px;
     border-radius: 8px;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
   }
   .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(30, 103, 168, 0.35);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
   }
   .sh-form-wrap .card {
-    border: 1px solid #e3ebf6;
+    border: none;
     border-radius: 12px !important;
-    box-shadow: 0 2px 10px rgba(30, 103, 168, 0.05);
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
     overflow: hidden;
     margin-bottom: 18px;
   }
   .sh-form-wrap .card-header {
-    border-bottom: 1px solid #e9eef6 !important;
-    padding: 14px 18px !important;
+    border-bottom: none !important;
   }
   .sh-form-wrap .card-body {
     padding: 20px !important;
@@ -6708,23 +6741,36 @@ const stakeHolderFormStyles = `
   }
   .sh-form-wrap .form-control,
   .sh-form-wrap .form-select {
-    border-radius: 8px !important;
-    border: 1px solid #d8e0ec !important;
+    border-radius: 10px !important;
+    border: 1.5px solid #d8e0ec !important;
     background-color: #fbfcfe !important;
-    padding: 0.5rem 0.75rem !important;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    padding: 0.62rem 0.9rem !important;
+    font-size: 13.5px;
+    color: #2b3a55;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  .sh-form-wrap .form-control::placeholder {
+    color: #a7b0c0;
+    font-weight: 400;
+  }
+  .sh-form-wrap .form-control:hover:not(:disabled):not([readonly]),
+  .sh-form-wrap .form-select:hover:not(:disabled) {
+    border-color: #a9c4e0 !important;
+    background-color: #ffffff !important;
   }
   .sh-form-wrap .form-control:focus,
   .sh-form-wrap .form-select:focus {
-    border-color: #4361ee !important;
+    border-color: #2b7ac0 !important;
     background-color: #ffffff !important;
-    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.12) !important;
+    box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14) !important;
     outline: none;
   }
   .sh-form-wrap .form-control[readonly],
-  .sh-form-wrap .form-control:read-only {
+  .sh-form-wrap .form-control:read-only,
+  .sh-form-wrap .form-select:disabled {
     background-color: #f1f5fa !important;
-    color: #5a6577;
+    border-color: #e4e9f2 !important;
+    color: #8a96a8 !important;
     cursor: not-allowed;
   }
   .sh-form-wrap .form-control.is-invalid,
@@ -6732,13 +6778,27 @@ const stakeHolderFormStyles = `
     border-color: #e3496a !important;
     box-shadow: 0 0 0 3px rgba(227, 73, 106, 0.12) !important;
   }
+  .sh-form-wrap .form-check-input {
+    border-radius: 5px;
+    border: 1.5px solid #c9d4e3;
+    cursor: pointer;
+  }
+  .sh-form-wrap .form-check-input:checked {
+    background-color: #1e67a8;
+    border-color: #1e67a8;
+  }
+  .sh-form-wrap .form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14);
+    border-color: #2b7ac0;
+  }
   .sh-form-wrap .text-danger {
     font-weight: 700;
     margin-left: 3px;
   }
   .sh-search-card {
-    background: linear-gradient(135deg, #ffffff 0%, #f5f9ff 100%) !important;
-    border: 1px solid #d6e3f3 !important;
+    background: #ffffff !important;
+    border: none !important;
+    border-top: 4px solid #2b7ac0 !important;
   }
   .sh-fruits-label {
     font-weight: 700 !important;
@@ -6796,6 +6856,221 @@ const stakeHolderFormStyles = `
   }
   .sh-form-wrap table tbody tr:hover {
     background-color: #f7faff !important;
+  }
+  .sh-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.3px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-left: none !important;
+    color: #ffffff !important;
+    padding: 14px 20px !important;
+  }
+  .sh-section-header svg,
+  .sh-section-header .icon,
+  .sh-modal-content .modal-header svg,
+  .sh-modal-content .modal-header .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 15px;
+  }
+  .sh-modal-content {
+    border-radius: 12px !important;
+    border: 1px solid #e3ebf6 !important;
+    overflow: hidden;
+  }
+  .sh-modal-content .modal-header {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-bottom: none;
+    padding: 16px 22px;
+  }
+  .sh-modal-content .modal-header .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+  }
+  .sh-modal-content .modal-header .btn-close:hover {
+    opacity: 1;
+  }
+  .sh-modal-content .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.3px;
+    color: #ffffff;
+  }
+  .sh-modal-content .modal-body {
+    padding: 22px 24px;
+  }
+  .sh-modal-content .form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+  .sh-modal-content .form-control,
+  .sh-modal-content .form-select {
+    border-radius: 10px !important;
+    border: 1.5px solid #d8e0ec !important;
+    background-color: #fbfcfe !important;
+    padding: 0.62rem 0.9rem !important;
+    font-size: 13.5px;
+    color: #2b3a55;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  .sh-modal-content .form-control::placeholder {
+    color: #a7b0c0;
+    font-weight: 400;
+  }
+  .sh-modal-content .form-control:hover:not(:disabled):not([readonly]),
+  .sh-modal-content .form-select:hover:not(:disabled) {
+    border-color: #a9c4e0 !important;
+    background-color: #ffffff !important;
+  }
+  .sh-modal-content .form-control:focus,
+  .sh-modal-content .form-select:focus {
+    border-color: #2b7ac0 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14) !important;
+    outline: none;
+  }
+  .sh-modal-content .form-control[readonly],
+  .sh-modal-content .form-control:read-only,
+  .sh-modal-content .form-select:disabled {
+    background-color: #f1f5fa !important;
+    border-color: #e4e9f2 !important;
+    color: #8a96a8 !important;
+    cursor: not-allowed;
+  }
+  .sh-modal-content .form-check-input {
+    border-radius: 5px;
+    border: 1.5px solid #c9d4e3;
+    cursor: pointer;
+  }
+  .sh-modal-content .form-check-input:checked {
+    background-color: #1e67a8;
+    border-color: #1e67a8;
+  }
+  .sh-modal-content .form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14);
+    border-color: #2b7ac0;
+  }
+  .sh-modal-content .form-control.is-invalid,
+  .sh-modal-content .form-select.is-invalid {
+    border-color: #e3496a !important;
+    box-shadow: 0 0 0 3px rgba(227, 73, 106, 0.12) !important;
+  }
+  .sh-modal-content .text-danger {
+    font-weight: 700;
+    margin-left: 3px;
+  }
+  .sh-modal-content .btn-primary {
+    background: linear-gradient(135deg, #1e67a8 0%, #2b7ac0 100%);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 10px rgba(30, 103, 168, 0.2);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-modal-content .btn-primary:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(30, 103, 168, 0.3);
+  }
+  .sh-modal-content .btn-success {
+    background: linear-gradient(135deg, #1e67a8 0%, #2b7ac0 100%);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 10px rgba(30, 103, 168, 0.2);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-modal-content .btn-success:not(:disabled):hover {
+    background: linear-gradient(135deg, #1e67a8 0%, #2b7ac0 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(30, 103, 168, 0.3);
+  }
+  .sh-modal-content .btn-secondary {
+    background: #ffffff;
+    color: #e3496a;
+    border: 1.5px solid #e3496a;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-modal-content .btn-secondary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #e3496a 0%, #c43257 100%);
+    color: #ffffff;
+    border-color: transparent;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(227, 73, 106, 0.28);
+  }
+  .sh-modal-content table {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .sh-modal-content table thead th {
+    background-color: #eef4fc !important;
+    color: #2b3a55 !important;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+    border-bottom: 2px solid #d6e3f3 !important;
+  }
+  .sh-modal-section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #1e67a8;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    margin: 4px 0 18px;
+    padding: 6px 14px;
+    background: #eaf2fc;
+    border-radius: 999px;
+  }
+  .sh-modal-section-label:not(:first-child) {
+    margin-top: 26px;
+  }
+  .sh-modal-section-label .icon {
+    color: #1e67a8;
+    font-size: 14px;
+  }
+  .sh-modal-footer {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 10px;
+    padding-top: 18px;
+    border-top: 1px solid #eef1f6;
+  }
+  .sh-modal-content .modal-body {
+    max-height: 72vh;
+    overflow-y: auto;
+  }
+  .sh-modal-content .modal-body::-webkit-scrollbar {
+    width: 8px;
+  }
+  .sh-modal-content .modal-body::-webkit-scrollbar-thumb {
+    background: #c9dcf0;
+    border-radius: 8px;
+  }
+  .sh-modal-content .modal-body::-webkit-scrollbar-track {
+    background: transparent;
   }
 `;
 
