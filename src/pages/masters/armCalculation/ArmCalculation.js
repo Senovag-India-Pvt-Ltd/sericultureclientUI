@@ -50,11 +50,21 @@ function ArmCalculation() {
   const [saving, setSaving]       = useState(false);
   const [tableData, setTableData] = useState(initTable);
   const [scCategoryList, setScCategoryList] = useState([]);
+  const [componentTypeList, setComponentTypeList] = useState([]);
+  const [componentList, setComponentList] = useState([]);
+  const [componentTypeId, setComponentTypeId] = useState("");
+  const [componentId, setComponentId] = useState("");
 
   useEffect(() => {
     api.get(baseURL + "scCategory/get-all")
       .then((r) => setScCategoryList((r.data.content?.scCategory || []).filter((c) => c.active !== false)))
       .catch(() => setScCategoryList([]));
+    api.get(baseURL + "scSubSchemeDetails/get-all")
+      .then((r) => setComponentTypeList(r.data.content?.scSubSchemeDetails || []))
+      .catch(() => setComponentTypeList([]));
+    api.get(baseURL + "scComponent/get-all")
+      .then((r) => setComponentList(r.data.content?.scComponent || []))
+      .catch(() => setComponentList([]));
   }, []);
 
   const CATEGORIES = CATEGORY_POLICY.map((cat) => {
@@ -92,6 +102,8 @@ function ArmCalculation() {
         const rate = parseFloat(r.unitRate);
         await api.post(baseURL + "armCalculation/add", {
           scCategoryId:      catObj.id,
+          componentTypeId:   componentTypeId || null,
+          componentId:       componentId || null,
           armEnds:           activeArm,
           equipmentName:     r.equipmentName.trim(),
           quantity:          qty,
@@ -205,6 +217,38 @@ function ArmCalculation() {
                 </Nav.Item>
               ))}
             </Nav>
+          </div>
+
+          {/* ── Component / Component Type (applies to every row saved below) ── */}
+          <div style={{ padding: "18px 24px 0" }}>
+            <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+              <div style={{ minWidth: 240, flex: "1 1 240px" }}>
+                <Form.Label style={{ fontWeight: 600, fontSize: "12.5px", color: "#4a5568" }}>{t("Component Type")}</Form.Label>
+                <Form.Select
+                  value={componentTypeId}
+                  onChange={(e) => setComponentTypeId(e.target.value)}
+                  style={{ borderRadius: "7px", border: "1.5px solid #d0d9e8", fontSize: "13px" }}
+                >
+                  <option value="">{t("-- Select Component Type --")}</option>
+                  {componentTypeList.map((c) => (
+                    <option key={c.scSubSchemeDetailsId} value={c.scSubSchemeDetailsId}>{c.subSchemeName}</option>
+                  ))}
+                </Form.Select>
+              </div>
+              <div style={{ minWidth: 240, flex: "1 1 240px" }}>
+                <Form.Label style={{ fontWeight: 600, fontSize: "12.5px", color: "#4a5568" }}>{t("Component")}</Form.Label>
+                <Form.Select
+                  value={componentId}
+                  onChange={(e) => setComponentId(e.target.value)}
+                  style={{ borderRadius: "7px", border: "1.5px solid #d0d9e8", fontSize: "13px" }}
+                >
+                  <option value="">{t("-- Select Component --")}</option>
+                  {componentList.map((c) => (
+                    <option key={c.scComponentId} value={c.scComponentId}>{c.scComponentName}</option>
+                  ))}
+                </Form.Select>
+              </div>
+            </div>
           </div>
 
           {/* ── Editable table ────────────────────────── */}
