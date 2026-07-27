@@ -13,12 +13,27 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function RearingOfDFLsForThe8LinesView() {
   const { t } = useTranslation();
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-      width: "50%",
-    },
+
+  const DetailGrid = ({ items }) => {
+    const visible = items.filter((it) => it && it.show !== false);
+    return (
+      <div className="sh-detail-grid">
+        {visible.map((it, i) => (
+          <div className="sh-detail-cell" key={`${it.label}-${i}`}>
+            <div className="sh-detail-label">{it.label}</div>
+            <div className="sh-detail-value">
+              {it.value !== undefined &&
+              it.value !== null &&
+              it.value !== "" ? (
+                it.value
+              ) : (
+                <span className="sh-detail-empty">—</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   };
 
   const formatDate = (dateString) => {
@@ -60,39 +75,45 @@ function RearingOfDFLsForThe8LinesView() {
 
   return (
     <Layout title={t("View Rearing of DFLs for the 8 lines Details")}>
+      <style>{rearing8LinesViewStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("View Rearing of DFLs for the 8 lines Details")}</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/Rearing-of-DFLs-for-the-8-Lines-List"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/Rearing-of-DFLs-for-the-8-Lines-List"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">{t("View Rearing of DFLs for the 8 lines Details")}</Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Link
+                    to="/seriui/Rearing-of-DFLs-for-the-8-Lines-List"
+                    className="btn btn-primary btn-md d-md-none sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go to List")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seriui/Rearing-of-DFLs-for-the-8-Lines-List"
+                    className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go to List")}</span>
+                  </Link>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
-        <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>{t("Rearing of DFLs for the 8 lines Details")}</Card.Header>
+      <Block className="mt-n4 sh-view-wrap">
+        <Card className="sh-section-card">
+          <Card.Header className="sh-section-header">
+            <Icon name="grid" />
+            <span>{t("Rearing of DFLs for the 8 lines Details")}</span>
+          </Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -101,123 +122,36 @@ function RearingOfDFLsForThe8LinesView() {
             ) : (
               <Row className="g-gs">
                 <Col lg="12">
-                  <table className="table small table-bordered">
-                    <tbody>
-                      <tr>
-                        <td style={styles.ctstyle}>ID:</td>
-                        <td>{rearing8Lines.id}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Disinfectant Usage Details")}:</td>
-                        <td>{rearing8Lines.disinfectantMasterName}</td>
-                      </tr>
-                      {/* <tr>
-                        <td style={styles.ctstyle}>Crop Details:</td>
-                        <td>{rearing8Lines.cropDetail}</td>
-                      </tr> */}
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Crop Number")}:</td>
-                        <td>{rearing8Lines.cropNumber}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Lot Number")}:</td>
-                        <td>{rearing8Lines.lotNumber}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Number Of DFLs")}:</td>
-                        <td>{rearing8Lines.numberOfDFLs}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Laid On Date")}:</td>
-                        <td>{formatDate(rearing8Lines.laidOnDate)}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Cold Storage Details")}:</td>
-                        <td>{rearing8Lines.coldStorageDetails}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Released On")}:</td>
-                        <td>{formatDate(rearing8Lines.releasedOnDate)}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Chawki Percentage")}:</td>
-                        <td>{rearing8Lines.chawkiPercentage}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Worm Weight In Grams")}:</td>
-                        <td>{rearing8Lines.wormWeightInGrams}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Spun on date(From)")}:</td>
-                        <td>{formatDate(rearing8Lines.spunOnDate)}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Worm Test Results")}:</td>
-                        <td>{rearing8Lines.wormTestDatesAndResults}</td>
-                      </tr>
-                      
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Crop Failure Details")}:</td>
-                        <td>{rearing8Lines.cropFailureDetails}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Low Yield")}:</td>
-                        <td>{rearing8Lines.lowYield}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Failed Eggs")}:</td>
-                        <td>{rearing8Lines.failedEggs}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Loose Eggs in One DFL")}:</td>
-                        <td>{rearing8Lines.singleEggBreak}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Hatched Larvae")}:</td>
-                        <td>{rearing8Lines.hatchedLarvae}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("4th Stage Larvae")}:</td>
-                        <td>{rearing8Lines.fourthStageLarvae}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Estimated Cocoons Produced")}:</td>
-                        <td>{rearing8Lines.cocoonProduced}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Worms Tested (4th Stage)")}:</td>
-                        <td>{rearing8Lines.wormsTested4thStage}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Destroyed Worms")}:</td>
-                        <td>{rearing8Lines.destroyedWorms}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Average Yield (count)")}:</td>
-                        <td>{rearing8Lines.avgYieldCount}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Yield Weight (grams)")}:</td>
-                        <td>{rearing8Lines.yieldWeightGrams}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Disposal Quantity")}:</td>
-                        <td>{rearing8Lines.disposalQuantity}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Reeling Cocoons")}:</td>
-                        <td>{rearing8Lines.reelingCocoons}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("P4 Seed Cocoons")}:</td>
-                        <td>{rearing8Lines.p4SeedCocoons}</td>
-                      </tr>
-                      {/* <tr>
-                        <td style={styles.ctstyle}>{t("Cocoon Produced in NOs")}:</td>
-                        <td>{rearing8Lines.cocoonAssessmentDetails}</td>
-                      </tr> */}
-                    </tbody>
-                  </table>
+                  <DetailGrid
+                    items={[
+                      { label: t("ID"), value: rearing8Lines.id },
+                      { label: t("Disinfectant Usage Details"), value: rearing8Lines.disinfectantMasterName },
+                      { label: t("Crop Number"), value: rearing8Lines.cropNumber },
+                      { label: t("Lot Number"), value: rearing8Lines.lotNumber },
+                      { label: t("Number Of DFLs"), value: rearing8Lines.numberOfDFLs },
+                      { label: t("Laid On Date"), value: formatDate(rearing8Lines.laidOnDate) },
+                      { label: t("Cold Storage Details"), value: rearing8Lines.coldStorageDetails },
+                      { label: t("Released On"), value: formatDate(rearing8Lines.releasedOnDate) },
+                      { label: t("Chawki Percentage"), value: rearing8Lines.chawkiPercentage },
+                      { label: t("Worm Weight In Grams"), value: rearing8Lines.wormWeightInGrams },
+                      { label: t("Spun on date(From)"), value: formatDate(rearing8Lines.spunOnDate) },
+                      { label: t("Worm Test Results"), value: rearing8Lines.wormTestDatesAndResults },
+                      { label: t("Crop Failure Details"), value: rearing8Lines.cropFailureDetails },
+                      { label: t("Low Yield"), value: rearing8Lines.lowYield },
+                      { label: t("Failed Eggs"), value: rearing8Lines.failedEggs },
+                      { label: t("Loose Eggs in One DFL"), value: rearing8Lines.singleEggBreak },
+                      { label: t("Hatched Larvae"), value: rearing8Lines.hatchedLarvae },
+                      { label: t("4th Stage Larvae"), value: rearing8Lines.fourthStageLarvae },
+                      { label: t("Estimated Cocoons Produced"), value: rearing8Lines.cocoonProduced },
+                      { label: t("Worms Tested (4th Stage)"), value: rearing8Lines.wormsTested4thStage },
+                      { label: t("Destroyed Worms"), value: rearing8Lines.destroyedWorms },
+                      { label: t("Average Yield (count)"), value: rearing8Lines.avgYieldCount },
+                      { label: t("Yield Weight (grams)"), value: rearing8Lines.yieldWeightGrams },
+                      { label: t("Disposal Quantity"), value: rearing8Lines.disposalQuantity },
+                      { label: t("Reeling Cocoons"), value: rearing8Lines.reelingCocoons },
+                      { label: t("P4 Seed Cocoons"), value: rearing8Lines.p4SeedCocoons },
+                    ]}
+                  />
                 </Col>
               </Row>
             )}
@@ -227,5 +161,144 @@ function RearingOfDFLsForThe8LinesView() {
     </Layout>
   );
 }
+
+const rearing8LinesViewStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-view-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-view-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+  .sh-view-wrap .card-body {
+    padding: 20px !important;
+  }
+  .sh-section-header {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-bottom: none !important;
+    padding: 14px 20px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    font-size: 15px !important;
+    letter-spacing: 0.2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sh-section-header svg,
+  .sh-section-header .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 15px;
+  }
+  .sh-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid #e6ecf4;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .sh-detail-cell {
+    display: grid;
+    grid-template-columns: 42% 1fr;
+    border-right: 1px solid #eef2f8;
+    border-bottom: 1px solid #eef2f8;
+    min-height: 40px;
+  }
+  .sh-detail-cell:nth-child(3n) {
+    border-right: none;
+  }
+  .sh-detail-label {
+    background-color: #f7faff;
+    color: #4a5568;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.1px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid #eef2f8;
+    line-height: 1.35;
+  }
+  .sh-detail-value {
+    padding: 8px 12px;
+    color: #2b3a55;
+    font-size: 13.5px;
+    display: flex;
+    align-items: center;
+    word-break: break-word;
+    line-height: 1.4;
+    transition: background-color 0.15s ease;
+  }
+  .sh-detail-cell:hover .sh-detail-value {
+    background-color: #fbfdff;
+  }
+  .sh-detail-empty {
+    color: #b0bac9;
+    font-style: italic;
+  }
+  @media (max-width: 991px) {
+    .sh-detail-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .sh-detail-cell:nth-child(3n) {
+      border-right: 1px solid #eef2f8;
+    }
+    .sh-detail-cell:nth-child(2n) {
+      border-right: none;
+    }
+  }
+  @media (max-width: 575px) {
+    .sh-detail-grid {
+      grid-template-columns: 1fr;
+    }
+    .sh-detail-cell {
+      grid-template-columns: 45% 1fr;
+      border-right: none !important;
+    }
+  }
+`;
 
 export default RearingOfDFLsForThe8LinesView;

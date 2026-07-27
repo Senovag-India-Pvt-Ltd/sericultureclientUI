@@ -12,12 +12,26 @@ import { useTranslation } from "react-i18next";
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function DispatchofCocoonstoP4GrainageView() {
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-      width: "50%",
-    },
+  const DetailGrid = ({ items }) => {
+    const visible = items.filter((it) => it && it.show !== false);
+    return (
+      <div className="sh-detail-grid">
+        {visible.map((it, i) => (
+          <div className="sh-detail-cell" key={`${it.label}-${i}`}>
+            <div className="sh-detail-label">{it.label}</div>
+            <div className="sh-detail-value">
+              {it.value !== undefined &&
+              it.value !== null &&
+              it.value !== "" ? (
+                it.value
+              ) : (
+                <span className="sh-detail-empty">—</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   };
 
   const { id } = useParams();
@@ -54,39 +68,45 @@ function DispatchofCocoonstoP4GrainageView() {
 
   return (
     <Layout title={t("View Dispatch of Cocoons to P4 Grainage")}>
+      <style>{dispatchCocoonsViewStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("View Dispatch of Cocoons to P4 Grainage Details")}</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage-List"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage-List"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">{t("View Dispatch of Cocoons to P4 Grainage Details")}</Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Link
+                    to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage-List"
+                    className="btn btn-primary btn-md d-md-none sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage-List"
+                    className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
-        <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>{t("Dispatch of Cocoons to P4 Grainage Details")}</Card.Header>
+      <Block className="mt-n4 sh-view-wrap">
+        <Card className="sh-section-card">
+          <Card.Header className="sh-section-header">
+            <Icon name="truck" />
+            <span>{t("Dispatch of Cocoons to P4 Grainage Details")}</span>
+          </Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
@@ -95,91 +115,22 @@ function DispatchofCocoonstoP4GrainageView() {
             ) : (
               <Row className="g-gs">
                 <Col lg="12">
-                  <table className="table small table-bordered">
-                    <tbody>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("ID")}:</td>
-                        <td>{dispatchCocoon.id}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                          {t("Grainage")}:
-                        </td>
-                        <td>{dispatchCocoon.grainageMasterName}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                          {t("Market")}:
-                        </td>
-                        <td>{dispatchCocoon.marketMasterName}</td>
-                      </tr>
-                      {/* <tr>
-                        <td style={styles.ctstyle}>{t("Line Year")}:</td>
-                        <td>{dispatchCocoon.lineName}</td>
-                      </tr> */}
-                      {/* <tr>
-                        <td style={styles.ctstyle}>
-                        {t("Source")}:
-                        </td>
-                        <td>{dispatchCocoon.sourceMasterName}</td>
-                      </tr> */}
-                      <tr>
-                        <td style={styles.ctstyle}>
-                        {t("Screening Batch No")}:
-                        </td>
-                        <td>{dispatchCocoon.screeningBatchNo}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                        {t("Generation Number")}:
-                        </td>
-                        <td>{dispatchCocoon.generationNumber}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                        {t("Spun on date(From)")}:
-                        </td>
-                        <td>{dispatchCocoon.spunOnDate}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                        {t("Lot Number")}:
-                        </td>
-                        <td>{dispatchCocoon.lotNumber}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                        {t("Number Of Cocoons Dispatched")}:
-                        </td>
-                        <td>{dispatchCocoon.numberOfCocoonsDispatched}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                        {t("Number Of Cocoons Dispatched(Market)")}:
-                        </td>
-                        <td>{dispatchCocoon.numberOfCocoonsDispatchedMarket}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                        {t("Date Of Supply")}:
-                        </td>
-                        <td>{dispatchCocoon.dateOfSupply}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                        {t("Dispatch Date")}:
-                        </td>
-                        <td>{dispatchCocoon.dispatchDate}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                        {t("Invoice No")}:
-                        </td>
-                        <td>{dispatchCocoon.invoiceNo}</td>
-                      </tr>
-                      
-                    </tbody>
-                  </table>
+                  <DetailGrid
+                    items={[
+                      { label: t("ID"), value: dispatchCocoon.id },
+                      { label: t("Grainage"), value: dispatchCocoon.grainageMasterName },
+                      { label: t("Market"), value: dispatchCocoon.marketMasterName },
+                      { label: t("Screening Batch No"), value: dispatchCocoon.screeningBatchNo },
+                      { label: t("Generation Number"), value: dispatchCocoon.generationNumber },
+                      { label: t("Spun on date(From)"), value: dispatchCocoon.spunOnDate },
+                      { label: t("Lot Number"), value: dispatchCocoon.lotNumber },
+                      { label: t("Number Of Cocoons Dispatched"), value: dispatchCocoon.numberOfCocoonsDispatched },
+                      { label: t("Number Of Cocoons Dispatched(Market)"), value: dispatchCocoon.numberOfCocoonsDispatchedMarket },
+                      { label: t("Date Of Supply"), value: dispatchCocoon.dateOfSupply },
+                      { label: t("Dispatch Date"), value: dispatchCocoon.dispatchDate },
+                      { label: t("Invoice No"), value: dispatchCocoon.invoiceNo },
+                    ]}
+                  />
                 </Col>
               </Row>
             )}
@@ -189,5 +140,144 @@ function DispatchofCocoonstoP4GrainageView() {
     </Layout>
   );
 }
+
+const dispatchCocoonsViewStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-view-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-view-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+  .sh-view-wrap .card-body {
+    padding: 20px !important;
+  }
+  .sh-section-header {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-bottom: none !important;
+    padding: 14px 20px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    font-size: 15px !important;
+    letter-spacing: 0.2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sh-section-header svg,
+  .sh-section-header .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 15px;
+  }
+  .sh-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid #e6ecf4;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .sh-detail-cell {
+    display: grid;
+    grid-template-columns: 42% 1fr;
+    border-right: 1px solid #eef2f8;
+    border-bottom: 1px solid #eef2f8;
+    min-height: 40px;
+  }
+  .sh-detail-cell:nth-child(3n) {
+    border-right: none;
+  }
+  .sh-detail-label {
+    background-color: #f7faff;
+    color: #4a5568;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.1px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid #eef2f8;
+    line-height: 1.35;
+  }
+  .sh-detail-value {
+    padding: 8px 12px;
+    color: #2b3a55;
+    font-size: 13.5px;
+    display: flex;
+    align-items: center;
+    word-break: break-word;
+    line-height: 1.4;
+    transition: background-color 0.15s ease;
+  }
+  .sh-detail-cell:hover .sh-detail-value {
+    background-color: #fbfdff;
+  }
+  .sh-detail-empty {
+    color: #b0bac9;
+    font-style: italic;
+  }
+  @media (max-width: 991px) {
+    .sh-detail-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .sh-detail-cell:nth-child(3n) {
+      border-right: 1px solid #eef2f8;
+    }
+    .sh-detail-cell:nth-child(2n) {
+      border-right: none;
+    }
+  }
+  @media (max-width: 575px) {
+    .sh-detail-grid {
+      grid-template-columns: 1fr;
+    }
+    .sh-detail-cell {
+      grid-template-columns: 45% 1fr;
+      border-right: none !important;
+    }
+  }
+`;
 
 export default DispatchofCocoonstoP4GrainageView;
