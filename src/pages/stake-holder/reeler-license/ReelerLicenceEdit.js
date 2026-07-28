@@ -857,7 +857,7 @@ function ReelerLicenceEdit() {
                         </div>
                       </Form.Group>
 
-                      <Form.Group className="form-group mt-3">
+                      {/* <Form.Group className="form-group mt-3">
                         <Form.Label>{t("DOB")}</Form.Label>
                         <div className="form-control-wrap">
                           <DatePicker
@@ -872,7 +872,7 @@ function ReelerLicenceEdit() {
                             className="form-control"
                           />
                         </div>
-                      </Form.Group>
+                      </Form.Group> */}
 
                       <Form.Group className="form-group mt-3">
                         <Form.Label>{t("gender")}</Form.Label>

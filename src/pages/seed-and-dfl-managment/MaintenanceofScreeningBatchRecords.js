@@ -248,7 +248,7 @@ function MaintenanceofScreeningBatchRecords() {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>{t("Go to List")}</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
                 <li>
@@ -257,7 +257,7 @@ function MaintenanceofScreeningBatchRecords() {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>{t("Go to List")}</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
               </ul>

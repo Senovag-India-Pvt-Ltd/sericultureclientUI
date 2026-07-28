@@ -13,12 +13,26 @@ const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function PreparationofeggsDFLsView() {
   const { t } = useTranslation(); // Add this line
-  const styles = {
-    ctstyle: {
-      backgroundColor: "rgb(248, 248, 249, 1)",
-      color: "rgb(0, 0, 0)",
-      width: "50%",
-    },
+  const DetailGrid = ({ items }) => {
+    const visible = items.filter((it) => it && it.show !== false);
+    return (
+      <div className="sh-detail-grid">
+        {visible.map((it, i) => (
+          <div className="sh-detail-cell" key={`${it.label}-${i}`}>
+            <div className="sh-detail-label">{it.label}</div>
+            <div className="sh-detail-value">
+              {it.value !== undefined &&
+              it.value !== null &&
+              it.value !== "" ? (
+                it.value
+              ) : (
+                <span className="sh-detail-empty">—</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   };
 
   const { id } = useParams();
@@ -48,42 +62,46 @@ function PreparationofeggsDFLsView() {
 
   return (
     <Layout title={t("Preparation of Eggs (DFLs) View")}>
+      <style>{preparationEggsDFLsViewStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">
-              {t("Preparation of Eggs (DFLs) View")}
-            </Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/Preparation-of-eggs-DFLs-List"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/Preparation-of-eggs-DFLs-List"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">
+                {t("Preparation of Eggs (DFLs) View")}
+              </Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Link
+                    to="/seriui/Preparation-of-eggs-DFLs-List"
+                    className="btn btn-primary btn-md d-md-none sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seriui/Preparation-of-eggs-DFLs-List"
+                    className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
-        <Card>
-          <Card.Header style={{ fontWeight: "bold" }}>
-            {t("Preparation of Eggs (DFLs) Details")}
+      <Block className="mt-n4 sh-view-wrap">
+        <Card className="sh-section-card">
+          <Card.Header className="sh-section-header">
+            <Icon name="grid" />
+            <span>{t("Preparation of Eggs (DFLs) Details")}</span>
           </Card.Header>
           <Card.Body>
             {loading ? (
@@ -93,128 +111,37 @@ function PreparationofeggsDFLsView() {
             ) : (
               <Row className="g-gs">
                 <Col lg="12">
-                  <table className="table small table-bordered">
-                    <tbody>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("ID")}:</td>
-                        <td>{prepareEggs.id}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Lot number")}:</td>
-                        <td>{prepareEggs.lotNumber}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                          {t("Number of Cocoons in Kg")}:
-                        </td>
-                        <td>{prepareEggs.numberOfCocoonsCB}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Race")}:</td>
-                        <td>{prepareEggs.raceName}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Generation Number")}:</td>
-                        <td>{prepareEggs.generationNumber}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>
-                          {t("Line Name")}:
-                        </td>
-                        <td>{prepareEggs.lineName}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Date of moth emergence")}:</td>
-                        <td>{prepareEggs.dateOfMothEmergence}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Laid On Date")}:</td>
-                        <td>{prepareEggs.laidOnDate}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Egg sheet serial number")}:</td>
-                        <td>{prepareEggs.eggSheetSerialNumber}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Number of pairs")}:</td>
-                        <td>{prepareEggs.numberOfPairs}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Number of Rejection")}:</td>
-                        <td>{prepareEggs.numberOfRejection}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("DFLs obtained")}:</td>
-                        <td>{prepareEggs.dflsObtained}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Egg Recovery %")}:</td>
-                        <td>{prepareEggs.eggRecoveryPercentage}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Parent Lot Number")}:</td>
-                        <td>{prepareEggs.parentLotNumber}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Selected Cocoon's in Nos")}:</td>
-                        <td>{prepareEggs.selectedCocoonsNo}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Rejected Cocoon's in Nos")}:</td>
-                        <td>{prepareEggs.rejectedCocoonsNo}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("No of Pairs (%) (Selected Cocoon's)")}:</td>
-                        <td>{prepareEggs.pairNoSelectedCocoonsNo}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("No of Pairs (%) (Rejected Cocoon's)")}:</td>
-                        <td>{prepareEggs.pairNoRejectedCocoonsNo}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Err %(Selected Cocoon's)")}:</td>
-                        <td>{prepareEggs.errPerSelectedCocoonsNo}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Err %(Rejected Cocoon's)")}:</td>
-                        <td>{prepareEggs.errPerRejectedCocoonsNo}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Remaining DFLs")}:</td>
-                        <td>{prepareEggs.remainingDfls}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Test results")}:</td>
-                        <td>{prepareEggs.testResults}</td>
-                      </tr>
-                      {/* <tr>
-                        <td style={styles.ctstyle}>{t("Certification (Yes/No)")}:</td>
-                        <td>
-                          {prepareEggs.certification === "1" ? "Yes" : "No"}
-                        </td>
-                      </tr> */}
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Additional remarks")}:</td>
-                        <td>{prepareEggs.additionalRemarks}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Second Source Lot Number")}:</td>
-                        <td>{prepareEggs.secondParentLotNumber}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Rejected Pairs (Examined)")}:</td>
-                        <td>{prepareEggs.rejectedPairsExamined}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Rejected Pairs (Other)")}:</td>
-                        <td>{prepareEggs.rejectedPairsOther}</td>
-                      </tr>
-                      <tr>
-                        <td style={styles.ctstyle}>{t("Pebrine Disease Beds")}:</td>
-                        <td>{prepareEggs.pebrineDiseaseBeds}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <DetailGrid
+                    items={[
+                      { label: t("ID"), value: prepareEggs.id },
+                      { label: t("Lot number"), value: prepareEggs.lotNumber },
+                      { label: t("Number of Cocoons in Kg"), value: prepareEggs.numberOfCocoonsCB },
+                      { label: t("Race"), value: prepareEggs.raceName },
+                      { label: t("Generation Number"), value: prepareEggs.generationNumber },
+                      { label: t("Line Name"), value: prepareEggs.lineName },
+                      { label: t("Date of moth emergence"), value: prepareEggs.dateOfMothEmergence },
+                      { label: t("Laid On Date"), value: prepareEggs.laidOnDate },
+                      { label: t("Egg sheet serial number"), value: prepareEggs.eggSheetSerialNumber },
+                      { label: t("Number of pairs"), value: prepareEggs.numberOfPairs },
+                      { label: t("Number of Rejection"), value: prepareEggs.numberOfRejection },
+                      { label: t("DFLs obtained"), value: prepareEggs.dflsObtained },
+                      { label: t("Egg Recovery %"), value: prepareEggs.eggRecoveryPercentage },
+                      { label: t("Parent Lot Number"), value: prepareEggs.parentLotNumber },
+                      { label: t("Selected Cocoon's in Nos"), value: prepareEggs.selectedCocoonsNo },
+                      { label: t("Rejected Cocoon's in Nos"), value: prepareEggs.rejectedCocoonsNo },
+                      { label: t("No of Pairs (%) (Selected Cocoon's)"), value: prepareEggs.pairNoSelectedCocoonsNo },
+                      { label: t("No of Pairs (%) (Rejected Cocoon's)"), value: prepareEggs.pairNoRejectedCocoonsNo },
+                      { label: t("Err %(Selected Cocoon's)"), value: prepareEggs.errPerSelectedCocoonsNo },
+                      { label: t("Err %(Rejected Cocoon's)"), value: prepareEggs.errPerRejectedCocoonsNo },
+                      { label: t("Remaining DFLs"), value: prepareEggs.remainingDfls },
+                      { label: t("Test results"), value: prepareEggs.testResults },
+                      { label: t("Additional remarks"), value: prepareEggs.additionalRemarks },
+                      { label: t("Second Source Lot Number"), value: prepareEggs.secondParentLotNumber },
+                      { label: t("Rejected Pairs (Examined)"), value: prepareEggs.rejectedPairsExamined },
+                      { label: t("Rejected Pairs (Other)"), value: prepareEggs.rejectedPairsOther },
+                      { label: t("Pebrine Disease Beds"), value: prepareEggs.pebrineDiseaseBeds },
+                    ]}
+                  />
                 </Col>
               </Row>
             )}
@@ -224,5 +151,144 @@ function PreparationofeggsDFLsView() {
     </Layout>
   );
 }
+
+const preparationEggsDFLsViewStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-view-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-view-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+  .sh-view-wrap .card-body {
+    padding: 20px !important;
+  }
+  .sh-section-header {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-bottom: none !important;
+    padding: 14px 20px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    font-size: 15px !important;
+    letter-spacing: 0.2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sh-section-header svg,
+  .sh-section-header .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 15px;
+  }
+  .sh-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid #e6ecf4;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .sh-detail-cell {
+    display: grid;
+    grid-template-columns: 42% 1fr;
+    border-right: 1px solid #eef2f8;
+    border-bottom: 1px solid #eef2f8;
+    min-height: 40px;
+  }
+  .sh-detail-cell:nth-child(3n) {
+    border-right: none;
+  }
+  .sh-detail-label {
+    background-color: #f7faff;
+    color: #4a5568;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.1px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid #eef2f8;
+    line-height: 1.35;
+  }
+  .sh-detail-value {
+    padding: 8px 12px;
+    color: #2b3a55;
+    font-size: 13.5px;
+    display: flex;
+    align-items: center;
+    word-break: break-word;
+    line-height: 1.4;
+    transition: background-color 0.15s ease;
+  }
+  .sh-detail-cell:hover .sh-detail-value {
+    background-color: #fbfdff;
+  }
+  .sh-detail-empty {
+    color: #b0bac9;
+    font-style: italic;
+  }
+  @media (max-width: 991px) {
+    .sh-detail-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .sh-detail-cell:nth-child(3n) {
+      border-right: 1px solid #eef2f8;
+    }
+    .sh-detail-cell:nth-child(2n) {
+      border-right: none;
+    }
+  }
+  @media (max-width: 575px) {
+    .sh-detail-grid {
+      grid-template-columns: 1fr;
+    }
+    .sh-detail-cell {
+      grid-template-columns: 45% 1fr;
+      border-right: none !important;
+    }
+  }
+`;
 
 export default PreparationofeggsDFLsView;

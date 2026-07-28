@@ -5,7 +5,7 @@ import Block from "../../../components/Block/Block";
 // import DatePicker from "../../../components/Form/DatePicker";
 import DatePicker from "react-datepicker";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 // import axios from "axios";
 import { Icon } from "../../../components";
@@ -19,6 +19,12 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 function NewReelerLicense() {
   // Translation
   const { t } = useTranslation();
+  // Same page for both Registration > Reeler License menu items; the "Without License"
+  // menu link adds ?licenseType=without to this URL, which skips the mandatory
+  // validation on a few license-specific fields below.
+  const location = useLocation();
+  const withLicense =
+    new URLSearchParams(location.search).get("licenseType") !== "without";
   // Virtual Bank Account
   const [vbAccountList, setVbAccountList] = useState([]);
   const [vbAccount, setVbAccount] = useState({
@@ -205,6 +211,13 @@ function NewReelerLicense() {
     });
     setSearchValidated(false);
   };
+
+  // Switching between "With License" / "Without License" wipes the form back to
+  // blank, the same as pressing the existing "Clear" button.
+  useEffect(() => {
+    clear();
+    setValidated(false);
+  }, [location.search]);
 
   const [data, setData] = useState({
     fruitsId: "",
@@ -980,6 +993,9 @@ function NewReelerLicense() {
             <Block.HeadContent>
               <Block.Title tag="h2" className="sh-page-title">
                 {t("Reeler License")}
+                <span className="sh-mode-badge">
+                  {withLicense ? t("With License") : t("Without License")}
+                </span>
               </Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
@@ -1357,7 +1373,7 @@ function NewReelerLicense() {
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="rrno">
                           {t("Electricity RR Numbers")}
-                          <span className="text-danger">*</span>
+                          {withLicense && <span className="text-danger">*</span>}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1465,7 +1481,7 @@ function NewReelerLicense() {
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
                           {t("Reeler Type")}
-                          <span className="text-danger">*</span>
+                          {withLicense && <span className="text-danger">*</span>}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1473,10 +1489,11 @@ function NewReelerLicense() {
                             value={data.reelerTypeMasterId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            required
+                            required={withLicense}
                             isInvalid={
-                              data.reelerTypeMasterId === undefined ||
-                              data.reelerTypeMasterId === "0"
+                              withLicense &&
+                              (data.reelerTypeMasterId === undefined ||
+                                data.reelerTypeMasterId === "0")
                             }
                           >
                             <option value="">{t("Select Reeler Type")}</option>
@@ -1570,7 +1587,7 @@ function NewReelerLicense() {
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
                           {t("Machine Type")}
-                          <span className="text-danger">*</span>
+                          {withLicense && <span className="text-danger">*</span>}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1578,10 +1595,11 @@ function NewReelerLicense() {
                             value={data.machineTypeId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            required
+                            required={withLicense}
                             isInvalid={
-                              data.machineTypeId === undefined ||
-                              data.machineTypeId === "0"
+                              withLicense &&
+                              (data.machineTypeId === undefined ||
+                                data.machineTypeId === "0")
                             }
                           >
                             <option value="">{t("Select Machine Type")}</option>
@@ -1603,7 +1621,7 @@ function NewReelerLicense() {
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
                           {t("Date of Machine Installation")}
-                          <span className="text-danger">*</span>
+                          {withLicense && <span className="text-danger">*</span>}
                         </Form.Label>
                         <div className="form-control-wrap">
                           {/* <DatePicker
@@ -2037,7 +2055,7 @@ function NewReelerLicense() {
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="reelingLicenseNumber">
                           {t("Reeling License Number")}
-                          <span className="text-danger">*</span>
+                          {withLicense && <span className="text-danger">*</span>}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -2047,7 +2065,7 @@ function NewReelerLicense() {
                             onChange={handleInputs}
                             type="text"
                             placeholder={t("Enter Reeling License Number")}
-                            required
+                            required={withLicense}
                           />
                           <Form.Control.Feedback type="invalid">
                             {t("Reeling License Number is required")}
@@ -2795,6 +2813,18 @@ const reelerFormStyles = `
   .sh-page-subtitle {
     color: rgba(255, 255, 255, 0.85);
     font-size: 13.5px;
+  }
+  .sh-mode-badge {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 3px 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    vertical-align: middle;
   }
   .sh-cta-btn {
     background: #ffffff;
