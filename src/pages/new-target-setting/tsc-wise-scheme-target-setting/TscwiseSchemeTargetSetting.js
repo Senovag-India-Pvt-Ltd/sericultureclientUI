@@ -1382,26 +1382,32 @@ function TscwiseSchemeTargetSetting() {
   };
 
   const customStyles = {
+    table: { style: { borderRadius: "10px", overflow: "hidden", boxShadow: "0 2px 8px rgba(30, 103, 168, 0.06)" } },
     rows: {
-      style: {
-        minHeight: "45px", // override the row height
-      },
+      style: { minHeight: "45px", fontSize: "13.5px", color: "#2b2d42", borderBottom: "1px solid #eef1f6 !important", transition: "background-color 0.15s ease" },
+      highlightOnHoverStyle: { backgroundColor: "#f4f8fd", cursor: "pointer", outline: "none" },
+      stripedStyle: { backgroundColor: "#fbfcfe" },
     },
+    headRow: { style: { minHeight: "50px", background: "linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%)", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" } },
     headCells: {
       style: {
-        backgroundColor: "#1e67a8",
+        backgroundColor: "transparent",
         color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
+        fontSize: "13px",
+        fontWeight: 600,
+        letterSpacing: "0.3px",
+        textTransform: "uppercase",
+        paddingLeft: "8px",
         paddingRight: "8px",
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px", // override the cell padding for data cells
+        paddingLeft: "8px",
         paddingRight: "8px",
       },
     },
+    pagination: { style: { borderTop: "1px solid #eef1f6", fontSize: "13px", color: "#5a6577" } },
   };
 
   const deleteError = () => {
@@ -1761,55 +1767,61 @@ function TscwiseSchemeTargetSetting() {
   };
   return (
     <Layout title={t("TSC Wise Target Setting for Subsidies")}>
+      <style>{tscwiseSchemeTargetSettingStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">
-              {t("TSC Wise Target Setting for Subsidies")}
-            </Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              {/* <li>
-                <Link
-                  to="/seriui/Budget-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li> */}
-              <li>
-                {/* <Link
-                  to="/seriui/Budget-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link> */}
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={handleShowModal}
-                >
-                  {t("View")}
-                </Button>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">
+                {t("TSC Wise Target Setting for Subsidies")}
+              </Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                {/* <li>
+                  <Link
+                    to="/seriui/Budget-list"
+                    className="btn btn-primary btn-md d-md-none"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>Go to List</span>
+                  </Link>
+                </li> */}
+                <li>
+                  {/* <Link
+                    to="/seriui/Budget-list"
+                    className="btn btn-primary d-none d-md-inline-flex"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>Go to List</span>
+                  </Link> */}
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={handleShowModal}
+                    className="sh-cta-btn"
+                  >
+                    <Icon name="eye" />
+                    <span>{t("View")}</span>
+                  </Button>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
         {/* <Form action="#"> */}
         <Row>
           <Col lg="12">
             <Form noValidate validated={validated} onSubmit={postData}>
               <Row className="g-3 ">
                 <Block>
-                  <Card>
-                    <Card.Header>
-                      {t("TSC Wise Target Setting for Subsidies")}
+                  <Card className="sh-section-card">
+                    <Card.Header className="sh-section-header">
+                      <Icon name="activity-round" />
+                      <span>{t("TSC Wise Target Setting for Subsidies")}</span>
                     </Card.Header>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'flex-start' }}>
                     <div
@@ -2548,8 +2560,11 @@ function TscwiseSchemeTargetSetting() {
                 </Block>
 
                 <Block>
-                  <Card>
-                    <Card.Header>{t("Months")}</Card.Header>
+                  <Card className="sh-section-card">
+                    <Card.Header className="sh-section-header">
+                      <Icon name="calendar" />
+                      <span>{t("Months")}</span>
+                    </Card.Header>
                     <Card.Body>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">
@@ -3142,13 +3157,15 @@ function TscwiseSchemeTargetSetting() {
                 <div className="gap-col">
                   <ul className="d-flex align-items-center justify-content-center gap g-3">
                     <li>
-                      <Button type="submit" variant="primary">
-                        {t("Save")}
+                      <Button type="submit" variant="primary" className="sh-save-btn">
+                        <Icon name="save" />
+                        <span>{t("Save")}</span>
                       </Button>
                     </li>
                     <li>
-                      <Button type="button" variant="secondary" onClick={clear}>
-                        {t("Cancel")}
+                      <Button type="button" variant="secondary" onClick={clear} className="sh-cancel-btn">
+                        <Icon name="cross" />
+                        <span>{t("Cancel")}</span>
                       </Button>
                     </li>
                   </ul>
@@ -3179,9 +3196,12 @@ function TscwiseSchemeTargetSetting() {
         </Row> */}
       </Block>
 
-      <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>{t("Tsc Wise Target Setting for Subsidies")}</Modal.Title>
+      <Modal show={showModal3} onHide={handleCloseModal3} size="xl" className="sh-modal">
+        <Modal.Header closeButton className="sh-modal-header">
+          <Modal.Title>
+            <Icon name="edit" />
+            <span>{t("Tsc Wise Target Setting for Subsidies")}</span>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -3749,8 +3769,9 @@ function TscwiseSchemeTargetSetting() {
                 <div className="d-flex justify-content-center gap g-2">
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleAdd}> */}
-                    <Button type="submit" variant="success">
-                      {t("Update")}
+                    <Button type="submit" variant="success" className="sh-save-btn">
+                      <Icon name="save" />
+                      <span>{t("Update")}</span>
                     </Button>
                   </div>
                 </div>
@@ -3759,9 +3780,12 @@ function TscwiseSchemeTargetSetting() {
           </Form>
         </Modal.Body>
       </Modal>
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>{t("Alloted Details")}</Modal.Title>
+      <Modal show={showModal} onHide={handleCloseModal} size="xl" className="sh-modal">
+        <Modal.Header closeButton className="sh-modal-header">
+          <Modal.Title>
+            <Icon name="target" />
+            <span>{t("Alloted Details")}</span>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -3871,9 +3895,12 @@ function TscwiseSchemeTargetSetting() {
           </Row>
         </Modal.Body>
       </Modal>
-      <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>{t("Select User")}</Modal.Title>
+      <Modal show={showModal2} onHide={handleCloseModal2} size="xl" className="sh-modal">
+        <Modal.Header closeButton className="sh-modal-header">
+          <Modal.Title>
+            <Icon name="users" />
+            <span>{t("Select User")}</span>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-n4">
@@ -3986,9 +4013,10 @@ function TscwiseSchemeTargetSetting() {
                     type="button"
                     variant="primary"
                     onClick={searchUser}
-                    className="w-100"
+                    className="w-100 sh-save-btn"
                   >
-                    {t("Search")}
+                    <Icon name="search" />
+                    <span>{t("Search")}</span>
                   </Button>
                 </Col>
               </Row>
@@ -4021,8 +4049,9 @@ function TscwiseSchemeTargetSetting() {
               </Row>
               <Row>
                 <div className="gap-col d-flex justify-content-center">
-                  <Button variant="primary" onClick={() => handleCloseModal2()}>
-                    {t("Submit")}
+                  <Button variant="primary" onClick={() => handleCloseModal2()} className="sh-save-btn">
+                    <Icon name="check" />
+                    <span>{t("Submit")}</span>
                   </Button>
                 </div>
               </Row>
@@ -4030,9 +4059,12 @@ function TscwiseSchemeTargetSetting() {
           </Block>
         </Modal.Body>
       </Modal>
-        <Modal show={showModal7} onHide={handleCloseModal7} size="lg">
-          <Modal.Header closeButton>
-            <Modal.Title>{t('Select User In Edit')}</Modal.Title>
+        <Modal show={showModal7} onHide={handleCloseModal7} size="lg" className="sh-modal">
+          <Modal.Header closeButton className="sh-modal-header">
+            <Modal.Title>
+              <Icon name="users" />
+              <span>{t('Select User In Edit')}</span>
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Block className="mt-n4">
@@ -4144,9 +4176,10 @@ function TscwiseSchemeTargetSetting() {
                       type="button"
                       variant="primary"
                       onClick={searchUserEdit}
-                      className="w-100"
+                      className="w-100 sh-save-btn"
                     >
-                      {t('Search')}
+                      <Icon name="search" />
+                      <span>{t('Search')}</span>
                     </Button>
                   </Col>
                 </Row>
@@ -4179,8 +4212,9 @@ function TscwiseSchemeTargetSetting() {
                 </Row>
                 <Row>
                   <div className="gap-col d-flex justify-content-center">
-                    <Button variant="primary" onClick={() => handleCloseModal7()}>
-                      {t('Submit')}
+                    <Button variant="primary" onClick={() => handleCloseModal7()} className="sh-save-btn">
+                      <Icon name="check" />
+                      <span>{t('Submit')}</span>
                     </Button>
                   </div>
                 </Row>
@@ -4191,5 +4225,183 @@ function TscwiseSchemeTargetSetting() {
     </Layout>
   );
 }
+
+const tscwiseSchemeTargetSettingStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card,
+  .sh-section-card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .sh-form-wrap .card-header {
+    border-bottom: none !important;
+  }
+  .sh-form-wrap .card-body {
+    padding: 20px !important;
+  }
+  .sh-form-wrap .form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+  .sh-form-wrap .form-control,
+  .sh-form-wrap .form-select {
+    border-radius: 10px !important;
+    border: 1.5px solid #d8e0ec !important;
+    background-color: #fbfcfe !important;
+    padding: 0.62rem 0.9rem !important;
+    font-size: 13.5px;
+    color: #2b3a55;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  .sh-form-wrap .form-control::placeholder {
+    color: #a7b0c0;
+    font-weight: 400;
+  }
+  .sh-form-wrap .form-control:hover:not(:disabled):not([readonly]),
+  .sh-form-wrap .form-select:hover:not(:disabled) {
+    border-color: #a9c4e0 !important;
+    background-color: #ffffff !important;
+  }
+  .sh-form-wrap .form-control:focus,
+  .sh-form-wrap .form-select:focus {
+    border-color: #2b7ac0 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14) !important;
+    outline: none;
+  }
+  .sh-form-wrap .form-control[readonly],
+  .sh-form-wrap .form-control:read-only,
+  .sh-form-wrap .form-select:disabled {
+    background-color: #f1f5fa !important;
+    border-color: #e4e9f2 !important;
+    color: #8a96a8 !important;
+    cursor: not-allowed;
+  }
+  .sh-form-wrap .form-control.is-invalid,
+  .sh-form-wrap .form-select.is-invalid {
+    border-color: #e3496a !important;
+    box-shadow: 0 0 0 3px rgba(227, 73, 106, 0.12) !important;
+  }
+  .sh-form-wrap .text-danger {
+    font-weight: 700;
+    margin-left: 3px;
+  }
+  .sh-section-header {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-bottom: none !important;
+    padding: 14px 20px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sh-section-header svg,
+  .sh-section-header .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 15px;
+  }
+  .sh-save-btn {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(30, 103, 168, 0.25);
+  }
+  .sh-cancel-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #ffffff;
+    color: #e3496a;
+    border: 1.5px solid #e3496a;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.15s ease, color 0.15s ease,
+      transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-cancel-btn:hover:not(:disabled),
+  .sh-cancel-btn:focus:not(:disabled) {
+    background: linear-gradient(135deg, #e3496a 0%, #c43257 100%);
+    color: #ffffff;
+    border-color: transparent;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(227, 73, 106, 0.32);
+  }
+  .sh-modal .modal-content {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .sh-modal-header {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-bottom: none !important;
+    color: #ffffff !important;
+  }
+  .sh-modal-header .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: #ffffff !important;
+  }
+  .sh-modal-header .btn-close {
+    filter: invert(1) brightness(2);
+  }
+`;
 
 export default TscwiseSchemeTargetSetting;

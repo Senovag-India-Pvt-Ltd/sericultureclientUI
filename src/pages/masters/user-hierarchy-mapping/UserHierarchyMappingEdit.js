@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { createTheme } from "react-data-table-component";
+import { Icon } from "../../../components";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function UserHierarchyMappingEdit() {
@@ -184,43 +185,52 @@ function UserHierarchyMappingEdit() {
 
   return (
     <Layout title="User Hierarchy Mapping">
-      <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">User Hierarchy Mapping</Block.Title>
-          </Block.HeadContent>
+      <style>{userHierarchyMappingEditStyles}</style>
+      <div className="sh-page-header">
+        <Block.Head>
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">User Hierarchy Mapping</Block.Title>
+            </Block.HeadContent>
 
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Button
-                  className="btn btn-primary btn-md d-md-none"
-                  onClick={() =>
-                    navigate("/seriui/user-hierarchy-mapping-list")
-                  }
-                >
-                  Go to List
-                </Button>
-              </li>
-              <li>
-                <Button
-                  className="btn btn-primary d-none d-md-inline-flex"
-                  onClick={() =>
-                    navigate("/seriui/user-hierarchy-mapping-list")
-                  }
-                >
-                  Go to List
-                </Button>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
-      </Block.Head>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Button
+                    className="btn btn-primary btn-md d-md-none sh-cta-btn"
+                    onClick={() =>
+                      navigate("/seriui/user-hierarchy-mapping-list")
+                    }
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>Go To List</span>
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
+                    onClick={() =>
+                      navigate("/seriui/user-hierarchy-mapping-list")
+                    }
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>Go To List</span>
+                  </Button>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </Block.Head>
+      </div>
 
-      <Block className="mt-n5">
+      <Block className="mt-n5 sh-form-wrap">
         <Form>
           <Row className="g-3">
-            <Card>
+            <Card className="sh-section-card">
+              <Card.Header className="sh-section-header">
+                <Icon name="edit" />
+                <span>Update Hierarchy Mapping</span>
+              </Card.Header>
               <Card.Body>
                 <Row className="g-gs">
                  
@@ -329,8 +339,10 @@ function UserHierarchyMappingEdit() {
                     type="button"
                     variant="primary"
                     onClick={handleSubmit}
+                    className="sh-save-btn"
                   >
-                    Update
+                    <Icon name="save" />
+                    <span>Update</span>
                   </Button>
                 </li>
 
@@ -342,8 +354,10 @@ function UserHierarchyMappingEdit() {
                       navigate("/seriui/user-hierarchy-mapping-list");
                       window.location.reload();
                     }}
+                    className="sh-cancel-btn"
                   >
-                    Cancel
+                    <Icon name="cross" />
+                    <span>Cancel</span>
                   </Button>
                 </li>
               </ul>
@@ -354,5 +368,126 @@ function UserHierarchyMappingEdit() {
     </Layout>
   );
 }
+
+const userHierarchyMappingEditStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card,
+  .sh-section-card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .sh-form-wrap .card-body {
+    padding: 20px !important;
+  }
+  .sh-form-wrap .form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+  .sh-form-wrap .form-control,
+  .sh-form-wrap .form-select {
+    border-radius: 10px !important;
+    border: 1.5px solid #d8e0ec !important;
+    background-color: #fbfcfe !important;
+    padding: 0.62rem 0.9rem !important;
+    font-size: 13.5px;
+    color: #2b3a55;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  .sh-form-wrap .form-control:focus,
+  .sh-form-wrap .form-select:focus {
+    border-color: #2b7ac0 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14) !important;
+    outline: none;
+  }
+  .sh-form-wrap .form-control:disabled {
+    background-color: #f1f5fa !important;
+    border-color: #e4e9f2 !important;
+    color: #8a96a8 !important;
+    cursor: not-allowed;
+  }
+  .sh-section-header {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-bottom: none !important;
+    padding: 14px 20px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sh-section-header svg,
+  .sh-section-header .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 15px;
+  }
+  .sh-save-btn {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(30, 103, 168, 0.25);
+  }
+  .sh-cancel-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+  }
+`;
 
 export default UserHierarchyMappingEdit;
