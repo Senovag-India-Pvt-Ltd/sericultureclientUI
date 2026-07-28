@@ -3537,14 +3537,6 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {helpdeskDashboardAllowed ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Helpdesk Dashboard")}
-                  to="/seriui/helpdesk-dashboard"
-                />
-              </MenuItem>
-            ) : null}
             {showMenu.Helpdesk_User_Dashboard ? (
               <MenuItem>
                 <MenuItemLink
