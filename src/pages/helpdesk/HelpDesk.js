@@ -294,7 +294,13 @@ if (data.contactNumber.length !== 10) {
       const file = e.target.files[0];
       setImage(file);
       setData((prev) => ({ ...prev, hdAttachFiles: file.name }));
-      // setPhotoFile(file);
+      // This is the actual file input rendered in the form. Without this,
+      // attachFiles stays null and the submit handler's
+      // `if (hdTicketId && attachFiles)` check silently skips the real
+      // upload — the ticket ends up with just the raw filename as a
+      // placeholder forever, and no error is shown because the code
+      // correctly (from its own view) thinks there was nothing to upload.
+      setAttachFiles(file);
     };
   
     // // Upload Image to S3 Bucket
