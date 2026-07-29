@@ -247,26 +247,32 @@ function TrainerPageList() {
   );
 
   const customStyles = {
+    table: { style: { borderRadius: "10px", overflow: "hidden", boxShadow: "0 2px 8px rgba(30, 103, 168, 0.06)" } },
     rows: {
-      style: {
-        minHeight: "45px", // override the row height
-      },
+      style: { minHeight: "52px", fontSize: "13.5px", color: "#2b2d42", borderBottom: "1px solid #eef1f6 !important", transition: "background-color 0.15s ease" },
+      highlightOnHoverStyle: { backgroundColor: "#f4f8fd", cursor: "pointer", outline: "none" },
+      stripedStyle: { backgroundColor: "#fbfcfe" },
     },
+    headRow: { style: { minHeight: "50px", background: "linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%)", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" } },
     headCells: {
       style: {
-        backgroundColor: "#1e67a8",
+        backgroundColor: "transparent",
         color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
+        fontSize: "13px",
+        fontWeight: 600,
+        letterSpacing: "0.3px",
+        textTransform: "uppercase",
+        paddingLeft: "12px",
+        paddingRight: "12px",
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
+        paddingLeft: "12px",
+        paddingRight: "12px",
       },
     },
+    pagination: { style: { borderTop: "1px solid #eef1f6", fontSize: "13px", color: "#5a6577" } },
   };
 
   const formatDate = (dateString) => {
@@ -293,7 +299,9 @@ function TrainerPageList() {
             variant="primary"
             size="sm"
             onClick={() => handleView(row.trScheduleId)}
+            className="d-inline-flex align-items-center gap-1 shadow-sm"
           >
+            <Icon name="eye" />
             {t("View")}
           </Button>
           {/* <Button
@@ -308,8 +316,9 @@ function TrainerPageList() {
             variant="primary"
             size="sm"
             onClick={() => handleAttendance(row.trScheduleId)}
-            className="ms-2"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
           >
+            <Icon name="check-circle" />
             {t("Attendance")}
           </Button>
         </div>
@@ -399,37 +408,42 @@ function TrainerPageList() {
 
   return (
     <Layout title={t("Trainer Page List")}>
+      <style>{trainerPageListStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("Trainer Page List")}</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            {/* <ul className="d-flex">
-              <li>
-                <Link
-                  to="#"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="plus" />
-                  <span>Create</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="#"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="plus" />
-                  <span>Create</span>
-                </Link>
-              </li>
-            </ul> */}
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">
+                {t("Trainer Page List")}
+              </Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              {/* <ul className="d-flex">
+                <li>
+                  <Link
+                    to="#"
+                    className="btn btn-primary btn-md d-md-none"
+                  >
+                    <Icon name="plus" />
+                    <span>Create</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="#"
+                    className="btn btn-primary d-none d-md-inline-flex"
+                  >
+                    <Icon name="plus" />
+                    <span>Create</span>
+                  </Link>
+                </li>
+              </ul> */}
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
         <Card>
           <Row className="m-2">
             <Col>
@@ -485,7 +499,8 @@ function TrainerPageList() {
                 )}
 
                 <Col sm={3}>
-                  <Button type="button" variant="primary" onClick={search}>
+                  <Button type="button" variant="primary" onClick={search} className="d-inline-flex align-items-center gap-1">
+                    <Icon name="search" />
                     {t("Search")}
                   </Button>
                 </Col>
@@ -515,5 +530,33 @@ function TrainerPageList() {
     </Layout>
   );
 }
+
+const trainerPageListStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+`;
 
 export default TrainerPageList;
