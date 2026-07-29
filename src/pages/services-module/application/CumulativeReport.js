@@ -829,6 +829,7 @@ function CumulativeReport() {
       width: "180px",
       center: true,
     },
+    { name: "Remarks", selector: (r) => r.remarks, wrap: true },
   ];
 
   // ============================ BREADCRUMB ============================

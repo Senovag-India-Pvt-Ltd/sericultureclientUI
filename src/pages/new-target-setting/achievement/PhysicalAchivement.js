@@ -287,6 +287,44 @@ const [listViewTargetData, setViewTargetListData] = useState([]);
     getMulberryTargetTypeList();
   }, []);
 
+  // Lets the user enter Brushing & Cocoon Production achievement values
+  // together in one Save, instead of switching the Target dropdown twice.
+  const [enterClusterCppTogether, setEnterClusterCppTogether] = useState(false);
+  const [clusterCppValues, setClusterCppValues] = useState({
+    brushing: "",
+    cocoonProduction: "",
+  });
+
+  const findClusterCppType = (keyword) =>
+    mulberryTargetTypeData.find(
+      (t) =>
+        t.mulberryTargetTypeName &&
+        t.mulberryTargetTypeName.toLowerCase().includes("cluster cpp target") &&
+        t.mulberryTargetTypeName.toLowerCase().includes(keyword)
+    );
+
+  const handleClusterCppToggle = (e) => {
+    const checked = e.target.checked;
+    setEnterClusterCppTogether(checked);
+    if (checked) {
+      const brushingType = findClusterCppType("brushing");
+      const cocoonType = findClusterCppType("cocoon production");
+      if (
+        data.mulberryTargetTypeId &&
+        (String(data.mulberryTargetTypeId) === String(brushingType?.mulberryTargetTypeId) ||
+          String(data.mulberryTargetTypeId) === String(cocoonType?.mulberryTargetTypeId))
+      ) {
+        setData((prev) => ({ ...prev, mulberryTargetTypeId: "" }));
+      }
+    } else {
+      setClusterCppValues({ brushing: "", cocoonProduction: "" });
+    }
+  };
+
+  const handleClusterCppValueChange = (key, value) => {
+    setClusterCppValues((prev) => ({ ...prev, [key]: value }));
+  };
+
   // to get District
   const [districtListData, setDistrictListData] = useState([]);
 
@@ -515,23 +553,58 @@ const [listViewTargetData, setViewTargetListData] = useState([]);
   // };
 
 
-  const postData = (event) => {
-            const form = event.currentTarget;
-            if (form.checkValidity() === false) {
-              event.preventDefault();
-              event.stopPropagation();
-              setValidated(true);
-            } else {
-              event.preventDefault();
-              // event.stopPropagation();
-              api
-                .post(baseURLTargetSetting + `schemeAchievement/add-Product`, data)
-                .then((response) => {
-                  if (response.data.content.error) {
-                    saveError(response.data.content.error_description);
-                  } else {
-                    saveSuccess();
-                    setData({   
+  const postData = async (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+      return;
+    }
+    event.preventDefault();
+    setValidated(true);
+
+    // When the "Brushing & Cocoon Production together" checkbox is on,
+    // save one record per filled-in value; otherwise save the single
+    // record as before. Same endpoint, same payload shape either way.
+    let payloads = [data];
+    if (enterClusterCppTogether) {
+      const brushingType = findClusterCppType("brushing");
+      const cocoonType = findClusterCppType("cocoon production");
+      payloads = [];
+      if (brushingType && clusterCppValues.brushing) {
+        payloads.push({
+          ...data,
+          mulberryTargetTypeId: brushingType.mulberryTargetTypeId,
+          value: clusterCppValues.brushing,
+        });
+      }
+      if (cocoonType && clusterCppValues.cocoonProduction) {
+        payloads.push({
+          ...data,
+          mulberryTargetTypeId: cocoonType.mulberryTargetTypeId,
+          value: clusterCppValues.cocoonProduction,
+        });
+      }
+      if (payloads.length === 0) {
+        saveError(t("Enter at least one Achievement Value"));
+        return;
+      }
+    }
+
+    try {
+      for (const payload of payloads) {
+        const response = await api.post(
+          baseURLTargetSetting + `schemeAchievement/add-Product`,
+          payload
+        );
+        if (response.data.content.error) {
+          saveError(response.data.content.error_description);
+          return;
+        }
+      }
+      saveSuccess();
+      setData({
         targetsAchievementId: "",
         financialYearMasterId: "",
         districtId: "",
@@ -549,29 +622,22 @@ const [listViewTargetData, setViewTargetListData] = useState([]);
         talukId: "",
         tscMasterId: "",
         target: "",
-        value: "", 
         pageType: "SCHEME",
-      
-      
-                    });
-                    setValidated(false);
-                  }
-                })
-                .catch((err) => {
-                  if (
-                    err.response &&
-                    err.response &&
-                    err.response.data &&
-                    err.response.data.validationErrors
-                  ) {
-                    if (Object.keys(err.response.data.validationErrors).length > 0) {
-                      saveError(err.response.data.validationErrors);
-                    }
-                  }
-                });
-              setValidated(true);
-            }
-          };
+      });
+      setClusterCppValues({ brushing: "", cocoonProduction: "" });
+      setEnterClusterCppTogether(false);
+      setValidated(false);
+    } catch (err) {
+      if (
+        err.response &&
+        err.response.data &&
+        err.response.data.validationErrors &&
+        Object.keys(err.response.data.validationErrors).length > 0
+      ) {
+        saveError(err.response.data.validationErrors);
+      }
+    }
+  };
 
   const postEditData = (event) => {
     const form = event.currentTarget;
@@ -1899,6 +1965,20 @@ useEffect(() => {
                         </Col>
 
                         <Col lg="6">
+                          <Form.Group className="form-group h-100 d-flex align-items-center">
+                            <Form.Check
+                              type="checkbox"
+                              id="enterClusterCppTogether"
+                              label={t(
+                                "Enter Cluster CPP Target - Brushing & Cocoon Production together"
+                              )}
+                              checked={enterClusterCppTogether}
+                              onChange={handleClusterCppToggle}
+                            />
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
                           <Form.Group className="form-group mt-n3">
                             <Form.Label>
                               {t("Target")}
@@ -1910,15 +1990,28 @@ useEffect(() => {
                                 value={data.mulberryTargetTypeId}
                                 onChange={handleInputs}
                                 onBlur={() => handleInputs}
-                                required
+                                required={!enterClusterCppTogether}
+                                disabled={enterClusterCppTogether}
                                 isInvalid={
-                                  data.mulberryTargetTypeId === undefined ||
-                                  data.mulberryTargetTypeId === "0"
+                                  !enterClusterCppTogether &&
+                                  (data.mulberryTargetTypeId === undefined ||
+                                    data.mulberryTargetTypeId === "0")
                                 }
                               >
                                 <option value="">{t("Select Target Type")}</option>
                                 {mulberryTargetTypeData && mulberryTargetTypeData.length
-                                ?mulberryTargetTypeData.map((list) => (
+                                ?mulberryTargetTypeData
+                                  .filter((list) => {
+                                    if (!enterClusterCppTogether || !list.mulberryTargetTypeName) {
+                                      return true;
+                                    }
+                                    const name = list.mulberryTargetTypeName.toLowerCase();
+                                    const isClusterCpp = name.includes("cluster cpp target");
+                                    const isBrushingOrCocoon =
+                                      name.includes("brushing") || name.includes("cocoon production");
+                                    return !(isClusterCpp && isBrushingOrCocoon);
+                                  })
+                                  .map((list) => (
                                   <option
                                     key={list.mulberryTargetTypeId}
                                     value={list.mulberryTargetTypeId}
@@ -2172,6 +2265,7 @@ required
 </Form.Group>
 </Col>
 
+{!enterClusterCppTogether && (
  <Col lg="6">
   <Form.Group className="form-group mt-n4">
     <Form.Label htmlFor="Achievement Value">
@@ -2186,7 +2280,7 @@ required
         type="text"
         placeholder={t("Enter Value")}
         required
-        // isInvalid={!data.value} 
+        // isInvalid={!data.value}
       />
       <Form.Control.Feedback type="invalid">
         {t("Achievement Value is required")}.
@@ -2194,7 +2288,58 @@ required
     </div>
   </Form.Group>
 </Col>
+)}
 
+{enterClusterCppTogether && (
+<>
+<Col lg="6">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label htmlFor="clusterCppBrushing">
+      {t("Cluster CPP Target - Brushing Achievement Value")}<span className="text-danger">*</span>
+    </Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        id="clusterCppBrushing"
+        name="clusterCppBrushing"
+        value={clusterCppValues.brushing}
+        onChange={(e) => handleClusterCppValueChange("brushing", e.target.value)}
+        type="text"
+        placeholder={t("Enter Brushing Achievement Value")}
+        required={enterClusterCppTogether}
+      />
+      <Form.Control.Feedback type="invalid">
+        {t("Brushing Achievement Value is required")}.
+      </Form.Control.Feedback>
+    </div>
+  </Form.Group>
+</Col>
+
+<Col lg="6">
+  <Form.Group className="form-group mt-n4">
+    <Form.Label htmlFor="clusterCppCocoonProduction">
+      {t("Cluster CPP Target - Cocoon Production Achievement Value")}<span className="text-danger">*</span>
+    </Form.Label>
+    <div className="form-control-wrap">
+      <Form.Control
+        id="clusterCppCocoonProduction"
+        name="clusterCppCocoonProduction"
+        value={clusterCppValues.cocoonProduction}
+        onChange={(e) => handleClusterCppValueChange("cocoonProduction", e.target.value)}
+        type="text"
+        placeholder={t("Enter Cocoon Production Achievement Value")}
+        required={enterClusterCppTogether}
+      />
+      <Form.Control.Feedback type="invalid">
+        {t("Cocoon Production Achievement Value is required")}.
+      </Form.Control.Feedback>
+    </div>
+  </Form.Group>
+</Col>
+</>
+)}
+
+{enterClusterCppTogether && (
+<>
 <Col lg="6">
   <Form.Group className="form-group mt-n4">
     <Form.Label htmlFor="noOfSericulturists">
@@ -2284,6 +2429,8 @@ required
     </div>
   </Form.Group>
 </Col>
+</>
+)}
 
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">
