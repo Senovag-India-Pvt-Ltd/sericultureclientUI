@@ -169,24 +169,62 @@ function MaintenanceOfMulberryGardenAlert() {
   );
 
   const customStyles = {
+    table: {
+      style: {
+        borderRadius: "10px",
+        overflow: "hidden",
+        boxShadow: "0 2px 8px rgba(30, 103, 168, 0.06)",
+      },
+    },
     rows: {
       style: {
-        minHeight: "45px", // override the row height
+        minHeight: "52px",
+        fontSize: "13.5px",
+        color: "#2b2d42",
+        borderBottom: "1px solid #eef1f6 !important",
+        transition: "background-color 0.15s ease",
+      },
+      highlightOnHoverStyle: {
+        backgroundColor: "#f4f8fd",
+        cursor: "pointer",
+        outline: "none",
+      },
+      stripedStyle: {
+        backgroundColor: "#fbfcfe",
+      },
+    },
+    headRow: {
+      style: {
+        minHeight: "50px",
+        background:
+          "linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%)",
+        borderTopLeftRadius: "10px",
+        borderTopRightRadius: "10px",
       },
     },
     headCells: {
       style: {
-        backgroundColor: "#1e67a8",
+        backgroundColor: "transparent",
         color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
+        fontSize: "13px",
+        fontWeight: 600,
+        letterSpacing: "0.3px",
+        textTransform: "uppercase",
+        paddingLeft: "12px",
+        paddingRight: "12px",
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
+        paddingLeft: "12px",
+        paddingRight: "12px",
+      },
+    },
+    pagination: {
+      style: {
+        borderTop: "1px solid #eef1f6",
+        fontSize: "13px",
+        color: "#5a6577",
       },
     },
   };
@@ -196,14 +234,17 @@ function MaintenanceOfMulberryGardenAlert() {
       name: "Action",
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex align-items-center flex-nowrap gap-2" style={{ whiteSpace: "nowrap" }}>
           <Button
             variant="primary"
             size="sm"
-            className="ms-2"
             onClick={() => handleEdit(row)}
+            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
+            title={t("Edit")}
           >
-            {t("Edit")}
+            <Icon name="edit" />
+            <span>{t("Edit")}</span>
           </Button>
           {/* <Button
             variant="danger"
@@ -217,6 +258,7 @@ function MaintenanceOfMulberryGardenAlert() {
       ),
       sortable: false,
       hide: "md",
+      minWidth: "140px",
     },
     {
       name: t("Plot Number"),
@@ -307,61 +349,77 @@ function MaintenanceOfMulberryGardenAlert() {
 
   return (
     <Layout title={t("Alert Window")}>
+      <style>{maintenanceMulberryGardenAlertStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("Alert Window")}</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/maintenance-of-mulberry-garden-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/maintenance-of-mulberry-garden-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">{t("Alert Window")}</Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Link
+                    to="/seriui/maintenance-of-mulberry-garden-list"
+                    className="btn btn-primary btn-md d-md-none sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seriui/maintenance-of-mulberry-garden-list"
+                    className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
-      <Block className="mt-n4">
-        <Card>
-          <DataTable
-            // title="New Trader License List"
-            tableClassName="data-table-head-light table-responsive"
-            columns={MulberryGardenDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+      <Block className="mt-n4 sh-list-wrap">
+        <Card className="sh-list-card">
+          <div className="sh-table-wrap">
+            <DataTable
+              // title="New Trader License List"
+              tableClassName="data-table-head-light table-responsive"
+              columns={MulberryGardenDataColumns}
+              data={listData}
+              highlightOnHover
+              striped
+              pointerOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+              noDataComponent={
+                <div className="sh-empty">
+                  <Icon name="inbox" />
+                  <p className="mt-2 mb-0">{t("No records found")}</p>
+                </div>
+              }
+            />
+          </div>
         </Card>
       </Block>
 
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>{t("Update Status")}</Modal.Title>
+      <Modal show={showModal} onHide={handleCloseModal} size="xl" className="sh-modal">
+        <Modal.Header closeButton className="sh-modal-header">
+          <Modal.Title>
+            <Icon name="bell" />
+            <span>{t("Update Status")}</span>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -449,13 +507,15 @@ function MaintenanceOfMulberryGardenAlert() {
                 <div className="d-flex justify-content-center gap g-2">
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleAdd}> */}
-                    <Button type="submit" variant="success">
-                      {t("Update")}
+                    <Button type="submit" variant="success" className="sh-save-btn">
+                      <Icon name="save" />
+                      <span>{t("Update")}</span>
                     </Button>
                   </div>
                   <div className="gap-col">
-                    <Button type="button" variant="secondary" onClick={clear}>
-                      {t("Cancel")}
+                    <Button type="button" variant="secondary" onClick={clear} className="sh-cancel-btn">
+                      <Icon name="cross" />
+                      <span>{t("Cancel")}</span>
                     </Button>
                   </div>
                 </div>
@@ -467,5 +527,104 @@ function MaintenanceOfMulberryGardenAlert() {
     </Layout>
   );
 }
+
+const maintenanceMulberryGardenAlertStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-list-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-list-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+  .sh-table-wrap {
+    padding: 0 4px 4px;
+  }
+  .sh-empty {
+    padding: 36px 12px;
+    text-align: center;
+    color: #8a96a8;
+    font-size: 14px;
+  }
+  .sh-empty svg {
+    width: 40px;
+    height: 40px;
+    opacity: 0.5;
+  }
+  .sh-modal .modal-content {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .sh-modal-header {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-bottom: none !important;
+    padding: 14px 20px !important;
+  }
+  .sh-modal-header .modal-title {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sh-modal-header .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+  }
+  .sh-save-btn {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(30, 103, 168, 0.25);
+  }
+  .sh-cancel-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+`;
 
 export default MaintenanceOfMulberryGardenAlert;

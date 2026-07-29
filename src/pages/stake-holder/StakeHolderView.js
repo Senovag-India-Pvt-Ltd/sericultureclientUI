@@ -622,57 +622,61 @@ function StakeHolderViewPage() {
 
 const stakeHolderViewStyles = `
   .sh-page-header {
-    padding: 18px 22px;
-    background: linear-gradient(135deg, #ffffff 0%, #eef4fc 100%);
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
     border-radius: 12px;
-    border: 1px solid #e3ebf6;
-    box-shadow: 0 2px 8px rgba(30, 103, 168, 0.05);
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
     margin-bottom: 22px;
   }
   .sh-page-title {
     margin-bottom: 4px;
-    color: #1e2a44;
+    color: #ffffff !important;
     font-weight: 700;
     letter-spacing: 0.2px;
   }
   .sh-page-subtitle {
-    color: #6b7a90;
+    color: rgba(255, 255, 255, 0.85);
     font-size: 13.5px;
   }
   .sh-cta-btn,
   .sh-edit-btn {
-    background: linear-gradient(135deg, #4361ee 0%, #1e67a8 100%);
+    background: #ffffff;
     border: none;
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(30, 103, 168, 0.25);
-    font-weight: 600;
+    color: #1e67a8 !important;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
     padding: 8px 18px;
     border-radius: 8px;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
   }
   .sh-edit-btn {
-    background: linear-gradient(135deg, #2dc7a3 0%, #1ea482 100%);
-    box-shadow: 0 4px 12px rgba(30, 164, 130, 0.25);
+    color: #1ea482 !important;
   }
   .sh-cta-btn:hover,
   .sh-edit-btn:hover {
+    background: #eef6ff;
     transform: translateY(-1px);
-    color: #fff;
-    box-shadow: 0 6px 16px rgba(30, 103, 168, 0.35);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
   }
   .sh-edit-btn:hover {
-    box-shadow: 0 6px 16px rgba(30, 164, 130, 0.35);
+    background: #eafaf5;
+  }
+  .sh-view-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
   }
   .sh-view-wrap .card {
-    border: 1px solid #e3ebf6;
+    border: none;
     border-radius: 12px !important;
-    box-shadow: 0 2px 10px rgba(30, 103, 168, 0.05);
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
     overflow: hidden;
     margin-bottom: 0;
   }
   .sh-hero-card {
     background: linear-gradient(135deg, #f5f9ff 0%, #eaf2fc 100%) !important;
-    border: 1px solid #d6e3f3 !important;
+    border: none !important;
     margin-bottom: 18px !important;
   }
   .sh-avatar {
@@ -723,9 +727,9 @@ const stakeHolderViewStyles = `
     border: 1px solid transparent;
   }
   .sh-chip-primary {
-    background: rgba(67, 97, 238, 0.1);
-    color: #2c4dca;
-    border-color: rgba(67, 97, 238, 0.18);
+    background: rgba(30, 103, 168, 0.1);
+    color: #1e67a8;
+    border-color: rgba(30, 103, 168, 0.18);
   }
   .sh-chip-info {
     background: rgba(38, 162, 210, 0.1);
@@ -751,27 +755,32 @@ const stakeHolderViewStyles = `
     margin-bottom: 18px !important;
   }
   .sh-section-header {
-    background: linear-gradient(90deg, #f5f9ff 0%, #ffffff 100%) !important;
-    border-bottom: 1px solid #e9eef6 !important;
-    padding: 14px 18px !important;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-bottom: none !important;
+    padding: 14px 20px !important;
     font-weight: 700 !important;
-    color: #1e2a44 !important;
+    color: #ffffff !important;
     font-size: 15px !important;
     letter-spacing: 0.2px;
     display: flex;
     align-items: center;
+    gap: 8px;
     position: relative;
   }
   .sh-section-accent {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: linear-gradient(180deg, #4361ee 0%, #1e67a8 100%);
+    display: none;
   }
-  .sh-section-header svg {
-    color: #4361ee;
+  .sh-section-header svg,
+  .sh-section-header .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 15px;
   }
   .sh-count-badge {
     display: inline-flex;
@@ -781,8 +790,8 @@ const stakeHolderViewStyles = `
     height: 22px;
     padding: 0 8px;
     border-radius: 999px;
-    background: #4361ee;
-    color: #fff;
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
     font-size: 12px;
     font-weight: 700;
   }
@@ -923,9 +932,9 @@ const stakeHolderViewStyles = `
     text-transform: uppercase;
   }
   .sh-default-pill-info {
-    background: rgba(67, 97, 238, 0.1);
-    color: #2c4dca;
-    border-color: rgba(67, 97, 238, 0.18);
+    background: rgba(30, 103, 168, 0.1);
+    color: #1e67a8;
+    border-color: rgba(30, 103, 168, 0.18);
     text-transform: none;
   }
   .sh-file-block {

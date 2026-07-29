@@ -353,7 +353,7 @@ function RegenerateSanctionOrder() {
     try {
       await runJasper(selectedSanctionOrder);
     } catch (error) {
-      showSchemeError("Jasper could not build the Sanction Order PDF. Please verify the selection and try again.", "Regeneration Failed");
+      showSchemeError("Could not build the Sanction Order PDF. Please verify the selection and try again.", "Regeneration Failed");
     } finally {
       setIsGenerating(false);
     }
@@ -422,7 +422,7 @@ function RegenerateSanctionOrder() {
             <div style={{ width: "38px", height: "38px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px" }}>🖨️</div>
             <div>
               <div style={{ color: "#fff", fontWeight: 700, fontSize: "17px", lineHeight: 1.2 }}>Regenerate Sanction Order</div>
-              <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "2px" }}>Builds a fresh PDF from Jasper — not the stored S3 copy</div>
+              <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "2px" }}>Builds a fresh PDF</div>
             </div>
           </div>
 
@@ -534,7 +534,7 @@ function RegenerateSanctionOrder() {
                   {isGenerating ? (
                     <><span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" /> Regenerating…</>
                   ) : (
-                    <>🖨️ Regenerate from Jasper</>
+                    <>🖨️ Regenerate Sanction Order</>
                   )}
                 </button>
               </Col>

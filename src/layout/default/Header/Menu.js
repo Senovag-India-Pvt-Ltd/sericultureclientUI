@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 
 import { useLayout } from "../LayoutProvider";
 
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useLocation } from "react-router-dom";
 import { createPopper } from "@popperjs/core";
 
 import { Icon, Media, MediaText, MediaGroup, Image } from "../../../components";
@@ -150,6 +150,7 @@ const _header = {
 function Menu() {
   const layout = useLayout();
   const { t } = useTranslation();
+  const location = useLocation();
 
   // set ModuleData to state
   const [moduleRows, setModuleRows] = useState([]);
@@ -1798,10 +1799,71 @@ function Menu() {
             ) : null}
             {showMenu.Registration_Reeler_License ? (
               <MenuItem>
-                <MenuItemLink
-                  text={t("Reeler License")}
-                  to="/seriui/issue-new-reeler-license"
-                />
+                <MenuItem sub>
+                  <MenuItemLink
+                    text={t("Reeler License")}
+                    onClick={menuToggle}
+                    onMouseEnter={menuHover}
+                    sub
+                  />
+                  <MenuSub>
+                    <MenuItem>
+                      {/* Plain Link (not NavLink) on purpose: NavLink auto-sets
+                          aria-current="page" from a pathname-only match, and both
+                          items share the same path (only the query differs) — that
+                          would mark both as current. Active state is computed here
+                          manually from licenseType instead. */}
+                      <Link
+                        className={`nk-nav-link${
+                          location.pathname ===
+                            "/seriui/issue-new-reeler-license" &&
+                          new URLSearchParams(location.search).get(
+                            "licenseType"
+                          ) !== "without"
+                            ? " active current-page"
+                            : ""
+                        }`}
+                        aria-current={
+                          location.pathname ===
+                            "/seriui/issue-new-reeler-license" &&
+                          new URLSearchParams(location.search).get(
+                            "licenseType"
+                          ) !== "without"
+                            ? "page"
+                            : undefined
+                        }
+                        to="/seriui/issue-new-reeler-license"
+                      >
+                        <MenuItemTemplate text={t("With License")} />
+                      </Link>
+                    </MenuItem>
+                    <MenuItem>
+                      <Link
+                        className={`nk-nav-link${
+                          location.pathname ===
+                            "/seriui/issue-new-reeler-license" &&
+                          new URLSearchParams(location.search).get(
+                            "licenseType"
+                          ) === "without"
+                            ? " active current-page"
+                            : ""
+                        }`}
+                        aria-current={
+                          location.pathname ===
+                            "/seriui/issue-new-reeler-license" &&
+                          new URLSearchParams(location.search).get(
+                            "licenseType"
+                          ) === "without"
+                            ? "page"
+                            : undefined
+                        }
+                        to="/seriui/issue-new-reeler-license?licenseType=without"
+                      >
+                        <MenuItemTemplate text={t("Without License")} />
+                      </Link>
+                    </MenuItem>
+                  </MenuSub>
+                </MenuItem>
               </MenuItem>
             ) : null}
             {showMenu.Registration_Renewal_of_Reeler_License ? (
@@ -3475,14 +3537,6 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {helpdeskDashboardAllowed ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Helpdesk Dashboard")}
-                  to="/seriui/helpdesk-dashboard"
-                />
-              </MenuItem>
-            ) : null}
             {showMenu.Helpdesk_User_Dashboard ? (
               <MenuItem>
                 <MenuItemLink
@@ -3675,6 +3729,14 @@ function Menu() {
                 <MenuItemLink
                   text={t("DBT Failed Tickets")}
                   to="/seriui/dbt-payment-failed-tickets"
+                />
+              </MenuItem>
+            ) : null}
+            {helpdeskDashboardAllowed ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Helpdesk Dashboard")}
+                  to="/seriui/helpdesk-dashboard"
                 />
               </MenuItem>
             ) : null}

@@ -257,26 +257,32 @@ function VillageList() {
   );
 
   const customStyles = {
+    table: { style: { borderRadius: "10px", overflow: "hidden", boxShadow: "0 2px 8px rgba(30, 103, 168, 0.06)" } },
     rows: {
-      style: {
-        minHeight: "45px", // override the row height
-      },
+      style: { minHeight: "52px", fontSize: "13.5px", color: "#2b2d42", borderBottom: "1px solid #eef1f6 !important", transition: "background-color 0.15s ease" },
+      highlightOnHoverStyle: { backgroundColor: "#f4f8fd", cursor: "pointer", outline: "none" },
+      stripedStyle: { backgroundColor: "#fbfcfe" },
     },
+    headRow: { style: { minHeight: "50px", background: "linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%)", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" } },
     headCells: {
       style: {
-        backgroundColor: "#1e67a8",
+        backgroundColor: "transparent",
         color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
+        fontSize: "13px",
+        fontWeight: 600,
+        letterSpacing: "0.3px",
+        textTransform: "uppercase",
+        paddingLeft: "12px",
+        paddingRight: "12px",
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
+        paddingLeft: "12px",
+        paddingRight: "12px",
       },
     },
+    pagination: { style: { borderTop: "1px solid #eef1f6", fontSize: "13px", color: "#5a6577" } },
   };
 
   const VillageDataColumns = [
@@ -289,25 +295,29 @@ function VillageList() {
           <Button
             variant="primary"
             size="sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm"
             onClick={() => handleView(row.villageId)}
           >
-            View
+            <Icon name="eye" />
+            <span>View</span>
           </Button>
           <Button
             variant="primary"
             size="sm"
-            className="ms-2"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
             onClick={() => handleEdit(row.villageId)}
           >
-            Edit
+            <Icon name="edit" />
+            <span>Edit</span>
           </Button>
           <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.villageId)}
-            className="ms-2"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
           >
-            Delete
+            <Icon name="trash" />
+            <span>Delete</span>
           </Button>
         </div>
       ),
@@ -389,37 +399,40 @@ function VillageList() {
 
   return (
     <Layout title="Village List">
+      <style>{villageListStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">Village List</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/village"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="plus" />
-                  <span>Create</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/village"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="plus" />
-                  <span>Create</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">Village List</Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Link
+                    to="/seriui/village"
+                    className="btn btn-primary btn-md d-md-none sh-cta-btn"
+                  >
+                    <Icon name="plus" />
+                    <span>Create</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seriui/village"
+                    className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
+                  >
+                    <Icon name="plus" />
+                    <span>Create</span>
+                  </Link>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
       <Card className="mt-1">
           <Row className="m-4">
             <Col sm={2}>
@@ -559,8 +572,9 @@ function VillageList() {
               </Form.Group>
             </Col> */}
             <Col sm={2}>
-              <Button type="button" variant="primary" onClick={search}>
-                Search
+              <Button type="button" variant="primary" onClick={search} className="d-inline-flex align-items-center gap-1">
+                <Icon name="search" />
+                <span>Search</span>
               </Button>
             </Col>
             </Row>
@@ -586,5 +600,49 @@ function VillageList() {
     </Layout>
   );
 }
+
+const villageListStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+`;
 
 export default VillageList;

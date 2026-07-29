@@ -26,6 +26,58 @@ const baseURLFarmerServer =
   process.env.REACT_APP_API_BASE_URL_REGISTRATION_FROM_FRUITS;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
+// Inject shared, page-scoped SweetAlert styling once (same block used by
+// ApplicationFormEdit.js and ServiceApplicationEdit.js — identical markup,
+// reused via the same style-tag id so navigating between the two doesn't
+// inject it twice).
+if (typeof document !== "undefined" && !document.getElementById("svc-swal-styles")) {
+  const s = document.createElement("style");
+  s.id = "svc-swal-styles";
+  s.innerHTML = `
+    .svc-swal-container { backdrop-filter: blur(5px); background: rgba(15,23,42,.45) !important; }
+    .svc-swal {
+      border-radius: 22px !important; padding: 6px 4px 20px !important;
+      background: linear-gradient(180deg,#ffffff 0%,#f8fafc 100%) !important;
+      box-shadow: 0 30px 80px rgba(15,23,42,.28), 0 0 0 1px rgba(15,23,42,.04) !important;
+      overflow: hidden !important; position: relative !important; max-width: 520px !important;
+    }
+    .svc-swal::before {
+      content:""; position:absolute; top:0; left:0; right:0; height:6px;
+      background: linear-gradient(90deg,#94a3b8,#64748b);
+    }
+    .svc-swal-error::before   { background: linear-gradient(90deg,#f87171,#dc2626,#9f1239) !important; }
+    .svc-swal-success::before { background: linear-gradient(90deg,#34d399,#0ea5e9,#6366f1) !important; }
+    .svc-swal-warning::before { background: linear-gradient(90deg,#fbbf24,#f97316,#dc2626) !important; }
+    .svc-swal .swal2-title {
+      font-size: 21px !important; font-weight: 800 !important; color: #0f172a !important;
+      letter-spacing: -.01em !important; margin-top: 4px !important; padding: 0 20px !important;
+    }
+    .svc-swal .swal2-html-container {
+      font-size: 13.5px !important; color: #475569 !important; line-height: 1.65 !important;
+      margin: 10px 22px 4px !important; text-align: left !important;
+    }
+    .svc-swal .swal2-icon { border-width: 3px !important; margin: 20px auto 4px !important; }
+    .svc-swal-error   .swal2-icon.swal2-error   { box-shadow: 0 0 0 8px rgba(239,68,68,.10); }
+    .svc-swal-success .swal2-icon.swal2-success { box-shadow: 0 0 0 8px rgba(34,197,94,.12); }
+    .svc-swal .swal2-styled {
+      border-radius: 12px !important; padding: 10px 28px !important; font-weight: 700 !important;
+      font-size: 13.5px !important; border: 0 !important;
+      transition: transform .14s ease, box-shadow .14s ease, filter .14s !important;
+    }
+    .svc-swal .swal2-styled:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.05); }
+    .svc-swal-error   .swal2-confirm { background: linear-gradient(135deg,#ef4444,#b91c1c) !important; box-shadow: 0 12px 26px rgba(220,38,38,.30) !important; }
+    .svc-swal-success .swal2-confirm { background: linear-gradient(135deg,#0ea5e9,#22d3ee) !important; box-shadow: 0 12px 26px rgba(14,165,233,.30) !important; }
+    /* Multi-error lists render as <br>-joined text — style them like a clean list */
+    .svc-swal-errlist { text-align: left; }
+    .svc-swal-errlist .svc-swal-errline {
+      display: flex; gap: 8px; align-items: flex-start; padding: 7px 10px; margin: 5px 0;
+      background: #fef2f2; border: 1px solid #fecaca; border-radius: 9px; color: #991b1b;
+    }
+    .svc-swal-errline::before { content: "⚠"; flex: 0 0 auto; }
+  `;
+  document.head.appendChild(s);
+}
+
 function ApplicationFormEdit() {
   const { id } = useParams();
   // Translation
@@ -52,6 +104,7 @@ function ApplicationFormEdit() {
     periodTo: "",
     monthYear: "",
     userMasterId: "",
+    approvalStageId: "",
   });
 
   // True when the selected sub scheme is configured with monthlyFrequency.
@@ -246,6 +299,7 @@ useEffect(() => {
           // ("APRIL-MAY") and other values fail to parse and are left blank.
           monthYear: parseMonthYear(datas.month) ? datas.month : "",
           userMasterId: datas.userMasterId || "",
+          approvalStageId: datas.approvalStageId || "",
         }));
 
         setFarmerId(datas.farmerId);
@@ -885,6 +939,26 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     getCategoryList();
   }, []);
 
+  // to get approval stage
+  const [approvalStageListData, setApprovalStageListData] = useState([]);
+
+  const getApprovalStageList = () => {
+    api
+      .get(baseURLMasterData + `scApprovalStage/get-all`)
+      .then((response) => {
+        if (response.data.content.scApprovalStage) {
+          setApprovalStageListData(response.data.content.scApprovalStage);
+        }
+      })
+      .catch((err) => {
+        setApprovalStageListData([]);
+      });
+  };
+
+  useEffect(() => {
+    getApprovalStageList();
+  }, []);
+
   // to get sc-vendor
   const [scVendorListData, setScVendorListData] = useState([]);
 
@@ -1075,6 +1149,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         sanctionNo: data.sanctionNumber,
         categoryId: data.scCategoryId,
         componentId: data.scComponentId,
+        approvalStageId: data.approvalStageId || null,
         financialYearMasterId: data.financialYearMasterId,
         vendorId: equipment.vendorId,
         description: equipment.description,
@@ -1171,6 +1246,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       componentId: toNum(data.scComponentId),
       categoryId: toNum(data.scCategoryId),
       headOfAccountId: toNum(data.scHeadAccountId),
+      approvalStageId: toNum(data.approvalStageId),
       userMasterId: toNum(data.userMasterId),
       schemeAmount: toNum(data.schemeAmount),
       sanctionNo: toNum(data.sanctionNumber),
@@ -1347,6 +1423,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     Swal.fire({
       icon: "success",
       title: "Updated Successfully",
+      customClass: { container: "svc-swal-container", popup: "svc-swal svc-swal-success" },
     }).then(() => {
       window.location.reload();
     });
@@ -1358,16 +1435,22 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
 
   
   const saveError = (message) => {
-    let errorMessage;
+    let lines;
     if (typeof message === "object") {
-      errorMessage = Object.values(message).join("<br>");
+      lines = Object.values(message);
     } else {
-      errorMessage = message;
+      lines = String(message || "").split(/;\s*|<br\s*\/?>/i).filter(Boolean);
     }
+    if (lines.length === 0) lines = ["Something went wrong. Please try again."];
+    const html =
+      `<div class="svc-swal-errlist">` +
+      lines.map((l) => `<div class="svc-swal-errline">${l}</div>`).join("") +
+      `</div>`;
     Swal.fire({
       icon: "error",
       title: "Attempt was not successful",
-      html: errorMessage,
+      html,
+      customClass: { container: "svc-swal-container", popup: "svc-swal svc-swal-error" },
     });
   };
 
@@ -2503,6 +2586,32 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                               <Form.Control.Feedback type="invalid">
                               {t("Sub Component is required")}
                               </Form.Control.Feedback>
+                            </div>
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg="6">
+                          <Form.Group className="form-group mt-n3">
+                            <Form.Label htmlFor="sordfl">
+                            {t("Approval Stage")}
+                            </Form.Label>
+                            <div className="form-control-wrap">
+                              <Form.Select
+                                name="approvalStageId"
+                                value={data.approvalStageId}
+                                onChange={handleInputs}
+                                onBlur={() => handleInputs}
+                              >
+                                <option value="">{t("Select Approval Stage")}</option>
+                                {(approvalStageListData || []).map((list) => (
+                                  <option
+                                    key={list.scApprovalStageId}
+                                    value={list.scApprovalStageId}
+                                  >
+                                    {list.stageName}
+                                  </option>
+                                ))}
+                              </Form.Select>
                             </div>
                           </Form.Group>
                         </Col>

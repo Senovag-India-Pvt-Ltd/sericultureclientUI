@@ -198,24 +198,62 @@ function ReceiptofDFLsfromtheP4grainage() {
   );
 
   const customStyles = {
+    table: {
+      style: {
+        borderRadius: "10px",
+        overflow: "hidden",
+        boxShadow: "0 2px 8px rgba(30, 103, 168, 0.06)",
+      },
+    },
     rows: {
       style: {
-        minHeight: "45px", // override the row height
+        minHeight: "52px",
+        fontSize: "13.5px",
+        color: "#2b2d42",
+        borderBottom: "1px solid #eef1f6 !important",
+        transition: "background-color 0.15s ease",
+      },
+      highlightOnHoverStyle: {
+        backgroundColor: "#f4f8fd",
+        cursor: "pointer",
+        outline: "none",
+      },
+      stripedStyle: {
+        backgroundColor: "#fbfcfe",
+      },
+    },
+    headRow: {
+      style: {
+        minHeight: "50px",
+        background:
+          "linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%)",
+        borderTopLeftRadius: "10px",
+        borderTopRightRadius: "10px",
       },
     },
     headCells: {
       style: {
-        backgroundColor: "#1e67a8",
+        backgroundColor: "transparent",
         color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
+        fontSize: "13px",
+        fontWeight: 600,
+        letterSpacing: "0.3px",
+        textTransform: "uppercase",
+        paddingLeft: "12px",
+        paddingRight: "12px",
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
+        paddingLeft: "12px",
+        paddingRight: "12px",
+      },
+    },
+    pagination: {
+      style: {
+        borderTop: "1px solid #eef1f6",
+        fontSize: "13px",
+        color: "#5a6577",
       },
     },
   };
@@ -229,15 +267,19 @@ function ReceiptofDFLsfromtheP4grainage() {
     {
       name: t("Action"),
       cell: (row) => (
-        <div className="text-start w-100">
+        <div className="d-flex align-items-center">
           <Button
             variant="primary"
             size="sm"
             onClick={() => handleEdit(row.id)}
+            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
+            title={t("Edit")}
           >
-            {t("Edit")}
+            <Icon name="edit" />
+            <span>{t("Edit")}</span>
           </Button>
-         
+
           {/* <Button
             variant="danger"
             size="sm"
@@ -322,23 +364,30 @@ function ReceiptofDFLsfromtheP4grainage() {
       name: t("Action"),
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex align-items-center gap-2">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="primary"
             size="sm"
             onClick={() => acceptConfirm(row.sodId, 1)}
+            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
+            title={t("Accept")}
           >
-            {t("Accept")}
+            <Icon name="check" />
+            <span>{t("Accept")}</span>
           </Button>
-         
+
           <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.sodId, 2)}
-            className="ms-2"
+            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
+            title={t("Reject")}
           >
-            {t("Reject")}
+            <Icon name="cross" />
+            <span>{t("Reject")}</span>
           </Button>
         </div>
       ),
@@ -405,59 +454,72 @@ function ReceiptofDFLsfromtheP4grainage() {
   
   return (
     <Layout title={t("Receipt of DFLs from the P4 grainage")}>
+      <style>{receiptDflsStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">
-              {t("Receipt of DFLs from the P4 grainage")}
-            </Block.Title>
-           
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                {/* <Link
-                  to="/seriui/Receipt-of-DFLs-from-the-P4-grainage-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/Receipt-of-DFLs-from-the-P4-grainage-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
-                </Link> */}
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">
+                {t("Receipt of DFLs from the P4 grainage")}
+              </Block.Title>
+
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  {/* <Link
+                    to="/seriui/Receipt-of-DFLs-from-the-P4-grainage-list"
+                    className="btn btn-primary btn-md d-md-none"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go to List")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seriui/Receipt-of-DFLs-from-the-P4-grainage-list"
+                    className="btn btn-primary d-none d-md-inline-flex"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go to List")}</span>
+                  </Link> */}
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
-        <Card>
-          <DataTable
-            // title="New Trader License List"
-            tableClassName="data-table-head-light table-responsive"
-            columns={ReceiptofDFLsfromtheP4grainageDataColumns}
-            data={listLogsData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+      <Block className="mt-n4 sh-list-wrap">
+        <Card className="sh-list-card">
+          <div className="sh-table-wrap">
+            <DataTable
+              // title="New Trader License List"
+              tableClassName="data-table-head-light table-responsive"
+              columns={ReceiptofDFLsfromtheP4grainageDataColumns}
+              data={listLogsData}
+              highlightOnHover
+              striped
+              pointerOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+              noDataComponent={
+                <div className="sh-empty">
+                  <Icon name="inbox" />
+                  <p className="mt-2 mb-0">{t("No records found")}</p>
+                </div>
+              }
+            />
+          </div>
         </Card>
       </Block>
 
@@ -601,9 +663,12 @@ function ReceiptofDFLsfromtheP4grainage() {
         </Form>
       </Block> */}
 
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+      <Modal show={showModal} onHide={handleCloseModal} size="xl" contentClassName="sh-modal-content">
         <Modal.Header closeButton>
-          <Modal.Title>{t("Alerts Window")}</Modal.Title>
+          <Modal.Title>
+            <Icon name="bell" className="me-1" />
+            {t("Alerts Window")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-2">
@@ -633,5 +698,120 @@ function ReceiptofDFLsfromtheP4grainage() {
     </Layout>
   );
 }
+
+const receiptDflsStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-list-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-list-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+  .sh-table-wrap {
+    padding: 0 4px 4px;
+  }
+  .sh-empty {
+    padding: 36px 12px;
+    text-align: center;
+    color: #8a96a8;
+    font-size: 14px;
+  }
+  .sh-empty svg {
+    width: 40px;
+    height: 40px;
+    opacity: 0.5;
+  }
+  .modal-backdrop.show {
+    background-color: #0c2844;
+    opacity: 0.75;
+  }
+  .sh-modal-content {
+    border-radius: 12px !important;
+    border: 1px solid #e3ebf6 !important;
+    overflow: hidden;
+  }
+  .sh-modal-content .modal-header {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-bottom: none;
+    padding: 16px 22px;
+  }
+  .sh-modal-content .modal-header .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+  }
+  .sh-modal-content .modal-header .btn-close:hover {
+    opacity: 1;
+  }
+  .sh-modal-content .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.3px;
+    color: #ffffff;
+  }
+  .sh-modal-content .modal-header svg,
+  .sh-modal-content .modal-header .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 15px;
+  }
+  .sh-modal-content .modal-body {
+    padding: 22px 24px;
+  }
+  .sh-modal-content table {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .sh-modal-content table thead th {
+    background-color: #eef4fc !important;
+    color: #2b3a55 !important;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+    border-bottom: 2px solid #d6e3f3 !important;
+  }
+`;
 
 export default ReceiptofDFLsfromtheP4grainage;

@@ -5457,8 +5457,13 @@ const isUserValid = React.useMemo(() => {
       renditta:data.renditta,
       silkTable: data.silkTable,
       noOfCocoonsNeedToProduce:data.noOfCocoonsNeedToProduce,
+      // noOfRawSilkProduced is a String column on sc_application_form_service
+      // (ApplicationFormRequest.noOfRawSilkProduced is typed String too), so the
+      // summed total is explicitly stringified rather than left as a JS number —
+      // and rounded to 2dp first since summing row inputs in JS float arithmetic
+      // can otherwise produce trailing-digit artifacts (e.g. 35.699999999999996).
       noOfRawSilkProduced: getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF"
-        ? silkIncentiveList.map((r) => r.noOfRawSilkProduced).join(",")
+        ? String(Math.round(silkIncentiveList.reduce((sum, r) => sum + (parseFloat(r.noOfRawSilkProduced) || 0), 0) * 100) / 100)
         : data.noOfRawSilkProduced,
       silkExchangeId: getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF"
         ? (Number(silkIncentiveList[0]?.silkExchangeId) || null)
@@ -9898,7 +9903,7 @@ const fetchReelerDetails = () => {
                             <Row className="g-gs">
                               <Col lg="3">
                                 <Form.Group className="form-group">
-                                  <Form.Label>{t("Equipment Date")}<span className="text-danger">*</span></Form.Label>
+                                  <Form.Label>{t("Transaction Date")}<span className="text-danger">*</span></Form.Label>
                                   <div className="form-control-wrap">
                                     <DatePicker
                                       selected={row.equipmentDate}
@@ -9919,8 +9924,15 @@ const fetchReelerDetails = () => {
                                   <Form.Label>{t("Quantity Of Raw Silk Produced in Kgs")}<span className="text-danger">*</span></Form.Label>
                                   <Form.Control
                                     type="text"
+                                    inputMode="decimal"
                                     value={row.noOfRawSilkProduced}
-                                    onChange={(e) => handleSilkIncentiveChange(index, "noOfRawSilkProduced", e.target.value)}
+                                    onChange={(e) => {
+                                      // Digits and at most one decimal point — no letters/symbols.
+                                      const sanitized = e.target.value
+                                        .replace(/[^0-9.]/g, "")
+                                        .replace(/(\..*)\./g, "$1");
+                                      handleSilkIncentiveChange(index, "noOfRawSilkProduced", sanitized);
+                                    }}
                                     placeholder={t("Enter No Of Raw Silk Produced")}
                                   />
                                 </Form.Group>

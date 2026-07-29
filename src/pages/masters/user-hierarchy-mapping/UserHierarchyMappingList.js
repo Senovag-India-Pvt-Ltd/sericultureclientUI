@@ -38,26 +38,32 @@ createTheme(
 );
 // 🔥 TABLE STYLE
 const customStyles = {
+  table: { style: { borderRadius: "10px", overflow: "hidden", boxShadow: "0 2px 8px rgba(30, 103, 168, 0.06)" } },
   rows: {
-    style: {
-      minHeight: "45px",
-    },
+    style: { minHeight: "52px", fontSize: "13.5px", color: "#2b2d42", borderBottom: "1px solid #eef1f6 !important", transition: "background-color 0.15s ease" },
+    highlightOnHoverStyle: { backgroundColor: "#f4f8fd", cursor: "pointer", outline: "none" },
+    stripedStyle: { backgroundColor: "#fbfcfe" },
   },
+  headRow: { style: { minHeight: "50px", background: "linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%)", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" } },
   headCells: {
     style: {
-      backgroundColor: "#1e67a8",
+      backgroundColor: "transparent",
       color: "#fff",
-      fontSize: "14px",
-      paddingLeft: "8px",
-      paddingRight: "8px",
+      fontSize: "13px",
+      fontWeight: 600,
+      letterSpacing: "0.3px",
+      textTransform: "uppercase",
+      paddingLeft: "12px",
+      paddingRight: "12px",
     },
   },
   cells: {
     style: {
-      paddingLeft: "8px",
-      paddingRight: "8px",
+      paddingLeft: "12px",
+      paddingRight: "12px",
     },
   },
+  pagination: { style: { borderTop: "1px solid #eef1f6", fontSize: "13px", color: "#5a6577" } },
 };
 function UserHierarchyMappingList() {
   const navigate = useNavigate();
@@ -232,16 +238,18 @@ const downloadCompleted = async () => {
       name: "Action",
       cell: (row) => (
         <>
-          <Button size="sm" onClick={() => handleEdit(row)}>
-            Edit
+          <Button size="sm" onClick={() => handleEdit(row)} className="d-inline-flex align-items-center gap-1 shadow-sm">
+            <Icon name="edit" />
+            <span>Edit</span>
           </Button>
           <Button
             size="sm"
             variant="danger"
-            className="ms-2"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
             onClick={() => deleteMapping(row.userHierarchyMappingId)}
           >
-            Delete
+            <Icon name="trash" />
+            <span>Delete</span>
           </Button>
         </>
       ),
@@ -259,9 +267,11 @@ const downloadCompleted = async () => {
         <Button
           size="sm"
           variant="danger"
+          className="d-inline-flex align-items-center gap-1 shadow-sm"
           onClick={() => deleteMapping(row.userHierarchyMappingId)}
         >
-          Delete
+          <Icon name="trash" />
+          <span>Delete</span>
         </Button>
       ),
     },
@@ -287,37 +297,40 @@ const downloadCompleted = async () => {
 
   return (
     <Layout title="User Hierarchy Mapping List">
-      <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">User Hierarchy Mapping List</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/user-hierarchy-mapping"
-                  className="btn btn-primary btn-md  d-md-none"
-                >
-                  <Icon name="plus" />
-                  <span>Create</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/user-hierarchy-mapping"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="plus" />
-                  <span>Create</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
-      </Block.Head>
-      <Block className="mt-n4">
-        <Card className="mt-1">
+      <style>{userHierarchyMappingListStyles}</style>
+      <div className="sh-page-header">
+        <Block.Head>
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">User Hierarchy Mapping List</Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Link
+                    to="/seriui/user-hierarchy-mapping"
+                    className="btn btn-primary btn-md  d-md-none sh-cta-btn"
+                  >
+                    <Icon name="plus" />
+                    <span>Create</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seriui/user-hierarchy-mapping"
+                    className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
+                  >
+                    <Icon name="plus" />
+                    <span>Create</span>
+                  </Link>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </Block.Head>
+      </div>
+      <Block className="mt-n4 sh-list-wrap">
+        <Card className="mt-1 sh-list-card">
           {/* 🔥 FILTER SECTION (Village Style) */}
           <Row className="m-4">
             <Col sm={2}>
@@ -363,8 +376,9 @@ const downloadCompleted = async () => {
             </Col>
 
             <Col sm={2}>
-              <Button className="mt-2 w-100" onClick={search}>
-                Search
+              <Button className="mt-2 w-100 sh-save-btn" onClick={search}>
+                <Icon name="search" />
+                <span>Search</span>
               </Button>
             </Col>
           </Row>
@@ -372,33 +386,37 @@ const downloadCompleted = async () => {
           {/* 🔥 TABLE SECTION */}
           {showTable && (
             <>
-              <div className="px-4">
-                <h5 className="mb-3">Manager Details</h5>
+              <div className="px-4 sh-table-wrap">
+                <h5 className="mb-3 sh-table-heading">Manager Details</h5>
               </div>
 
-              <DataTable
-                columns={managerColumns}
-                data={managerData}
-                pagination
-                highlightOnHover
-                theme="solarized"
-                customStyles={customStyles}
-                noDataComponent="No Manager Found"
-              />
-
-              <div className="px-4 mt-4">
-                <h5 className="mb-3">Reportees</h5>
+              <div className="px-4 sh-table-wrap">
+                <DataTable
+                  columns={managerColumns}
+                  data={managerData}
+                  pagination
+                  highlightOnHover
+                  theme="solarized"
+                  customStyles={customStyles}
+                  noDataComponent="No Manager Found"
+                />
               </div>
 
-              <DataTable
-                columns={reporteeColumns}
-                data={reporteesData}
-                pagination
-                highlightOnHover
-                theme="solarized"
-                customStyles={customStyles}
-                noDataComponent="No Reportees Found"
-              />
+              <div className="px-4 mt-4 sh-table-wrap">
+                <h5 className="mb-3 sh-table-heading">Reportees</h5>
+              </div>
+
+              <div className="px-4 sh-table-wrap">
+                <DataTable
+                  columns={reporteeColumns}
+                  data={reporteesData}
+                  pagination
+                  highlightOnHover
+                  theme="solarized"
+                  customStyles={customStyles}
+                  noDataComponent="No Reportees Found"
+                />
+              </div>
             </>
           )}
         </Card>
@@ -406,5 +424,69 @@ const downloadCompleted = async () => {
     </Layout>
   );
 }
+
+const userHierarchyMappingListStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-list-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-list-card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+  .sh-table-heading {
+    color: #1e3a5f;
+    font-weight: 700;
+    font-size: 14.5px;
+  }
+  .sh-table-wrap {
+    margin-bottom: 8px;
+  }
+  .sh-save-btn {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(30, 103, 168, 0.25);
+  }
+`;
 
 export default UserHierarchyMappingList;

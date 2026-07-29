@@ -289,44 +289,47 @@ function DispatchofCocoonstoP4Grainage() {
 
   return (
     <Layout title={t("Dispatch of Cocoons to P4 Grainage")}>
+      <style>{dispatchCocoonsFormStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">
-              {t("Dispatch of Cocoons to P4 Grainage")}
-            </Block.Title>
-           
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage-List"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage-List"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">
+                {t("Dispatch of Cocoons to P4 Grainage")}
+              </Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Link
+                    to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage-List"
+                    className="btn btn-primary btn-md d-md-none sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seriui/Dispatch-of-Cocoons-to-P4-Grainage-List"
+                    className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
         <Form noValidate validated={validated} onSubmit={postData}>
-          <Card>
-            <Card.Header style={{ fontWeight: "bold" }}>
-              {t("Dispatch of Cocoons to P4 Grainage")}
+          <Card className="sh-section-card">
+            <Card.Header className="sh-section-header">
+              <Icon name="truck" />
+              <span>{t("Dispatch of Cocoons to P4 Grainage")}</span>
                 </Card.Header>
                     <Card.Body>
                         <Row className="g-gs">
@@ -737,17 +740,19 @@ function DispatchofCocoonstoP4Grainage() {
                       </Card.Body>
                     </Card>
 
-                <div className="gap-col">
+                <div className="gap-col sh-actions-bar">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
-                    {t("Save")}
+                  <Button type="submit" variant="primary" className="sh-save-btn">
+                    <Icon name="save" />
+                    <span>{t("Save")}</span>
                   </Button>
                 </li>
                 <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                    {t("Cancel")}
+                  <Button type="button" variant="secondary" onClick={clear} className="sh-cancel-btn">
+                    <Icon name="cross" />
+                    <span>{t("Cancel")}</span>
                   </Button>
                 </li>
               </ul>
@@ -757,5 +762,98 @@ function DispatchofCocoonstoP4Grainage() {
     </Layout>
   );
 }
+
+const dispatchCocoonsFormStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-section-card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .sh-section-card .card-body {
+    padding: 20px !important;
+  }
+  .sh-section-header {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-bottom: none !important;
+    padding: 14px 20px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    font-size: 15px !important;
+    letter-spacing: 0.2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sh-section-header svg,
+  .sh-section-header .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 15px;
+  }
+  .sh-actions-bar {
+    margin-top: 6px;
+  }
+  .sh-save-btn,
+  .sh-cancel-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 8px 22px;
+  }
+  .sh-save-btn {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border: none;
+    box-shadow: 0 4px 12px rgba(30, 103, 168, 0.25);
+  }
+  .sh-save-btn:hover {
+    box-shadow: 0 6px 16px rgba(30, 103, 168, 0.35);
+    transform: translateY(-1px);
+  }
+`;
 
 export default DispatchofCocoonstoP4Grainage;

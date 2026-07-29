@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Button, Nav, Table, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../../../layout/default";
@@ -11,19 +11,32 @@ import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 const ARM_ENDS = ["120 Ends", "200 Ends", "400 Ends"];
-const CATEGORIES = [
-  { label: "General", id: 3, central: 50, state: 25 },
-  { label: "TSP",     id: 4, central: 65, state: 25 },
-  { label: "SCSP",    id: 5, central: 65, state: 25 },
+// Central/State % are a fixed funding-split policy per category (not stored in sc_category
+// master data), so those stay hardcoded here. The scCategoryId, however, is auto-generated
+// per environment and must NOT be hardcoded — it's resolved by matching the real, active
+// sc_category name below (the same fix applied to ArmCalculationList.js, which previously
+// had General/SCSP swapped because ids 3/4/5 didn't actually correspond to those labels).
+const CATEGORY_POLICY = [
+  { label: "General", central: 50, state: 25 },
+  { label: "TSP",     central: 65, state: 25 },
+  { label: "SCSP",    central: 65, state: 25 },
 ];
 
-const newRow = () => ({ key: Date.now() + Math.random(), equipmentName: "", quantity: "", unitRate: "" });
+const newRow = () => ({
+  key: Date.now() + Math.random(),
+  equipmentName: "",
+  quantity: "",
+  unitRate: "",
+  advancePercentage: "",
+  firstPayment: "",
+  finalPayment: "",
+});
 
 const initTable = () => {
   const t = {};
   ARM_ENDS.forEach((arm) => {
     t[arm] = {};
-    CATEGORIES.forEach((cat) => { t[arm][cat.label] = [newRow()]; });
+    CATEGORY_POLICY.forEach((cat) => { t[arm][cat.label] = [newRow()]; });
   });
   return t;
 };
@@ -36,6 +49,30 @@ function ArmCalculation() {
   const [activeCat, setActiveCat] = useState("General");
   const [saving, setSaving]       = useState(false);
   const [tableData, setTableData] = useState(initTable);
+  const [scCategoryList, setScCategoryList] = useState([]);
+  const [componentTypeList, setComponentTypeList] = useState([]);
+  const [componentList, setComponentList] = useState([]);
+  const [componentTypeId, setComponentTypeId] = useState("");
+  const [componentId, setComponentId] = useState("");
+
+  useEffect(() => {
+    api.get(baseURL + "scCategory/get-all")
+      .then((r) => setScCategoryList((r.data.content?.scCategory || []).filter((c) => c.active !== false)))
+      .catch(() => setScCategoryList([]));
+    api.get(baseURL + "scSubSchemeDetails/get-all")
+      .then((r) => setComponentTypeList(r.data.content?.scSubSchemeDetails || []))
+      .catch(() => setComponentTypeList([]));
+    api.get(baseURL + "scComponent/get-all")
+      .then((r) => setComponentList(r.data.content?.scComponent || []))
+      .catch(() => setComponentList([]));
+  }, []);
+
+  const CATEGORIES = CATEGORY_POLICY.map((cat) => {
+    const match = scCategoryList.find((c) =>
+      (c.categoryName || "").toLowerCase().startsWith(cat.label.toLowerCase())
+    );
+    return { ...cat, id: match ? match.scCategoryId : null };
+  });
 
   const catObj = CATEGORIES.find((c) => c.label === activeCat);
   const rows   = tableData[activeArm][activeCat];
@@ -65,6 +102,8 @@ function ArmCalculation() {
         const rate = parseFloat(r.unitRate);
         await api.post(baseURL + "armCalculation/add", {
           scCategoryId:      catObj.id,
+          componentTypeId:   componentTypeId || null,
+          componentId:       componentId || null,
           armEnds:           activeArm,
           equipmentName:     r.equipmentName.trim(),
           quantity:          qty,
@@ -72,6 +111,9 @@ function ArmCalculation() {
           unitCost:          qty * rate,
           centralPercentage: catObj.central,
           statePercentage:   catObj.state,
+          advancePercentage: r.advancePercentage ? parseFloat(r.advancePercentage) : null,
+          firstPayment:      r.firstPayment ? parseFloat(r.firstPayment) : null,
+          finalPayment:      r.finalPayment ? parseFloat(r.finalPayment) : null,
         });
       }
       setSaving(false);
@@ -177,6 +219,38 @@ function ArmCalculation() {
             </Nav>
           </div>
 
+          {/* ── Component / Component Type (applies to every row saved below) ── */}
+          <div style={{ padding: "18px 24px 0" }}>
+            <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+              <div style={{ minWidth: 240, flex: "1 1 240px" }}>
+                <Form.Label style={{ fontWeight: 600, fontSize: "12.5px", color: "#4a5568" }}>{t("Component Type")}</Form.Label>
+                <Form.Select
+                  value={componentTypeId}
+                  onChange={(e) => setComponentTypeId(e.target.value)}
+                  style={{ borderRadius: "7px", border: "1.5px solid #d0d9e8", fontSize: "13px" }}
+                >
+                  <option value="">{t("-- Select Component Type --")}</option>
+                  {componentTypeList.map((c) => (
+                    <option key={c.scSubSchemeDetailsId} value={c.scSubSchemeDetailsId}>{c.subSchemeName}</option>
+                  ))}
+                </Form.Select>
+              </div>
+              <div style={{ minWidth: 240, flex: "1 1 240px" }}>
+                <Form.Label style={{ fontWeight: 600, fontSize: "12.5px", color: "#4a5568" }}>{t("Component")}</Form.Label>
+                <Form.Select
+                  value={componentId}
+                  onChange={(e) => setComponentId(e.target.value)}
+                  style={{ borderRadius: "7px", border: "1.5px solid #d0d9e8", fontSize: "13px" }}
+                >
+                  <option value="">{t("-- Select Component --")}</option>
+                  {componentList.map((c) => (
+                    <option key={c.scComponentId} value={c.scComponentId}>{c.scComponentName}</option>
+                  ))}
+                </Form.Select>
+              </div>
+            </div>
+          </div>
+
           {/* ── Editable table ────────────────────────── */}
           <Card.Body style={{ padding: "20px 24px" }}>
             <div style={{ overflowX: "auto" }}>
@@ -188,6 +262,9 @@ function ArmCalculation() {
                     <th style={{ ...thStyle, width: 100, textAlign: "center" }}>{t("Qty")} <span className="text-danger">*</span></th>
                     <th style={{ ...thStyle, width: 160, textAlign: "right" }}>{t("Unit Rate (₹)")} <span className="text-danger">*</span></th>
                     <th style={{ ...thStyle, width: 170, textAlign: "right" }}>{t("Total Amount (₹)")}</th>
+                    <th style={{ ...thStyle, width: 110, textAlign: "center" }}>{t("Advance (%)")}</th>
+                    <th style={{ ...thStyle, width: 110, textAlign: "center" }}>{t("First Payment (%)")}</th>
+                    <th style={{ ...thStyle, width: 110, textAlign: "center" }}>{t("Final Payment (%)")}</th>
                     <th style={{ ...thStyle, width: 48, textAlign: "center" }}></th>
                   </tr>
                 </thead>
@@ -239,6 +316,42 @@ function ArmCalculation() {
                             <span style={{ color: "#d1d5db" }}>—</span>
                           )}
                         </td>
+                        <td style={tdStyle}>
+                          <Form.Control
+                            type="number"
+                            value={r.advancePercentage}
+                            onChange={(e) => updateRow(r.key, "advancePercentage", e.target.value)}
+                            placeholder="0"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            style={{ ...inputStyle, textAlign: "center" }}
+                          />
+                        </td>
+                        <td style={tdStyle}>
+                          <Form.Control
+                            type="number"
+                            value={r.firstPayment}
+                            onChange={(e) => updateRow(r.key, "firstPayment", e.target.value)}
+                            placeholder="0"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            style={{ ...inputStyle, textAlign: "center" }}
+                          />
+                        </td>
+                        <td style={tdStyle}>
+                          <Form.Control
+                            type="number"
+                            value={r.finalPayment}
+                            onChange={(e) => updateRow(r.key, "finalPayment", e.target.value)}
+                            placeholder="0"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            style={{ ...inputStyle, textAlign: "center" }}
+                          />
+                        </td>
                         <td style={{ ...tdStyle, textAlign: "center" }}>
                           <Button
                             variant="outline-danger"
@@ -265,7 +378,7 @@ function ArmCalculation() {
                       <td style={{ ...tdStyle, textAlign: "right", fontWeight: 800, fontSize: "15px", color: "#004b8e" }}>
                         ₹ {totalAmt.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                       </td>
-                      <td />
+                      <td colSpan={4} />
                     </tr>
                   </tfoot>
                 )}

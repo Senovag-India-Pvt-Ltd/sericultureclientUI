@@ -5,7 +5,7 @@ import Block from "../../../components/Block/Block";
 // import DatePicker from "../../../components/Form/DatePicker";
 import DatePicker from "react-datepicker";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 // import axios from "axios";
 import { Icon } from "../../../components";
@@ -19,6 +19,12 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 function NewReelerLicense() {
   // Translation
   const { t } = useTranslation();
+  // Same page for both Registration > Reeler License menu items; the "Without License"
+  // menu link adds ?licenseType=without to this URL, which skips the mandatory
+  // validation on a few license-specific fields below.
+  const location = useLocation();
+  const withLicense =
+    new URLSearchParams(location.search).get("licenseType") !== "without";
   // Virtual Bank Account
   const [vbAccountList, setVbAccountList] = useState([]);
   const [vbAccount, setVbAccount] = useState({
@@ -205,6 +211,13 @@ function NewReelerLicense() {
     });
     setSearchValidated(false);
   };
+
+  // Switching between "With License" / "Without License" wipes the form back to
+  // blank, the same as pressing the existing "Clear" button.
+  useEffect(() => {
+    clear();
+    setValidated(false);
+  }, [location.search]);
 
   const [data, setData] = useState({
     fruitsId: "",
@@ -973,45 +986,53 @@ function NewReelerLicense() {
 
   return (
     <Layout title="Reeler License">
+      <style>{reelerFormStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("Reeler License")}</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/reeler-license-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span> {t("Go To List")}</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/reeler-license-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go To List")}</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">
+                {t("Reeler License")}
+                <span className="sh-mode-badge">
+                  {withLicense ? t("With License") : t("Without License")}
+                </span>
+              </Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Link
+                    to="/seriui/reeler-license-list"
+                    className="btn btn-primary btn-md d-md-none sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span> {t("Go To List")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seriui/reeler-license-list"
+                    className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
         {/* <Form action="#"> */}
         <Form noValidate validated={searchValidated} onSubmit={search}>
-          <Card>
+          <Card className="sh-search-card">
             <Card.Body>
               <Row className="g-gs">
                 <Col lg="12">
                   <Form.Group as={Row} className="form-group" controlId="fid">
-                    <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
+                    <Form.Label column sm={1} className="sh-fruits-label">
                       {t("FRUITS ID")}
                       <span className="text-danger">*</span>
                     </Form.Label>
@@ -1030,26 +1051,24 @@ function NewReelerLicense() {
                         {t("Fruits ID Should Contain 16 digits")}.
                       </Form.Control.Feedback>
                     </Col>
-                    <Col sm={2}>
-                      <Button type="submit" variant="primary">
-                        {t("search")}
-                      </Button>
-                    </Col>
-                    <Col sm={2}>
-                      <Button type="submit" variant="primary" onClick={clear}>
-                        {t("Clear")}
-                      </Button>
-                    </Col>
-                    <Col sm={2}>
-                      <Button
-                        type="button"
-                        variant="primary"
-                        href="https://fruits.karnataka.gov.in/OnlineUserLogin.aspx"
-                        target="_blank"
-                        // onClick={search}
-                      >
-                        {t("Generate_FRUITS_ID")}
-                      </Button>
+                    <Col sm={6}>
+                      <div className="d-flex flex-wrap gap-2">
+                        <Button type="submit" variant="primary">
+                          {t("search")}
+                        </Button>
+                        <Button type="submit" variant="primary" onClick={clear}>
+                          {t("Clear")}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="primary"
+                          href="https://fruits.karnataka.gov.in/OnlineUserLogin.aspx"
+                          target="_blank"
+                          // onClick={search}
+                        >
+                          {t("Generate_FRUITS_ID")}
+                        </Button>
+                      </div>
                     </Col>
                   </Form.Group>
                 </Col>
@@ -1061,7 +1080,10 @@ function NewReelerLicense() {
           <Row className="g-1 ">
             <Block className="mt-3">
               <Card>
-                <Card.Header>{t("Reeler Personal info")}</Card.Header>
+                <Card.Header className="sh-section-header">
+                  <Icon name="user" />
+                  <span>{t("Reeler Personal info")}</span>
+                </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="4">
@@ -1351,7 +1373,7 @@ function NewReelerLicense() {
                       <Form.Group className="form-group mt-3">
                         <Form.Label htmlFor="rrno">
                           {t("Electricity RR Numbers")}
-                          <span className="text-danger">*</span>
+                          {withLicense && <span className="text-danger">*</span>}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -1459,7 +1481,7 @@ function NewReelerLicense() {
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
                           {t("Reeler Type")}
-                          <span className="text-danger">*</span>
+                          {withLicense && <span className="text-danger">*</span>}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1467,10 +1489,11 @@ function NewReelerLicense() {
                             value={data.reelerTypeMasterId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            required
+                            required={withLicense}
                             isInvalid={
-                              data.reelerTypeMasterId === undefined ||
-                              data.reelerTypeMasterId === "0"
+                              withLicense &&
+                              (data.reelerTypeMasterId === undefined ||
+                                data.reelerTypeMasterId === "0")
                             }
                           >
                             <option value="">{t("Select Reeler Type")}</option>
@@ -1564,7 +1587,7 @@ function NewReelerLicense() {
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
                           {t("Machine Type")}
-                          <span className="text-danger">*</span>
+                          {withLicense && <span className="text-danger">*</span>}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -1572,10 +1595,11 @@ function NewReelerLicense() {
                             value={data.machineTypeId}
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
-                            required
+                            required={withLicense}
                             isInvalid={
-                              data.machineTypeId === undefined ||
-                              data.machineTypeId === "0"
+                              withLicense &&
+                              (data.machineTypeId === undefined ||
+                                data.machineTypeId === "0")
                             }
                           >
                             <option value="">{t("Select Machine Type")}</option>
@@ -1597,7 +1621,7 @@ function NewReelerLicense() {
                       <Form.Group className="form-group mt-3">
                         <Form.Label>
                           {t("Date of Machine Installation")}
-                          <span className="text-danger">*</span>
+                          {withLicense && <span className="text-danger">*</span>}
                         </Form.Label>
                         <div className="form-control-wrap">
                           {/* <DatePicker
@@ -1773,7 +1797,10 @@ function NewReelerLicense() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header>{t("address")}</Card.Header>
+                <Card.Header className="sh-section-header">
+                  <Icon name="map-pin" />
+                  <span>{t("address")}</span>
+                </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="4">
@@ -1996,7 +2023,10 @@ function NewReelerLicense() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header>{t("License Details")}</Card.Header>
+                <Card.Header className="sh-section-header">
+                  <Icon name="award" />
+                  <span>{t("License Details")}</span>
+                </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
@@ -2025,7 +2055,7 @@ function NewReelerLicense() {
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="reelingLicenseNumber">
                           {t("Reeling License Number")}
-                          <span className="text-danger">*</span>
+                          {withLicense && <span className="text-danger">*</span>}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -2035,7 +2065,7 @@ function NewReelerLicense() {
                             onChange={handleInputs}
                             type="text"
                             placeholder={t("Enter Reeling License Number")}
-                            required
+                            required={withLicense}
                           />
                           <Form.Control.Feedback type="invalid">
                             {t("Reeling License Number is required")}
@@ -2144,7 +2174,10 @@ function NewReelerLicense() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header>{t("Chakbandi Details")}</Card.Header>
+                <Card.Header className="sh-section-header">
+                  <Icon name="crop" />
+                  <span>{t("Chakbandi Details")}</span>
+                </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
@@ -2241,7 +2274,10 @@ function NewReelerLicense() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header> {t("bank_account_details")}</Card.Header>
+                <Card.Header className="sh-section-header">
+                  <Icon name="cc" />
+                  <span>{t("bank_account_details")}</span>
+                </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">
                     <Col lg="6">
@@ -2339,7 +2375,10 @@ function NewReelerLicense() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header>{t("Virtual Bank Account")}</Card.Header>
+                <Card.Header className="sh-section-header">
+                  <Icon name="wallet" />
+                  <span>{t("Virtual Bank Account")}</span>
+                </Card.Header>
                 <Card.Body>
                   {/* <h3>Virtual Bank account</h3> */}
                   <Row className="g-gs mb-1">
@@ -2443,15 +2482,17 @@ function NewReelerLicense() {
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
-                  <Button type="submit" variant="primary">
+                  <Button type="submit" variant="primary" className="shadow-sm px-4 py-2">
+                    <Icon name="check" className="me-1" />
                     {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Link
                     to="/seriui/reeler-license-list"
-                    className="btn btn-secondary border-0"
+                    className="btn sh-cancel-btn shadow-sm px-4 py-2"
                   >
+                    <Icon name="cross" className="me-1" />
                     {t("cancel")}
                   </Link>
                 </li>
@@ -2461,9 +2502,12 @@ function NewReelerLicense() {
         </Form>
       </Block>
 
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+      <Modal show={showModal} onHide={handleCloseModal} size="xl" centered contentClassName="sh-modal-content">
         <Modal.Header closeButton>
-          <Modal.Title>Add Virtual Bank Account Details</Modal.Title>
+          <Modal.Title>
+            <Icon name="wallet" className="me-1" />
+            Add Virtual Bank Account Details
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -2574,10 +2618,11 @@ function NewReelerLicense() {
               </Col>
 
               <Col lg="12">
-                <div className="d-flex justify-content-center gap g-2">
+                <div className="d-flex justify-content-center gap g-2 sh-modal-footer">
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleAdd}> */}
                     <Button type="submit" variant="success">
+                      <Icon name="plus" className="me-1" />
                       {t("add")}
                     </Button>
                   </div>
@@ -2588,6 +2633,7 @@ function NewReelerLicense() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal}>
+                      <Icon name="cross" className="me-1" />
                       {t("cancel")}
                     </Button>
                   </div>
@@ -2598,9 +2644,12 @@ function NewReelerLicense() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModal2} onHide={handleCloseModal2} size="lg">
+      <Modal show={showModal2} onHide={handleCloseModal2} size="lg" centered contentClassName="sh-modal-content">
         <Modal.Header closeButton>
-          <Modal.Title>{t("Edit Virtual Bank Account")}</Modal.Title>
+          <Modal.Title>
+            <Icon name="wallet" className="me-1" />
+            {t("Edit Virtual Bank Account")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -2714,13 +2763,14 @@ function NewReelerLicense() {
               </Col>
 
               <Col lg="12">
-                <div className="d-flex justify-content-center gap g-2">
+                <div className="d-flex justify-content-center gap g-2 sh-modal-footer">
                   <div className="gap-col">
                     {/* <Button
                       variant="success"
                       onClick={() => handleUpdate(vbId, vbAccount)}
                     > */}
                     <Button type="submit" variant="success">
+                      <Icon name="check" className="me-1" />
                       {t("update")}
                     </Button>
                   </div>
@@ -2731,6 +2781,7 @@ function NewReelerLicense() {
                   </div> */}
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal2}>
+                      <Icon name="cross" className="me-1" />
                       {t("cancel")}
                     </Button>
                   </div>
@@ -2743,5 +2794,381 @@ function NewReelerLicense() {
     </Layout>
   );
 }
+
+const reelerFormStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-page-subtitle {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 13.5px;
+  }
+  .sh-mode-badge {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 3px 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    vertical-align: middle;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .sh-form-wrap .card-header {
+    border-bottom: none !important;
+  }
+  .sh-form-wrap .card-body {
+    padding: 20px !important;
+  }
+  .sh-form-wrap .form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+  .sh-form-wrap .form-control,
+  .sh-form-wrap .form-select {
+    border-radius: 10px !important;
+    border: 1.5px solid #d8e0ec !important;
+    background-color: #fbfcfe !important;
+    padding: 0.62rem 0.9rem !important;
+    font-size: 13.5px;
+    color: #2b3a55;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  .sh-form-wrap .form-control::placeholder {
+    color: #a7b0c0;
+    font-weight: 400;
+  }
+  .sh-form-wrap .form-control:hover:not(:disabled):not([readonly]),
+  .sh-form-wrap .form-select:hover:not(:disabled) {
+    border-color: #a9c4e0 !important;
+    background-color: #ffffff !important;
+  }
+  .sh-form-wrap .form-control:focus,
+  .sh-form-wrap .form-select:focus {
+    border-color: #2b7ac0 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14) !important;
+    outline: none;
+  }
+  .sh-form-wrap .form-control[readonly],
+  .sh-form-wrap .form-control:read-only,
+  .sh-form-wrap .form-select:disabled {
+    background-color: #f1f5fa !important;
+    border-color: #e4e9f2 !important;
+    color: #8a96a8 !important;
+    cursor: not-allowed;
+  }
+  .sh-form-wrap .form-control.is-invalid,
+  .sh-form-wrap .form-select.is-invalid {
+    border-color: #e3496a !important;
+    box-shadow: 0 0 0 3px rgba(227, 73, 106, 0.12) !important;
+  }
+  .sh-form-wrap .form-check-input {
+    border-radius: 5px;
+    border: 1.5px solid #c9d4e3;
+    cursor: pointer;
+  }
+  .sh-form-wrap .form-check-input:checked {
+    background-color: #1e67a8;
+    border-color: #1e67a8;
+  }
+  .sh-form-wrap .form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14);
+    border-color: #2b7ac0;
+  }
+  .sh-form-wrap .text-danger {
+    font-weight: 700;
+    margin-left: 3px;
+  }
+  .sh-search-card {
+    background: #ffffff !important;
+    border: none !important;
+    border-top: 4px solid #2b7ac0 !important;
+  }
+  .sh-fruits-label {
+    font-weight: 700 !important;
+    color: #1e67a8 !important;
+    font-size: 14px !important;
+    letter-spacing: 0.3px;
+  }
+  .sh-form-wrap .btn-primary {
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-form-wrap .btn-primary:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(30, 103, 168, 0.25);
+  }
+  .sh-form-wrap .btn-success {
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  .sh-cancel-btn {
+    background: #ffffff;
+    color: #e3496a;
+    border: 1.5px solid #e3496a;
+    border-radius: 8px;
+    transition: background-color 0.15s ease, color 0.15s ease,
+      transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-cancel-btn:hover:not(:disabled),
+  .sh-cancel-btn:focus:not(:disabled) {
+    background: linear-gradient(135deg, #e3496a 0%, #c43257 100%);
+    color: #ffffff;
+    border-color: transparent;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(227, 73, 106, 0.32);
+  }
+  .sh-cancel-btn:disabled {
+    background: #f8f9fa;
+    color: #b8c0cc;
+    border-color: #d8dde6;
+    cursor: not-allowed;
+  }
+  .sh-form-wrap table {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .sh-form-wrap table thead th {
+    background-color: #eef4fc !important;
+    color: #2b3a55 !important;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+    border-bottom: 2px solid #d6e3f3 !important;
+  }
+  .sh-form-wrap table tbody tr:hover {
+    background-color: #f7faff !important;
+  }
+  .sh-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.3px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-left: none !important;
+    color: #ffffff !important;
+    padding: 14px 20px !important;
+  }
+  .sh-section-header svg,
+  .sh-section-header .icon,
+  .sh-modal-content .modal-header svg,
+  .sh-modal-content .modal-header .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 15px;
+  }
+  .modal-backdrop.show {
+    background-color: #0c2844;
+    opacity: 0.75;
+  }
+  .sh-modal-content {
+    border-radius: 12px !important;
+    border: 1px solid #e3ebf6 !important;
+    overflow: hidden;
+  }
+  .sh-modal-content .modal-header {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-bottom: none;
+    padding: 16px 22px;
+  }
+  .sh-modal-content .modal-header .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+  }
+  .sh-modal-content .modal-header .btn-close:hover {
+    opacity: 1;
+  }
+  .sh-modal-content .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.3px;
+    color: #ffffff;
+  }
+  .sh-modal-content .modal-body {
+    padding: 22px 24px;
+  }
+  .sh-modal-content .form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+  .sh-modal-content .form-control,
+  .sh-modal-content .form-select {
+    border-radius: 10px !important;
+    border: 1.5px solid #d8e0ec !important;
+    background-color: #fbfcfe !important;
+    padding: 0.62rem 0.9rem !important;
+    font-size: 13.5px;
+    color: #2b3a55;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  .sh-modal-content .form-control::placeholder {
+    color: #a7b0c0;
+    font-weight: 400;
+  }
+  .sh-modal-content .form-control:hover:not(:disabled):not([readonly]),
+  .sh-modal-content .form-select:hover:not(:disabled) {
+    border-color: #a9c4e0 !important;
+    background-color: #ffffff !important;
+  }
+  .sh-modal-content .form-control:focus,
+  .sh-modal-content .form-select:focus {
+    border-color: #2b7ac0 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14) !important;
+    outline: none;
+  }
+  .sh-modal-content .form-control[readonly],
+  .sh-modal-content .form-control:read-only,
+  .sh-modal-content .form-select:disabled {
+    background-color: #f1f5fa !important;
+    border-color: #e4e9f2 !important;
+    color: #8a96a8 !important;
+    cursor: not-allowed;
+  }
+  .sh-modal-content .form-check-input {
+    border-radius: 5px;
+    border: 1.5px solid #c9d4e3;
+    cursor: pointer;
+  }
+  .sh-modal-content .form-check-input:checked {
+    background-color: #1e67a8;
+    border-color: #1e67a8;
+  }
+  .sh-modal-content .form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14);
+    border-color: #2b7ac0;
+  }
+  .sh-modal-content .form-control.is-invalid,
+  .sh-modal-content .form-select.is-invalid {
+    border-color: #e3496a !important;
+    box-shadow: 0 0 0 3px rgba(227, 73, 106, 0.12) !important;
+  }
+  .sh-modal-content .text-danger {
+    font-weight: 700;
+    margin-left: 3px;
+  }
+  .sh-modal-content .btn-primary {
+    background: linear-gradient(135deg, #1e67a8 0%, #2b7ac0 100%);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 10px rgba(30, 103, 168, 0.2);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-modal-content .btn-primary:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(30, 103, 168, 0.3);
+  }
+  .sh-modal-content .btn-success {
+    background: linear-gradient(135deg, #1e67a8 0%, #2b7ac0 100%);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 10px rgba(30, 103, 168, 0.2);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-modal-content .btn-success:not(:disabled):hover {
+    background: linear-gradient(135deg, #1e67a8 0%, #2b7ac0 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(30, 103, 168, 0.3);
+  }
+  .sh-modal-content .btn-secondary {
+    background: #ffffff;
+    color: #e3496a;
+    border: 1.5px solid #e3496a;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-modal-content .btn-secondary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #e3496a 0%, #c43257 100%);
+    color: #ffffff;
+    border-color: transparent;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(227, 73, 106, 0.28);
+  }
+  .sh-modal-content table {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .sh-modal-content table thead th {
+    background-color: #eef4fc !important;
+    color: #2b3a55 !important;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+    border-bottom: 2px solid #d6e3f3 !important;
+  }
+  .sh-modal-footer {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 10px;
+    padding-top: 18px;
+    border-top: 1px solid #eef1f6;
+  }
+`;
 
 export default NewReelerLicense;
