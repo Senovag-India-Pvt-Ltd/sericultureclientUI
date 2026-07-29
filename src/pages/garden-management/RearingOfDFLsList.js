@@ -1288,24 +1288,62 @@ const [showModal8, setShowModal8] = useState(false);
   );
 
   const customStyles = {
+    table: {
+      style: {
+        borderRadius: "10px",
+        overflow: "hidden",
+        boxShadow: "0 2px 8px rgba(30, 103, 168, 0.06)",
+      },
+    },
     rows: {
       style: {
-        minHeight: "45px", // override the row height
+        minHeight: "52px",
+        fontSize: "13.5px",
+        color: "#2b2d42",
+        borderBottom: "1px solid #eef1f6 !important",
+        transition: "background-color 0.15s ease",
+      },
+      highlightOnHoverStyle: {
+        backgroundColor: "#f4f8fd",
+        cursor: "pointer",
+        outline: "none",
+      },
+      stripedStyle: {
+        backgroundColor: "#fbfcfe",
+      },
+    },
+    headRow: {
+      style: {
+        minHeight: "50px",
+        background:
+          "linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%)",
+        borderTopLeftRadius: "10px",
+        borderTopRightRadius: "10px",
       },
     },
     headCells: {
       style: {
-        backgroundColor: "#1e67a8",
+        backgroundColor: "transparent",
         color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
+        fontSize: "13px",
+        fontWeight: 600,
+        letterSpacing: "0.3px",
+        textTransform: "uppercase",
+        paddingLeft: "12px",
+        paddingRight: "12px",
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
+        paddingLeft: "12px",
+        paddingRight: "12px",
+      },
+    },
+    pagination: {
+      style: {
+        borderTop: "1px solid #eef1f6",
+        fontSize: "13px",
+        color: "#5a6577",
       },
     },
   };
@@ -1915,26 +1953,30 @@ const [showModal8, setShowModal8] = useState(false);
         <div className="text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
-            variant="primary"
+            variant="outline-primary"
             size="sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm"
             onClick={() => handleView(row.id)}
           >
+            <Icon name="eye" />
             {t("View")}
           </Button>
           <Button
             variant="primary"
             size="sm"
-            className="ms-2"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
             onClick={() => handleEdit(row.id)}
           >
+            <Icon name="edit" />
             {t("Edit")}
           </Button>
           <Button
             variant="danger"
             size="sm"
             onClick={() => handleShowModal3(row)}
-            className="ms-2"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
           >
+            <Icon name="plus" />
             {t("Add Feeding Table")}
           </Button>
 
@@ -1942,8 +1984,9 @@ const [showModal8, setShowModal8] = useState(false);
             variant="danger"
             size="sm"
             onClick={() => handleShowModal6(row)}
-            className="ms-2"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
           >
+            <Icon name="plus" />
             {t("Add Moulting Table")}
           </Button>
 
@@ -1951,8 +1994,9 @@ const [showModal8, setShowModal8] = useState(false);
             variant="danger"
             size="sm"
             onClick={() => handleShowModal10(row)}
-            className="ms-2"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
           >
+            <Icon name="plus" />
             {t("Add Temperature Table")}
           </Button>
         </div>
@@ -2089,77 +2133,129 @@ const [showModal8, setShowModal8] = useState(false);
 
   return (
     <Layout title={t("List Of Rearing of DFLs")}>
+      <style>{rearingOfDFLsListStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("List Of Rearing of DFLs")}</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/rearing-of-dfls"
-                  className="btn btn-primary btn-md d-md-none"
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">
+                {t("List Of Rearing of DFLs")}
+              </Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex flex-wrap gap-2">
+                <li>
+                  <Link
+                    to="/seriui/rearing-of-dfls"
+                    className="btn btn-primary btn-md d-md-none sh-cta-btn"
+                  >
+                    <Icon name="plus" />
+                    <span>{t("Create")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seriui/rearing-of-dfls"
+                    className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
+                  >
+                    <Icon name="plus" />
+                    <span>{t("Create")}</span>
+                  </Link>
+                </li>
+                <li>
+                <Button
+                  variant="light"
+                  size="sm"
+                  onClick={() => getMoultList()}
+                  className="sh-cta-btn d-inline-flex align-items-center gap-1"
                 >
-                  <Icon name="plus" />
-                  <span>{t("Create")}</span>
-                </Link>
+                  <Icon name="activity-round" />
+                  {t("Feeding Table List")}
+                </Button>
               </li>
+
               <li>
-                <Link
-                  to="/seriui/rearing-of-dfls"
-                  className="btn btn-primary d-none d-md-inline-flex"
+                <Button
+                  variant="light"
+                  size="sm"
+                  onClick={() => getOnlyMoultingList()}
+                  className="sh-cta-btn d-inline-flex align-items-center gap-1"
                 >
-                  <Icon name="plus" />
-                  <span>{t("Create")}</span>
-                </Link>
+                  <Icon name="activity-round" />
+                  {t("Moulting Table")}
+                </Button>
               </li>
+
               <li>
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={() => getMoultList()}
-                className="ms-2"
-              >
-                {t("Feeding Table List")}
-              </Button>
-            </li>
-
-            <li>
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={() => getOnlyMoultingList()}
-                className="ms-2"
-              >
-                {t("Moulting Table")}
-              </Button>
-            </li>
-
-            <li>
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={() => getOnlyTemperatureList()}
-                className="ms-2"
-              >
-                {t("Temperature Humidity Table")}
-              </Button>
-            </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+                <Button
+                  variant="light"
+                  size="sm"
+                  onClick={() => getOnlyTemperatureList()}
+                  className="sh-cta-btn d-inline-flex align-items-center gap-1"
+                >
+                  <Icon name="activity-round" />
+                  {t("Temperature Humidity Table")}
+                </Button>
+              </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
-        <Card>
+      <Block className="mt-n4 sh-list-wrap">
+        <Card className="sh-list-card">
         {/* <div style={{ overflowX: 'auto' }}> */}
+          <div className="sh-table-wrap">
+            <DataTable
+              // title="New Trader License List"
+              // tableClassName="data-table-head-light table-responsive"
+              columns={RearingOfDFLsDataColumns}
+              data={listData}
+              highlightOnHover
+              striped
+              pointerOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+              noDataComponent={
+                <div className="sh-empty">
+                  <Icon name="inbox" />
+                  <p className="mt-2 mb-0">{t("No records found")}</p>
+                </div>
+              }
+            />
+          </div>
+          {/* </div> */}
+        </Card>
+      </Block>
+
+      <Modal show={showModal8} onHide={handleCloseModal8} size="xl" className="sh-modal">
+  <Modal.Header closeButton className="sh-modal-header">
+    <Modal.Title>
+      <Icon name="activity-round" />
+      <span>{t("Moulting Table")}</span>
+    </Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <Block className="mt-3 sh-list-wrap">
+      <Card className="sh-list-card">
+        <div className="sh-table-wrap">
           <DataTable
-            // title="New Trader License List"
-            // tableClassName="data-table-head-light table-responsive"
-            columns={RearingOfDFLsDataColumns}
-            data={listData}
+            tableClassName="data-table-head-light table-responsive"
+            columns={RearingOfDFLSOnlyMoultingDataColumns}
+            data={listOnlyMoultData}
             highlightOnHover
+            striped
+            pointerOnHover
             pagination
             paginationServer
             paginationTotalRows={totalRows}
@@ -2172,47 +2268,24 @@ const [showModal8, setShowModal8] = useState(false);
             theme="solarized"
             customStyles={customStyles}
           />
-          {/* </div> */}
-        </Card>
-      </Block>
-
-      <Modal show={showModal8} onHide={handleCloseModal8} size="xl">
-  <Modal.Header closeButton>
-    <Modal.Title>{t("Moulting Table")}</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    <Block className="mt-3">
-      <Card>
-        <DataTable
-          tableClassName="data-table-head-light table-responsive"
-          columns={RearingOfDFLSOnlyMoultingDataColumns}
-          data={listOnlyMoultData}
-          highlightOnHover
-          pagination
-          paginationServer
-          paginationTotalRows={totalRows}
-          paginationPerPage={countPerPage}
-          paginationComponentOptions={{
-            noRowsPerPage: true,
-          }}
-          onChangePage={(page) => setPage(page - 1)}
-          progressPending={loading}
-          theme="solarized"
-          customStyles={customStyles}
-        />
+        </div>
       </Card>
     </Block>
   </Modal.Body>
   <Modal.Footer>
-    <Button variant="secondary" onClick={handleCloseModal8}>
-      {t("Close")}
+    <Button variant="secondary" onClick={handleCloseModal8} className="sh-cancel-btn">
+      <Icon name="cross" />
+      <span>{t("Close")}</span>
     </Button>
   </Modal.Footer>
 </Modal>
 
- <Modal show={showModal6} onHide={handleCloseModal6} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>{t("Add Moulting Details")}</Modal.Title>
+ <Modal show={showModal6} onHide={handleCloseModal6} size="xl" className="sh-modal">
+        <Modal.Header closeButton className="sh-modal-header">
+          <Modal.Title>
+            <Icon name="edit" />
+            <span>{t("Add Moulting Details")}</span>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-4">
@@ -2517,9 +2590,12 @@ const [showModal8, setShowModal8] = useState(false);
           </Modal.Body>
       </Modal>
 
-      <Modal show={showModal3} onHide={handleCloseModal3} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>{t("Feeding Table")}</Modal.Title>
+      <Modal show={showModal3} onHide={handleCloseModal3} size="xl" className="sh-modal">
+        <Modal.Header closeButton className="sh-modal-header">
+          <Modal.Title>
+            <Icon name="edit" />
+            <span>{t("Feeding Table")}</span>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-4">
@@ -2722,43 +2798,54 @@ const [showModal8, setShowModal8] = useState(false);
           </Modal.Body>
       </Modal>
 
-      <Modal show={showModal4} onHide={handleCloseModal4} size="xl">
-  <Modal.Header closeButton>
-    <Modal.Title>{t("Feeding Table")}</Modal.Title>
+      <Modal show={showModal4} onHide={handleCloseModal4} size="xl" className="sh-modal">
+  <Modal.Header closeButton className="sh-modal-header">
+    <Modal.Title>
+      <Icon name="activity-round" />
+      <span>{t("Feeding Table")}</span>
+    </Modal.Title>
   </Modal.Header>
   <Modal.Body>
-    <Block className="mt-3">
-      <Card>
-        <DataTable
-          tableClassName="data-table-head-light table-responsive"
-          columns={RearingOfDFLSMoultDataColumns}
-          data={listMoultData}
-          highlightOnHover
-          pagination
-          paginationServer
-          paginationTotalRows={totalRows}
-          paginationPerPage={countPerPage}
-          paginationComponentOptions={{
-            noRowsPerPage: true,
-          }}
-          onChangePage={(page) => setPage(page - 1)}
-          progressPending={loading}
-          theme="solarized"
-          customStyles={customStyles}
-        />
+    <Block className="mt-3 sh-list-wrap">
+      <Card className="sh-list-card">
+        <div className="sh-table-wrap">
+          <DataTable
+            tableClassName="data-table-head-light table-responsive"
+            columns={RearingOfDFLSMoultDataColumns}
+            data={listMoultData}
+            highlightOnHover
+            striped
+            pointerOnHover
+            pagination
+            paginationServer
+            paginationTotalRows={totalRows}
+            paginationPerPage={countPerPage}
+            paginationComponentOptions={{
+              noRowsPerPage: true,
+            }}
+            onChangePage={(page) => setPage(page - 1)}
+            progressPending={loading}
+            theme="solarized"
+            customStyles={customStyles}
+          />
+        </div>
       </Card>
     </Block>
   </Modal.Body>
   <Modal.Footer>
-    <Button variant="secondary" onClick={handleCloseModal4}>
-      {t("Close")}
+    <Button variant="secondary" onClick={handleCloseModal4} className="sh-cancel-btn">
+      <Icon name="cross" />
+      <span>{t("Close")}</span>
     </Button>
   </Modal.Footer>
 </Modal>
 
-<Modal show={showModal5} onHide={handleCloseModal5} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>{t("Edit Feeding Table")}</Modal.Title>
+<Modal show={showModal5} onHide={handleCloseModal5} size="xl" className="sh-modal">
+        <Modal.Header closeButton className="sh-modal-header">
+          <Modal.Title>
+            <Icon name="edit" />
+            <span>{t("Edit Feeding Table")}</span>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-4">
@@ -2960,9 +3047,12 @@ const [showModal8, setShowModal8] = useState(false);
           </Modal.Body>
       </Modal>
 
-        <Modal show={showModal7} onHide={handleCloseModal7} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>{t("Edit Moulting Details")}</Modal.Title>
+        <Modal show={showModal7} onHide={handleCloseModal7} size="xl" className="sh-modal">
+        <Modal.Header closeButton className="sh-modal-header">
+          <Modal.Title>
+            <Icon name="edit" />
+            <span>{t("Edit Moulting Details")}</span>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Block className="mt-4">
@@ -3223,9 +3313,12 @@ const [showModal8, setShowModal8] = useState(false);
           </Modal.Body>
       </Modal>
 
-      <Modal show={showModal10} onHide={handleCloseModal10} size="xl">
-                  <Modal.Header closeButton>
-                    <Modal.Title>{t("Add Temperature Details")}</Modal.Title>
+      <Modal show={showModal10} onHide={handleCloseModal10} size="xl" className="sh-modal">
+                  <Modal.Header closeButton className="sh-modal-header">
+                    <Modal.Title>
+                      <Icon name="edit" />
+                      <span>{t("Add Temperature Details")}</span>
+                    </Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
                     <Block className="mt-4">
@@ -3506,43 +3599,54 @@ const [showModal8, setShowModal8] = useState(false);
                     </Modal.Body>
                 </Modal>
 
-                <Modal show={showModal9} onHide={handleCloseModal9} size="xl">
-                    <Modal.Header closeButton>
-                      <Modal.Title>{t("Temperature-Humidity Table")}</Modal.Title>
+                <Modal show={showModal9} onHide={handleCloseModal9} size="xl" className="sh-modal">
+                    <Modal.Header closeButton className="sh-modal-header">
+                      <Modal.Title>
+                        <Icon name="activity-round" />
+                        <span>{t("Temperature-Humidity Table")}</span>
+                      </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                      <Block className="mt-3">
-                        <Card>
-                          <DataTable
-                            tableClassName="data-table-head-light table-responsive"
-                            columns={RearingOfDFLSOnlyTemperatureDataColumns}
-                            data={listOnlyTemperatureData}
-                            highlightOnHover
-                            pagination
-                            paginationServer
-                            paginationTotalRows={totalRows}
-                            paginationPerPage={countPerPage}
-                            paginationComponentOptions={{
-                              noRowsPerPage: true,
-                            }}
-                            onChangePage={(page) => setPage(page - 1)}
-                            progressPending={loading}
-                            theme="solarized"
-                            customStyles={customStyles}
-                          />
+                      <Block className="mt-3 sh-list-wrap">
+                        <Card className="sh-list-card">
+                          <div className="sh-table-wrap">
+                            <DataTable
+                              tableClassName="data-table-head-light table-responsive"
+                              columns={RearingOfDFLSOnlyTemperatureDataColumns}
+                              data={listOnlyTemperatureData}
+                              highlightOnHover
+                              striped
+                              pointerOnHover
+                              pagination
+                              paginationServer
+                              paginationTotalRows={totalRows}
+                              paginationPerPage={countPerPage}
+                              paginationComponentOptions={{
+                                noRowsPerPage: true,
+                              }}
+                              onChangePage={(page) => setPage(page - 1)}
+                              progressPending={loading}
+                              theme="solarized"
+                              customStyles={customStyles}
+                            />
+                          </div>
                         </Card>
                       </Block>
                     </Modal.Body>
                     <Modal.Footer>
-                      <Button variant="secondary" onClick={handleCloseModal9}>
-                        {t("Close")}
+                      <Button variant="secondary" onClick={handleCloseModal9} className="sh-cancel-btn">
+                        <Icon name="cross" />
+                        <span>{t("Close")}</span>
                       </Button>
                     </Modal.Footer>
                   </Modal>
 
-                <Modal show={showModal11} onHide={handleCloseModal11} size="xl">
-                      <Modal.Header closeButton>
-                        <Modal.Title>{t("Edit Temperature Humidity Details")}</Modal.Title>
+                <Modal show={showModal11} onHide={handleCloseModal11} size="xl" className="sh-modal">
+                      <Modal.Header closeButton className="sh-modal-header">
+                        <Modal.Title>
+                          <Icon name="edit" />
+                          <span>{t("Edit Temperature Humidity Details")}</span>
+                        </Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
                         <Block className="mt-4">
@@ -3823,9 +3927,12 @@ const [showModal8, setShowModal8] = useState(false);
                         </Modal.Body>
                     </Modal>
 
-                    <Modal show={showModal} onHide={handleCloseModal} size="xl">
-                            <Modal.Header closeButton>
-                              <Modal.Title>{t("Cocoon Assesment Details")}</Modal.Title>
+                    <Modal show={showModal} onHide={handleCloseModal} size="xl" className="sh-modal">
+                            <Modal.Header closeButton className="sh-modal-header">
+                              <Modal.Title>
+                                <Icon name="edit" />
+                                <span>{t("Cocoon Assesment Details")}</span>
+                              </Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
                               <Block className="mt-4">
@@ -5597,9 +5704,12 @@ const [showModal8, setShowModal8] = useState(false);
                             </Modal.Body>
                           </Modal>
                     
-                          <Modal show={showModal1} onHide={handleCloseModal1} size="xl">
-                            <Modal.Header closeButton>
-                              <Modal.Title>{t("View")}</Modal.Title>
+                          <Modal show={showModal1} onHide={handleCloseModal1} size="xl" className="sh-modal">
+                            <Modal.Header closeButton className="sh-modal-header">
+                              <Modal.Title>
+                                <Icon name="eye" />
+                                <span>{t("View")}</span>
+                              </Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
                               {loading ? (
@@ -5954,5 +6064,104 @@ const [showModal8, setShowModal8] = useState(false);
     </Layout>
   );
 }
+
+const rearingOfDFLsListStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-list-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-list-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+  .sh-table-wrap {
+    padding: 0 4px 4px;
+  }
+  .sh-empty {
+    padding: 36px 12px;
+    text-align: center;
+    color: #8a96a8;
+    font-size: 14px;
+  }
+  .sh-empty svg {
+    width: 40px;
+    height: 40px;
+    opacity: 0.5;
+  }
+  .sh-modal .modal-content {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .sh-modal-header {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-bottom: none !important;
+    padding: 14px 20px !important;
+  }
+  .sh-modal-header .modal-title {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sh-modal-header .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+  }
+  .sh-save-btn {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(30, 103, 168, 0.25);
+  }
+  .sh-cancel-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+`;
 
 export default RearingOfDFLsList;
