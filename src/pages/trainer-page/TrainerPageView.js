@@ -126,39 +126,47 @@ function TrainerPageView() {
 
   return (
     <Layout title="View Scheduled Training and Trainee Details">
+      <style>{trainerPageViewStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">View Scheduled Training and Trainee Details</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/trainer-page-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/trainer-page-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>Go to List</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">
+                View Scheduled Training and Trainee Details
+              </Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Link
+                    to="/seriui/trainer-page-list"
+                    className="btn btn-primary btn-md d-md-none sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>Go To List</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seriui/trainer-page-list"
+                    className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>Go To List</span>
+                  </Link>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
         <Card>
-          <Card.Header>Scheduled Training Details</Card.Header>
+          <Card.Header className="sh-section-header">
+            <Icon name="eye" />
+            <span>Scheduled Training Details</span>
+          </Card.Header>
           <Card.Body>
             <Row className="g-gs">
               <Col lg="12">
@@ -240,11 +248,12 @@ function TrainerPageView() {
                               <Button
                                 variant="primary"
                                 size="sm"
-                                className="ms-2"
+                                className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
                                 onClick={() =>
                                   downloadFile(trTrainer.trUploadPath)
                                 }
                               >
+                                <Icon name="download" />
                                 Download File
                               </Button>
                             </>
@@ -256,10 +265,11 @@ function TrainerPageView() {
                 <Button
                 variant="primary"
                 size="sm"
-                className="ms-2"
+                className="ms-2 sh-save-btn"
                 onClick={() => handleEdit(trTrainer.trScheduleId)}
               >
-                Start Training
+                <Icon name="activity-round" />
+                <span>Start Training</span>
               </Button>
               </Col>
             </Row>
@@ -267,7 +277,10 @@ function TrainerPageView() {
         </Card>
 
         <Card className="mt-3">
-          <Card.Header>Trainee Details</Card.Header>
+          <Card.Header className="sh-section-header">
+            <Icon name="user-list" />
+            <span>Trainee Details</span>
+          </Card.Header>
           <Card.Body>
            
             {trDetailsList && trDetailsList.length > 0
@@ -362,5 +375,97 @@ function TrainerPageView() {
     </Layout>
   );
 }
+
+const trainerPageViewStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .sh-form-wrap .card-header {
+    border-bottom: none !important;
+  }
+  .sh-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.3px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-left: none !important;
+    color: #ffffff !important;
+    padding: 14px 20px !important;
+  }
+  .sh-section-header svg,
+  .sh-section-header .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 15px;
+  }
+  .sh-save-btn {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(30, 103, 168, 0.25);
+  }
+  .sh-form-wrap table thead th {
+    background-color: #eef4fc !important;
+    color: #2b3a55 !important;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+    border-bottom: 2px solid #d6e3f3 !important;
+  }
+  .sh-form-wrap table tbody tr:hover {
+    background-color: #f7faff !important;
+  }
+`;
 
 export default TrainerPageView;
