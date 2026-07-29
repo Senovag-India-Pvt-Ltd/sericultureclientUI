@@ -464,12 +464,17 @@ const handleAttachFileUpload = async (hdTicketId) => {
   formData.append("multipartFile", attachFiles); // matches @RequestParam("multipartFile")
   formData.append("hdTicketId", hdTicketId);     // matches @RequestParam("hdTicketId")
 
-  // NOTE: do NOT set Content-Type manually. Axios auto-adds the correct
-  // "multipart/form-data; boundary=..." header when the body is FormData;
-  // hard-coding it without a boundary makes the server reject the upload.
+  // The shared `api` axios instance hardcodes a default
+  // "Content-Type: application/json" header, which overrides axios's normal
+  // auto-detection for FormData bodies. Left as-is, the request goes out as
+  // JSON (the File object serializes to "{}"), not as a real file upload —
+  // explicitly clearing it here lets axios/the browser set the correct
+  // "multipart/form-data; boundary=..." header (with a real boundary) for
+  // this call only, without touching the default for every other request.
   const response = await api.post(
     `${baseURL2}hdTicket/hd-attach-files`,
-    formData
+    formData,
+    { headers: { "Content-Type": undefined } }
   );
 
   console.log("✅ File upload response:", response.data);
