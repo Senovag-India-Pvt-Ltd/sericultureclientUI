@@ -335,43 +335,49 @@ function RegisteredPrivateChawki() {
   };
   return (
     <Layout title="Calculation For Registered Private Bivoltine Chawki Rearing Center Subsidy">
+      <style>{registeredPrivateChawkiStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("Calculation For Registered Private Bivoltine Chawki Rearing Center Subsidy")}</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/registered-private-chawki-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go To List")}</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/registered-private-chawki-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go To List")}</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">{t("Calculation For Registered Private Bivoltine Chawki Rearing Center Subsidy")}</Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Link
+                    to="/seriui/registered-private-chawki-list"
+                    className="btn btn-primary btn-md d-md-none sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seriui/registered-private-chawki-list"
+                    className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4 sh-form-wrap">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
           <Block className="mt-3">
             <Card>
-            <Card.Header>{t("Scheme Details")}</Card.Header>
+            <Card.Header className="sh-section-header">
+              <Icon name="setting" />
+              <span>{t("Scheme Details")}</span>
+            </Card.Header>
               <Card.Body>
                 <Row className="g-gs">
                   
@@ -464,7 +470,10 @@ function RegisteredPrivateChawki() {
 
             <Block className="mt-3">
             <Card>
-            <Card.Header>{t("Establishment Of Mulberry Garden")}</Card.Header>
+            <Card.Header className="sh-section-header">
+              <Icon name="package" />
+              <span>{t("Establishment Of Mulberry Garden")}</span>
+            </Card.Header>
               <Card.Body>
                 <Row className="g-gs">
                   
@@ -497,7 +506,10 @@ function RegisteredPrivateChawki() {
 
             <Block className="mt-3">
             <Card>
-            <Card.Header>{t("Installation of Drip Irrigation")}</Card.Header>
+            <Card.Header className="sh-section-header">
+              <Icon name="package" />
+              <span>{t("Installation of Drip Irrigation")}</span>
+            </Card.Header>
               <Card.Body>
                 <Row className="g-gs">
                   
@@ -530,7 +542,10 @@ function RegisteredPrivateChawki() {
 
             <Block className="mt-3">
             <Card>
-            <Card.Header>{t("Chawki Rearing Building")}</Card.Header>
+            <Card.Header className="sh-section-header">
+              <Icon name="package" />
+              <span>{t("Chawki Rearing Building")}</span>
+            </Card.Header>
               <Card.Body>
                 <Row className="g-gs">
                   
@@ -563,7 +578,10 @@ function RegisteredPrivateChawki() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header>{t("Add Rearing Equipment Details")}</Card.Header>
+                <Card.Header className="sh-section-header">
+                  <Icon name="package" />
+                  <span>{t("Add Rearing Equipment Details")}</span>
+                </Card.Header>
                 <Card.Body>
                   {/* <h3>Virtual Bank account</h3> */}
                   <Row className="g-gs mb-1">
@@ -633,15 +651,18 @@ function RegisteredPrivateChawki() {
                                           variant="primary"
                                           size="sm"
                                           onClick={() => handleGet(i)}
+                                          className="d-inline-flex align-items-center gap-1 shadow-sm"
                                         >
+                                          <Icon name="edit" />
                                           {t("Edit")}
                                         </Button>
                                         <Button
                                           variant="danger"
                                           size="sm"
                                           onClick={() => handleDelete(i)}
-                                          className="ms-2"
+                                          className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
                                         >
+                                          <Icon name="trash" />
                                           {t("delete")}
                                         </Button>
                                       </div>
@@ -671,13 +692,15 @@ function RegisteredPrivateChawki() {
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
-                  <Button type="submit" variant="primary">
-                  {t("save")}
+                  <Button type="submit" variant="primary" className="sh-save-btn">
+                  <Icon name="save" />
+                  <span>{t("save")}</span>
                   </Button>
                 </li>
                 <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
-                  {t("cancel")}
+                  <Button type="button" variant="secondary" onClick={clear} className="sh-cancel-btn">
+                  <Icon name="cross" />
+                  <span>{t("cancel")}</span>
                   </Button>
                 </li>
               </ul>
@@ -686,9 +709,12 @@ function RegisteredPrivateChawki() {
         </Form>
       </Block>
 
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+      <Modal show={showModal} onHide={handleCloseModal} size="xl" contentClassName="sh-modal-content">
         <Modal.Header closeButton>
-          <Modal.Title>{t("Add Rearing Equipment Details")}</Modal.Title>
+          <Modal.Title>
+            <Icon name="package" />
+            {t("Add Rearing Equipment Details")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -811,7 +837,7 @@ function RegisteredPrivateChawki() {
               </Col>
 
               <Col lg="12">
-                <div className="d-flex justify-content-center gap g-2">
+                <div className="d-flex justify-content-center gap g-2 sh-modal-footer">
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleAdd}> */}
                     <Button type="submit" variant="success">
@@ -835,9 +861,12 @@ function RegisteredPrivateChawki() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
+      <Modal show={showModal2} onHide={handleCloseModal2} size="xl" contentClassName="sh-modal-content">
         <Modal.Header closeButton>
-          <Modal.Title>{t("Edit Rearing Equipment Details")}</Modal.Title>
+          <Modal.Title>
+            <Icon name="edit" />
+            {t("Edit Rearing Equipment Details")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -962,7 +991,7 @@ function RegisteredPrivateChawki() {
               </Col>
 
               <Col lg="12">
-                <div className="d-flex justify-content-center gap g-2">
+                <div className="d-flex justify-content-center gap g-2 sh-modal-footer">
                   <div className="gap-col">
                     <Button type="submit" variant="success">
                     {t("update")}
@@ -987,5 +1016,270 @@ function RegisteredPrivateChawki() {
     </Layout>
   );
 }
+
+const registeredPrivateChawkiStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .sh-form-wrap .card-header {
+    border-bottom: none !important;
+  }
+  .sh-form-wrap .form-label {
+    font-weight: 600;
+    color: #33475b;
+    font-size: 13.5px;
+  }
+  .sh-form-wrap .form-control,
+  .sh-form-wrap .form-select {
+    border-radius: 8px;
+    border: 1.5px solid #dbe4ee;
+    padding: 9px 12px;
+    font-size: 13.5px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-form-wrap .form-control:hover,
+  .sh-form-wrap .form-select:hover {
+    border-color: #9fc0e0;
+  }
+  .sh-form-wrap .form-control:focus,
+  .sh-form-wrap .form-select:focus {
+    border-color: #1e67a8;
+    box-shadow: 0 0 0 0.2rem rgba(30, 103, 168, 0.15);
+  }
+  .sh-form-wrap .form-control[readonly] {
+    background-color: #f4f6f9;
+  }
+  .sh-form-wrap .form-control.is-invalid,
+  .sh-form-wrap .form-select.is-invalid {
+    border-color: #e3496a;
+  }
+  .sh-form-wrap .text-danger {
+    color: #e3496a !important;
+  }
+  .sh-form-wrap table thead th {
+    background-color: #eef4fc !important;
+    color: #2b3a55 !important;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+    border-bottom: 2px solid #d6e3f3 !important;
+  }
+  .sh-form-wrap table tbody tr:hover {
+    background-color: #f7faff !important;
+  }
+  .sh-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.3px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-left: none !important;
+    color: #ffffff !important;
+    padding: 14px 20px !important;
+  }
+  .sh-section-header svg,
+  .sh-section-header .icon,
+  .sh-modal-content .modal-header svg,
+  .sh-modal-content .modal-header .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 15px;
+  }
+  .sh-save-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border: none;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(30, 103, 168, 0.25);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-save-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(30, 103, 168, 0.32);
+  }
+  .sh-cancel-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #ffffff;
+    color: #e3496a;
+    border: 1.5px solid #e3496a;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-cancel-btn:hover:not(:disabled),
+  .sh-cancel-btn:focus:not(:disabled) {
+    background: linear-gradient(135deg, #e3496a 0%, #c43257 100%);
+    color: #ffffff;
+    border-color: transparent;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(227, 73, 106, 0.32);
+  }
+  .sh-modal-content {
+    border-radius: 12px !important;
+    border: 1px solid #e3ebf6 !important;
+    overflow: hidden;
+  }
+  .sh-modal-content .modal-header {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-bottom: none;
+    padding: 16px 22px;
+  }
+  .sh-modal-content .modal-header .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+  }
+  .sh-modal-content .modal-header .btn-close:hover {
+    opacity: 1;
+  }
+  .sh-modal-content .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.3px;
+    color: #ffffff;
+  }
+  .sh-modal-content .modal-body {
+    padding: 22px 24px;
+  }
+  .sh-modal-content .form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+  .sh-modal-content .form-control,
+  .sh-modal-content .form-select {
+    border-radius: 10px !important;
+    border: 1.5px solid #d8e0ec !important;
+    background-color: #fbfcfe !important;
+    padding: 0.62rem 0.9rem !important;
+    font-size: 13.5px;
+    color: #2b3a55;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  .sh-modal-content .form-control:hover:not(:disabled):not([readonly]),
+  .sh-modal-content .form-select:hover:not(:disabled) {
+    border-color: #a9c4e0 !important;
+    background-color: #ffffff !important;
+  }
+  .sh-modal-content .form-control:focus,
+  .sh-modal-content .form-select:focus {
+    border-color: #2b7ac0 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14) !important;
+    outline: none;
+  }
+  .sh-modal-content .form-control.is-invalid,
+  .sh-modal-content .form-select.is-invalid {
+    border-color: #e3496a !important;
+    box-shadow: 0 0 0 3px rgba(227, 73, 106, 0.12) !important;
+  }
+  .sh-modal-content .text-danger {
+    font-weight: 700;
+    margin-left: 3px;
+  }
+  .sh-modal-content .btn-success {
+    background: linear-gradient(135deg, #1e67a8 0%, #2b7ac0 100%);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 10px rgba(30, 103, 168, 0.2);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-modal-content .btn-success:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(30, 103, 168, 0.3);
+  }
+  .sh-modal-content .btn-secondary {
+    background: #ffffff;
+    color: #e3496a;
+    border: 1.5px solid #e3496a;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-modal-content .btn-secondary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #e3496a 0%, #c43257 100%);
+    color: #ffffff;
+    border-color: transparent;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(227, 73, 106, 0.28);
+  }
+  .sh-modal-content table {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .sh-modal-content table thead th {
+    background-color: #eef4fc !important;
+    color: #2b3a55 !important;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+    border-bottom: 2px solid #d6e3f3 !important;
+  }
+  .sh-modal-footer {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 10px;
+    padding-top: 18px;
+    border-top: 1px solid #eef1f6;
+  }
+`;
 
 export default RegisteredPrivateChawki;

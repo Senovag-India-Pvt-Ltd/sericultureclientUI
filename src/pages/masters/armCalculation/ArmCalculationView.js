@@ -38,22 +38,25 @@ function ArmCalculationView() {
 
   return (
     <Layout title={t("View ARM Calculation")}>
+      <style>{armCalculationViewHeaderStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("ARM Calculation Details")}</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <div className="d-flex gap-2">
-              <Button onClick={() => navigate(`/seriui/arm-calculation-edit/${id}`)} style={{ background: "linear-gradient(135deg,#1e67a8,#2d9cdb)", border: "none", borderRadius: "8px", fontWeight: 700 }}>
-                <Icon name="edit" /> {t("Edit")}
-              </Button>
-              <Link to="/seriui/arm-calculation-list" className="btn btn-outline-secondary" style={{ borderRadius: "8px", fontWeight: 700 }}>
-                <Icon name="arrow-left" /> {t("Back")}
-              </Link>
-            </div>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">{t("ARM Calculation Details")}</Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <div className="d-flex gap-2">
+                <Button onClick={() => navigate(`/seriui/arm-calculation-edit/${id}`)} style={{ background: "linear-gradient(135deg,#1e67a8,#2d9cdb)", border: "none", borderRadius: "8px", fontWeight: 700 }}>
+                  <Icon name="edit" /> {t("Edit")}
+                </Button>
+                <Link to="/seriui/arm-calculation-list" className="btn btn-outline-secondary" style={{ borderRadius: "8px", fontWeight: 700 }}>
+                  <Icon name="arrow-left" /> {t("Back")}
+                </Link>
+              </div>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
       <Block className="mt-n4">
@@ -163,5 +166,22 @@ function ArmCalculationView() {
     </Layout>
   );
 }
+
+const armCalculationViewHeaderStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+`;
 
 export default ArmCalculationView;

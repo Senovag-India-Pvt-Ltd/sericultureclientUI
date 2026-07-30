@@ -15,6 +15,37 @@ if (typeof document !== "undefined" && !document.getElementById("armedit-styles"
   const s = document.createElement("style");
   s.id = "armedit-styles";
   s.innerHTML = `
+    .sh-page-header {
+      padding: 20px 24px;
+      background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+      margin-bottom: 22px;
+    }
+    .sh-page-title {
+      margin-bottom: 4px;
+      color: #ffffff !important;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+    .sh-cta-btn {
+      background: #ffffff;
+      color: #1e67a8 !important;
+      border: none;
+      box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 8px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    }
+    .sh-cta-btn:hover {
+      background: #eef6ff;
+      color: #1e67a8 !important;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+    }
+
     .armedit-wrap { animation: armedit-fade .35s ease; }
     @keyframes armedit-fade { from { opacity:0; transform:translateY(8px);} to { opacity:1; transform:none; } }
 
@@ -268,16 +299,18 @@ function ArmCalculationEdit() {
   return (
     <Layout title={t("Edit ARM Calculation")}>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("Edit ARM Calculation")}</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <Link to="/seriui/arm-calculation-list" className="btn btn-primary d-none d-md-inline-flex">
-              <Icon name="arrow-left" /><span>{t("Back to List")}</span>
-            </Link>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">{t("Edit ARM Calculation")}</Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <Link to="/seriui/arm-calculation-list" className="btn btn-primary d-none d-md-inline-flex sh-cta-btn">
+                <Icon name="arrow-left" /><span>{t("Back to List")}</span>
+              </Link>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
       <Block className="mt-n4 armedit-wrap">
