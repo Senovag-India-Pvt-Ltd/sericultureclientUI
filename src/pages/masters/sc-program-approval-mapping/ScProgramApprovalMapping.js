@@ -375,41 +375,48 @@ function ScProgramApprovalMapping() {
   };
   return (
     <Layout title="Service Program Approval Mapping">
+      <style>{scProgramApprovalMappingStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("Service Program Approval Mapping")}</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/sc-program-approval-mapping-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go To List")}</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/sc-program-approval-mapping-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go To List")}</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">{t("Service Program Approval Mapping")}</Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Link
+                    to="/seriui/sc-program-approval-mapping-list"
+                    className="btn btn-primary btn-md d-md-none sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seriui/sc-program-approval-mapping-list"
+                    className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4 sh-form-wrap">
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           <Row className="g-3 ">
             <Card>
+              <Card.Header className="sh-section-header">
+                <Icon name="setting" />
+                <span>{t("Scheme And Approval Stage Details")}</span>
+              </Card.Header>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
                 <Row className="g-gs">
@@ -674,7 +681,7 @@ function ScProgramApprovalMapping() {
 
             <Block className="mt-3">
               <Card>
-                <Card.Header>{t("Add Designation")}</Card.Header>
+                <Card.Header className="sh-section-header"><Icon name="package" /><span>{t("Add Designation")}</span></Card.Header>
                 <Card.Body>
                   {/* <h3>Virtual Bank account</h3> */}
                   <Row className="g-gs mb-1">
@@ -742,15 +749,18 @@ function ScProgramApprovalMapping() {
                                           variant="primary"
                                           size="sm"
                                           onClick={() => handleGet(i)}
+                                          className="d-inline-flex align-items-center gap-1 shadow-sm"
                                         >
+                                          <Icon name="edit" />
                                           {t("Edit")}
                                         </Button>
                                         <Button
                                           variant="danger"
                                           size="sm"
                                           onClick={() => handleDelete(i)}
-                                          className="ms-2"
+                                          className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
                                         >
+                                          <Icon name="trash" />
                                           {t("delete")}
                                         </Button>
                                       </div>
@@ -778,12 +788,14 @@ function ScProgramApprovalMapping() {
             <div className="gap-col">
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
-                  <Button type="submit" variant="primary">
+                  <Button type="submit" variant="primary" className="sh-save-btn">
+                  <Icon name="save" />
                   {t("save")}
                   </Button>
                 </li>
                 <li>
-                  <Button type="button" variant="secondary" onClick={clear}>
+                  <Button type="button" variant="secondary" onClick={clear} className="sh-cancel-btn">
+                  <Icon name="cross" />
                   {t("cancel")}
                   </Button>
                 </li>
@@ -793,9 +805,9 @@ function ScProgramApprovalMapping() {
         </Form>
       </Block>
 
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+      <Modal show={showModal} onHide={handleCloseModal} size="xl" contentClassName="sh-modal-content">
         <Modal.Header closeButton>
-          <Modal.Title>{t("Add Designation")}</Modal.Title>
+          <Modal.Title><Icon name="plus" />{t("Add Designation")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -881,7 +893,8 @@ function ScProgramApprovalMapping() {
                 <div className="d-flex justify-content-center gap g-2">
                   <div className="gap-col">
                     {/* <Button variant="success" onClick={handleAdd}> */}
-                    <Button type="submit" variant="success">
+                    <Button type="submit" variant="success" className="sh-save-btn">
+                    <Icon name="plus" />
                     {t("add")}
                     </Button>
                   </div>
@@ -891,7 +904,9 @@ function ScProgramApprovalMapping() {
                       type="button"
                       variant="secondary"
                       onClick={designationClear}
+                      className="sh-cancel-btn"
                     >
+                       <Icon name="cross" />
                        {t("Clear")}
                     </Button>
                   </div>
@@ -902,9 +917,9 @@ function ScProgramApprovalMapping() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
+      <Modal show={showModal2} onHide={handleCloseModal2} size="xl" contentClassName="sh-modal-content">
         <Modal.Header closeButton>
-          <Modal.Title>{t("Edit Designation")}</Modal.Title>
+          <Modal.Title><Icon name="edit" />{t("Edit Designation")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* <Form action="#"> */}
@@ -991,7 +1006,8 @@ function ScProgramApprovalMapping() {
               <Col lg="12">
                 <div className="d-flex justify-content-center gap g-2">
                   <div className="gap-col">
-                    <Button type="submit" variant="success">
+                    <Button type="submit" variant="success" className="sh-save-btn">
+                    <Icon name="save" />
                     {t("update")}
                     </Button>
                   </div>
@@ -1001,7 +1017,9 @@ function ScProgramApprovalMapping() {
                       type="button"
                       variant="secondary"
                       onClick={designationClear}
+                      className="sh-cancel-btn"
                     >
+                      <Icon name="cross" />
                       {t("Clear")}
                     </Button>
                   </div>
@@ -1014,5 +1032,142 @@ function ScProgramApprovalMapping() {
     </Layout>
   );
 }
+
+const scProgramApprovalMappingStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+  .sh-form-wrap .card-header {
+    border-bottom: none !important;
+  }
+  .sh-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.3px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-left: none !important;
+    color: #ffffff !important;
+    padding: 14px 20px !important;
+  }
+  .sh-section-header svg,
+  .sh-section-header .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 15px;
+  }
+  .sh-form-wrap .form-label {
+    font-weight: 600;
+    color: #2b3a55;
+    font-size: 13.5px;
+  }
+  .sh-form-wrap .form-control,
+  .sh-form-wrap .form-select {
+    border-radius: 8px;
+    border: 1px solid #dbe4f0;
+    padding: 9px 12px;
+    font-size: 13.5px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-form-wrap .form-control:focus,
+  .sh-form-wrap .form-select:focus {
+    border-color: #3b8dd6;
+    box-shadow: 0 0 0 0.2rem rgba(59, 141, 214, 0.15);
+  }
+  .sh-save-btn {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border: none !important;
+    font-weight: 600;
+    padding: 8px 22px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(30, 103, 168, 0.25);
+  }
+  .sh-cancel-btn {
+    background: #ffffff !important;
+    color: #c43257 !important;
+    border: 1px solid #e3496a !important;
+    font-weight: 600;
+    padding: 8px 22px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s ease;
+  }
+  .sh-cancel-btn:hover {
+    background: linear-gradient(135deg, #e3496a 0%, #c43257 100%) !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+  }
+  .sh-modal-content {
+    border: none;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .sh-modal-content .modal-header {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-bottom: none;
+    padding: 18px 24px;
+  }
+  .sh-modal-content .modal-title {
+    color: #ffffff;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sh-modal-content .btn-close {
+    filter: invert(1) brightness(200%);
+  }
+`;
 
 export default ScProgramApprovalMapping;
