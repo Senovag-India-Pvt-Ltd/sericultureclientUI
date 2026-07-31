@@ -167,8 +167,12 @@ function UsersView() {
                         <td style={styles.ctstyle}>{t("Division Name")}</td>
                         <td>{user.nameInKannada}</td>
                       </tr>
+                      <tr>
+                        <td style={styles.ctstyle}>{t("Division Name For Sanction Order English")}</td>
+                        <td>{user.designationNameInEnglishForSanctionOrder}</td>
+                      </tr>
 
-                      
+
                     </tbody>
                   </table>
                 </Col>

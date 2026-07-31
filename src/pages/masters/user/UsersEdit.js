@@ -74,6 +74,7 @@ function UsersEdit() {
               divisionMasterId: "",
               allowAnyUser:"",
               designationNameInKannadaForSanctionOrder: "",
+              designationNameInEnglishForSanctionOrder: "",
             });
             setValidated(false);
           }
@@ -904,6 +905,24 @@ function UsersEdit() {
                         </Form.Group>
                       </Col>
 
+                      <Col lg="4">
+                        <Form.Group className="form-group">
+                          <Form.Label htmlFor="designationNameInEnglishForSanctionOrder">
+                            {t("Division Name For Sanction Order English")}
+                          </Form.Label>
+                          <div className="form-control-wrap">
+                            <Form.Control
+                              id="designationNameInEnglishForSanctionOrder"
+                              name="designationNameInEnglishForSanctionOrder"
+                              value={data.designationNameInEnglishForSanctionOrder}
+                              onChange={handleInputs}
+                              type="text"
+                              placeholder={t("Enter Division in English")}
+                            />
+                          </div>
+                        </Form.Group>
+                      </Col>
+
                        <Col lg="2">
                           <Form.Group as={Row} className="form-group mt-4">
                             <Col sm={1}>
@@ -923,7 +942,7 @@ function UsersEdit() {
                             </Form.Label>
                           </Form.Group>
                         </Col>
-                  
+
                 </Row>
               </Card.Body>
             </Card>

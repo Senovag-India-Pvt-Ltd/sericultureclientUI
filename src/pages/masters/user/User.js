@@ -35,6 +35,7 @@ function User() {
     divisionMasterId: "",
     allowAnyUser:"",
     designationNameInKannadaForSanctionOrder: "",
+    designationNameInEnglishForSanctionOrder: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -98,6 +99,7 @@ function User() {
               divisionMasterId: "",
               allowAnyUser:"",
               designationNameInKannadaForSanctionOrder: "",
+              designationNameInEnglishForSanctionOrder: "",
             });
             setValidated(false);
           }
@@ -895,6 +897,24 @@ function User() {
                           onChange={handleInputs}
                           type="text"
                           placeholder={t("Enter Division")}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="4">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="designationNameInEnglishForSanctionOrder">
+                        {t("Division Name For Sanction Order English")}
+                      </Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Control
+                          id="designationNameInEnglishForSanctionOrder"
+                          name="designationNameInEnglishForSanctionOrder"
+                          value={data.designationNameInEnglishForSanctionOrder}
+                          onChange={handleInputs}
+                          type="text"
+                          placeholder={t("Enter Division in English")}
                         />
                       </div>
                     </Form.Group>
