@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
-import { FaSquare, FaCheckSquare, FaMinusSquare } from "react-icons/fa";
+import { FaRegSquare, FaCheckSquare, FaMinusSquare } from "react-icons/fa";
 import { IoMdArrowDropright } from "react-icons/io";
 import TreeView, { flattenTree } from "react-accessible-treeview";
 import cx from "classnames";
@@ -23,6 +23,8 @@ function RoleConfig() {
     rpRolePermissionId: 4,
     values: [],
   });
+
+  const [validated, setValidated] = useState(false);
 
   //   to clear selected ids
   //   const [selectedIds, setSelectedIds] = useState([6,8]);
@@ -166,6 +168,76 @@ function RoleConfig() {
 
   const ourTree = flattenTree(folders);
 
+  // Deterministic checkbox-tree toggle logic, independent of the library's
+  // own internal propagateSelect reducer (which was leaving some nested
+  // items permanently checked and un-uncheckable — the underlying id was
+  // never actually present in data.values, only implied by a checked
+  // ancestor, so removing "just this id" on click was a no-op).
+  //
+  // childrenOf / parentOf: adjacency built once per render from arr.
+  const childrenOf = {};
+  const parentOf = {};
+  arr.forEach((item) => {
+    parentOf[item.rpPagePermissionId] = item.parent || null;
+    if (item.parent) {
+      if (!childrenOf[item.parent]) childrenOf[item.parent] = [];
+      childrenOf[item.parent].push(item.rpPagePermissionId);
+    }
+  });
+
+  const getDescendantIds = (id) => {
+    const result = [];
+    const stack = [...(childrenOf[id] || [])];
+    while (stack.length) {
+      const next = stack.pop();
+      result.push(next);
+      if (childrenOf[next]) stack.push(...childrenOf[next]);
+    }
+    return result;
+  };
+
+  const getAncestorIds = (id) => {
+    const result = [];
+    let current = parentOf[id];
+    while (current) {
+      result.push(current);
+      current = parentOf[current];
+    }
+    return result;
+  };
+
+  // A node counts as selected if its own id is in the list, OR any ancestor's
+  // id is (matches how the tree visually renders propagated selection) —
+  // needed so older saved data that only recorded a parent id still expands
+  // correctly the first time a node under it is toggled.
+  const isEffectivelySelected = (id, valuesSet) =>
+    valuesSet.has(id) || getAncestorIds(id).some((a) => valuesSet.has(a));
+
+  const toggleNodeSelection = (clickedId) => {
+    const currentSet = new Set(data.values);
+    const wasSelected = isEffectivelySelected(clickedId, currentSet);
+
+    // Materialize every currently-effective selection (including ones only
+    // implied by an ancestor) into an explicit set, so storage never again
+    // depends on ancestor-implies-descendant semantics.
+    const allIds = arr.map((item) => item.rpPagePermissionId);
+    const materialized = new Set(
+      allIds.filter((id) => isEffectivelySelected(id, currentSet))
+    );
+
+    const affected = [clickedId, ...getDescendantIds(clickedId)];
+    if (wasSelected) {
+      affected.forEach((id) => materialized.delete(id));
+    } else {
+      affected.forEach((id) => materialized.add(id));
+    }
+
+    setData((prevData) => ({
+      ...prevData,
+      values: Array.from(materialized),
+    }));
+  };
+
   const ArrowIcon = ({ isOpen, className }) => {
     const baseClass = "arrow";
     const classes = cx(
@@ -182,7 +254,7 @@ function RoleConfig() {
       case "all":
         return <FaCheckSquare {...rest} />;
       case "none":
-        return <FaSquare {...rest} />;
+        return <FaRegSquare {...rest} />;
       case "some":
         return <FaMinusSquare {...rest} />;
       default:
@@ -193,6 +265,16 @@ function RoleConfig() {
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
   const postData = (e) => {
+    if (!data.roleId || data.roleId === "0") {
+      setValidated(true);
+      Swal.fire({
+        icon: "warning",
+        title: "Role is required",
+        text: "Please select a Role before submitting.",
+      });
+      return;
+    }
+    setValidated(false);
     api
       .post(baseURL + `rp-role-association/save-multiple`, data)
       .then((response) => {
@@ -219,6 +301,7 @@ function RoleConfig() {
     name = e.target.name;
     value = e.target.value;
     setData({ ...data, [name]: value });
+    setValidated(false);
     api
       .post(
         baseURL +
@@ -237,9 +320,16 @@ function RoleConfig() {
         //   item.value
         // ))
         if (res) {
+          // A saved value can reference an rpPagePermissionId that was later
+          // deleted/deactivated. Passing such a stale id to TreeView's
+          // selectedIds crashes it with "Node with id=X doesn't exist in
+          // the tree.", so drop any id no longer present in the current tree.
+          const validIds = new Set(arr.map((item) => item.rpPagePermissionId));
           setData((prev) => ({
             ...prev,
-            values: res.map((item) => item.value),
+            values: res
+              .map((item) => item.value)
+              .filter((id) => validIds.has(id)),
           }));
         } else {
           setData((prev) => ({ ...prev, values: [] }));
@@ -347,12 +437,19 @@ function RoleConfig() {
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group ">
-                      <Form.Label>Role</Form.Label>
+                      <Form.Label>
+                        Role<span className="text-danger">*</span>
+                      </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
                           name="roleId"
                           value={data.roleId}
                           onChange={handleInputs}
+                          required
+                          isInvalid={
+                            validated &&
+                            (!data.roleId || data.roleId === "0")
+                          }
                         >
                           <option value="0">Select Roles</option>
                           {rolesListData.map((list) => (
@@ -361,6 +458,9 @@ function RoleConfig() {
                             </option>
                           ))}
                         </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          Role is required
+                        </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                   </Col>
@@ -375,56 +475,58 @@ function RoleConfig() {
                           multiSelect
                           selectedIds={data.values}
                           defaultExpandedIds={[1]}
-                          propagateSelect
-                          propagateSelectUpwards
-                          togglableSelect
                           nodeRenderer={({
                             element,
                             isBranch,
                             isExpanded,
-                            isSelected,
-                            isHalfSelected,
-                            isDisabled,
                             getNodeProps,
                             level,
-                            handleSelect,
                             handleExpand,
                           }) => {
-                            // console.log(isExpanded);
-                            // console.log("parent",element.parent);
-                            // console.log("isSelected",isSelected);
-                            // console.log("isHalfSelected",isHalfSelected)
-
-                            // console.log("isBranch",isBranch);
-                            const onCheckboxSelect = (e, selectedId) => {
-                              handleSelect(e);
+                            // Checked/half-checked state is computed entirely
+                            // from data.values ourselves (isEffectivelySelected
+                            // / getDescendantIds), NOT from the library's own
+                            // isSelected/isHalfSelected. The library's
+                            // propagateSelect prop, when enabled, re-adds every
+                            // descendant of a still-selected ancestor back into
+                            // its internal state on every prop change — which
+                            // silently undid our own toggleNodeSelection removal
+                            // one render later, making nested items impossible
+                            // to uncheck. propagateSelect/propagateSelectUpwards/
+                            // togglableSelect are intentionally omitted above so
+                            // the library only mirrors data.values verbatim.
+                            const onCheckboxSelect = (e) => {
+                              toggleNodeSelection(element.id);
                               e.stopPropagation();
-                              console.log(element.parent);
-
-                              //   const isSelected =
-                              //     data.values.includes(selectedId);
-                              let updatedValues;
-                              // console.log(isSelected);
-
-                              if (isSelected) {
-                                updatedValues = data.values.filter(
-                                  (id) => id !== selectedId
-                                );
-                                // updatedValues = [...data.values, selectedId];
-                                console.log("hello", updatedValues);
-                              }
-                              // else if(element.parent){
-                              //   updatedValues = [...data.values, selectedId,element.parent];
-                              // }
-                              else {
-                                updatedValues = [...data.values, selectedId];
-                              }
-                              setData((prevData) => ({
-                                ...prevData,
-                                values: updatedValues,
-                              }));
                             };
-                            // console.log(data);
+
+                            const selectedSet = new Set(data.values);
+                            const selfSelected = isEffectivelySelected(
+                              element.id,
+                              selectedSet
+                            );
+                            const descendantIds = getDescendantIds(element.id);
+                            const selectedDescendantCount = descendantIds.filter(
+                              (id) => isEffectivelySelected(id, selectedSet)
+                            ).length;
+
+                            let variant = "none";
+                            if (isBranch) {
+                              if (
+                                selfSelected &&
+                                selectedDescendantCount === descendantIds.length
+                              ) {
+                                variant = "all";
+                              } else if (
+                                selfSelected ||
+                                selectedDescendantCount > 0
+                              ) {
+                                variant = "some";
+                              }
+                            } else {
+                              variant = selfSelected ? "all" : "none";
+                            }
+
                             return (
                               <div
                                 {...getNodeProps({ onClick: handleExpand })}
@@ -433,16 +535,8 @@ function RoleConfig() {
                                 {isBranch && <ArrowIcon isOpen={isExpanded} />}
                                 <CheckBoxIcon
                                   className="checkbox-icon"
-                                  onClick={(e) =>
-                                    onCheckboxSelect(e, element.id)
-                                  }
-                                  variant={
-                                    isHalfSelected
-                                      ? "some"
-                                      : isSelected
-                                      ? "all"
-                                      : "none"
-                                  }
+                                  onClick={onCheckboxSelect}
+                                  variant={variant}
                                 />
                                 <span className="name">{element.name}</span>
                               </div>

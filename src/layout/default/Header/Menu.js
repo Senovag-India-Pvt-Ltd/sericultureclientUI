@@ -293,6 +293,7 @@ function Menu() {
     Market_SeedCocoonMarket_Base_Price_Fixation: false,
     Market_SeedCocoonMarket_Lot_Wise_Price_Fixation: false,
     Market_SeedCocoonMarket_Pupa_Test_Cocoon_Assessment_Page: false,
+    Market_SeedCocoonMarket_InvoicePermitReceipt: false,
         Market_Crop_Inspection_Edit: false,
             Market_Fitness_Edit: false,
 
@@ -923,6 +924,12 @@ function Menu() {
           updatedShowMenu[key] = true;
         }
       });
+      // The cascade above only matches keys with a trailing "_" (i.e. the
+      // descendants), never the exact trigger string itself -- so without
+      // this, granting the whole "Training" node left every child menu item
+      // correctly enabled while the wrapper gating the entire flyout stayed
+      // false, hiding the whole populated section.
+      updatedShowMenu["Admin_Master_Training"] = true;
     }
 
     if (data.includes("Admin_Master_HelpDesk")) {
@@ -931,6 +938,7 @@ function Menu() {
           updatedShowMenu[key] = true;
         }
       });
+      updatedShowMenu["Admin_Master_HelpDesk"] = true;
     }
 
     if (data.includes("Admin_Master_Garden")) {
@@ -939,6 +947,7 @@ function Menu() {
           updatedShowMenu[key] = true;
         }
       });
+      updatedShowMenu["Admin_Master_Garden"] = true;
     }
 
     if (data.includes("Admin_Master_Auction")) {
@@ -1249,6 +1258,15 @@ function Menu() {
       }));
     }
 
+    const hasTargetSettingDashboard = data.includes("TargetSetting_Dashboard");
+    if (hasTargetSettingDashboard) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        TargetSetting: true,
+        TargetSetting_Dashboard: true,
+      }));
+    }
+
 
     const hasReport = data.some((item) => item.startsWith("Admin_Report_"));
     if (hasReport) {
@@ -1319,6 +1337,84 @@ function Menu() {
         ...prevMenu,
         Market: true,
         Market_Payment: true,
+      }));
+    }
+
+    // Market_SeedMarket is the wrapper flag that gates BOTH the entire
+    // "Commercial Market" flyout and the entire "Seed Market" flyout. It was
+    // only ever reachable by granting the whole "Market" root wholesale, so
+    // granting any specific leaf underneath (e-Inward, e-Acceptance,
+    // Gatepass, e-Payment sub-items, Seed Market items, etc.) without also
+    // checking the root left the wrapper permanently false — meaning none of
+    // those leaves could ever render, even though their own flags were
+    // individually correct.
+    const hasCommercialOrSeedMarket = data.some(
+      (item) =>
+        [
+          "Market_Bidding",
+          "Market_Accept_Farmer_Auction",
+          "Market_Weighment",
+          "Market_Gatepass",
+          "Market_Payment",
+          "Market_Reject",
+          "Market_Show_Lot",
+        ].includes(item) ||
+        item.startsWith("Market_Payment_") ||
+        item.startsWith("Market_SeedMarket_") ||
+        item.startsWith("Market_SeedCocoonMarket_")
+    );
+    if (hasCommercialOrSeedMarket) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Market: true,
+        Market_SeedMarket: true,
+      }));
+    }
+
+    // Seed Market's own "e-Payment" sub-flyout wrapper -- same shape of bug:
+    // its 3 children have no shared naming prefix with each other, and
+    // nothing ever set the wrapper itself.
+    const hasSeedMarketPayment = data.some((item) =>
+      [
+        "Market_SeedMarket_Ready_For_Payment",
+        "Market_SeedMarket_Bulk_Send_To_Payment",
+        "Market_SeedMarket_Payment_Statement",
+      ].includes(item)
+    );
+    if (hasSeedMarketPayment) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Market: true,
+        Market_SeedMarket: true,
+        Market_SeedMarket_Payment: true,
+      }));
+    }
+
+    // Admin > Master > Service > Calculation wrapper -- had no reachability
+    // path at all (not even the coarse root cascade sets it, since the
+    // generic "Admin_Master_Service_" sweep only matches keys with the
+    // trailing underscore, and "Calculation" itself isn't one of them).
+    const hasAdminMasterServiceCalculation = data.some((item) =>
+      item.startsWith("Admin_Master_Service_Calculation_")
+    );
+    if (hasAdminMasterServiceCalculation) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Admin: true,
+        Admin_Master: true,
+        Admin_Master_Service: true,
+        Admin_Master_Service_Calculation: true,
+      }));
+    }
+
+    const hasSeedCocoonMarketInvoicePermitReceipt = data.includes(
+      "Market_SeedCocoonMarket_InvoicePermitReceipt"
+    );
+    if (hasSeedCocoonMarketInvoicePermitReceipt) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Market: true,
+        Market_SeedCocoonMarket_InvoicePermitReceipt: true,
       }));
     }
 
@@ -2606,7 +2702,7 @@ function Menu() {
                       </MenuItem>
                     ) : null}
 
-                    {showMenu.Market_SeedCocoonMarket_Inward ? (
+                    {showMenu.Market_SeedCocoonMarket_InvoicePermitReceipt ? (
                       <MenuItem>
                         <MenuItemLink
                           text={t(
@@ -3390,7 +3486,7 @@ function Menu() {
       ) : null}
 
       {/* 🔹 Target Setting Dashboard */}
-      {showMenu.TargetSetting ? (
+      {showMenu.TargetSetting_Dashboard ? (
         <MenuItem>
           <MenuItemLink
             text={t("Target Setting Dahboard")}
