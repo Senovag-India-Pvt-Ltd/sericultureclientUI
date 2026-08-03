@@ -325,64 +325,48 @@ useEffect(() => {
 
       setFarmerId(datas.farmerId);
 
-      // ✅ Step 1: First call reeler/get/{farmerId} to get fruitsId
-      api
-        .get(baseURLRegistration + `reeler/get/${datas.farmerId}`)
-        .then((reelerRes) => {
-          const reelerData = reelerRes.data?.content;
-          const fruitsId = reelerData?.fruitsId;
+      // The beneficiary id (datas.farmerId) is a generic id shared by both
+      // Farmer and Reeler tables — a farmer's id and a reeler's id are
+      // independent sequences, so the same numeric value can validly exist
+      // as a row in BOTH tables. Guessing "try reeler, fall back to farmer"
+      // previously showed the wrong beneficiary whenever that coincidence
+      // happened.
+      //
+      // datas.beneficiaryType ("Farmer"/"Reeler") is the application row's
+      // own authoritative field — the same one the backend
+      // (DBTController/ApplicationFormService/ApplicationTransactionService)
+      // already trusts for Farmer/Reeler branching everywhere else in this
+      // system — so resolve on that directly.
+      const beneficiaryType = (datas.beneficiaryType || "").trim().toLowerCase();
 
-          if (fruitsId) {
-            // ✅ Step 2: Call get-reeler-details-by-fruits-id using fruitsId
-            api
-              .post(
-                baseURLFarmerServer +
-                  `reeler/get-reeler-details-by-fruits-id`,
-                { fruitsId: fruitsId }
-              )
-              .then((reelerDetailsRes) => {
-                const reeler = reelerDetailsRes.data?.content?.reelerResponse;
+      if (beneficiaryType === "reeler") {
+        fetchReelerRelatedData(datas);
+      } else if (beneficiaryType === "farmer") {
+        fetchFarmerRelatedData(datas);
+      } else {
+        // beneficiaryType wasn't populated on this row — fall back to the
+        // sub-scheme's sanctionForReeling flag (same source the create form
+        // uses, see serviceApplication.js getIncentiveAndBonusList).
+        api
+          .get(
+            baseURLMasterData +
+              `scSubSchemeDetails/get-by-scheme-and-sub-scheme-details-id/${datas.schemeId}/${datas.subSchemeId}`
+          )
+          .then((subSchemeRes) => {
+            const subSchemeList = subSchemeRes.data?.content?.scSubSchemeDetails;
+            const sanctionForReeling = subSchemeList?.[0]?.sanctionForReeling === true;
 
-                if (reeler) {
-                  // ✅ Reeler data found → set as farmerDetails
-                  const reelerAddress = reeler.fruitsId || "";
-                  setFarmerDetails({
-                    farmerName: reeler.reelerName,
-                    fid: reelerAddress, // show address in FRUITS ID column
-                    talukName: reeler.talukName || "",
-                    village: reeler.address || "",
-                  });
-
-                  setData((prev) => ({
-                    ...prev,
-                    reelerId: reeler.reelerId,
-                    reelerName: reeler.reelerName,
-                    fatherName: reeler.fatherName,
-                    gender: reeler.gender,
-                    casteId: reeler.casteId,
-                    address: reelerAddress,
-                  }));
-
-                  setValidated(false);
-                  setLoading(false);
-                } else {
-                  // ❌ No reeler details → call farmer APIs
-                  fetchFarmerRelatedData(datas);
-                }
-              })
-              .catch((err) => {
-                console.error("Error fetching reeler details:", err);
-                fetchFarmerRelatedData(datas);
-              });
-          } else {
-            // ❌ No fruitsId found → fallback to farmer data
+            if (sanctionForReeling) {
+              fetchReelerRelatedData(datas);
+            } else {
+              fetchFarmerRelatedData(datas);
+            }
+          })
+          .catch((err) => {
+            console.error("Error fetching sub-scheme beneficiary type:", err);
             fetchFarmerRelatedData(datas);
-          }
-        })
-        .catch((err) => {
-          console.error("Error fetching reeler by farmerId:", err);
-          fetchFarmerRelatedData(datas);
-        });
+          });
+      }
 
       // ✅ Always call handleView at the end
       handleView(id);
@@ -396,7 +380,65 @@ useEffect(() => {
     });
 };
 
-// 🔁 Helper function: fetch farmer details if reeler not found
+// 🔁 Helper function: fetch reeler details for reeler-beneficiary applications
+// (sub-scheme's sanctionForReeling === true — see getIdList above).
+const fetchReelerRelatedData = (datas) => {
+  api
+    .get(baseURLRegistration + `reeler/get/${datas.farmerId}`)
+    .then((reelerRes) => {
+      const reelerData = reelerRes.data?.content;
+      const fruitsId = reelerData?.fruitsId;
+
+      if (!fruitsId) {
+        fetchFarmerRelatedData(datas);
+        return;
+      }
+
+      api
+        .post(baseURLFarmerServer + `reeler/get-reeler-details-by-fruits-id`, {
+          fruitsId: fruitsId,
+        })
+        .then((reelerDetailsRes) => {
+          const reeler = reelerDetailsRes.data?.content?.reelerResponse;
+
+          if (!reeler) {
+            fetchFarmerRelatedData(datas);
+            return;
+          }
+
+          const reelerAddress = reeler.fruitsId || "";
+          setFarmerDetails({
+            farmerName: reeler.reelerName,
+            fid: reelerAddress, // show address in FRUITS ID column
+            talukName: reeler.talukName || "",
+            village: reeler.address || "",
+          });
+
+          setData((prev) => ({
+            ...prev,
+            reelerId: reeler.reelerId,
+            reelerName: reeler.reelerName,
+            fatherName: reeler.fatherName,
+            gender: reeler.gender,
+            casteId: reeler.casteId,
+            address: reelerAddress,
+          }));
+
+          setValidated(false);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("Error fetching reeler details:", err);
+          fetchFarmerRelatedData(datas);
+        });
+    })
+    .catch((err) => {
+      console.error("Error fetching reeler by farmerId:", err);
+      fetchFarmerRelatedData(datas);
+    });
+};
+
+// 🔁 Helper function: fetch farmer details for farmer-beneficiary applications
 const fetchFarmerRelatedData = (datas) => {
   // Farmer Address API
   api

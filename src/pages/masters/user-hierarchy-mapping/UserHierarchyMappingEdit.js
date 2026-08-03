@@ -223,7 +223,7 @@ function UserHierarchyMappingEdit() {
         </Block.Head>
       </div>
 
-      <Block className="mt-n5 sh-form-wrap">
+      <Block className="mt-n4 sh-form-wrap">
         <Form>
           <Row className="g-3">
             <Card className="sh-section-card">

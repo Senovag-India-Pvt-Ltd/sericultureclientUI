@@ -29,6 +29,11 @@ const EMPTY = {
   otherCost: "",
   income: "",
   dcbIncome: "",
+  mysoreRaceCocoonValue: "",
+  chemicalEggSheetCost: "",
+  electricityCost: "",
+  fuelCost: "",
+  mysoreRaceEggsValue: "",
 };
 
 function GrainageMonthlyCost() {
@@ -91,6 +96,11 @@ function GrainageMonthlyCost() {
         otherCost: data.otherCost === "" ? 0 : data.otherCost,
         income: data.income === "" ? 0 : data.income,
         dcbIncome: data.dcbIncome === "" ? 0 : data.dcbIncome,
+        mysoreRaceCocoonValue: data.mysoreRaceCocoonValue === "" ? 0 : data.mysoreRaceCocoonValue,
+        chemicalEggSheetCost: data.chemicalEggSheetCost === "" ? 0 : data.chemicalEggSheetCost,
+        electricityCost: data.electricityCost === "" ? 0 : data.electricityCost,
+        fuelCost: data.fuelCost === "" ? 0 : data.fuelCost,
+        mysoreRaceEggsValue: data.mysoreRaceEggsValue === "" ? 0 : data.mysoreRaceEggsValue,
       };
       api
         .post(baseURLSeedDfl + `grainage-monthly-cost/save-info`, payload)
@@ -295,6 +305,96 @@ function GrainageMonthlyCost() {
                         min="0"
                         step="any"
                         placeholder={t("Enter DCB Income")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="mysoreRaceCocoonValue">{t("Mysore Race Cocoon Value")}</Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="mysoreRaceCocoonValue"
+                        name="mysoreRaceCocoonValue"
+                        value={data.mysoreRaceCocoonValue}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder={t("Enter Mysore Race Cocoon Value")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="chemicalEggSheetCost">{t("Chemical + Egg Sheet Cost")}</Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="chemicalEggSheetCost"
+                        name="chemicalEggSheetCost"
+                        value={data.chemicalEggSheetCost}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder={t("Enter Chemical + Egg Sheet Cost")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="electricityCost">{t("Electricity Cost")}</Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="electricityCost"
+                        name="electricityCost"
+                        value={data.electricityCost}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder={t("Enter Electricity Cost")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="fuelCost">{t("Fuel Cost")}</Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="fuelCost"
+                        name="fuelCost"
+                        value={data.fuelCost}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder={t("Enter Fuel Cost")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="6">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="mysoreRaceEggsValue">{t("Mysore Race Eggs Value")}</Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="mysoreRaceEggsValue"
+                        name="mysoreRaceEggsValue"
+                        value={data.mysoreRaceEggsValue}
+                        onChange={handleInputs}
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder={t("Enter Mysore Race Eggs Value")}
                       />
                     </div>
                   </Form.Group>

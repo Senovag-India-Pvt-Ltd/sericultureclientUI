@@ -304,52 +304,49 @@ useEffect(() => {
 
         setFarmerId(datas.farmerId);
 
-        api
-          .get(
-            baseURLRegistration +
-              `farmer-address/get-by-farmer-id-join/${datas.farmerId}`
-          )
-          .then((response) => {
-            if (response.data.errorCode === -1) {
-              saveError(response.data.message);
-            } else {
-              // console.log("Fruits ID",response.data.content.fruitsId);
-              setFarmerDetails((prev) => ({
-                ...prev,
-                village:
-                  response.data.content.farmerAddress &&
-                  response.data.content.farmerAddress[0].villageName,
-                talukName:
-                  response.data.content.farmerAddress &&
-                  response.data.content.farmerAddress[0].talukName,
-              }));
-              setValidated(false);
-            }
-          })
-          .catch((err) => {
-            handleError(err);
-          });
+        // The beneficiary id (datas.farmerId) is a generic id shared by both
+        // Farmer and Reeler tables — a farmer's id and a reeler's id are
+        // independent sequences, so the same numeric value can validly exist
+        // as a row in BOTH tables. This form previously always queried the
+        // farmer endpoints unconditionally, so a reeler-beneficiary
+        // application would silently show whichever unrelated farmer
+        // happened to share that numeric id.
+        //
+        // datas.beneficiaryType ("Farmer"/"Reeler") is the application row's
+        // own authoritative field — the same one the backend
+        // (DBTController/ApplicationFormService/ApplicationTransactionService)
+        // already trusts for Farmer/Reeler branching everywhere else in this
+        // system — so resolve on that directly.
+        const beneficiaryType = (datas.beneficiaryType || "").trim().toLowerCase();
 
-        api
-          .get(
-            baseURLRegistration +
-              `farmer/get-by-farmer-id-join/${datas.farmerId}`
-          )
-          .then((response) => {
-            if (response.data.errorCode === -1) {
-              saveError(response.data.message);
-            } else {
-              setFarmerDetails((prev) => ({
-                ...prev,
-                farmerName: response.data.content.firstName,
-                fid: response.data.content.fruitsId,
-              }));
-              setValidated(false);
-            }
-          })
-          .catch((err) => {
-            handleError(err);
-          });
+        if (beneficiaryType === "reeler") {
+          fetchReelerBeneficiaryDetails(datas);
+        } else if (beneficiaryType === "farmer") {
+          fetchFarmerBeneficiaryDetails(datas);
+        } else {
+          // beneficiaryType wasn't populated on this row — fall back to the
+          // sub-scheme's sanctionForReeling flag (same source the create
+          // form uses, see serviceApplication.js getIncentiveAndBonusList).
+          api
+            .get(
+              baseURLMasterData +
+                `scSubSchemeDetails/get-by-scheme-and-sub-scheme-details-id/${datas.schemeId}/${datas.subSchemeId}`
+            )
+            .then((subSchemeRes) => {
+              const subSchemeList = subSchemeRes.data?.content?.scSubSchemeDetails;
+              const sanctionForReeling = subSchemeList?.[0]?.sanctionForReeling === true;
+
+              if (sanctionForReeling) {
+                fetchReelerBeneficiaryDetails(datas);
+              } else {
+                fetchFarmerBeneficiaryDetails(datas);
+              }
+            })
+            .catch((err) => {
+              console.error("Error fetching sub-scheme beneficiary type:", err);
+              fetchFarmerBeneficiaryDetails(datas);
+            });
+        }
 
         // Prefill the SAVED land rows scoped to THIS application (route id is
         // the parent sc_application_form id here) instead of the farmer's full
@@ -387,6 +384,98 @@ useEffect(() => {
         setData({});
         setLoading(false);
       }); 
+  };
+
+  // 🔁 Helper: fetch farmer details for farmer-beneficiary applications
+  const fetchFarmerBeneficiaryDetails = (datas) => {
+    api
+      .get(
+        baseURLRegistration +
+          `farmer-address/get-by-farmer-id-join/${datas.farmerId}`
+      )
+      .then((response) => {
+        if (response.data.errorCode === -1) {
+          saveError(response.data.message);
+        } else {
+          setFarmerDetails((prev) => ({
+            ...prev,
+            village:
+              response.data.content.farmerAddress &&
+              response.data.content.farmerAddress[0].villageName,
+            talukName:
+              response.data.content.farmerAddress &&
+              response.data.content.farmerAddress[0].talukName,
+          }));
+          setValidated(false);
+        }
+      })
+      .catch((err) => {
+        handleError(err);
+      });
+
+    api
+      .get(baseURLRegistration + `farmer/get-by-farmer-id-join/${datas.farmerId}`)
+      .then((response) => {
+        if (response.data.errorCode === -1) {
+          saveError(response.data.message);
+        } else {
+          setFarmerDetails((prev) => ({
+            ...prev,
+            farmerName: response.data.content.firstName,
+            fid: response.data.content.fruitsId,
+          }));
+          setValidated(false);
+        }
+      })
+      .catch((err) => {
+        handleError(err);
+      });
+  };
+
+  // 🔁 Helper: fetch reeler details for reeler-beneficiary applications
+  // (sub-scheme's sanctionForReeling === true — see getIdList above).
+  const fetchReelerBeneficiaryDetails = (datas) => {
+    api
+      .get(baseURLRegistration + `reeler/get/${datas.farmerId}`)
+      .then((reelerRes) => {
+        const fruitsId = reelerRes.data?.content?.fruitsId;
+
+        if (!fruitsId) {
+          fetchFarmerBeneficiaryDetails(datas);
+          return;
+        }
+
+        api
+          .post(baseURLFarmerServer + `reeler/get-reeler-details-by-fruits-id`, {
+            fruitsId: fruitsId,
+          })
+          .then((reelerDetailsRes) => {
+            const reeler = reelerDetailsRes.data?.content?.reelerResponse;
+
+            if (!reeler) {
+              fetchFarmerBeneficiaryDetails(datas);
+              return;
+            }
+
+            const reelerAddress = reeler.fruitsId || "";
+            setFarmerDetails((prev) => ({
+              ...prev,
+              farmerName: reeler.reelerName,
+              fid: reelerAddress, // show address in FRUITS ID column
+              talukName: reeler.talukName || "",
+              village: reeler.address || "",
+            }));
+            setValidated(false);
+          })
+          .catch((err) => {
+            console.error("Error fetching reeler details:", err);
+            fetchFarmerBeneficiaryDetails(datas);
+          });
+      })
+      .catch((err) => {
+        console.error("Error fetching reeler by farmerId:", err);
+        fetchFarmerBeneficiaryDetails(datas);
+      });
   };
 
   useEffect(() => {
