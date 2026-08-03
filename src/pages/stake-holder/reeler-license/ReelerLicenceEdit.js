@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 
 function ReelerLicenceEdit() {
    // Translation
@@ -267,6 +268,72 @@ function ReelerLicenceEdit() {
 
   const _header = { "Content-Type": "application/json", accept: "*/*" };
 
+  // Turns axios/server errors into plain-language text — never surfaces
+  // raw things like "Request failed with status code 403" to the user.
+  const getFriendlyErrorMessage = (err, fallback) => {
+    const data = err && err.response && err.response.data;
+    if (data && typeof data.message === "string" && data.message.trim()) {
+      return data.message;
+    }
+    if (typeof data === "string" && data.trim()) {
+      return data;
+    }
+    if (!err || !err.response) {
+      return "Unable to reach the server. Please check your internet connection and try again.";
+    }
+    switch (err.response.status) {
+      case 401:
+        return "Your session has expired. Please log in again.";
+      case 403:
+        return "You don't have permission to perform this action. Please contact your administrator.";
+      case 404:
+        return "The requested record could not be found.";
+      case 409:
+        return "This record was changed elsewhere. Please refresh the page and try again.";
+      case 500:
+      case 502:
+      case 503:
+        return "The server ran into a problem. Please try again in a moment.";
+      default:
+        return fallback || "Something went wrong. Please try again.";
+    }
+  };
+
+  // Shared persistence path used by both the manual Save button and the
+  // FRUITS sync flow, so both go through the exact same update API/behavior.
+  const persistReelerUpdate = (payload) => {
+    return api
+      .post(baseURL + `reeler/edit`, payload)
+      .then((response) => {
+        const reelerId = response.data.content.reelerId;
+        if (reelerId) {
+          handleMahajarUpload(reelerId);
+        }
+        if (response.data.content.error) {
+          updateError(response.data.content.error_description);
+          return null;
+        }
+        return response;
+      })
+      .catch((err) => {
+        if (
+          err.response &&
+          err.response.data &&
+          err.response.data.validationErrors &&
+          Object.keys(err.response.data.validationErrors).length > 0
+        ) {
+          updateError(err.response.data.validationErrors);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Update attempt was not successful",
+            text: getFriendlyErrorMessage(err, "Something went wrong while updating. Please try again."),
+          });
+        }
+        return null;
+      });
+  };
+
   const postData = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -286,28 +353,154 @@ function ReelerLicenceEdit() {
       if (data.fruitsId.length < 16 || data.fruitsId.length > 16) {
         return;
       }
-      api
-        .post(baseURL + `reeler/edit`, data)
-        .then((response) => {
-          const reelerId = response.data.content.reelerId;
-          if (reelerId) {
-            handleMahajarUpload(reelerId);
-          }
-          if (response.data.content.error) {
-            updateError(response.data.content.error_description);
-          } else {
-            updateSuccess();
-            setValidated(false);
-          }
-        })
-        .catch((err) => {
-          // setData({});
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            updateError(err.response.data.validationErrors);
-          }
-        });
+      persistReelerUpdate(data).then((response) => {
+        if (response) {
+          updateSuccess();
+          setValidated(false);
+        }
+      });
       setValidated(true);
     }
+  };
+
+  // --- FRUITS re-sync for already-linked reelers ---
+  const [syncingFruits, setSyncingFruits] = useState(false);
+  const REELER_SYNC_FIELDS = ["reelerName", "fatherName", "gender", "casteId", "address"];
+
+  const formatFieldLabel = (key) =>
+    key
+      .replace(/([A-Z])/g, " $1")
+      .replace(/^./, (s) => s.toUpperCase())
+      .trim();
+
+  const normalizeForCompare = (val) =>
+    val === undefined || val === null ? "" : String(val).trim();
+
+  const syncFromFruits = () => {
+    if (!data.fruitsId || data.fruitsId.length !== 16) {
+      Swal.fire({
+        icon: "warning",
+        title: "Invalid FRUITS ID",
+        text: "FRUITS ID must be exactly 16 digits.",
+      });
+      return;
+    }
+
+    setSyncingFruits(true);
+    api
+      .post(
+        baseURLFarmer + `farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`,
+        { fruitsId: data.fruitsId },
+      )
+      .then((result) => {
+        if (result.data.content.error) {
+          Swal.fire({
+            icon: "warning",
+            title: "Data not Found!!!",
+            text: result.data.content.error_description,
+          });
+          return;
+        }
+
+        const dump = result.data.content.farmerResponse;
+        if (!dump) {
+          Swal.fire({
+            icon: "info",
+            title: "No data found",
+            text: "FRUITS did not return any details for this FRUITS ID.",
+          });
+          return;
+        }
+
+        let dump1 = "";
+        if (
+          result.data.content.farmerAddressList &&
+          result.data.content.farmerAddressList.length
+        ) {
+          dump1 = result.data.content.farmerAddressList[0];
+        }
+
+        const incoming = {
+          reelerName: dump.firstName,
+          fatherName: dump.fatherName,
+          gender: dump.genderId,
+          casteId: dump.casteId,
+          address: dump1 ? dump1.addressText : "",
+        };
+
+        const changes = REELER_SYNC_FIELDS.map((key) => ({
+          key,
+          oldVal: data[key],
+          newVal: incoming[key],
+        })).filter(
+          (c) =>
+            c.newVal !== undefined &&
+            c.newVal !== null &&
+            c.newVal !== "" &&
+            normalizeForCompare(c.oldVal) !== normalizeForCompare(c.newVal),
+        );
+
+        if (changes.length === 0) {
+          Swal.fire({
+            icon: "info",
+            title: "Already up to date",
+            text: "No differences were found between FRUITS and the saved reeler record.",
+          });
+          return;
+        }
+
+        const changeRows = changes
+          .map(
+            (c) =>
+              `<tr><td style="text-align:left;padding:4px 8px;">${formatFieldLabel(c.key)}</td>` +
+              `<td style="text-align:left;padding:4px 8px;color:#888;">${normalizeForCompare(c.oldVal) || "&mdash;"}</td>` +
+              `<td style="text-align:left;padding:4px 8px;">${normalizeForCompare(c.newVal)}</td></tr>`,
+          )
+          .join("");
+
+        const html =
+          `<div style="text-align:left;font-size:13px;">` +
+          `<p>The following details differ between FRUITS and the saved record. Confirming will replace them and update the reeler immediately.</p>` +
+          `<table style="width:100%;border-collapse:collapse;">` +
+          `<thead><tr><th style="text-align:left;padding:4px 8px;">Field</th><th style="text-align:left;padding:4px 8px;">Current</th><th style="text-align:left;padding:4px 8px;">FRUITS</th></tr></thead>` +
+          `<tbody>${changeRows}</tbody></table></div>`;
+
+        Swal.fire({
+          icon: "question",
+          title: "Update from FRUITS?",
+          html,
+          showCancelButton: true,
+          confirmButtonText: "Update Now",
+          cancelButtonText: "Cancel",
+          width: 650,
+        }).then((confirmResult) => {
+          if (!confirmResult.isConfirmed) {
+            return;
+          }
+
+          const mergedData = { ...data };
+          changes.forEach((c) => {
+            mergedData[c.key] = c.newVal;
+          });
+
+          persistReelerUpdate(mergedData).then((response) => {
+            if (response) {
+              setData(mergedData);
+              updateSuccess();
+            }
+          });
+        });
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Sync failed",
+          text: getFriendlyErrorMessage(err, "Something went wrong while fetching data from FRUITS. Please try again."),
+        });
+      })
+      .finally(() => {
+        setSyncingFruits(false);
+      });
   };
 
   //   to get data from api
@@ -792,15 +985,16 @@ function ReelerLicenceEdit() {
                           Fruits ID is required.
                         </Form.Control.Feedback>
                       </Col>
-                      {/* <Col sm={2}>
+                      <Col sm={3}>
                         <Button
                           type="button"
-                          variant="primary"
-                          // onClick={display}
+                          variant="info"
+                          disabled={syncingFruits || !data.fruitsId || data.fruitsId.length !== 16}
+                          onClick={syncFromFruits}
                         >
-                          Search
+                          {syncingFruits ? t("Syncing...") : t("Sync from FRUITS")}
                         </Button>
-                      </Col> */}
+                      </Col>
                     </Form.Group>
                   </Col>
                 </Row>

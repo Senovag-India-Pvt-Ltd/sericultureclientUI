@@ -1094,6 +1094,83 @@ function StakeHolderEdit() {
     });
   };
 
+  const buildFarmerUpdatePayload = (
+    dataObj,
+    bankObj,
+    familyList,
+    addressList,
+    landList,
+  ) => ({
+    editFarmerRequest: dataObj,
+    editFarmerBankAccountRequest: bankObj,
+    editFarmerFamilyRequests: familyList,
+    editFarmerAddressRequests: addressList,
+    editFarmerLandDetailsRequests: landList,
+  });
+
+  // Turns axios/server errors into plain-language text — never surfaces
+  // raw things like "Request failed with status code 403" to the user.
+  const getFriendlyErrorMessage = (err, fallback) => {
+    const data = err && err.response && err.response.data;
+    if (data && typeof data.message === "string" && data.message.trim()) {
+      return data.message;
+    }
+    if (typeof data === "string" && data.trim()) {
+      return data;
+    }
+    if (!err || !err.response) {
+      return "Unable to reach the server. Please check your internet connection and try again.";
+    }
+    switch (err.response.status) {
+      case 401:
+        return "Your session has expired. Please log in again.";
+      case 403:
+        return "You don't have permission to perform this action. Please contact your administrator.";
+      case 404:
+        return "The requested record could not be found.";
+      case 409:
+        return "This record was changed elsewhere. Please refresh the page and try again.";
+      case 500:
+      case 502:
+      case 503:
+        return "The server ran into a problem. Please try again in a moment.";
+      default:
+        return fallback || "Something went wrong. Please try again.";
+    }
+  };
+
+  // Shared persistence path used by both the manual Save button and the
+  // FRUITS sync flow, so both go through the exact same update API/behavior.
+  const persistFarmerUpdate = async (sendData) => {
+    setIsSaving(true);
+    try {
+      const response = await api.post(
+        baseURL2 + `farmer/edit-complete-farmer-details`,
+        sendData,
+      );
+      if (response.data.content.error) {
+        updateFarmerError(response.data.content.error_description);
+        return null;
+      }
+      return response;
+    } catch (err) {
+      const validationErrors =
+        err && err.response && err.response.data && err.response.data.validationErrors;
+      if (validationErrors && Object.keys(validationErrors).length > 0) {
+        updateError(validationErrors);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Update attempt was not successful",
+          text: getFriendlyErrorMessage(err, "Something went wrong while updating. Please try again."),
+        });
+      }
+      return null;
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const postData = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -1150,25 +1227,19 @@ function StakeHolderEdit() {
       }
     }
 
-    const sendData = {
-      editFarmerRequest: data,
-      editFarmerBankAccountRequest: bank,
-      editFarmerFamilyRequests: familyMembersList,
-      editFarmerAddressRequests: farmerAddressList,
-      editFarmerLandDetailsRequests: farmerLandList,
-    };
+    const sendData = buildFarmerUpdatePayload(
+      data,
+      bank,
+      familyMembersList,
+      farmerAddressList,
+      farmerLandList,
+    );
 
-    setIsSaving(true);
-    try {
-      const response = await api.post(
-        baseURL2 + `farmer/edit-complete-farmer-details`,
-        sendData
-      );
-      const farmerId = response.data.content.farmerId;
-      const farmerBankAccountId = response.data.content.farmerBankAccountId;
-      if (response.data.content.error) {
-        updateFarmerError(response.data.content.error_description);
-      } else {
+    const response = await persistFarmerUpdate(sendData);
+    if (response) {
+      try {
+        const farmerId = response.data.content.farmerId;
+        const farmerBankAccountId = response.data.content.farmerBankAccountId;
         if (data.photoPath && image) {
           await handleFileUpload(farmerId);
         }
@@ -1188,26 +1259,246 @@ function StakeHolderEdit() {
         }
         setDeletedVbIds([]);
         updateSuccess();
-      }
-    } catch (err) {
-      const validationErrors =
-        err && err.response && err.response.data && err.response.data.validationErrors;
-      if (validationErrors && Object.keys(validationErrors).length > 0) {
-        updateError(validationErrors);
-      } else {
-        const serverMessage =
-          (err && err.response && err.response.data && err.response.data.message) ||
-          (err && err.message) ||
-          "Something went wrong while updating. Please try again.";
+      } catch (err) {
         Swal.fire({
           icon: "error",
           title: "Update attempt was not successful",
-          text: serverMessage,
+          text: "Farmer details were saved, but a follow-up step (photo/document/virtual account) failed. Please review and retry.",
         });
       }
+    }
+    setValidated(true);
+  };
+
+  // --- FRUITS re-sync for already-linked farmers ---
+  const FARMER_SYNC_EXCLUDED_FIELDS = ["farmerId", "fruitsId", "photoPath"];
+
+  const formatFieldLabel = (key) =>
+    key
+      .replace(/([A-Z])/g, " $1")
+      .replace(/^./, (s) => s.toUpperCase())
+      .trim();
+
+  const normalizeForCompare = (val) =>
+    val === undefined || val === null ? "" : String(val).trim();
+
+  const diffScalarFields = (current, incoming) => {
+    const changes = [];
+    Object.keys(incoming || {}).forEach((key) => {
+      if (FARMER_SYNC_EXCLUDED_FIELDS.includes(key)) return;
+      const newVal = incoming[key];
+      if (newVal === undefined || newVal === null || newVal === "") return;
+      if (key === "mobileNumber" && String(newVal).length !== 10) return;
+      const oldVal = current ? current[key] : undefined;
+      if (normalizeForCompare(oldVal) !== normalizeForCompare(newVal)) {
+        changes.push({ key, oldVal, newVal });
+      }
+    });
+    return changes;
+  };
+
+  const normalizeLandItem = (detail) => ({
+    ...detail,
+    stateId: detail.stateId === 0 || detail.stateId === "0" ? null : detail.stateId,
+    districtId: detail.districtId === 0 || detail.districtId === "0" ? null : detail.districtId,
+    talukId: detail.talukId === 0 || detail.talukId === "0" ? null : detail.talukId,
+    hobliId: detail.hobliId === 0 || detail.hobliId === "0" ? null : detail.hobliId,
+    villageId: detail.villageId === 0 || detail.villageId === "0" ? null : detail.villageId,
+  });
+
+  // Address/land rows from FRUITS don't share a DB primary key with our
+  // stored rows, so we compare on the fields FRUITS actually sends and,
+  // if the set of rows differs, treat the whole list as replaced.
+  const listContentDiffers = (currentList, incomingList) => {
+    const incoming = Array.isArray(incomingList) ? incomingList : [];
+    if (incoming.length === 0) return false;
+    const current = Array.isArray(currentList) ? currentList : [];
+    const keys = Object.keys(incoming[0]);
+    const project = (item) =>
+      JSON.stringify(
+        keys.reduce((acc, key) => {
+          acc[key] = normalizeForCompare(item ? item[key] : undefined);
+          return acc;
+        }, {}),
+      );
+    const currentProjected = current.map(project).sort();
+    const incomingProjected = incoming.map(project).sort();
+    return JSON.stringify(currentProjected) !== JSON.stringify(incomingProjected);
+  };
+
+  // The bulk edit-complete-farmer-details endpoint can only UPDATE existing
+  // address/land rows by id (see FarmerLandDetailsService.updateFarmerLandDetailsDetails) —
+  // it has no insert path, so FRUITS rows (which have no farmerAddressId/farmerLandDetailsId)
+  // can never go through it. Instead we replace each list the same way the on-page
+  // Add/Delete modals already do: delete the farmer's current rows, then add the
+  // FRUITS rows fresh, one by one, through the existing add/delete endpoints.
+  const replaceFarmerAddressList = async (incomingAddressList) => {
+    for (const item of farmerAddressList) {
+      if (item.farmerAddressId) {
+        await api
+          .delete(baseURL2 + `farmer-address/delete/${item.farmerAddressId}`)
+          .catch(() => {});
+      }
+    }
+    for (const item of incomingAddressList) {
+      const { farmerAddressId, ...rest } = item;
+      await api
+        .post(baseURL2 + `farmer-address/add`, { ...rest, farmerId: id })
+        .catch(() => {});
+    }
+  };
+
+  const replaceFarmerLandList = async (incomingLandList) => {
+    for (const item of farmerLandList) {
+      if (item.farmerLandDetailsId) {
+        await api
+          .delete(baseURL2 + `farmer-land-details/delete/${item.farmerLandDetailsId}`)
+          .catch(() => {});
+      }
+    }
+    for (const item of incomingLandList) {
+      const { farmerLandDetailsId, ...rest } = item;
+      await api
+        .post(baseURL2 + `farmer-land-details/add`, { ...rest, farmerId: id })
+        .catch(() => {});
+    }
+  };
+
+  const syncFromFruits = async () => {
+    if (!data.fruitsId || data.fruitsId.length !== 16) {
+      Swal.fire({
+        icon: "warning",
+        title: "Invalid FRUITS ID",
+        text: "FRUITS ID must be exactly 16 digits.",
+      });
+      return;
+    }
+
+    setSyncingFruits(true);
+    try {
+      const result = await api.post(
+        baseURLFarmerServer + `farmer/get-details-by-fruits-id`,
+        { fruitsId: data.fruitsId },
+      );
+
+      if (result.data.content.error) {
+        searchError(result.data.content.error_description);
+        return;
+      }
+
+      const incomingFarmer = result.data.content.farmerResponse || {};
+      const incomingAddressList = Array.isArray(result.data.content.farmerAddressList)
+        ? result.data.content.farmerAddressList
+        : [];
+      const incomingLandList = (
+        Array.isArray(result.data.content.farmerLandDetailsDTOList)
+          ? result.data.content.farmerLandDetailsDTOList
+          : []
+      ).map(normalizeLandItem);
+
+      const scalarChanges = diffScalarFields(data, incomingFarmer);
+      const addressChanged = listContentDiffers(farmerAddressList, incomingAddressList);
+      const landChanged = listContentDiffers(farmerLandList, incomingLandList);
+
+      if (scalarChanges.length === 0 && !addressChanged && !landChanged) {
+        Swal.fire({
+          icon: "info",
+          title: "Already up to date",
+          text: "No differences were found between FRUITS and the saved farmer record.",
+        });
+        return;
+      }
+
+      const changeRows = scalarChanges
+        .map(
+          (c) =>
+            `<tr><td style="text-align:left;padding:4px 8px;">${formatFieldLabel(c.key)}</td>` +
+            `<td style="text-align:left;padding:4px 8px;color:#888;">${normalizeForCompare(c.oldVal) || "&mdash;"}</td>` +
+            `<td style="text-align:left;padding:4px 8px;">${normalizeForCompare(c.newVal)}</td></tr>`,
+        )
+        .join("");
+
+      const listRows =
+        (addressChanged
+          ? `<tr><td style="text-align:left;padding:4px 8px;">Address Details</td>` +
+            `<td colspan="2" style="text-align:left;padding:4px 8px;">${farmerAddressList.length} saved &rarr; ${incomingAddressList.length} from FRUITS (will be replaced)</td></tr>`
+          : "") +
+        (landChanged
+          ? `<tr><td style="text-align:left;padding:4px 8px;">Land Details</td>` +
+            `<td colspan="2" style="text-align:left;padding:4px 8px;">${farmerLandList.length} saved &rarr; ${incomingLandList.length} from FRUITS (will be replaced)</td></tr>`
+          : "");
+
+      const html =
+        `<div style="text-align:left;font-size:13px;">` +
+        `<p>The following differ between FRUITS and the saved record. Confirming will update the changed fields and replace the Address/Land details shown below with what FRUITS has now.</p>` +
+        (changeRows
+          ? `<table style="width:100%;border-collapse:collapse;">` +
+            `<thead><tr><th style="text-align:left;padding:4px 8px;">Field</th><th style="text-align:left;padding:4px 8px;">Current</th><th style="text-align:left;padding:4px 8px;">FRUITS</th></tr></thead>` +
+            `<tbody>${changeRows}</tbody></table>`
+          : "") +
+        (listRows
+          ? `<table style="width:100%;border-collapse:collapse;margin-top:8px;"><tbody>${listRows}</tbody></table>`
+          : "") +
+        `</div>`;
+
+      const confirmResult = await Swal.fire({
+        icon: "question",
+        title: "Update from FRUITS?",
+        html,
+        showCancelButton: true,
+        confirmButtonText: "Update Now",
+        cancelButtonText: "Cancel",
+        width: 650,
+      });
+
+      if (!confirmResult.isConfirmed) {
+        return;
+      }
+
+      const mergedData = { ...data };
+      scalarChanges.forEach((c) => {
+        mergedData[c.key] = c.newVal;
+      });
+
+      if (scalarChanges.length > 0) {
+        // Address/land lists are sent back unchanged here — they're replaced
+        // separately below through the add/delete endpoints, since the bulk
+        // update endpoint can't insert new address/land rows (see notes above
+        // replaceFarmerAddressList/replaceFarmerLandList).
+        const payload = buildFarmerUpdatePayload(
+          mergedData,
+          bank,
+          familyMembersList,
+          farmerAddressList,
+          farmerLandList,
+        );
+        const response = await persistFarmerUpdate(payload);
+        if (!response) {
+          return;
+        }
+        setData(mergedData);
+      }
+
+      if (addressChanged) {
+        await replaceFarmerAddressList(incomingAddressList);
+      }
+      if (landChanged) {
+        await replaceFarmerLandList(incomingLandList);
+      }
+      if (addressChanged || landChanged) {
+        getFarmerAddressDetailsList();
+        getFLDetailsList();
+      }
+
+      updateSuccess();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Sync failed",
+        text: getFriendlyErrorMessage(error, "Something went wrong while fetching data from FRUITS. Please try again."),
+      });
     } finally {
-      setIsSaving(false);
-      setValidated(true);
+      setSyncingFruits(false);
     }
   };
 
@@ -1270,6 +1561,7 @@ function StakeHolderEdit() {
   // }, [id]);
   const [disableSearch, setDisableSearch] = useState(true);
   const [editFruits, setEditFruits] = useState(true);
+  const [syncingFruits, setSyncingFruits] = useState(false);
   const getIdList = () => {
     api
       .get(baseURL2 + `farmer/get/${id}`)
@@ -2219,6 +2511,18 @@ function StakeHolderEdit() {
                         {t("search")}
                       </Button>
                     </Col>
+                    {editFruits && (
+                      <Col sm={3}>
+                        <Button
+                          type="button"
+                          variant="info"
+                          disabled={syncingFruits || !data.fruitsId || data.fruitsId.length !== 16}
+                          onClick={syncFromFruits}
+                        >
+                          {syncingFruits ? t("Syncing...") : t("Sync from FRUITS")}
+                        </Button>
+                      </Col>
+                    )}
                   </Form.Group>
                 </Col>
               </Row>
