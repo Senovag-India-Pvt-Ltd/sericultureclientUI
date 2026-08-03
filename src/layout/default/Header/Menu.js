@@ -209,10 +209,6 @@ function Menu() {
       .catch(() => setDbtTicketsAllowed(false));
   }, []);
 
-  // Visibility for the "Helpdesk Dashboard" menu — restricted to an allow-list of
-  // usernames (frontend gate, no backend call, so it can't break on a UI-only deploy).
-  const helpdeskDashboardAllowed = isHelpdeskDashboardUser();
-
   console.log(data);
 
   const [showMenu, setShowMenu] = useState({
@@ -389,6 +385,7 @@ function Menu() {
     Helpdesk_Escalated_Dashboard: false,
     Helpdesk_My_Tickets: false,
     Helpdesk_FAQ: false,
+    Helpdesk_DBT_Failed_Tickets: false,
 
     Admin: false,
 
@@ -730,6 +727,19 @@ function Menu() {
     // Admin_Report_District_Report: false,
     // Admin_Report_Average_Cocoon_Report: false,
   });
+
+  // Helpdesk Dashboard menu item: role permission AND the fixed test-user
+  // allow-list must both pass. The role checkbox alone would show it to every
+  // user under that role; the allow-list keeps it scoped to the test accounts
+  // regardless of how many real users share the role.
+  const helpdeskDashboardVisible =
+    showMenu.Helpdesk_Dashboard && isHelpdeskDashboardUser();
+
+  // DBT Failed Tickets menu item: same dual-gate pattern as Helpdesk Dashboard —
+  // role permission AND the backend allow-list check (dbtTicketsAllowed already
+  // reflects the dbt_failed_ticket_allowed_user table) must both pass.
+  const dbtFailedTicketsVisible =
+    showMenu.Helpdesk_DBT_Failed_Tickets && dbtTicketsAllowed;
 
   // Old show menu using mapcode
 
@@ -3614,9 +3624,9 @@ function Menu() {
         </MenuItem>
       ) : null}
 
-      {showMenu.Helpdesk || dbtTicketsAllowed || helpdeskDashboardAllowed ? (
+      {showMenu.Helpdesk || dbtFailedTicketsVisible || helpdeskDashboardVisible ? (
         <MenuItem sub>
-          {showMenu.Helpdesk || dbtTicketsAllowed || helpdeskDashboardAllowed ? (
+          {showMenu.Helpdesk || dbtFailedTicketsVisible || helpdeskDashboardVisible ? (
             <MenuItemLink
               text={t("helpdesk")}
               onClick={menuToggle}
@@ -3820,7 +3830,7 @@ function Menu() {
                 </MenuSub>
               </MenuItem>
             ) : null}
-            {dbtTicketsAllowed ? (
+            {dbtFailedTicketsVisible ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("DBT Failed Tickets")}
@@ -3828,7 +3838,7 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
-            {helpdeskDashboardAllowed ? (
+            {helpdeskDashboardVisible ? (
               <MenuItem>
                 <MenuItemLink
                   text={t("Helpdesk Dashboard")}
