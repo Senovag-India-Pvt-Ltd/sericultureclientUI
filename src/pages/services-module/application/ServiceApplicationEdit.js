@@ -380,61 +380,89 @@ useEffect(() => {
     });
 };
 
+// datas.farmerId is a generic beneficiary id column shared by both the
+// Farmer and Reeler tables (independent auto-increment sequences), so the
+// exact same numeric value legitimately exists as an unrelated row in BOTH
+// tables (confirmed in data: reeler_id 4281 = "B Santhosh", farmer_id 4281 =
+// a completely different "GANGARAJU N"). Once datas.beneficiaryType has told
+// us this row is a Reeler, falling back to a farmer lookup on ANY failure
+// here would silently show that unrelated farmer instead — which is exactly
+// the bug this function exists to prevent. So on failure we show a clear
+// error and leave the fields blank, we never guess by querying the other
+// table.
+const showBeneficiaryLoadError = () => {
+  Swal.fire({
+    icon: "warning",
+    title: "Could not load beneficiary details",
+    text: "The FRUITS/registration lookup for this application's beneficiary failed. Please try again or contact support.",
+  });
+};
+
 // 🔁 Helper function: fetch reeler details for reeler-beneficiary applications
-// (sub-scheme's sanctionForReeling === true — see getIdList above).
+// (datas.beneficiaryType === "Reeler" — see getIdList above).
+//
+// This reads directly off the LOCAL registration service's reeler/get/{id}
+// (the exact same call ReelerLicenceEdit.js already uses to load the full
+// reeler edit form from — reelerName/fatherName/gender/casteId/address/
+// fruitsId/talukId all come back from it directly). We deliberately do NOT
+// round-trip through reeler/get-reeler-details-by-fruits-id on the external
+// FRUITS gateway (baseURLFarmerServer) the way the create form does — that
+// call 403s from this environment, and failing it used to fall back to
+// querying the farmer table with the same numeric id, which silently shows
+// an unrelated farmer (see note above showBeneficiaryLoadError).
 const fetchReelerRelatedData = (datas) => {
   api
     .get(baseURLRegistration + `reeler/get/${datas.farmerId}`)
     .then((reelerRes) => {
-      const reelerData = reelerRes.data?.content;
-      const fruitsId = reelerData?.fruitsId;
+      const reeler = reelerRes.data?.content;
 
-      if (!fruitsId) {
-        fetchFarmerRelatedData(datas);
+      if (!reeler || !reeler.reelerId) {
+        console.error("Reeler lookup returned no data for reeler id", datas.farmerId);
+        showBeneficiaryLoadError();
+        setLoading(false);
         return;
       }
 
-      api
-        .post(baseURLFarmerServer + `reeler/get-reeler-details-by-fruits-id`, {
-          fruitsId: fruitsId,
-        })
-        .then((reelerDetailsRes) => {
-          const reeler = reelerDetailsRes.data?.content?.reelerResponse;
+      setFarmerDetails({
+        farmerName: reeler.reelerName || "",
+        fid: reeler.fruitsId || "",
+        talukName: "",
+        village: reeler.address || "",
+      });
 
-          if (!reeler) {
-            fetchFarmerRelatedData(datas);
-            return;
-          }
+      setData((prev) => ({
+        ...prev,
+        reelerId: reeler.reelerId,
+        reelerName: reeler.reelerName,
+        fatherName: reeler.fatherName,
+        gender: reeler.gender,
+        casteId: reeler.casteId,
+        address: reeler.address || "",
+      }));
 
-          const reelerAddress = reeler.fruitsId || "";
-          setFarmerDetails({
-            farmerName: reeler.reelerName,
-            fid: reelerAddress, // show address in FRUITS ID column
-            talukName: reeler.talukName || "",
-            village: reeler.address || "",
+      setValidated(false);
+      setLoading(false);
+
+      // talukId only — resolve the display name separately (best-effort;
+      // the name/FRUITS ID fields above are already correct without this).
+      if (reeler.talukId) {
+        api
+          .get(baseURLMasterData + `taluk/get/${reeler.talukId}`)
+          .then((talukRes) => {
+            const talukName = talukRes.data?.content?.talukName;
+            if (talukName) {
+              setFarmerDetails((prev) => ({ ...prev, talukName }));
+            }
+          })
+          .catch((err) => {
+            console.error("Error resolving reeler taluk name:", err);
           });
-
-          setData((prev) => ({
-            ...prev,
-            reelerId: reeler.reelerId,
-            reelerName: reeler.reelerName,
-            fatherName: reeler.fatherName,
-            gender: reeler.gender,
-            casteId: reeler.casteId,
-            address: reelerAddress,
-          }));
-
-          setValidated(false);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error("Error fetching reeler details:", err);
-          fetchFarmerRelatedData(datas);
-        });
+      }
     })
     .catch((err) => {
       console.error("Error fetching reeler by farmerId:", err);
-      fetchFarmerRelatedData(datas);
+      showBeneficiaryLoadError();
+      setLoading(false);
     });
 };
 
