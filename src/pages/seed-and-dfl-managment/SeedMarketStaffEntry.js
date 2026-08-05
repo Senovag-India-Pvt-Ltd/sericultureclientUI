@@ -82,8 +82,9 @@ function SeedMarketStaffEntry() {
 
   return (
     <Layout title={t("Seed Market Staff Establishment")}>
-      <Block.Head><Block.Title tag="h2">ಕಾರ್ಯನಿರತ ಸಿಬ್ಬಂದಿ — Staff Establishment (Sheet 2 §D)</Block.Title></Block.Head>
-      <Block className="mt-3">
+      <style>{seedMarketStaffEntryStyles}</style>
+      <Block.Head><div className="sh-page-header"><Block.Title tag="h2" className="sh-page-title">ಕಾರ್ಯನಿರತ ಸಿಬ್ಬಂದಿ — Staff Establishment (Sheet 2 §D)</Block.Title></div></Block.Head>
+      <Block className="mt-n4 sh-form-wrap">
         <Card className="shadow-sm border-0" style={{ borderRadius: "16px" }}>
           <Card.Body>
             <Row className="g-3">
@@ -145,5 +146,33 @@ function SeedMarketStaffEntry() {
     </Layout>
   );
 }
+
+const seedMarketStaffEntryStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+`;
 
 export default SeedMarketStaffEntry;

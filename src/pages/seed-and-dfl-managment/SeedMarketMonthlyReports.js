@@ -333,20 +333,23 @@ export function SeedMarketMonthlyProgressReport() {
 
   return (
     <Layout title={t("Seed Market Monthly Progress")}>
+      <style>{seedMarketMonthlyProgressReportStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">
-              {t("ಸರ್ಕಾರಿ ರೇಷ್ಮೆ ಗೂಡಿನ ಮಾರುಕಟ್ಟೆ ಮಾಹೆಯ ಪ್ರಗತಿ ವರದಿ")}
-              <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", background: "linear-gradient(135deg,#dcfce7,#bbf7d0)", color: "#14532d", padding: "2px 10px", borderRadius: "20px", fontSize: "10.5px", fontWeight: 800, marginLeft: "8px", border: "1px solid #86efac", verticalAlign: "middle" }}>
-                Sheet 1 · Seed Market
-              </span>
-            </Block.Title>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">
+                {t("ಸರ್ಕಾರಿ ರೇಷ್ಮೆ ಗೂಡಿನ ಮಾರುಕಟ್ಟೆ ಮಾಹೆಯ ಪ್ರಗತಿ ವರದಿ")}
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", background: "linear-gradient(135deg,#dcfce7,#bbf7d0)", color: "#14532d", padding: "2px 10px", borderRadius: "20px", fontSize: "10.5px", fontWeight: 800, marginLeft: "8px", border: "1px solid #86efac", verticalAlign: "middle" }}>
+                  Sheet 1 · Seed Market
+                </span>
+              </Block.Title>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
         <MarketFilterCard
           config={{
             badge: "Sheet 1", icon: "🏪",
@@ -493,20 +496,23 @@ export function SeedMarketMonthlyPricingReport() {
 
   return (
     <Layout title={t("Seed Market Pricing Summary")}>
+      <style>{seedMarketMonthlyPricingReportStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">
-              {t("ಧಾರಣೆ ಸಾರಾಂಶ — ಪ್ರತಿ ಕೆ.ಜಿಗೆ")}
-              <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", background: "linear-gradient(135deg,#dcfce7,#bbf7d0)", color: "#14532d", padding: "2px 10px", borderRadius: "20px", fontSize: "10.5px", fontWeight: 800, marginLeft: "8px", border: "1px solid #86efac", verticalAlign: "middle" }}>
-                Sheet 2 · Pricing
-              </span>
-            </Block.Title>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">
+                {t("ಧಾರಣೆ ಸಾರಾಂಶ — ಪ್ರತಿ ಕೆ.ಜಿಗೆ")}
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", background: "linear-gradient(135deg,#dcfce7,#bbf7d0)", color: "#14532d", padding: "2px 10px", borderRadius: "20px", fontSize: "10.5px", fontWeight: 800, marginLeft: "8px", border: "1px solid #86efac", verticalAlign: "middle" }}>
+                  Sheet 2 · Pricing
+                </span>
+              </Block.Title>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
         <MarketFilterCard
           config={{
             badge: "Sheet 2", icon: "💰",
@@ -692,20 +698,23 @@ export function SeedMarketDistrictWiseReport() {
 
   return (
     <Layout title={t("Seed Market District-wise Sales")}>
+      <style>{seedMarketDistrictWiseReportStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">
-              {t("ಜಿಲ್ಲಾವಾರು ಗೂಡು ಮಾರಾಟ ವರದಿ — ಮಾಸಿಕ")}
-              <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", background: "linear-gradient(135deg,#dcfce7,#bbf7d0)", color: "#14532d", padding: "2px 10px", borderRadius: "20px", fontSize: "10.5px", fontWeight: 800, marginLeft: "8px", border: "1px solid #86efac", verticalAlign: "middle" }}>
-                Sheet 3 · District-wise
-              </span>
-            </Block.Title>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">
+                {t("ಜಿಲ್ಲಾವಾರು ಗೂಡು ಮಾರಾಟ ವರದಿ — ಮಾಸಿಕ")}
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", background: "linear-gradient(135deg,#dcfce7,#bbf7d0)", color: "#14532d", padding: "2px 10px", borderRadius: "20px", fontSize: "10.5px", fontWeight: 800, marginLeft: "8px", border: "1px solid #86efac", verticalAlign: "middle" }}>
+                  Sheet 3 · District-wise
+                </span>
+              </Block.Title>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
         <MarketFilterCard
           config={{
             badge: "Sheet 3", icon: "🗺",
@@ -878,3 +887,87 @@ export function SeedMarketDistrictWiseReport() {
     </Layout>
   );
 }
+
+const seedMarketMonthlyProgressReportStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+`;
+
+const seedMarketMonthlyPricingReportStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+`;
+
+const seedMarketDistrictWiseReportStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+`;

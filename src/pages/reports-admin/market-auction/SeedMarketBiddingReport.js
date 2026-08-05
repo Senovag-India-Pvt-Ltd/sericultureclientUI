@@ -154,18 +154,21 @@ function SeedMarketBiddingReport() {
 
   return (
     <Layout title={t("Seed Market Bidding Report")}>
+      <style>{seedMarketBiddingReportStyles}</style>
 
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">
-              {t("Seed Market Bidding Report")}
-            </Block.Title>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">
+                {t("Seed Market Bidding Report")}
+              </Block.Title>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n4 sh-form-wrap">
 
         <Form noValidate validated={validated} onSubmit={searchReport}>
 
@@ -382,5 +385,33 @@ function SeedMarketBiddingReport() {
     </Layout>
   );
 }
+
+const seedMarketBiddingReportStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+`;
 
 export default SeedMarketBiddingReport;
