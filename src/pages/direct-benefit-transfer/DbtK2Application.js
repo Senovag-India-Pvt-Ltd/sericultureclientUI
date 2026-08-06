@@ -33,29 +33,6 @@ const CTRL_H = "44px";
 const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom: "3px", display: "block" };
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
-const dbtK2ApplicationStyles = `
-  .sh-page-header {
-    padding: 20px 24px;
-    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
-    border-radius: 12px;
-    border: none;
-    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
-    margin-bottom: 22px;
-  }
-  .sh-page-title { margin-bottom: 0; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
-  .sh-modal-content { border-radius: 12px !important; border: 1px solid #e3ebf6 !important; overflow: hidden; }
-  .sh-modal-content .modal-header { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%); border-bottom: none; padding: 16px 22px; }
-  .sh-modal-content .modal-header .btn-close { filter: brightness(0) invert(1); opacity: 0.85; }
-  .sh-modal-content .modal-title { color: #ffffff; font-weight: 700; }
-  .sh-modal-content .modal-body { padding: 22px 24px; }
-  .sh-modal-content .btn-secondary {
-    background: #ffffff; color: #e3496a; border: 1.5px solid #e3496a; border-radius: 8px; font-weight: 600;
-  }
-  .sh-swal-popup { border-radius: 14px !important; }
-  .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; }
-  .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
-`;
-
 function DbtK2Application() {
   const [listData, setListData] = useState([]);
   const [page, setPage] = useState(0);
@@ -540,7 +517,6 @@ function DbtK2Application() {
         Swal.fire({
           icon: "warning",
           title: "No record found!!!",
-          customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
         });
       });
   };
@@ -660,7 +636,6 @@ function DbtK2Application() {
       icon: "error",
       title: "Delete attempt was not successful",
       text: "Something went wrong!",
-      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
     });
   };
 
@@ -671,7 +646,6 @@ function DbtK2Application() {
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, delete it!",
-      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     }).then((result) => {
       if (result.value) {
         const response = api
@@ -679,24 +653,19 @@ function DbtK2Application() {
           .then((response) => {
             // deleteConfirm(_id);
             getList();
-            Swal.fire({
-              title: "Deleted",
-              text: "You successfully deleted this record",
-              icon: "success",
-              customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
-            });
+            Swal.fire(
+              "Deleted",
+              "You successfully deleted this record",
+              "success"
+            );
           })
           .catch((err) => {
             deleteError();
           });
+        // Swal.fire("Deleted", "You successfully deleted this record", "success");
       } else {
         console.log(result.value);
-        Swal.fire({
-          title: "Cancelled",
-          text: "Your record is not deleted",
-          icon: "info",
-          customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
-        });
+        Swal.fire("Cancelled", "Your record is not deleted", "info");
       }
     });
   };
@@ -778,7 +747,6 @@ function DbtK2Application() {
       icon: "success",
       title: "Saved successfully",
       text: message,
-      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
     });
   };
   const saveError = (message) => {
@@ -792,7 +760,6 @@ function DbtK2Application() {
       icon: "error",
       title: "Save attempt was not successful",
       html: errorMessage,
-      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
     });
   };
 
@@ -1008,7 +975,7 @@ return (
           />
         </Card>
       </Block>
-      <Modal show={showModal} onHide={handleCloseModal} size="xl" contentClassName="sh-modal-content">
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>{t("View Details")}</Modal.Title>
         </Modal.Header>
