@@ -20,6 +20,23 @@ import { useTranslation } from "react-i18next"; // Add this line
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
+const readyForPaymentForSeedMarketStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-form-wrap { background: #eef2f8; border-radius: 14px; padding: 18px; }
+  .sh-form-wrap .card { border: none; border-radius: 12px !important; box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1); overflow: hidden; }
+  .sh-swal-popup { border-radius: 14px !important; }
+  .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; }
+  .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+`;
+
 function ReadyForPaymentForSeedMarket() {
   const { t } = useTranslation(); // Add this line
 
@@ -54,7 +71,8 @@ function ReadyForPaymentForSeedMarket() {
     if(!date){
       Swal.fire({
         icon: 'warning',
-        title: 'This Lot is not distributed'
+        title: 'This Lot is not distributed',
+        customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
       });
       return;
     }
@@ -154,26 +172,36 @@ function ReadyForPaymentForSeedMarket() {
   );
 
   const customStyles = {
+    table: { style: { borderRadius: "10px", overflow: "hidden", boxShadow: "0 2px 8px rgba(30, 103, 168, 0.06)" } },
+    headRow: { style: { minHeight: "50px", background: "linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%)", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" } },
     rows: {
       style: {
         minHeight: "45px", // override the row height
+        fontSize: "13.5px",
+        color: "#2b2d42",
+        borderBottom: "1px solid #eef1f6 !important",
       },
+      highlightOnHoverStyle: { backgroundColor: "#f4f8fd", cursor: "pointer", outline: "none" },
     },
     headCells: {
       style: {
-        backgroundColor: "#1e67a8",
+        backgroundColor: "transparent",
         color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
+        fontSize: "13px",
+        fontWeight: 600,
+        textTransform: "uppercase",
+        letterSpacing: "0.3px",
+        paddingLeft: "12px", // override the cell padding for head cells
+        paddingRight: "12px",
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
+        paddingLeft: "12px", // override the cell padding for data cells
+        paddingRight: "12px",
       },
     },
+    pagination: { style: { borderTop: "1px solid #eef1f6", fontSize: "13px", color: "#5a6577" } },
   };
 
   const convertDateFormat = (dateString) => {
@@ -296,15 +324,18 @@ function ReadyForPaymentForSeedMarket() {
 
   return (
     <Layout title={t("Ready for Payment For Seed Market")} show="true"> {/* Add translation function */}
+      <style>{readyForPaymentForSeedMarketStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Ready for Payment For Seed Market")}</Block.Title> {/* Add translation function */}
+            <Block.Title tag="h2" className="sh-page-title">{t("Ready for Payment For Seed Market")}</Block.Title> {/* Add translation function */}
           </Block.HeadContent>
-         
+
         </Block.HeadBetween>
+        </div>
       </Block.Head>
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"

@@ -11,6 +11,41 @@ import {
   CustomDropdownMenu,
 } from "../../components";
 
+const subsidyCounterSigningStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-page-header .breadcrumb-item, .sh-page-header .breadcrumb-item a { color: rgba(255,255,255,0.85) !important; }
+  .sh-page-header .breadcrumb-item.active { color: #ffffff !important; }
+  .sh-page-header .breadcrumb-item + .breadcrumb-item::before { color: rgba(255,255,255,0.6) !important; }
+  .sh-form-wrap { background: #eef2f8; border-radius: 14px; padding: 18px; }
+  .sh-form-wrap .card { border: none; border-radius: 12px !important; box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1); overflow: hidden; }
+  .sh-form-wrap table thead th {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%); color: #fff;
+    font-weight: 700; font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.3px;
+    border: none; padding: 10px 12px; white-space: nowrap;
+  }
+  .sh-form-wrap table tbody tr:hover { background-color: #f3f8fd; }
+  .sh-form-wrap table tbody td { padding: 8px 12px; vertical-align: middle; }
+  .sh-modal-content { border-radius: 12px !important; border: 1px solid #e3ebf6 !important; overflow: hidden; }
+  .sh-modal-content .modal-header { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%); border-bottom: none; padding: 16px 22px; }
+  .sh-modal-content .modal-header .btn-close { filter: brightness(0) invert(1); opacity: 0.85; }
+  .sh-modal-content .modal-title { color: #ffffff; font-weight: 700; }
+  .sh-modal-content .modal-body { padding: 22px 24px; }
+  .sh-modal-content .form-control, .sh-modal-content .form-select {
+    border-radius: 8px; border: 1px solid #dbe4f0;
+  }
+  .sh-modal-content .btn-secondary {
+    background: #ffffff; color: #e3496a; border: 1.5px solid #e3496a; border-radius: 8px; font-weight: 600;
+  }
+`;
+
 function SubsidyCounterSigning() {
   // Translation
   const { t } = useTranslation();
@@ -28,10 +63,12 @@ function SubsidyCounterSigning() {
   const handleCloseModal2 = () => setShowModal2(false);
   return (
     <Layout title="Subsidy Counter Signing List">
+      <style>{subsidyCounterSigningStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Subsidy Counter Signing List")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("Subsidy Counter Signing List")}</Block.Title>
             <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
@@ -67,9 +104,10 @@ function SubsidyCounterSigning() {
             </ul>
           </Block.HeadContent> */}
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block>
+      <Block className="mt-n4 sh-form-wrap">
         <Card>
           <div className="table-responsive" style={{ paddingBottom: "100px" }}>
             <table className="table small">
@@ -267,7 +305,7 @@ function SubsidyCounterSigning() {
         </Card>
       </Block>
 
-      <Modal show={showModal} onHide={handleCloseModal} size="lg">
+      <Modal show={showModal} onHide={handleCloseModal} size="lg" contentClassName="sh-modal-content">
         <Modal.Header closeButton>
           <Modal.Title>{t("Approve/Reject")}</Modal.Title>
         </Modal.Header>
@@ -406,7 +444,7 @@ function SubsidyCounterSigning() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModal1} onHide={handleCloseModal1} size="lg">
+      <Modal show={showModal1} onHide={handleCloseModal1} size="lg" contentClassName="sh-modal-content">
         <Modal.Header closeButton>
           <Modal.Title>{t("View Model")}</Modal.Title>
         </Modal.Header>
@@ -545,7 +583,7 @@ function SubsidyCounterSigning() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModal2} onHide={handleCloseModal2} size="lg">
+      <Modal show={showModal2} onHide={handleCloseModal2} size="lg" contentClassName="sh-modal-content">
         <Modal.Header closeButton>
           <Modal.Title>{t("Modify Model")}</Modal.Title>
         </Modal.Header>

@@ -4,6 +4,7 @@ import Swal from "sweetalert2/src/sweetalert2.js";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
+import { Icon } from "../../components";
 import React, { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
@@ -14,6 +15,35 @@ import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
+
+const gatepassStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-form-wrap { background: #eef2f8; border-radius: 14px; padding: 18px; }
+  .sh-form-wrap .card { border: none; border-radius: 12px !important; box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1); overflow: hidden; }
+  .sh-form-wrap .form-label { font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 6px; letter-spacing: 0.2px; }
+  .sh-form-wrap .form-control, .sh-form-wrap .form-select {
+    border-radius: 10px !important; border: 1.5px solid #d8e0ec !important; background-color: #fbfcfe !important;
+    padding: 0.62rem 0.9rem !important; font-size: 13.5px; color: #2b3a55;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  .sh-form-wrap .form-control:focus, .sh-form-wrap .form-select:focus {
+    border-color: #2b7ac0 !important; background-color: #ffffff !important; box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14) !important; outline: none;
+  }
+  .sh-form-wrap .form-control.is-invalid { border-color: #e3496a !important; box-shadow: 0 0 0 3px rgba(227, 73, 106, 0.12) !important; }
+  .sh-form-wrap .btn-primary { border-radius: 8px; font-weight: 600; letter-spacing: 0.3px; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+  .sh-form-wrap .btn-primary:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(30, 103, 168, 0.25); }
+  .sh-swal-popup { border-radius: 14px !important; }
+  .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; }
+  .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+`;
 
 function Gatepass() {
   const navigate = useNavigate();
@@ -37,6 +67,7 @@ function Gatepass() {
       icon: "success",
       title: "Accepted successfully",
       text: "Auction Accepted Successfully",
+      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     });
   };
 
@@ -51,6 +82,7 @@ function Gatepass() {
       icon: "error",
       title: "Gatepass not generated!",
       html: errorMessage,
+      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     });
   };
 
@@ -221,10 +253,12 @@ function Gatepass() {
 
   return (
     <Layout title={t("Gatepass")} show="true">
+      <style>{gatepassStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Gatepass")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("Gatepass")}</Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
             <ul className="d-flex">
@@ -246,9 +280,10 @@ function Gatepass() {
             </ul>
           </Block.HeadContent> */}
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n5 sh-form-wrap">
         {/* <Form action="#"> */}
         <Row className="g-3 ">
           <Card>

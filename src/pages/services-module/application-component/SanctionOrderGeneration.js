@@ -16,6 +16,46 @@ import ViewAllApplication from "./ViewAllApplication";
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
+const sanctionOrderGenerationStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-cta-btn {
+    background: #ffffff; color: #1e67a8 !important; border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25); font-weight: 700; padding: 8px 18px;
+    border-radius: 8px; transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover { background: #eef6ff; color: #1e67a8 !important; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32); }
+  .sh-form-wrap { background: #eef2f8; border-radius: 14px; padding: 18px; }
+  .sh-form-wrap .card { border: none; border-radius: 12px !important; box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1); overflow: hidden; }
+  .sh-form-wrap .form-control, .sh-form-wrap .form-select {
+    border-radius: 8px; border: 1px solid #dbe4f0; padding: 9px 12px; font-size: 13.5px;
+  }
+  .sh-form-wrap .btn-primary {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border: none !important;
+    font-weight: 600; border-radius: 8px; transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-form-wrap .btn-primary:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(30, 103, 168, 0.25); }
+  .sh-modal-content { border-radius: 12px !important; border: 1px solid #e3ebf6 !important; overflow: hidden; }
+  .sh-modal-content .modal-header { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%); border-bottom: none; padding: 16px 22px; }
+  .sh-modal-content .modal-header .btn-close { filter: brightness(0) invert(1); opacity: 0.85; }
+  .sh-modal-content .modal-title { color: #ffffff; font-weight: 700; }
+  .sh-modal-content .modal-body { padding: 22px 24px; }
+  .sh-modal-content .btn-primary {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border: none !important;
+    font-weight: 600; border-radius: 8px;
+  }
+  .sh-swal-popup { border-radius: 14px !important; }
+  .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; }
+  .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+`;
+
 const SanctionOrderGeneration = () => {
   const [helpDeskFaq, setHelpDeskFaq] = useState({
     text: "",
@@ -429,6 +469,7 @@ const SanctionOrderGeneration = () => {
             icon: "warning",
             title: "In Process",
             // text: message,
+            customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
           });
         }
       })
@@ -473,6 +514,7 @@ const SanctionOrderGeneration = () => {
       icon: "success",
       title: "Saved successfully",
       text: message,
+      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
     });
   };
   const saveError = (message) => {
@@ -486,6 +528,7 @@ const SanctionOrderGeneration = () => {
       icon: "error",
       title: "Save attempt was not successful",
       html: errorMessage,
+      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
     });
   };
 
@@ -733,24 +776,54 @@ const SanctionOrderGeneration = () => {
   ];
 
   const customStyles = {
+    table: {
+      style: {
+        borderRadius: "12px",
+        boxShadow: "0 4px 14px rgba(30, 103, 168, 0.1)",
+        overflow: "hidden",
+      },
+    },
+    headRow: {
+      style: {
+        background: "linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%)",
+        minHeight: "44px",
+      },
+    },
     rows: {
       style: {
-        minHeight: "45px", // override the row height
+        minHeight: "45px",
+        fontSize: "13.5px",
+        borderBottom: "1px solid #eef2f8",
+      },
+      highlightOnHoverStyle: {
+        backgroundColor: "#f3f8fd",
+        transitionDuration: "0.15s",
+      },
+      stripedStyle: {
+        backgroundColor: "#f8fafc",
       },
     },
     headCells: {
       style: {
-        backgroundColor: "#1e67a8",
+        backgroundColor: "transparent",
         color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
+        fontWeight: 700,
+        fontSize: "12.5px",
+        textTransform: "uppercase",
+        letterSpacing: "0.3px",
+        paddingLeft: "12px",
+        paddingRight: "12px",
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
+        paddingLeft: "12px",
+        paddingRight: "12px",
+      },
+    },
+    pagination: {
+      style: {
+        borderTop: "1px solid #eef2f8",
       },
     },
   };
@@ -771,17 +844,19 @@ const SanctionOrderGeneration = () => {
 
   return (
     <div>
+      <style>{sanctionOrderGenerationStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Sanction Order Generation List</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">Sanction Order Generation List</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
                   to="/seriui/application-dashboard"
-                  className="btn btn-primary btn-md d-md-none"
+                  className="btn sh-cta-btn btn-md d-md-none"
                 >
                   <Icon name="plus" />
                   <span>Dashboard</span>
@@ -790,7 +865,7 @@ const SanctionOrderGeneration = () => {
               <li>
                 <Link
                   to="/seriui/application-dashboard"
-                  className="btn btn-primary d-none d-md-inline-flex"
+                  className="btn sh-cta-btn d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
                   <span>Dashboard</span>
@@ -799,9 +874,10 @@ const SanctionOrderGeneration = () => {
             </ul>
           </Block.HeadContent>
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
         <Card>
           <DataTable
             //  title="Market List"
@@ -823,7 +899,7 @@ const SanctionOrderGeneration = () => {
           />
         </Card>
       </Block>
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+      <Modal show={showModal} onHide={handleCloseModal} size="xl" contentClassName="sh-modal-content">
         <Modal.Header closeButton>
           <Modal.Title>File Upload</Modal.Title>
         </Modal.Header>

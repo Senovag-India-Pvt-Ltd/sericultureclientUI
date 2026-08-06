@@ -13,6 +13,47 @@ const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURLChawki = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
+const pupaAndCocoonAssessmentPageStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-form-wrap { background: #eef2f8; border-radius: 14px; padding: 18px; }
+  .sh-form-wrap .card { border: none; border-radius: 12px !important; box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1); overflow: hidden; }
+  .sh-form-wrap .card-header { border-bottom: none !important; }
+  .sh-form-wrap .form-label { font-weight: 600; color: #2b3a55; font-size: 13.5px; }
+  .sh-form-wrap .form-control, .sh-form-wrap .form-select {
+    border-radius: 8px; border: 1px solid #dbe4f0; padding: 9px 12px; font-size: 13.5px;
+  }
+  .sh-form-wrap .form-control:focus, .sh-form-wrap .form-select:focus {
+    border-color: #3b8dd6; box-shadow: 0 0 0 0.2rem rgba(59, 141, 214, 0.15);
+  }
+  .sh-save-btn {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border: none !important;
+    font-weight: 600; padding: 8px 22px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;
+    box-shadow: 0 4px 12px rgba(30, 103, 168, 0.25);
+  }
+  .sh-modal-content { border-radius: 12px !important; border: 1px solid #e3ebf6 !important; overflow: hidden; }
+  .sh-modal-content .modal-header { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%); border-bottom: none; padding: 16px 22px; }
+  .sh-modal-content .modal-header .btn-close { filter: brightness(0) invert(1); opacity: 0.85; }
+  .sh-modal-content .modal-title { color: #ffffff; font-weight: 700; }
+  .sh-modal-content .modal-body { padding: 22px 24px; }
+  .sh-modal-content .btn-primary {
+    background: linear-gradient(135deg, #1e67a8 0%, #2b7ac0 100%); border: none; border-radius: 8px; font-weight: 600;
+  }
+  .sh-modal-content .btn-secondary {
+    background: #ffffff; color: #e3496a; border: 1.5px solid #e3496a; border-radius: 8px; font-weight: 600;
+  }
+  .sh-swal-popup { border-radius: 14px !important; }
+  .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; }
+  .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+`;
+
 function PupaAndCocoonAssessmentPage() {
   const { t } = useTranslation(); // Initialize useTranslation
   const [data, setData] = useState({
@@ -309,12 +350,12 @@ if (form.checkValidity() === false) {
   const styles = {
     ctstyle: {
       fontWeight: 700,
-      color: '#0f766e',
+      color: '#1e67a8',
       backgroundColor: '#f0fdfa',
       padding: '10px 14px',
       fontSize: '13px',
       width: '40%',
-      borderLeft: '3px solid #14b8a6',
+      borderLeft: '3px solid #2b7ac0',
       letterSpacing: '0.02em',
     },
     valStyle: {
@@ -334,7 +375,7 @@ if (form.checkValidity() === false) {
     },
     // Shared modal-header gradient — all detail modals use this so they read as one family.
     modalHeader: {
-      background: 'linear-gradient(135deg,#0f766e 0%,#14b8a6 50%,#5b57ac 100%)',
+      background: 'linear-gradient(135deg,#1e67a8 0%,#2b7ac0 50%,#3b8dd6 100%)',
       color: '#fff',
       padding: '16px 24px',
       border: 'none',
@@ -494,6 +535,7 @@ const saveSuccess = () => {
     icon: "success",
     title: "Pupa Testing And Cocoon Assessment Completed  Successfully",
     text: "You Can Proceed To Allotment",
+    customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
   }).then(() => {
       // navigate("#");
       window.location.reload();
@@ -505,6 +547,7 @@ const saveError = (message = "Something went wrong!") => {
     icon: "error",
     title: "Save attempt was not successful",
     text: message,
+    customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
   });
 };
 
@@ -512,10 +555,12 @@ const saveError = (message = "Something went wrong!") => {
 
   return (
     <Layout title={t("Pupa Testing And Cocoon Assessment")}>
+      <style>{pupaAndCocoonAssessmentPageStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Pupa Testing And Cocoon Assessment")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("Pupa Testing And Cocoon Assessment")}</Block.Title>
           </Block.HeadContent>
           <li>
                 <Link
@@ -534,9 +579,10 @@ const saveError = (message = "Something went wrong!") => {
                 </Link>
               </li>
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
       <Form
           noValidate
           validated={validated}
@@ -546,7 +592,7 @@ const saveError = (message = "Something went wrong!") => {
         <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 4px 20px rgba(30,103,168,.10)", overflow: "hidden" }}>
           {/* Gradient header strip — matches the rest of the cocoon-market screens. */}
           <div style={{
-            background: "linear-gradient(135deg,#0f766e 0%,#14b8a6 50%,#5b57ac 100%)",
+            background: "linear-gradient(135deg,#1e67a8 0%,#2b7ac0 50%,#3b8dd6 100%)",
             padding: "12px 20px", display: "flex", alignItems: "center", gap: "12px",
           }}>
             <div style={{ width: "42px", height: "42px", borderRadius: "12px", background: "rgba(255,255,255,.18)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px" }}>🔬</div>
@@ -563,7 +609,7 @@ const saveError = (message = "Something went wrong!") => {
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", minWidth: "1200px" }}>
                 <thead>
                   <tr style={{
-                    background: "linear-gradient(135deg,#0f766e,#14b8a6)",
+                    background: "linear-gradient(135deg,#1e67a8,#2b7ac0)",
                     color: "#fff", fontWeight: 700,
                   }}>
                     {[t("Action"), t("Sl.No"), t("Date Of Issuance Of Bidding Slip"), t("Bidding Slip Lot No"), t("FID"), t("Farmer Name"), t("Phone Number"), t("Address Details"), t("Crop Details"), t("FC Details"), t("Weighment Details")].map((h, i) => (
@@ -606,7 +652,7 @@ const saveError = (message = "Something went wrong!") => {
                         </td>
                         <td style={cellSt}>{item.marketAuctionDate}</td>
                         <td style={cellSt}>{item.allottedLotId}</td>
-                        <td style={cellSt}><span style={{ fontFamily: "ui-monospace,monospace", color: "#0f766e", fontWeight: 700 }}>{item.fruitsId}</span></td>
+                        <td style={cellSt}><span style={{ fontFamily: "ui-monospace,monospace", color: "#1e67a8", fontWeight: 700 }}>{item.fruitsId}</span></td>
                         <td style={cellSt}><span style={{ fontWeight: 700 }}>{item.firstName}</span></td>
                         <td style={cellSt}>{item.mobileNumber}</td>
                         <td style={cellSt}>
@@ -637,7 +683,7 @@ const saveError = (message = "Something went wrong!") => {
             </div>
           </Card.Body>
         </Card>
-        <Modal show={showModal} onHide={handleCloseModal} size="lg" centered>
+        <Modal show={showModal} onHide={handleCloseModal} size="lg" centered contentClassName="sh-modal-content">
           <Modal.Header closeButton closeVariant="white" style={styles.modalHeader}>
             <Modal.Title style={styles.modalTitle}>
               <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>👤 {t("Address & Personal Details")}</span>
@@ -648,7 +694,7 @@ const saveError = (message = "Something went wrong!") => {
             <Row className="g-4">
               <Col lg="6">
                 <div style={{ background: "#fff", borderRadius: "10px", overflow: "hidden", border: "1px solid #e2e8f0", boxShadow: "0 2px 8px rgba(15,118,110,.06)" }}>
-                  <div style={{ background: "linear-gradient(135deg,#0f766e,#14b8a6)", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: "12px", letterSpacing: "0.04em", textTransform: "uppercase" }}>
+                  <div style={{ background: "linear-gradient(135deg,#1e67a8,#2b7ac0)", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: "12px", letterSpacing: "0.04em", textTransform: "uppercase" }}>
                     🧾 {t("Identity")}
                   </div>
                   <table style={{ width: "100%", borderCollapse: "collapse" }}>
@@ -663,7 +709,7 @@ const saveError = (message = "Something went wrong!") => {
               </Col>
               <Col lg="6">
                 <div style={{ background: "#fff", borderRadius: "10px", overflow: "hidden", border: "1px solid #e2e8f0", boxShadow: "0 2px 8px rgba(91,87,172,.06)" }}>
-                  <div style={{ background: "linear-gradient(135deg,#4338ca,#6366f1)", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: "12px", letterSpacing: "0.04em", textTransform: "uppercase" }}>
+                  <div style={{ background: "linear-gradient(135deg,#1e67a8,#3b8dd6)", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: "12px", letterSpacing: "0.04em", textTransform: "uppercase" }}>
                     📍 {t("Address")}
                   </div>
                   <table style={{ width: "100%", borderCollapse: "collapse" }}>
@@ -722,7 +768,7 @@ const saveError = (message = "Something went wrong!") => {
         </Modal.Body>
       </Modal> */}
 
-      <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg" centered>
+      <Modal show={showModalFC} onHide={handleCloseModalFC} size="lg" centered contentClassName="sh-modal-content">
         <Modal.Header closeButton closeVariant="white" style={styles.modalHeader}>
           <Modal.Title style={styles.modalTitle}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>📄 {t("Fitness Certificate Details")}</span>
@@ -743,7 +789,7 @@ const saveError = (message = "Something went wrong!") => {
                       the certificate thumbnail on the left, and a 2-column key/value grid
                       for the metadata on the right. */}
                   <div style={{ background: "#fff", borderRadius: "12px", border: "1px solid #e2e8f0", overflow: "hidden", boxShadow: "0 2px 10px rgba(15,118,110,.06)" }}>
-                    <div style={{ background: "linear-gradient(135deg,#0f766e,#14b8a6)", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: "12px", letterSpacing: "0.04em", textTransform: "uppercase", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <div style={{ background: "linear-gradient(135deg,#1e67a8,#2b7ac0)", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: "12px", letterSpacing: "0.04em", textTransform: "uppercase", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                       <span>📜 {t("Certificate")} #{index + 1}</span>
                       {data.lotNumberRsp && <span style={{ background: "rgba(255,255,255,.22)", borderRadius: "20px", padding: "2px 10px", fontSize: "11px" }}>{t("Lot")} {data.lotNumberRsp}</span>}
                     </div>
@@ -805,7 +851,7 @@ const saveError = (message = "Something went wrong!") => {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg" centered>
+      <Modal show={showModalCrop} onHide={handleCloseModalCrop} size="lg" centered contentClassName="sh-modal-content">
         <Modal.Header closeButton closeVariant="white" style={styles.modalHeader}>
           <Modal.Title style={styles.modalTitle}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>🌿 {t("Crop Details")}</span>
@@ -817,13 +863,13 @@ const saveError = (message = "Something went wrong!") => {
             {/* KPI strip — three coloured cards summarising the crop at a glance, then a key/value table below. */}
             <Col md="4">
               <div style={{ background: "linear-gradient(135deg,#f0fdfa,#ccfbf1)", border: "1.5px solid #5eead4", borderRadius: "12px", padding: "14px 16px" }}>
-                <div style={{ fontSize: "11px", color: "#0f766e", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("No of DFL's")}</div>
+                <div style={{ fontSize: "11px", color: "#1e67a8", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("No of DFL's")}</div>
                 <div style={{ fontSize: "20px", color: "#134e4a", fontWeight: 800, marginTop: "4px" }}>{farmerDetails?.numbersOfDfls || '—'}</div>
               </div>
             </Col>
             <Col md="4">
               <div style={{ background: "linear-gradient(135deg,#eef2ff,#e0e7ff)", border: "1.5px solid #a5b4fc", borderRadius: "12px", padding: "14px 16px" }}>
-                <div style={{ fontSize: "11px", color: "#4338ca", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("Lot No.")}</div>
+                <div style={{ fontSize: "11px", color: "#1e67a8", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("Lot No.")}</div>
                 <div style={{ fontSize: "20px", color: "#312e81", fontWeight: 800, marginTop: "4px" }}>{farmerDetails?.lotNumberRsp || '—'}</div>
               </div>
             </Col>
@@ -835,7 +881,7 @@ const saveError = (message = "Something went wrong!") => {
             </Col>
             <Col lg="12">
               <div style={{ background: "#fff", borderRadius: "10px", overflow: "hidden", border: "1px solid #e2e8f0", boxShadow: "0 2px 8px rgba(15,118,110,.06)" }}>
-                <div style={{ background: "linear-gradient(135deg,#0f766e,#14b8a6)", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: "12px", letterSpacing: "0.04em", textTransform: "uppercase" }}>
+                <div style={{ background: "linear-gradient(135deg,#1e67a8,#2b7ac0)", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: "12px", letterSpacing: "0.04em", textTransform: "uppercase" }}>
                   📋 {t("Full Crop Details")}
                 </div>
                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
@@ -867,7 +913,7 @@ const saveError = (message = "Something went wrong!") => {
             <Col md="8" lg="6">
               {/* Big hero KPI card — Initial Weighment is the only field, so make it count. */}
               <div style={{
-                background: "linear-gradient(135deg,#0f766e 0%,#14b8a6 100%)",
+                background: "linear-gradient(135deg,#1e67a8 0%,#2b7ac0 100%)",
                 borderRadius: "14px",
                 padding: "24px 22px",
                 color: "#fff",
@@ -900,7 +946,7 @@ const saveError = (message = "Something went wrong!") => {
         size="lg"
         centered
       >
-        <Modal.Header closeButton style={{ background: "linear-gradient(135deg,#0f766e 0%,#14b8a6 50%,#5b57ac 100%)", border: "none", padding: "16px 24px", borderRadius: "8px 8px 0 0" }} closeVariant="white">
+        <Modal.Header closeButton style={{ background: "linear-gradient(135deg,#1e67a8 0%,#2b7ac0 50%,#3b8dd6 100%)", border: "none", padding: "16px 24px", borderRadius: "8px 8px 0 0" }} closeVariant="white">
           <Modal.Title style={{ color: "#fff", fontWeight: 800, fontSize: "16px", display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>🧪 {t("Pupa Test")}</span>
             {selectedAssessmentItem?.firstName && (
@@ -930,7 +976,7 @@ const saveError = (message = "Something went wrong!") => {
                 user can see Pupa Test vs Cocoon Assessment as two distinct stages. */}
             <Card className="mb-3" style={{ border: "none", borderRadius: "12px", boxShadow: "0 2px 12px rgba(15,118,110,.10)", overflow: "hidden" }}>
               <div style={{
-                background: "linear-gradient(135deg,#0f766e,#14b8a6)",
+                background: "linear-gradient(135deg,#1e67a8,#2b7ac0)",
                 color: "#fff", padding: "10px 16px",
                 fontWeight: 800, fontSize: "13px", display: "flex", alignItems: "center", gap: "8px",
               }}>
@@ -1088,7 +1134,7 @@ const saveError = (message = "Something went wrong!") => {
                 the Pupa Test section above. */}
             <Card style={{ border: "none", borderRadius: "12px", boxShadow: "0 2px 12px rgba(91,87,172,.10)", overflow: "hidden" }}>
               <div style={{
-                background: "linear-gradient(135deg,#4338ca,#6366f1)",
+                background: "linear-gradient(135deg,#1e67a8,#3b8dd6)",
                 color: "#fff", padding: "10px 16px",
                 fontWeight: 800, fontSize: "13px", display: "flex", alignItems: "center", gap: "8px",
               }}>
@@ -1143,7 +1189,7 @@ const saveError = (message = "Something went wrong!") => {
                 type="submit"
                 disabled={isSubmitting}
                 style={{
-                  background: isSubmitting ? "#c8d6e5" : "linear-gradient(135deg,#0f766e,#14b8a6)",
+                  background: isSubmitting ? "#c8d6e5" : "linear-gradient(135deg,#1e67a8,#2b7ac0)",
                   border: "none", borderRadius: "10px", padding: "11px 30px",
                   fontWeight: 700, fontSize: "14px", color: "#fff",
                   cursor: isSubmitting ? "not-allowed" : "pointer",

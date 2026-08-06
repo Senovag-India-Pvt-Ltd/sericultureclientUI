@@ -2,7 +2,7 @@ import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import { Select } from "../../components";
+import { Select, Icon } from "../../components";
 
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -20,6 +20,40 @@ const baseURL1 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
+
+const reelerBiddingSlipStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-form-wrap { background: #eef2f8; border-radius: 14px; padding: 18px; }
+  .sh-form-wrap .card { border: none; border-radius: 12px !important; box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1); overflow: hidden; }
+  .sh-section-header {
+    display: flex; align-items: center; gap: 10px; font-weight: 700 !important; font-size: 1rem !important;
+    letter-spacing: 0.3px; background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-left: none !important; color: #ffffff !important; padding: 14px 20px !important; border-bottom: none !important;
+  }
+  .sh-form-wrap .form-label { font-weight: 600; color: #2b3a55; font-size: 13.5px; }
+  .sh-form-wrap .form-control, .sh-form-wrap .form-select {
+    border-radius: 8px; border: 1px solid #dbe4f0; padding: 9px 12px; font-size: 13.5px;
+  }
+  .sh-form-wrap .form-control:focus, .sh-form-wrap .form-select:focus {
+    border-color: #3b8dd6; box-shadow: 0 0 0 0.2rem rgba(59, 141, 214, 0.15);
+  }
+  .sh-save-btn {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border: none !important;
+    font-weight: 600; padding: 8px 22px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;
+    box-shadow: 0 4px 12px rgba(30, 103, 168, 0.25);
+  }
+  .sh-swal-popup { border-radius: 14px !important; }
+  .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; box-shadow: 0 4px 12px rgba(30,103,168,0.25) !important; }
+  .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+`;
 
 function ReelerBiddingSlip() {
   const { t } = useTranslation();
@@ -173,6 +207,7 @@ function ReelerBiddingSlip() {
             Swal.fire({
               icon: "warning",
               title: "Details not Found",
+              customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
             });
           }
           setReelerDetails({});
@@ -661,7 +696,7 @@ function ReelerBiddingSlip() {
       title: "Bidding Slip has been generated",
       text: `Alloted Bin number ${big} ${small}`,
       width: 300,
-      // customClass: styles.sweetsize,
+      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     });
   };
 
@@ -670,6 +705,7 @@ function ReelerBiddingSlip() {
       icon: "error",
       title: "Save attempt was not successful",
       text: message,
+      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     });
   };
 
@@ -684,15 +720,18 @@ function ReelerBiddingSlip() {
       icon: "error",
       title: "Details not Found",
       html: errorMessage,
+      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     });
   };
 
   return (
     <Layout title={t("Silk Market Bidding Slip")} show="true">
+      <style>{reelerBiddingSlipStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Silk Market Bidding Slip")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("Silk Market Bidding Slip")}</Block.Title>
             {/* <nav>
               <ol className="breadcrumb breadcrumb-arrow mb-0">
                 <li className="breadcrumb-item">
@@ -705,9 +744,10 @@ function ReelerBiddingSlip() {
             </nav> */}
           </Block.HeadContent>
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
         {/* <Form action="#"> */}
         <Form noValidate validated={validatedDisplay} onSubmit={display}>
           <Card>
@@ -763,7 +803,8 @@ function ReelerBiddingSlip() {
                       </Form.Control.Feedback>
                     </Col>
                     <Col sm={2} lg={3}>
-                      <Button type="submit" variant="primary">
+                      <Button type="submit" variant="primary" className="sh-save-btn">
+                        <Icon name="search" />
                         {t("Search")}
                       </Button>
                     </Col>
@@ -1264,7 +1305,8 @@ function ReelerBiddingSlip() {
                           variant="primary"
                           onClick={postData}
                         > */}
-                        <Button type="submit" variant="primary">
+                        <Button type="submit" variant="primary" className="sh-save-btn">
+                          <Icon name="save" />
                           {t("Submit")}
                         </Button>
                       </li>
@@ -1281,7 +1323,7 @@ function ReelerBiddingSlip() {
                     {isSubmit ? (
                       sourceData.allotedLotList.length > 0 ? (
                         <Card>
-                          <Card.Header>Print Bidding Slip</Card.Header>
+                          <Card.Header className="sh-section-header"><Icon name="printer" /><span>Print Bidding Slip</span></Card.Header>
                           <Card.Body>
                             <Row className="g-gs">
                               <Col lg="12">
@@ -1329,7 +1371,7 @@ function ReelerBiddingSlip() {
                     {isSubmit ? (
                       sourceData.allotedSmallBinList.length > 0 ? (
                         <Card>
-                          <Card.Header>Small Bin</Card.Header>
+                          <Card.Header className="sh-section-header"><Icon name="box" /><span>Small Bin</span></Card.Header>
                           <Card.Body>
                             <Row className="g-gs">
                               <Col lg="12">
@@ -1377,7 +1419,7 @@ function ReelerBiddingSlip() {
                     {isSubmit ? (
                       sourceData.allotedBigBinList.length > 0 ? (
                         <Card>
-                          <Card.Header>Big Bin</Card.Header>
+                          <Card.Header className="sh-section-header"><Icon name="box" /><span>Big Bin</span></Card.Header>
                           <Card.Body>
                             <Row className="g-gs">
                               <Col lg="12">
@@ -1486,7 +1528,7 @@ function ReelerBiddingSlip() {
 
                 <Col lg="5">
                   <Card>
-                    <Card.Header>{t("Reeler Personal Info")}</Card.Header>
+                    <Card.Header className="sh-section-header"><Icon name="user" /><span>{t("Reeler Personal Info")}</span></Card.Header>
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="12">
@@ -1571,7 +1613,7 @@ function ReelerBiddingSlip() {
                   </Card>
 
                   <Card className="card-gutter-md mt-4">
-                    <Card.Header>{t("Reeler Address")}</Card.Header>
+                    <Card.Header className="sh-section-header"><Icon name="map-pin" /><span>{t("Reeler Address")}</span></Card.Header>
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="12">

@@ -9,6 +9,21 @@ import { useTranslation } from "react-i18next";
 
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
+const transferMarketFeeToGovtAccountStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-swal-popup { border-radius: 14px !important; }
+  .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; }
+  .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+`;
+
 const formatDate = (d) =>
   d.getFullYear() +
   "-" +
@@ -68,7 +83,7 @@ function TransferMarketFeeToGovtAccount() {
         setLotList(raw);
         setSearched(true);
         if (raw.length === 0) {
-          Swal.fire({ icon: "info", title: t("No Records"), text: t("No pending lots found for the given date and market.") });
+          Swal.fire({ icon: "info", title: t("No Records"), text: t("No pending lots found for the given date and market."), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
         }
       })
       .catch((err) => {
@@ -76,7 +91,7 @@ function TransferMarketFeeToGovtAccount() {
           err.response?.data?.errorMessages?.[0]?.message ||
           err.message ||
           t("Failed to fetch records.");
-        Swal.fire({ icon: "error", title: t("Error"), text: msg });
+        Swal.fire({ icon: "error", title: t("Error"), text: msg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
         setSearched(true);
       })
       .finally(() => setLoading(false));
@@ -97,12 +112,12 @@ function TransferMarketFeeToGovtAccount() {
         link.click();
         link.remove();
       })
-      .catch(() => Swal.fire({ icon: "error", title: t("Error"), text: t("Failed to download preview CSV.") }));
+      .catch(() => Swal.fire({ icon: "error", title: t("Error"), text: t("Failed to download preview CSV."), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } }));
   };
 
   const handleTransfer = async () => {
     if (!fileName.trim()) {
-      Swal.fire({ icon: "warning", title: t("File Name Required"), text: t("Please enter a file name before transferring.") });
+      Swal.fire({ icon: "warning", title: t("File Name Required"), text: t("Please enter a file name before transferring."), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
       return;
     }
     const result = await Swal.fire({
@@ -111,6 +126,7 @@ function TransferMarketFeeToGovtAccount() {
       icon: "question",
       showCancelButton: true,
       confirmButtonText: t("Yes, Transfer"),
+      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     });
     if (!result.value) return;
 
@@ -129,6 +145,7 @@ function TransferMarketFeeToGovtAccount() {
           icon: "success",
           title: t("Success"),
           text: content?.message || t("Market fee transferred successfully."),
+          customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
         });
       })
       .catch((err) => {
@@ -136,7 +153,7 @@ function TransferMarketFeeToGovtAccount() {
           err.response?.data?.errorMessages?.[0]?.message ||
           err.message ||
           t("Transfer failed.");
-        Swal.fire({ icon: "error", title: t("Error"), text: msg });
+        Swal.fire({ icon: "error", title: t("Error"), text: msg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
       })
       .finally(() => setTransferring(false));
   };
@@ -162,7 +179,7 @@ function TransferMarketFeeToGovtAccount() {
           err.response?.data?.errorMessages?.[0]?.message ||
           err.message ||
           t("Failed to download bank CSV.");
-        Swal.fire({ icon: "error", title: t("Error"), text: msg });
+        Swal.fire({ icon: "error", title: t("Error"), text: msg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
       });
   };
 
@@ -180,12 +197,15 @@ function TransferMarketFeeToGovtAccount() {
 
   return (
     <Layout title={t("Transfer Market Fee to Govt Account")}>
+      <style>{transferMarketFeeToGovtAccountStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Transfer Market Fee to Govt Account")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("Transfer Market Fee to Govt Account")}</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
       <Block className="mt-n4">

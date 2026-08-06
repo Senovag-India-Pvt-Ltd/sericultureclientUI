@@ -153,12 +153,25 @@ function InvoicePermitAndMarketReceipt() {
 
   return (
     <Layout title={t("Seed Market Reports")}>
+      <style>{`
+        .sh-page-header {
+          padding: 20px 24px;
+          background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+          border-radius: 12px;
+          border: none;
+          box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+          margin-bottom: 22px;
+        }
+        .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+      `}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Seed Market Reports")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("Seed Market Reports")}</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
       <Block className="mt-n4">

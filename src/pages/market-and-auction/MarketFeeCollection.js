@@ -8,6 +8,21 @@ import api from "../../../src/services/auth/api";
 
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
+const marketFeeCollectionStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-swal-popup { border-radius: 14px !important; }
+  .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; }
+  .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+`;
+
 function MarketFeeCollection() {
   const { t } = useTranslation();
 
@@ -73,7 +88,7 @@ function MarketFeeCollection() {
           err.response?.data?.errorMessages?.[0]?.message ||
           err.message ||
           t("Failed to fetch lot list.");
-        Swal.fire({ icon: "error", title: t("Error"), text: msg });
+        Swal.fire({ icon: "error", title: t("Error"), text: msg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
         setSearched(true);
       })
       .finally(() => setLoading(false));
@@ -105,7 +120,7 @@ function MarketFeeCollection() {
 
   const handleUpdate = async () => {
     if (selectedLots.size === 0) {
-      Swal.fire({ icon: "warning", title: t("Select Lots"), text: t("Please select at least one lot to collect market fee.") });
+      Swal.fire({ icon: "warning", title: t("Select Lots"), text: t("Please select at least one lot to collect market fee."), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
       return;
     }
     const marketId = localStorage.getItem("marketId");
@@ -119,14 +134,14 @@ function MarketFeeCollection() {
           )
         )
       );
-      Swal.fire({ icon: "success", title: t("Success"), text: t("Market fee collected successfully.") });
+      Swal.fire({ icon: "success", title: t("Success"), text: t("Market fee collected successfully."), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
       fetchLots(fruitsId);
     } catch (err) {
       const msg =
         err.response?.data?.errorMessages?.[0]?.message ||
         err.message ||
         t("Failed to update market fee.");
-      Swal.fire({ icon: "error", title: t("Error"), text: msg });
+      Swal.fire({ icon: "error", title: t("Error"), text: msg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
     } finally {
       setUpdating(false);
     }
@@ -134,12 +149,15 @@ function MarketFeeCollection() {
 
   return (
     <Layout title={t("Market Fee Collection")}>
+      <style>{marketFeeCollectionStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Market Fee Collection")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("Market Fee Collection")}</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
       <Block className="mt-n4">

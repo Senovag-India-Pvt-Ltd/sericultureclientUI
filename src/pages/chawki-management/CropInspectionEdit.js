@@ -12,6 +12,29 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_CHAWKI_MANAGEMENT;
 const baseURLRegistration = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
+const cropInspectionEditStyles = `
+  .sh-page-header {
+    padding: 12px 20px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 8px;
+  }
+  .sh-page-title { margin-bottom: 0; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-page-header .breadcrumb-item a,
+  .sh-page-header .breadcrumb-item.active { color: rgba(255,255,255,0.85) !important; }
+  .sh-cta-btn {
+    background: #ffffff !important; color: #1e67a8 !important; border: none !important;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25); font-weight: 700;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover { background: #eef6ff !important; transform: translateY(-1px); }
+  .sh-swal-popup { border-radius: 14px !important; }
+  .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; }
+  .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+`;
+
 function CropInspectionEdit() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -95,7 +118,7 @@ function CropInspectionEdit() {
             resData.errorMessages[0]?.message?.[0]?.message ||
             resData.errorMessages[0]?.message ||
             "Validation error from server.";
-          Swal.fire({ icon: "warning", title: "Not Found", text: apiMsg });
+          Swal.fire({ icon: "warning", title: "Not Found", text: apiMsg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
           setSearchLoading(false);
           return;
         }
@@ -106,7 +129,7 @@ function CropInspectionEdit() {
           loadInspectionList(found.farmerId);
           setSearchLoading(false);
         } else {
-          Swal.fire({ icon: "warning", title: "Details not Found", text: "No details found" });
+          Swal.fire({ icon: "warning", title: "Details not Found", text: "No details found", customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
           setSearchLoading(false);
         }
       })
@@ -117,9 +140,9 @@ function CropInspectionEdit() {
             errData.errorMessages[0]?.message?.[0]?.message ||
             errData.errorMessages[0]?.message ||
             "Validation error from server.";
-          Swal.fire({ icon: "warning", title: "Not Found", text: apiMsg });
+          Swal.fire({ icon: "warning", title: "Not Found", text: apiMsg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
         } else {
-          Swal.fire({ icon: "warning", title: "Details not Found" });
+          Swal.fire({ icon: "warning", title: "Details not Found", customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
         }
         setSearchLoading(false);
       });
@@ -238,7 +261,7 @@ function CropInspectionEdit() {
       });
 
       if (response.data.content?.error) {
-        Swal.fire({ icon: "error", title: "Update failed", text: response.data.content.error_description || "Something went wrong!" });
+        Swal.fire({ icon: "error", title: "Update failed", text: response.data.content.error_description || "Something went wrong!", customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
         setSaving(false);
         return;
       }
@@ -253,14 +276,14 @@ function CropInspectionEdit() {
       }
 
       setSaving(false);
-      Swal.fire({ icon: "success", title: "Updated successfully" }).then(() => {
+      Swal.fire({ icon: "success", title: "Updated successfully", customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } }).then(() => {
         setEditData(null);
         clearImageState();
         if (farmerDetails?.farmerId) loadInspectionList(farmerDetails.farmerId);
       });
     } catch {
       setSaving(false);
-      Swal.fire({ icon: "error", title: "Update attempt was not successful", text: "Something went wrong!" });
+      Swal.fire({ icon: "error", title: "Update attempt was not successful", text: "Something went wrong!", customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
     }
   };
 
@@ -270,34 +293,24 @@ function CropInspectionEdit() {
 
   return (
     <Layout title={t("Crop Inspection Edit")}>
+      <style>{cropInspectionEditStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Crop Inspection Edit")}</Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">{t("Home")}</Link>
-                </li>
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/crop-inspection-list">{t("Crop Inspection List")}</Link>
-                </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  {t("Edit Crop Inspection")}
-                </li>
-              </ol>
-            </nav>
+            <Block.Title tag="h2" className="sh-page-title">{t("Crop Inspection Edit")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
-            <Link to="/seriui/crop-inspection-list" className="btn btn-primary d-none d-md-inline-flex">
+            <Link to="/seriui/crop-inspection-list" className="btn btn-primary d-none d-md-inline-flex sh-cta-btn">
               <Icon name="arrow-long-left" />
               <span>{t("Go To List")}</span>
             </Link>
           </Block.HeadContent>
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-3">
+      <Block className="mt-n2">
 
         {/* ── Farmer Search ── */}
         <Card style={{ borderRadius: "12px", boxShadow: "0 2px 12px rgba(0,0,0,0.08)", border: "none", overflow: "hidden", marginBottom: "20px" }}>

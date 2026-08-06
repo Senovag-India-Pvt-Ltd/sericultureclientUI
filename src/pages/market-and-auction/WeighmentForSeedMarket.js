@@ -19,6 +19,23 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
+const weighmentForSeedMarketStyles = `
+  .sh-form-wrap { background: #eef2f8; border-radius: 14px; padding: 18px; }
+  .sh-form-wrap .card { border: none; border-radius: 12px !important; box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1); overflow: hidden; }
+  .sh-form-wrap .btn-primary {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border: none !important;
+    font-weight: 600; border-radius: 8px; transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-form-wrap .btn-primary:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(30, 103, 168, 0.25); }
+  .sh-form-wrap table thead th {
+    background-color: #eef4fc !important; color: #2b3a55 !important; font-weight: 700; font-size: 13px;
+    letter-spacing: 0.2px; border-bottom: 2px solid #d6e3f3 !important;
+  }
+  .sh-swal-popup { border-radius: 14px !important; }
+  .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; }
+  .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+`;
+
 function WeighmentForSeedMarket() {
   const [weighStream, setWeighStream] = useState("");
   const [lastWeight, setLastWeight] = useState("0");
@@ -246,6 +263,7 @@ function WeighmentForSeedMarket() {
     Swal.fire({
       icon: "error",
       text: message,
+      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     }).then((result) => {
       if (result.isConfirmed) {
         setData({
@@ -276,6 +294,7 @@ function WeighmentForSeedMarket() {
     Swal.fire({
       icon: "warning",
       text: message,
+      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     }).then((result) => {
       if (result.isConfirmed) {
         setData({
@@ -307,6 +326,7 @@ function WeighmentForSeedMarket() {
       icon: "warning",
       title: t("Weighment Completed"),
       // text: `Total amount Debited is ${amount} for Lot ${lot}`,
+      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     }).then((result) => {
       if (result.isConfirmed) {
         setData({
@@ -425,6 +445,7 @@ function WeighmentForSeedMarket() {
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: t("Yes, Continue!"),
+        customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
       });
 
       if (result.isConfirmed) {
@@ -723,6 +744,7 @@ const handleShowModalAssesment = () => {
       title: t("Saved successfully"),
 
       // text: "You clicked the button!",
+      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     });
   };
   const saveError = () => {
@@ -730,12 +752,14 @@ const handleShowModalAssesment = () => {
       icon: "error",
       title: t("Save attempt was not successful"),
       text: t("Something went wrong!"),
+      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     });
   };
   return (
     <div>
+      <style>{weighmentForSeedMarketStyles}</style>
       {weighTest ? (
-        <Block>
+        <Block className="sh-form-wrap">
           <Form action="#">
             <Row className="g-3">
               <Col lg="12">
@@ -1048,7 +1072,7 @@ const handleShowModalAssesment = () => {
           </Form>
         </Block>
       ) : (
-        <Block>
+        <Block className="sh-form-wrap">
           <Form action="#">
             <Row className="g-3">
               <Col lg="12">

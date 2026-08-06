@@ -8,6 +8,21 @@ import { useTranslation } from "react-i18next";
 
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
+const reelerBankTransferStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-swal-popup { border-radius: 14px !important; }
+  .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; }
+  .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+`;
+
 const formatINR = (amount) =>
   amount != null
     ? "₹" + Number(amount).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
@@ -48,7 +63,7 @@ function ReelerBankTransfer() {
     }
     e.preventDefault();
     if (!marketId) {
-      Swal.fire({ icon: "warning", title: t("Not Allowed"), text: t("You are not assigned to a market. Please contact your administrator.") });
+      Swal.fire({ icon: "warning", title: t("Not Allowed"), text: t("You are not assigned to a market. Please contact your administrator."), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
       return;
     }
     setBalanceData(null);
@@ -72,7 +87,7 @@ function ReelerBankTransfer() {
           content?.error_description;
 
         if (content?.error || backendError) {
-          Swal.fire({ icon: "error", title: t("Error"), text: backendError || t("Buyer not found.") });
+          Swal.fire({ icon: "error", title: t("Error"), text: backendError || t("Buyer not found."), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
         } else {
           setBalanceData(content);
           setSearched(true);
@@ -89,7 +104,7 @@ function ReelerBankTransfer() {
           err.response?.data?.error_description ||
           err.message ||
           t("Buyer not found.");
-        Swal.fire({ icon: "error", title: t("Error"), text: msg });
+        Swal.fire({ icon: "error", title: t("Error"), text: msg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
       })
       .finally(() => setLoading(false));
 
@@ -105,6 +120,7 @@ function ReelerBankTransfer() {
       showCancelButton: true,
       confirmButtonText: t("Yes, Transfer"),
       confirmButtonColor: "#1e67a8",
+      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     });
     if (!result.value) return;
 
@@ -130,9 +146,9 @@ function ReelerBankTransfer() {
           content?.error_description;
 
         if (content?.error || backendError) {
-          Swal.fire({ icon: "error", title: t("Error"), text: backendError || t("Transfer failed.") });
+          Swal.fire({ icon: "error", title: t("Error"), text: backendError || t("Transfer failed."), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
         } else {
-          Swal.fire({ icon: "success", title: t("Success"), text: `Transfer of ${formatINR(transferAmount)} initiated successfully.` });
+          Swal.fire({ icon: "success", title: t("Success"), text: `Transfer of ${formatINR(transferAmount)} initiated successfully.`, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
         }
       })
       .catch((err) => {
@@ -144,7 +160,7 @@ function ReelerBankTransfer() {
           err.response?.data?.error_description ||
           err.message ||
           t("Transfer failed.");
-        Swal.fire({ icon: "error", title: t("Error"), text: msg });
+        Swal.fire({ icon: "error", title: t("Error"), text: msg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
       })
       .finally(() => setTransferring(false));
   };
@@ -181,9 +197,10 @@ function ReelerBankTransfer() {
             icon: status === 403 ? "error" : "warning",
             title: status === 403 ? t("Access Denied") : t("Download Failed"),
             text: backendMsg || t("Failed to download CSV."),
+            customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
           });
         } catch {
-          Swal.fire({ icon: "error", title: t("Error"), text: t("Failed to download CSV.") });
+          Swal.fire({ icon: "error", title: t("Error"), text: t("Failed to download CSV."), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
         }
       });
   };
@@ -215,12 +232,15 @@ function ReelerBankTransfer() {
 
   return (
     <Layout title={t("Reeler / RSP Bank Transfer")}>
+      <style>{reelerBankTransferStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Reeler / RSP Bank Transfer")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("Reeler / RSP Bank Transfer")}</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
       <Block className="mt-n4">

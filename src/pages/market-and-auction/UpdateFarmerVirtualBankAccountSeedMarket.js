@@ -9,6 +9,21 @@ import api from "../../../src/services/auth/api";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
+const updateFarmerVirtualBankAccountSeedMarketStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-swal-popup { border-radius: 14px !important; }
+  .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; }
+  .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+`;
+
 function UpdateFarmerVirtualBankAccountSeedMarket() {
   const { t } = useTranslation();
 
@@ -75,7 +90,7 @@ function UpdateFarmerVirtualBankAccountSeedMarket() {
             resData.errorMessages[0]?.message?.[0]?.message ||
             resData.errorMessages[0]?.message ||
             t("No farmer record found for the given input.");
-          Swal.fire({ icon: "warning", title: t("Not Found"), text: msg });
+          Swal.fire({ icon: "warning", title: t("Not Found"), text: msg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
           setLoading(false);
           return;
         }
@@ -85,7 +100,7 @@ function UpdateFarmerVirtualBankAccountSeedMarket() {
           setFarmerDetails(farmer);
           getVbList(farmer.farmerId);
         } else {
-          Swal.fire({ icon: "warning", title: t("Not Found"), text: t("No farmer record found for the given input.") });
+          Swal.fire({ icon: "warning", title: t("Not Found"), text: t("No farmer record found for the given input."), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
         }
       })
       .catch((err) => {
@@ -95,7 +110,7 @@ function UpdateFarmerVirtualBankAccountSeedMarket() {
           errData?.errorMessages?.[0]?.message ||
           err.message ||
           t("Failed to fetch farmer details.");
-        Swal.fire({ icon: "warning", title: t("Not Found"), text: msg });
+        Swal.fire({ icon: "warning", title: t("Not Found"), text: msg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
       })
       .finally(() => setLoading(false));
     setValidatedSearch(false);
@@ -136,6 +151,7 @@ function UpdateFarmerVirtualBankAccountSeedMarket() {
         icon: "warning",
         title: t("Invalid IFSC Code"),
         text: t("IFSC Code must be exactly 11 characters."),
+        customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
       });
       return false;
     }
@@ -144,6 +160,7 @@ function UpdateFarmerVirtualBankAccountSeedMarket() {
         icon: "warning",
         title: t("Account Number Mismatch"),
         text: t("Virtual Account Number and Re-enter do not match."),
+        customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
       });
       return false;
     }
@@ -157,6 +174,7 @@ function UpdateFarmerVirtualBankAccountSeedMarket() {
         icon: "warning",
         title: t("Duplicate Account"),
         text: t("This Virtual Account Number already exists."),
+        customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
       });
       return false;
     }
@@ -191,10 +209,11 @@ function UpdateFarmerVirtualBankAccountSeedMarket() {
           text: t("Virtual Bank Account added successfully."),
           timer: 2000,
           showConfirmButton: false,
+          customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
         });
       })
       .catch(() =>
-        Swal.fire({ icon: "error", title: t("Error"), text: t("Failed to add Virtual Bank Account.") })
+        Swal.fire({ icon: "error", title: t("Error"), text: t("Failed to add Virtual Bank Account."), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } })
       );
   };
 
@@ -233,10 +252,11 @@ function UpdateFarmerVirtualBankAccountSeedMarket() {
           text: t("Virtual Bank Account updated successfully."),
           timer: 2000,
           showConfirmButton: false,
+          customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
         });
       })
       .catch(() =>
-        Swal.fire({ icon: "error", title: t("Error"), text: t("Failed to update Virtual Bank Account.") })
+        Swal.fire({ icon: "error", title: t("Error"), text: t("Failed to update Virtual Bank Account."), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } })
       );
   };
 
@@ -250,6 +270,7 @@ function UpdateFarmerVirtualBankAccountSeedMarket() {
       cancelButtonColor: "#6b7280",
       confirmButtonText: t("Yes, delete it"),
       cancelButtonText: t("Cancel"),
+      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     }).then((result) => {
       if (result.isConfirmed) {
         api
@@ -262,10 +283,11 @@ function UpdateFarmerVirtualBankAccountSeedMarket() {
               text: t("Virtual Bank Account deleted."),
               timer: 2000,
               showConfirmButton: false,
+              customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
             });
           })
           .catch(() =>
-            Swal.fire({ icon: "error", title: t("Error"), text: t("Failed to delete Virtual Bank Account.") })
+            Swal.fire({ icon: "error", title: t("Error"), text: t("Failed to delete Virtual Bank Account."), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } })
           );
       }
     });
@@ -439,12 +461,15 @@ function UpdateFarmerVirtualBankAccountSeedMarket() {
 
   return (
     <Layout title={t("Update Farmer Virtual Bank Account")}>
+      <style>{updateFarmerVirtualBankAccountSeedMarketStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Update Farmer Virtual Bank Account")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("Update Farmer Virtual Bank Account")}</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
       <Block className="mt-n4">

@@ -19,6 +19,20 @@ import DatePicker from "react-datepicker";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
+const readyForPaymentStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-form-wrap { background: #eef2f8; border-radius: 14px; padding: 18px; }
+  .sh-form-wrap .card { border: none; border-radius: 12px !important; box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1); overflow: hidden; }
+`;
+
 function ReadyForPayment() {
   const { t } = useTranslation(); // Initialize translation
 
@@ -202,26 +216,36 @@ function ReadyForPayment() {
   );
 
   const customStyles = {
+    table: { style: { borderRadius: "10px", overflow: "hidden", boxShadow: "0 2px 8px rgba(30, 103, 168, 0.06)" } },
+    headRow: { style: { minHeight: "50px", background: "linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%)", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" } },
     rows: {
       style: {
         minHeight: "45px", // override the row height
+        fontSize: "13.5px",
+        color: "#2b2d42",
+        borderBottom: "1px solid #eef1f6 !important",
       },
+      highlightOnHoverStyle: { backgroundColor: "#f4f8fd", cursor: "pointer", outline: "none" },
     },
     headCells: {
       style: {
-        backgroundColor: "#1e67a8",
+        backgroundColor: "transparent",
         color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
+        fontSize: "13px",
+        fontWeight: 600,
+        textTransform: "uppercase",
+        letterSpacing: "0.3px",
+        paddingLeft: "12px", // override the cell padding for head cells
+        paddingRight: "12px",
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
+        paddingLeft: "12px", // override the cell padding for data cells
+        paddingRight: "12px",
       },
     },
+    pagination: { style: { borderTop: "1px solid #eef1f6", fontSize: "13px", color: "#5a6577" } },
   };
 
   const convertDateFormat = (dateString) => {
@@ -352,10 +376,12 @@ function ReadyForPayment() {
 
   return (
     <Layout title={t("Ready for Payment")} show="true">
+      <style>{readyForPaymentStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Ready for Payment")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("Ready for Payment")}</Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
             <ul className="d-flex">
@@ -380,6 +406,7 @@ function ReadyForPayment() {
             </ul>
           </Block.HeadContent> */}
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
       {/* <Card>
@@ -478,7 +505,7 @@ function ReadyForPayment() {
         </Card>
       </Block> */}
 
-      <Block className="mt-4">
+      <Block className="mt-4 sh-form-wrap">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"
@@ -500,7 +527,7 @@ function ReadyForPayment() {
         </Card>
       </Block>
 
-      <Card className="mt-3">
+      <Card className="mt-3" style={{ border: "none", borderRadius: "12px", boxShadow: "0 4px 14px rgba(30, 103, 168, 0.1)" }}>
         <Card.Body>
           <Row className="g-gs">
             <Col lg="12">

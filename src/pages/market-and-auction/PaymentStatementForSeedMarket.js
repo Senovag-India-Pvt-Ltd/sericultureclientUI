@@ -21,6 +21,35 @@ import { useTranslation } from "react-i18next";
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
+const paymentStatementForSeedMarketStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-form-wrap { background: #eef2f8; border-radius: 14px; padding: 18px; }
+  .sh-form-wrap .card { border: none; border-radius: 12px !important; box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1); overflow: hidden; }
+  .sh-form-wrap .form-label { font-weight: 600; color: #2b3a55; font-size: 13.5px; }
+  .sh-form-wrap .form-control, .sh-form-wrap .form-select {
+    border-radius: 8px; border: 1px solid #dbe4f0; padding: 9px 12px; font-size: 13.5px;
+  }
+  .sh-form-wrap .form-control:focus, .sh-form-wrap .form-select:focus {
+    border-color: #3b8dd6; box-shadow: 0 0 0 0.2rem rgba(59, 141, 214, 0.15);
+  }
+  .sh-save-btn {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border: none !important;
+    font-weight: 600; padding: 8px 22px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;
+    box-shadow: 0 4px 12px rgba(30, 103, 168, 0.25);
+  }
+  .sh-swal-popup { border-radius: 14px !important; }
+  .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; }
+  .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+`;
+
 function PaymentStatementForSeedMarket() {
     const { t } = useTranslation();
   
@@ -70,6 +99,7 @@ function PaymentStatementForSeedMarket() {
         Swal.fire({
           icon: "warning",
           title: err.response.data.errorMessages[0].message[0].message,
+          customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
         });
 
         // setData({});
@@ -104,26 +134,36 @@ function PaymentStatementForSeedMarket() {
   );
 
   const customStyles = {
+    table: { style: { borderRadius: "10px", overflow: "hidden", boxShadow: "0 2px 8px rgba(30, 103, 168, 0.06)" } },
+    headRow: { style: { minHeight: "50px", background: "linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%)", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" } },
     rows: {
       style: {
         minHeight: "45px", // override the row height
+        fontSize: "13.5px",
+        color: "#2b2d42",
+        borderBottom: "1px solid #eef1f6 !important",
       },
+      highlightOnHoverStyle: { backgroundColor: "#f4f8fd", cursor: "pointer", outline: "none" },
     },
     headCells: {
       style: {
-        backgroundColor: "#1e67a8",
+        backgroundColor: "transparent",
         color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
+        fontSize: "13px",
+        fontWeight: 600,
+        textTransform: "uppercase",
+        letterSpacing: "0.3px",
+        paddingLeft: "12px", // override the cell padding for head cells
+        paddingRight: "12px",
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
+        paddingLeft: "12px", // override the cell padding for data cells
+        paddingRight: "12px",
       },
     },
+    pagination: { style: { borderTop: "1px solid #eef1f6", fontSize: "13px", color: "#5a6577" } },
   };
 
   // const convertDateFormat = (dateString) => {
@@ -374,6 +414,7 @@ function PaymentStatementForSeedMarket() {
           Swal.fire({
             icon: "warning",
             title: "No record found!!!",
+            customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
           });
         });
     } else {
@@ -388,6 +429,7 @@ function PaymentStatementForSeedMarket() {
         return Swal.fire({
           icon: "warning",
           title: "Date Not Selected",
+          customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
         });
       }
       api
@@ -403,12 +445,14 @@ function PaymentStatementForSeedMarket() {
             Swal.fire({
               icon: "success",
               title: "Request has been sent to Bank",
+              customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
             });
           }
           if (response.data.errorCode === -1) {
             Swal.fire({
               icon: "warning",
               title: response.data.errorMessages[0],
+              customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
             });
           }
 
@@ -434,6 +478,7 @@ function PaymentStatementForSeedMarket() {
         return Swal.fire({
           icon: "warning",
           title: "Date Not Selected",
+          customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
         });
       }
       const allotedlotList = bankStatementList.map(bankStatement=>bankStatement.allottedLotId);
@@ -450,6 +495,7 @@ function PaymentStatementForSeedMarket() {
             icon: "success",
             title: "Success",
             text: "Payment Completed Successfully!",
+            customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
           });
          
         })
@@ -491,6 +537,7 @@ function PaymentStatementForSeedMarket() {
           Swal.fire({
             icon: "warning",
             title: "Either file name is incorrect or Wait for few minutes!!!",
+            customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
           });
         });
     } else {
@@ -530,15 +577,19 @@ function PaymentStatementForSeedMarket() {
 
   return (
     <Layout title={t("Payment Settlement")} show="true">
+      <style>{paymentStatementForSeedMarketStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Payment Settlement")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("Payment Settlement")}</Block.Title>
           </Block.HeadContent>
-          
+
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
+      <div className="mt-n4 sh-form-wrap">
       <Card>
         <Card.Body>
           <Row className="g-gs">
@@ -575,6 +626,7 @@ function PaymentStatementForSeedMarket() {
                   <Button
                     type="button"
                     variant="primary"
+                    className="sh-save-btn"
                     onClick={getBankStatement}
                   >
                     {t("Get Details")}
@@ -585,8 +637,9 @@ function PaymentStatementForSeedMarket() {
           </Row>
         </Card.Body>
       </Card>
+      </div>
 
-      <Block className="mt-4">
+      <Block className="mt-4 sh-form-wrap">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"
@@ -634,6 +687,7 @@ function PaymentStatementForSeedMarket() {
                   <Button
                     type="button"
                     variant="primary"
+                    className="sh-save-btn"
                     onClick={() => handleButtonClick(generateCsv)}
                   >
                     {t("Generate CSV File")}
@@ -645,6 +699,7 @@ function PaymentStatementForSeedMarket() {
                       <Button
                         type="button"
                         variant="primary"
+                        className="sh-save-btn"
                         onClick={() =>
                           handleButtonClick(markCashPaymentLotListToSuccess)
                         }
@@ -659,6 +714,7 @@ function PaymentStatementForSeedMarket() {
                       <Button
                         type="button"
                         variant="primary"
+                        className="sh-save-btn"
                         onClick={() =>
                           handleButtonClick(requestJobToProcessPayment)
                         }
@@ -671,6 +727,7 @@ function PaymentStatementForSeedMarket() {
                       <Button
                         type="button"
                         variant="primary"
+                        className="sh-save-btn"
                         onClick={() =>
                           handleButtonClick(checkBankGeneratedStatement)
                         }

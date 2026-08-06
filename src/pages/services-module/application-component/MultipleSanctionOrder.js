@@ -29,6 +29,117 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
+const multipleSanctionOrderStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-page-subtitle { color: rgba(255, 255, 255, 0.85); font-size: 13.5px; }
+  .sh-cta-btn {
+    background: #ffffff; color: #1e67a8 !important; border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25); font-weight: 700; padding: 8px 18px;
+    border-radius: 8px; transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover { background: #eef6ff; color: #1e67a8 !important; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32); }
+  .sh-form-wrap { background: #eef2f8; border-radius: 14px; padding: 18px; }
+  .sh-form-wrap .card { border: none; border-radius: 12px !important; box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1); overflow: hidden; margin-bottom: 18px; }
+  .sh-form-wrap .card-header { border-bottom: none !important; }
+  .sh-form-wrap .card-body { padding: 20px !important; }
+  .sh-form-wrap .form-label { font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 6px; letter-spacing: 0.2px; }
+  .sh-form-wrap .form-control, .sh-form-wrap .form-select {
+    border-radius: 10px !important; border: 1.5px solid #d8e0ec !important; background-color: #fbfcfe !important;
+    padding: 0.62rem 0.9rem !important; font-size: 13.5px; color: #2b3a55;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  .sh-form-wrap .form-control::placeholder { color: #a7b0c0; font-weight: 400; }
+  .sh-form-wrap .form-control:hover:not(:disabled):not([readonly]), .sh-form-wrap .form-select:hover:not(:disabled) {
+    border-color: #a9c4e0 !important; background-color: #ffffff !important;
+  }
+  .sh-form-wrap .form-control:focus, .sh-form-wrap .form-select:focus {
+    border-color: #2b7ac0 !important; background-color: #ffffff !important; box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14) !important; outline: none;
+  }
+  .sh-form-wrap .form-control[readonly], .sh-form-wrap .form-control:read-only, .sh-form-wrap .form-select:disabled {
+    background-color: #f1f5fa !important; border-color: #e4e9f2 !important; color: #8a96a8 !important; cursor: not-allowed;
+  }
+  .sh-form-wrap .form-control.is-invalid, .sh-form-wrap .form-select.is-invalid {
+    border-color: #e3496a !important; box-shadow: 0 0 0 3px rgba(227, 73, 106, 0.12) !important;
+  }
+  .sh-form-wrap .form-check-input { border-radius: 5px; border: 1.5px solid #c9d4e3; cursor: pointer; }
+  .sh-form-wrap .form-check-input:checked { background-color: #1e67a8; border-color: #1e67a8; }
+  .sh-form-wrap .form-check-input:focus { box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14); border-color: #2b7ac0; }
+  .sh-form-wrap .text-danger { font-weight: 700; margin-left: 3px; }
+  .sh-search-card { background: #ffffff !important; border: none !important; border-top: 4px solid #2b7ac0 !important; }
+  .sh-fruits-label { font-weight: 700 !important; color: #1e67a8 !important; font-size: 14px !important; letter-spacing: 0.3px; }
+  .sh-form-wrap .btn-primary { border-radius: 8px; font-weight: 600; letter-spacing: 0.3px; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+  .sh-form-wrap .btn-primary:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(30, 103, 168, 0.25); }
+  .sh-form-wrap .btn-success { font-weight: 600; }
+  .sh-cancel-btn {
+    background: #ffffff; color: #e3496a; border: 1.5px solid #e3496a; border-radius: 8px;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-cancel-btn:hover:not(:disabled), .sh-cancel-btn:focus:not(:disabled) {
+    background: linear-gradient(135deg, #e3496a 0%, #c43257 100%); color: #ffffff; border-color: transparent;
+    transform: translateY(-1px); box-shadow: 0 6px 14px rgba(227, 73, 106, 0.32);
+  }
+  .sh-cancel-btn:disabled { background: #f8f9fa; color: #b8c0cc; border-color: #d8dde6; cursor: not-allowed; }
+  .sh-form-wrap table { border-radius: 8px; overflow: hidden; }
+  .sh-form-wrap table thead th {
+    background-color: #eef4fc !important; color: #2b3a55 !important; font-weight: 700; font-size: 13px;
+    letter-spacing: 0.2px; border-bottom: 2px solid #d6e3f3 !important;
+  }
+  .sh-form-wrap table tbody tr:hover { background-color: #f7faff !important; }
+  .sh-section-header {
+    display: flex; align-items: center; gap: 10px; font-weight: 700 !important; font-size: 1rem !important;
+    letter-spacing: 0.3px; background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-left: none !important; color: #ffffff !important; padding: 14px 20px !important;
+  }
+  .sh-section-header svg, .sh-section-header .icon, .sh-modal-content .modal-header svg, .sh-modal-content .modal-header .icon {
+    display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px;
+    border-radius: 50%; background: rgba(255, 255, 255, 0.22); color: #ffffff; font-size: 15px;
+  }
+  .sh-modal-content { border-radius: 12px !important; border: 1px solid #e3ebf6 !important; overflow: hidden; }
+  .sh-modal-content .modal-header { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%); border-bottom: none; padding: 16px 22px; }
+  .sh-modal-content .modal-header .btn-close { filter: brightness(0) invert(1); opacity: 0.85; }
+  .sh-modal-content .modal-header .btn-close:hover { opacity: 1; }
+  .sh-modal-content .modal-title { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.05rem; letter-spacing: 0.3px; color: #ffffff; }
+  .sh-modal-content .modal-body { padding: 22px 24px; max-height: 72vh; overflow-y: auto; }
+  .sh-modal-content .form-label { font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 6px; letter-spacing: 0.2px; }
+  .sh-modal-content .form-control, .sh-modal-content .form-select {
+    border-radius: 10px !important; border: 1.5px solid #d8e0ec !important; background-color: #fbfcfe !important;
+    padding: 0.62rem 0.9rem !important; font-size: 13.5px; color: #2b3a55;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  .sh-modal-content .form-control:focus, .sh-modal-content .form-select:focus {
+    border-color: #2b7ac0 !important; background-color: #ffffff !important; box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14) !important; outline: none;
+  }
+  .sh-modal-content .btn-primary {
+    background: linear-gradient(135deg, #1e67a8 0%, #2b7ac0 100%); border: none; border-radius: 8px; font-weight: 600;
+    letter-spacing: 0.3px; box-shadow: 0 4px 10px rgba(30, 103, 168, 0.2); transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-modal-content .btn-primary:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(30, 103, 168, 0.3); }
+  .sh-modal-content .btn-secondary {
+    background: #ffffff; color: #e3496a; border: 1.5px solid #e3496a; border-radius: 8px; font-weight: 600;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-modal-content .btn-secondary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #e3496a 0%, #c43257 100%); color: #ffffff; border-color: transparent;
+    transform: translateY(-1px); box-shadow: 0 6px 14px rgba(227, 73, 106, 0.28);
+  }
+  .sh-modal-content table thead th {
+    background-color: #eef4fc !important; color: #2b3a55 !important; font-weight: 700; font-size: 13px;
+    letter-spacing: 0.2px; border-bottom: 2px solid #d6e3f3 !important;
+  }
+  .sh-modal-footer { display: flex; justify-content: center; gap: 12px; margin-top: 10px; padding-top: 18px; border-top: 1px solid #eef1f6; }
+  .sh-swal-popup { border-radius: 14px !important; }
+  .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; box-shadow: 0 4px 12px rgba(30,103,168,0.25) !important; }
+  .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+`;
+
 const titleCase = (s) => (s ? s.charAt(0) + s.slice(1).toLowerCase() : s);
 // Display a saved saf.month value nicely: "APRIL-MAY" -> "April - May",
 // "APRIL 2026" -> "April 2026", "APRIL" -> "April".
@@ -2180,26 +2291,37 @@ const saveRejectSuccess = (message) => {
     };
 
   const customStyles = {
+    table: { style: { borderRadius: "10px", overflow: "hidden", boxShadow: "0 2px 8px rgba(30, 103, 168, 0.06)" } },
+    headRow: { style: { minHeight: "50px", background: "linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%)", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" } },
     rows: {
       style: {
         minHeight: "45px", // override the row height
+        fontSize: "13.5px",
+        color: "#2b2d42",
+        borderBottom: "1px solid #eef1f6 !important",
       },
+      highlightOnHoverStyle: { backgroundColor: "#f4f8fd", cursor: "pointer", outline: "none" },
+      stripedStyle: { backgroundColor: "#fbfcfe" },
     },
     headCells: {
       style: {
-        backgroundColor: "#1e67a8",
+        backgroundColor: "transparent",
         color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
+        fontSize: "13px",
+        fontWeight: 600,
+        letterSpacing: "0.3px",
+        textTransform: "uppercase",
+        paddingLeft: "12px", // override the cell padding for head cells
+        paddingRight: "12px",
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
+        paddingLeft: "12px", // override the cell padding for data cells
+        paddingRight: "12px",
       },
     },
+    pagination: { style: { borderTop: "1px solid #eef1f6", fontSize: "13px", color: "#5a6577" } },
   };
 
   const styles = {
@@ -2298,10 +2420,12 @@ const saveRejectSuccess = (message) => {
 
   return (
     <Layout title="List Of Application">
+      <style>{multipleSanctionOrderStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">List Of Application</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">List Of Application</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
@@ -2321,11 +2445,10 @@ const saveRejectSuccess = (message) => {
                   {(totalSchemeAmount ?? 0).toLocaleString("en-IN")}
                 </span> */}
                  <span
-                    className="btn btn-light"
+                    className="sh-cta-btn"
                     style={{
                       fontWeight: "bold",
-                      color: "green",
-                      fontSize: "1.6rem",
+                      fontSize: "1.1rem",
                     }}
                   >
                     Total Amount: ₹
@@ -2338,7 +2461,7 @@ const saveRejectSuccess = (message) => {
               <li>
                 <Link
                   to="/seriui/application-dashboard"
-                  className="btn btn-primary btn-md d-md-none"
+                  className="btn btn-primary btn-md d-md-none sh-cta-btn"
                 >
                   <Icon name="plus" />
                   <span>Dashboard</span>
@@ -2347,7 +2470,7 @@ const saveRejectSuccess = (message) => {
               <li>
                 <Link
                   to="/seriui/application-dashboard"
-                  className="btn btn-primary d-none d-md-inline-flex"
+                  className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                 >
                   <Icon name="plus" />
                   <span>Dashboard</span>
@@ -2356,9 +2479,10 @@ const saveRejectSuccess = (message) => {
             </ul>
           </Block.HeadContent>
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
         <Card className="mt-1">
           
 
@@ -2842,7 +2966,7 @@ const saveRejectSuccess = (message) => {
       </Block>
 
 
-      <Modal show={showModal2} onHide={handleCloseModal2} size="xl">
+      <Modal show={showModal2} onHide={handleCloseModal2} size="xl" contentClassName="sh-modal-content">
               <Modal.Header closeButton>
                 <Modal.Title>View Details</Modal.Title>
               </Modal.Header>
@@ -3043,11 +3167,9 @@ const saveRejectSuccess = (message) => {
                         </table>
       
                         <Card className="shadow-sm border-0 rounded-3 mt-4">
-                      <Card.Header 
-                        className="fw-bold text-white" 
-                        style={{ backgroundColor: "#0F6CBE" }}
-                      >
-                        Kanesh Land Details
+                      <Card.Header className="sh-section-header">
+                        <Icon name="map-pin" />
+                        <span>Kanesh Land Details</span>
                       </Card.Header>
                       <Card.Body>
                         <table className="table table-bordered table-striped small">
@@ -3098,11 +3220,9 @@ const saveRejectSuccess = (message) => {
                     </Card>
       
                     <Card className="shadow-sm border-0 rounded-3 mt-4">
-                                    <Card.Header 
-                                      className="fw-bold text-white" 
-                                      style={{ backgroundColor: "#0F6CBE" }}
-                                    >
-                                      Constructed Area
+                                    <Card.Header className="sh-section-header">
+                                      <Icon name="building" />
+                                      <span>Constructed Area</span>
                                     </Card.Header>
                                     <Card.Body>
                                       <table className="table table-bordered table-striped small">
@@ -3485,7 +3605,7 @@ const saveRejectSuccess = (message) => {
               </Modal.Footer>
             </Modal>
 
-             <Modal show={showModal} onHide={handleCloseModal} size="xl">
+             <Modal show={showModal} onHide={handleCloseModal} size="xl" contentClassName="sh-modal-content">
                     <Modal.Body>
                       {loading ? (
                         <h1 className="d-flex justify-content-center align-items-center">

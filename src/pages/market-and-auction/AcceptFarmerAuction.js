@@ -4,6 +4,7 @@ import Swal from "sweetalert2/src/sweetalert2.js";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
+import { Icon } from "../../components";
 import React, { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
@@ -13,6 +14,32 @@ import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL1 = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
+
+const acceptFarmerAuctionStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-form-wrap { background: #eef2f8; border-radius: 14px; padding: 18px; }
+  .sh-form-wrap .card { border: none; border-radius: 12px !important; box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1); overflow: hidden; }
+  .sh-form-wrap .form-control { border-radius: 8px; border: 1px solid #dbe4f0; }
+  .sh-form-wrap .form-control:focus { border-color: #3b8dd6; box-shadow: 0 0 0 0.2rem rgba(59, 141, 214, 0.15); }
+  .sh-save-btn {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border: none !important;
+    font-weight: 600; padding: 8px 22px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;
+    box-shadow: 0 4px 12px rgba(30, 103, 168, 0.25);
+  }
+  .sh-plain-table thead th { border: none !important; }
+  .sh-plain-table tbody tr:hover { background-color: #f7faff; }
+  .sh-swal-popup { border-radius: 14px !important; }
+  .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; }
+  .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+`;
 
 function AcceptFarmerAuction() {
   const navigate = useNavigate();
@@ -49,6 +76,7 @@ function AcceptFarmerAuction() {
       icon: "success",
       title: "Accepted successfully",
       text: "Auction Accepted Successfully",
+      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     });
   };
 
@@ -63,6 +91,7 @@ function AcceptFarmerAuction() {
       icon: "error",
       title: "Accept attempt was not successful",
       html: errorMessage,
+      customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     });
   };
 
@@ -251,10 +280,12 @@ function AcceptFarmerAuction() {
 
   return (
     <Layout title={t("Accept Farmer Auction")} show="true">
+      <style>{acceptFarmerAuctionStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Accept Farmer Auction")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("Accept Farmer Auction")}</Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
             <ul className="d-flex">
@@ -276,9 +307,10 @@ function AcceptFarmerAuction() {
             </ul>
           </Block.HeadContent> */}
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n5">
+      <Block className="mt-n5 sh-form-wrap">
         {/* <Form action="#"> */}
         <Row className="g-3 ">
           <Card>
@@ -333,7 +365,8 @@ function AcceptFarmerAuction() {
                           variant="primary"
                           onClick={display}
                         > */}
-                        <Button type="submit" variant="primary">
+                        <Button type="submit" variant="primary" className="sh-save-btn">
+                          <Icon name="search" />
                           {t("Get Details")}
                         </Button>
                       </Col>
@@ -349,14 +382,14 @@ function AcceptFarmerAuction() {
             <Row className="g-gs pt-2">
               <Col lg="12">
                 <table
-                  className="table table-striped table-bordered"
+                  className="table table-striped table-bordered sh-plain-table"
                   style={{ backgroundColor: "white" }}
                 >
                   <thead>
                     <tr>
                       <th
                         style={{
-                          backgroundColor: "#0f6cbe",
+                          background: "linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%)",
                           color: "#fff",
                         }}
                         colSpan="2"
@@ -365,7 +398,7 @@ function AcceptFarmerAuction() {
                       </th>
                       <th
                         style={{
-                          backgroundColor: "#0f6cbe",
+                          background: "linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%)",
                           color: "#fff",
                         }}
                         colSpan="2"
@@ -475,6 +508,7 @@ function AcceptFarmerAuction() {
                                 <Button
                                   type="button"
                                   variant="primary"
+                                  className="sh-save-btn"
                                   onClick={postData}
                                   // disabled={disable}
                                 >

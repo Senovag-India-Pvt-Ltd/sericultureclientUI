@@ -20,6 +20,50 @@ import { useTranslation } from "react-i18next";
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
+const bankStatementStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-form-wrap { background: #eef2f8; border-radius: 14px; padding: 18px; }
+  .sh-form-wrap .card { border: none; border-radius: 12px !important; box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1); overflow: hidden; }
+  .sh-form-wrap .form-label { font-weight: 600; color: #2b3a55; font-size: 13.5px; }
+  .sh-form-wrap .form-control, .sh-form-wrap .form-select {
+    border-radius: 8px; border: 1px solid #dbe4f0; padding: 9px 12px; font-size: 13.5px;
+  }
+  .sh-form-wrap .form-control:focus, .sh-form-wrap .form-select:focus {
+    border-color: #3b8dd6; box-shadow: 0 0 0 0.2rem rgba(59, 141, 214, 0.15);
+  }
+  .sh-save-btn {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border: none !important;
+    font-weight: 600; padding: 8px 22px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;
+    box-shadow: 0 4px 12px rgba(30, 103, 168, 0.25);
+  }
+  .sh-modal-content { border-radius: 12px !important; border: 1px solid #e3ebf6 !important; overflow: hidden; }
+  .sh-modal-content .modal-header { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%); border-bottom: none; padding: 16px 22px; }
+  .sh-modal-content .modal-header .btn-close { filter: brightness(0) invert(1); opacity: 0.85; }
+  .sh-modal-content .modal-title { color: #ffffff; font-weight: 700; }
+  .sh-modal-content .modal-body { padding: 22px 24px; }
+  .sh-modal-content table thead th {
+    background-color: #eef4fc !important; color: #2b3a55 !important; font-weight: 700; font-size: 13px;
+    letter-spacing: 0.2px; border-bottom: 2px solid #d6e3f3 !important;
+  }
+  .sh-modal-content .btn-primary {
+    background: linear-gradient(135deg, #1e67a8 0%, #2b7ac0 100%); border: none; border-radius: 8px; font-weight: 600;
+  }
+  .sh-modal-content .btn-secondary {
+    background: #ffffff; color: #e3496a; border: 1.5px solid #e3496a; border-radius: 8px; font-weight: 600;
+  }
+  .sh-swal-popup { border-radius: 14px !important; }
+  .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; }
+  .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+`;
+
 function BankStatement() {
   const { t } = useTranslation();
   const [showModal, setShowModal] = useState(false);
@@ -82,6 +126,7 @@ function BankStatement() {
         Swal.fire({
           icon: "warning",
           title: err.response.data.errorMessages[0].message[0].message,
+          customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
         });
 
         // setData({});
@@ -116,26 +161,36 @@ function BankStatement() {
   );
 
   const customStyles = {
+    table: { style: { borderRadius: "10px", overflow: "hidden", boxShadow: "0 2px 8px rgba(30, 103, 168, 0.06)" } },
+    headRow: { style: { minHeight: "50px", background: "linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%)", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" } },
     rows: {
       style: {
         minHeight: "45px", // override the row height
+        fontSize: "13.5px",
+        color: "#2b2d42",
+        borderBottom: "1px solid #eef1f6 !important",
       },
+      highlightOnHoverStyle: { backgroundColor: "#f4f8fd", cursor: "pointer", outline: "none" },
     },
     headCells: {
       style: {
-        backgroundColor: "#1e67a8",
+        backgroundColor: "transparent",
         color: "#fff",
-        fontSize: "14px",
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
+        fontSize: "13px",
+        fontWeight: 600,
+        textTransform: "uppercase",
+        letterSpacing: "0.3px",
+        paddingLeft: "12px", // override the cell padding for head cells
+        paddingRight: "12px",
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
+        paddingLeft: "12px", // override the cell padding for data cells
+        paddingRight: "12px",
       },
     },
+    pagination: { style: { borderTop: "1px solid #eef1f6", fontSize: "13px", color: "#5a6577" } },
   };
 
   const convertDateFormat = (dateString) => {
@@ -371,6 +426,7 @@ function BankStatement() {
           Swal.fire({
             icon: "warning",
             title: "No record found!!!",
+            customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
           });
         });
     } else {
@@ -385,6 +441,7 @@ function BankStatement() {
         return Swal.fire({
           icon: "warning",
           title: "Date Not Selected",
+          customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
         });
       }
       api
@@ -400,12 +457,14 @@ function BankStatement() {
             Swal.fire({
               icon: "success",
               title: "Request has been sent to Bank",
+              customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
             });
           }
           if (response.data.errorCode === -1) {
             Swal.fire({
               icon: "warning",
               title: response.data.errorMessages[0],
+              customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
             });
           }
 
@@ -431,6 +490,7 @@ function BankStatement() {
         return Swal.fire({
           icon: "warning",
           title: "Date Not Selected",
+          customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
         });
       }
       const allotedlotList = bankStatementList.map(bankStatement=>bankStatement.allottedLotId);
@@ -503,6 +563,7 @@ function BankStatement() {
           Swal.fire({
             icon: "warning",
             title: "Either file name is incorrect or Wait for few minutes!!!",
+            customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
           });
         });
     } else {
@@ -542,10 +603,12 @@ function BankStatement() {
 
   return (
     <Layout title={t("Bank Statement")} show="true">
+      <style>{bankStatementStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Bank Statement")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("Bank Statement")}</Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
             <ul className="d-flex">
@@ -570,8 +633,10 @@ function BankStatement() {
             </ul>
           </Block.HeadContent> */}
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
+      <div className="mt-n4 sh-form-wrap">
       <Card>
         <Card.Body>
           <Row className="g-gs">
@@ -655,6 +720,7 @@ function BankStatement() {
                   <Button
                     type="button"
                     variant="primary"
+                    className="sh-save-btn"
                     onClick={getBankStatement}
                   >
                     {t("Get Details")}
@@ -665,8 +731,9 @@ function BankStatement() {
           </Row>
         </Card.Body>
       </Card>
+      </div>
 
-      <Block className="mt-4">
+      <Block className="mt-4 sh-form-wrap">
         <Card>
           <DataTable
             tableClassName="data-table-head-light table-responsive"
@@ -716,6 +783,7 @@ function BankStatement() {
                   <Button
                     type="button"
                     variant="primary"
+                    className="sh-save-btn"
                     onClick={() => handleButtonClick(generateCsv)}
                   >
                     {t("Generate CSV File")}
@@ -727,6 +795,7 @@ function BankStatement() {
                       <Button
                         type="button"
                         variant="primary"
+                        className="sh-save-btn"
                         onClick={() =>
                           handleButtonClick(markCashPaymentLotListToSuccess)
                         }
@@ -741,6 +810,7 @@ function BankStatement() {
                       <Button
                         type="button"
                         variant="primary"
+                        className="sh-save-btn"
                         onClick={() =>
                           handleButtonClick(requestJobToProcessPayment)
                         }
@@ -753,6 +823,7 @@ function BankStatement() {
                       <Button
                         type="button"
                         variant="primary"
+                        className="sh-save-btn"
                         onClick={() =>
                           handleButtonClick(checkBankGeneratedStatement)
                         }
@@ -774,7 +845,7 @@ function BankStatement() {
         </Card.Body>
       </Card>
 
-      <Modal show={showModal} onHide={handleCloseModal} size="lg">
+      <Modal show={showModal} onHide={handleCloseModal} size="lg" contentClassName="sh-modal-content">
         <Modal.Header closeButton>
           <Modal.Title>{t("Approve/Reject")}</Modal.Title>
         </Modal.Header>
@@ -913,7 +984,7 @@ function BankStatement() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModal1} onHide={handleCloseModal1} size="lg">
+      <Modal show={showModal1} onHide={handleCloseModal1} size="lg" contentClassName="sh-modal-content">
         <Modal.Header closeButton>
           <Modal.Title>{t("View Model")}</Modal.Title>
         </Modal.Header>
@@ -1052,7 +1123,7 @@ function BankStatement() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showModal2} onHide={handleCloseModal2} size="lg">
+      <Modal show={showModal2} onHide={handleCloseModal2} size="lg" contentClassName="sh-modal-content">
         <Modal.Header closeButton>
           <Modal.Title>{t("Modify Model")}</Modal.Title>
         </Modal.Header>

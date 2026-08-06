@@ -7697,21 +7697,122 @@ const fetchReelerDetails = () => {
       width: "380px",
     });
   };
-  
+
+
+const serviceApplicationStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-cta-btn {
+    background: #ffffff; color: #1e67a8 !important; border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25); font-weight: 700; padding: 8px 18px;
+    border-radius: 8px; transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover { background: #eef6ff; color: #1e67a8 !important; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32); }
+  .sh-form-wrap { background: #eef2f8; border-radius: 14px; padding: 28px; }
+  html body .sh-form-wrap .card { border: none; border-radius: 12px !important; box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1); overflow: hidden; margin-bottom: 18px; }
+  html body .sh-form-wrap .card-header { border-bottom: none !important; }
+  html body .sh-form-wrap .card-header:not([style]) {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    color: #ffffff !important; font-weight: 700 !important; letter-spacing: 0.3px; padding: 12px 20px !important;
+  }
+  html body .sh-form-wrap .card-body { padding: 20px !important; }
+  html body .sh-form-wrap .form-label { font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 6px; letter-spacing: 0.2px; }
+  html body .sh-form-wrap .form-control, html body .sh-form-wrap .form-select {
+    border-radius: 10px !important; border: 1.5px solid #d8e0ec !important; background-color: #fbfcfe !important;
+    padding: 0.62rem 0.9rem !important; font-size: 13.5px; color: #2b3a55;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  html body .sh-form-wrap .form-control:hover:not(:disabled):not([readonly]), html body .sh-form-wrap .form-select:hover:not(:disabled) {
+    border-color: #a9c4e0 !important; background-color: #ffffff !important;
+  }
+  html body .sh-form-wrap .form-control:focus, html body .sh-form-wrap .form-select:focus {
+    border-color: #2b7ac0 !important; background-color: #ffffff !important; box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14) !important; outline: none;
+  }
+  html body .sh-form-wrap .form-control[readonly], html body .sh-form-wrap .form-control:read-only, html body .sh-form-wrap .form-select:disabled {
+    background-color: #f1f5fa !important; border-color: #e4e9f2 !important; color: #8a96a8 !important; cursor: not-allowed;
+  }
+  html body .sh-form-wrap .form-control.is-invalid, html body .sh-form-wrap .form-select.is-invalid {
+    border-color: #e3496a !important; box-shadow: 0 0 0 3px rgba(227, 73, 106, 0.12) !important;
+  }
+  html body .sh-form-wrap .form-check-input { border-radius: 5px; border: 1.5px solid #c9d4e3; cursor: pointer; }
+  html body .sh-form-wrap .form-check-input:checked { background-color: #1e67a8; border-color: #1e67a8; }
+  html body .sh-form-wrap .text-danger { font-weight: 700; margin-left: 3px; }
+  html body .sh-form-wrap .btn-primary { border-radius: 8px; font-weight: 600; letter-spacing: 0.3px; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+  html body .sh-form-wrap .btn-primary:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(30, 103, 168, 0.25); }
+  html body .sh-form-wrap .btn-success { font-weight: 600; }
+  .sh-save-btn {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border: none !important;
+    color: #ffffff !important; font-weight: 700; border-radius: 8px; padding: 8px 26px;
+    box-shadow: 0 4px 12px rgba(30,103,168,0.25); transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-save-btn:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(30,103,168,0.32); }
+  .sh-cancel-btn {
+    background: #ffffff; color: #e3496a; border: 1.5px solid #e3496a; border-radius: 8px;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sh-cancel-btn:hover:not(:disabled), .sh-cancel-btn:focus:not(:disabled) {
+    background: linear-gradient(135deg, #e3496a 0%, #c43257 100%); color: #ffffff; border-color: transparent;
+    transform: translateY(-1px); box-shadow: 0 6px 14px rgba(227, 73, 106, 0.32);
+  }
+  .sh-form-wrap table { border-radius: 8px; overflow: hidden; }
+  .sh-form-wrap table thead th {
+    background-color: #eef4fc !important; color: #2b3a55 !important; font-weight: 700; font-size: 13px;
+    letter-spacing: 0.2px; border-bottom: 2px solid #d6e3f3 !important;
+  }
+  .sh-form-wrap table tbody tr:hover { background-color: #f7faff !important; }
+  .sh-section-header {
+    display: flex; align-items: center; gap: 10px; font-weight: 700 !important; font-size: 1rem !important;
+    letter-spacing: 0.3px; background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-left: none !important; color: #ffffff !important; padding: 14px 20px !important;
+  }
+  .sh-section-header svg, .sh-section-header .icon, html body .sh-modal-content .modal-header svg, html body .sh-modal-content .modal-header .icon {
+    display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px;
+    border-radius: 50%; background: rgba(255, 255, 255, 0.22); color: #ffffff; font-size: 15px;
+  }
+  .sh-modal-content { border-radius: 12px !important; border: 1px solid #e3ebf6 !important; overflow: hidden; }
+  html body .sh-modal-content .modal-header { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%); border-bottom: none; padding: 16px 22px; }
+  html body .sh-modal-content .modal-header .btn-close { filter: brightness(0) invert(1); opacity: 0.85; }
+  html body .sh-modal-content .modal-title { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.05rem; letter-spacing: 0.3px; color: #ffffff; }
+  html body .sh-modal-content .modal-body { padding: 22px 24px; max-height: 72vh; overflow-y: auto; }
+  html body .sh-modal-content .btn-primary {
+    background: linear-gradient(135deg, #1e67a8 0%, #2b7ac0 100%); border: none; border-radius: 8px; font-weight: 600;
+    letter-spacing: 0.3px; box-shadow: 0 4px 10px rgba(30, 103, 168, 0.2); transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  html body .sh-modal-content .btn-secondary {
+    background: #ffffff; color: #e3496a; border: 1.5px solid #e3496a; border-radius: 8px; font-weight: 600;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  html body .sh-modal-content .btn-secondary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #e3496a 0%, #c43257 100%); color: #ffffff; border-color: transparent;
+    transform: translateY(-1px); box-shadow: 0 6px 14px rgba(227, 73, 106, 0.28);
+  }
+  .sh-swal-popup { border-radius: 14px !important; }
+  .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; box-shadow: 0 4px 12px rgba(30,103,168,0.25) !important; }
+  .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+`;
 
   return (
     <Layout title="Scheme Details Form">
+      <style>{serviceApplicationStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Scheme Details Form")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("Scheme Details Form")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
                   to="/seriui/all-application-list"
-                  className="btn btn-primary btn-md d-md-none"
+                  className="btn btn-primary btn-md d-md-none sh-cta-btn"
                 >
                   <Icon name="arrow-long-left" />
                   <span>{t("Applications List")}</span>
@@ -7720,7 +7821,7 @@ const fetchReelerDetails = () => {
               <li>
                 <Link
                   to="/seriui/all-application-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
+                  className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                 >
                   <Icon name="arrow-long-left" />
                   <span>{t("Applications List")}</span>
@@ -7729,9 +7830,10 @@ const fetchReelerDetails = () => {
             </ul>
           </Block.HeadContent>
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
         {/* <Form action="#"> */}
         {/* <Form noValidate validated={searchValidated} onSubmit={search}> */}
         <Form noValidate validated={searchValidated} onSubmit={search}>
@@ -7867,7 +7969,7 @@ const fetchReelerDetails = () => {
 
       </Block>
       <Row>
-        <Block>
+        <Block className="sh-form-wrap">
           <Form noValidate validated={validated} onSubmit={postData}>
             <Row className="g-1 ">
               <Col lg={12}>
@@ -12751,12 +12853,12 @@ const fetchReelerDetails = () => {
                     {/* <Button type="submit" variant="primary">
                     {t("save")}
                     </Button> */}
-                    <Button type="submit" variant="primary" disabled={saveDisabled}>
+                    <Button type="submit" className="sh-save-btn" disabled={saveDisabled}>
                     {t("save")}
                 </Button>
                   </li>
                   <li>
-                    <Button type="button" variant="secondary" onClick={clear}>
+                    <Button type="button" className="sh-cancel-btn" onClick={clear}>
                     {t("cancel")}
                     </Button>
                   </li>
@@ -12767,7 +12869,7 @@ const fetchReelerDetails = () => {
         </Block>
       </Row>
 
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+      <Modal show={showModal} onHide={handleCloseModal} size="xl" contentClassName="sh-modal-content">
         <Modal.Header closeButton>
           <Modal.Title>{t("File Upload")}</Modal.Title>
         </Modal.Header>
@@ -13149,7 +13251,7 @@ const fetchReelerDetails = () => {
               </Modal.Body>
             </Modal> */}
 
-          <Modal show={showModalBreakUp} onHide={handleCloseModalBreakUp} size="xl">
+          <Modal show={showModalBreakUp} onHide={handleCloseModalBreakUp} size="xl" contentClassName="sh-modal-content">
             <Modal.Header closeButton style={{ background: "#f0f6ff", borderBottom: "1px solid #dce8f5" }}>
               <Modal.Title style={{ fontWeight: "700", color: "#1a3c6e", fontSize: "16px" }}>{t("Break Up")}</Modal.Title>
             </Modal.Header>

@@ -2220,12 +2220,86 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     },
   };
 
+  const applicationFormEditStyles = `
+    .sh-page-header {
+      padding: 20px 24px;
+      background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+      margin-bottom: 22px;
+    }
+    .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+    .sh-cta-btn {
+      background: #ffffff !important; color: #1e67a8 !important; border: none !important;
+      box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25); font-weight: 700;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    }
+    .sh-cta-btn:hover { background: #eef6ff !important; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32); }
+    .sh-form-wrap { background: #eef2f8; border-radius: 14px; padding: 28px; }
+    html body .sh-form-wrap .card { border: none; border-radius: 12px !important; box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1); overflow: hidden; margin-bottom: 18px; }
+    html body .sh-form-wrap .card-header { border-bottom: none !important; }
+    html body .sh-form-wrap .form-label { font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 6px; letter-spacing: 0.2px; }
+    html body .sh-form-wrap .form-control, html body .sh-form-wrap .form-select {
+      border-radius: 10px !important; border: 1.5px solid #d8e0ec !important; background-color: #fbfcfe !important;
+      padding: 0.62rem 0.9rem !important; font-size: 13.5px; color: #2b3a55;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+    }
+    html body .sh-form-wrap .form-control:focus, html body .sh-form-wrap .form-select:focus {
+      border-color: #2b7ac0 !important; background-color: #ffffff !important; box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14) !important; outline: none;
+    }
+    html body .sh-form-wrap .btn-primary { border-radius: 8px; font-weight: 600; letter-spacing: 0.3px; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+    html body .sh-form-wrap .btn-primary:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(30, 103, 168, 0.25); }
+    html body .sh-form-wrap .btn-success { font-weight: 600; }
+    .sh-cancel-btn {
+      background: #ffffff; color: #e3496a; border: 1.5px solid #e3496a; border-radius: 8px;
+      transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .sh-cancel-btn:hover:not(:disabled) {
+      background: linear-gradient(135deg, #e3496a 0%, #c43257 100%); color: #ffffff; border-color: transparent;
+      transform: translateY(-1px); box-shadow: 0 6px 14px rgba(227, 73, 106, 0.32);
+    }
+    .sh-form-wrap table { border-radius: 8px; overflow: hidden; }
+    .sh-form-wrap table thead th {
+      background-color: #eef4fc !important; color: #2b3a55 !important; font-weight: 700; font-size: 13px;
+      letter-spacing: 0.2px; border-bottom: 2px solid #d6e3f3 !important;
+    }
+    .sh-form-wrap table tbody tr:hover { background-color: #f7faff !important; }
+    .sh-section-header {
+      display: flex; align-items: center; gap: 10px; font-weight: 700 !important; font-size: 1rem !important;
+      letter-spacing: 0.3px; background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+      border-left: none !important; color: #ffffff !important; padding: 14px 20px !important;
+    }
+    .sh-modal-content { border-radius: 12px !important; border: 1px solid #e3ebf6 !important; overflow: hidden; }
+    html body .sh-modal-content .modal-header { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%); border-bottom: none; padding: 16px 22px; }
+    html body .sh-modal-content .modal-header .btn-close { filter: brightness(0) invert(1); opacity: 0.85; }
+    html body .sh-modal-content .modal-title { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.05rem; letter-spacing: 0.3px; color: #ffffff; }
+    html body .sh-modal-content .modal-body { padding: 22px 24px; max-height: 72vh; overflow-y: auto; }
+    html body .sh-modal-content .btn-primary {
+      background: linear-gradient(135deg, #1e67a8 0%, #2b7ac0 100%); border: none; border-radius: 8px; font-weight: 600;
+      letter-spacing: 0.3px; box-shadow: 0 4px 10px rgba(30, 103, 168, 0.2); transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    html body .sh-modal-content .btn-secondary {
+      background: #ffffff; color: #e3496a; border: 1.5px solid #e3496a; border-radius: 8px; font-weight: 600;
+      transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    html body .sh-modal-content .btn-secondary:hover:not(:disabled) {
+      background: linear-gradient(135deg, #e3496a 0%, #c43257 100%); color: #ffffff; border-color: transparent;
+      transform: translateY(-1px); box-shadow: 0 6px 14px rgba(227, 73, 106, 0.28);
+    }
+    .sh-swal-popup { border-radius: 14px !important; }
+    .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; }
+    .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+  `;
+
   return (
     <Layout title=" Edit Scheme Details Form">
+      <style>{applicationFormEditStyles}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2"> {t("Edit Scheme Details Form")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title"> {t("Edit Scheme Details Form")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
            <ul className="d-flex list-unstyled gap-3">
@@ -2252,9 +2326,10 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
 
           </Block.HeadContent>
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
         {/* <Form action="#"> */}
         {/* <Form noValidate validated={searchValidated} onSubmit={search}> */}
         <Form noValidate validated={searchValidated} onSubmit={search}>
@@ -2397,13 +2472,13 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         </Card> */}
       </Block>
       <Row>
-        <Block>
+        <Block className="sh-form-wrap">
           <Form noValidate validated={validated} onSubmit={postData}>
             <Row className="g-1 ">
               <Col lg={12}>
                 <Block className="mt-3">
                   <Card>
-                    <Card.Header style={{ fontWeight: "bold" }}>
+                    <Card.Header className="sh-section-header">
                       {t("Scheme Details")}
                     </Card.Header>
                     <Card.Body>
@@ -2962,7 +3037,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
 
               <Block className="mt-3">
                 <Card>
-                  <Card.Header style={{ fontWeight: "bold" }}>
+                  <Card.Header className="sh-section-header">
                     {t("Saved Land Details")}
                   </Card.Header>
                   <Card.Body>
@@ -2992,7 +3067,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
               {/* {data.equordev.includes("equipment") && ( */}
                 {/* <Block className="mt-3">
                   <Card>
-                    <Card.Header style={{ fontWeight: "bold" }}>
+                    <Card.Header className="sh-section-header">
                       Equipment Purchase
                     </Card.Header>
                     <Card.Body>
@@ -3061,11 +3136,11 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                 <>
                   <Block className="mt-3">
                     <Card>
-                      {/* <Card.Header style={{ fontWeight: "bold" }}>
+                      {/* <Card.Header className="sh-section-header">
                         RTC Details
                       </Card.Header> */}
                       <Card.Body>
-                      <Card.Header style={{ fontWeight: "bold" }}>
+                      <Card.Header className="sh-section-header">
                         {t("Edit Land Details")}
                       </Card.Header>
                         <Row>
@@ -3146,7 +3221,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
 
                   {/* <Block className="mt-3">
                 <Card>
-                  <Card.Header style={{ fontWeight: "bold" }}>
+                  <Card.Header className="sh-section-header">
                     {t("Documents")}
                   </Card.Header>
                   <Card.Body>
@@ -3213,7 +3288,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         </Block>
       </Row>
 
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+      <Modal show={showModal} onHide={handleCloseModal} size="xl" contentClassName="sh-modal-content">
         <Modal.Header closeButton>
           <Modal.Title>{t("Upload Documents")}</Modal.Title>
         </Modal.Header>
