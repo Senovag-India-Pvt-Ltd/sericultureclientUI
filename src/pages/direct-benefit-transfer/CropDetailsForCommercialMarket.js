@@ -658,37 +658,40 @@ const [showModal, setShowModal] = useState(false);
 
   return (
     <Layout title={t("Crop Details-Commercial Market")}>
+      <style>{cropDetailsCommercialMarketStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("Crop Details-Commercial Market")}</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/crop-details-commercial-market-list"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/crop-details-commercial-market-list"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="arrow-long-left" />
-                  <span>{t("Go to List")}</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">{t("Crop Details-Commercial Market")}</Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Link
+                    to="/seriui/crop-details-commercial-market-list"
+                    className="btn btn-primary btn-md d-md-none sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seriui/crop-details-commercial-market-list"
+                    className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
+                  >
+                    <Icon name="arrow-long-left" />
+                    <span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
               {/* <Form action="#"> */}
               <Form noValidate validated={searchValidated} onSubmit={search}>
                 <Card>
@@ -1812,5 +1815,52 @@ const [showModal, setShowModal] = useState(false);
     </Layout>
   );
 }
+
+const cropDetailsCommercialMarketStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+  .sh-form-wrap .card-header {
+    border-bottom: none !important;
+  }
+`;
 
 export default CropDetailsForCommercialMarket;

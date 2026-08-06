@@ -215,6 +215,8 @@ function Menu() {
     Registration: false,
     Registration_Farmer_Registration: false,
     Registration_Reeler_License: false,
+    Registration_Reeler_License_With_License: false,
+    Registration_Reeler_License_Without_License: false,
     Registration_Renewal_of_Reeler_License: false,
     Registration_Transfer_of_Reeler_License: false,
     Registration_Trader_License: false,
@@ -257,6 +259,7 @@ function Menu() {
     DBT_Tsc_Officer_List: false,
 
     Market: false,
+    Market_CommercialMarket: false,
     Market_Bidding: false,
     Market_Accept_Farmer_Auction: false,
     Market_Weighment: false,
@@ -264,6 +267,10 @@ function Menu() {
     Market_Reject: false,
     Market_Show_Lot: false,
     Market_Reeler_Initial_Amount: false,
+
+    Market_SilkExchange: false,
+    Market_SilkExchange_Bidding: false,
+    Market_SilkExchange_Weighment: false,
 
     Market_Payment: false,
     Market_Payment_Ready_for_Payment: false,
@@ -541,15 +548,155 @@ function Menu() {
     Reports: false,
 
     Reports_Format_Reports: false,
+    Reports_Format_Reports_Seed_Market: false,
+    Reports_Format_Reports_Commercial_Market: false,
+    Reports_Format_Reports_Schemes: false,
+    Reports_Format_Reports_Mysore_Seed_Area: false,
+    Reports_Format_Reports_Bivoltine_Seed_Area: false,
+    Reports_Format_Reports_TSC_Reports: false,
+    Reports_Format_Reports_Training_Reports: false,
     Reports_Format_Reports_Sanction_Order: false,
+    Reports_Format_Reports_Regenerate_Sanction_Order: false,
     Reports_Format_Reports_WorkOrder: false,
+    Reports_Format_Reports_Regenerate_Work_Order: false,
+    Reports_Format_Reports_ARM_Release_Letters: false,
     Reports_Format_Reports_Selection_Letters: false,
     Reports_Format_Reports_Acknowledgement: false,
+    Reports_Format_Reports_Mysore_Gg_Lotwise_Progress_Report: false,
+    Reports_Format_Reports_Mysore_Gg_Sheet4_Combined_Report: false,
+    Reports_Format_Reports_Mysore_Gg_Production_Cumulative_Report: false,
+    Reports_Format_Reports_Mysore_Gg_Pierced_Cocoons_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_Progress_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_Lotwise_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_Cocoon_Supply_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_Cocoon_Butterfly_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_Egg_Distribution_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_Egg_Production_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_Mulberry_Weekly_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_Monthly_Farm_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_Monthly_Hatching_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_Crop_Harvest_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_P4_Form_Summary_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_P4_Weekly_Programme_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_P4_Crop_Details_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_P3_Weekly_Programme_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_P3_Grainage_Monthly_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_P3_Lotwise_Monthly_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Distribution_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_P3_Cocoon_Supply_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Distribution_Details_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Preparation_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_P3_Pupa_Moth_Exam_Report: false,
+    Reports_Format_Reports_Mysore_Farm_Form27b_Report: false,
+    Reports_Format_Reports_Mysore_Farm_Mulberry_Garden_Report: false,
+    Reports_Format_Reports_Mysore_Farm_Chaki_Center_Report: false,
+    Reports_Format_Reports_Mysore_Farm_Weather_Report: false,
+    Reports_Format_Reports_Mysore_Farm_Future_Chawki_Plan_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_P2_Production_Income_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_P2_Lotwise_Monthly_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_P2_Weekly_Production_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_P2_Weekly_Tsc_Supply_Report: false,
+    Reports_Format_Reports_Mysore_Grainage_P2_Pebrine_Cases_Report: false,
+    Reports_Format_Reports_Mysore_Ads_Gg1_Report: false,
+    Reports_Format_Reports_Mysore_Ads_Gg2_Report: false,
+    Reports_Format_Reports_Mysore_Ads_Gg3_Report: false,
+    Reports_Format_Reports_Mysore_Ads_Pebrine_Report: false,
+    Reports_Format_Reports_Mysore_Ads_Plantation_Report: false,
+    Reports_Format_Reports_Mysore_Ads_Rearer_Details_Report: false,
+    Reports_Format_Reports_Mysore_Ads_Rearer_Year_Comparison_Report: false,
+    Reports_Format_Reports_Mysore_Ads_Chawki_Report: false,
+    Reports_Format_Reports_Mysore_Dds_Weekly_Chawki_Report: false,
+    Reports_Format_Reports_Bivoltine_Farm_P2_Monthly_Progress_Report: false,
+    Reports_Format_Reports_Bivoltine_Farm_P2_Crop_Detail_Report: false,
+    Reports_Format_Reports_Bivoltine_Farm_Form1_Chawki_Report: false,
+    Reports_Format_Reports_Bivoltine_Farm_Form2_Progress_Report: false,
+    Reports_Format_Reports_Bivoltine_Farm_Form3_Performance_Report: false,
+    Reports_Format_Reports_Bivoltine_Farm_Form4_Crop_Progress_Report: false,
+    Reports_Format_Reports_Bivoltine_P3_Farm_Sheet1_Monthly_Progress_Report: false,
+    Reports_Format_Reports_Bivoltine_P3_Farm_Sheet3_Annual_Crops_Report: false,
+    Reports_Format_Reports_Bivoltine_P3_Farm_Sheet4_Production_Target_Report: false,
+    Reports_Format_Reports_Bivoltine_P3_Farm_Sheet5_Crop_Report_Part1: false,
+    Reports_Format_Reports_Bivoltine_P3_Farm_Sheet9_Weekly_Hatching_Report: false,
+    Reports_Format_Reports_Bivoltine_P3_Farm_Sheet10_Annual_Target_Report: false,
+    Reports_Format_Reports_Bivoltine_P3_Farm_Sheet12_Rearing_Progress_Report: false,
+    Reports_Format_Reports_Bivoltine_P3_Farm_Sheet13_Mulberry_Performance_Report: false,
+    Reports_Format_Reports_Bivoltine_P3_Farm_Sheet15_Chowki_Target_F1_Report: false,
+    Reports_Format_Reports_Bivoltine_Grainage_Brief_Monthly_Report: false,
+    Reports_Format_Reports_Bivoltine_Grainage_Form1_Detailed_Report: false,
+    Reports_Format_Reports_Bivoltine_Grainage_Form2_Source_Report: false,
+    Reports_Format_Reports_Bivoltine_Grainage_Form10_Report: false,
+    Reports_Format_Reports_Bivoltine_Grainage_Lotwise_Detail_Report: false,
+    Reports_Format_Reports_Bivoltine_Grainage_Race_Progress_Report: false,
+    Reports_Format_Reports_Bivoltine_Grainage_P1_Lotwise_Detail_Report: false,
+    Reports_Format_Reports_Bivoltine_Grainage_Cocoon_Purchase_Report: false,
+    Reports_Format_Reports_Bivoltine_Grainage_Dfl_Distribution_Location_Report: false,
+    Reports_Format_Reports_Bivoltine_Grainage_Diapause_Availability_Report: false,
+    Reports_Format_Reports_Bivoltine_Grainage_Daywise_Chawki_Report: false,
+    Reports_Format_Reports_Bivoltine_Tsc_Monthly_Subdivision_Progress_Report: false,
+    Reports_Format_Reports_Bivoltine_Tsc_Monthly_Farmer_Category_Detail_Report: false,
+    Reports_Format_Reports_Bivoltine_Tsc_Monthly_Nrega_Progress_Report: false,
+    Reports_Format_Reports_Bivoltine_Dd_Mulberry_Area_Report: false,
+    Reports_Format_Reports_Bivoltine_Dd_Crop_Yield_Report: false,
+    Reports_Format_Reports_Bivoltine_Dd_Chawki_Progress_Report: false,
+    Reports_Format_Reports_Bivoltine_Dd_Cocoon_Progress_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Farmer_Stats_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Mulberry_Area_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Chawki_Harvest_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Seed_Cocoon_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Chawki_Cocoon_Weekly_Report: false,
+    Reports_Format_Reports_TSC_Tsc_New_Mulberry_Plantings_Report: false,
+    Reports_Format_Reports_TSC_Tsc_P2_Brushed_Dfls_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Daily_Chawki_Week_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_Mulberry_Area_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_Farmer_Categorization_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_Demographics_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_Mulberry_By_Variety_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_Plantation_Detail_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_Pure_Brushing_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_Cross_Brushing_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_Race_Wise_Brushing_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_Pure_Cocoon_Production_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_Crop_Yield_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_Market_Cocoon_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_Crc_Brushing_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_Weekly_Brushing_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_Weekly_Cocoon_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_Ns1_Chawki_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_Ns2_Cocoon_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_S1_Chawki_Plan_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_S1_Ripe_Eggs_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_S4_Weekly_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_S4_Summary_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_P1_Chawki_Lotwise_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_P1_Cocoon_Lotwise_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Monthly_Source_Grainage_Chawki_Report: false,
+    Reports_Format_Reports_TSC_Tsc_Cluster_Wise_Report: false,
+    Reports_Format_Reports_Training_Training_Physical_Progress_Report: false,
+    Reports_Format_Reports_Training_Training_Financial_Progress_Report: false,
+    Reports_Format_Reports_Training_Training_Maintenance_Expense_Report: false,
+    Reports_Format_Reports_Mysore_Group_GG_Monthly_Report: false,
+    Reports_Format_Reports_Mysore_Group_P4_Grainage_Report: false,
+    Reports_Format_Reports_Mysore_Group_P4_BSF_Kunigal_Report: false,
+    Reports_Format_Reports_Mysore_Group_P4_Bilidevalaya_Farm_Report: false,
+    Reports_Format_Reports_Mysore_Group_P3_Grainage_Report: false,
+    Reports_Format_Reports_Mysore_Group_P3_Farms_MSC_Seed_Area_Reports: false,
+    Reports_Format_Reports_Mysore_Group_P2_Grainage_Bilidevalaya: false,
+    Reports_Format_Reports_Mysore_Group_ADS_Reports: false,
+    Reports_Format_Reports_Bivoltine_Group_P2_Farms_Reports: false,
+    Reports_Format_Reports_Bivoltine_Group_P3_Farms_Bivoltine: false,
+    Reports_Format_Reports_Bivoltine_Group_P1_And_P2_Grainage_Reports_Bivoltine: false,
+    Reports_Format_Reports_Bivoltine_Group_ADS_Reports: false,
+    Reports_Format_Reports_Bivoltine_Group_DD_Reports: false,
+    Reports_Format_Reports_TSC_Group_TSC_Mysore_Seed_Area: false,
+    Reports_Format_Reports_TSC_Group_TSC_Bivoltine: false,
 
     Reports_Admin: false,
     Reports_Admin_User_Details_Report: false,
 
     Reports_Dashboard: false,
+    Reports_Dashboard_Dashboards: false,
+    Reports_Dashboard_Pendency_Statistics: false,
+    Reports_Dashboard_Cumulative_Report: false,
 
     Reports_Export_Report: false,
 
@@ -600,12 +747,35 @@ function Menu() {
     Reports_Export_Report_Commercial_Market_Market_Report: false,
     Reports_Export_Report_Commercial_Market_District_Report: false,
     Reports_Export_Report_Commercial_Market_Average_Cocoon_Report: false,
+    Reports_Export_Report_Commercial_Market_Reeler_Current_Balance: false,
+    Reports_Export_Report_Commercial_Market_Reeler_Credit_Report: false,
 
     Reports_Export_Report_Seed_Market: false,
     Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt: false,
      Reports_Export_Report_Seed_Market_External_Unit_Balance_Report: false,
     Reports_Export_Report_Seed_Market_Reeler_Balance_Report: false,
     Reports_Export_Report_Seed_Market_Dashboard: false,
+    Reports_Export_Report_Seed_Market_Invoice: false,
+    Reports_Export_Report_Seed_Market_Permit: false,
+    Reports_Export_Report_Seed_Market_Cash_Receipt: false,
+    Reports_Export_Report_Seed_Market_Market_Receipt: false,
+    Reports_Export_Report_Seed_Market_DTR_Report: false,
+    Reports_Export_Report_Seed_Market_Fitness_Certificate: false,
+    Reports_Export_Report_Seed_Market_Bidding_Slip: false,
+    Reports_Export_Report_Seed_Market_Triplet: false,
+    Reports_Export_Report_Seed_Market_Weekly_Report: false,
+    Reports_Export_Report_Seed_Market_Pending_Fee_Report: false,
+    Reports_Export_Report_Seed_Market_MF_Report: false,
+    Reports_Export_Report_Seed_Market_Transaction_Report: false,
+    Reports_Export_Report_Seed_Market_Credit_Report: false,
+    Reports_Export_Report_Seed_Market_Monthly_Progress: false,
+    Reports_Export_Report_Seed_Market_Pricing_Summary: false,
+    Reports_Export_Report_Seed_Market_District_Wise_Sales: false,
+    Reports_Export_Report_Seed_Market_Budget_Entry: false,
+    Reports_Export_Report_Seed_Market_Budget_List: false,
+    Reports_Export_Report_Seed_Market_Staff_Entry: false,
+    Reports_Export_Report_Seed_Market_Staff_List: false,
+    Reports_Export_Report_Seed_Market_Bidding_Report: false,
 
 
     Reports_Export_Report_Silk_Type_Market: false,
@@ -1011,6 +1181,16 @@ function Menu() {
         }
       });
     }
+    // Roles granted the bare "Reeler License" permission before With/Without
+    // License existed as separate checkboxes should keep seeing both, without
+    // needing the role re-saved.
+    if (data.includes("Registration_Reeler_License")) {
+      Object.keys(updatedShowMenu).forEach((key) => {
+        if (key.startsWith("Registration_Reeler_License_")) {
+          updatedShowMenu[key] = true;
+        }
+      });
+    }
     if (data.includes("Reports_Export_Report")) {
       Object.keys(updatedShowMenu).forEach((key) => {
         if (key.startsWith("Reports_Export_Report_")) {
@@ -1142,6 +1322,17 @@ function Menu() {
       setShowMenu((prevMenu) => ({
         ...prevMenu,
         Registration: true,
+      }));
+    }
+
+    const hasReelerLicenseChild = data.some((item) =>
+      item.startsWith("Registration_Reeler_License_")
+    );
+    if (hasReelerLicenseChild) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Registration: true,
+        Registration_Reeler_License: true,
       }));
     }
 
@@ -1350,16 +1541,13 @@ function Menu() {
       }));
     }
 
-    // Market_SeedMarket is the wrapper flag that gates BOTH the entire
-    // "Commercial Market" flyout and the entire "Seed Market" flyout. It was
-    // only ever reachable by granting the whole "Market" root wholesale, so
-    // granting any specific leaf underneath (e-Inward, e-Acceptance,
-    // Gatepass, e-Payment sub-items, Seed Market items, etc.) without also
-    // checking the root left the wrapper permanently false — meaning none of
-    // those leaves could ever render, even though their own flags were
-    // individually correct.
-    const hasCommercialOrSeedMarket = data.some(
+    // "Commercial Market", "Seed Market" and "Silk Exchange" are three separate
+    // flyouts under Market & Auction, each now backed by its own Role Config
+    // permission group (Market_CommercialMarket / Market_SeedMarket /
+    // Market_SilkExchange), so each wrapper only turns on from its own leaves.
+    const hasCommercialMarket = data.some(
       (item) =>
+        item === "Market_CommercialMarket" ||
         [
           "Market_Bidding",
           "Market_Accept_Farmer_Auction",
@@ -1369,11 +1557,33 @@ function Menu() {
           "Market_Reject",
           "Market_Show_Lot",
         ].includes(item) ||
-        item.startsWith("Market_Payment_") ||
+        item.startsWith("Market_Payment_")
+    );
+    if (hasCommercialMarket) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Market: true,
+        Market_CommercialMarket: true,
+      }));
+    }
+
+    const hasSilkExchange = data.some((item) =>
+      item.startsWith("Market_SilkExchange")
+    );
+    if (hasSilkExchange) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Market: true,
+        Market_SilkExchange: true,
+      }));
+    }
+
+    const hasSeedMarket = data.some(
+      (item) =>
         item.startsWith("Market_SeedMarket_") ||
         item.startsWith("Market_SeedCocoonMarket_")
     );
-    if (hasCommercialOrSeedMarket) {
+    if (hasSeedMarket) {
       setShowMenu((prevMenu) => ({
         ...prevMenu,
         Market: true,
@@ -1618,7 +1828,6 @@ function Menu() {
         Reports: true,
         Reports_Export_Report: true,
         Reports_Export_Report_Seed_Market: true,
-        Reports_Format_Reports: true,
       }));
     }
 
@@ -1629,9 +1838,257 @@ function Menu() {
       setShowMenu((prevMenu) => ({
         ...prevMenu,
         Reports: true,
-        Reports_Format_Reports: true,
         Reports_Export_Report_Seed_Market: true,
         Reports_Export_Report_Seed_Market_Dashboard: true,
+      }));
+    }
+
+    // Backward compatibility: roles granted any pre-existing Seed Market child
+    // permission (before per-report checkboxes existed) previously saw these
+    // reports unconditionally whenever Seed Market was open at all.
+    if (data.includes("Reports_Format_Reports_Mysore_Group_GG_Monthly_Report")) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports_Format_Reports_Mysore_Group_GG_Monthly_Report: true,
+        Reports_Format_Reports_Mysore_Gg_Lotwise_Progress_Report: true,
+        Reports_Format_Reports_Mysore_Gg_Sheet4_Combined_Report: true,
+        Reports_Format_Reports_Mysore_Gg_Production_Cumulative_Report: true,
+        Reports_Format_Reports_Mysore_Gg_Pierced_Cocoons_Report: true,
+      }));
+    }
+
+    if (data.includes("Reports_Format_Reports_Mysore_Group_P4_Grainage_Report")) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports_Format_Reports_Mysore_Group_P4_Grainage_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_Progress_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_Lotwise_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_Cocoon_Supply_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_Cocoon_Butterfly_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_Egg_Distribution_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_Egg_Production_Report: true,
+      }));
+    }
+
+    if (data.includes("Reports_Format_Reports_Mysore_Group_P4_BSF_Kunigal_Report")) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports_Format_Reports_Mysore_Group_P4_BSF_Kunigal_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_Mulberry_Weekly_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_Monthly_Farm_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_Monthly_Hatching_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_Crop_Harvest_Report: true,
+      }));
+    }
+
+    if (data.includes("Reports_Format_Reports_Mysore_Group_P4_Bilidevalaya_Farm_Report")) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports_Format_Reports_Mysore_Group_P4_Bilidevalaya_Farm_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_P4_Form_Summary_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_P4_Weekly_Programme_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_P4_Crop_Details_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_P3_Weekly_Programme_Report: true,
+      }));
+    }
+
+    if (data.includes("Reports_Format_Reports_Mysore_Group_P3_Grainage_Report")) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports_Format_Reports_Mysore_Group_P3_Grainage_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_P3_Grainage_Monthly_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_P3_Lotwise_Monthly_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Distribution_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_P3_Cocoon_Supply_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Distribution_Details_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Preparation_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_P3_Pupa_Moth_Exam_Report: true,
+      }));
+    }
+
+    if (data.includes("Reports_Format_Reports_Mysore_Group_P3_Farms_MSC_Seed_Area_Reports")) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports_Format_Reports_Mysore_Group_P3_Farms_MSC_Seed_Area_Reports: true,
+        Reports_Format_Reports_Mysore_Farm_Form27b_Report: true,
+        Reports_Format_Reports_Mysore_Farm_Mulberry_Garden_Report: true,
+        Reports_Format_Reports_Mysore_Farm_Chaki_Center_Report: true,
+        Reports_Format_Reports_Mysore_Farm_Weather_Report: true,
+        Reports_Format_Reports_Mysore_Farm_Future_Chawki_Plan_Report: true,
+      }));
+    }
+
+    if (data.includes("Reports_Format_Reports_Mysore_Group_P2_Grainage_Bilidevalaya")) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports_Format_Reports_Mysore_Group_P2_Grainage_Bilidevalaya: true,
+        Reports_Format_Reports_Mysore_Grainage_P2_Production_Income_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_P2_Lotwise_Monthly_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_P2_Weekly_Production_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_P2_Weekly_Tsc_Supply_Report: true,
+        Reports_Format_Reports_Mysore_Grainage_P2_Pebrine_Cases_Report: true,
+      }));
+    }
+
+    if (data.includes("Reports_Format_Reports_Mysore_Group_ADS_Reports")) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports_Format_Reports_Mysore_Group_ADS_Reports: true,
+        Reports_Format_Reports_Mysore_Ads_Gg1_Report: true,
+        Reports_Format_Reports_Mysore_Ads_Gg2_Report: true,
+        Reports_Format_Reports_Mysore_Ads_Gg3_Report: true,
+        Reports_Format_Reports_Mysore_Ads_Pebrine_Report: true,
+        Reports_Format_Reports_Mysore_Ads_Plantation_Report: true,
+        Reports_Format_Reports_Mysore_Ads_Rearer_Details_Report: true,
+        Reports_Format_Reports_Mysore_Ads_Rearer_Year_Comparison_Report: true,
+        Reports_Format_Reports_Mysore_Ads_Chawki_Report: true,
+        Reports_Format_Reports_Mysore_Dds_Weekly_Chawki_Report: true,
+      }));
+    }
+
+    if (data.includes("Reports_Format_Reports_Bivoltine_Group_P2_Farms_Reports")) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports_Format_Reports_Bivoltine_Group_P2_Farms_Reports: true,
+        Reports_Format_Reports_Bivoltine_Farm_P2_Monthly_Progress_Report: true,
+        Reports_Format_Reports_Bivoltine_Farm_P2_Crop_Detail_Report: true,
+      }));
+    }
+
+    if (data.includes("Reports_Format_Reports_Bivoltine_Group_P3_Farms_Bivoltine")) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports_Format_Reports_Bivoltine_Group_P3_Farms_Bivoltine: true,
+        Reports_Format_Reports_Bivoltine_Farm_Form1_Chawki_Report: true,
+        Reports_Format_Reports_Bivoltine_Farm_Form2_Progress_Report: true,
+        Reports_Format_Reports_Bivoltine_Farm_Form3_Performance_Report: true,
+        Reports_Format_Reports_Bivoltine_Farm_Form4_Crop_Progress_Report: true,
+        Reports_Format_Reports_Bivoltine_P3_Farm_Sheet1_Monthly_Progress_Report: true,
+        Reports_Format_Reports_Bivoltine_P3_Farm_Sheet3_Annual_Crops_Report: true,
+        Reports_Format_Reports_Bivoltine_P3_Farm_Sheet4_Production_Target_Report: true,
+        Reports_Format_Reports_Bivoltine_P3_Farm_Sheet5_Crop_Report_Part1: true,
+        Reports_Format_Reports_Bivoltine_P3_Farm_Sheet9_Weekly_Hatching_Report: true,
+        Reports_Format_Reports_Bivoltine_P3_Farm_Sheet10_Annual_Target_Report: true,
+        Reports_Format_Reports_Bivoltine_P3_Farm_Sheet12_Rearing_Progress_Report: true,
+        Reports_Format_Reports_Bivoltine_P3_Farm_Sheet13_Mulberry_Performance_Report: true,
+        Reports_Format_Reports_Bivoltine_P3_Farm_Sheet15_Chowki_Target_F1_Report: true,
+      }));
+    }
+
+    if (data.includes("Reports_Format_Reports_Bivoltine_Group_P1_And_P2_Grainage_Reports_Bivoltine")) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports_Format_Reports_Bivoltine_Group_P1_And_P2_Grainage_Reports_Bivoltine: true,
+        Reports_Format_Reports_Bivoltine_Grainage_Brief_Monthly_Report: true,
+        Reports_Format_Reports_Bivoltine_Grainage_Form1_Detailed_Report: true,
+        Reports_Format_Reports_Bivoltine_Grainage_Form2_Source_Report: true,
+        Reports_Format_Reports_Bivoltine_Grainage_Form10_Report: true,
+        Reports_Format_Reports_Bivoltine_Grainage_Lotwise_Detail_Report: true,
+        Reports_Format_Reports_Bivoltine_Grainage_Race_Progress_Report: true,
+        Reports_Format_Reports_Bivoltine_Grainage_P1_Lotwise_Detail_Report: true,
+        Reports_Format_Reports_Bivoltine_Grainage_Cocoon_Purchase_Report: true,
+        Reports_Format_Reports_Bivoltine_Grainage_Dfl_Distribution_Location_Report: true,
+        Reports_Format_Reports_Bivoltine_Grainage_Diapause_Availability_Report: true,
+        Reports_Format_Reports_Bivoltine_Grainage_Daywise_Chawki_Report: true,
+      }));
+    }
+
+    if (data.includes("Reports_Format_Reports_Bivoltine_Group_ADS_Reports")) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports_Format_Reports_Bivoltine_Group_ADS_Reports: true,
+        Reports_Format_Reports_Bivoltine_Tsc_Monthly_Subdivision_Progress_Report: true,
+        Reports_Format_Reports_Bivoltine_Tsc_Monthly_Farmer_Category_Detail_Report: true,
+        Reports_Format_Reports_Bivoltine_Tsc_Monthly_Nrega_Progress_Report: true,
+      }));
+    }
+
+    if (data.includes("Reports_Format_Reports_Bivoltine_Group_DD_Reports")) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports_Format_Reports_Bivoltine_Group_DD_Reports: true,
+        Reports_Format_Reports_Bivoltine_Dd_Mulberry_Area_Report: true,
+        Reports_Format_Reports_Bivoltine_Dd_Crop_Yield_Report: true,
+        Reports_Format_Reports_Bivoltine_Dd_Chawki_Progress_Report: true,
+        Reports_Format_Reports_Bivoltine_Dd_Cocoon_Progress_Report: true,
+      }));
+    }
+
+    if (data.includes("Reports_Format_Reports_TSC_Group_TSC_Mysore_Seed_Area")) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports_Format_Reports_TSC_Group_TSC_Mysore_Seed_Area: true,
+        Reports_Format_Reports_TSC_Tsc_Farmer_Stats_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Mulberry_Area_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Chawki_Harvest_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Seed_Cocoon_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Chawki_Cocoon_Weekly_Report: true,
+        Reports_Format_Reports_TSC_Tsc_New_Mulberry_Plantings_Report: true,
+        Reports_Format_Reports_TSC_Tsc_P2_Brushed_Dfls_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Daily_Chawki_Week_Report: true,
+      }));
+    }
+
+    if (data.includes("Reports_Format_Reports_TSC_Group_TSC_Bivoltine")) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports_Format_Reports_TSC_Group_TSC_Bivoltine: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_Mulberry_Area_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_Farmer_Categorization_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_Demographics_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_Mulberry_By_Variety_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_Plantation_Detail_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_Pure_Brushing_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_Cross_Brushing_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_Race_Wise_Brushing_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_Pure_Cocoon_Production_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_Crop_Yield_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_Market_Cocoon_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_Crc_Brushing_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_Weekly_Brushing_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_Weekly_Cocoon_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_Ns1_Chawki_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_Ns2_Cocoon_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_S1_Chawki_Plan_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_S1_Ripe_Eggs_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_S4_Weekly_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_S4_Summary_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_P1_Chawki_Lotwise_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_P1_Cocoon_Lotwise_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Monthly_Source_Grainage_Chawki_Report: true,
+        Reports_Format_Reports_TSC_Tsc_Cluster_Wise_Report: true,
+      }));
+    }
+
+    const hasLegacySeedMarketGrant = data.some((item) =>
+      [
+        "Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt",
+        "Reports_Export_Report_Seed_Market_External_Unit_Balance_Report",
+        "Reports_Export_Report_Seed_Market_Reeler_Balance_Report",
+        "Reports_Export_Report_Seed_Market_Dashboard",
+      ].includes(item)
+    );
+    if (hasLegacySeedMarketGrant) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Reports: true,
+        Reports_Export_Report_Seed_Market: true,
+        Reports_Export_Report_Seed_Market_Fitness_Certificate: true,
+        Reports_Export_Report_Seed_Market_Bidding_Slip: true,
+        Reports_Export_Report_Seed_Market_Triplet: true,
+        Reports_Export_Report_Seed_Market_Weekly_Report: true,
+        Reports_Export_Report_Seed_Market_Pending_Fee_Report: true,
+        Reports_Export_Report_Seed_Market_MF_Report: true,
+        Reports_Export_Report_Seed_Market_Transaction_Report: true,
+        Reports_Export_Report_Seed_Market_Credit_Report: true,
+        Reports_Export_Report_Seed_Market_Monthly_Progress: true,
+        Reports_Export_Report_Seed_Market_Pricing_Summary: true,
+        Reports_Export_Report_Seed_Market_District_Wise_Sales: true,
+        Reports_Export_Report_Seed_Market_Budget_Entry: true,
+        Reports_Export_Report_Seed_Market_Budget_List: true,
+        Reports_Export_Report_Seed_Market_Staff_Entry: true,
+        Reports_Export_Report_Seed_Market_Staff_List: true,
+        Reports_Export_Report_Seed_Market_Bidding_Report: true,
       }));
     }
 
@@ -1913,61 +2370,65 @@ function Menu() {
                     sub
                   />
                   <MenuSub>
-                    <MenuItem>
-                      {/* Plain Link (not NavLink) on purpose: NavLink auto-sets
-                          aria-current="page" from a pathname-only match, and both
-                          items share the same path (only the query differs) — that
-                          would mark both as current. Active state is computed here
-                          manually from licenseType instead. */}
-                      <Link
-                        className={`nk-nav-link${
-                          location.pathname ===
-                            "/seriui/issue-new-reeler-license" &&
-                          new URLSearchParams(location.search).get(
-                            "licenseType"
-                          ) !== "without"
-                            ? " active current-page"
-                            : ""
-                        }`}
-                        aria-current={
-                          location.pathname ===
-                            "/seriui/issue-new-reeler-license" &&
-                          new URLSearchParams(location.search).get(
-                            "licenseType"
-                          ) !== "without"
-                            ? "page"
-                            : undefined
-                        }
-                        to="/seriui/issue-new-reeler-license"
-                      >
-                        <MenuItemTemplate text={t("With License")} />
-                      </Link>
-                    </MenuItem>
-                    <MenuItem>
-                      <Link
-                        className={`nk-nav-link${
-                          location.pathname ===
-                            "/seriui/issue-new-reeler-license" &&
-                          new URLSearchParams(location.search).get(
-                            "licenseType"
-                          ) === "without"
-                            ? " active current-page"
-                            : ""
-                        }`}
-                        aria-current={
-                          location.pathname ===
-                            "/seriui/issue-new-reeler-license" &&
-                          new URLSearchParams(location.search).get(
-                            "licenseType"
-                          ) === "without"
-                            ? "page"
-                            : undefined
-                        }
-                        to="/seriui/issue-new-reeler-license?licenseType=without"
-                      >
-                        <MenuItemTemplate text={t("Without License")} />
-                      </Link>
-                    </MenuItem>
+                    {showMenu.Registration_Reeler_License_With_License ? (
+                      <MenuItem>
+                        {/* Plain Link (not NavLink) on purpose: NavLink auto-sets
+                            aria-current="page" from a pathname-only match, and both
+                            items share the same path (only the query differs) — that
+                            would mark both as current. Active state is computed here
+                            manually from licenseType instead. */}
+                        <Link
+                          className={`nk-nav-link${
+                            location.pathname ===
+                              "/seriui/issue-new-reeler-license" &&
+                            new URLSearchParams(location.search).get(
+                              "licenseType"
+                            ) !== "without"
+                              ? " active current-page"
+                              : ""
+                          }`}
+                          aria-current={
+                            location.pathname ===
+                              "/seriui/issue-new-reeler-license" &&
+                            new URLSearchParams(location.search).get(
+                              "licenseType"
+                            ) !== "without"
+                              ? "page"
+                              : undefined
+                          }
+                          to="/seriui/issue-new-reeler-license"
+                        >
+                          <MenuItemTemplate text={t("With License")} />
+                        </Link>
+                      </MenuItem>
+                    ) : null}
+                    {showMenu.Registration_Reeler_License_Without_License ? (
+                      <MenuItem>
+                        <Link
+                          className={`nk-nav-link${
+                            location.pathname ===
+                              "/seriui/issue-new-reeler-license" &&
+                            new URLSearchParams(location.search).get(
+                              "licenseType"
+                            ) === "without"
+                              ? " active current-page"
+                              : ""
+                          }`}
+                          aria-current={
+                            location.pathname ===
+                              "/seriui/issue-new-reeler-license" &&
+                            new URLSearchParams(location.search).get(
+                              "licenseType"
+                            ) === "without"
+                              ? "page"
+                              : undefined
+                          }
+                          to="/seriui/issue-new-reeler-license?licenseType=without"
+                        >
+                          <MenuItemTemplate text={t("Without License")} />
+                        </Link>
+                      </MenuItem>
+                    ) : null}
                   </MenuSub>
                 </MenuItem>
               </MenuItem>
@@ -2462,8 +2923,7 @@ function Menu() {
                 </MenuItem>
               ) : null}
             </MenuItem> */}
-            <MenuItem>
-              {showMenu.Market_SeedMarket ? (
+            {showMenu.Market_CommercialMarket ? (
                 <MenuItem sub>
                   <MenuItemLink
                     text={t("Commercial Market")}
@@ -2558,9 +3018,7 @@ function Menu() {
                   </MenuSub>
                 </MenuItem>
               ) : null}
-            </MenuItem>
-            <MenuItem>
-              {showMenu.Market_SeedMarket ? (
+            {showMenu.Market_SeedMarket ? (
                 <MenuItem sub>
                   <MenuItemLink
                     text={t("Seed Market")}
@@ -2756,9 +3214,7 @@ function Menu() {
                   </MenuSub>
                 </MenuItem>
               ) : null}
-            </MenuItem>
-            <MenuItem>
-              {showMenu.Market_SeedMarket ? (
+            {showMenu.Market_SilkExchange ? (
                 <MenuItem sub>
                   <MenuItemLink
                     text={t("Silk Exchange")}
@@ -2767,7 +3223,7 @@ function Menu() {
                     sub
                   />
                   <MenuSub>
-                    {showMenu.Market_Bidding ? (
+                    {showMenu.Market_SilkExchange_Bidding ? (
                       <MenuItem>
                         <MenuItemLink
                           text={t("e-Inward (Silk Exchange)")}
@@ -2775,7 +3231,7 @@ function Menu() {
                         />
                       </MenuItem>
                     ) : null}
-                    {showMenu.Market_Weighment ? (
+                    {showMenu.Market_SilkExchange_Weighment ? (
                       <MenuItem>
                         <MenuItemLink
                           text={t("e-Weighment (Silk Exchange)")}
@@ -2786,7 +3242,6 @@ function Menu() {
                   </MenuSub>
                 </MenuItem>
               ) : null}
-            </MenuItem>
 
             {/* <MenuItem>
               {showMenu.Market_SeedMarket_Payment ? (
@@ -5780,7 +6235,8 @@ function Menu() {
                     sub
                   />
                   <MenuSub>
-                    {showMenu.Reports_Export_Report_Seed_Market ? (
+                    {showMenu.Reports_Export_Report_Seed_Market ||
+                    showMenu.Reports_Format_Reports_Seed_Market ? (
                       <MenuItem sub>
                         <MenuItemLink
                           text={t("Seed Market")}
@@ -5789,7 +6245,8 @@ function Menu() {
                           sub
                         />
                         <MenuSub>
-                          {showMenu.Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt ? (
+                          {showMenu.Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt ||
+                          showMenu.Reports_Export_Report_Seed_Market_Invoice ? (
                             <MenuItem>
                               <MenuItemLink
                                 text={t("Invoice")}
@@ -5797,7 +6254,8 @@ function Menu() {
                               />
                             </MenuItem>
                           ) : null}
-                          {showMenu.Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt ? (
+                          {showMenu.Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt ||
+                          showMenu.Reports_Export_Report_Seed_Market_Permit ? (
                             <MenuItem>
                               <MenuItemLink
                                 text={t("Permit")}
@@ -5805,7 +6263,8 @@ function Menu() {
                               />
                             </MenuItem>
                           ) : null}
-                          {showMenu.Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt ? (
+                          {showMenu.Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt ||
+                          showMenu.Reports_Export_Report_Seed_Market_Cash_Receipt ? (
                             <MenuItem>
                               <MenuItemLink
                                 text={t("Cash Receipt")}
@@ -5813,7 +6272,8 @@ function Menu() {
                               />
                             </MenuItem>
                           ) : null}
-                          {showMenu.Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt ? (
+                          {showMenu.Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt ||
+                          showMenu.Reports_Export_Report_Seed_Market_Market_Receipt ? (
                             <MenuItem>
                               <MenuItemLink
                                 text={t("Market Receipt")}
@@ -5821,7 +6281,8 @@ function Menu() {
                               />
                             </MenuItem>
                           ) : null}
-                          {showMenu.Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt ? (
+                          {showMenu.Reports_Export_Report_Seed_Market_Invoice_Permit_Receipt ||
+                          showMenu.Reports_Export_Report_Seed_Market_DTR_Report ? (
                             <MenuItem>
                               <MenuItemLink
                                 text={t("DTR Report")}
@@ -5829,24 +6290,30 @@ function Menu() {
                               />
                             </MenuItem>
                           ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_Fitness_Certificate ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Fitness Certificate")}
                               to="/seriui/fitness-certificate-report"
                             />
                           </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_Bidding_Slip ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Bidding Slip")}
                               to="/seriui/seed-market-bidding-slip-report"
                             />
                           </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_Triplet ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Triplet")}
                               to="/seriui/seed-market-triplet-report"
                             />
                           </MenuItem>
+                          ) : null}
 
                           {showMenu.Reports_Export_Report_Seed_Market_External_Unit_Balance_Report ? (
                             <MenuItem>
@@ -5864,85 +6331,111 @@ function Menu() {
                               />
                             </MenuItem>
                           ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_Weekly_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Market Weekly Report")}
                               to="/seriui/market-weekly-report"
                             />
                           </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_Pending_Fee_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Pending Market Fee Report")}
                               to="/seriui/pending-market-fee-report"
                             />
                           </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_MF_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Seed MF Report")}
                               to="/seriui/seed-mf-report"
                             />
                           </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_Transaction_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Seed Market Transaction Report")}
                               to="/seriui/seed-market-transaction-report"
                             />
                           </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_Credit_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Seed Market Credit Report")}
                               to="/seriui/seed-market-credit-report"
                             />
                           </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_Monthly_Progress ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Seed Market Monthly Progress (Sheet 1)")}
                               to="/seriui/seed-market-monthly-progress-report"
                             />
                           </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_Pricing_Summary ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Seed Market Pricing Summary (Sheet 2 · ₹/kg)")}
                               to="/seriui/seed-market-monthly-pricing-report"
                             />
                           </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_District_Wise_Sales ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Seed Market District-wise Sales (Sheet 3)")}
                               to="/seriui/seed-market-district-wise-report"
                             />
                           </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_Budget_Entry ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Seed Market Budget Remittance (Sheet 2 §C · Entry)")}
                               to="/seriui/seed-market-budget-entry"
                             />
                           </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_Budget_List ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Seed Market Budget Remittance (Sheet 2 §C · List)")}
                               to="/seriui/seed-market-budget-list"
                             />
                           </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_Staff_Entry ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Seed Market Staff Establishment (Sheet 2 §D · Entry)")}
                               to="/seriui/seed-market-staff-entry"
                             />
                           </MenuItem>
+                          ) : null}
+                          {showMenu.Reports_Export_Report_Seed_Market_Staff_List ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Seed Market Staff Establishment (Sheet 2 §D · List)")}
                               to="/seriui/seed-market-staff-list"
                             />
                           </MenuItem>
+                          ) : null}
 
+                          {showMenu.Reports_Export_Report_Seed_Market_Bidding_Report ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Seed Market Bidding Report")}
                               to="/seriui/seed-market-bidding-report"
                             />
                           </MenuItem>
+                          ) : null}
                           {showMenu.Reports_Export_Report_Seed_Market_Dashboard ? (
                           <MenuItem>
                             <MenuItemLink
@@ -5955,7 +6448,8 @@ function Menu() {
                       </MenuItem>
                     ) : null}
 
-                    {showMenu.Reports_Export_Report_Commercial_Market ? (
+                    {showMenu.Reports_Export_Report_Commercial_Market ||
+                    showMenu.Reports_Format_Reports_Commercial_Market ? (
                       <MenuItem sub>
                         <MenuItemLink
                           text={t("Commercial Market")}
@@ -6012,7 +6506,8 @@ function Menu() {
                               />
                             </MenuItem>
                           ) : null}
-                          {showMenu.Reports_Export_Report_Silk_Type_DTR_Report ? (
+                          {showMenu.Reports_Export_Report_Silk_Type_DTR_Report ||
+                          showMenu.Reports_Export_Report_Commercial_Market_Reeler_Current_Balance ? (
                             <MenuItem>
                               <MenuItemLink
                                 text={t("Reeler Current Balance Report")}
@@ -6020,7 +6515,8 @@ function Menu() {
                               />
                             </MenuItem>
                           ) : null}
-                          {showMenu.Reports_Export_Report_Silk_Type_DTR_Report ? (
+                          {showMenu.Reports_Export_Report_Silk_Type_DTR_Report ||
+                          showMenu.Reports_Export_Report_Commercial_Market_Reeler_Credit_Report ? (
                             <MenuItem>
                               <MenuItemLink
                                 text={t("Reeler Credit Report")}
@@ -6201,6 +6697,7 @@ function Menu() {
                     ) : null}
 
                         {/* ─── Schemes (sub-menu inside Format Reports) ─── */}
+                        {showMenu.Reports_Format_Reports_Schemes ? (
                         <MenuItem sub>
                           <MenuItemLink
                             text={t("Schemes")}
@@ -6227,7 +6724,7 @@ function Menu() {
                               </MenuItem>
                             ) : null}
 
-                            {showMenu.Reports_Format_Reports_WorkOrder ? (
+                            {showMenu.Reports_Format_Reports_Regenerate_Work_Order ? (
                               <MenuItem>
                                 <MenuItemLink
                                   text={t("Regenerate Work Order")}
@@ -6236,7 +6733,7 @@ function Menu() {
                               </MenuItem>
                             ) : null}
 
-                            {showMenu.Reports_Format_Reports_WorkOrder ? (
+                            {showMenu.Reports_Format_Reports_ARM_Release_Letters ? (
                               <MenuItem>
                                 <MenuItemLink
                                   text={t("ARM Release Letters")}
@@ -6263,7 +6760,7 @@ function Menu() {
                               </MenuItem>
                             ) : null}
 
-                            {showMenu.Reports_Format_Reports_Sanction_Order ? (
+                            {showMenu.Reports_Format_Reports_Regenerate_Sanction_Order ? (
                               <MenuItem>
                                 <MenuItemLink
                                   text={t("Regenerate Sanction Order")}
@@ -6273,8 +6770,10 @@ function Menu() {
                             ) : null}
                           </MenuSub>
                         </MenuItem>
+                        ) : null}
 
                         {/* ─── Mysore Seed Area ─── */}
+                        {showMenu.Reports_Format_Reports_Mysore_Seed_Area ? (
                         <MenuItem sub>
                           <MenuItemLink
                             text={t("Mysore Seed Area")}
@@ -6284,7 +6783,8 @@ function Menu() {
                           />
                           <MenuSub>
                         {/* ─── GG Monthly Report — its own submenu directly under Mysore Seed Area ─── */}
-                        <MenuItem sub>
+                        {(showMenu.Reports_Format_Reports_Mysore_Group_GG_Monthly_Report || showMenu.Reports_Format_Reports_Mysore_Gg_Lotwise_Progress_Report || showMenu.Reports_Format_Reports_Mysore_Gg_Sheet4_Combined_Report || showMenu.Reports_Format_Reports_Mysore_Gg_Production_Cumulative_Report || showMenu.Reports_Format_Reports_Mysore_Gg_Pierced_Cocoons_Report) ? (
+<MenuItem sub>
                           <MenuItemLink
                             text={t("GG Monthly Report")}
                             onClick={menuToggle}
@@ -6292,33 +6792,43 @@ function Menu() {
                             sub
                           />
                           <MenuSub>
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Gg_Lotwise_Progress_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("Sheet 2 — Lot-wise Progress")}
                                 to="/seriui/gg-lotwise-progress-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Mysore_Gg_Sheet4_Combined_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("Sheet 4 — DCB · Disease · DFL Distribution")}
                                 to="/seriui/gg-sheet4-combined-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Mysore_Gg_Production_Cumulative_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("Form 7 — DFL Production Cumulative")}
                                 to="/seriui/gg-production-cumulative-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Mysore_Gg_Pierced_Cocoons_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("Form 8 — Pierced Cocoon Details")}
                                 to="/seriui/gg-pierced-cocoons-report"
                               />
                             </MenuItem>
+) : null}
                           </MenuSub>
                         </MenuItem>
-                        <MenuItem sub>
+) : null}
+                        {(showMenu.Reports_Format_Reports_Mysore_Group_P4_Grainage_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Progress_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Lotwise_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Cocoon_Supply_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Cocoon_Butterfly_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Egg_Distribution_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Egg_Production_Report) ? (
+<MenuItem sub>
                           <MenuItemLink
                             text={t("P4 Grainage Report")}
                             onClick={menuToggle}
@@ -6326,45 +6836,59 @@ function Menu() {
                             sub
                           />
                           <MenuSub>
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_Progress_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P4 Grainage Monthly Progress Report")}
                                 to="/seriui/grainage-progress-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_Lotwise_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P4 Monthly Lot Wise Details Report")}
                                 to="/seriui/grainage-lotwise-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_Cocoon_Supply_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P4 Grainage Cocoon Supply Report")}
                                 to="/seriui/grainage-cocoon-supply-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_Cocoon_Butterfly_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P4 Cocoon Butterfly Examination Report")}
                                 to="/seriui/grainage-cocoon-butterfly-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_Egg_Distribution_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P4 Egg Distribution Report")}
                                 to="/seriui/grainage-egg-distribution-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_Egg_Production_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P4 Egg Production Report")}
                                 to="/seriui/grainage-egg-production-report"
                               />
                             </MenuItem>
+) : null}
                           </MenuSub>
                         </MenuItem>
-                        <MenuItem sub>
+) : null}
+                        {(showMenu.Reports_Format_Reports_Mysore_Group_P4_BSF_Kunigal_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Mulberry_Weekly_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Monthly_Farm_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Monthly_Hatching_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Crop_Harvest_Report) ? (
+<MenuItem sub>
                           <MenuItemLink
                             text={t("P4 BSF Kunigal Report")}
                             onClick={menuToggle}
@@ -6372,33 +6896,43 @@ function Menu() {
                             sub
                           />
                           <MenuSub>
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_Mulberry_Weekly_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("Mulberry Weekly Maintenance Report")}
                                 to="/seriui/grainage-mulberry-weekly-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_Monthly_Farm_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("Monthly Farm Report")}
                                 to="/seriui/grainage-monthly-farm-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_Monthly_Hatching_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("Monthly Hatching Report (Form-27)")}
                                 to="/seriui/grainage-monthly-hatching-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_Crop_Harvest_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("Crop Harvest Details Report")}
                                 to="/seriui/grainage-crop-harvest-report"
                               />
                             </MenuItem>
+) : null}
                           </MenuSub>
                         </MenuItem>
-                        <MenuItem sub>
+) : null}
+                        {(showMenu.Reports_Format_Reports_Mysore_Group_P4_Bilidevalaya_Farm_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P4_Form_Summary_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P4_Weekly_Programme_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P4_Crop_Details_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Weekly_Programme_Report) ? (
+<MenuItem sub>
                           <MenuItemLink
                             text={t("P4 Bilidevalaya Farm Report")}
                             onClick={menuToggle}
@@ -6406,35 +6940,45 @@ function Menu() {
                             sub
                           />
                           <MenuSub>
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_P4_Form_Summary_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P4 Form-27 B Monthly Summary")}
                                 to="/seriui/grainage-p4-form-summary-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_P4_Weekly_Programme_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P4 Weekly Programme")}
                                 to="/seriui/grainage-p4-weekly-programme-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_P4_Crop_Details_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P4 Crop Harvest & Hatching Details")}
                                 to="/seriui/grainage-p4-crop-details-report"
                               />
                             </MenuItem>
+) : null}
 
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Weekly_Programme_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P3 Weekly Programme")}
                                 to="/seriui/grainage-p3-weekly-programme-report"
                               />
                             </MenuItem>
+) : null}
                           </MenuSub>
                         </MenuItem>
+) : null}
                         
-                        <MenuItem sub>
+                        {(showMenu.Reports_Format_Reports_Mysore_Group_P3_Grainage_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Grainage_Monthly_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Lotwise_Monthly_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Distribution_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Cocoon_Supply_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Distribution_Details_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Preparation_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Pupa_Moth_Exam_Report) ? (
+<MenuItem sub>
                           <MenuItemLink
                             text={t("P3 Grainage Report")}
                             onClick={menuToggle}
@@ -6443,57 +6987,73 @@ function Menu() {
                           />
                           <MenuSub>
 
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Grainage_Monthly_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P3 Grainage Monthly Progress Report")}
                                 to="/seriui/grainage-p3-grainage-monthly-report"
                               />
                             </MenuItem>
+) : null}
 
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Lotwise_Monthly_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P3 Lotwise Monthly Report")}
                                 to="/seriui/grainage-p3-lotwise-monthly-report"
                               />
                             </MenuItem>
+) : null}
 
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Distribution_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P3 DFL Distribution Report")}
                                 to="/seriui/grainage-p3-dfl-distribution-report"
                               />
                             </MenuItem>
+) : null}
 
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Cocoon_Supply_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P3 Cocoon Supply Report")}
                                 to="/seriui/grainage-p3-cocoon-supply-report"
                               />
                             </MenuItem>
+) : null}
 
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Distribution_Details_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P3 DFL Distribution Details Report")}
                                 to="/seriui/grainage-p3-dfl-distribution-details-report"
                               />
                             </MenuItem>
+) : null}
 
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Preparation_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P3 DFL Preparation Programme Report")}
                                 to="/seriui/grainage-p3-dfl-preparation-report"
                               />
                             </MenuItem>
+) : null}
 
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Pupa_Moth_Exam_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P3 Pupa & Moth Examination Report")}
                                 to="/seriui/grainage-p3-pupa-moth-exam-report"
                               />
                             </MenuItem>
+) : null}
                           </MenuSub>
                         </MenuItem>
-                        <MenuItem sub>
+) : null}
+                        {(showMenu.Reports_Format_Reports_Mysore_Group_P3_Farms_MSC_Seed_Area_Reports || showMenu.Reports_Format_Reports_Mysore_Farm_Form27b_Report || showMenu.Reports_Format_Reports_Mysore_Farm_Mulberry_Garden_Report || showMenu.Reports_Format_Reports_Mysore_Farm_Chaki_Center_Report || showMenu.Reports_Format_Reports_Mysore_Farm_Weather_Report || showMenu.Reports_Format_Reports_Mysore_Farm_Future_Chawki_Plan_Report) ? (
+<MenuItem sub>
                           <MenuItemLink
                             text={t("P3 Farms MSC Seed Area Reports")}
                             onClick={menuToggle}
@@ -6501,44 +7061,56 @@ function Menu() {
                             sub
                           />
                           <MenuSub>
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Farm_Form27b_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("Farm Form-27 B Report")}
                                 to="/seriui/farm-form27b-report"
                               />
                             </MenuItem>
+) : null}
 
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Farm_Mulberry_Garden_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("Farm Mulberry Garden Report")}
                                 to="/seriui/farm-mulberry-garden-report"
                               />
                             </MenuItem>
+) : null}
 
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Farm_Chaki_Center_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("Farm Chaki Center Monthly Report")}
                                 to="/seriui/farm-chaki-center-report"
                               />
                             </MenuItem>
+) : null}
 
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Farm_Weather_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("Farm Weather Conditions Report")}
                                 to="/seriui/farm-weather-report"
                               />
                             </MenuItem>
+) : null}
 
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Farm_Future_Chawki_Plan_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("Farm Future Chawki Plan Report")}
                                 to="/seriui/farm-future-chawki-plan-report"
                               />
                             </MenuItem>
+) : null}
                           </MenuSub>
                         </MenuItem>
+) : null}
 
-                        <MenuItem sub>
+                        {(showMenu.Reports_Format_Reports_Mysore_Group_P2_Grainage_Bilidevalaya || showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Production_Income_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Lotwise_Monthly_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Weekly_Production_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Weekly_Tsc_Supply_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Pebrine_Cases_Report) ? (
+<MenuItem sub>
                           <MenuItemLink
                             text={t("P2 Grainage Bilidevalaya")}
                             onClick={menuToggle}
@@ -6546,44 +7118,56 @@ function Menu() {
                             sub
                           />
                           <MenuSub>
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Production_Income_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P2 Production & Income Report")}
                                 to="/seriui/grainage-p2-production-income-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Lotwise_Monthly_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P2 Lotwise Monthly Report")}
                                 to="/seriui/grainage-p2-lotwise-monthly-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Weekly_Production_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P2 Weekly Production Report")}
                                 to="/seriui/grainage-p2-weekly-production-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Weekly_Tsc_Supply_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P2 Weekly TSC Supply Report")}
                                 to="/seriui/grainage-p2-weekly-tsc-supply-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Pebrine_Cases_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("P2 Pebrine Cases Report")}
                                 to="/seriui/grainage-p2-pebrine-cases-report"
                               />
                             </MenuItem>
+) : null}
                           </MenuSub>
                         </MenuItem>
+) : null}
 
                         {/* TSC Reports moved out of Mysore Seed Area to the new
                             top-level "TSC Reports" parent in Format Reports — see "TSC
                             (Mysore Seed Area)" child of that parent. */}
 
-                        <MenuItem sub>
+                        {(showMenu.Reports_Format_Reports_Mysore_Group_ADS_Reports || showMenu.Reports_Format_Reports_Mysore_Ads_Gg1_Report || showMenu.Reports_Format_Reports_Mysore_Ads_Gg2_Report || showMenu.Reports_Format_Reports_Mysore_Ads_Gg3_Report || showMenu.Reports_Format_Reports_Mysore_Ads_Pebrine_Report || showMenu.Reports_Format_Reports_Mysore_Ads_Plantation_Report || showMenu.Reports_Format_Reports_Mysore_Ads_Rearer_Details_Report || showMenu.Reports_Format_Reports_Mysore_Ads_Rearer_Year_Comparison_Report || showMenu.Reports_Format_Reports_Mysore_Ads_Chawki_Report || showMenu.Reports_Format_Reports_Mysore_Dds_Weekly_Chawki_Report) ? (
+<MenuItem sub>
                               <MenuItemLink
                                 text={t("ADS Reports")}
                                 onClick={menuToggle}
@@ -6591,67 +7175,88 @@ function Menu() {
                                 sub
                               />
                               <MenuSub>
-                                <MenuItem>
+                                {showMenu.Reports_Format_Reports_Mysore_Ads_Gg1_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("ADS · P1 Grainage Monthly Progress (GG-1)")}
                                     to="/seriui/ads-gg1-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Mysore_Ads_Gg2_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("ADS · Weekly DFL Production Progress (GG-2)")}
                                     to="/seriui/ads-gg2-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Mysore_Ads_Gg3_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("ADS · Production Cost & Income (GG-3)")}
                                     to="/seriui/ads-gg3-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Mysore_Ads_Pebrine_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("ADS · Pebrine Cases Detail")}
                                     to="/seriui/ads-pebrine-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Mysore_Ads_Plantation_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("ADS · TSC Mulberry Plantation Statistics")}
                                     to="/seriui/ads-plantation-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Mysore_Ads_Rearer_Details_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("ADS · TSC Farmer Demographics")}
                                     to="/seriui/ads-rearer-details-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Mysore_Ads_Rearer_Year_Comparison_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("ADS · TSC Farmer Demographic — Year Comparison")}
                                     to="/seriui/ads-rearer-year-comparison-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Mysore_Ads_Chawki_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("ADS · TSC Chawki Programme & Achievement")}
                                     to="/seriui/ads-chawki-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Mysore_Dds_Weekly_Chawki_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("DDS · Weekly Chawki Report")}
                                     to="/seriui/dds-weekly-chawki-report"
                                   />
                                 </MenuItem>
+) : null}
                               </MenuSub>
                             </MenuItem>
+) : null}
                           </MenuSub>
                         </MenuItem>
+                        ) : null}
                         {/* ─── End Mysore Seed Area ─── */}
 
                         {/* ─── Bivoltine Seed Area ─── */}
+                        {showMenu.Reports_Format_Reports_Bivoltine_Seed_Area ? (
                         <MenuItem sub>
                           <MenuItemLink
                             text={t("Bivoltine Seed Area")}
@@ -6660,7 +7265,8 @@ function Menu() {
                             sub
                           />
                           <MenuSub>
-                            <MenuItem sub>
+                            {(showMenu.Reports_Format_Reports_Bivoltine_Group_P2_Farms_Reports || showMenu.Reports_Format_Reports_Bivoltine_Farm_P2_Monthly_Progress_Report || showMenu.Reports_Format_Reports_Bivoltine_Farm_P2_Crop_Detail_Report) ? (
+<MenuItem sub>
                               <MenuItemLink
                                 text={t("P2 Farms Reports")}
                                 onClick={menuToggle}
@@ -6668,22 +7274,28 @@ function Menu() {
                                 sub
                               />
                               <MenuSub>
-                                <MenuItem>
+                                {showMenu.Reports_Format_Reports_Bivoltine_Farm_P2_Monthly_Progress_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("P2 Farm Monthly Progress (Sheet-1)")}
                                     to="/seriui/farm-p2-monthly-progress-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Farm_P2_Crop_Detail_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("P2 Farm Crop Detail — Form-1 (Sheet-2)")}
                                     to="/seriui/farm-p2-crop-detail-report"
                                   />
                                 </MenuItem>
+) : null}
                               </MenuSub>
                             </MenuItem>
+) : null}
 
-                            <MenuItem sub>
+                            {(showMenu.Reports_Format_Reports_Bivoltine_Group_P3_Farms_Bivoltine || showMenu.Reports_Format_Reports_Bivoltine_Farm_Form1_Chawki_Report || showMenu.Reports_Format_Reports_Bivoltine_Farm_Form2_Progress_Report || showMenu.Reports_Format_Reports_Bivoltine_Farm_Form3_Performance_Report || showMenu.Reports_Format_Reports_Bivoltine_Farm_Form4_Crop_Progress_Report || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet1_Monthly_Progress_Report || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet3_Annual_Crops_Report || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet4_Production_Target_Report || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet5_Crop_Report_Part1 || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet9_Weekly_Hatching_Report || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet10_Annual_Target_Report || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet12_Rearing_Progress_Report || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet13_Mulberry_Performance_Report || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet15_Chowki_Target_F1_Report) ? (
+<MenuItem sub>
                               <MenuItemLink
                                 text={t("P3 Farms (Bivoltine)")}
                                 onClick={menuToggle}
@@ -6691,91 +7303,119 @@ function Menu() {
                                 sub
                               />
                               <MenuSub>
-                                {/* <MenuItem>
+                                {/* {showMenu.Reports_Format_Reports_Bivoltine_Farm_Form1_Chawki_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Form-1 · Monthly Chawki Achievement")}
                                     to="/seriui/farm-form1-chawki-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Farm_Form2_Progress_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Form F-2 · Monthly Progress (per-lot)")}
                                     to="/seriui/farm-form2-progress-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Farm_Form3_Performance_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Form-3 · Farm Performance (CY vs PY)")}
                                     to="/seriui/farm-form3-performance-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Farm_Form4_Crop_Progress_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Form-4 · Crop Progress (CY vs PY)")}
                                     to="/seriui/farm-form4-crop-progress-report"
                                   />
-                                </MenuItem> */}
-                                <MenuItem>
+                                </MenuItem>
+) : null} */}
+                                {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet1_Monthly_Progress_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Sheet-1 · Monthly Progress (Form F-2)")}
                                     to="/seriui/p3-farm-sheet1-monthly-progress-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet3_Annual_Crops_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Sheet-3 · Annual Crops Grown")}
                                     to="/seriui/p3-farm-sheet3-annual-crops-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet4_Production_Target_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Sheet-4 · Seed Cocoon Production Target (Form 27)")}
                                     to="/seriui/p3-farm-sheet4-production-target-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet5_Crop_Report_Part1 ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Monthly Crop Report (rows 1–37)")}
                                     to="/seriui/p3-farm-sheet5-crop-report-part1"
                                   />
                                 </MenuItem>
+) : null}
                                 {/* Sheet-6 (rows 15-22) and Sheet-7 (rows 23-37) merged into the
                                     Monthly Crop Report above (same format, one continuous form).
                                     Their /p3-farm/sheet6 & /sheet7 endpoints remain for compatibility. */}
-                                <MenuItem>
+                                {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet9_Weekly_Hatching_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Sheet-9 · Weekly Cocoon Hatching Programme")}
                                     to="/seriui/p3-farm-sheet9-weekly-hatching-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet10_Annual_Target_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Sheet-10 · Annual Target vs Achievement")}
                                     to="/seriui/p3-farm-sheet10-annual-target-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet12_Rearing_Progress_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Sheet-12 · Rearing Section Crop Progress")}
                                     to="/seriui/p3-farm-sheet12-rearing-progress-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet13_Mulberry_Performance_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Sheet-13 · Garden / Mulberry Performance")}
                                     to="/seriui/p3-farm-sheet13-mulberry-performance-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet15_Chowki_Target_F1_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Sheet-15 · Chowki Target Achievement (Form F-1)")}
                                     to="/seriui/p3-farm-sheet15-chowki-target-f1-report"
                                   />
                                 </MenuItem>
+) : null}
                               </MenuSub>
                             </MenuItem>
+) : null}
 
-                            <MenuItem sub>
+                            {(showMenu.Reports_Format_Reports_Bivoltine_Group_P1_And_P2_Grainage_Reports_Bivoltine || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Brief_Monthly_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Form1_Detailed_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Form2_Source_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Form10_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Lotwise_Detail_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Race_Progress_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_P1_Lotwise_Detail_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Cocoon_Purchase_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Dfl_Distribution_Location_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Diapause_Availability_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Daywise_Chawki_Report) ? (
+<MenuItem sub>
                               <MenuItemLink
                                 text={t("P1 and P2 Grainage Reports (Bivoltine)")}
                                 onClick={menuToggle}
@@ -6783,81 +7423,105 @@ function Menu() {
                                 sub
                               />
                               <MenuSub>
-                                <MenuItem>
+                                {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Brief_Monthly_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Grainage Monthly Brief Progress (CY + PY)")}
                                     to="/seriui/grainage-brief-monthly-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Form1_Detailed_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Form-1 · Detailed Monthly Progress (race-split)")}
                                     to="/seriui/grainage-form1-detailed-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Form2_Source_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Form-2 · Source-split Monthly Progress")}
                                     to="/seriui/grainage-form2-source-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Form10_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Form-10 · Production · PY · Cost · Income")}
                                     to="/seriui/grainage-form10-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Lotwise_Detail_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Lot-wise Detail (top 4 lots)")}
                                     to="/seriui/grainage-lotwise-detail-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Race_Progress_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Race-wise Progress (CSR-2 / CSR-4)")}
                                     to="/seriui/grainage-race-progress-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Grainage_P1_Lotwise_Detail_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("P1 Lot-wise DFL Production Detail")}
                                     to="/seriui/grainage-p1-lotwise-detail-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Cocoon_Purchase_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Cocoon Purchase Report (Farm + Purchased)")}
                                     to="/seriui/grainage-cocoon-purchase-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Dfl_Distribution_Location_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("DFL Distribution by Taluk / District")}
                                     to="/seriui/grainage-dfl-distribution-location-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Diapause_Availability_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Diapause / Refrigerated DFL Availability (5-mo)")}
                                     to="/seriui/grainage-diapause-availability-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Daywise_Chawki_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Day-wise Chawki Distribution (race × week)")}
                                     to="/seriui/grainage-daywise-chawki-report"
                                   />
                                 </MenuItem>
+) : null}
                               </MenuSub>
                             </MenuItem>
+) : null}
 
                             {/* TSC Reports (Bivoltine) moved out of Bivoltine Seed Area to
                                 the new top-level "TSC Reports" parent in Format Reports —
                                 see "TSC (Bivoltine)" child of that parent. */}
 
                             {/* ─── ADS Reports (under Bivoltine Seed Area) ─── */}
-                            <MenuItem sub>
+                            {(showMenu.Reports_Format_Reports_Bivoltine_Group_ADS_Reports || showMenu.Reports_Format_Reports_Bivoltine_Tsc_Monthly_Subdivision_Progress_Report || showMenu.Reports_Format_Reports_Bivoltine_Tsc_Monthly_Farmer_Category_Detail_Report || showMenu.Reports_Format_Reports_Bivoltine_Tsc_Monthly_Nrega_Progress_Report) ? (
+<MenuItem sub>
                               <MenuItemLink
                                 text={t("ADS Reports")}
                                 onClick={menuToggle}
@@ -6865,29 +7529,37 @@ function Menu() {
                                 sub
                               />
                               <MenuSub>
-                                <MenuItem>
+                                {showMenu.Reports_Format_Reports_Bivoltine_Tsc_Monthly_Subdivision_Progress_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Subdivision Progress (5 Programmes)")}
                                     to="/seriui/tsc-monthly-subdivision-progress-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Tsc_Monthly_Farmer_Category_Detail_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Farmer Category Detail")}
                                     to="/seriui/tsc-monthly-farmer-category-detail-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Tsc_Monthly_Nrega_Progress_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("NREGA Progress — Line Department (Block-wise)")}
                                     to="/seriui/tsc-monthly-nrega-progress-report"
                                   />
                                 </MenuItem>
+) : null}
                               </MenuSub>
                             </MenuItem>
+) : null}
 
                             {/* ─── DD Reports (under Bivoltine Seed Area) ─── */}
-                            <MenuItem sub>
+                            {(showMenu.Reports_Format_Reports_Bivoltine_Group_DD_Reports || showMenu.Reports_Format_Reports_Bivoltine_Dd_Mulberry_Area_Report || showMenu.Reports_Format_Reports_Bivoltine_Dd_Crop_Yield_Report || showMenu.Reports_Format_Reports_Bivoltine_Dd_Chawki_Progress_Report || showMenu.Reports_Format_Reports_Bivoltine_Dd_Cocoon_Progress_Report) ? (
+<MenuItem sub>
                               <MenuItemLink
                                 text={t("DD Reports")}
                                 onClick={menuToggle}
@@ -6895,42 +7567,53 @@ function Menu() {
                                 sub
                               />
                               <MenuSub>
-                                <MenuItem>
+                                {showMenu.Reports_Format_Reports_Bivoltine_Dd_Mulberry_Area_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("DD · Form 27A · Mulberry Area")}
                                     to="/seriui/dd-mulberry-area-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Dd_Crop_Yield_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("DD · Form 27B · Crop Yield Detail")}
                                     to="/seriui/dd-crop-yield-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Dd_Chawki_Progress_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("DD · Form 28 · Chawki Progress (Bivoltine)")}
                                     to="/seriui/dd-chawki-progress-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_Bivoltine_Dd_Cocoon_Progress_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("DD · Form 32 · Cocoon Production (Bivoltine)")}
                                     to="/seriui/dd-cocoon-progress-report"
                                   />
                                 </MenuItem>
+) : null}
                               </MenuSub>
                             </MenuItem>
+) : null}
 
                             {/* Training moved out of Bivoltine Seed Area to the new
                                 top-level "Training Reports" parent in Format Reports. */}
                           </MenuSub>
                         </MenuItem>
+                        ) : null}
                         {/* ─── End Bivoltine Seed Area ─── */}
 
                         {/* ─── TSC Reports — single top-level parent in Format Reports;
                             Mysore-side and Bivoltine-side TSC reports live as siblings
                             inside, no longer buried under Seed Area parents. ─── */}
+                        {showMenu.Reports_Format_Reports_TSC_Reports ? (
                         <MenuItem sub>
                           <MenuItemLink
                             text={t("TSC Reports")}
@@ -6940,7 +7623,8 @@ function Menu() {
                           />
                           <MenuSub>
                             {/* ─── TSC (Mysore Seed Area) — 8 reports ─── */}
-                            <MenuItem sub>
+                            {(showMenu.Reports_Format_Reports_TSC_Group_TSC_Mysore_Seed_Area || showMenu.Reports_Format_Reports_TSC_Tsc_Farmer_Stats_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Mulberry_Area_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Chawki_Harvest_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Seed_Cocoon_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Chawki_Cocoon_Weekly_Report || showMenu.Reports_Format_Reports_TSC_Tsc_New_Mulberry_Plantings_Report || showMenu.Reports_Format_Reports_TSC_Tsc_P2_Brushed_Dfls_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Daily_Chawki_Week_Report) ? (
+<MenuItem sub>
                               <MenuItemLink
                                 text={t("TSC (Mysore Seed Area)")}
                                 onClick={menuToggle}
@@ -6948,59 +7632,77 @@ function Menu() {
                                 sub
                               />
                               <MenuSub>
-                                <MenuItem>
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Farmer_Stats_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Farmer Statistics Report")}
                                     to="/seriui/tsc-farmer-stats-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Mulberry_Area_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Mulberry Area Report")}
                                     to="/seriui/tsc-mulberry-area-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Chawki_Harvest_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Chawki & Harvest Report")}
                                     to="/seriui/tsc-chawki-harvest-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Seed_Cocoon_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Seed Cocoon Production Report")}
                                     to="/seriui/tsc-seed-cocoon-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Chawki_Cocoon_Weekly_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Chawki & Cocoon Weekly Report")}
                                     to="/seriui/tsc-chawki-cocoon-weekly-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_New_Mulberry_Plantings_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC New Mulberry Plantings Report")}
                                     to="/seriui/tsc-new-mulberry-plantings-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_P2_Brushed_Dfls_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC P2 Brushed DFLs Report")}
                                     to="/seriui/tsc-p2-brushed-dfls-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Daily_Chawki_Week_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Daily Chawki Weekly Report")}
                                     to="/seriui/tsc-daily-chawki-week-report"
                                   />
                                 </MenuItem>
+) : null}
                               </MenuSub>
                             </MenuItem>
+) : null}
 
                             {/* ─── TSC (Bivoltine) — 22 reports ─── */}
-                            <MenuItem sub>
+                            {(showMenu.Reports_Format_Reports_TSC_Group_TSC_Bivoltine || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Mulberry_Area_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Farmer_Categorization_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Demographics_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Mulberry_By_Variety_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Plantation_Detail_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Pure_Brushing_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Cross_Brushing_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Race_Wise_Brushing_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Pure_Cocoon_Production_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Crop_Yield_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Market_Cocoon_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Crc_Brushing_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Weekly_Brushing_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Weekly_Cocoon_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Ns1_Chawki_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Ns2_Cocoon_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_S1_Chawki_Plan_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_S1_Ripe_Eggs_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_S4_Weekly_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_S4_Summary_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_P1_Chawki_Lotwise_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_P1_Cocoon_Lotwise_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Source_Grainage_Chawki_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Cluster_Wise_Report) ? (
+<MenuItem sub>
                               <MenuItemLink
                                 text={t("TSC (Bivoltine)")}
                                 onClick={menuToggle}
@@ -7008,158 +7710,209 @@ function Menu() {
                                 sub
                               />
                               <MenuSub>
-                                <MenuItem>
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Mulberry_Area_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Mulberry Area (Form 27A)")}
                                     to="/seriui/tsc-monthly-mulberry-area-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Farmer_Categorization_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Farmer Categorization (Sheet 2)")}
                                     to="/seriui/tsc-monthly-farmer-categorization-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Demographics_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Demographics (Form 2A)")}
                                     to="/seriui/tsc-monthly-demographics-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Mulberry_By_Variety_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Mulberry by Variety (Sheet 3b)")}
                                     to="/seriui/tsc-monthly-mulberry-by-variety-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Plantation_Detail_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Plantation Detail (Sheet 4)")}
                                     to="/seriui/tsc-monthly-plantation-detail-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Pure_Brushing_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Pure-race DFL Brushing (Sheet 5a · Form 28-4)")}
                                     to="/seriui/tsc-monthly-pure-brushing-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Cross_Brushing_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Cross/Hybrid DFL Brushing (Sheet 5b · Form 28)")}
                                     to="/seriui/tsc-monthly-cross-brushing-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Race_Wise_Brushing_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Race-wise DFL Brushing (Sheet 5c · Form 28)")}
                                     to="/seriui/tsc-monthly-race-wise-brushing-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Pure_Cocoon_Production_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Pure-race Cocoon Production (Sheet 5d · Form 32)")}
                                     to="/seriui/tsc-monthly-pure-cocoon-production-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Crop_Yield_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Crop Yield (Sheet 6 · Form 27B)")}
                                     to="/seriui/tsc-monthly-crop-yield-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Market_Cocoon_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Market-wise Cocoon (Sheet 7)")}
                                     to="/seriui/tsc-monthly-market-cocoon-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Crc_Brushing_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly CRC Brushing — Govt + Private (Sheet 8)")}
                                     to="/seriui/tsc-monthly-crc-brushing-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Weekly_Brushing_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Weekly Brushing (Sheet 10a · Form S-2)")}
                                     to="/seriui/tsc-monthly-weekly-brushing-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Weekly_Cocoon_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Weekly Cocoon Production (Sheet 10b · Form S-3)")}
                                     to="/seriui/tsc-monthly-weekly-cocoon-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Ns1_Chawki_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly NS-1 Chawki Target & Achievement (Sheet 11a)")}
                                     to="/seriui/tsc-monthly-ns1-chawki-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Ns2_Cocoon_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly NS-2 Weekly Cocoon Production (Sheet 11b)")}
                                     to="/seriui/tsc-monthly-ns2-cocoon-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_S1_Chawki_Plan_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly S-1 Chawki Plan (Sheet 12a · Form S-1)")}
                                     to="/seriui/tsc-monthly-s1-chawki-plan-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_S1_Ripe_Eggs_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Ripe Eggs & Next-Month (Sheet 12b · Form S-1b)")}
                                     to="/seriui/tsc-monthly-s1-ripe-eggs-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_S4_Weekly_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Seed Cocoon Weekly (Sheet 13a · Form S-4)")}
                                     to="/seriui/tsc-monthly-s4-weekly-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_S4_Summary_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly S-4 Per-Race Summary (Sheet 13b · Form S-4)")}
                                     to="/seriui/tsc-monthly-s4-summary-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_P1_Chawki_Lotwise_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly P1 Chawki Lot-wise (Sheet 14)")}
                                     to="/seriui/tsc-monthly-p1-chawki-lotwise-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_P1_Cocoon_Lotwise_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly P1 Cocoon Lot-wise (Sheet 15)")}
                                     to="/seriui/tsc-monthly-p1-cocoon-lotwise-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Source_Grainage_Chawki_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("TSC Monthly Source-Grainage Chawki (Sheet 16)")}
                                     to="/seriui/tsc-monthly-source-grainage-chawki-report"
                                   />
                                 </MenuItem>
-                                <MenuItem>
+) : null}
+                                {showMenu.Reports_Format_Reports_TSC_Tsc_Cluster_Wise_Report ? (
+<MenuItem>
                                   <MenuItemLink
                                     text={t("Bivoltine Cluster Wise Report")}
                                     to="/seriui/tsc-cluster-wise-report"
                                   />
                                 </MenuItem>
+) : null}
                               </MenuSub>
                             </MenuItem>
+) : null}
                           </MenuSub>
                         </MenuItem>
+                        ) : null}
 
                         {/* ─── Training Reports — moved out of Bivoltine Seed Area;
                             only Bivoltine variant exists today so the 3 reports sit
                             directly inside this parent (no extra nesting). ─── */}
+                        {showMenu.Reports_Format_Reports_Training_Reports ? (
                         <MenuItem sub>
                           <MenuItemLink
                             text={t("Training Reports")}
@@ -7168,26 +7921,33 @@ function Menu() {
                             sub
                           />
                           <MenuSub>
-                            <MenuItem>
+                            {showMenu.Reports_Format_Reports_Training_Training_Physical_Progress_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("Training · Form 1 · Physical Progress")}
                                 to="/seriui/training-physical-progress-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Training_Training_Financial_Progress_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("Training · Form 2 · Financial Progress")}
                                 to="/seriui/training-financial-progress-report"
                               />
                             </MenuItem>
-                            <MenuItem>
+) : null}
+                            {showMenu.Reports_Format_Reports_Training_Training_Maintenance_Expense_Report ? (
+<MenuItem>
                               <MenuItemLink
                                 text={t("Training · Form 3 · Maintenance Expense (Item-wise)")}
                                 to="/seriui/training-maintenance-expense-report"
                               />
                             </MenuItem>
+) : null}
                           </MenuSub>
                         </MenuItem>
+                        ) : null}
 
                     {/* <MenuItem>
                       <MenuItemLink
@@ -7219,25 +7979,31 @@ function Menu() {
                     />
                   </MenuItem>
                   */}
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Dashboards")}
-                      to="https://app.powerbi.com/view?r=eyJrIjoiYTFmMjJiMTctMDk2Yi00M2U0LTk2NTAtZmIzYjQ0ODE2YWM2IiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9"
-                      blank={true}
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Pendency Statistics")}
-                      to="/seriui/pendency-dashboard"
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Cumulative Report")}
-                      to="/seriui/cumulative-report"
-                    />
-                  </MenuItem>
+                  {showMenu.Reports_Dashboard_Dashboards ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Dashboards")}
+                        to="https://app.powerbi.com/view?r=eyJrIjoiYTFmMjJiMTctMDk2Yi00M2U0LTk2NTAtZmIzYjQ0ODE2YWM2IiwidCI6Ijk1NWYzZWI3LTE5ZGMtNGJiOC05NjZkLTViZjkzMzVjYjM5ZCJ9"
+                        blank={true}
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Reports_Dashboard_Pendency_Statistics ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Pendency Statistics")}
+                        to="/seriui/pendency-dashboard"
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Reports_Dashboard_Cumulative_Report ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Cumulative Report")}
+                        to="/seriui/cumulative-report"
+                      />
+                    </MenuItem>
+                  ) : null}
                 </MenuSub>
               </MenuItem>
             ) : null}

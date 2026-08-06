@@ -128,11 +128,14 @@ function ReelerBalanceReport() {
 
   return (
     <Layout title={t("Reeler Balance Report")}>
+      <style>{reelerBalanceReportStyles}</style>
       <Block.Head>
-        <Block.Title tag="h2">Reeler Balance</Block.Title>
+        <div className="sh-page-header">
+          <Block.Title tag="h2" className="sh-page-title">Reeler Balance</Block.Title>
+        </div>
       </Block.Head>
 
-      <Block className="mt-4">
+      <Block className="mt-n4 sh-form-wrap">
         <Form>
           <Card className="shadow-sm border-0" style={{ borderRadius: "16px" }}>
             <Card.Body>
@@ -242,4 +245,32 @@ function ReelerBalanceReport() {
     </Layout>
   );
 }
+const reelerBalanceReportStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+`;
+
 export default ReelerBalanceReport;

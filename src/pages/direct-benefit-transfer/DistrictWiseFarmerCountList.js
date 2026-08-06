@@ -349,33 +349,33 @@ function DistrictWiseFarmerCountList() {
       <style>{districtWiseFarmerCountListStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2" className="sh-page-title">{t("District Wise Farmer Count")}</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            {/* <ul className="d-flex">
-              <li>
-                <Link
-                  to="/seriui/districtWiseFarmerCount"
-                  className="btn btn-primary btn-md d-md-none"
-                >
-                  <Icon name="plus" />
-                  <span>{t("Create")}</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/districtWiseFarmerCount"
-                  className="btn btn-primary d-none d-md-inline-flex"
-                >
-                  <Icon name="plus" />
-                  <span>{t("Create")}</span>
-                </Link>
-              </li>
-            </ul> */}
-          </Block.HeadContent>
-        </Block.HeadBetween>
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">{t("District Wise Farmer Count")}</Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              {/* <ul className="d-flex">
+                <li>
+                  <Link
+                    to="/seriui/districtWiseFarmerCount"
+                    className="btn btn-primary btn-md d-md-none"
+                  >
+                    <Icon name="plus" />
+                    <span>{t("Create")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seriui/districtWiseFarmerCount"
+                    className="btn btn-primary d-none d-md-inline-flex"
+                  >
+                    <Icon name="plus" />
+                    <span>{t("Create")}</span>
+                  </Link>
+                </li>
+              </ul> */}
+            </Block.HeadContent>
+          </Block.HeadBetween>
         </div>
       </Block.Head>
 
@@ -513,5 +513,33 @@ function DistrictWiseFarmerCountList() {
     </Layout>
   );
 }
+
+const districtWiseFarmerCountListStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+`;
 
 export default DistrictWiseFarmerCountList;

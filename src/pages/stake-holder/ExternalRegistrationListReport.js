@@ -317,31 +317,32 @@ const handleInputs = (e) => {
   }, []);
   
   const customStyles = {
-    headRow: { style: { minHeight: "52px", height: "auto" } },
+    table: { style: { borderRadius: "10px", overflow: "hidden", boxShadow: "0 2px 8px rgba(30, 103, 168, 0.06)" } },
+    rows: {
+      style: { minHeight: "52px", fontSize: "13.5px", color: "#2b2d42", borderBottom: "1px solid #eef1f6 !important", transition: "background-color 0.15s ease" },
+      highlightOnHoverStyle: { backgroundColor: "#f4f8fd", cursor: "pointer", outline: "none" },
+      stripedStyle: { backgroundColor: "#fbfcfe" },
+    },
+    headRow: { style: { minHeight: "50px", background: "linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%)", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" } },
     headCells: {
       style: {
-        background: ACCENT_TABLE, color: "#fff", fontWeight: 700, fontSize: "13px",
-        padding: "10px 8px", borderRight: "1px solid rgba(255,255,255,0.5)",
-        borderBottom: "2px solid rgba(255,255,255,0.6)", whiteSpace: "normal",
-        wordBreak: "break-word", overflowWrap: "break-word", overflow: "visible",
-        lineHeight: "1.4", minHeight: "52px", height: "auto",
-        verticalAlign: "middle", justifyContent: "center", textAlign: "center",
-      },
-    },
-    rows: {
-      style: {
-        minHeight: "32px",
-        "&:nth-of-type(odd)":  { background: "#fff" },
-        "&:nth-of-type(even)": { background: "#f7fafd" },
+        backgroundColor: "transparent",
+        color: "#fff",
+        fontSize: "13px",
+        fontWeight: 600,
+        letterSpacing: "0.3px",
+        textTransform: "uppercase",
+        paddingLeft: "12px",
+        paddingRight: "12px",
       },
     },
     cells: {
       style: {
-        borderRight: "1px solid #eef2f7", borderBottom: "1px solid #e8edf5",
-        paddingTop: "4px", paddingBottom: "4px", paddingLeft: "8px", paddingRight: "8px",
-        color: "#2d3748", fontSize: "13px", justifyContent: "center", textAlign: "center",
+        paddingLeft: "12px",
+        paddingRight: "12px",
       },
     },
+    pagination: { style: { borderTop: "1px solid #eef1f6", fontSize: "13px", color: "#5a6577" } },
   };
 
   const colHeader = (label) => (
@@ -368,16 +369,19 @@ const handleInputs = (e) => {
 
   return (
     <Layout title={t("RSP/ CRC/ NSSO Registration Report")}>
+      <style>{externalRegistrationListReportStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("RSP/ CRC/ NSSO Registration Report")}</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent></Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">{t("RSP/ CRC/ NSSO Registration Report")}</Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent></Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-n4">
+      <Block className="mt-n4 sh-form-wrap">
         {/* Filter Card */}
         <Card style={{ borderRadius: "12px", border: "none", boxShadow: "0 2px 16px rgba(30,103,168,0.10)", backgroundColor: "#fff" }}>
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
@@ -449,5 +453,33 @@ const handleInputs = (e) => {
     </Layout>
   );
 }
+
+const externalRegistrationListReportStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+`;
 
 export default ExternalRegistrationListReport;
