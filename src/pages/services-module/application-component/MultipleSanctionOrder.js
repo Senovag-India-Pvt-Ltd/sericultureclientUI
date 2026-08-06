@@ -138,6 +138,37 @@ const multipleSanctionOrderStyles = `
   .sh-swal-popup { border-radius: 14px !important; }
   .sh-swal-confirm { background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important; border-radius: 8px !important; font-weight: 600 !important; box-shadow: 0 4px 12px rgba(30,103,168,0.25) !important; }
   .sh-swal-cancel { background: #ffffff !important; color: #c43257 !important; border: 1px solid #e3496a !important; border-radius: 8px !important; font-weight: 600 !important; }
+  .sh-total-banner {
+    display: flex; align-items: center; gap: 16px; background: #ffffff;
+    border-radius: 14px; padding: 16px 24px; margin-bottom: 18px;
+    border-left: 6px solid #1f9d55; box-shadow: 0 6px 18px rgba(31, 157, 85, 0.16);
+  }
+  .sh-total-banner .sh-total-icon {
+    width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, #1f9d55 0%, #2ec46e 100%);
+    color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 22px;
+    box-shadow: 0 4px 10px rgba(31, 157, 85, 0.35);
+  }
+  .sh-total-banner .sh-total-label {
+    font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #6b7688;
+  }
+  .sh-total-banner .sh-total-value {
+    font-size: 2rem; font-weight: 800; color: #1f9d55; letter-spacing: 0.2px; line-height: 1.15;
+  }
+  .sh-data-wrap { background: #eef2f8; border-radius: 14px; padding: 18px; }
+  .sh-data-wrap .card { border: none; border-radius: 12px !important; box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1); overflow: hidden; margin-bottom: 18px; }
+  .sh-data-wrap .form-label { font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 6px; letter-spacing: 0.2px; }
+  .sh-data-wrap .form-control, .sh-data-wrap .form-select {
+    border-radius: 10px !important; border: 1.5px solid #d8e0ec !important; background-color: #fbfcfe !important;
+    padding: 0.62rem 0.9rem !important; font-size: 13.5px; color: #2b3a55;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  .sh-data-wrap .form-control::placeholder { color: #a7b0c0; font-weight: 400; }
+  .sh-data-wrap .form-control:focus, .sh-data-wrap .form-select:focus {
+    border-color: #2b7ac0 !important; background-color: #ffffff !important; box-shadow: 0 0 0 3px rgba(30, 103, 168, 0.14) !important; outline: none;
+  }
+  .sh-data-wrap .btn-primary { border-radius: 8px; font-weight: 600; letter-spacing: 0.3px; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+  .sh-data-wrap .btn-primary:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(30, 103, 168, 0.25); }
 `;
 
 const titleCase = (s) => (s ? s.charAt(0) + s.slice(1).toLowerCase() : s);
@@ -2427,62 +2458,31 @@ const saveRejectSuccess = (message) => {
           <Block.HeadContent>
             <Block.Title tag="h2" className="sh-page-title">List Of Application</Block.Title>
           </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                {/* <span className="btn btn-light">
-            Total Amount: ₹{(totalSchemeAmount ?? 0).toLocaleString("en-IN")}
-            </span> */}
-                {/* <span
-                  className="btn btn-light"
-                  style={{
-                    fontWeight: "bold",
-                    color: "green",
-                    fontSize: "1.6rem",
-                  }}
-                >
-                  Total Amount: ₹
-                  {(totalSchemeAmount ?? 0).toLocaleString("en-IN")}
-                </span> */}
-                 <span
-                    className="sh-cta-btn"
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: "1.1rem",
-                    }}
-                  >
-                    Total Amount: ₹
-                    {(selectedRows.length > 0
-                      ? selectedTotalSchemeAmount
-                      : totalSchemeAmount
-                    ).toLocaleString("en-IN")}
-                  </span>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/application-dashboard"
-                  className="btn btn-primary btn-md d-md-none sh-cta-btn"
-                >
-                  <Icon name="plus" />
-                  <span>Dashboard</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seriui/application-dashboard"
-                  className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
-                >
-                  <Icon name="plus" />
-                  <span>Dashboard</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
         </Block.HeadBetween>
         </div>
       </Block.Head>
 
-      <Block className="mt-n4 sh-form-wrap">
+      <Block className="mt-n2">
+        <div className="sh-total-banner">
+          <div className="sh-total-icon">
+            <Icon name="wallet" />
+          </div>
+          <div>
+            <div className="sh-total-label">
+              {selectedRows.length > 0 ? "Selected Amount" : "Total Amount"}
+            </div>
+            <div className="sh-total-value">
+              ₹
+              {(selectedRows.length > 0
+                ? selectedTotalSchemeAmount
+                : totalSchemeAmount
+              ).toLocaleString("en-IN")}
+            </div>
+          </div>
+        </div>
+      </Block>
+
+      <Block className="mt-n2 sh-form-wrap">
         <Card className="mt-1">
           
 
@@ -2734,7 +2734,7 @@ const saveRejectSuccess = (message) => {
         </Card>
       </Block>
 
-      <Block className="mt-3">
+      <Block className="mt-3 sh-data-wrap">
         <Card>
           <DataTable
             //  title="Market List"
