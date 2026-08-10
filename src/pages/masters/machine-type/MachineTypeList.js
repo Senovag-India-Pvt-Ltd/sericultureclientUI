@@ -153,13 +153,13 @@ function MachineTypeList() {
       name: t("Action"),
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="primary"
             size="sm"
             onClick={() => handleView(row.machineTypeId)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
             <Icon name="eye" />
             {t("View")}
@@ -167,7 +167,7 @@ function MachineTypeList() {
           <Button
             variant="primary"
             size="sm"
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             onClick={() => handleEdit(row.machineTypeId)}
           >
             <Icon name="edit" />
@@ -177,7 +177,7 @@ function MachineTypeList() {
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.machineTypeId)}
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
             <Icon name="trash" />
             {t("delete")}
@@ -186,6 +186,9 @@ function MachineTypeList() {
       ),
       sortable: false,
       hide: "md",
+      width: "300px",
+      minWidth: "300px",
+      grow: 0,
     },
     {
       name:t("Machine Type"),
@@ -240,23 +243,25 @@ function MachineTypeList() {
 
       <Block className="mt-n4 sh-form-wrap">
         <Card>
-          <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={MachineTypeDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+          <div style={{ overflowX: "auto" }}>
+            <DataTable
+              tableClassName="data-table-head-light table-responsive"
+              columns={MachineTypeDataColumns}
+              data={listData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </div>
         </Card>
       </Block>
     </Layout>

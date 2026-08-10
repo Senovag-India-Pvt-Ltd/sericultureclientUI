@@ -188,19 +188,20 @@ function RaceList() {
       name: t("Action"),
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="primary"
             size="sm"
             onClick={() => handleView(row.raceMasterId)}
+            className="text-nowrap"
           >
             {t("View")}
           </Button>
           <Button
             variant="primary"
             size="sm"
-            className="ms-2"
+            className="ms-2 text-nowrap"
             onClick={() => handleEdit(row.raceMasterId)}
           >
             {t("Edit")}
@@ -209,7 +210,7 @@ function RaceList() {
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.raceMasterId)}
-            className="ms-2"
+            className="ms-2 text-nowrap"
           >
             {t("delete")}
           </Button>
@@ -217,6 +218,9 @@ function RaceList() {
       ),
       sortable: false,
       hide: "md",
+      width: "300px",
+      minWidth: "300px",
+      grow: 0,
     },
     // {
     //   name: "Market",
@@ -339,6 +343,7 @@ function RaceList() {
           </Row>  */}
 
           {/* <div className={isActive ? "" : "d-none"}> */}
+          <div style={{ overflowX: "auto" }}>
             <DataTable
               tableClassName="data-table-head-light table-responsive"
               columns={RaceDataColumns}
@@ -356,6 +361,7 @@ function RaceList() {
               theme="solarized"
               customStyles={customStyles}
             />
+          </div>
           {/* </div> */}
         </Card>
       </Block>

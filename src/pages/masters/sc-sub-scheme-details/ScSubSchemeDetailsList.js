@@ -205,13 +205,13 @@ function ScSubSchemeDetailsList() {
       name: t("Action"),
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="primary"
             size="sm"
             onClick={() => handleView(row.scSubSchemeDetailsId)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
             <Icon name="eye" />
             {t("View")}
@@ -219,7 +219,7 @@ function ScSubSchemeDetailsList() {
           <Button
             variant="primary"
             size="sm"
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             onClick={() => handleEdit(row.scSubSchemeDetailsId)}
           >
             <Icon name="edit" />
@@ -229,7 +229,7 @@ function ScSubSchemeDetailsList() {
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.scSubSchemeDetailsId)}
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
             <Icon name="trash" />
             {t("delete")}
@@ -238,7 +238,9 @@ function ScSubSchemeDetailsList() {
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
+      width: "300px",
+      minWidth: "300px",
+      grow: 0,
     },
     {
       name: t("Scheme Details"),
@@ -398,23 +400,25 @@ function ScSubSchemeDetailsList() {
             </Col>
           </Row>
 
-          <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={ScSubSchemeDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+          <div style={{ overflowX: "auto" }}>
+            <DataTable
+              tableClassName="data-table-head-light table-responsive"
+              columns={ScSubSchemeDataColumns}
+              data={listData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </div>
         </Card>
       </Block>
     </Layout>

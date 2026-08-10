@@ -157,13 +157,13 @@ function HelpDeskStatusList() {
       name: t("Action"),
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="primary"
             size="sm"
             onClick={() => handleView(row.hdStatusId)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
             <Icon name="eye" />
              {t("View")}
@@ -171,7 +171,7 @@ function HelpDeskStatusList() {
           <Button
             variant="primary"
             size="sm"
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             onClick={() => handleEdit(row.hdStatusId)}
           >
             <Icon name="edit" />
@@ -181,7 +181,7 @@ function HelpDeskStatusList() {
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.hdStatusId)}
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
             <Icon name="trash" />
             {t("delete")}
@@ -190,6 +190,9 @@ function HelpDeskStatusList() {
       ),
       sortable: false,
       hide: "md",
+      width: "300px",
+      minWidth: "300px",
+      grow: 0,
     },
     {
       name: t("Help Desk Status"),
@@ -237,23 +240,25 @@ function HelpDeskStatusList() {
 
       <Block className="mt-n4 sh-form-wrap">
         <Card>
-          <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={HdStatusDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+          <div style={{ overflowX: "auto" }}>
+            <DataTable
+              tableClassName="data-table-head-light table-responsive"
+              columns={HdStatusDataColumns}
+              data={listData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </div>
         </Card>
       </Block>
     </Layout>

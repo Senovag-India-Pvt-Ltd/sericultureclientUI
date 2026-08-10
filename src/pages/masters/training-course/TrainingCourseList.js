@@ -157,13 +157,13 @@ function TrainingCourseList() {
       name: t("Action"),
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="primary"
             size="sm"
             onClick={() => handleView(row.trCourseMasterId)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
             <Icon name="eye" />
              {t("View")}
@@ -171,7 +171,7 @@ function TrainingCourseList() {
           <Button
             variant="primary"
             size="sm"
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             onClick={() => handleEdit(row.trCourseMasterId)}
           >
              <Icon name="edit" />
@@ -181,7 +181,7 @@ function TrainingCourseList() {
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.trCourseMasterId)}
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
             <Icon name="trash" />
             {t("delete")}
@@ -190,6 +190,9 @@ function TrainingCourseList() {
       ),
       sortable: false,
       hide: "md",
+      width: "300px",
+      minWidth: "300px",
+      grow: 0,
     },
     {
       name: t("Training Course Name"),
@@ -245,24 +248,26 @@ function TrainingCourseList() {
 
       <Block className="mt-n4 sh-form-wrap">
         <Card>
-          <DataTable
-            // title="TrainingCourse List"
-            tableClassName="data-table-head-light table-responsive"
-            columns={TrainingCoursesDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+          <div style={{ overflowX: "auto" }}>
+            <DataTable
+              // title="TrainingCourse List"
+              tableClassName="data-table-head-light table-responsive"
+              columns={TrainingCoursesDataColumns}
+              data={listData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </div>
         </Card>
       </Block>
     </Layout>

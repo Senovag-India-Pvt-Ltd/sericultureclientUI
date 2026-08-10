@@ -185,13 +185,13 @@ function ScApprovalStageList() {
       name:  t("Action"),
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="primary"
             size="sm"
             onClick={() => handleView(row.scApprovalStageId)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
              <Icon name="eye" />
              {t("View")}
@@ -199,7 +199,7 @@ function ScApprovalStageList() {
           <Button
             variant="primary"
             size="sm"
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             onClick={() => handleEdit(row.scApprovalStageId)}
           >
               <Icon name="edit" />
@@ -209,7 +209,7 @@ function ScApprovalStageList() {
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.scApprovalStageId)}
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
             <Icon name="trash" />
             {t("delete")}
@@ -218,6 +218,9 @@ function ScApprovalStageList() {
       ),
       sortable: false,
       hide: "md",
+      width: "300px",
+      minWidth: "300px",
+      grow: 0,
     },
     {
       name: t("Approval Stage"),
@@ -461,19 +464,21 @@ function ScApprovalStageList() {
             )}
           </div>
 
-          <DataTable
-            // title="scCategory List"
-            tableClassName="data-table-head-light table-responsive"
-            columns={ScApprovalStageDataColumns}
-            data={filteredData}
-            highlightOnHover
-            pagination
-            paginationPerPage={50}
-            paginationRowsPerPageOptions={[50, 100, 200]}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+          <div style={{ overflowX: "auto" }}>
+            <DataTable
+              // title="scCategory List"
+              tableClassName="data-table-head-light table-responsive"
+              columns={ScApprovalStageDataColumns}
+              data={filteredData}
+              highlightOnHover
+              pagination
+              paginationPerPage={50}
+              paginationRowsPerPageOptions={[50, 100, 200]}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </div>
         </Card>
       </Block>
     </Layout>
