@@ -227,12 +227,12 @@ function NewTraderLicenseList() {
     {
       name: t("Action"),
       cell: (row) => (
-        <div className="d-flex align-items-center gap-2">
+        <div className="d-flex flex-nowrap align-items-center gap-2">
           <Button
             variant="outline-primary"
             size="sm"
             onClick={() => handleView(row.traderLicenseId)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             style={{
               borderRadius: "6px",
               fontWeight: 500,
@@ -248,7 +248,7 @@ function NewTraderLicenseList() {
             variant="primary"
             size="sm"
             onClick={() => handleEdit(row.traderLicenseId)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             style={{
               borderRadius: "6px",
               fontWeight: 500,
@@ -272,6 +272,9 @@ function NewTraderLicenseList() {
       ),
       sortable: false,
       hide: "md",
+      width: "220px",
+      minWidth: "220px",
+      grow: 0,
     },
     {
       name: t("ARN Number"),
@@ -569,6 +572,7 @@ const traderListStyles = `
   }
   .sh-table-wrap {
     padding: 0 4px 4px;
+    overflow-x: auto;
   }
   .sh-empty {
     padding: 36px 12px;

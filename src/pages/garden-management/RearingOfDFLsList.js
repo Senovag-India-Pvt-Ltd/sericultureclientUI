@@ -643,11 +643,12 @@ const [showModal8, setShowModal8] = useState(false);
       name: "Action",
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="danger"
             size="sm"
+            className="text-nowrap"
             onClick={() => deleteConfirmForFeeding(row.id)}
           >
             Delete
@@ -656,18 +657,20 @@ const [showModal8, setShowModal8] = useState(false);
           <Button
             variant="primary"
             size="sm"
-            className="ms-2"
+            className="ms-2 text-nowrap"
             onClick={() => handleShowModal5(row)} // <-- correct
           >
             {t("Edit")}
           </Button>
 
-         
+
         </div>
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
+      width: "220px",
+      minWidth: "220px",
+      grow: 0,
     },
 
   ];
@@ -975,31 +978,34 @@ const [showModal8, setShowModal8] = useState(false);
             name: "Action",
             cell: (row) => (
               //   Button style
-              <div className="text-start w-100">
+              <div className="d-flex flex-nowrap align-items-center text-start w-100">
                 {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
                 <Button
                   variant="danger"
                   size="sm"
+                  className="text-nowrap"
                   onClick={() => deleteConfirmForTemperature(row.id)}
                 >
                   Delete
                 </Button>
-      
+
                 <Button
                   variant="primary"
                   size="sm"
-                  className="ms-2"
+                  className="ms-2 text-nowrap"
                   onClick={() => handleShowModal11(row)} // <-- correct
                 >
                   {t("Edit")}
                 </Button>
-      
-               
+
+
               </div>
             ),
             sortable: false,
             hide: "md",
-            grow: 2,
+            width: "220px",
+            minWidth: "220px",
+            grow: 0,
           },
       
         ];
@@ -1071,11 +1077,12 @@ const [showModal8, setShowModal8] = useState(false);
       name: "Action",
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="danger"
             size="sm"
+            className="text-nowrap"
             onClick={() => deleteConfirmForMoult(row.id)}
           >
             Delete
@@ -1084,18 +1091,20 @@ const [showModal8, setShowModal8] = useState(false);
           <Button
             variant="primary"
             size="sm"
-            className="ms-2"
+            className="ms-2 text-nowrap"
             onClick={() => handleShowModal7(row)} // <-- correct
           >
             {t("Edit")}
           </Button>
 
-         
+
         </div>
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
+      width: "220px",
+      minWidth: "220px",
+      grow: 0,
     },
 
   ];
@@ -1950,12 +1959,12 @@ const [showModal8, setShowModal8] = useState(false);
       name: t("Action"),
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="outline-primary"
             size="sm"
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             onClick={() => handleView(row.id)}
           >
             <Icon name="eye" />
@@ -1964,7 +1973,7 @@ const [showModal8, setShowModal8] = useState(false);
           <Button
             variant="primary"
             size="sm"
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             onClick={() => handleEdit(row.id)}
           >
             <Icon name="edit" />
@@ -1974,7 +1983,7 @@ const [showModal8, setShowModal8] = useState(false);
             variant="danger"
             size="sm"
             onClick={() => handleShowModal3(row)}
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
             <Icon name="plus" />
             {t("Add Feeding Table")}
@@ -1984,7 +1993,7 @@ const [showModal8, setShowModal8] = useState(false);
             variant="danger"
             size="sm"
             onClick={() => handleShowModal6(row)}
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
             <Icon name="plus" />
             {t("Add Moulting Table")}
@@ -1994,7 +2003,7 @@ const [showModal8, setShowModal8] = useState(false);
             variant="danger"
             size="sm"
             onClick={() => handleShowModal10(row)}
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
             <Icon name="plus" />
             {t("Add Temperature Table")}
@@ -2003,7 +2012,9 @@ const [showModal8, setShowModal8] = useState(false);
       ),
       sortable: false,
       hide: "md",
-      grow: 6,
+      width: "380px",
+      minWidth: "380px",
+      grow: 0,
 
     },
     {
@@ -6109,6 +6120,7 @@ const rearingOfDFLsListStyles = `
   }
   .sh-table-wrap {
     padding: 0 4px 4px;
+    overflow-x: auto;
   }
   .sh-empty {
     padding: 36px 12px;

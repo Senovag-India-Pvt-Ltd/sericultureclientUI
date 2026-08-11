@@ -203,7 +203,7 @@ function MaintenanceOfEggsAtColdList() {
             variant="outline-primary"
             size="sm"
             onClick={() => handleView(row.id)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
             title={t("View")}
           >
@@ -214,7 +214,7 @@ function MaintenanceOfEggsAtColdList() {
             variant="primary"
             size="sm"
             onClick={() => handleEdit(row.id)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
             title={t("Edit")}
           >
@@ -225,7 +225,7 @@ function MaintenanceOfEggsAtColdList() {
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.id)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
           >
             <Icon name="trash" />
@@ -235,8 +235,9 @@ function MaintenanceOfEggsAtColdList() {
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
-      minWidth: "340px",
+      width: "300px",
+      minWidth: "300px",
+      grow: 0,
     },
     {
       name: t("Lot Number"),
@@ -328,32 +329,34 @@ function MaintenanceOfEggsAtColdList() {
       <Block className="mt-n4 sh-list-wrap">
         <Card className="sh-list-card">
           <div className="sh-table-wrap">
-            <DataTable
-              // title="New Trader License List"
-              tableClassName="data-table-head-light table-responsive"
-              columns={MaintenanceOfEggsAtColdStorageDataColumns}
-              data={listData}
-              highlightOnHover
-              striped
-              pointerOnHover
-              pagination
-              paginationServer
-              paginationTotalRows={totalRows}
-              paginationPerPage={countPerPage}
-              paginationComponentOptions={{
-                noRowsPerPage: true,
-              }}
-              onChangePage={(page) => setPage(page - 1)}
-              progressPending={loading}
-              theme="solarized"
-              customStyles={customStyles}
-              noDataComponent={
-                <div className="sh-empty">
-                  <Icon name="inbox" />
-                  <p className="mt-2 mb-0">{t("No records found")}</p>
-                </div>
-              }
-            />
+            <div style={{ overflowX: "auto" }}>
+              <DataTable
+                // title="New Trader License List"
+                tableClassName="data-table-head-light table-responsive"
+                columns={MaintenanceOfEggsAtColdStorageDataColumns}
+                data={listData}
+                highlightOnHover
+                striped
+                pointerOnHover
+                pagination
+                paginationServer
+                paginationTotalRows={totalRows}
+                paginationPerPage={countPerPage}
+                paginationComponentOptions={{
+                  noRowsPerPage: true,
+                }}
+                onChangePage={(page) => setPage(page - 1)}
+                progressPending={loading}
+                theme="solarized"
+                customStyles={customStyles}
+                noDataComponent={
+                  <div className="sh-empty">
+                    <Icon name="inbox" />
+                    <p className="mt-2 mb-0">{t("No records found")}</p>
+                  </div>
+                }
+              />
+            </div>
           </div>
         </Card>
       </Block>

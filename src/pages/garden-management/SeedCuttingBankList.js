@@ -189,12 +189,12 @@ function SeedCuttingBankList() {
       name: t("Action"),
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="outline-primary"
             size="sm"
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             onClick={() => handleView(row.id)}
           >
             <Icon name="eye" />
@@ -203,7 +203,7 @@ function SeedCuttingBankList() {
           <Button
             variant="primary"
             size="sm"
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             onClick={() => handleEdit(row.id)}
           >
             <Icon name="edit" />
@@ -221,8 +221,9 @@ function SeedCuttingBankList() {
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
-      minWidth: "180px",
+      grow: 0,
+      width: "220px",
+      minWidth: "220px",
     },
     {
       name: t("Fruits Id"),
@@ -385,6 +386,7 @@ const seedCuttingBankListStyles = `
   }
   .sh-table-wrap {
     padding: 0 4px 4px;
+    overflow-x: auto;
   }
   .sh-empty {
     padding: 36px 12px;

@@ -194,13 +194,13 @@ function MaintenanceofLineRecordsforEachRaceList() {
       name: t("Action"),
       cell: (row) => (
         //   Button style
-        <div className="d-flex align-items-center gap-2">
+        <div className="d-flex flex-nowrap align-items-center gap-2">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="outline-primary"
             size="sm"
             onClick={() => handleView(row.id)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
             title={t("View")}
           >
@@ -211,7 +211,7 @@ function MaintenanceofLineRecordsforEachRaceList() {
             variant="primary"
             size="sm"
             onClick={() => handleEdit(row.id)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
             title={t("Edit")}
           >
@@ -231,8 +231,9 @@ function MaintenanceofLineRecordsforEachRaceList() {
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
-      minWidth: "260px",
+      width: "220px",
+      minWidth: "220px",
+      grow: 0,
     },
 
     {
@@ -383,32 +384,34 @@ function MaintenanceofLineRecordsforEachRaceList() {
       <Block className="mt-n4 sh-list-wrap">
         <Card className="sh-list-card">
           <div className="sh-table-wrap">
-            <DataTable
-              // title="New Trader License List"
-              tableClassName="data-table-head-light table-responsive"
-              columns={LineRecordDataColumns}
-              data={listData}
-              highlightOnHover
-              striped
-              pointerOnHover
-              pagination
-              paginationServer
-              paginationTotalRows={totalRows}
-              paginationPerPage={countPerPage}
-              paginationComponentOptions={{
-                noRowsPerPage: true,
-              }}
-              onChangePage={(page) => setPage(page - 1)}
-              progressPending={loading}
-              theme="solarized"
-              customStyles={customStyles}
-              noDataComponent={
-                <div className="sh-empty">
-                  <Icon name="inbox" />
-                  <p className="mt-2 mb-0">{t("No records found")}</p>
-                </div>
-              }
-            />
+            <div style={{ overflowX: "auto" }}>
+              <DataTable
+                // title="New Trader License List"
+                tableClassName="data-table-head-light table-responsive"
+                columns={LineRecordDataColumns}
+                data={listData}
+                highlightOnHover
+                striped
+                pointerOnHover
+                pagination
+                paginationServer
+                paginationTotalRows={totalRows}
+                paginationPerPage={countPerPage}
+                paginationComponentOptions={{
+                  noRowsPerPage: true,
+                }}
+                onChangePage={(page) => setPage(page - 1)}
+                progressPending={loading}
+                theme="solarized"
+                customStyles={customStyles}
+                noDataComponent={
+                  <div className="sh-empty">
+                    <Icon name="inbox" />
+                    <p className="mt-2 mb-0">{t("No records found")}</p>
+                  </div>
+                }
+              />
+            </div>
           </div>
         </Card>
       </Block>

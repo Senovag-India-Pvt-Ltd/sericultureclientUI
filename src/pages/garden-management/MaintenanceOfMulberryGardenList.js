@@ -482,13 +482,13 @@ const handleUpdateAllDates = (row) => {
       name: t("Action"),
       cell: (row) => (
         //   Button style
-        <div className="d-flex align-items-center flex-wrap gap-2">
+        <div className="d-flex align-items-center flex-nowrap gap-2">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="outline-primary"
             size="sm"
             onClick={() => handleView(row.id)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
             title={t("View")}
           >
@@ -499,7 +499,7 @@ const handleUpdateAllDates = (row) => {
             variant="primary"
             size="sm"
             onClick={() => handleEdit(row.id)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
             title={t("Edit")}
           >
@@ -510,7 +510,7 @@ const handleUpdateAllDates = (row) => {
             variant="primary"
             size="sm"
             onClick={() => handleUpdate(row.id)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
             title={t("Update Pruning Date")}
           >
@@ -521,7 +521,7 @@ const handleUpdateAllDates = (row) => {
             variant="primary"
             size="sm"
             onClick={() => handleUpdateAllDates(row)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
             title={t("Update Dates")}
           >
@@ -548,8 +548,9 @@ const handleUpdateAllDates = (row) => {
       ),
       sortable: false,
       hide: "md",
-      grow: 4,
-      minWidth: "560px",
+      width: "380px",
+      minWidth: "380px",
+      grow: 0,
     },
 
 
@@ -666,11 +667,11 @@ const handleUpdateAllDates = (row) => {
     {
       name: t("Action"),
       cell: (row) => (
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           <Button
             variant="primary"
             size="sm"
-            className="ms-2"
+            className="ms-2 text-nowrap"
             onClick={() => handleStatusEdit(row)}
           >
             {t("Edit")}
@@ -679,6 +680,9 @@ const handleUpdateAllDates = (row) => {
       ),
       sortable: false,
       hide: "md",
+      width: "220px",
+      minWidth: "220px",
+      grow: 0,
     },
     {
       name: t("Plot Number"),
@@ -1462,6 +1466,7 @@ const maintenanceMulberryGardenListStyles = `
   }
   .sh-table-wrap {
     padding: 0 4px 4px;
+    overflow-x: auto;
   }
   .sh-empty {
     padding: 36px 12px;
