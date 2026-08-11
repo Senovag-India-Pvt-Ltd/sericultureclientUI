@@ -208,11 +208,11 @@ function ClusterList() {
     {
       name: t("Action"),
       cell: (row) => (
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           <Button
             variant="primary"
             size="sm"
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             onClick={() => handleView(row.clusterId)}
           >
             <Icon name="eye" />
@@ -221,7 +221,7 @@ function ClusterList() {
           <Button
             variant="primary"
             size="sm"
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             onClick={() => handleEdit(row.clusterId)}
           >
             <Icon name="edit" />
@@ -231,7 +231,7 @@ function ClusterList() {
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.clusterId)}
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
             <Icon name="trash" />
             <span>{t("delete")}</span>
@@ -240,6 +240,9 @@ function ClusterList() {
       ),
       sortable: false,
       hide: "md",
+      width: "300px",
+      minWidth: "300px",
+      grow: 0,
     },
     {
       name: t("Cluster Name"),
@@ -339,23 +342,25 @@ function ClusterList() {
             </Col>
           </Row>
 
-          <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={ClusterDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+          <div style={{ overflowX: "auto" }}>
+            <DataTable
+              tableClassName="data-table-head-light table-responsive"
+              columns={ClusterDataColumns}
+              data={listData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </div>
         </Card>
       </Block>
     </Layout>

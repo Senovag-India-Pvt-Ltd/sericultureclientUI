@@ -144,19 +144,20 @@ function ScProgramList() {
       name: "Action",
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="primary"
             size="sm"
             onClick={() => handleView(row.scProgramId)}
+            className="text-nowrap"
           >
             View
           </Button>
           <Button
             variant="primary"
             size="sm"
-            className="ms-2"
+            className="ms-2 text-nowrap"
             onClick={() => handleEdit(row.scProgramId)}
           >
             Edit
@@ -165,7 +166,7 @@ function ScProgramList() {
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.scProgramId)}
-            className="ms-2"
+            className="ms-2 text-nowrap"
           >
             Delete
           </Button>
@@ -173,6 +174,9 @@ function ScProgramList() {
       ),
       sortable: false,
       hide: "md",
+      width: "300px",
+      minWidth: "300px",
+      grow: 0,
     },
     {
       name: "Program",
@@ -217,24 +221,26 @@ function ScProgramList() {
 
       <Block className="mt-n4">
         <Card>
-          <DataTable
-            // title="Program List"
-            tableClassName="data-table-head-light table-responsive"
-            columns={ScProgramDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+          <div style={{ overflowX: "auto" }}>
+            <DataTable
+              // title="Program List"
+              tableClassName="data-table-head-light table-responsive"
+              columns={ScProgramDataColumns}
+              data={listData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </div>
         </Card>
       </Block>
     </Layout>

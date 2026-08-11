@@ -121,17 +121,20 @@ function GovtAccountList() {
       cell: (row) => {
         const rowId = row.govtAccountId || row.id;
         return (
-          <div className="text-start w-100">
-            <Button variant="primary" size="sm" onClick={() => handleEdit(rowId)}>
+          <div className="d-flex flex-nowrap align-items-center text-start w-100">
+            <Button variant="primary" size="sm" onClick={() => handleEdit(rowId)} className="text-nowrap">
               {t("Edit")}
             </Button>
-            <Button variant="danger" size="sm" onClick={() => deleteConfirm(rowId)} className="ms-2">
+            <Button variant="danger" size="sm" onClick={() => deleteConfirm(rowId)} className="ms-2 text-nowrap">
               {t("Delete")}
             </Button>
           </div>
         );
       },
       sortable: false,
+      width: "220px",
+      minWidth: "220px",
+      grow: 0,
     },
     {
       name: t("Govt Account Number"),
@@ -190,21 +193,23 @@ function GovtAccountList() {
 
       <Block className="mt-n4 sh-form-wrap">
         <Card>
-          <DataTable
-            tableClassName="data-table-head-light table-responsive"
-            columns={columns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{ noRowsPerPage: true }}
-            onChangePage={(p) => setPage(p - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+          <div style={{ overflowX: "auto" }}>
+            <DataTable
+              tableClassName="data-table-head-light table-responsive"
+              columns={columns}
+              data={listData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{ noRowsPerPage: true }}
+              onChangePage={(p) => setPage(p - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </div>
         </Card>
       </Block>
     </Layout>

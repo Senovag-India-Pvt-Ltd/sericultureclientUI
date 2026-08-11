@@ -188,19 +188,20 @@ function ScVendorBankList() {
       name: "Action",
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="primary"
             size="sm"
             onClick={() => handleView(row.scVendorBankId)}
+            className="text-nowrap"
           >
             View
           </Button>
           <Button
             variant="primary"
             size="sm"
-            className="ms-2"
+            className="ms-2 text-nowrap"
             onClick={() => handleEdit(row.scVendorBankId)}
           >
             Edit
@@ -209,7 +210,7 @@ function ScVendorBankList() {
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.scVendorBankId)}
-            className="ms-2"
+            className="ms-2 text-nowrap"
           >
             Delete
           </Button>
@@ -217,6 +218,9 @@ function ScVendorBankList() {
       ),
       sortable: false,
       hide: "md",
+      width: "300px",
+      minWidth: "300px",
+      grow: 0,
     },
     {
       name: "Bank Name",
@@ -337,24 +341,26 @@ function ScVendorBankList() {
               </Form.Group>
             </Col>
           </Row>
-          <DataTable
-            // title="Grainage List"
-            tableClassName="data-table-head-light table-responsive"
-            columns={ScVendorBankDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+          <div style={{ overflowX: "auto" }}>
+            <DataTable
+              // title="Grainage List"
+              tableClassName="data-table-head-light table-responsive"
+              columns={ScVendorBankDataColumns}
+              data={listData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </div>
         </Card>
       </Block>
     </Layout>

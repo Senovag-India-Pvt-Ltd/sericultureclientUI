@@ -156,19 +156,20 @@ function DisinfectantList() {
       name: t("Action"),
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="primary"
             size="sm"
             onClick={() => handleView(row.disinfectantMasterId)}
+            className="text-nowrap"
           >
             {t("View")}
           </Button>
           <Button
             variant="primary"
             size="sm"
-            className="ms-2"
+            className="ms-2 text-nowrap"
             onClick={() => handleEdit(row.disinfectantMasterId)}
           >
             {t("Edit")}
@@ -177,7 +178,7 @@ function DisinfectantList() {
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.disinfectantMasterId)}
-            className="ms-2"
+            className="ms-2 text-nowrap"
           >
             {t("delete")}
           </Button>
@@ -185,6 +186,9 @@ function DisinfectantList() {
       ),
       sortable: false,
       hide: "md",
+      width: "300px",
+      minWidth: "300px",
+      grow: 0,
     },
     {
       name: t("Disinfectant"),
@@ -239,24 +243,26 @@ function DisinfectantList() {
 
       <Block className="mt-n4 sh-form-wrap">
         <Card>
-          <DataTable
-            // title="Disinfectant List"
-            tableClassName="data-table-head-light table-responsive"
-            columns={DisinfectantDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+          <div style={{ overflowX: "auto" }}>
+            <DataTable
+              // title="Disinfectant List"
+              tableClassName="data-table-head-light table-responsive"
+              columns={DisinfectantDataColumns}
+              data={listData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </div>
         </Card>
       </Block>
     </Layout>

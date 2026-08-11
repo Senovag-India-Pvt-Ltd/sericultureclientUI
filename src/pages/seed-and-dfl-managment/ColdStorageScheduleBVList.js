@@ -312,16 +312,17 @@ function ColdStorageScheduleBVList() {
       name: t("Action"),
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="primary"
             size="sm"
             onClick={() => acceptConfirm(row.cssId)}
+            className="text-nowrap"
           >
             Accept
           </Button>
-         
+
           {/* <Button
             variant="danger"
             size="sm"
@@ -334,6 +335,9 @@ function ColdStorageScheduleBVList() {
       ),
       sortable: false,
       hide: "md",
+      width: "140px",
+      minWidth: "140px",
+      grow: 0,
       // grow: 3,
     },
 
@@ -401,7 +405,7 @@ function ColdStorageScheduleBVList() {
             variant="outline-primary"
             size="sm"
             onClick={() => handleView(row.id)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
             title={t("View")}
           >
@@ -412,7 +416,7 @@ function ColdStorageScheduleBVList() {
             variant="primary"
             size="sm"
             onClick={() => handleEdit(row.id)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
             title={t("Edit")}
           >
@@ -423,7 +427,7 @@ function ColdStorageScheduleBVList() {
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.id)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
             title={t("Delete")}
           >
@@ -434,8 +438,9 @@ function ColdStorageScheduleBVList() {
       ),
       sortable: false,
       hide: "md",
-      grow: 3,
-      minWidth: "400px",
+      width: "300px",
+      minWidth: "300px",
+      grow: 0,
     },
 
     {
@@ -506,12 +511,13 @@ function ColdStorageScheduleBVList() {
       name: t("Action"),
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="primary"
             size="sm"
             onClick={() => getCalendarList(row.lotNumber,row.laidOnDate)}
+            className="text-nowrap"
           >
            Schedule Table
           </Button>
@@ -519,6 +525,9 @@ function ColdStorageScheduleBVList() {
           ),
           sortable: false,
           hide: "md",
+          width: "140px",
+          minWidth: "140px",
+          grow: 0,
           },
       ]
 
@@ -614,49 +623,15 @@ function ColdStorageScheduleBVList() {
       <Block className="mt-n4 sh-list-wrap">
         <Card className="sh-list-card">
           <div className="sh-table-wrap">
-            <DataTable
-              // title="New Trader License List"
-              tableClassName="data-table-head-light table-responsive"
-              columns={ColdStorageScheduleBVDataColumns}
-              data={listData}
-              highlightOnHover
-              striped
-              pointerOnHover
-              pagination
-              paginationServer
-              paginationTotalRows={totalRows}
-              paginationPerPage={countPerPage}
-              paginationComponentOptions={{
-                noRowsPerPage: true,
-              }}
-              onChangePage={(page) => setPage(page - 1)}
-              progressPending={loading}
-              theme="solarized"
-              customStyles={customStyles}
-              noDataComponent={
-                <div className="sh-empty">
-                  <Icon name="inbox" />
-                  <p className="mt-2 mb-0">{t("No records found")}</p>
-                </div>
-              }
-            />
-          </div>
-        </Card>
-      </Block>
-
-      <Modal show={showModal} onHide={handleCloseModal} size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>{t("Alerts Window")}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Block className="mt-2">
-            <Card>
+            <div style={{ overflowX: "auto" }}>
               <DataTable
                 // title="New Trader License List"
                 tableClassName="data-table-head-light table-responsive"
-                columns={ColdStorageAlertDataColumns}
-                data={listLogsData}
+                columns={ColdStorageScheduleBVDataColumns}
+                data={listData}
                 highlightOnHover
+                striped
+                pointerOnHover
                 pagination
                 paginationServer
                 paginationTotalRows={totalRows}
@@ -668,7 +643,45 @@ function ColdStorageScheduleBVList() {
                 progressPending={loading}
                 theme="solarized"
                 customStyles={customStyles}
+                noDataComponent={
+                  <div className="sh-empty">
+                    <Icon name="inbox" />
+                    <p className="mt-2 mb-0">{t("No records found")}</p>
+                  </div>
+                }
               />
+            </div>
+          </div>
+        </Card>
+      </Block>
+
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>{t("Alerts Window")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Block className="mt-2">
+            <Card>
+              <div style={{ overflowX: "auto" }}>
+                <DataTable
+                  // title="New Trader License List"
+                  tableClassName="data-table-head-light table-responsive"
+                  columns={ColdStorageAlertDataColumns}
+                  data={listLogsData}
+                  highlightOnHover
+                  pagination
+                  paginationServer
+                  paginationTotalRows={totalRows}
+                  paginationPerPage={countPerPage}
+                  paginationComponentOptions={{
+                    noRowsPerPage: true,
+                  }}
+                  onChangePage={(page) => setPage(page - 1)}
+                  progressPending={loading}
+                  theme="solarized"
+                  customStyles={customStyles}
+                />
+              </div>
             </Card>
           </Block>
         </Modal.Body>

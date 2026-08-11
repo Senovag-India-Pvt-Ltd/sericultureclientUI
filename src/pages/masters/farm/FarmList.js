@@ -200,19 +200,20 @@ function FarmList() {
       name: t("Action"),
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="primary"
             size="sm"
             onClick={() => handleView(row.farmId)}
+            className="text-nowrap"
           >
             {t("View")}
           </Button>
           <Button
             variant="primary"
             size="sm"
-            className="ms-2"
+            className="ms-2 text-nowrap"
             onClick={() => handleEdit(row.farmId)}
           >
             {t("Edit")}
@@ -221,7 +222,7 @@ function FarmList() {
             variant="danger"
             size="sm"
             onClick={() => deleteConfirm(row.farmId)}
-            className="ms-2"
+            className="ms-2 text-nowrap"
           >
              {t("delete")}
           </Button>
@@ -229,6 +230,9 @@ function FarmList() {
       ),
       sortable: false,
       hide: "md",
+      width: "300px",
+      minWidth: "300px",
+      grow: 0,
     },
     {
       name: t("Farm"),
@@ -337,24 +341,26 @@ function FarmList() {
             </Col>
           </Row>
 
-          <DataTable
-            // title="Farm List"
-            tableClassName="data-table-head-light table-responsive"
-            columns={FarmDataColumns}
-            data={listData}
-            highlightOnHover
-            pagination
-            paginationServer
-            paginationTotalRows={totalRows}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onChangePage={(page) => setPage(page - 1)}
-            progressPending={loading}
-            theme="solarized"
-            customStyles={customStyles}
-          />
+          <div style={{ overflowX: "auto" }}>
+            <DataTable
+              // title="Farm List"
+              tableClassName="data-table-head-light table-responsive"
+              columns={FarmDataColumns}
+              data={listData}
+              highlightOnHover
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationPerPage={countPerPage}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
+              onChangePage={(page) => setPage(page - 1)}
+              progressPending={loading}
+              theme="solarized"
+              customStyles={customStyles}
+            />
+          </div>
         </Card>
       </Block>
     </Layout>

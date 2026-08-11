@@ -1173,12 +1173,13 @@ const [showModal8, setShowModal8] = useState(false);
       name: "Action",
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirmForFeeding(row.id)}
+            className="text-nowrap"
           >
             Delete
           </Button>
@@ -1186,18 +1187,20 @@ const [showModal8, setShowModal8] = useState(false);
           <Button
             variant="primary"
             size="sm"
-            className="ms-2"
+            className="ms-2 text-nowrap"
             onClick={() => handleShowModal5(row)} // <-- correct
           >
             {t("Edit")}
           </Button>
 
-         
+
         </div>
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
+      width: "220px",
+      minWidth: "220px",
+      grow: 0,
     },
 
     // {
@@ -1290,12 +1293,13 @@ const [showModal8, setShowModal8] = useState(false);
       name: "Action",
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
             variant="danger"
             size="sm"
             onClick={() => deleteConfirmForMoult(row.id)}
+            className="text-nowrap"
           >
             Delete
           </Button>
@@ -1303,18 +1307,20 @@ const [showModal8, setShowModal8] = useState(false);
           <Button
             variant="primary"
             size="sm"
-            className="ms-2"
+            className="ms-2 text-nowrap"
             onClick={() => handleShowModal7(row)} // <-- correct
           >
             {t("Edit")}
           </Button>
 
-         
+
         </div>
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
+      width: "220px",
+      minWidth: "220px",
+      grow: 0,
     },
 
   ];
@@ -1633,31 +1639,34 @@ const [showModal8, setShowModal8] = useState(false);
             name: "Action",
             cell: (row) => (
               //   Button style
-              <div className="text-start w-100">
+              <div className="d-flex flex-nowrap align-items-center text-start w-100">
                 {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
                 <Button
                   variant="danger"
                   size="sm"
                   onClick={() => deleteConfirmForTemperature(row.id)}
+                  className="text-nowrap"
                 >
                   Delete
                 </Button>
-      
+
                 <Button
                   variant="primary"
                   size="sm"
-                  className="ms-2"
+                  className="ms-2 text-nowrap"
                   onClick={() => handleShowModal11(row)} // <-- correct
                 >
                   {t("Edit")}
                 </Button>
-      
-               
+
+
               </div>
             ),
             sortable: false,
             hide: "md",
-            grow: 2,
+            width: "220px",
+            minWidth: "220px",
+            grow: 0,
           },
       
         ];
@@ -2456,23 +2465,25 @@ const [showModal8, setShowModal8] = useState(false);
   <Modal.Body>
     <Block className="mt-3">
       <Card>
-        <DataTable
-          tableClassName="data-table-head-light table-responsive"
-          columns={RearingOfDFLSMoultDataColumns}
-          data={listMoultData}
-          highlightOnHover
-          pagination
-          paginationServer
-          paginationTotalRows={totalRows}
-          paginationPerPage={countPerPage}
-          paginationComponentOptions={{
-            noRowsPerPage: true,
-          }}
-          onChangePage={(page) => setPage(page - 1)}
-          progressPending={loading}
-          theme="solarized"
-          customStyles={customStyles}
-        />
+        <div style={{ overflowX: "auto" }}>
+          <DataTable
+            tableClassName="data-table-head-light table-responsive"
+            columns={RearingOfDFLSMoultDataColumns}
+            data={listMoultData}
+            highlightOnHover
+            pagination
+            paginationServer
+            paginationTotalRows={totalRows}
+            paginationPerPage={countPerPage}
+            paginationComponentOptions={{
+              noRowsPerPage: true,
+            }}
+            onChangePage={(page) => setPage(page - 1)}
+            progressPending={loading}
+            theme="solarized"
+            customStyles={customStyles}
+          />
+        </div>
       </Card>
     </Block>
   </Modal.Body>
@@ -2493,23 +2504,25 @@ const [showModal8, setShowModal8] = useState(false);
   <Modal.Body>
     <Block className="mt-3">
       <Card>
-        <DataTable
-          tableClassName="data-table-head-light table-responsive"
-          columns={RearingOfDFLSOnlyMoultingDataColumns}
-          data={listOnlyMoultData}
-          highlightOnHover
-          pagination
-          paginationServer
-          paginationTotalRows={totalRows}
-          paginationPerPage={countPerPage}
-          paginationComponentOptions={{
-            noRowsPerPage: true,
-          }}
-          onChangePage={(page) => setPage(page - 1)}
-          progressPending={loading}
-          theme="solarized"
-          customStyles={customStyles}
-        />
+        <div style={{ overflowX: "auto" }}>
+          <DataTable
+            tableClassName="data-table-head-light table-responsive"
+            columns={RearingOfDFLSOnlyMoultingDataColumns}
+            data={listOnlyMoultData}
+            highlightOnHover
+            pagination
+            paginationServer
+            paginationTotalRows={totalRows}
+            paginationPerPage={countPerPage}
+            paginationComponentOptions={{
+              noRowsPerPage: true,
+            }}
+            onChangePage={(page) => setPage(page - 1)}
+            progressPending={loading}
+            theme="solarized"
+            customStyles={customStyles}
+          />
+        </div>
       </Card>
     </Block>
   </Modal.Body>
@@ -5972,23 +5985,25 @@ const [showModal8, setShowModal8] = useState(false);
                     <Modal.Body>
                       <Block className="mt-3">
                         <Card>
-                          <DataTable
-                            tableClassName="data-table-head-light table-responsive"
-                            columns={RearingOfDFLSOnlyTemperatureDataColumns}
-                            data={listOnlyTemperatureData}
-                            highlightOnHover
-                            pagination
-                            paginationServer
-                            paginationTotalRows={totalRows}
-                            paginationPerPage={countPerPage}
-                            paginationComponentOptions={{
-                              noRowsPerPage: true,
-                            }}
-                            onChangePage={(page) => setPage(page - 1)}
-                            progressPending={loading}
-                            theme="solarized"
-                            customStyles={customStyles}
-                          />
+                          <div style={{ overflowX: "auto" }}>
+                            <DataTable
+                              tableClassName="data-table-head-light table-responsive"
+                              columns={RearingOfDFLSOnlyTemperatureDataColumns}
+                              data={listOnlyTemperatureData}
+                              highlightOnHover
+                              pagination
+                              paginationServer
+                              paginationTotalRows={totalRows}
+                              paginationPerPage={countPerPage}
+                              paginationComponentOptions={{
+                                noRowsPerPage: true,
+                              }}
+                              onChangePage={(page) => setPage(page - 1)}
+                              progressPending={loading}
+                              theme="solarized"
+                              customStyles={customStyles}
+                            />
+                          </div>
                         </Card>
                       </Block>
                     </Modal.Body>

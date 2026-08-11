@@ -126,7 +126,7 @@ useEffect(() => {
       name: t("Action"),
       cell: (row) => (
         //   Button style
-        <div className="text-start w-100">
+        <div className="d-flex flex-nowrap align-items-center text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           {/* <Button
             variant="primary"
@@ -138,7 +138,7 @@ useEffect(() => {
           <Button
             variant="primary"
             size="sm"
-            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
+            className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             onClick={() => handleEdit(row.supplyOfDisinfectantsId)}
           >
             <Icon name="edit" />
@@ -157,6 +157,9 @@ useEffect(() => {
       sortable: false,
       hide: "md",
       // grow: 2,
+      width: "150px",
+      minWidth: "150px",
+      grow: 0,
     },
     {
         name: t("First Name"),
@@ -263,6 +266,7 @@ useEffect(() => {
 
       <Block className="mt-n4 sh-form-wrap">
         <Card>
+        <div style={{ overflowX: "auto" }}>
         <DataTable
             tableClassName="data-table-head-light table-responsive"
             columns={ChawkiDataColumns}
@@ -280,6 +284,7 @@ useEffect(() => {
             theme="solarized"
             customStyles={customStyles}
             />
+        </div>
         </Card>
         </Block>
         </Layout>

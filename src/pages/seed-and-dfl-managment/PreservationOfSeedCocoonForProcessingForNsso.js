@@ -522,7 +522,7 @@ function PreservationofseedcocoonforprocessingListForNsso() {
             variant="primary"
             size="sm"
             onClick={() => acceptConfirmForMarket(row.lotGroupageId, 1)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
           >
             <Icon name="check" />
@@ -533,7 +533,7 @@ function PreservationofseedcocoonforprocessingListForNsso() {
             variant="danger"
             size="sm"
             onClick={() => deleteConfirmForMarket(row.lotGroupageId, 2)}
-            className="d-inline-flex align-items-center gap-1 shadow-sm"
+            className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
             style={{ borderRadius: "6px", fontWeight: 500, fontSize: "12.5px", paddingInline: "10px" }}
           >
             <Icon name="cross" />
@@ -543,8 +543,9 @@ function PreservationofseedcocoonforprocessingListForNsso() {
       ),
       sortable: false,
       hide: "md",
-      grow: 2,
+      width: "220px",
       minWidth: "220px",
+      grow: 0,
     },
 
     {
@@ -915,23 +916,25 @@ function PreservationofseedcocoonforprocessingListForNsso() {
             <Block className="mt-2 sh-list-wrap">
               <Card className="sh-list-card">
                 <div className="sh-table-wrap">
-                  <DataTable
-                    tableClassName="data-table-head-light table-responsive"
-                    columns={PreservationOfSeedCocoonGardenDataColumns}
-                    data={listLogsForMarketData}
-                    highlightOnHover
-                    striped
-                    pointerOnHover
-                    pagination
-                    paginationServer
-                    paginationTotalRows={totalRows}
-                    paginationPerPage={countPerPage}
-                    paginationComponentOptions={{ noRowsPerPage: true }}
-                    onChangePage={(page) => setPage(page - 1)}
-                    progressPending={loading}
-                    theme="solarized"
-                    customStyles={customStyles}
-                  />
+                  <div style={{ overflowX: "auto" }}>
+                    <DataTable
+                      tableClassName="data-table-head-light table-responsive"
+                      columns={PreservationOfSeedCocoonGardenDataColumns}
+                      data={listLogsForMarketData}
+                      highlightOnHover
+                      striped
+                      pointerOnHover
+                      pagination
+                      paginationServer
+                      paginationTotalRows={totalRows}
+                      paginationPerPage={countPerPage}
+                      paginationComponentOptions={{ noRowsPerPage: true }}
+                      onChangePage={(page) => setPage(page - 1)}
+                      progressPending={loading}
+                      theme="solarized"
+                      customStyles={customStyles}
+                    />
+                  </div>
                 </div>
               </Card>
             </Block>
