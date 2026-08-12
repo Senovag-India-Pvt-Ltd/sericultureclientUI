@@ -940,7 +940,7 @@ function ExternalUnitRegisterEdit() {
                       </Form.Group>
                       <Form.Group className="form-group">
                         <Form.Label>
-                          {t(" Name in Kannada")}
+                          {t("Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">

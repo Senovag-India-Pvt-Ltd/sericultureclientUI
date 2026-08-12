@@ -296,7 +296,7 @@ function StakeHolderViewPage() {
                   {StakeHolder.tscName ? (
                     <span className="sh-chip sh-chip-warning">
                       <Icon name="building" />
-                      <span className="ms-1">TSC: {StakeHolder.tscName}</span>
+                      <span className="ms-1">{t("TSC")}: {StakeHolder.tscName}</span>
                     </span>
                   ) : null}
                 </div>
@@ -330,7 +330,7 @@ function StakeHolderViewPage() {
                 { label: t("FRUITS ID"), value: StakeHolder.fruitsId },
                 { label: t("farmer_name"), value: StakeHolder.firstName },
                 { label: t("farmer_name_kannada"), value: StakeHolder.nameKan },
-                { label: "TSC", value: StakeHolder.tscName },
+                { label: t("TSC"), value: StakeHolder.tscName },
                 { label: t("fathers_husbands_name"), value: StakeHolder.fatherName },
                 {
                   label: t("Gender"),

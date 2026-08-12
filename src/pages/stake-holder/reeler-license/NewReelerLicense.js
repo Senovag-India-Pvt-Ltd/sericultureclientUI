@@ -821,11 +821,11 @@ function NewReelerLicense() {
 
   // Multi-document upload state
   const [documents, setDocuments] = useState([
-    { id: 1, label: "Mahajar Details", file: null, fileName: "", uploaded: false },
+    { id: 1, label: "", file: null, fileName: "", uploaded: false, isDefault: true },
   ]);
 
   const handleDocLabelChange = (id, value) => {
-    setDocuments((prev) => prev.map((d) => d.id === id ? { ...d, label: value } : d));
+    setDocuments((prev) => prev.map((d) => d.id === id ? { ...d, label: value, isDefault: false } : d));
   };
 
   const handleDocFileChange = (id, e) => {
@@ -1709,16 +1709,16 @@ function NewReelerLicense() {
                             </Form.Label>
                             <div style={{ border: "1px solid #dce8f5", borderRadius: "10px", overflow: "hidden", background: "#f8faff" }}>
                               <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr auto", background: "#e8f0fb", padding: "8px 12px", fontSize: "11.5px", fontWeight: "700", color: "#1a3c6e", textTransform: "uppercase", letterSpacing: "0.4px" }}>
-                                <span>Document Type</span>
-                                <span>File</span>
+                                <span>{t("Document Type")}</span>
+                                <span>{t("File")}</span>
                                 <span></span>
                               </div>
                               {documents.map((doc, idx) => (
                                 <div key={doc.id} style={{ display: "grid", gridTemplateColumns: "1fr 2fr auto", gap: "8px", alignItems: "center", padding: "10px 12px", borderTop: idx > 0 ? "1px solid #dce8f5" : "none", background: "#fff" }}>
                                   <Form.Control
                                     type="text"
-                                    placeholder="e.g. Mahajar, Aadhaar…"
-                                    value={doc.label}
+                                    placeholder={t("e.g. Mahajar, Aadhaar…")}
+                                    value={doc.isDefault ? t("Mahajar Details") : doc.label}
                                     onChange={(e) => handleDocLabelChange(doc.id, e.target.value)}
                                     style={{ fontSize: "12.5px", padding: "6px 10px", borderRadius: "6px", border: "1.5px solid #c9d8ec" }}
                                   />
@@ -1740,7 +1740,7 @@ function NewReelerLicense() {
                                     onClick={() => removeDocumentRow(doc.id)}
                                     disabled={documents.length === 1}
                                     style={{ background: "none", border: "none", color: documents.length === 1 ? "#ccc" : "#dc2626", fontSize: "16px", cursor: documents.length === 1 ? "default" : "pointer", padding: "2px 6px", lineHeight: 1 }}
-                                    title="Remove"
+                                    title={t("Remove")}
                                   >✕</button>
                                 </div>
                               ))}
@@ -1750,7 +1750,7 @@ function NewReelerLicense() {
                                   onClick={addDocumentRow}
                                   style={{ background: "none", border: "1.5px dashed #1a5fa8", color: "#1a5fa8", borderRadius: "6px", padding: "5px 14px", fontSize: "12px", fontWeight: "600", cursor: "pointer" }}
                                 >
-                                  + Add Another Document
+                                  + {t("Add Another Document")}
                                 </button>
                               </div>
                             </div>
@@ -2119,7 +2119,7 @@ function NewReelerLicense() {
                             value={data.functionOfUnit}
                             onChange={handleInputs}
                           >
-                            <option value="">Select</option>
+                            <option value="">{t("Select")}</option>
                             <option value="1">Yes</option>
                             <option value="2">No</option>
                           </Form.Select>
