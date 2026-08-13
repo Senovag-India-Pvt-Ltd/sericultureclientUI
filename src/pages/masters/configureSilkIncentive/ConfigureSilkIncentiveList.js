@@ -177,8 +177,7 @@ function ConfigureSilkIncentiveList() {
           </Button>
         </div>
       ),
-      width: "300px",
-      minWidth: "300px",
+      minWidth: "340px",
       grow: 0,
       sortable: false,
     },

@@ -207,8 +207,7 @@ function ScProgramAccountMappingList() {
       ),
       sortable: false,
       hide: "md",
-      width: "300px",
-      minWidth: "300px",
+      minWidth: "340px",
       grow: 0,
     },
     {

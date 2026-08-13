@@ -177,8 +177,7 @@ function ConfigureReelingShedList() {
           </Button>
         </div>
       ),
-      width: "300px",
-      minWidth: "300px",
+      minWidth: "340px",
       sortable: false,
       grow: 0
     },
