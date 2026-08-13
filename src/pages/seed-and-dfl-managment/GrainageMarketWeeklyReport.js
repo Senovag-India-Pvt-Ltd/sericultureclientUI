@@ -23,13 +23,25 @@ const MONTH_KN = [
   "ಜುಲೈ", "ಆಗಸ್ಟ್", "ಸೆಪ್ಟೆಂಬರ್", "ಅಕ್ಟೋಬರ್", "ನವೆಂಬರ್", "ಡಿಸೆಂಬರ್",
 ];
 
-const WEEKS = [
-  { value: 1, range: "1-7"     },
-  { value: 2, range: "8-14"    },
-  { value: 3, range: "15-21"   },
-  { value: 4, range: "22-28"   },
-  { value: 5, range: "29-end"  },
-];
+// Week 1 reaches back into the previous month (day 24 to month-end), so every calendar day
+// belongs to exactly one week label — a month's 24th-to-end days are only ever reached as
+// week 1 of the FOLLOWING month, never duplicated as a week 5 of the same month.
+const WEEKS = [1, 2, 3, 4];
+
+const daysInMonth = (year, month) => new Date(year, month, 0).getDate(); // month: 1-12
+
+function weekRangeLabel(year, month, week) {
+  if (week === 1) {
+    if (!year || !month) return "24-end (prev. month)";
+    const prevMonth = month === 1 ? 12 : month - 1;
+    const prevYear  = month === 1 ? year - 1 : year;
+    return `24-${daysInMonth(prevYear, prevMonth)} (prev. month)`;
+  }
+  if (week === 2) return "1-7";
+  if (week === 3) return "8-15";
+  if (week === 4) return "16-23";
+  return "";
+}
 
 // Column model — matches the backend repository keys exactly.
 // Leading 3 columns: Sl.No, Parental, Date.
@@ -310,7 +322,7 @@ function GrainageMarketWeeklyReport() {
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
   const weekNum    = Number(filter.week);
-  const weekRange  = WEEKS.find((w) => w.value === weekNum)?.range || "";
+  const weekRange  = weekRangeLabel(monthYear, monthNum, weekNum);
   const market     = marketList.find((m) => String(m.marketMasterId) === String(filter.marketId));
   const marketEn   = market?.marketMasterName || "";
   const marketKn   = market?.marketNameInKannada || "";
@@ -411,7 +423,7 @@ function GrainageMarketWeeklyReport() {
                   <Form.Select name="week" value={filter.week} onChange={handleChange} style={sel}>
                     <option value="">— Week —</option>
                     {WEEKS.map((w) => (
-                      <option key={w.value} value={w.value}>W{w.value} · {w.range}</option>
+                      <option key={w} value={w}>W{w} · {weekRangeLabel(monthYear, monthNum, w)}</option>
                     ))}
                   </Form.Select>
                 </Col>

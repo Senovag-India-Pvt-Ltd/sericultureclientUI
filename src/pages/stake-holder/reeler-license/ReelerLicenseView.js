@@ -284,7 +284,7 @@ function ReelerLicenseView() {
                 { label: t("Aadhaar Number"), value: Reeler.aadhaarNumber },
                 { label: t("Assign To Inspect"), value: Reeler.assignToInspectId },
                 { label: t("ARN Number"), value: Reeler.arnNumber },
-                { label: "TSC", value: Reeler.tscName },
+                { label: t("TSC"), value: Reeler.tscName },
                 { label: t("Ward Number"), value: Reeler.wardNumber },
                 { label: t("education"), value: Reeler.name },
                 { label: t("ration_number"), value: Reeler.rationCard },
@@ -479,14 +479,14 @@ function ReelerLicenseView() {
                         <video src={selectedMahajarFile} controls style={{ width: "100%", borderRadius: "6px", marginBottom: "10px" }} />
                       )}
                       {selectedMahajarFile && fileType === "pdf" && (
-                        <a href={selectedMahajarFile} target="_blank" rel="noreferrer" style={{ display: "block", fontSize: "12px", color: "#1a5fa8", marginBottom: "10px" }}>👁 Open PDF in browser ↗</a>
+                        <a href={selectedMahajarFile} target="_blank" rel="noreferrer" style={{ display: "block", fontSize: "12px", color: "#1a5fa8", marginBottom: "10px" }}>👁 {t("Open PDF in browser")} ↗</a>
                       )}
                       <Button
                         size="sm"
                         onClick={() => downloadFile(fileName)}
                         style={{ width: "100%", background: "linear-gradient(135deg, #1a5fa8, #0d4f8a)", border: "none", borderRadius: "6px", fontSize: "12px", fontWeight: "600", color: "#fff", padding: "6px 0" }}
                       >
-                        ⬇ Download {fileType === "pdf" ? "PDF" : fileType === "video" ? "Video" : fileType === "image" ? "Photo" : "File"}
+                        ⬇ {fileType === "pdf" ? t("Download PDF") : fileType === "video" ? t("Download Video") : fileType === "image" ? t("Download Photo") : t("Download File")}
                       </Button>
                     </div>
                   );

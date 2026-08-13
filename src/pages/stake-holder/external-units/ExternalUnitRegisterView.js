@@ -130,7 +130,7 @@ function ExternalUnitRegisterView() {
                       { label: t("IFSC Code"), value: ExternalUnitRegister.ifscCode },
                       { label: t("Market"), value: ExternalUnitRegister.marketMasterName },
                       { label: t("Lot Number Nomenclature"), value: ExternalUnitRegister.lotNumberNomenclature },
-                      { label: "Tsc", value: ExternalUnitRegister.tscName },
+                      { label: t("Tsc"), value: ExternalUnitRegister.tscName },
                       { label: t("district"), value: ExternalUnitRegister.districtName },
                       { label: t("taluk"), value: ExternalUnitRegister.talukName },
                       { label: t("Name in Kannada"), value: ExternalUnitRegister.nameInKannada },

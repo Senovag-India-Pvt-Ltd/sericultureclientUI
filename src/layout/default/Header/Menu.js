@@ -288,6 +288,8 @@ function Menu() {
     Market_SeedMarket_Ready_For_Payment: false,
     Market_SeedMarket_Bulk_Send_To_Payment: false,
     Market_SeedMarket_Payment_Statement: false,
+    Market_SeedMarket_Payment_HDFC: false,
+    Market_SeedMarket_DBT_K2_Govt_Grainage: false,
     Market_SeedMarket_Transfer_Market_Fee_To_Govt_Account: false,
     Market_SeedMarket_Reeler_Bank_Transfer: false,
 
@@ -318,6 +320,7 @@ function Menu() {
     SeedDFL_Grainage: false,
     SeedDFL_Grainage_Line_Records_Each_race: false,
     SeedDFL_Grainage_Seed_Cocoon_Processing: false,
+    SeedDFL_Grainage_Monthly_Cost: false,
     SeedDFL_Grainage_Preparation_Egg_DFLs: false,
     SeedDFL_Grainage_Eggs_Cold_storage: false,
     SeedDFL_Grainage_Cold_Storage_Schedule_BV: false,
@@ -392,6 +395,28 @@ function Menu() {
     Helpdesk_Escalated_Dashboard: false,
     Helpdesk_My_Tickets: false,
     Helpdesk_FAQ: false,
+    Helpdesk_Video_Manual: false,
+    Helpdesk_FAQ_Adopting_Solar_Water_Heater_PSF: false,
+    Helpdesk_FAQ_Bonus_For_Bivoltine_Cocoons: false,
+    Helpdesk_FAQ_Adopting_Silent_Generator_PSF: false,
+    Helpdesk_FAQ_Multi_End_Reeling_Machinery_MERM_PSF: false,
+    Helpdesk_FAQ_Incentive_For_Bivoltine_Cocoons_30_KG_PSF: false,
+    Helpdesk_FAQ_Incentive_For_Bivoltine_Cocoons: false,
+    Helpdesk_FAQ_Incentive_For_MSC_Cocoons_120_Per_Kg: false,
+    Helpdesk_FAQ_MSC_Chawki_Incentive_100_DFLs_1500: false,
+    Helpdesk_FAQ_North_Karnataka_Cocoon_Transportation_Incentive: false,
+    Helpdesk_FAQ_Pure_Mysore_Bonus_225_Per_Kg: false,
+    Helpdesk_FAQ_Silk_Incentive_PSF: false,
+    Helpdesk_FAQ_Rearing_Equipment_SS: false,
+    Helpdesk_FAQ_Adopting_Solar_Power_Generator_PSF: false,
+    Helpdesk_FAQ_Adopting_Heat_Recovery_Unit_PSF: false,
+    Helpdesk_FAQ_Bivoltine_Chawki_Incentive: false,
+    Helpdesk_FAQ_Improved_Cottage_Basin_ICB: false,
+    Helpdesk_FAQ_Italian_Model_Cottage_Basin_IMCB: false,
+    Helpdesk_FAQ_Subsidy_For_Adopting_Boiler_PSF: false,
+    Helpdesk_FAQ_Reeling_Shed_PSF: false,
+    Helpdesk_FAQ_Registered_Private_Bivoltine_Chawki_Rearing_Center_Subsidy: false,
+    Helpdesk_FAQ_Silk_Samagra: false,
     Helpdesk_DBT_Failed_Tickets: false,
 
     Admin: false,
@@ -460,6 +485,7 @@ function Menu() {
     Admin_Master_Service_Approval_Stage: false,
     Admin_Master_Service_Spacing: false,
     Admin_Master_Service_Hectare: false,
+    Admin_Master_Service_Target: false,
     Admin_Master_Service_Configure_Pmkys_Amount: false,
     Admin_Master_Service_Configure_Bonus_Amount: false,
     Admin_Master_Service_Configure_RH_Amount: false,
@@ -482,7 +508,7 @@ function Menu() {
     Admin_Master_Service_Calculation_Bonus: false,
     Admin_Master_Service_Calculation_RH_Amount: false,
     Admin_Master_Service_Calculation_Registered_Private_Chawki: false,
-    Admin_Master_Service_Calculation_ARM: true,
+    Admin_Master_Service_Calculation_ARM: false,
     
 
     Admin_Master_Training: false,
@@ -722,6 +748,7 @@ function Menu() {
     Reports_Export_Report_Commercial_Market_Admin: false,
     Reports_Export_Report_Commercial_Market_Transaction: false,
     Reports_Export_Report_Commercial_Market_Dashboard: false,
+    Reports_Export_Report_Commercial_Market_Daily_Dashboard: false,
     Reports_Export_Report_Commercial_Market_Abstract: false,
     Reports_Export_Report_Commercial_Market_District_Abstract: false,
     Reports_Export_Report_Commercial_Market_DTR_Blank_Report: false,
@@ -1610,6 +1637,22 @@ function Menu() {
       }));
     }
 
+    // "HDFC (Reeler,RSP,NSSO)" sub-group container under Seed Market's e-Payment:
+    // checking it alone grants all 3 reports inside it; children stay individually
+    // toggleable too.
+    if (data.includes("Market_SeedMarket_Payment_HDFC")) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Market: true,
+        Market_SeedMarket: true,
+        Market_SeedMarket_Payment: true,
+        Market_SeedMarket_Payment_HDFC: true,
+        Market_SeedMarket_Ready_For_Payment: true,
+        Market_SeedMarket_Bulk_Send_To_Payment: true,
+        Market_SeedMarket_Payment_Statement: true,
+      }));
+    }
+
     // Admin > Master > Service > Calculation wrapper -- had no reachability
     // path at all (not even the coarse root cascade sets it, since the
     // generic "Admin_Master_Service_" sweep only matches keys with the
@@ -1717,6 +1760,42 @@ function Menu() {
       }));
     }
 
+    const hasAdminMasterTraining = data.some((item) =>
+      item.startsWith("Admin_Master_Training_")
+    );
+    if (hasAdminMasterTraining) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Admin: true,
+        Admin_Master: true,
+        Admin_Master_Training: true,
+      }));
+    }
+
+    const hasAdminMasterHelpDesk = data.some((item) =>
+      item.startsWith("Admin_Master_HelpDesk_")
+    );
+    if (hasAdminMasterHelpDesk) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Admin: true,
+        Admin_Master: true,
+        Admin_Master_HelpDesk: true,
+      }));
+    }
+
+    const hasAdminMasterGarden = data.some((item) =>
+      item.startsWith("Admin_Master_Garden_")
+    );
+    if (hasAdminMasterGarden) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Admin: true,
+        Admin_Master: true,
+        Admin_Master_Garden: true,
+      }));
+    }
+
     // const hasAdminReport = data.some((item) =>
     //   item.startsWith("Admin_Report_")
     // );
@@ -1772,8 +1851,16 @@ function Menu() {
       }));
     }
 
-    const hasReportsExportReport = data.some((item) =>
-      item.startsWith("Reports_Export_Report_")
+    const hasReportsExportReport = data.some(
+      (item) =>
+        item.startsWith("Reports_Export_Report_") &&
+        // Seed Market / Commercial Market's leaf reports were moved under
+        // Format Reports and kept their legacy map_code prefix for backward
+        // compatibility (see hasReportsExportReportSeedMarket/CommercialMarket
+        // above). They no longer have any content under the actual "Export
+        // Reports" menu, so granting them must not reveal that top-level item.
+        !item.startsWith("Reports_Export_Report_Seed_Market_") &&
+        !item.startsWith("Reports_Export_Report_Commercial_Market_")
     );
     if (hasReportsExportReport) {
       setShowMenu((prevMenu) => ({
@@ -1814,7 +1901,9 @@ function Menu() {
       setShowMenu((prevMenu) => ({
         ...prevMenu,
         Reports: true,
-        Reports_Export_Report: true,
+        // Not Reports_Export_Report -- Commercial Market's content now lives
+        // only under Format Reports (moved there earlier), so opening the
+        // top-level "Export Reports" menu here would show an empty section.
         Reports_Export_Report_Commercial_Market: true,
       }));
     }
@@ -1826,7 +1915,8 @@ function Menu() {
       setShowMenu((prevMenu) => ({
         ...prevMenu,
         Reports: true,
-        Reports_Export_Report: true,
+        // Not Reports_Export_Report -- see Commercial Market comment above;
+        // Seed Market's content also now lives only under Format Reports.
         Reports_Export_Report_Seed_Market: true,
       }));
     }
@@ -2149,6 +2239,16 @@ function Menu() {
         Reports: true,
         Reports_Export_Report: true,
         Reports_Export_Report_Target_Setting: true,
+      }));
+    }
+
+    const hasInspection = data.some((item) =>
+      item.startsWith("Inspection_")
+    );
+    if (hasInspection) {
+      setShowMenu((prevMenu) => ({
+        ...prevMenu,
+        Inspection: true,
       }));
     }
 
@@ -3107,6 +3207,10 @@ function Menu() {
                           sub
                         />
                         <MenuSub>
+                         {showMenu.Market_SeedMarket_Payment_HDFC ||
+                         showMenu.Market_SeedMarket_Ready_For_Payment ||
+                         showMenu.Market_SeedMarket_Bulk_Send_To_Payment ||
+                         showMenu.Market_SeedMarket_Payment_Statement ? (
                          <MenuItem sub>
                          <MenuItemLink
                          text="HDFC (Reeler,RSP,NSSO)"
@@ -3142,12 +3246,15 @@ function Menu() {
                          
                         </MenuSub>
                         </MenuItem>
-                        <MenuItem>
-                          <MenuItemLink
-                            text="DBT/K2 (Govt Grainage)"
-                            to="/seriui/dbt-k2-govt-grainage"
-                          />
-                        </MenuItem>
+                         ) : null}
+                        {showMenu.Market_SeedMarket_DBT_K2_Govt_Grainage ? (
+                          <MenuItem>
+                            <MenuItemLink
+                              text="DBT/K2 (Govt Grainage)"
+                              to="/seriui/dbt-k2-govt-grainage"
+                            />
+                          </MenuItem>
+                        ) : null}
                                           </MenuSub>
                                           </MenuItem>
                                           ) : null}
@@ -3497,7 +3604,7 @@ function Menu() {
                       />
                     </MenuItem>
                   ) : null}
-                  {showMenu.SeedDFL_Grainage ? (
+                  {showMenu.SeedDFL_Grainage_Monthly_Cost ? (
                     <MenuItem>
                       <MenuItemLink
                         text={t("Grainage Monthly Cost")}
@@ -4119,7 +4226,7 @@ function Menu() {
               <MenuItemLink text="My Tickets" to="/seriui/my-tickets" />
             </MenuItem>
           ) : null} */}
-            {showMenu.Helpdesk_FAQ ? (
+            {showMenu.Helpdesk_FAQ || showMenu.Helpdesk_Video_Manual ? (
               <MenuItem sub>
                 <MenuItemLink
                   text={t("Video Manual")}
@@ -4128,160 +4235,195 @@ function Menu() {
                   sub
                 />
                 <MenuSub>
-                  {/* <MenuItem>
-                    <MenuItemLink
-                      text={t("Adopting Silent Generator-PSF")}
-                      to="https://drive.google.com/open?id=1_nnRq0CQIhGaggjPBfInQafh-WsrBt87&usp=drive_copy"
-                      blank
-                    />
-                  </MenuItem> */}
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Adopting Solar Water Heater-PSF")}
-                      to="https://drive.google.com/open?id=10fZ3Gc7MXadMrAfPaD6Zq-ztLTLhO_p3&usp=drive_copy"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Bonus For Bivoltine Cocoons")}
-                      to="https://drive.google.com/open?id=1dwLAfUi8hXky3wsZGuFVQEJXPTWPjGAT&usp=drive_copy"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Adopting Silent Generator-PSF")}
-                      to="https://drive.google.com/file/d/1_nnRq0CQIhGaggjPBfInQafh-WsrBt87/view?usp=sharing"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Multi End Reeling Machinery MERM-PSF")}
-                      to="https://drive.google.com/file/d/1XZA54w47Z9pfrlTGrbSqeMf3pHrJtYg8/view?usp=sharing"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Incentive For Bivoltine Cocoons - Rs.30/KG-PSF")}
-                      to="https://drive.google.com/open?id=1mY6j8lxs3TuOCRWKo4ud-xpSURIEToXJ&usp=drive_copy"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Incentive For Bivoltine Cocoons")}
-                      to="https://drive.google.com/open?id=1j6Ha4_Gy8cFwqkp09FHRfSlByMsxySeG&usp=drive_copy"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Incentive For MSC Cocoons Rs.120 Per Kg")}
-                      to="https://drive.google.com/open?id=1xoGA8MQ0Gyypm5J4zACyI0FYXBMUVxS8&usp=drive_copy"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("MSC Chawki Incentive - Unit Cost For 100 DFLs Rs.1500")}
-                      to="https://drive.google.com/open?id=1HXM7khZgYrQDPIJBQut687W5iMNP1sLL&usp=drive_copy"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("North Karnataka Cocoon Transportation Incentive")}
-                      to="https://drive.google.com/open?id=1CBOM0Efx-K8f7HR7fTejp5MAH6PYPoc4&usp=drive_copy"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Pure Mysore Bonus - Rs.225 Per Kg")}
-                      to="https://drive.google.com/open?id=1YGEX6JgtrF9AtpCji6Qe6QbiIrednfIS&usp=drive_copy"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Silk Incentive-PSF")}
-                      to="https://drive.google.com/open?id=1fOBBDKYV3yBJjoMT1BJpWu2PJoTMCkMb&usp=drive_copy"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Rearing Equipment SS")}
-                      to="https://drive.google.com/open?id=1pxcyOv2UnjETdNqOiuf_Mponu7qDlD0r&usp=drive_copy"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Adopting Solar Power Generator-PSF")}
-                      to="https://drive.google.com/open?id=1e2Ek2-48n9LYrYoq3ORX0ML-Zck4aXk9&usp=drive_copy"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Adopting Heat Recovery Unit-PSF")}
-                      to="https://drive.google.com/open?id=1rj6FxnfIHRZ5wORqXujjzrDKoQS2ddmV&usp=drive_copy"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Bivoltine Chawki Incentive")}
-                      to="https://drive.google.com/open?id=1Z1iN0s0NduOyIsYFSlqYzStpb9cUychA&usp=drive_copy"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Improved Cottage Basin (ICB)")}
-                      to="https://drive.google.com/open?id=1QKV9bIRvIKxjLI09YYeYllyAtSiHeZj3&usp=drive_copy"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Italian Model Cottage Basin (IMCB)")}
-                      to="https://drive.google.com/open?id=1KpZNG7pC3RqPUZ2wG0iPz3A-I8QFG_Ct&usp=drive_copy"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Subsidy for Adopting Boiler-PSF")}
-                      to="https://drive.google.com/open?id=1pYfWsJBzYPDyv4CK8s5Cmjz6bq8f56V_&usp=drive_copy"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Reeling Shed PSF")}
-                      to="https://drive.google.com/file/d/1oDOuRK2lX7rwOBaQRcN9QOJ48ooBls75/view?usp=sharing"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Registered Private Bivoltine Chawki Rearing Center Subsidy")}
-                      to="https://drive.google.com/file/d/1qGpKqW3dasfH7D7NG8D5k_Kd5F-LE716/view?usp=sharing"
-                      blank
-                    />
-                  </MenuItem>
-                  <MenuItem>
-                    <MenuItemLink
-                      text={t("Silk Samagra")}
-                      to="https://drive.google.com/file/d/1qyb2JLTpqxDJDq5MQgh7L83rFZe0JYh0/view?usp=sharing"
-                      blank
-                    />
-                  </MenuItem>
+                  {showMenu.Helpdesk_FAQ_Adopting_Solar_Water_Heater_PSF ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Adopting Solar Water Heater-PSF")}
+                        to="https://drive.google.com/open?id=10fZ3Gc7MXadMrAfPaD6Zq-ztLTLhO_p3&usp=drive_copy"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Bonus_For_Bivoltine_Cocoons ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Bonus For Bivoltine Cocoons")}
+                        to="https://drive.google.com/open?id=1dwLAfUi8hXky3wsZGuFVQEJXPTWPjGAT&usp=drive_copy"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Adopting_Silent_Generator_PSF ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Adopting Silent Generator-PSF")}
+                        to="https://drive.google.com/file/d/1_nnRq0CQIhGaggjPBfInQafh-WsrBt87/view?usp=sharing"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Multi_End_Reeling_Machinery_MERM_PSF ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Multi End Reeling Machinery MERM-PSF")}
+                        to="https://drive.google.com/file/d/1XZA54w47Z9pfrlTGrbSqeMf3pHrJtYg8/view?usp=sharing"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Incentive_For_Bivoltine_Cocoons_30_KG_PSF ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Incentive For Bivoltine Cocoons - Rs.30/KG-PSF")}
+                        to="https://drive.google.com/open?id=1mY6j8lxs3TuOCRWKo4ud-xpSURIEToXJ&usp=drive_copy"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Incentive_For_Bivoltine_Cocoons ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Incentive For Bivoltine Cocoons")}
+                        to="https://drive.google.com/open?id=1j6Ha4_Gy8cFwqkp09FHRfSlByMsxySeG&usp=drive_copy"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Incentive_For_MSC_Cocoons_120_Per_Kg ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Incentive For MSC Cocoons Rs.120 Per Kg")}
+                        to="https://drive.google.com/open?id=1xoGA8MQ0Gyypm5J4zACyI0FYXBMUVxS8&usp=drive_copy"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_MSC_Chawki_Incentive_100_DFLs_1500 ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("MSC Chawki Incentive - Unit Cost For 100 DFLs Rs.1500")}
+                        to="https://drive.google.com/open?id=1HXM7khZgYrQDPIJBQut687W5iMNP1sLL&usp=drive_copy"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_North_Karnataka_Cocoon_Transportation_Incentive ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("North Karnataka Cocoon Transportation Incentive")}
+                        to="https://drive.google.com/open?id=1CBOM0Efx-K8f7HR7fTejp5MAH6PYPoc4&usp=drive_copy"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Pure_Mysore_Bonus_225_Per_Kg ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Pure Mysore Bonus - Rs.225 Per Kg")}
+                        to="https://drive.google.com/open?id=1YGEX6JgtrF9AtpCji6Qe6QbiIrednfIS&usp=drive_copy"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Silk_Incentive_PSF ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Silk Incentive-PSF")}
+                        to="https://drive.google.com/open?id=1fOBBDKYV3yBJjoMT1BJpWu2PJoTMCkMb&usp=drive_copy"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Rearing_Equipment_SS ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Rearing Equipment SS")}
+                        to="https://drive.google.com/open?id=1pxcyOv2UnjETdNqOiuf_Mponu7qDlD0r&usp=drive_copy"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Adopting_Solar_Power_Generator_PSF ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Adopting Solar Power Generator-PSF")}
+                        to="https://drive.google.com/open?id=1e2Ek2-48n9LYrYoq3ORX0ML-Zck4aXk9&usp=drive_copy"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Adopting_Heat_Recovery_Unit_PSF ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Adopting Heat Recovery Unit-PSF")}
+                        to="https://drive.google.com/open?id=1rj6FxnfIHRZ5wORqXujjzrDKoQS2ddmV&usp=drive_copy"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Bivoltine_Chawki_Incentive ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Bivoltine Chawki Incentive")}
+                        to="https://drive.google.com/open?id=1Z1iN0s0NduOyIsYFSlqYzStpb9cUychA&usp=drive_copy"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Improved_Cottage_Basin_ICB ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Improved Cottage Basin (ICB)")}
+                        to="https://drive.google.com/open?id=1QKV9bIRvIKxjLI09YYeYllyAtSiHeZj3&usp=drive_copy"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Italian_Model_Cottage_Basin_IMCB ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Italian Model Cottage Basin (IMCB)")}
+                        to="https://drive.google.com/open?id=1KpZNG7pC3RqPUZ2wG0iPz3A-I8QFG_Ct&usp=drive_copy"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Subsidy_For_Adopting_Boiler_PSF ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Subsidy for Adopting Boiler-PSF")}
+                        to="https://drive.google.com/open?id=1pYfWsJBzYPDyv4CK8s5Cmjz6bq8f56V_&usp=drive_copy"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Reeling_Shed_PSF ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Reeling Shed PSF")}
+                        to="https://drive.google.com/file/d/1oDOuRK2lX7rwOBaQRcN9QOJ48ooBls75/view?usp=sharing"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Registered_Private_Bivoltine_Chawki_Rearing_Center_Subsidy ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Registered Private Bivoltine Chawki Rearing Center Subsidy")}
+                        to="https://drive.google.com/file/d/1qGpKqW3dasfH7D7NG8D5k_Kd5F-LE716/view?usp=sharing"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
+                  {showMenu.Helpdesk_FAQ_Silk_Samagra ? (
+                    <MenuItem>
+                      <MenuItemLink
+                        text={t("Silk Samagra")}
+                        to="https://drive.google.com/file/d/1qyb2JLTpqxDJDq5MQgh7L83rFZe0JYh0/view?usp=sharing"
+                        blank
+                      />
+                    </MenuItem>
+                  ) : null}
                 </MenuSub>
               </MenuItem>
             ) : null}
@@ -4889,7 +5031,7 @@ function Menu() {
                           </MenuItem>
                         ) : null}
                         
-                        {showMenu.Admin_Master_Service_Spacing ? (
+                        {showMenu.Admin_Master_Service_Target ? (
                           <MenuItem>
                             <MenuItemLink
                               text={t("Target")}
@@ -6676,7 +6818,8 @@ function Menu() {
                               />
                             </MenuItem>
                           ) : null}
-                          {showMenu.Reports_Export_Report_Commercial_Market_Dashboard ? (
+                          {showMenu.Reports_Export_Report_Commercial_Market_Daily_Dashboard ||
+                          showMenu.Reports_Export_Report_Commercial_Market_Dashboard ? (
                             <MenuItem>
                               <MenuItemLink
                                 text={t("Daily Dashboard")}
