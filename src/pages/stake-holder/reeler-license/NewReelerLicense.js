@@ -18,7 +18,7 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 
 function NewReelerLicense() {
   // Translation
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   // Same page for both Registration > Reeler License menu items; the "Without License"
   // menu link adds ?licenseType=without to this URL, which skips the mandatory
   // validation on a few license-specific fields below.
@@ -1158,9 +1158,9 @@ function NewReelerLicense() {
                             onChange={handleInputs}
                           >
                             <option value="">{t("select_gender")}</option>
-                            <option value="1">Male</option>
-                            <option value="2">Female</option>
-                            <option value="3">Other</option>
+                            <option value="1">{t("Male")}</option>
+                            <option value="2">{t("Female")}</option>
+                            <option value="3">{t("Other")}</option>
                           </Form.Select>
                         </div>
                       </Form.Group>
@@ -1184,7 +1184,9 @@ function NewReelerLicense() {
                             <option value="">{t("select_Caste")}</option>
                             {casteListData.map((list) => (
                               <option key={list.id} value={list.id}>
-                                {list.title}
+                                {i18n.language === "kn"
+                                  ? list.nameInKannada
+                                  : list.title}
                               </option>
                             ))}
                           </Form.Select>
@@ -1272,7 +1274,9 @@ function NewReelerLicense() {
                                 key={list.tscMasterId}
                                 value={list.tscMasterId}
                               >
-                                {list.name}
+                                {i18n.language === "kn"
+                                  ? list.nameInKannada
+                                  : list.name}
                               </option>
                             ))}
                           </Form.Select>
@@ -1347,7 +1351,9 @@ function NewReelerLicense() {
                             <option value="0">{t("select_education")}</option>
                             {educationListData.map((list) => (
                               <option key={list.id} value={list.id}>
-                                {list.name}
+                                {i18n.language === "kn"
+                                  ? list.educationNameInKannada
+                                  : list.name}
                               </option>
                             ))}
                           </Form.Select>
@@ -1502,7 +1508,9 @@ function NewReelerLicense() {
                                 key={list.reelerTypeMasterId}
                                 value={list.reelerTypeMasterId}
                               >
-                                {list.reelerTypeMasterName}
+                                {i18n.language === "kn"
+                                  ? list.reelerTypeNameInKannada
+                                  : list.reelerTypeMasterName}
                               </option>
                             ))}
                           </Form.Select>
@@ -1608,7 +1616,9 @@ function NewReelerLicense() {
                                 key={list.machineTypeId}
                                 value={list.machineTypeId}
                               >
-                                {list.machineTypeName}
+                                {i18n.language === "kn"
+                                  ? list.machineTypeNameInKannada
+                                  : list.machineTypeName}
                               </option>
                             ))}
                           </Form.Select>
@@ -1689,7 +1699,9 @@ function NewReelerLicense() {
                                 key={list.tscMasterId}
                                 value={list.tscMasterId}
                               >
-                                {list.name}
+                                {i18n.language === "kn"
+                                  ? list.nameInKannada
+                                  : list.name}
                               </option>
                             ))}
                           </Form.Select>
@@ -1823,7 +1835,9 @@ function NewReelerLicense() {
                             <option value="">{t("select_state")}</option>
                             {stateListData.map((list) => (
                               <option key={list.stateId} value={list.stateId}>
-                                {list.stateName}
+                                {i18n.language === "kn"
+                                  ? list.stateNameInKannada
+                                  : list.stateName}
                               </option>
                             ))}
                           </Form.Select>
@@ -1857,7 +1871,9 @@ function NewReelerLicense() {
                                     key={list.districtId}
                                     value={list.districtId}
                                   >
-                                    {list.districtName}
+                                    {i18n.language === "kn"
+                                      ? list.districtNameInKannada
+                                      : list.districtName}
                                   </option>
                                 ))
                               : ""}
@@ -1890,7 +1906,9 @@ function NewReelerLicense() {
                                     key={list.talukId}
                                     value={list.talukId}
                                   >
-                                    {list.talukName}
+                                    {i18n.language === "kn"
+                                      ? list.talukNameInKannada
+                                      : list.talukName}
                                   </option>
                                 ))
                               : ""}
@@ -1925,7 +1943,9 @@ function NewReelerLicense() {
                                     key={list.hobliId}
                                     value={list.hobliId}
                                   >
-                                    {list.hobliName}
+                                    {i18n.language === "kn"
+                                      ? list.hobliNameInKannada
+                                      : list.hobliName}
                                   </option>
                                 ))
                               : ""}
@@ -1959,7 +1979,9 @@ function NewReelerLicense() {
                                     key={list.villageId}
                                     value={list.villageId}
                                   >
-                                    {list.villageName}
+                                    {i18n.language === "kn"
+                                      ? list.villageNameInKannada
+                                      : list.villageName}
                                   </option>
                                 ))
                               : ""}
@@ -2119,9 +2141,9 @@ function NewReelerLicense() {
                             value={data.functionOfUnit}
                             onChange={handleInputs}
                           >
-                            <option value="">Select</option>
-                            <option value="1">Yes</option>
-                            <option value="2">No</option>
+                            <option value="">{t("Select")}</option>
+                            <option value="1">{t("Yes")}</option>
+                            <option value="2">{t("No")}</option>
                           </Form.Select>
                         </div>
                       </Form.Group>
@@ -2605,7 +2627,9 @@ function NewReelerLicense() {
                               key={list.marketMasterId}
                               value={`${list.marketMasterId}_${list.marketMasterName}`}
                             >
-                              {list.marketMasterName}
+                              {i18n.language === "kn"
+                                ? list.marketNameInKannada
+                                : list.marketMasterName}
                             </option>
                           ))
                         : ""}
@@ -2750,7 +2774,9 @@ function NewReelerLicense() {
                               key={list.marketMasterId}
                               value={`${list.marketMasterId}_${list.marketMasterName}`}
                             >
-                              {list.marketMasterName}
+                              {i18n.language === "kn"
+                                ? list.marketNameInKannada
+                                : list.marketMasterName}
                             </option>
                           ))
                         : ""}

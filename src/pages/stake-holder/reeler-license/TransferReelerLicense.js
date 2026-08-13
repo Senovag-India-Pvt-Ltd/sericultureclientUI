@@ -1562,7 +1562,7 @@ function TransferReelerLicense() {
                             value={data.functionOfUnit}
                             onChange={handleInputs}
                           >
-                            <option value="">Select</option>
+                            <option value="">{t("select")}</option>
                             <option value="1">Yes</option>
                             <option value="2">No</option>
                           </Form.Select>
@@ -1681,7 +1681,7 @@ function TransferReelerLicense() {
                             value={data.mahajarWest}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("West")}
+                            placeholder={t("Enter West")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -1704,7 +1704,7 @@ function TransferReelerLicense() {
                             value={data.mahajarNorth}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("North")}
+                            placeholder={t("Enter North")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -1727,7 +1727,7 @@ function TransferReelerLicense() {
                             value={data.mahajarSouth}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("South")}
+                            placeholder={t("Enter South")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">

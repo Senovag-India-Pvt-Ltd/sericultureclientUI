@@ -2432,7 +2432,7 @@ function StakeHolderEdit() {
   };
 
   // Translation
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <Layout title="Edit Farmer Details">
@@ -2685,9 +2685,9 @@ function StakeHolderEdit() {
                             disabled
                           >
                             <option value="">{t("select_gender")}</option>
-                            <option value="1">Male</option>
-                            <option value="2">Female</option>
-                            <option value="3">Third Gender</option>
+                            <option value="1">{t("Male")}</option>
+                            <option value="2">{t("Female")}</option>
+                            <option value="3">{t("Third Gender")}</option>
                           </Form.Select>
                         </div>
                       </Form.Group>
@@ -2880,7 +2880,9 @@ function StakeHolderEdit() {
                                 key={list.farmerTypeId}
                                 value={list.farmerTypeId}
                               >
-                                {list.farmerTypeName}
+                                {i18n.language === "kn"
+                                  ? list.farmerTypeNameInKannada
+                                  : list.farmerTypeName}
                               </option>
                             ))}
                           </Form.Select>
@@ -2905,7 +2907,9 @@ function StakeHolderEdit() {
                             <option value="0">{t("select_Caste")}</option>
                             {casteListData.map((list) => (
                               <option key={list.id} value={list.id}>
-                                {list.title}
+                                {i18n.language === "kn"
+                                  ? list.nameInKannada
+                                  : list.title}
                               </option>
                             ))}
                           </Form.Select>
@@ -2978,7 +2982,9 @@ function StakeHolderEdit() {
                             <option value="">{t("select_education")} </option>
                             {educationListData.map((list) => (
                               <option key={list.id} value={list.id}>
-                                {list.name}
+                                {i18n.language === "kn"
+                                  ? list.educationNameInKannada
+                                  : list.name}
                               </option>
                             ))}
                           </Form.Select>
@@ -3025,7 +3031,9 @@ function StakeHolderEdit() {
                                 key={list.tscMasterId}
                                 value={list.tscMasterId}
                               >
-                                {list.name}
+                                {i18n.language === "kn"
+                                  ? list.nameInKannada
+                                  : list.name}
                               </option>
                             ))}
                           </Form.Select>
@@ -3903,7 +3911,9 @@ function StakeHolderEdit() {
                           key={list.relationshipId}
                           value={list.relationshipId}
                         >
-                          {list.relationshipName}
+                          {i18n.language === "kn"
+                            ? list.relationshipNameInKannada
+                            : list.relationshipName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4016,7 +4026,9 @@ function StakeHolderEdit() {
                           key={list.relationshipId}
                           value={list.relationshipId}
                         >
-                          {list.relationshipName}
+                          {i18n.language === "kn"
+                            ? list.relationshipNameInKannada
+                            : list.relationshipName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4097,7 +4109,9 @@ function StakeHolderEdit() {
                           key={list.landOwnershipId}
                           value={list.landOwnershipId}
                         >
-                          {list.landOwnershipName}
+                          {i18n.language === "kn"
+                            ? list.landOwnershipNameInKannada
+                            : list.landOwnershipName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4127,7 +4141,9 @@ function StakeHolderEdit() {
                       <option value="">{t("select_soil_type")}</option>
                       {soilTypeListData.map((list) => (
                         <option key={list.soilTypeId} value={list.soilTypeId}>
-                          {list.soilTypeName}
+                          {i18n.language === "kn"
+                            ? list.soilTypeNameInKannada
+                            : list.soilTypeName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4175,7 +4191,9 @@ function StakeHolderEdit() {
                           key={list.mulberrySourceId}
                           value={list.mulberrySourceId}
                         >
-                          {list.mulberrySourceName}
+                          {i18n.language === "kn"
+                            ? list.mulberrySourceNameInKannada
+                            : list.mulberrySourceName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4229,7 +4247,9 @@ function StakeHolderEdit() {
                           key={list.mulberryVarietyId}
                           value={list.mulberryVarietyId}
                         >
-                          {list.mulberryVarietyName}
+                          {i18n.language === "kn"
+                            ? list.mulberryVarietyNameInKannada
+                            : list.mulberryVarietyName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4309,7 +4329,9 @@ function StakeHolderEdit() {
                           key={list.plantationTypeId}
                           value={list.plantationTypeId}
                         >
-                          {list.plantationTypeName}
+                          {i18n.language === "kn"
+                            ? list.plantationTypeNameInKannada
+                            : list.plantationTypeName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4342,7 +4364,9 @@ function StakeHolderEdit() {
                           key={list.irrigationSourceId}
                           value={list.irrigationSourceId}
                         >
-                          {list.irrigationSourceName}
+                          {i18n.language === "kn"
+                            ? list.irrigationSourceNameInKannada
+                            : list.irrigationSourceName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4375,7 +4399,9 @@ function StakeHolderEdit() {
                           key={list.irrigationTypeId}
                           value={list.irrigationTypeId}
                         >
-                          {list.irrigationTypeName}
+                          {i18n.language === "kn"
+                            ? list.irrigationTypeNameInKannada
+                            : list.irrigationTypeName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4428,7 +4454,9 @@ function StakeHolderEdit() {
                       </option>
                       {roofTypeListData.map((list) => (
                         <option key={list.roofTypeId} value={list.roofTypeId}>
-                          {list.roofTypeName}
+                          {i18n.language === "kn"
+                            ? list.roofTypeNameInKannada
+                            : list.roofTypeName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4461,7 +4489,9 @@ function StakeHolderEdit() {
                           key={list.silkWormVarietyId}
                           value={list.silkWormVarietyId}
                         >
-                          {list.silkWormVarietyName}
+                          {i18n.language === "kn"
+                            ? list.silkWormVarietyNameInKannada
+                            : list.silkWormVarietyName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4744,7 +4774,9 @@ function StakeHolderEdit() {
                           <option value="0">{t("select_state")}</option>
                           {stateListData.map((list) => (
                             <option key={list.stateId} value={list.stateId}>
-                              {list.stateName}
+                              {i18n.language === "kn"
+                                ? list.stateNameInKannada
+                                : list.stateName}
                             </option>
                           ))}
                         </Form.Select>
@@ -4766,7 +4798,9 @@ function StakeHolderEdit() {
                                   key={list.districtId}
                                   value={list.districtId}
                                 >
-                                  {list.districtName}
+                                  {i18n.language === "kn"
+                                    ? list.districtNameInKannada
+                                    : list.districtName}
                                 </option>
                               ))
                             : ""}
@@ -4786,7 +4820,9 @@ function StakeHolderEdit() {
                           {talukListData && talukListData.length
                             ? talukListData.map((list) => (
                                 <option key={list.talukId} value={list.talukId}>
-                                  {list.talukName}
+                                  {i18n.language === "kn"
+                                    ? list.talukNameInKannada
+                                    : list.talukName}
                                 </option>
                               ))
                             : ""}
@@ -4806,7 +4842,9 @@ function StakeHolderEdit() {
                           {hobliListData && hobliListData.length
                             ? hobliListData.map((list) => (
                                 <option key={list.hobliId} value={list.hobliId}>
-                                  {list.hobliName}
+                                  {i18n.language === "kn"
+                                    ? list.hobliNameInKannada
+                                    : list.hobliName}
                                 </option>
                               ))
                             : ""}
@@ -4829,7 +4867,9 @@ function StakeHolderEdit() {
                                   key={list.villageId}
                                   value={list.villageId}
                                 >
-                                  {list.villageName}
+                                  {i18n.language === "kn"
+                                    ? list.villageNameInKannada
+                                    : list.villageName}
                                 </option>
                               ))
                             : ""}
@@ -4989,7 +5029,9 @@ function StakeHolderEdit() {
                           key={list.landOwnershipId}
                           value={list.landOwnershipId}
                         >
-                          {list.landOwnershipName}
+                          {i18n.language === "kn"
+                            ? list.landOwnershipNameInKannada
+                            : list.landOwnershipName}
                         </option>
                       ))}
                     </Form.Select>
@@ -5018,7 +5060,9 @@ function StakeHolderEdit() {
                       <option value="">{t("select_soil_type")}</option>
                       {soilTypeListData.map((list) => (
                         <option key={list.soilTypeId} value={list.soilTypeId}>
-                          {list.soilTypeName}
+                          {i18n.language === "kn"
+                            ? list.soilTypeNameInKannada
+                            : list.soilTypeName}
                         </option>
                       ))}
                     </Form.Select>
@@ -5064,7 +5108,9 @@ function StakeHolderEdit() {
                           key={list.mulberrySourceId}
                           value={list.mulberrySourceId}
                         >
-                          {list.mulberrySourceName}
+                          {i18n.language === "kn"
+                            ? list.mulberrySourceNameInKannada
+                            : list.mulberrySourceName}
                         </option>
                       ))}
                     </Form.Select>
@@ -5116,7 +5162,9 @@ function StakeHolderEdit() {
                           key={list.mulberryVarietyId}
                           value={list.mulberryVarietyId}
                         >
-                          {list.mulberryVarietyName}
+                          {i18n.language === "kn"
+                            ? list.mulberryVarietyNameInKannada
+                            : list.mulberryVarietyName}
                         </option>
                       ))}
                     </Form.Select>
@@ -5194,7 +5242,9 @@ function StakeHolderEdit() {
                           key={list.plantationTypeId}
                           value={list.plantationTypeId}
                         >
-                          {list.plantationTypeName}
+                          {i18n.language === "kn"
+                            ? list.plantationTypeNameInKannada
+                            : list.plantationTypeName}
                         </option>
                       ))}
                     </Form.Select>
@@ -5227,7 +5277,9 @@ function StakeHolderEdit() {
                           key={list.irrigationSourceId}
                           value={list.irrigationSourceId}
                         >
-                          {list.irrigationSourceName}
+                          {i18n.language === "kn"
+                            ? list.irrigationSourceNameInKannada
+                            : list.irrigationSourceName}
                         </option>
                       ))}
                     </Form.Select>
@@ -5260,7 +5312,9 @@ function StakeHolderEdit() {
                           key={list.irrigationTypeId}
                           value={list.irrigationTypeId}
                         >
-                          {list.irrigationTypeName}
+                          {i18n.language === "kn"
+                            ? list.irrigationTypeNameInKannada
+                            : list.irrigationTypeName}
                         </option>
                       ))}
                     </Form.Select>
@@ -5313,7 +5367,9 @@ function StakeHolderEdit() {
                       </option>
                       {roofTypeListData.map((list) => (
                         <option key={list.roofTypeId} value={list.roofTypeId}>
-                          {list.roofTypeName}
+                          {i18n.language === "kn"
+                            ? list.roofTypeNameInKannada
+                            : list.roofTypeName}
                         </option>
                       ))}
                     </Form.Select>
@@ -5346,7 +5402,9 @@ function StakeHolderEdit() {
                           key={list.silkWormVarietyId}
                           value={list.silkWormVarietyId}
                         >
-                          {list.silkWormVarietyName}
+                          {i18n.language === "kn"
+                            ? list.silkWormVarietyNameInKannada
+                            : list.silkWormVarietyName}
                         </option>
                       ))}
                     </Form.Select>
@@ -5629,7 +5687,9 @@ function StakeHolderEdit() {
                           <option value="0">{t("select_state")}</option>
                           {stateListData.map((list) => (
                             <option key={list.stateId} value={list.stateId}>
-                              {list.stateName}
+                              {i18n.language === "kn"
+                                ? list.stateNameInKannada
+                                : list.stateName}
                             </option>
                           ))}
                         </Form.Select>
@@ -5651,7 +5711,9 @@ function StakeHolderEdit() {
                                   key={list.districtId}
                                   value={list.districtId}
                                 >
-                                  {list.districtName}
+                                  {i18n.language === "kn"
+                                    ? list.districtNameInKannada
+                                    : list.districtName}
                                 </option>
                               ))
                             : ""}
@@ -5671,7 +5733,9 @@ function StakeHolderEdit() {
                           {talukListData && talukListData.length
                             ? talukListData.map((list) => (
                                 <option key={list.talukId} value={list.talukId}>
-                                  {list.talukName}
+                                  {i18n.language === "kn"
+                                    ? list.talukNameInKannada
+                                    : list.talukName}
                                 </option>
                               ))
                             : ""}
@@ -5691,7 +5755,9 @@ function StakeHolderEdit() {
                           {hobliListData && hobliListData.length
                             ? hobliListData.map((list) => (
                                 <option key={list.hobliId} value={list.hobliId}>
-                                  {list.hobliName}
+                                  {i18n.language === "kn"
+                                    ? list.hobliNameInKannada
+                                    : list.hobliName}
                                 </option>
                               ))
                             : ""}
@@ -5714,7 +5780,9 @@ function StakeHolderEdit() {
                                   key={list.villageId}
                                   value={list.villageId}
                                 >
-                                  {list.villageName}
+                                  {i18n.language === "kn"
+                                    ? list.villageNameInKannada
+                                    : list.villageName}
                                 </option>
                               ))
                             : ""}
@@ -5870,7 +5938,9 @@ function StakeHolderEdit() {
                       <option value="">{t("select_state")}</option>
                       {addressStateListData.map((list) => (
                         <option key={list.stateId} value={list.stateId}>
-                          {list.stateName}
+                          {i18n.language === "kn"
+                            ? list.stateNameInKannada
+                            : list.stateName}
                         </option>
                       ))}
                     </Form.Select>
@@ -5905,7 +5975,9 @@ function StakeHolderEdit() {
                               key={list.districtId}
                               value={list.districtId}
                             >
-                              {list.districtName}
+                              {i18n.language === "kn"
+                                ? list.districtNameInKannada
+                                : list.districtName}
                             </option>
                           ))
                         : ""}
@@ -5938,7 +6010,9 @@ function StakeHolderEdit() {
                       {addressTalukListData && addressTalukListData.length
                         ? addressTalukListData.map((list) => (
                             <option key={list.talukId} value={list.talukId}>
-                              {list.talukName}
+                              {i18n.language === "kn"
+                                ? list.talukNameInKannada
+                                : list.talukName}
                             </option>
                           ))
                         : ""}
@@ -5971,7 +6045,9 @@ function StakeHolderEdit() {
                       {addressHobliListData && addressHobliListData.length
                         ? addressHobliListData.map((list) => (
                             <option key={list.hobliId} value={list.hobliId}>
-                              {list.hobliName}
+                              {i18n.language === "kn"
+                                ? list.hobliNameInKannada
+                                : list.hobliName}
                             </option>
                           ))
                         : ""}
@@ -6004,7 +6080,9 @@ function StakeHolderEdit() {
                       {addressVillageListData && addressVillageListData.length
                         ? addressVillageListData.map((list) => (
                             <option key={list.villageId} value={list.villageId}>
-                              {list.villageName}
+                              {i18n.language === "kn"
+                                ? list.villageNameInKannada
+                                : list.villageName}
                             </option>
                           ))
                         : ""}
@@ -6144,7 +6222,9 @@ function StakeHolderEdit() {
                       <option value="">{t("select_state")}</option>
                       {addressStateListData.map((list) => (
                         <option key={list.stateId} value={list.stateId}>
-                          {list.stateName}
+                          {i18n.language === "kn"
+                            ? list.stateNameInKannada
+                            : list.stateName}
                         </option>
                       ))}
                     </Form.Select>
@@ -6179,7 +6259,9 @@ function StakeHolderEdit() {
                               key={list.districtId}
                               value={list.districtId}
                             >
-                              {list.districtName}
+                              {i18n.language === "kn"
+                                ? list.districtNameInKannada
+                                : list.districtName}
                             </option>
                           ))
                         : ""}
@@ -6212,7 +6294,9 @@ function StakeHolderEdit() {
                       {addressTalukListData && addressTalukListData.length
                         ? addressTalukListData.map((list) => (
                             <option key={list.talukId} value={list.talukId}>
-                              {list.talukName}
+                              {i18n.language === "kn"
+                                ? list.talukNameInKannada
+                                : list.talukName}
                             </option>
                           ))
                         : ""}
@@ -6245,7 +6329,9 @@ function StakeHolderEdit() {
                       {addressHobliListData && addressHobliListData.length
                         ? addressHobliListData.map((list) => (
                             <option key={list.hobliId} value={list.hobliId}>
-                              {list.hobliName}
+                              {i18n.language === "kn"
+                                ? list.hobliNameInKannada
+                                : list.hobliName}
                             </option>
                           ))
                         : ""}
@@ -6278,7 +6364,9 @@ function StakeHolderEdit() {
                       {addressVillageListData && addressVillageListData.length
                         ? addressVillageListData.map((list) => (
                             <option key={list.villageId} value={list.villageId}>
-                              {list.villageName}
+                              {i18n.language === "kn"
+                                ? list.villageNameInKannada
+                                : list.villageName}
                             </option>
                           ))
                         : ""}
@@ -6489,7 +6577,9 @@ function StakeHolderEdit() {
                       <option value="">{t("Select Market")}</option>
                       {marketMasterListData.map((list) => (
                         <option key={list.marketMasterId} value={list.marketMasterId}>
-                          {list.marketMasterName}
+                          {i18n.language === "kn"
+                            ? list.marketNameInKannada
+                            : list.marketMasterName}
                         </option>
                       ))}
                     </Form.Select>
@@ -6645,7 +6735,9 @@ function StakeHolderEdit() {
                       <option value="">{t("Select Market")}</option>
                       {marketMasterListData.map((list) => (
                         <option key={list.marketMasterId} value={list.marketMasterId}>
-                          {list.marketMasterName}
+                          {i18n.language === "kn"
+                            ? list.marketNameInKannada
+                            : list.marketMasterName}
                         </option>
                       ))}
                     </Form.Select>
