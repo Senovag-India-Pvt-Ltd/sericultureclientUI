@@ -50,7 +50,7 @@ function FarmerBankAccountReasonView() {
   }, [id]);
 
   return (
-    <Layout title="Farmer Bank Reason View" content="container">
+    <Layout title="Farmer Bank Reason View">
       <style>{farmerBankAccountReasonViewStyles}</style>
       <Block.Head>
         <div className="sh-page-header">

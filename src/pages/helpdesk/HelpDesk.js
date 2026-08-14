@@ -711,57 +711,53 @@ const handleAttachFileUpload = async (hdTicketId) => {
           border-radius: 10px !important;
           margin-right: 8px !important;
         }
+        .sh-page-header {
+          padding: 20px 24px;
+          background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+          border-radius: 12px;
+          border: none;
+          box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+          margin-bottom: 22px;
+        }
+        .sh-page-title {
+          margin-bottom: 4px;
+          color: #ffffff !important;
+          font-weight: 700;
+          letter-spacing: 0.2px;
+        }
+        .sh-section-header {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-weight: 700 !important;
+          font-size: 1rem !important;
+          letter-spacing: 0.3px;
+          background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+          border-left: none !important;
+          color: #ffffff !important;
+          padding: 14px 20px !important;
+          border: none !important;
+        }
+        .sh-section-header svg,
+        .sh-section-header .icon {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.22);
+          color: #ffffff;
+          font-size: 15px;
+        }
       `}</style>
       <Block.Head className="pt-3 mt-0">
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <div
-              className="d-flex align-items-center"
-              style={{
-                gap: "14px",
-                background: "rgba(255, 255, 255, 0.96)",
-                backdropFilter: "blur(6px)",
-                border: "1px solid #e3ecf7",
-                padding: "12px 18px",
-                borderRadius: "14px",
-                boxShadow: "0 4px 14px rgba(15, 76, 138, 0.12)",
-              }}
-            >
-              <div
-                style={{
-                  width: "44px",
-                  height: "44px",
-                  borderRadius: "12px",
-                  background:
-                    "linear-gradient(135deg, #1e67a8 0%, #0f3060 100%)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#ffffff",
-                  boxShadow: "0 4px 12px rgba(15, 76, 138, 0.28)",
-                  flexShrink: 0,
-                }}
-              >
-                <Icon name="help" style={{ fontSize: "20px" }}></Icon>
-              </div>
-              <div style={{ lineHeight: 1.25 }}>
-                <h2
-                  className="mb-1"
-                  style={{
-                    color: "#0f3060",
-                    fontSize: "22px",
-                    fontWeight: 800,
-                    margin: 0,
-                    letterSpacing: "0.2px",
-                  }}
-                >
-                  {t("Create Ticket")}
-                </h2>
-                <span style={{ color: "#3b5278", fontSize: "13px", fontWeight: 500 }}>
-                  {/* {t("Raise a support request — we'll get back to you shortly")} */}
-                </span>
-              </div>
-            </div>
+            <Block.Title tag="h2" className="sh-page-title">
+              {t("Create Ticket")}
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <div style={{ display: "flex", alignItems: "stretch", gap: "16px" }}>
@@ -841,6 +837,7 @@ const handleAttachFileUpload = async (hdTicketId) => {
             </div>
           </Block.HeadContent>
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
       <Block style={{ marginTop: "8px" }}>
@@ -853,23 +850,9 @@ const handleAttachFileUpload = async (hdTicketId) => {
                 overflow: "hidden",
               }}
             >
-              <Card.Header
-                style={{
-                  background:
-                    "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)",
-                  color: "#ffffff",
-                  fontWeight: 700,
-                  fontSize: "15px",
-                  padding: "14px 22px",
-                  letterSpacing: "0.3px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  border: "none",
-                }}
-              >
+              <Card.Header className="sh-section-header">
                 <Icon name="edit" style={{ fontSize: "18px" }}></Icon>
-                {t("Ticket Information")}
+                <span>{t("Ticket Information")}</span>
               </Card.Header>
               <Card.Body
                 className="helpdesk-form"

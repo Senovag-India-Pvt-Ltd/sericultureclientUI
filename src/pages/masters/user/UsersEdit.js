@@ -578,7 +578,7 @@ function UsersEdit() {
                           value={data.password}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter password"
+                          placeholder={t("Enter password")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">

@@ -8,10 +8,12 @@ import { Icon, Select } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function VillageEdit() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -226,7 +228,7 @@ function VillageEdit() {
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Village</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Village")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -236,7 +238,7 @@ function VillageEdit() {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
                 <li>
@@ -245,7 +247,7 @@ function VillageEdit() {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
               </ul>
@@ -261,19 +263,19 @@ function VillageEdit() {
             <Card>
               <Card.Header className="sh-section-header">
                 <Icon name="edit" />
-                <span>Village Details</span>
+                <span>{t("Village Details")}</span>
               </Card.Header>
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          State<span className="text-danger">*</span>
+                          {t("state")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -286,7 +288,7 @@ function VillageEdit() {
                               data.stateId === undefined || data.stateId === "0"
                             }
                           >
-                            <option value="">Select State</option>
+                            <option value="">{t("Select State")}</option>
                             {stateListData.map((list) => (
                               <option key={list.stateId} value={list.stateId}>
                                 {list.stateName}
@@ -294,7 +296,7 @@ function VillageEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            State Name is required
+                            {t("State Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -302,7 +304,7 @@ function VillageEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          District<span className="text-danger">*</span>
+                          {t("district")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -316,7 +318,7 @@ function VillageEdit() {
                               data.districtId === "0"
                             }
                           >
-                            <option value="">Select District</option>
+                            <option value="">{t("Select District")}</option>
                             {districtListData && districtListData.length
                               ? districtListData.map((list) => (
                                   <option
@@ -329,7 +331,7 @@ function VillageEdit() {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            District Name is required
+                            {t("District Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -337,7 +339,7 @@ function VillageEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Taluk<span className="text-danger">*</span>
+                          {t("taluk")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -350,7 +352,7 @@ function VillageEdit() {
                               data.talukId === undefined || data.talukId === "0"
                             }
                           >
-                            <option value="">Select Taluk</option>
+                            <option value="">{t("Select Taluk")}</option>
                             {talukListData && talukListData.length
                               ? talukListData.map((list) => (
                                   <option
@@ -363,7 +365,7 @@ function VillageEdit() {
                               : ""}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Taluk Name is required
+                            {t("Taluk Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -371,7 +373,7 @@ function VillageEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          Hobli<span className="text-danger">*</span>
+                          {t("Hobli")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -384,7 +386,7 @@ function VillageEdit() {
                               data.hobliId === undefined || data.hobliId === "0"
                             }
                           >
-                            <option value="">Select Hobli</option>
+                            <option value="">{t("Select Hobli")}</option>
                             {hobliListData && hobliListData.length
                               ? hobliListData.map((list) => (
                                   <option
@@ -397,7 +399,7 @@ function VillageEdit() {
                               : null}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            Hobli Name is required
+                            {t("Hobli Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -405,7 +407,7 @@ function VillageEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="Village">
-                          Village<span className="text-danger">*</span>
+                          {t("Village")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -414,10 +416,10 @@ function VillageEdit() {
                             value={data.villageName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Village"
+                            placeholder={t("Enter Village")}
                           />
                           <Form.Control.Feedback type="invalid">
-                            Village Name is required
+                            {t("Village Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -426,7 +428,7 @@ function VillageEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="Village">
-                          Village Name in Kannada
+                          {t("Village Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -436,11 +438,11 @@ function VillageEdit() {
                             value={data.villageNameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Village Name in Kannada"
+                            placeholder={t("Enter Village Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Village Name Name in Kannada is required
+                            {t("Village Name Name in Kannada is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -449,7 +451,7 @@ function VillageEdit() {
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="Village">
-                        Lg Village<span className="text-danger">*</span>
+                        {t("Lg Village")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -458,11 +460,11 @@ function VillageEdit() {
                           value={data.lgVillage}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Lg Village"
+                          placeholder={t("Enter Lg Village")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Lg Village is required
+                        {t("Lg Village is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -471,7 +473,7 @@ function VillageEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="Village">
-                        Village Code<span className="text-danger">*</span>
+                        {t("Village Code")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -480,11 +482,11 @@ function VillageEdit() {
                           value={data.villageCode}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Village Code"
+                          placeholder={t("Enter Village Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Village Code is required
+                        {t("Village Code is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -500,7 +502,7 @@ function VillageEdit() {
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary" className="sh-save-btn">
                     <Icon name="save" />
-                    <span>Update</span>
+                    <span>{t("update")}</span>
                   </Button>
                 </li>
                 <li>
@@ -512,7 +514,7 @@ function VillageEdit() {
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear} className="sh-cancel-btn">
                     <Icon name="cross" />
-                    <span>Cancel</span>
+                    <span>{t("cancel")}</span>
                   </Button>
                 </li>
               </ul>

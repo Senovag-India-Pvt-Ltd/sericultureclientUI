@@ -297,7 +297,7 @@ function StakeHolderViewPage() {
                     <span className="sh-chip sh-chip-warning">
                       <Icon name="building" />
                       <span className="ms-1">
-                        TSC:{" "}
+                        {t("TSC")}:{" "}
                         {i18n.language === "kn"
                           ? StakeHolder.tscNameKannada
                           : StakeHolder.tscName}
@@ -336,7 +336,7 @@ function StakeHolderViewPage() {
                 { label: t("farmer_name"), value: StakeHolder.firstName },
                 { label: t("farmer_name_kannada"), value: StakeHolder.nameKan },
                 {
-                  label: "TSC",
+                  label: t("TSC"),
                   value:
                     i18n.language === "kn"
                       ? StakeHolder.tscNameKannada

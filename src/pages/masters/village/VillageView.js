@@ -6,10 +6,12 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function VillageView() {
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -56,7 +58,7 @@ function VillageView() {
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Village View</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Village View")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -66,7 +68,7 @@ function VillageView() {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
                 <li>
@@ -75,7 +77,7 @@ function VillageView() {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
               </ul>
@@ -88,7 +90,7 @@ function VillageView() {
         <Card>
           <Card.Header className="sh-section-header">
             <Icon name="eye" />
-            <span>Village Details</span>
+            <span>{t("Village Details")}</span>
           </Card.Header>
           <Card.Body>
             <Row className="g-gs">
@@ -96,35 +98,35 @@ function VillageView() {
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> ID:</td>
+                      <td style={styles.ctstyle}> {t("ID")}:</td>
                       <td>{Village.villageId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> State:</td>
+                      <td style={styles.ctstyle}> {t("State")}:</td>
                       <td>{Village.stateName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> District:</td>
+                      <td style={styles.ctstyle}> {t("District")}:</td>
                       <td>{Village.districtName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Taluk:</td>
+                      <td style={styles.ctstyle}> {t("Taluk")}:</td>
                       <td>{Village.talukName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Village:</td>
+                      <td style={styles.ctstyle}> {t("Village")}:</td>
                       <td>{Village.villageName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Village Name in Kannada:</td>
+                      <td style={styles.ctstyle}> {t("Village Name in Kannada")}:</td>
                       <td>{Village.villageNameInKannada}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Lg Village:</td>
+                      <td style={styles.ctstyle}>{t("Lg Village")}:</td>
                       <td>{Village.lgVillage}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Village Code:</td>
+                      <td style={styles.ctstyle}>{t("Village Code")}:</td>
                       <td>{Village.villageCode}</td>
                     </tr>
                   </tbody>

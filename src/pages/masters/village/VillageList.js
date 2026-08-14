@@ -11,10 +11,12 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function VillageList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 50;
@@ -287,7 +289,7 @@ function VillageList() {
 
   const VillageDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="d-flex flex-nowrap align-items-center text-start w-100">
@@ -299,7 +301,7 @@ function VillageList() {
             onClick={() => handleView(row.villageId)}
           >
             <Icon name="eye" />
-            <span>View</span>
+            <span>{t("View")}</span>
           </Button>
           <Button
             variant="primary"
@@ -308,7 +310,7 @@ function VillageList() {
             onClick={() => handleEdit(row.villageId)}
           >
             <Icon name="edit" />
-            <span>Edit</span>
+            <span>{t("Edit")}</span>
           </Button>
           <Button
             variant="danger"
@@ -317,7 +319,7 @@ function VillageList() {
             className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
             <Icon name="trash" />
-            <span>Delete</span>
+            <span>{t("Delete")}</span>
           </Button>
         </div>
       ),
@@ -327,70 +329,70 @@ function VillageList() {
       grow: 0,
     },
     {
-      name: "Serial Number",
+      name: t("Serial Number"),
       selector: (row) => row.serialNumber,
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Village Id",
+      name: t("Village Id"),
       selector: (row) => row.villageId,
       cell: (row) => <span>{row.villageId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "State",
+      name: t("State"),
       selector: (row) => row.stateName,
       cell: (row) => <span>{row.stateName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "District",
+      name: t("District"),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Taluk",
+      name: t("Taluk"),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Hobli",
+      name: t("Hobli"),
       selector: (row) => row.hobliName,
       cell: (row) => <span>{row.hobliName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Village",
+      name: t("Village"),
       selector: (row) => row.villageName,
       cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Village Name In Kannada",
+      name: t("Village Name In Kannada"),
       selector: (row) => row.villageNameInKannada,
       cell: (row) => <span>{row.villageNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Lg Villag",
+      name: t("Lg Villag"),
       selector: (row) => row.lgVillage,
       cell: (row) => <span>{row.lgVillage}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Village Code",
+      name: t("Village Code"),
       selector: (row) => row.villageCode,
       cell: (row) => <span>{row.villageCode}</span>,
       sortable: true,
@@ -405,7 +407,7 @@ function VillageList() {
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Village List</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Village List")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -415,7 +417,7 @@ function VillageList() {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="plus" />
-                    <span>Create</span>
+                    <span>{t("Create")}</span>
                   </Link>
                 </li>
                 <li>
@@ -424,7 +426,7 @@ function VillageList() {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="plus" />
-                    <span>Create</span>
+                    <span>{t("Create")}</span>
                   </Link>
                 </li>
               </ul>
@@ -438,7 +440,7 @@ function VillageList() {
           <Row className="m-4">
             <Col sm={2}>
               <Form.Group className="form-group mt-n4">
-                <Form.Label>District</Form.Label>
+                <Form.Label>{t("District")}</Form.Label>
                 <div className="form-control-wrap">
                   <Form.Select
                     name="districtId"
@@ -449,7 +451,7 @@ function VillageList() {
                       data.districtId === undefined || data.districtId === "0"
                     }
                   >
-                    <option value="">Select District</option>
+                    <option value="">{t("Select District")}</option>
                     {districtListData && districtListData.length
                       ? districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
@@ -459,7 +461,7 @@ function VillageList() {
                       : ""}
                   </Form.Select>
                   <Form.Control.Feedback type="invalid">
-                    District Name is required
+                    {t("District Name is required")}
                   </Form.Control.Feedback>
                 </div>
               </Form.Group>
@@ -467,7 +469,7 @@ function VillageList() {
 
             <Col sm={2}>
               <Form.Group className="form-group mt-n4">
-                <Form.Label>Taluk</Form.Label>
+                <Form.Label>{t("Taluk")}</Form.Label>
                 <div className="form-control-wrap">
                   <Form.Select
                     name="talukId"
@@ -478,7 +480,7 @@ function VillageList() {
                       data.talukId === undefined || data.talukId === "0"
                     }
                   >
-                    <option value="">Select Taluk</option>
+                    <option value="">{t("Select Taluk")}</option>
                     {talukListData && talukListData.length
                       ? talukListData.map((list) => (
                           <option key={list.talukId} value={list.talukId}>
@@ -488,7 +490,7 @@ function VillageList() {
                       : ""}
                   </Form.Select>
                   <Form.Control.Feedback type="invalid">
-                    Taluk Name is required
+                    {t("Taluk Name is required")}
                   </Form.Control.Feedback>
                 </div>
               </Form.Group>
@@ -496,7 +498,7 @@ function VillageList() {
 
             <Col sm={2}>
               <Form.Group className="form-group mt-n4">
-                <Form.Label>Hobli</Form.Label>
+                <Form.Label>{t("Hobli")}</Form.Label>
                 <div className="form-control-wrap">
                   <Form.Select
                     name="hobliId"
@@ -508,7 +510,7 @@ function VillageList() {
                       data.hobliId === "0"
                     }
                   >
-                    <option value="">Select Hobli</option>
+                    <option value="">{t("Select Hobli")}</option>
                     {hobliListData && hobliListData.length
                       ? hobliListData.map((list) => (
                           <option key={list.hobliId} value={list.hobliId}>
@@ -518,7 +520,7 @@ function VillageList() {
                       : ""}
                   </Form.Select>
                   <Form.Control.Feedback type="invalid">
-                    Hobli Name is required
+                    {t("Hobli Name is required")}
                   </Form.Control.Feedback>
                 </div>
               </Form.Group>
@@ -526,7 +528,7 @@ function VillageList() {
             <Col sm={2}>
               <Form.Group className="form-group mt-n4">
                 <Form.Label htmlFor="Village">
-                  Village<span className="text-danger">*</span>
+                  {t("Village")}<span className="text-danger">*</span>
                 </Form.Label>
                 <div className="form-control-wrap">
                   <Form.Control
@@ -535,11 +537,11 @@ function VillageList() {
                     value={data.villageName}
                     onChange={handleInputs}
                     type="text"
-                    placeholder="Enter Village"
+                    placeholder={t("Enter Village")}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    Village Name is required
+                    {t("Village Name is required")}
                   </Form.Control.Feedback>
                 </div>
               </Form.Group>
@@ -575,7 +577,7 @@ function VillageList() {
             <Col sm={2}>
               <Button type="button" variant="primary" onClick={search} className="d-inline-flex align-items-center gap-1">
                 <Icon name="search" />
-                <span>Search</span>
+                <span>{t("Search")}</span>
               </Button>
             </Col>
             </Row>
