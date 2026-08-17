@@ -963,13 +963,13 @@ function DbtPushedList() {
   ];
 
   return (
-    <Layout title="DBT Pushed List">
+    <Layout title="DBT Pushed Applications">
       <style>{dbtPushedListStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2" className="sh-page-title">{t("DBT Pushed List")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("DBT Pushed Applications")}</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
         </div>

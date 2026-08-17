@@ -1887,13 +1887,13 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
   `;
 
   return (
-    <Layout title="Drawing Officer List-K2 Push">
+    <Layout title="K2 Application Push">
       <style>{drawingOfficerListForK2PushStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2" className="sh-page-title">{t("Drawing Officer List-K2 Push")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("K2 Application Push")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
 

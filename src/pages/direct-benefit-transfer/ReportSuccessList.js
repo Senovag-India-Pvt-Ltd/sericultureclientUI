@@ -1150,13 +1150,13 @@ const getFinancialDefaultDetails = () => {
   `;
 
   return (
-    <Layout title="Report Success List">
+    <Layout title="Successful Applications">
       <style>{reportSuccessListStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2" className="sh-page-title">{t("Report Success List")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("Successful Applications")}</Block.Title>
           </Block.HeadContent>
           {/* <Block.HeadContent>
             <ul className="d-flex">

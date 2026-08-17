@@ -1728,13 +1728,13 @@ const getFinancialDefaultDetails = () => {
   `;
 
   return (
-    <Layout title="Rejection List-DBT">
+    <Layout title="DBT Rejected Applications">
       <style>{rejectionListForDBTStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2" className="sh-page-title">{t("Rejection List-DBT")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("DBT Rejected Applications")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
 
