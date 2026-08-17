@@ -50,7 +50,7 @@ function DiseaseStatusView() {
   }, [id]);
 
   return (
-    <Layout title={t("Disease Status View")} content="container">
+    <Layout title={t("Disease Status View")}>
       <style>{diseaseStatusViewStyles}</style>
       <Block.Head>
         <div className="sh-page-header">

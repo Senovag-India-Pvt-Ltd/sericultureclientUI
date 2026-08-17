@@ -126,7 +126,7 @@ function HelpDeskSeverityEdit() {
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Edit Help Desk Severity</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Edit Help Desk Severity")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -161,7 +161,7 @@ function HelpDeskSeverityEdit() {
             <Card>
               <Card.Header className="sh-section-header">
                 <Icon name="edit" />
-                <span>Help Desk Severity Details</span>
+                <span>{t("Help Desk Severity Details")}</span>
               </Card.Header>
               <Card.Body>
                 {loading ? (
@@ -173,7 +173,7 @@ function HelpDeskSeverityEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="hdSeverity">
-                          Help Desk Severity
+                          {t("Help Desk Severity")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -183,11 +183,11 @@ function HelpDeskSeverityEdit() {
                             value={data.hdSeverityName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Hd Severity"
+                            placeholder={t("Enter Help Desk Severity")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Severity Name is required.
+                            {t("Severity Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

@@ -14,10 +14,12 @@ import { FaRegSquare, FaCheckSquare, FaMinusSquare } from "react-icons/fa";
 import { IoMdArrowDropright } from "react-icons/io";
 import TreeView, { flattenTree } from "react-accessible-treeview";
 import cx from "classnames";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function RoleConfig() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     roleId: "",
     rpRolePermissionId: 4,
@@ -269,8 +271,8 @@ function RoleConfig() {
       setValidated(true);
       Swal.fire({
         icon: "warning",
-        title: "Role is required",
-        text: "Please select a Role before submitting.",
+        title: t("Role is required"),
+        text: t("Please select a Role before submitting."),
       });
       return;
     }
@@ -281,7 +283,7 @@ function RoleConfig() {
         // saveSuccess();
         Swal.fire({
           icon: "success",
-          title: "Saved successfully",
+          title: t("Saved successfully"),
         });
         // alert("saved");
         setData({
@@ -351,7 +353,7 @@ function RoleConfig() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     }).then(() => navigate("/seriui/relationship-list"));
   };
@@ -359,8 +361,8 @@ function RoleConfig() {
   const saveError = () => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Save attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
@@ -390,7 +392,7 @@ function RoleConfig() {
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Role Config</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Role Config")}</Block.Title>
               {/* <nav>
                 <ol className="breadcrumb breadcrumb-arrow mb-0">
                   <li className="breadcrumb-item">
@@ -413,7 +415,7 @@ function RoleConfig() {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
                 <li>
@@ -422,7 +424,7 @@ function RoleConfig() {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
               </ul>
@@ -441,7 +443,7 @@ function RoleConfig() {
                   <Col lg="6">
                     <Form.Group className="form-group ">
                       <Form.Label>
-                        Role<span className="text-danger">*</span>
+                        {t("Role")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -454,7 +456,7 @@ function RoleConfig() {
                             (!data.roleId || data.roleId === "0")
                           }
                         >
-                          <option value="0">Select Roles</option>
+                          <option value="0">{t("Select Roles")}</option>
                           {rolesListData.map((list) => (
                             <option key={list.roleId} value={list.roleId}>
                               {list.roleName}
@@ -462,7 +464,7 @@ function RoleConfig() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Role is required
+                          {t("Role is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -557,7 +559,7 @@ function RoleConfig() {
               <ul className="d-flex align-items-center justify-content-center gap g-3">
                 <li>
                   <Button type="button" variant="primary" onClick={postData}>
-                    Submit
+                    {t("Submit")}
                   </Button>
                 </li>
                 <li>
@@ -565,7 +567,7 @@ function RoleConfig() {
                     to="/seriui/relationship-list"
                     className="btn btn-secondary border-0"
                   >
-                    Cancel
+                    {t("Cancel")}
                   </Link>
                 </li>
               </ul>

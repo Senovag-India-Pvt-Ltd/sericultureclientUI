@@ -50,7 +50,7 @@ function MountView() {
   }, [id]);
 
   return (
-    <Layout title={t("Mount View")} content="container">
+    <Layout title={t("Mount View")}>
       <style>{mountViewStyles}</style>
       <Block.Head>
         <div className="sh-page-header">

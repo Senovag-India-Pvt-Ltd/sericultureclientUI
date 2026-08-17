@@ -50,7 +50,7 @@ function ReasonView() {
   }, [id]);
 
   return (
-    <Layout title={t("Reason View")} content="container">
+    <Layout title={t("Reason View")}>
       <style>{reasonViewStyles}</style>
       <Block.Head>
         <div className="sh-page-header">

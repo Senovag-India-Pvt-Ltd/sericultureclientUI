@@ -13,10 +13,12 @@ import { FaSquare, FaCheckSquare, FaMinusSquare } from "react-icons/fa";
 import { IoMdArrowDropright } from "react-icons/io";
 import TreeView, { flattenTree } from "react-accessible-treeview";
 import cx from "classnames";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function RolePages() {
+  const { t } = useTranslation();
   const folder = {
     name: "",
     children: [
@@ -409,7 +411,7 @@ function RolePages() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     }).then(() => navigate("#"));
   };
@@ -417,8 +419,8 @@ function RolePages() {
   const saveError = () => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Save attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
@@ -429,7 +431,7 @@ function RolePages() {
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">{editId ? "Edit" : "Add"} Page</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{editId ? t("Edit") : t("Add")} {t("Page")}</Block.Title>
               {/* <nav>
                 <ol className="breadcrumb breadcrumb-arrow mb-0">
                   <li className="breadcrumb-item">
@@ -480,7 +482,7 @@ function RolePages() {
                     <Row className="g-gs">
                       <Col lg="6">
                         <Form.Group className="form-group mt-3">
-                          <Form.Label htmlFor="parent">Parent</Form.Label>
+                          <Form.Label htmlFor="parent">{t("Parent")}</Form.Label>
                           <div className="d-flex">
                             <div className="form-control-wrap">
                               <Form.Control
@@ -498,7 +500,7 @@ function RolePages() {
                                 variant="primary"
                                 onClick={handleShowModal}
                               >
-                                add
+                                {t("Add")}
                               </Button>
                             </div>
                           </div>
@@ -530,7 +532,7 @@ function RolePages() {
                         </Form.Group> */}
 
                         <Form.Group className="form-group mt-3">
-                          <Form.Label htmlFor="pageName">Page Name</Form.Label>
+                          <Form.Label htmlFor="pageName">{t("Page Name")}</Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
                               id="pageName"
@@ -538,12 +540,12 @@ function RolePages() {
                               value={selectedNodeId.pageName}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter Page Name"
+                              placeholder={t("Enter Page Name")}
                             />
                           </div>
                         </Form.Group>
                         <Form.Group className="form-group mt-3">
-                          <Form.Label htmlFor="route">Route</Form.Label>
+                          <Form.Label htmlFor="route">{t("Route")}</Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
                               id="route"
@@ -551,12 +553,12 @@ function RolePages() {
                               value={selectedNodeId.route}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter Route"
+                              placeholder={t("Enter Route")}
                             />
                           </div>
                         </Form.Group>
                         <Form.Group className="form-group mt-3">
-                          <Form.Label htmlFor="mapCode">Map Code</Form.Label>
+                          <Form.Label htmlFor="mapCode">{t("Map Code")}</Form.Label>
                           <div className="form-control-wrap">
                             <Form.Control
                               id="mapCode"
@@ -564,7 +566,7 @@ function RolePages() {
                               value={selectedNodeId.mapCode}
                               onChange={handleInputs}
                               type="text"
-                              placeholder="Enter Map Code(Unique)"
+                              placeholder={t("Enter Map Code(Unique)")}
                             />
                           </div>
                         </Form.Group>
@@ -635,7 +637,7 @@ function RolePages() {
                                 remove(removeId);
                               }}
                             >
-                              Remove
+                              {t("Remove")}
                             </Button>
                           </div>
                         ) : (
@@ -707,7 +709,7 @@ function RolePages() {
 
             <Modal show={showModal} onHide={handleCloseModal} size="xl">
               <Modal.Header closeButton>
-                <Modal.Title>Add Parent</Modal.Title>
+                <Modal.Title>{t("Add Parent")}</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <Form action="#">
@@ -840,7 +842,7 @@ function RolePages() {
                       <div className="d-flex justify-content-center gap g-2">
                         <div className="gap-col">
                           <Button variant="success" onClick={handleCloseModal}>
-                            Add
+                            {t("Add")}
                           </Button>
                         </div>
 
@@ -849,7 +851,7 @@ function RolePages() {
                             variant="secondary"
                             onClick={handleCloseModal}
                           >
-                            Cancel
+                            {t("Cancel")}
                           </Button>
                         </div>
                       </div>
@@ -864,11 +866,11 @@ function RolePages() {
                 <li>
                   {editId && select ? (
                     <Button type="button" variant="primary" onClick={postEdit}>
-                      Update
+                      {t("Update")}
                     </Button>
                   ) : (
                     <Button type="button" variant="primary" onClick={postData}>
-                      Submit
+                      {t("Submit")}
                     </Button>
                   )}
                 </li>
@@ -878,7 +880,7 @@ function RolePages() {
                     variant="secondary"
                     onClick={() => clear()}
                   >
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

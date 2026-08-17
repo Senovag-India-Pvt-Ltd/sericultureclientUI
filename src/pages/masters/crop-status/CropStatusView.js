@@ -51,7 +51,7 @@ function CropStatusView() {
   }, [id]);
 
   return (
-   <Layout title={t("Crop Status View")} content="container">
+   <Layout title={t("Crop Status View")}>
       <style>{cropStatusViewStyles}</style>
       <Block.Head>
         <div className="sh-page-header">

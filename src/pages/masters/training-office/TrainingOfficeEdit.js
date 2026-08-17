@@ -182,7 +182,7 @@ function TrainingOfficeEdit() {
                             value={data.trOfficeName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("Enter Training Office ")}
+                            placeholder={t("Enter Training Office")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
