@@ -13,7 +13,7 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function StakeHolderViewPage() {
   // Translation
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const DetailGrid = ({ items }) => {
     const visible = items.filter((it) => it && it.show !== false);
@@ -296,7 +296,12 @@ function StakeHolderViewPage() {
                   {StakeHolder.tscName ? (
                     <span className="sh-chip sh-chip-warning">
                       <Icon name="building" />
-                      <span className="ms-1">{t("TSC")}: {StakeHolder.tscName}</span>
+                      <span className="ms-1">
+                        {t("TSC")}:{" "}
+                        {i18n.language === "kn"
+                          ? StakeHolder.tscNameKannada
+                          : StakeHolder.tscName}
+                      </span>
                     </span>
                   ) : null}
                 </div>
@@ -330,22 +335,40 @@ function StakeHolderViewPage() {
                 { label: t("FRUITS ID"), value: StakeHolder.fruitsId },
                 { label: t("farmer_name"), value: StakeHolder.firstName },
                 { label: t("farmer_name_kannada"), value: StakeHolder.nameKan },
-                { label: t("TSC"), value: StakeHolder.tscName },
-                { label: t("fathers_husbands_name"), value: StakeHolder.fatherName },
+                {
+                  label: t("TSC"),
+                  value:
+                    i18n.language === "kn"
+                      ? StakeHolder.tscNameKannada
+                      : StakeHolder.tscName,
+                },
+                {
+                  label: t("fathers_husbands_name"),
+                  value:
+                    i18n.language === "kn"
+                      ? StakeHolder.fatherNameKan
+                      : StakeHolder.fatherName,
+                },
                 {
                   label: t("Gender"),
                   value:
                     StakeHolder.genderId === 1
-                      ? "Male"
+                      ? t("Male")
                       : StakeHolder.genderId === 2
-                        ? "Female"
+                        ? t("Female")
                         : StakeHolder.genderId === 3
-                          ? "Third Gender"
+                          ? t("Third Gender")
                           : StakeHolder.genderId
-                            ? "Other"
+                            ? t("Other")
                             : "",
                 },
-                { label: t("Caste"), value: StakeHolder.title },
+                {
+                  label: t("Caste"),
+                  value:
+                    i18n.language === "kn"
+                      ? StakeHolder.casteNameKannada
+                      : StakeHolder.title,
+                },
                 {
                   label: t("differently_abled"),
                   value:
@@ -363,8 +386,20 @@ function StakeHolderViewPage() {
                   value: StakeHolder.totalLandHolding,
                 },
                 { label: t("farmer_number"), value: StakeHolder.farmerNumber },
-                { label: t("farmer_type"), value: StakeHolder.farmerTypeName },
-                { label: t("education"), value: StakeHolder.name },
+                {
+                  label: t("farmer_type"),
+                  value:
+                    i18n.language === "kn"
+                      ? StakeHolder.farmerTypeNameKannada
+                      : StakeHolder.farmerTypeName,
+                },
+                {
+                  label: t("education"),
+                  value:
+                    i18n.language === "kn"
+                      ? StakeHolder.educationNameKannada
+                      : StakeHolder.name,
+                },
                 { label: t("recipient_id"), value: StakeHolder.khazaneRecipientId },
               ]}
             />
@@ -432,7 +467,10 @@ function StakeHolderViewPage() {
                         { label: t("Name"), value: familyMembers.farmerFamilyName },
                         {
                           label: t("relationship"),
-                          value: familyMembers.relationshipName,
+                          value:
+                            i18n.language === "kn"
+                              ? familyMembers.relationshipNameKannada
+                              : familyMembers.relationshipName,
                         },
                       ]}
                     />
@@ -482,10 +520,34 @@ function StakeHolderViewPage() {
                         //   value: farmerAddressDetails.farmerAddressId,
                         // },
                         { label: t("address"), value: farmerAddressDetails.addressText },
-                        { label: t("district"), value: farmerAddressDetails.district },
-                        { label: t("taluk"), value: farmerAddressDetails.taluk },
-                        { label: t("village"), value: farmerAddressDetails.village },
-                        { label: t("state"), value: farmerAddressDetails.stateName },
+                        {
+                          label: t("district"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerAddressDetails.districtNameKannada
+                              : farmerAddressDetails.districtName,
+                        },
+                        {
+                          label: t("taluk"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerAddressDetails.talukNameKannada
+                              : farmerAddressDetails.talukName,
+                        },
+                        {
+                          label: t("village"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerAddressDetails.villageNameKannada
+                              : farmerAddressDetails.villageName,
+                        },
+                        {
+                          label: t("state"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerAddressDetails.stateNameKannada
+                              : farmerAddressDetails.stateName,
+                        },
                       ]}
                     />
                   </div>
@@ -530,20 +592,74 @@ function StakeHolderViewPage() {
                     <DetailGrid
                       items={[
                         // { label: t("Farmer Land Details Id"), value: farmerLand.farmerLandDetailsId },
-                        { label: t("land_ownership"), value: farmerLand.landOwnershipName },
+                        {
+                          label: t("land_ownership"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerLand.landOwnershipNameKannada
+                              : farmerLand.landOwnershipName,
+                        },
                         { label: t("survey_number"), value: farmerLand.surveyNumber },
-                        { label: t("plantation_type"), value: farmerLand.plantationTypeName },
-                        { label: t("soil_type"), value: farmerLand.soilTypeName },
+                        {
+                          label: t("plantation_type"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerLand.plantationTypeNameKannada
+                              : farmerLand.plantationTypeName,
+                        },
+                        {
+                          label: t("soil_type"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerLand.soilTypeNameKannada
+                              : farmerLand.soilTypeName,
+                        },
                         { label: t("hissa"), value: farmerLand.hissa },
-                        { label: t("source_of_Mulberry"), value: farmerLand.mulberrySourceName },
+                        {
+                          label: t("source_of_Mulberry"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerLand.mulberrySourceNameKannada
+                              : farmerLand.mulberrySourceName,
+                        },
                         { label: t("Mulberry Area(in Acres)"), value: farmerLand.mulberryArea },
-                        { label: t("Mulberry_Variety"), value: farmerLand.mulberryVarietyName },
+                        {
+                          label: t("Mulberry_Variety"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerLand.mulberryVarietyNameKannada
+                              : farmerLand.mulberryVarietyName,
+                        },
                         { label: t("Plantation Spacing"), value: farmerLand.spacing },
-                        { label: t("irrigation_source"), value: farmerLand.irrigationSourceName },
-                        { label: t("irrigation_type"), value: farmerLand.irrigationTypeName },
+                        {
+                          label: t("irrigation_source"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerLand.irrigationSourceNameKannada
+                              : farmerLand.irrigationSourceName,
+                        },
+                        {
+                          label: t("irrigation_type"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerLand.irrigationTypeNameKannada
+                              : farmerLand.irrigationTypeName,
+                        },
                         { label: t("Rearing House (In Sq ft)"), value: farmerLand.rearingHouseDetails },
-                        { label: t("rearing_house_roof_type"), value: farmerLand.roofTypeName },
-                        { label: t("silk_worm"), value: farmerLand.silkWormVarietyName },
+                        {
+                          label: t("rearing_house_roof_type"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerLand.roofTypeNameKannada
+                              : farmerLand.roofTypeName,
+                        },
+                        {
+                          label: t("silk_worm"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerLand.silkWormVarietyNameKannada
+                              : farmerLand.silkWormVarietyName,
+                        },
                         { label: t("rearing_capacity_crops_per_Annum"), value: farmerLand.rearingCapacityCrops },
                         { label: t("rearing_capacity_dlf_per_crop"), value: farmerLand.rearingCapacityDlf },
                         { label: t("loan_details"), value: farmerLand.loanDetails },
@@ -555,11 +671,41 @@ function StakeHolderViewPage() {
                         { label: t("Acre"), value: farmerLand.acre },
                         { label: t("Gunta"), value: farmerLand.gunta },
                         { label: t("FGunta"), value: farmerLand.fgunta },
-                        { label: t("state"), value: farmerLand.stateName },
-                        { label: t("district"), value: farmerLand.districtName },
-                        { label: t("taluk"), value: farmerLand.talukName },
-                        { label: t("hobli"), value: farmerLand.hobliName },
-                        { label: t("village"), value: farmerLand.villageName },
+                        {
+                          label: t("state"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerLand.stateNameKannada
+                              : farmerLand.stateName,
+                        },
+                        {
+                          label: t("district"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerLand.districtNameKannada
+                              : farmerLand.districtName,
+                        },
+                        {
+                          label: t("taluk"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerLand.talukNameKannada
+                              : farmerLand.talukName,
+                        },
+                        {
+                          label: t("hobli"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerLand.hobliNameKannada
+                              : farmerLand.hobliName,
+                        },
+                        {
+                          label: t("village"),
+                          value:
+                            i18n.language === "kn"
+                              ? farmerLand.villageNameKannada
+                              : farmerLand.villageName,
+                        },
                         { label: t("address"), value: farmerLand.address },
                         { label: t("pin_code"), value: farmerLand.pincode },
                       ]}

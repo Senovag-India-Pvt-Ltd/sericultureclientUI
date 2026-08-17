@@ -129,7 +129,7 @@ function SilkWormVarietyEdit() {
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Edit Silk Worm Variety</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Edit Silk Worm Variety")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">

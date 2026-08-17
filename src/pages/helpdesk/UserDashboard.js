@@ -488,74 +488,76 @@ function UserDashboard() {
         .user-dashboard .rdt_Pagination button {
           color: #1a3c6e !important;
         }
+        .sh-page-header {
+          padding: 20px 24px;
+          background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+          border-radius: 12px;
+          border: none;
+          box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+          margin-bottom: 22px;
+        }
+        .sh-page-title {
+          margin-bottom: 4px;
+          color: #ffffff !important;
+          font-weight: 700;
+          letter-spacing: 0.2px;
+        }
+        .sh-cta-btn {
+          background: #ffffff;
+          color: #1e67a8 !important;
+          border: none;
+          box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+          font-weight: 700;
+          padding: 8px 18px;
+          border-radius: 8px;
+          transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+        }
+        .sh-cta-btn:hover {
+          background: #eef6ff;
+          color: #1e67a8 !important;
+          transform: translateY(-1px);
+          box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+        }
+        .sh-section-header {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-weight: 700 !important;
+          font-size: 1rem !important;
+          letter-spacing: 0.3px;
+          background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+          border-left: none !important;
+          color: #ffffff !important;
+          padding: 14px 20px !important;
+          border: none !important;
+        }
+        .sh-section-header svg,
+        .sh-section-header .icon {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.22);
+          color: #ffffff;
+          font-size: 15px;
+        }
       `}</style>
       <Block.Head>
+        <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <div
-              className="d-flex align-items-center"
-              style={{
-                gap: "14px",
-                background: "rgba(255, 255, 255, 0.96)",
-                backdropFilter: "blur(6px)",
-                border: "1px solid #e3ecf7",
-                padding: "12px 18px",
-                borderRadius: "14px",
-                boxShadow: "0 4px 14px rgba(15, 76, 138, 0.12)",
-                width: "fit-content",
-              }}
-            >
-              <div
-                style={{
-                  width: "44px",
-                  height: "44px",
-                  borderRadius: "12px",
-                  background: "linear-gradient(135deg, #1e67a8 0%, #0f3060 100%)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#ffffff",
-                  boxShadow: "0 4px 12px rgba(15, 76, 138, 0.28)",
-                  flexShrink: 0,
-                }}
-              >
-                <Icon name="user-circle-fill" style={{ fontSize: "20px" }}></Icon>
-              </div>
-              <div style={{ lineHeight: 1.25 }}>
-                <h2
-                  style={{
-                    color: "#0f3060",
-                    fontSize: "22px",
-                    fontWeight: 800,
-                    margin: 0,
-                    letterSpacing: "0.2px",
-                  }}
-                >
-                  {t("User Dashboard")}
-                </h2>
-                <span style={{ color: "#3b5278", fontSize: "13px", fontWeight: 500 }}>
-                  {/* {t("Track the status of tickets you have raised")} */}
-                </span>
-              </div>
-            </div>
+            <Block.Title tag="h2" className="sh-page-title">
+              {t("User Dashboard")}
+            </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <ul className="d-flex">
               <li>
                 <Link
                   to="/seriui/help-desk"
-                  className="d-inline-flex align-items-center d-md-none"
-                  style={{
-                    background: "linear-gradient(135deg, #1e67a8 0%, #0f3060 100%)",
-                    color: "#ffffff",
-                    fontWeight: 600,
-                    padding: "9px 16px",
-                    borderRadius: "10px",
-                    gap: "8px",
-                    letterSpacing: "0.3px",
-                    boxShadow: "0 6px 16px rgba(15, 76, 138, 0.28)",
-                    textDecoration: "none",
-                  }}
+                  className="btn btn-primary btn-md d-md-none sh-cta-btn"
                 >
                   <Icon name="plus" />
                   <span>{t("Create New Ticket")}</span>
@@ -564,18 +566,7 @@ function UserDashboard() {
               <li>
                 <Link
                   to="/seriui/help-desk"
-                  className="d-none d-md-inline-flex align-items-center"
-                  style={{
-                    background: "linear-gradient(135deg, #1e67a8 0%, #0f3060 100%)",
-                    color: "#ffffff",
-                    fontWeight: 600,
-                    padding: "10px 18px",
-                    borderRadius: "10px",
-                    gap: "8px",
-                    letterSpacing: "0.3px",
-                    boxShadow: "0 6px 16px rgba(15, 76, 138, 0.28)",
-                    textDecoration: "none",
-                  }}
+                  className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                 >
                   <Icon name="plus" />
                   <span>{t("Create New Ticket")}</span>
@@ -584,6 +575,7 @@ function UserDashboard() {
             </ul>
           </Block.HeadContent>
         </Block.HeadBetween>
+        </div>
       </Block.Head>
 
       <Row className="g-gs user-dashboard">
@@ -645,22 +637,9 @@ function UserDashboard() {
                 overflow: "hidden",
               }}
             >
-              <Card.Header
-                style={{
-                  background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)",
-                  color: "#ffffff",
-                  fontWeight: 700,
-                  fontSize: "15px",
-                  padding: "14px 22px",
-                  letterSpacing: "0.3px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  border: "none",
-                }}
-              >
+              <Card.Header className="sh-section-header">
                 <Icon name="list-thumb" style={{ fontSize: "18px" }}></Icon>
-                {t("My Tickets")}
+                <span>{t("My Tickets")}</span>
               </Card.Header>
               <div
                 style={{

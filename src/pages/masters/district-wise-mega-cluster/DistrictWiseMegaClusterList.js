@@ -299,7 +299,7 @@ function DistrictWiseMegaClusterList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By
+                  {t("Search By")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -321,7 +321,7 @@ function DistrictWiseMegaClusterList() {
                     value={data.text}
                     onChange={handleInputs}
                     type="text"
-                    placeholder="Search"
+                    placeholder={t("Search")}
                   />
                 </Col>
                 <Col sm={3}>

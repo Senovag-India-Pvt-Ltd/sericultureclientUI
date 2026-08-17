@@ -50,7 +50,7 @@ function StateView() {
   }, [id]);
 
   return (
-    <Layout title="State View" content="container">
+    <Layout title="State View">
       <style>{stateViewStyles}</style>
       <Block.Head>
         <div className="sh-page-header">

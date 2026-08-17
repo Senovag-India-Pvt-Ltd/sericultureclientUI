@@ -2319,7 +2319,7 @@ function StakeHolderRegister() {
   };
 
   // Translation
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <Layout title="Farmer Registration">
@@ -2546,9 +2546,9 @@ function StakeHolderRegister() {
                             disabled
                           >
                             <option value="">{t("select_gender")}</option>
-                            <option value="1">Male</option>
-                            <option value="2">Female</option>
-                            <option value="3">Third Gender</option>
+                            <option value="1">{t("Male")}</option>
+                            <option value="2">{t("Female")}</option>
+                            <option value="3">{t("Third Gender")}</option>
                           </Form.Select>
                         </div>
                       </Form.Group>
@@ -2847,7 +2847,9 @@ function StakeHolderRegister() {
                             <option value="">{t("select_education")} </option>
                             {educationListData.map((list) => (
                               <option key={list.id} value={list.id}>
-                                {list.name}
+                                {i18n.language === "kn"
+                                  ? list.educationNameInKannada
+                                  : list.name}
                               </option>
                             ))}
                           </Form.Select>
@@ -2878,7 +2880,9 @@ function StakeHolderRegister() {
                                 key={list.tscMasterId}
                                 value={list.tscMasterId}
                               >
-                                {list.name}
+                                {i18n.language === "kn"
+                                  ? list.nameInKannada
+                                  : list.name}
                               </option>
                             ))}
                           </Form.Select>
@@ -2979,7 +2983,7 @@ function StakeHolderRegister() {
                             )}
                           </>
                         ) : (
-                          <p>No file selected or file was canceled.</p>
+                          <p>{t("No_File_Selected_Or_File_Was_Canceled")}</p>
                         )}
                       </Form.Group>
                     </Col>
@@ -3728,7 +3732,9 @@ function StakeHolderRegister() {
                           key={list.relationshipId}
                           value={`${list.relationshipId}_${list.relationshipName}`}
                         >
-                          {list.relationshipName}
+                          {i18n.language === "kn"
+                            ? list.relationshipNameInKannada
+                            : list.relationshipName}
                         </option>
                       ))}
                     </Form.Select>
@@ -3823,7 +3829,9 @@ function StakeHolderRegister() {
                           key={list.relationshipId}
                           value={`${list.relationshipId}_${list.relationshipName}`}
                         >
-                          {list.relationshipName}
+                          {i18n.language === "kn"
+                            ? list.relationshipNameInKannada
+                            : list.relationshipName}
                         </option>
                       ))}
                     </Form.Select>
@@ -3881,7 +3889,7 @@ function StakeHolderRegister() {
           >
             <div className="sh-modal-section-label">
               <Icon name="map" />
-              Land, Mulberry &amp; Rearing Details
+              {t("land_mulberry_rearing_details")}
             </div>
             <Row className="g-5 px-5">
               <Col lg="4">
@@ -3924,7 +3932,9 @@ function StakeHolderRegister() {
                           key={list.landOwnershipId}
                           value={`${list.landOwnershipId}_${list.landOwnershipName}`}
                         >
-                          {list.landOwnershipName}
+                          {i18n.language === "kn"
+                            ? list.landOwnershipNameInKannada
+                            : list.landOwnershipName}
                         </option>
                       ))}
                     </Form.Select>
@@ -3957,7 +3967,9 @@ function StakeHolderRegister() {
                           key={list.soilTypeId}
                           value={`${list.soilTypeId}_${list.soilTypeName}`}
                         >
-                          {list.soilTypeName}
+                          {i18n.language === "kn"
+                            ? list.soilTypeNameInKannada
+                            : list.soilTypeName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4005,7 +4017,9 @@ function StakeHolderRegister() {
                           key={list.mulberrySourceId}
                           value={`${list.mulberrySourceId}_${list.mulberrySourceName}`}
                         >
-                          {list.mulberrySourceName}
+                          {i18n.language === "kn"
+                            ? list.mulberrySourceNameInKannada
+                            : list.mulberrySourceName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4059,7 +4073,9 @@ function StakeHolderRegister() {
                           key={list.mulberryVarietyId}
                           value={`${list.mulberryVarietyId}_${list.mulberryVarietyName}`}
                         >
-                          {list.mulberryVarietyName}
+                          {i18n.language === "kn"
+                            ? list.mulberryVarietyNameInKannada
+                            : list.mulberryVarietyName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4132,7 +4148,9 @@ function StakeHolderRegister() {
                           key={list.plantationTypeId}
                           value={`${list.plantationTypeId}_${list.plantationTypeName}`}
                         >
-                          {list.plantationTypeName}
+                          {i18n.language === "kn"
+                            ? list.plantationTypeNameInKannada
+                            : list.plantationTypeName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4165,7 +4183,9 @@ function StakeHolderRegister() {
                           key={list.irrigationSourceId}
                           value={`${list.irrigationSourceId}_${list.irrigationSourceName}`}
                         >
-                          {list.irrigationSourceName}
+                          {i18n.language === "kn"
+                            ? list.irrigationSourceNameInKannada
+                            : list.irrigationSourceName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4198,7 +4218,9 @@ function StakeHolderRegister() {
                           key={list.irrigationTypeId}
                           value={`${list.irrigationTypeId}_${list.irrigationTypeName}`}
                         >
-                          {list.irrigationTypeName}
+                          {i18n.language === "kn"
+                            ? list.irrigationTypeNameInKannada
+                            : list.irrigationTypeName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4254,7 +4276,9 @@ function StakeHolderRegister() {
                           key={list.roofTypeId}
                           value={`${list.roofTypeId}_${list.roofTypeName}`}
                         >
-                          {list.roofTypeName}
+                          {i18n.language === "kn"
+                            ? list.roofTypeNameInKannada
+                            : list.roofTypeName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4287,7 +4311,9 @@ function StakeHolderRegister() {
                           key={list.silkWormVarietyId}
                           value={`${list.silkWormVarietyId}_${list.silkWormVarietyName}`}
                         >
-                          {list.silkWormVarietyName}
+                          {i18n.language === "kn"
+                            ? list.silkWormVarietyNameInKannada
+                            : list.silkWormVarietyName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4459,7 +4485,7 @@ function StakeHolderRegister() {
                         value={farmerLand.gpsLng}
                         onChange={handleFLInputs}
                         type="text"
-                        placeholder="Enter Longitude"
+                        placeholder={t("Enter Longitude")}
                       />
                     </Col>
                   </Row>
@@ -4582,7 +4608,9 @@ function StakeHolderRegister() {
                           <option value="0">{t("select_state")}</option>
                           {stateListData.map((list) => (
                             <option key={list.stateId} value={list.stateId}>
-                              {list.stateName}
+                              {i18n.language === "kn"
+                                ? list.stateNameInKannada
+                                : list.stateName}
                             </option>
                           ))}
                         </Form.Select>
@@ -4604,7 +4632,9 @@ function StakeHolderRegister() {
                                   key={list.districtId}
                                   value={`${list.districtId}_${list.districtName}`}
                                 >
-                                  {list.districtName}
+                                  {i18n.language === "kn"
+                                    ? list.districtNameInKannada
+                                    : list.districtName}
                                 </option>
                               ))
                             : ""}
@@ -4627,7 +4657,9 @@ function StakeHolderRegister() {
                                   key={list.talukId}
                                   value={`${list.talukId}_${list.talukName}`}
                                 >
-                                  {list.talukName}
+                                  {i18n.language === "kn"
+                                    ? list.talukNameInKannada
+                                    : list.talukName}
                                 </option>
                               ))
                             : ""}
@@ -4650,7 +4682,9 @@ function StakeHolderRegister() {
                                   key={list.hobliId}
                                   value={`${list.hobliId}_${list.hobliName}`}
                                 >
-                                  {list.hobliName}
+                                  {i18n.language === "kn"
+                                    ? list.hobliNameInKannada
+                                    : list.hobliName}
                                 </option>
                               ))
                             : ""}
@@ -4673,7 +4707,9 @@ function StakeHolderRegister() {
                                   key={list.villageId}
                                   value={`${list.villageId}_${list.villageName}`}
                                 >
-                                  {list.villageName}
+                                  {i18n.language === "kn"
+                                    ? list.villageNameInKannada
+                                    : list.villageName}
                                 </option>
                               ))
                             : ""}
@@ -4805,7 +4841,7 @@ function StakeHolderRegister() {
           >
             <div className="sh-modal-section-label">
               <Icon name="map" />
-              Land, Mulberry &amp; Rearing Details
+             {t("land_mulberry_rearing_details")}
             </div>
             <Row className="g-5 px-5">
               <Col lg="4">
@@ -4848,7 +4884,9 @@ function StakeHolderRegister() {
                           key={list.landOwnershipId}
                           value={`${list.landOwnershipId}_${list.landOwnershipName}`}
                         >
-                          {list.landOwnershipName}
+                          {i18n.language === "kn"
+                            ? list.landOwnershipNameInKannada
+                            : list.landOwnershipName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4881,7 +4919,9 @@ function StakeHolderRegister() {
                           key={list.soilTypeId}
                           value={`${list.soilTypeId}_${list.soilTypeName}`}
                         >
-                          {list.soilTypeName}
+                          {i18n.language === "kn"
+                            ? list.soilTypeNameInKannada
+                            : list.soilTypeName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4929,7 +4969,9 @@ function StakeHolderRegister() {
                           key={list.mulberrySourceId}
                           value={`${list.mulberrySourceId}_${list.mulberrySourceName}`}
                         >
-                          {list.mulberrySourceName}
+                          {i18n.language === "kn"
+                            ? list.mulberrySourceNameInKannada
+                            : list.mulberrySourceName}
                         </option>
                       ))}
                     </Form.Select>
@@ -4983,7 +5025,9 @@ function StakeHolderRegister() {
                           key={list.mulberryVarietyId}
                           value={`${list.mulberryVarietyId}_${list.mulberryVarietyName}`}
                         >
-                          {list.mulberryVarietyName}
+                          {i18n.language === "kn"
+                            ? list.mulberryVarietyNameInKannada
+                            : list.mulberryVarietyName}
                         </option>
                       ))}
                     </Form.Select>
@@ -5063,7 +5107,9 @@ function StakeHolderRegister() {
                           key={list.plantationTypeId}
                           value={`${list.plantationTypeId}_${list.plantationTypeName}`}
                         >
-                          {list.plantationTypeName}
+                          {i18n.language === "kn"
+                            ? list.plantationTypeNameInKannada
+                            : list.plantationTypeName}
                         </option>
                       ))}
                     </Form.Select>
@@ -5096,7 +5142,9 @@ function StakeHolderRegister() {
                           key={list.irrigationSourceId}
                           value={`${list.irrigationSourceId}_${list.irrigationSourceName}`}
                         >
-                          {list.irrigationSourceName}
+                          {i18n.language === "kn"
+                            ? list.irrigationSourceNameInKannada
+                            : list.irrigationSourceName}
                         </option>
                       ))}
                     </Form.Select>
@@ -5129,7 +5177,9 @@ function StakeHolderRegister() {
                           key={list.irrigationTypeId}
                           value={`${list.irrigationTypeId}_${list.irrigationTypeName}`}
                         >
-                          {list.irrigationTypeName}
+                          {i18n.language === "kn"
+                            ? list.irrigationTypeNameInKannada
+                            : list.irrigationTypeName}
                         </option>
                       ))}
                     </Form.Select>
@@ -5185,7 +5235,9 @@ function StakeHolderRegister() {
                           key={list.roofTypeId}
                           value={`${list.roofTypeId}_${list.roofTypeName}`}
                         >
-                          {list.roofTypeName}
+                          {i18n.language === "kn"
+                            ? list.roofTypeNameInKannada
+                            : list.roofTypeName}
                         </option>
                       ))}
                     </Form.Select>
@@ -5218,7 +5270,9 @@ function StakeHolderRegister() {
                           key={list.silkWormVarietyId}
                           value={`${list.silkWormVarietyId}_${list.silkWormVarietyName}`}
                         >
-                          {list.silkWormVarietyName}
+                          {i18n.language === "kn"
+                            ? list.silkWormVarietyNameInKannada
+                            : list.silkWormVarietyName}
                         </option>
                       ))}
                     </Form.Select>
@@ -5414,7 +5468,7 @@ function StakeHolderRegister() {
                         value={farmerLand.gpsLng}
                         onChange={handleFLInputs}
                         type="text"
-                        placeholder="Enter Longitude"
+                        placeholder={t("Enter Longitude")}
                       />
                     </Col>
                   </Row>
@@ -5545,7 +5599,9 @@ function StakeHolderRegister() {
                           <option value="0">{t("select_state")}</option>
                           {stateListData.map((list) => (
                             <option key={list.stateId} value={list.stateId}>
-                              {list.stateName}
+                              {i18n.language === "kn"
+                                ? list.stateNameInKannada
+                                : list.stateName}
                             </option>
                           ))}
                         </Form.Select>
@@ -5567,7 +5623,9 @@ function StakeHolderRegister() {
                                   key={list.districtId}
                                   value={`${list.districtId}_${list.districtName}`}
                                 >
-                                  {list.districtName}
+                                  {i18n.language === "kn"
+                                    ? list.districtNameInKannada
+                                    : list.districtName}
                                 </option>
                               ))
                             : ""}
@@ -5590,7 +5648,9 @@ function StakeHolderRegister() {
                                   key={list.talukId}
                                   value={`${list.talukId}_${list.talukName}`}
                                 >
-                                  {list.talukName}
+                                  {i18n.language === "kn"
+                                    ? list.talukNameInKannada
+                                    : list.talukName}
                                 </option>
                               ))
                             : ""}
@@ -5613,7 +5673,9 @@ function StakeHolderRegister() {
                                   key={list.hobliId}
                                   value={`${list.hobliId}_${list.hobliName}`}
                                 >
-                                  {list.hobliName}
+                                  {i18n.language === "kn"
+                                    ? list.hobliNameInKannada
+                                    : list.hobliName}
                                 </option>
                               ))
                             : ""}
@@ -5636,7 +5698,9 @@ function StakeHolderRegister() {
                                   key={list.villageId}
                                   value={`${list.villageId}_${list.villageName}`}
                                 >
-                                  {list.villageName}
+                                  {i18n.language === "kn"
+                                    ? list.villageNameInKannada
+                                    : list.villageName}
                                 </option>
                               ))
                             : ""}
@@ -5771,7 +5835,7 @@ function StakeHolderRegister() {
           >
             <div className="sh-modal-section-label">
               <Icon name="map-pin" />
-              Location Details
+              {t("location_details")}
             </div>
             <Row className="g-3">
               <Col lg="6">
@@ -5798,7 +5862,9 @@ function StakeHolderRegister() {
                           key={list.stateId}
                           value={`${list.stateId}_${list.stateName}`}
                         >
-                          {list.stateName}
+                          {i18n.language === "kn"
+                            ? list.stateNameInKannada
+                            : list.stateName}
                         </option>
                       ))}
                     </Form.Select>
@@ -5833,7 +5899,9 @@ function StakeHolderRegister() {
                               key={list.districtId}
                               value={`${list.districtId}_${list.districtName}`}
                             >
-                              {list.districtName}
+                              {i18n.language === "kn"
+                                ? list.districtNameInKannada
+                                : list.districtName}
                             </option>
                           ))
                         : ""}
@@ -5869,7 +5937,9 @@ function StakeHolderRegister() {
                               key={list.talukId}
                               value={`${list.talukId}_${list.talukName}`}
                             >
-                              {list.talukName}
+                              {i18n.language === "kn"
+                                ? list.talukNameInKannada
+                                : list.talukName}
                             </option>
                           ))
                         : ""}
@@ -5905,7 +5975,9 @@ function StakeHolderRegister() {
                               key={list.hobliId}
                               value={`${list.hobliId}_${list.hobliName}`}
                             >
-                              {list.hobliName}
+                              {i18n.language === "kn"
+                                ? list.hobliNameInKannada
+                                : list.hobliName}
                             </option>
                           ))
                         : ""}
@@ -5941,7 +6013,9 @@ function StakeHolderRegister() {
                               key={list.villageId}
                               value={`${list.villageId}_${list.villageName}`}
                             >
-                              {list.villageName}
+                              {i18n.language === "kn"
+                                ? list.villageNameInKannada
+                                : list.villageName}
                             </option>
                           ))
                         : ""}
@@ -6072,7 +6146,7 @@ function StakeHolderRegister() {
           >
             <div className="sh-modal-section-label">
               <Icon name="map-pin" />
-              Location Details
+             {t("location_details")}
             </div>
             <Row className="g-3">
               <Col lg="6">
@@ -6098,7 +6172,9 @@ function StakeHolderRegister() {
                           key={list.stateId}
                           value={`${list.stateId}_${list.stateName}`}
                         >
-                          {list.stateName}
+                          {i18n.language === "kn"
+                            ? list.stateNameInKannada
+                            : list.stateName}
                         </option>
                       ))}
                     </Form.Select>
@@ -6132,7 +6208,9 @@ function StakeHolderRegister() {
                               key={list.districtId}
                               value={`${list.districtId}_${list.districtName}`}
                             >
-                              {list.districtName}
+                              {i18n.language === "kn"
+                                ? list.districtNameInKannada
+                                : list.districtName}
                             </option>
                           ))
                         : ""}
@@ -6167,7 +6245,9 @@ function StakeHolderRegister() {
                               key={list.talukId}
                               value={`${list.talukId}_${list.talukName}`}
                             >
-                              {list.talukName}
+                              {i18n.language === "kn"
+                                ? list.talukNameInKannada
+                                : list.talukName}
                             </option>
                           ))
                         : ""}
@@ -6202,7 +6282,9 @@ function StakeHolderRegister() {
                               key={list.hobliId}
                               value={`${list.hobliId}_${list.hobliName}`}
                             >
-                              {list.hobliName}
+                              {i18n.language === "kn"
+                                ? list.hobliNameInKannada
+                                : list.hobliName}
                             </option>
                           ))
                         : ""}
@@ -6237,7 +6319,9 @@ function StakeHolderRegister() {
                               key={list.villageId}
                               value={`${list.villageId}_${list.villageName}`}
                             >
-                              {list.villageName}
+                              {i18n.language === "kn"
+                                ? list.villageNameInKannada
+                                : list.villageName}
                             </option>
                           ))
                         : ""}
@@ -6468,7 +6552,9 @@ function StakeHolderRegister() {
                       <option value="">{t("Select Market")}</option>
                       {marketMasterListData.map((list) => (
                         <option key={list.marketMasterId} value={`${list.marketMasterId}_${list.marketMasterName}`}>
-                          {list.marketMasterName}
+                          {i18n.language === "kn"
+                            ? list.marketNameInKannada
+                            : list.marketMasterName}
                         </option>
                       ))}
                     </Form.Select>
@@ -6629,7 +6715,9 @@ function StakeHolderRegister() {
                       <option value="">{t("Select Market")}</option>
                       {marketMasterListData.map((list) => (
                         <option key={list.marketMasterId} value={`${list.marketMasterId}_${list.marketMasterName}`}>
-                          {list.marketMasterName}
+                          {i18n.language === "kn"
+                            ? list.marketNameInKannada
+                            : list.marketMasterName}
                         </option>
                       ))}
                     </Form.Select>
