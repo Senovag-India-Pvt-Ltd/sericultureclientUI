@@ -1684,13 +1684,13 @@ const getFinancialDefaultDetails = () => {
   `;
 
   return (
-    <Layout title="Rejection List-K2">
+    <Layout title="K2 Rejected Applications">
       <style>{rejectionListForK2Styles}</style>
       <Block.Head>
         <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2" className="sh-page-title">{t("Rejection List-K2")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("K2 Rejected Applications")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
 

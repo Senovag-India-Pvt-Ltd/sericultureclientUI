@@ -1898,13 +1898,13 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
   `;
 
   return (
-    <Layout title="Drawing Officer List-DBT Push">
+    <Layout title="DBT Application Push">
       <style>{drawingOfficerListForDBTPushStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2" className="sh-page-title">{t("Drawing Officer List-DBT Push")}</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("DBT Application Push")}</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
 

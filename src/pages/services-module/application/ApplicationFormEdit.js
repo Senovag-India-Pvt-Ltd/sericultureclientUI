@@ -278,6 +278,14 @@ useEffect(() => {
       .get(baseURLDBT + `service/get-join/${id}`)
       .then((response) => {
         const datas = response.data.content;
+        // A monthly-frequency month is stored as "APRIL 2026"; PSF ranges
+        // ("APRIL-MAY") and other values fail to parse and are left blank.
+        const monthYear = parseMonthYear(datas.month) ? datas.month : "";
+        // Monthly-frequency records don't always have periodFrom/periodTo saved on
+        // their own — the Month field is the source of truth for them. Re-derive the
+        // dates from the saved month whenever the API didn't return them directly, so
+        // Period From/To don't show blank on edit while Month is populated.
+        const derivedPeriod = monthYear ? getMonthPeriodByValue(monthYear) : {};
         setData((prev) => ({
           ...prev,
           scSchemeDetailsId: datas.schemeId,
@@ -293,11 +301,13 @@ useEffect(() => {
           description: datas.description,
           hectareId: datas.hectareId,
           spacingId: datas.spacingId,
-          periodFrom: datas.periodFrom ? new Date(datas.periodFrom) : null,
-          periodTo: datas.periodTo ? new Date(datas.periodTo) : null,
-          // A monthly-frequency month is stored as "APRIL 2026"; PSF ranges
-          // ("APRIL-MAY") and other values fail to parse and are left blank.
-          monthYear: parseMonthYear(datas.month) ? datas.month : "",
+          periodFrom: datas.periodFrom
+            ? new Date(datas.periodFrom)
+            : derivedPeriod.periodFrom || null,
+          periodTo: datas.periodTo
+            ? new Date(datas.periodTo)
+            : derivedPeriod.periodTo || null,
+          monthYear,
           userMasterId: datas.userMasterId || "",
           approvalStageId: datas.approvalStageId || "",
         }));
@@ -2309,7 +2319,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                   className="btn d-none d-md-inline-flex align-items-center gap-2 px-4 py-2 rounded-pill shadow-sm btn-primary transition-all"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>{t("Rejection List-K2")}</span>
+                  <span>{t("K2 Rejected Applications")}</span>
                 </Link>
               </li>
               <li>
@@ -2318,7 +2328,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                   className="btn d-none d-md-inline-flex align-items-center gap-2 px-4 py-2 rounded-pill shadow-sm btn-success transition-all"
                 >
                   <Icon name="arrow-long-left" />
-                  <span>{t("Rejection List-DBT")}</span>
+                  <span>{t("DBT Rejected Applications")}</span>
                 </Link>
               </li>
             </ul>
