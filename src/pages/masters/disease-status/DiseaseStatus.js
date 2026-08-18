@@ -155,7 +155,7 @@ function DiseaseStatus() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        {t("Disease Status  is required")}
+                        {t("Disease Status is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

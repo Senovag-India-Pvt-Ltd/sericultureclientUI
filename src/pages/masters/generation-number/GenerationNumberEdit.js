@@ -193,7 +193,7 @@ function GenerationNumberEdit() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          {t("Generation Number  is required")}.
+                          {t("Generation Number is required")}.
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

@@ -96,7 +96,7 @@ function TrainingMode() {
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">{("Training Mode")}</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Training Mode")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -139,7 +139,7 @@ function TrainingMode() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="trModeMaster">
-                      {("Training Mode")}<span className="text-danger">*</span>
+                      {t("Training Mode")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control

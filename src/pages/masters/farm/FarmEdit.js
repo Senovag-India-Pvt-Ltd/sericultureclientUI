@@ -302,8 +302,8 @@ function FarmEdit() {
                           }
                         >
                           <option value="">{t("Select")}</option>
-                          <option value="Yes">Yes</option>
-                          <option value="No">No</option>
+                          <option value="Yes">{t("Yes")}</option>
+                          <option value="No">{t("No")}</option>
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
                           {t("This Field required")}

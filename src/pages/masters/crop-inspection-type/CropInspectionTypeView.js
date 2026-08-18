@@ -53,7 +53,7 @@ function CropInspectionTypeView() {
   return (
 
 
-    <Layout title={t("Crop Inspection Type View")} content="container">
+    <Layout title={t("Crop Inspection Type View")}>
   <style>{cropInspectionTypeViewStyles}</style>
   <Block.Head>
     <div className="sh-page-header">
