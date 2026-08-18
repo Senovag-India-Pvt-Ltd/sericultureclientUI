@@ -19,7 +19,7 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function PendingRenewReelerLicenseReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -301,19 +301,19 @@ function PendingRenewReelerLicenseReport() {
   );
 
   const ReelerDataColumns = [
-    { name: colHeader("Sl.No"),                selector: (row) => row.serialNumber,       cell: (row) => <span>{row.serialNumber}</span>,       sortable: true },
-    { name: colHeader("First Name"),           selector: (row) => row.firstName,           cell: (row) => <span>{row.firstName}</span>,           sortable: true },
-    { name: colHeader("Father Name"),          selector: (row) => row.fatherName,          cell: (row) => <span>{row.fatherName}</span>,          sortable: true },
-    { name: colHeader("Fruits Id"),            selector: (row) => row.fruitsId,            cell: (row) => <span>{row.fruitsId}</span>,            sortable: true },
-    { name: colHeader("Reeler License Number"), selector: (row) => row.reelerLicenseNumber, cell: (row) => <span>{row.reelerLicenseNumber}</span>, sortable: true },
-    { name: colHeader("Reeler Number"),        selector: (row) => row.reelerNumber,        cell: (row) => <span>{row.reelerNumber}</span>,        sortable: true },
-    { name: colHeader("Mobile Number"),        selector: (row) => row.reelerMobileNumber,  cell: (row) => <span>{row.reelerMobileNumber}</span>,  sortable: true },
+    { name: colHeader(t("Sl.No")),                selector: (row) => row.serialNumber,       cell: (row) => <span>{row.serialNumber}</span>,       sortable: true },
+    { name: colHeader(t("First Name")),           selector: (row) => row.firstName,           cell: (row) => <span>{row.firstName}</span>,           sortable: true },
+    { name: colHeader(t("Father Name")),          selector: (row) => row.fatherName,          cell: (row) => <span>{row.fatherName}</span>,          sortable: true },
+    { name: colHeader(t("Fruits Id")),            selector: (row) => row.fruitsId,            cell: (row) => <span>{row.fruitsId}</span>,            sortable: true },
+    { name: colHeader(t("Reeler License Number")), selector: (row) => row.reelerLicenseNumber, cell: (row) => <span>{row.reelerLicenseNumber}</span>, sortable: true },
+    { name: colHeader(t("Reeler Number")),        selector: (row) => row.reelerNumber,        cell: (row) => <span>{row.reelerNumber}</span>,        sortable: true },
+    { name: colHeader(t("Mobile Number")),        selector: (row) => row.reelerMobileNumber,  cell: (row) => <span>{row.reelerMobileNumber}</span>,  sortable: true },
    // { name: colHeader("Passbook Number"),      selector: (row) => row.passbookNumber,      cell: (row) => <span>{row.passbookNumber}</span>,      sortable: true },
-    { name: colHeader("District Name"),        selector: (row) => row.districtName,        cell: (row) => <span>{row.districtName}</span>,        sortable: true },
-    { name: colHeader("Taluk Name"),           selector: (row) => row.talukName,           cell: (row) => <span>{row.talukName}</span>,           sortable: true },
-    { name: colHeader("Village Name"),         selector: (row) => row.villageName,         cell: (row) => <span>{row.villageName}</span>,         sortable: true },
-    { name: colHeader("Renew License Date"),   selector: (row) => row.renewalDate,         cell: (row) => <span>{row.renewalDate}</span>,         sortable: true },
-    { name: colHeader("Expiration Date"),      selector: (row) => row.expiryDate,          cell: (row) => <span>{row.expiryDate}</span>,          sortable: true },
+    { name: colHeader(t("District Name")),        selector: (row) => row.districtName,        cell: (row) => <span>{row.districtName}</span>,        sortable: true },
+    { name: colHeader(t("Taluk Name")),           selector: (row) => row.talukName,           cell: (row) => <span>{row.talukName}</span>,           sortable: true },
+    { name: colHeader(t("Village Name")),         selector: (row) => row.villageName,         cell: (row) => <span>{row.villageName}</span>,         sortable: true },
+    { name: colHeader(t("Renew License Date")),   selector: (row) => row.renewalDate,         cell: (row) => <span>{row.renewalDate}</span>,         sortable: true },
+    { name: colHeader(t("Expiration Date")),      selector: (row) => row.expiryDate,          cell: (row) => <span>{row.expiryDate}</span>,          sortable: true },
   ];
 
   return (
@@ -337,7 +337,7 @@ function PendingRenewReelerLicenseReport() {
             <span style={{ fontSize: "20px" }}>⏳</span>
             <div>
               <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Pending to renew License Report")}</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export pending renewal license data</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export pending renewal license data")}</div>
             </div>
           </div>
 
@@ -350,7 +350,9 @@ function PendingRenewReelerLicenseReport() {
                   <option value="">{t("Select District")}</option>
                   {districtListData && districtListData.length
                     ? districtListData.map((list) => (
-                        <option key={list.districtId} value={list.districtId}>{list.districtName}</option>
+                        <option key={list.districtId} value={list.districtId}>
+                          {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
+                        </option>
                       ))
                     : ""}
                 </Form.Select>
@@ -362,7 +364,9 @@ function PendingRenewReelerLicenseReport() {
                   <option value="">{t("Select Taluk")}</option>
                   {talukListData && talukListData.length
                     ? talukListData.map((list) => (
-                        <option key={list.talukId} value={list.talukId}>{list.talukName}</option>
+                        <option key={list.talukId} value={list.talukId}>
+                          {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
+                        </option>
                       ))
                     : ""}
                 </Form.Select>
@@ -374,7 +378,9 @@ function PendingRenewReelerLicenseReport() {
                   <option value="">{t("Select hobli")}</option>
                   {hobliListData && hobliListData.length
                     ? hobliListData.map((list) => (
-                        <option key={list.hobliId} value={list.hobliId}>{list.hobliName}</option>
+                        <option key={list.hobliId} value={list.hobliId}>
+                          {i18n.language === "kn" ? list.hobliNameInKannada : list.hobliName}
+                        </option>
                       ))
                     : ""}
                 </Form.Select>
@@ -386,7 +392,9 @@ function PendingRenewReelerLicenseReport() {
                   <option value="">{t("Select village")}</option>
                   {villageListData && villageListData.length
                     ? villageListData.map((list) => (
-                        <option key={list.villageId} value={list.villageId}>{list.villageName}</option>
+                        <option key={list.villageId} value={list.villageId}>
+                          {i18n.language === "kn" ? list.villageNameInKannada : list.villageName}
+                        </option>
                       ))
                     : ""}
                 </Form.Select>
@@ -398,7 +406,9 @@ function PendingRenewReelerLicenseReport() {
                   <option value="">{t("Select Market")}</option>
                   {marketListData && marketListData.length
                     ? marketListData.map((list) => (
-                        <option key={list.marketMasterId} value={list.marketMasterId}>{list.marketMasterName}</option>
+                        <option key={list.marketMasterId} value={list.marketMasterId}>
+                          {i18n.language === "kn" ? list.marketNameInKannada : list.marketMasterName}
+                        </option>
                       ))
                     : ""}
                 </Form.Select>

@@ -19,7 +19,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function ReelerCountList() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState([]);
   const [page, setPage] = useState(0);
   const countPerPage = 25;
@@ -324,7 +324,9 @@ function ReelerCountList() {
                 <Form.Select name="districtId" value={data.districtId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select District")}</option>
                   {districtListData.map((d) => (
-                    <option key={d.districtId} value={d.districtId}>{d.districtName}</option>
+                    <option key={d.districtId} value={d.districtId}>
+                      {i18n.language === "kn" ? d.districtNameInKannada : d.districtName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -333,8 +335,10 @@ function ReelerCountList() {
                 <label style={lbl}>{t("Taluk")}</label>
                 <Form.Select name="talukId" value={data.talukId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select Taluk")}</option>
-                  {talukListData.map((t) => (
-                    <option key={t.talukId} value={t.talukId}>{t.talukName}</option>
+                  {talukListData.map((tk) => (
+                    <option key={tk.talukId} value={tk.talukId}>
+                      {i18n.language === "kn" ? tk.talukNameInKannada : tk.talukName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -344,7 +348,9 @@ function ReelerCountList() {
                 <Form.Select name="hobliId" value={hobliData.hobliId} onChange={handleHobliInputs} style={sel}>
                   <option value="">{t("Select Hobli")}</option>
                   {hobliListData.map((h) => (
-                    <option key={h.hobliId} value={h.hobliId}>{h.hobliName}</option>
+                    <option key={h.hobliId} value={h.hobliId}>
+                      {i18n.language === "kn" ? h.hobliNameInKannada : h.hobliName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -354,7 +360,9 @@ function ReelerCountList() {
                 <Form.Select name="villageId" value={data.villageId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select Village")}</option>
                   {villageListData.map((v) => (
-                    <option key={v.villageId} value={v.villageId}>{v.villageName}</option>
+                    <option key={v.villageId} value={v.villageId}>
+                      {i18n.language === "kn" ? v.villageNameInKannada : v.villageName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -364,7 +372,9 @@ function ReelerCountList() {
                 <Form.Select name="marketId" value={data.marketId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select Market")}</option>
                   {marketListData.map((m) => (
-                    <option key={m.marketMasterId} value={m.marketMasterId}>{m.marketMasterName}</option>
+                    <option key={m.marketMasterId} value={m.marketMasterId}>
+                      {i18n.language === "kn" ? m.marketNameInKannada : m.marketMasterName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -374,7 +384,9 @@ function ReelerCountList() {
                 <Form.Select name="casteId" value={data.casteId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select Caste")}</option>
                   {casteListData.map((c) => (
-                    <option key={c.id} value={c.id}>{c.title}</option>
+                    <option key={c.id} value={c.id}>
+                      {i18n.language === "kn" ? c.nameInKannada : c.title}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>

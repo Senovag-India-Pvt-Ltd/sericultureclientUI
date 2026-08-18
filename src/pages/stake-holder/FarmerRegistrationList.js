@@ -20,7 +20,7 @@ const ACCENT_HEADER = "linear-gradient(135deg,#1a5f9e 0%,#2c8fd4 60%,#38b2ac 100
 const ACCENT_TABLE  = "linear-gradient(135deg,#1a5f9e,#2c8fd4)";
 
 function FarmerRegistrationList() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -600,7 +600,9 @@ function FarmerRegistrationList() {
                 <Form.Select name="districtId" value={data.districtId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select District")}</option>
                   {districtListData && districtListData.map((list) => (
-                    <option key={list.districtId} value={list.districtId}>{list.districtName}</option>
+                    <option key={list.districtId} value={list.districtId}>
+                      {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -609,7 +611,9 @@ function FarmerRegistrationList() {
                 <Form.Select name="talukId" value={data.talukId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select Taluk")}</option>
                   {talukListData && talukListData.map((list) => (
-                    <option key={list.talukId} value={list.talukId}>{list.talukName}</option>
+                    <option key={list.talukId} value={list.talukId}>
+                      {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -618,7 +622,9 @@ function FarmerRegistrationList() {
                 <Form.Select name="hobliId" value={hobliData.hobliId} onChange={handleHobliInputs} style={sel}>
                   <option value="">{t("Select Hobli")}</option>
                   {hobliListData && hobliListData.map((list) => (
-                    <option key={list.hobliId} value={list.hobliId}>{list.hobliName}</option>
+                    <option key={list.hobliId} value={list.hobliId}>
+                      {i18n.language === "kn" ? list.hobliNameInKannada : list.hobliName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -627,7 +633,9 @@ function FarmerRegistrationList() {
                 <Form.Select name="villageId" value={data.villageId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select Village")}</option>
                   {villageListData && villageListData.map((list) => (
-                    <option key={list.villageId} value={list.villageId}>{list.villageName}</option>
+                    <option key={list.villageId} value={list.villageId}>
+                      {i18n.language === "kn" ? list.villageNameInKannada : list.villageName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -636,7 +644,9 @@ function FarmerRegistrationList() {
                 <Form.Select name="tscMasterId" value={data.tscMasterId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select TSC")}</option>
                   {tscListData && tscListData.map((list) => (
-                    <option key={list.tscMasterId} value={list.tscMasterId}>{list.name}</option>
+                    <option key={list.tscMasterId} value={list.tscMasterId}>
+                      {i18n.language === "kn" ? list.nameInKannada : list.name}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -645,7 +655,9 @@ function FarmerRegistrationList() {
                 <Form.Select name="casteId" value={data.casteId} onChange={handleInputs} style={sel}>
                   <option value="0">{t("Select Caste")}</option>
                   {casteListData.map((list) => (
-                    <option key={list.id} value={list.id}>{list.title}</option>
+                    <option key={list.id} value={list.id}>
+                      {i18n.language === "kn" ? list.nameInKannada : list.title}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
