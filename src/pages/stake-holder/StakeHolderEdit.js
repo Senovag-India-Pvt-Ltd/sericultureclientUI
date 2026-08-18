@@ -212,7 +212,9 @@ function StakeHolderEdit() {
     api
       .get(baseURL2 + `farmer-land-details/get-by-farmer-id-join/${id}`)
       .then((response) => {
-        setFarmerLandList(response.data.content.farmerLandDetails);
+        // Same as getFarmerAddressDetailsList: backend omits farmerLandDetails
+        // entirely (200 OK) when the farmer has zero saved land records.
+        setFarmerLandList(response.data.content.farmerLandDetails || []);
       })
       .catch((err) => {
         // const message = err.response.data.errorMessages[0].message[0].message;
@@ -358,7 +360,10 @@ function StakeHolderEdit() {
     api
       .get(baseURL2 + `farmer-address/get-by-farmer-id-join/${id}`)
       .then((response) => {
-        setFarmerAddressList(response.data.content.farmerAddress);
+        // Backend omits the farmerAddress key entirely (200 OK, no error) when the
+        // farmer has zero saved addresses — default to [] so callers like
+        // replaceFarmerAddressList (`for...of farmerAddressList`) don't throw on undefined.
+        setFarmerAddressList(response.data.content.farmerAddress || []);
       })
       .catch((err) => {
         // const message = err.response.data.errorMessages[0].message[0].message;
@@ -1049,10 +1054,11 @@ function StakeHolderEdit() {
             }));
 
             // Update farmer address list, ensuring 'prev' and 'farmerAddressList' are arrays
+            // getDetailsByFruitsId populates farmerAddressDTOList, not farmerAddressList.
             setFarmerAddressList((prev) => [
               ...(Array.isArray(prev) ? prev : []),
-              ...(Array.isArray(result.data.content.farmerAddressList)
-                ? result.data.content.farmerAddressList
+              ...(Array.isArray(result.data.content.farmerAddressDTOList)
+                ? result.data.content.farmerAddressDTOList
                 : []),
             ]);
 
@@ -1119,7 +1125,13 @@ function StakeHolderEdit() {
       return data;
     }
     if (!err || !err.response) {
-      return "Unable to reach the server. Please check your internet connection and try again.";
+      // isAxiosError distinguishes a real network failure (request never got a
+      // response) from a plain JS exception thrown while handling a response that
+      // DID come back — the latter needs its own message, not a network excuse.
+      if (err && err.isAxiosError) {
+        return "Unable to reach the server. Please check your internet connection and try again.";
+      }
+      return (err && err.message) || fallback || "Something went wrong. Please try again.";
     }
     switch (err.response.status) {
       case 401:
@@ -1387,8 +1399,10 @@ function StakeHolderEdit() {
       }
 
       const incomingFarmer = result.data.content.farmerResponse || {};
-      const incomingAddressList = Array.isArray(result.data.content.farmerAddressList)
-        ? result.data.content.farmerAddressList
+      // getDetailsByFruitsId populates farmerAddressDTOList, not farmerAddressList —
+      // reading the wrong key here meant this was always [], so Address never synced.
+      const incomingAddressList = Array.isArray(result.data.content.farmerAddressDTOList)
+        ? result.data.content.farmerAddressDTOList
         : [];
       const incomingLandList = (
         Array.isArray(result.data.content.farmerLandDetailsDTOList)
@@ -1492,6 +1506,7 @@ function StakeHolderEdit() {
 
       updateSuccess();
     } catch (error) {
+      console.error("Sync from FRUITS failed:", error);
       Swal.fire({
         icon: "error",
         title: "Sync failed",
