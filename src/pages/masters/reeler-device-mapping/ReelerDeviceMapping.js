@@ -8,8 +8,10 @@ import { Icon } from "../../../components";
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 function ReelerDeviceMapping() {
+  const { t } = useTranslation();
   const [data, setData] = useState({});
 
   const [reelerListData, setReelerListData] = useState([]);
@@ -22,21 +24,21 @@ function ReelerDeviceMapping() {
   };
 
   return (
-    <Layout title="Reeler Device Mapping">
+    <Layout title={t("Reeler Device Mapping")}>
       <style>{reelerDeviceMappingStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Reeler Device Mapping</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Reeler Device Mapping")}</Block.Title>
               <nav>
                 <ol className="breadcrumb breadcrumb-arrow mb-0">
                   <li className="breadcrumb-item">
-                    <Link to="/seriui/">Home</Link>
+                    <Link to="/seriui/">{t("Home")}</Link>
                   </li>
                   {/* <li className="breadcrumb-item"><Link to="/seriui/crm/case-task">Subsidy Verification List</Link></li> */}
                   <li className="breadcrumb-item active" aria-current="page">
-                    List
+                    {t("List")}
                   </li>
                 </ol>
               </nav>
@@ -45,56 +47,64 @@ function ReelerDeviceMapping() {
         </div>
       </Block.Head>
 
-      <Form action="#">
-        <Row className="g-3">
-          <Col lg="6">
-            <Form.Group className="form-group">
-              <Form.Label htmlFor="actions">Device Id</Form.Label>
-              <div className="form-control-wrap">
-                <Form.Control
-                  id="deviceId"
-                  type="text"
-                  placeholder="Actions"
-                  value="Enter Device Id"
-                />
-              </div>
-            </Form.Group>
-          </Col>
-
-          <Col lg="6">
-            <Form.Group className="form-group">
-              <Form.Label>Reeler Id</Form.Label>
-              <div className="form-control-wrap">
-                <Form.Select
-                  name="reelerId"
-                  value={data.reelerId}
-                  onChange={handleInputs}
-                >
-                  <option value="0">Select Reeler</option>
-                  {reelerListData.map((list) => (
-                    <option key={list.reelerId} value={list.reelerId}>
-                      {list.reelerName}
-                    </option>
-                  ))}
-                </Form.Select>
-              </div>
-            </Form.Group>
-            <Col>
-              <Button type="button" variant="primary" onClick={display}>
-                Update Device Id
-              </Button>
-            </Col>
-            {/* </Col>
-                </Row> */}
-          </Col>
-        </Row>
-      </Form>
-
       <Block className="mt-n4 sh-form-wrap">
+        <Card>
+          <Card.Body>
+            <Form action="#">
+              <Row className="g-gs align-items-end">
+                <Col lg="5">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="deviceId">{t("Device Id")}</Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Control
+                        id="deviceId"
+                        type="text"
+                        placeholder="Actions"
+                        value={t("Enter Device Id")}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="5">
+                  <Form.Group className="form-group">
+                    <Form.Label htmlFor="reelerId">{t("Reeler Id")}</Form.Label>
+                    <div className="form-control-wrap">
+                      <Form.Select
+                        id="reelerId"
+                        name="reelerId"
+                        value={data.reelerId}
+                        onChange={handleInputs}
+                      >
+                        <option value="0">{t("Select Reeler")}</option>
+                        {reelerListData.map((list) => (
+                          <option key={list.reelerId} value={list.reelerId}>
+                            {list.reelerName}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </div>
+                  </Form.Group>
+                </Col>
+
+                <Col lg="2">
+                  <Form.Group className="form-group">
+                    <Button type="button" variant="primary" className="sh-save-btn w-100" onClick={display}>
+                      {t("Update Device Id")}
+                    </Button>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Form>
+          </Card.Body>
+        </Card>
+      </Block>
+
+      <Block className="mt-4 sh-form-wrap">
         <Card>
           <Card.Header className="sh-section-header text-center">
             <Icon name="setting" />
-            <span>Reeler Device Mapping</span>
+            <span>{t("Reeler Device Mapping")}</span>
           </Card.Header>
           <Card.Body>
             <Row className="g-gs">
@@ -106,16 +116,16 @@ function ReelerDeviceMapping() {
                   <thead>
                     <tr>
                       {/* <th></th> */}
-                      <th>UserName</th>
-                      <th>Name</th>
-                      <th>Type</th>
-                      <th>Type</th>
-                      <th>Status</th>
-                      <th>Mac_ID</th>
-                      <th>And_Dev_ID</th>
-                      <th>Counter</th>
-                      <th>Block</th>
-                      <th>Dev_IP</th>
+                      <th>{t("UserName")}</th>
+                      <th>{t("Name")}</th>
+                      <th>{t("Type")}</th>
+                      <th>{t("Type")}</th>
+                      <th>{t("Status")}</th>
+                      <th>{t("Mac_ID")}</th>
+                      <th>{t("And_Dev_ID")}</th>
+                      <th>{t("Counter")}</th>
+                      <th>{t("Block")}</th>
+                      <th>{t("Dev_IP")}</th>
                     </tr>
                   </thead>
                   <tbody>

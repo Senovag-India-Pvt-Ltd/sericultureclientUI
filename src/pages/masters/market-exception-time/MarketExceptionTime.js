@@ -146,14 +146,14 @@ function MarketExceptionTime() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     });
   };
   const saveError = (message) => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       text: message,
     });
   };
@@ -171,7 +171,7 @@ function MarketExceptionTime() {
                 <li>
                   <Link
                     to="/seriui/market-list"
-                    className="btn btn-primary btn-md d-md-none"
+                    className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
                     <span>{t("Go To List")}</span>
@@ -180,7 +180,7 @@ function MarketExceptionTime() {
                 <li>
                   <Link
                     to="/seriui/market-list"
-                    className="btn btn-primary d-none d-md-inline-flex"
+                    className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
                     <span>{t("Go To List")}</span>
@@ -234,7 +234,7 @@ function MarketExceptionTime() {
                               value={data.issueBidSlipEndTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder={t("Enter 1st Round Bid End Time")}
+                              placeholder={t("Enter Issue Bidding Slip End Time")}
                               // required
                             />
                             {/* <Form.Control.Feedback type="invalid">
@@ -297,7 +297,7 @@ function MarketExceptionTime() {
                               value={data.auction1AcceptStartTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder={t("Enter 1st Round Bid Start Time")}
+                              placeholder={t("Enter 1st Round Bid Acceptance Start Time")}
                               // required
                             />
                             {/* <Form.Control.Feedback type="invalid">
@@ -318,7 +318,7 @@ function MarketExceptionTime() {
                               value={data.auction1AcceptEndTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder={t("Enter 1st Round Bid End Time")}
+                              placeholder={t("Enter 1st Round Bid Acceptance End Time")}
                               // required
                             />
                             {/* <Form.Control.Feedback type="invalid">
@@ -340,7 +340,7 @@ function MarketExceptionTime() {
                               value={data.auction2StartTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder={t("Enter 2st Round Bid Start Time")}
+                              placeholder={t("Enter 2nd Round Bid Start Time")}
                               // required
                             />
                             {/* <Form.Control.Feedback type="invalid">
@@ -361,7 +361,7 @@ function MarketExceptionTime() {
                               value={data.auction2EndTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder={t("Enter 2st Round Bid End Time")}
+                              placeholder={t("Enter 2nd Round Bid End Time")}
                               // required
                             />
                             {/* <Form.Control.Feedback type="invalid">
@@ -383,7 +383,7 @@ function MarketExceptionTime() {
                               value={data.auction2AcceptStartTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder={t("Enter 1st Round Bid Start Time")}
+                              placeholder={t("Enter 2nd Round Bid Acceptance Start Time")}
                               // required
                             />
                             {/* <Form.Control.Feedback type="invalid">
@@ -404,7 +404,7 @@ function MarketExceptionTime() {
                               value={data.auction2AcceptEndTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder={t("Enter 1st Round Bid End Time")}
+                              placeholder={t("Enter 2nd Round Bid Acceptance End Time")}
                               // required
                             />
                             {/* <Form.Control.Feedback type="invalid">
@@ -468,7 +468,7 @@ function MarketExceptionTime() {
                               value={data.auction3AcceptStartTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder={t("Enter 1st Round Bid Start Time")}
+                              placeholder={t("Enter 3rd Round Bid Acceptance Start Time")}
                               // required
                             />
                             {/* <Form.Control.Feedback type="invalid">
@@ -494,7 +494,7 @@ function MarketExceptionTime() {
                               value={data.auction3AcceptEndTime}
                               onChange={handleInputs}
                               type="text"
-                              placeholder={t("Enter 1st Round Bid End Time")}
+                              placeholder={t("Enter 3rd Round Bid Acceptance End Time")}
                               // required
                             />
                             {/* <Form.Control.Feedback type="invalid">

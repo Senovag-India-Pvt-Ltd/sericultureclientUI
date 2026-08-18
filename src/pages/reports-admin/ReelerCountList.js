@@ -217,49 +217,49 @@ function ReelerCountList() {
 
   const ReelerDataColumns = [
     {
-      name: colHeader("Sl.No"),
+      name: colHeader(t("Sl.No")),
       selector: (row) => row.serialNumber,
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
     },
     {
-      name: colHeader("First Name"),
+      name: colHeader(t("First Name")),
       selector: (row) => row.firstName,
       cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
     },
     {
-      name: colHeader("Father Name"),
+      name: colHeader(t("Father Name")),
       selector: (row) => row.fatherName,
       cell: (row) => <span>{row.fatherName}</span>,
       sortable: true,
     },
     {
-      name: colHeader("Fruits Id"),
+      name: colHeader(t("Fruits Id")),
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
     },
     {
-      name: colHeader("Caste"),
+      name: colHeader(t("Caste")),
       selector: (row) => row.caste,
       cell: (row) => <span>{row.caste}</span>,
       sortable: true,
     },
     {
-      name: colHeader("Reeler License Number"),
+      name: colHeader(t("Reeler License Number")),
       selector: (row) => row.reelerLicenseNumber,
       cell: (row) => <span>{row.reelerLicenseNumber}</span>,
       sortable: true,
     },
     {
-      name: colHeader("Reeler Number"),
+      name: colHeader(t("Reeler Number")),
       selector: (row) => row.reelerNumber,
       cell: (row) => <span>{row.reelerNumber}</span>,
       sortable: true,
     },
     {
-      name: colHeader("Mobile Number"),
+      name: colHeader(t("Mobile Number")),
       selector: (row) => row.reelerMobileNumber,
       cell: (row) => <span>{row.reelerMobileNumber}</span>,
       sortable: true,
@@ -271,19 +271,19 @@ function ReelerCountList() {
     //   sortable: true,
     // },
     {
-      name: colHeader("District Name"),
+      name: colHeader(t("District Name")),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
     },
     {
-      name: colHeader("Taluk Name"),
+      name: colHeader(t("Taluk Name")),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
     },
     {
-      name: colHeader("Village Name"),
+      name: colHeader(t("Village Name")),
       selector: (row) => row.villageName,
       cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
@@ -311,8 +311,8 @@ function ReelerCountList() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>🧵</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Reeler Wise Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export reeler registration data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Reeler Wise Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export reeler registration data")}</div>
             </div>
           </div>
 

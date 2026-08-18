@@ -54,13 +54,13 @@ function ExternalUnitTypeView() {
 
   const paymentMethod =
   ExternalUnitType.paymentViaBank
-    ? "Bank"
+    ? t("Bank")
     : ExternalUnitType.paymentViaK2
     ? "K2"
     : "-";
 
   return (
-    <Layout title={t("External Unit Type View")} content="container">
+    <Layout title={t("External Unit Type View")}>
       <style>{externalUnitTypeViewStyles}</style>
       <Block.Head>
         <div className="sh-page-header">

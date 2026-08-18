@@ -7,10 +7,12 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import { useState } from "react";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function FinancialYear() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     financialYear: "",
     isDefault: false,
@@ -87,7 +89,7 @@ function FinancialYear() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
     });
   };
   const saveError = (message) => {
@@ -99,18 +101,18 @@ function FinancialYear() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
     });
   };
   return (
-    <Layout title="Financial Year">
+    <Layout title={t("Financial Year")}>
       <style>{financialYearStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Financial Year</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Financial Year")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -120,7 +122,7 @@ function FinancialYear() {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
                 <li>
@@ -129,7 +131,7 @@ function FinancialYear() {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
               </ul>
@@ -145,14 +147,14 @@ function FinancialYear() {
             <Card>
               <Card.Header className="sh-section-header">
                 <Icon name="setting" />
-                <span>Financial Year Details</span>
+                <span>{t("Financial Year Details")}</span>
               </Card.Header>
               <Card.Body>
                 <Row className="g-gs">
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="financialYear">
-                        Financial Year<span className="text-danger">*</span>
+                        {t("Financial Year")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -161,11 +163,11 @@ function FinancialYear() {
                           value={data.financialYear}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Title"
+                          placeholder={t("Enter Title")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Financial Year is required.
+                          {t("Financial Year is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -178,7 +180,7 @@ function FinancialYear() {
                           id="isDefault"
                           checked={data.isDefault}
                           name="isDefault"
-                          label="Is Default"
+                          label={t("Is Default")}
                           onChange={handleCheckBox}
                         />
                       </Col>
@@ -206,13 +208,13 @@ function FinancialYear() {
                 <li>
                   <Button type="submit" variant="primary" className="sh-save-btn">
                     <Icon name="save" />
-                    Save
+                    {t("Save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear} className="sh-cancel-btn">
                     <Icon name="cross" />
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

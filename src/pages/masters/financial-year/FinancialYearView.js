@@ -7,10 +7,12 @@ import { Icon } from "../../../components";
 import CasteDatas from "../../../store/masters/caste/CasteData";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function FinancialYearView() {
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -51,13 +53,13 @@ function FinancialYearView() {
   }, [id]);
 
   return (
-    <Layout title="Financial Year View">
+    <Layout title={t("Financial Year View")}>
       <style>{financialYearViewStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Financial Year View</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Financial Year View")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -67,7 +69,7 @@ function FinancialYearView() {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
                 <li>
@@ -76,7 +78,7 @@ function FinancialYearView() {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
               </ul>
@@ -89,12 +91,12 @@ function FinancialYearView() {
         <Card>
           <Card.Header className="sh-section-header">
             <Icon name="eye" />
-            <span>Financial Year View Details</span>
+            <span>{t("Financial Year View Details")}</span>
           </Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -102,13 +104,13 @@ function FinancialYearView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}> Financial Year:</td>
+                        <td style={styles.ctstyle}> {t("Financial Year")}:</td>
                         <td>{FinancialYear.financialYear}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Is Default:</td>
+                        <td style={styles.ctstyle}>{t("Is Default")}:</td>
                         <td>
-                          <span>{FinancialYear.isDefault ? "Yes" : "No"}</span>
+                          <span>{FinancialYear.isDefault ? t("Yes") : t("No")}</span>
                         </td>
                       </tr>
                     </tbody>

@@ -206,6 +206,7 @@ function GovtAccountList() {
               paginationComponentOptions={{ noRowsPerPage: true }}
               onChangePage={(p) => setPage(p - 1)}
               progressPending={loading}
+              progressComponent={<div className="py-4">{t("Loading...")}</div>}
               theme="solarized"
               customStyles={customStyles}
             />

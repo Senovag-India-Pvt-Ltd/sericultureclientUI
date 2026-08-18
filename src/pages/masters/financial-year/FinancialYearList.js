@@ -12,10 +12,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function FinancialYearList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -152,7 +154,7 @@ function FinancialYearList() {
 
   const CasteDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="d-flex flex-nowrap align-items-center text-start w-100">
@@ -163,7 +165,7 @@ function FinancialYearList() {
             onClick={() => handleView(row.financialYearMasterId)}
             className="text-nowrap"
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -171,7 +173,7 @@ function FinancialYearList() {
             className="ms-2 text-nowrap"
             onClick={() => handleEdit(row.financialYearMasterId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -179,7 +181,7 @@ function FinancialYearList() {
             onClick={() => deleteConfirm(row.financialYearMasterId)}
             className="ms-2 text-nowrap"
           >
-            Delete
+            {t("Delete")}
           </Button>
         </div>
       ),
@@ -189,7 +191,7 @@ function FinancialYearList() {
       grow: 0,
     },
     {
-      name: "Financial Year",
+      name: t("Financial Year"),
       selector: (row) => row.financialYear,
       cell: (row) => <span>{row.financialYear}</span>,
       sortable: false,
@@ -197,22 +199,22 @@ function FinancialYearList() {
     },
 
     {
-      name: " Is Default",
+      name: t("Is Default"),
       selector: (row) => row.isDefault,
-      cell: (row) => <span>{row.isDefault ? "Yes" : "No"}</span>,
+      cell: (row) => <span>{row.isDefault ? t("Yes") : t("No")}</span>,
       sortable: false,
       hide: "md",
     },
   ];
 
   return (
-    <Layout title="Financial Year List">
+    <Layout title={t("Financial Year List")}>
       <style>{financialYearListStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Financial Year List</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Financial Year List")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -222,7 +224,7 @@ function FinancialYearList() {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="plus" />
-                    <span>Create</span>
+                    <span>{t("create")}</span>
                   </Link>
                 </li>
                 <li>
@@ -231,7 +233,7 @@ function FinancialYearList() {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="plus" />
-                    <span>Create</span>
+                    <span>{t("create")}</span>
                   </Link>
                 </li>
               </ul>
@@ -257,6 +259,7 @@ function FinancialYearList() {
               }}
               onChangePage={(page) => setPage(page - 1)}
               progressPending={loading}
+              progressComponent={<div className="py-4">{t("Loading...")}</div>}
               theme="solarized"
               customStyles={customStyles}
             />

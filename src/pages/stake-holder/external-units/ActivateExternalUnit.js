@@ -379,7 +379,7 @@ function ActivateExternalUnit() {
                           value={data.password}
                           onChange={handleInputs}
                           type="password"
-                          placeholder={t("Enter Address")}
+                          placeholder={t("Enter Password")}
                         />
                       </div>
                     </Form.Group>

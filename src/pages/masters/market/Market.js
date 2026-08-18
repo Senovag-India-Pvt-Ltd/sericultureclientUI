@@ -340,7 +340,7 @@ function Market() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     }).then(() => navigate("#"));
   };
@@ -353,7 +353,7 @@ function Market() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -481,7 +481,7 @@ function Market() {
                     </Form.Group>
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="weight">
-                        {t("Tare Weight(In Kg)")}
+                        {t("Tare Weight (In Kg)")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -495,13 +495,13 @@ function Market() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          {t("Tare Weight(In Kg) is required")}
+                          {t("Tare Weight (In Kg) is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="weight">
-                        {t("Lot Weight(In Kg)")}<span className="text-danger">*</span>
+                        {t("Lot Weight (In Kg)")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -514,7 +514,7 @@ function Market() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          {t("Lot Weight(In Kg) is required")}
+                          {t("Lot Weight (In Kg) is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -1342,7 +1342,7 @@ function Market() {
                         />
                       </Col>
                       <Form.Label column sm={11} className="mt-n2">
-                        Is Test
+                        {t("Is Test")}
                       </Form.Label>
                     </Form.Group>
 
@@ -1358,7 +1358,7 @@ function Market() {
                         />
                       </Col>
                       <Form.Label column sm={11} className="mt-n2">
-                        Require Base Price
+                        {t("Require Base Price")}
                       </Form.Label>
                     </Form.Group>
                   </Col>

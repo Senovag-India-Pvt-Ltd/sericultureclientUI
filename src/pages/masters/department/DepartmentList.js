@@ -10,10 +10,12 @@ import React from "react";
 import Swal from "sweetalert2";
 import api from "../../../../src/services/auth/api";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DepartmentList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -146,7 +148,7 @@ function DepartmentList() {
 
   const DepartmentDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="d-flex flex-nowrap align-items-center text-start w-100">
@@ -157,7 +159,7 @@ function DepartmentList() {
             onClick={() => handleView(row.departmentId)}
             className="text-nowrap"
           >
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -165,7 +167,7 @@ function DepartmentList() {
             className="ms-2 text-nowrap"
             onClick={() => handleEdit(row.departmentId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -173,7 +175,7 @@ function DepartmentList() {
             onClick={() => deleteConfirm(row.departmentId)}
             className="ms-2 text-nowrap"
           >
-            Delete
+            {t("Delete")}
           </Button>
         </div>
       ),
@@ -184,28 +186,28 @@ function DepartmentList() {
     },
 
     {
-      name: "Department Code",
+      name: t("Department Code"),
       selector: (row) => row.departmentCode,
       cell: (row) => <span>{row.departmentCode}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Department Name",
+      name: t("Department Name"),
       selector: (row) => row.departmentName,
       cell: (row) => <span>{row.departmentName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Department Name In Kannada",
+      name: t("Department Name In Kannada"),
       selector: (row) => row.departmentNameInKannada,
       cell: (row) => <span>{row.departmentNameInKannada}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Department Details",
+      name: t("Department Details"),
       selector: (row) => row.departmentDetails,
       cell: (row) => <span>{row.departmentDetails}</span>,
       sortable: true,
@@ -214,13 +216,13 @@ function DepartmentList() {
   ];
 
   return (
-    <Layout title="List Of Department">
+    <Layout title={t("List Of Department")}>
       <style>{departmentListStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">List Of Department</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("List Of Department")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -230,7 +232,7 @@ function DepartmentList() {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="plus" />
-                    <span>Create</span>
+                    <span>{t("create")}</span>
                   </Link>
                 </li>
                 <li>
@@ -239,7 +241,7 @@ function DepartmentList() {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="plus" />
-                    <span>Create</span>
+                    <span>{t("create")}</span>
                   </Link>
                 </li>
               </ul>

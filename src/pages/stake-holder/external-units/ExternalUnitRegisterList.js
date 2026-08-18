@@ -371,7 +371,7 @@ function ExternalUnitRegisterList() {
   ];
 
   return (
-    <Layout title="External Unit List">
+    <Layout title={t("External Unit List")}>
       <style>{externalUnitListStyles}</style>
       <Block.Head>
         <div className="sh-page-header">

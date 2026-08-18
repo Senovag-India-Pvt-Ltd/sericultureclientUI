@@ -407,28 +407,28 @@ function FarmerRegistrationList() {
 
   const FarmerDataColumns = [
     {
-      name: colHeader("Sl.No"),
+      name: colHeader(t("Sl.No")),
       selector: (row) => row.serialNumber,
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: colHeader("First Name"),
+      name: colHeader(t("First Name")),
       selector: (row) => row.firstName,
       cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: colHeader("Middle Name"),
+      name: colHeader(t("Middle Name")),
       selector: (row) => row.middleName,
       cell: (row) => <span>{row.middleName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: colHeader("Fruits Id"),
+      name: colHeader(t("Fruits Id")),
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
@@ -449,14 +449,14 @@ function FarmerRegistrationList() {
     //   hide: "md",
     // },
     {
-      name: colHeader("Father Name"),
+      name: colHeader(t("Father Name")),
       selector: (row) => row.fatherName,
       cell: (row) => <span>{row.fatherName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: colHeader("Caste"),
+      name: colHeader(t("Caste")),
       selector: (row) => row.caste,
       cell: (row) => <span>{row.caste}</span>,
       sortable: true,
@@ -470,14 +470,14 @@ function FarmerRegistrationList() {
     //   hide: "md",
     // },
     {
-      name: colHeader("District Name"),
+      name: colHeader(t("District Name")),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: colHeader("Taluk Name"),
+      name: colHeader(t("Taluk Name")),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
@@ -533,7 +533,7 @@ function FarmerRegistrationList() {
     //   hide: "md",
     // },
     {
-      name: colHeader("Land Address"),
+      name: colHeader(t("Land Address")),
       selector: (row) => row.landAddress,
       cell: (row) => <span>{row.landAddress}</span>,
       sortable: true,
@@ -547,13 +547,13 @@ function FarmerRegistrationList() {
     //   hide: "md",
     // },
     {
-      name: colHeader("Mobile Number"),
+      name: colHeader(t("Mobile Number")),
       selector: (row) => row.mobileNumber,
       cell: (row) => <span>{row.mobileNumber}</span>,
       sortable: true,
     },
     {
-      name: colHeader("TSC Name"),
+      name: colHeader(t("TSC Name")),
       selector: (row) => row.tscName,
       cell: (row) => <span>{row.tscName}</span>,
       sortable: true,

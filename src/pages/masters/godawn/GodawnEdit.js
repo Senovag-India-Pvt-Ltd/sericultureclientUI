@@ -115,7 +115,7 @@ function GodawnEdit() {
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Updated successfully",
+      title: t("Updated successfully"),
       // text: "You clicked the button!",
     }).then(() => navigate("#"));
   };

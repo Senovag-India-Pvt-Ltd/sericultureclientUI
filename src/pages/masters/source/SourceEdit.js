@@ -95,7 +95,7 @@ function SourceEdit() {
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Updated successfully",
+      title: t("Updated successfully"),
       // text: "You clicked the button!",
     }).then(() => navigate("#"));
   };
@@ -108,7 +108,7 @@ function SourceEdit() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
     });
   };
