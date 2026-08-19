@@ -18,6 +18,8 @@ import React from "react";
 import DatePicker from "react-datepicker";
 import { useState } from "react";
 import { useEffect } from "react";
+import CreditedBankDetailsButton from "./CreditedBankDetailsButton";
+import { isPaymentSuccessInDbt } from "../../utils/dbtStatus";
 import axios from "axios";
 import api from "../../services/auth/api";
 import { useTranslation } from "react-i18next";
@@ -936,7 +938,7 @@ function DbtBApplication() {
     { name: colHeader(t("Component")),          selector: (row) => row.scComponentName,     cell: (row) => <span>{row.scComponentName}</span>,     sortable: true, hide: "md" },
     { name: colHeader(t("Sanction Number")),    selector: (row) => row.sanctionNumber,      cell: (row) => <span>{row.sanctionNumber}</span>,      sortable: true, hide: "md" },
     { name: colHeader(t("Subsidy Amount")),     selector: (row) => row.actualAmount,        cell: (row) => <span>{row.actualAmount}</span>,        sortable: true, hide: "md" },
-    { name: colHeader(t("Application Status")), selector: (row) => row.applicationStatus,   cell: (row) => <span style={{ color: "green", fontWeight: "bold" }}>{row.applicationStatus}</span>, sortable: true, hide: "md" },
+    { name: colHeader(t("Application Status")), selector: (row) => row.applicationStatus,   cell: (row) => isPaymentSuccessInDbt(row.applicationStatus) ? <CreditedBankDetailsButton applicationFormId={row.scApplicationFormId} /> : <span style={{ color: "green", fontWeight: "bold" }}>{row.applicationStatus}</span>, sortable: true, hide: "md" },
     { name: colHeader(t("Quota Type")),         selector: (row) => row.quotaType,           cell: (row) => <span>{row.quotaType}</span>,           sortable: true, hide: "md" },
   ];
 

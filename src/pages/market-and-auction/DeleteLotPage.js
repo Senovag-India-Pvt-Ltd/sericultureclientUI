@@ -271,6 +271,7 @@ const handleDelete = async (lotId, transactionDate) => {
                     onChange={handleDateChange}
                     className="form-control"
                     dateFormat="dd/MM/yyyy"
+                    portalId="seri-datepicker-portal"
                   />
                 </Row>
           

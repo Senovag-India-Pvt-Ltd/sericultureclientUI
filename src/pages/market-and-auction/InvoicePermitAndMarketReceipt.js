@@ -234,11 +234,11 @@ function InvoicePermitAndMarketReceipt() {
                   <Row className="mb-2">
                     <Col md={4} style={fieldGroupStyle}>
                       <label style={labelStyle}>From Date <span style={{ color: "#e53e3e" }}>*</span></label>
-                      <DatePicker dateFormat="dd/MM/yyyy" selected={data.fromDate} onChange={(d) => setData({ ...data, fromDate: d })} className="form-control" maxDate={new Date()} />
+                      <DatePicker dateFormat="dd/MM/yyyy" selected={data.fromDate} onChange={(d) => setData({ ...data, fromDate: d })} className="form-control" maxDate={new Date()} portalId="seri-datepicker-portal" />
                     </Col>
                     <Col md={4} style={fieldGroupStyle}>
                       <label style={labelStyle}>To Date <span style={{ color: "#e53e3e" }}>*</span></label>
-                      <DatePicker dateFormat="dd/MM/yyyy" selected={data.toDate} onChange={(d) => setData({ ...data, toDate: d })} className="form-control" maxDate={new Date()} />
+                      <DatePicker dateFormat="dd/MM/yyyy" selected={data.toDate} onChange={(d) => setData({ ...data, toDate: d })} className="form-control" maxDate={new Date()} portalId="seri-datepicker-portal" />
                     </Col>
                   </Row>
                 </>
@@ -264,11 +264,11 @@ function InvoicePermitAndMarketReceipt() {
                   <Row className="mb-2">
                     <Col md={4} style={fieldGroupStyle}>
                       <label style={labelStyle}>From Date <span style={{ color: "#e53e3e" }}>*</span></label>
-                      <DatePicker dateFormat="dd/MM/yyyy" selected={data.fromDate} onChange={(d) => setData({ ...data, fromDate: d })} className="form-control" maxDate={new Date()} />
+                      <DatePicker dateFormat="dd/MM/yyyy" selected={data.fromDate} onChange={(d) => setData({ ...data, fromDate: d })} className="form-control" maxDate={new Date()} portalId="seri-datepicker-portal" />
                     </Col>
                     <Col md={4} style={fieldGroupStyle}>
                       <label style={labelStyle}>To Date <span style={{ color: "#e53e3e" }}>*</span></label>
-                      <DatePicker dateFormat="dd/MM/yyyy" selected={data.toDate} onChange={(d) => setData({ ...data, toDate: d })} className="form-control" maxDate={new Date()} />
+                      <DatePicker dateFormat="dd/MM/yyyy" selected={data.toDate} onChange={(d) => setData({ ...data, toDate: d })} className="form-control" maxDate={new Date()} portalId="seri-datepicker-portal" />
                     </Col>
                   </Row>
                 </>
@@ -279,7 +279,7 @@ function InvoicePermitAndMarketReceipt() {
                 <Row className="mb-2">
                   <Col md={4} style={fieldGroupStyle}>
                     <label style={labelStyle}>Auction Date <span style={{ color: "#e53e3e" }}>*</span></label>
-                    <DatePicker dateFormat="dd/MM/yyyy" selected={data.auctionDate} onChange={(d) => setData({ ...data, auctionDate: d })} className="form-control" maxDate={new Date()} />
+                    <DatePicker dateFormat="dd/MM/yyyy" selected={data.auctionDate} onChange={(d) => setData({ ...data, auctionDate: d })} className="form-control" maxDate={new Date()} portalId="seri-datepicker-portal" />
                   </Col>
                   <Col md={4} style={fieldGroupStyle}>
                     <label style={labelStyle}>Bidding Slip Lot No <span style={{ color: "#e53e3e" }}>*</span></label>

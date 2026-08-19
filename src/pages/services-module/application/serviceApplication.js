@@ -8359,6 +8359,7 @@ const serviceApplicationStyles = `
                                     maxDate={new Date()}
                                     // readOnly
                                     // required
+                                    portalId="seri-datepicker-portal"
                                   />
                                 </div>
                               </Form.Group>
@@ -9779,8 +9780,9 @@ const serviceApplicationStyles = `
                                 // readOnly={schemeDetails.calculationBasedOn === "Silk Samagra Central" || 
                                 //   schemeDetails.calculationBasedOn === "Silk Samagra State" || 
                                 //   !schemeDetails.calculationBasedOn}
-                                readOnly 
+                                readOnly
                                 required
+                                portalId="seri-datepicker-portal"
                               />
                             </div>
                           </Form.Group>
@@ -9810,7 +9812,8 @@ const serviceApplicationStyles = `
                                 // readOnly={schemeDetails.calculationBasedOn === "Silk Samagra Central" || 
                                 //   schemeDetails.calculationBasedOn === "Silk Samagra State" || 
                                 //   !schemeDetails.calculationBasedOn}
-                                readOnly 
+                                readOnly
+                                portalId="seri-datepicker-portal"
                               />
                             </div>
                           </Form.Group>
@@ -10017,6 +10020,7 @@ const serviceApplicationStyles = `
                                       dateFormat="dd/MM/yyyy"
                                       className="form-control"
                                       maxDate={new Date()}
+                                      portalId="seri-datepicker-portal"
                                     />
                                   </div>
                                 </Form.Group>
@@ -10183,6 +10187,7 @@ const serviceApplicationStyles = `
                                     className="form-control"
                                     maxDate={new Date()}
                                     required
+                                    portalId="seri-datepicker-portal"
                                   />
                                 </div>
                               </Form.Group>
@@ -11256,6 +11261,7 @@ const serviceApplicationStyles = `
                                     className="form-control"
                                     maxDate={new Date()}
                                     required
+                                    portalId="seri-datepicker-portal"
                                   />
                                 </div>
                               </Form.Group>
@@ -11479,6 +11485,7 @@ const serviceApplicationStyles = `
                                     className="form-control"
                                     maxDate={new Date()}
                                     required
+                                    portalId="seri-datepicker-portal"
                                   />
                                 </div>
                               </Form.Group>
@@ -12237,7 +12244,7 @@ const serviceApplicationStyles = `
                                 <Col lg="4">
                                   <Form.Group className="form-group mt-n3">
                                     <Form.Label>{t("Tax Invoice Date")}</Form.Label>
-                                    <DatePicker selected={row.taxInvoiceDate} onChange={(date) => handleRearingEquipmentDateChange(index, date)} peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select" dateFormat="dd/MM/yyyy" className="form-control" maxDate={new Date()} />
+                                    <DatePicker selected={row.taxInvoiceDate} onChange={(date) => handleRearingEquipmentDateChange(index, date)} peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select" dateFormat="dd/MM/yyyy" className="form-control" maxDate={new Date()} portalId="seri-datepicker-portal" />
                                   </Form.Group>
                                 </Col>
                                 <Col lg="12" className="text-end">
@@ -12327,7 +12334,7 @@ const serviceApplicationStyles = `
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="sordfl">{t("Tax Invoice Date")}</Form.Label>
                               <div className="form-control-wrap">
-                                <DatePicker selected={data.taxInvoiceDate} onChange={(date) => handleDateChange(date, "taxInvoiceDate")} peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select" dateFormat="dd/MM/yyyy" className="form-control" maxDate={new Date()} />
+                                <DatePicker selected={data.taxInvoiceDate} onChange={(date) => handleDateChange(date, "taxInvoiceDate")} peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select" dateFormat="dd/MM/yyyy" className="form-control" maxDate={new Date()} portalId="seri-datepicker-portal" />
                               </div>
                             </Form.Group>
                           </Col>
@@ -13213,6 +13220,7 @@ const serviceApplicationStyles = `
                                 maxDate={new Date()}
                                 // readOnly
                                 required
+                                portalId="seri-datepicker-portal"
                               />
                             </div>
                           </Form.Group>

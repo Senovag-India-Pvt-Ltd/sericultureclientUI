@@ -833,6 +833,7 @@ const handleShowModalAssesment = () => {
                               maxDate={new Date()}
                               className="form-control"
                               placeholderText={t("Select Date")}
+                              portalId="seri-datepicker-portal"
                             />
                           </div>
                         </Col>

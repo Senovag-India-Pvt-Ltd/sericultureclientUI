@@ -223,7 +223,11 @@ const handleDateChange = (date) => {
       data.buyerType === "NSSO" ? data.address :
       data.buyerType === "Reeling" ? data.reelerName :
       data.buyerType === "Govt Grainage" ? data.grainageMasterName : '';
-      setDataLotList((prev) => [...prev, {...data,auctionDate,allottedLotId,buyerName}]);
+      // Stamp this NEW distribution row with the actual date it's being recorded on (today),
+      // not the top-level `auctionDate` search field — that field stays pinned to the
+      // bidding slip's original date so the lot can still be found on a later visit.
+      const newRowDistributionDate = new Date();
+      setDataLotList((prev) => [...prev, {...data,auctionDate:newRowDistributionDate,allottedLotId,buyerName}]);
       // Reset the form for the next entry but keep the price (amount) intact
       // totalLotWeight auto-recomputes from dataLotList via useMemo above.
 
@@ -474,7 +478,15 @@ const handleUpdateLotDetails = (e, i, changes) => {
             setMovingToAnotherMarket(savedMovingToAnotherMarket);
             setMovingMarketReason(savedMovingMarketReason);
 
-            setDataLotList(response.data.content);
+            // Each row keeps its OWN distribution date (backend's transactionDate, sourced
+            // from lot_groupage.auction_date) rather than the shared search-date state, so
+            // previously-saved rows from other dates aren't mistaken for "today's" row.
+            setDataLotList(
+              (response.data.content || []).map((row) => ({
+                ...row,
+                auctionDate: row.transactionDate || row.auctionDate,
+              }))
+            );
             setShowFarmerDetails(true);
           } else {
             setFarmerDetails((prev) => ({
@@ -888,6 +900,10 @@ const hasRemaining = remainingQty > 0;
 
   // Step 3: build the payload (with the chosen saleDisposalId, if any) and post it.
   const performSave = (saleDisposalId = null) => {
+      // The backend looks up the parent market_auction/lot by matching THIS exact date
+      // against the bidding slip's fixed auction date — it must stay the search-date value
+      // for every row, old or new, or the save silently fails to find the lot. The row's
+      // real distribution date is sent separately below as `distributionDate`.
       const formattedAuctionDate = formatAuctionDate(auctionDate);
       const hasLotGroupageId = dataLotList.some(item => item.lotGroupageId);
       setIsSaving(true);
@@ -911,7 +927,14 @@ const hasRemaining = remainingQty > 0;
             externalUnitId: item.externalUnitId,
             invoiceNumber: item.invoiceNumber,
             allottedLotId: allottedLotId,
+            // auctionDate MUST stay the bidding-slip/search date — the backend uses it to look
+            // up the parent market_auction/lot record, not to record when this row was
+            // distributed. distributionDate carries the row's own real date (set when it was
+            // fetched/added — see search() and handleAddLotDetails above) and is what actually
+            // gets stored/displayed per row, so reopening a lot on a later date to distribute
+            // the remainder no longer overwrites earlier rows' dates.
             auctionDate: formattedAuctionDate,
+            distributionDate: formatAuctionDate(item.auctionDate || auctionDate),
             lotParentLevel: lotParentLevel,
             averageYield: calculatedAverageYield,
             dflLotNumber: noOfDFLs,
@@ -984,7 +1007,13 @@ const hasRemaining = remainingQty > 0;
             // cocoons are gone), but anything else — rejection or simple leftover — must record
             // the real remainder.
             remainingCocoonWeight: movingToAnotherMarketFlag ? 0 : remainingQty,
-            auctionDate: formatAuctionDate(item.auctionDate),
+            // auctionDate MUST stay the bidding-slip/search date the backend uses to look up the
+            // parent market_auction/lot (getMarketAuctionIdByAllottedLotIdAndMarketAuctionDate
+            // matches it exactly) — sending the row's own distribution date here makes that
+            // lookup fail whenever the two dates differ, and the row silently isn't saved.
+            // distributionDate carries the row's real date and is what's actually stored/shown.
+            auctionDate: formattedAuctionDate,
+            distributionDate: formatAuctionDate(item.auctionDate),
             purposeForRejection: purposeForRejectionFlag,
             movingToAnotherMarket: movingToAnotherMarketFlag,
             movingMarketReason: movingToAnotherMarketFlag ? trimmedMovingMarketReason : null,
@@ -1606,6 +1635,12 @@ const handlePurchaseModeChange = (e) => {
                             onChange={handleDateChange}
                             maxDate={new Date()}
                             className="form-control"
+                            // The card wrapping this field has overflow:hidden (keeps the
+                            // gradient header's rounded corners clean) which was clipping the
+                            // calendar popup down to a sliver. Rendering it in a portal on
+                            // <body> lets it escape that clipping without touching the shared
+                            // card CSS used by every other card on this page.
+                            portalId="lot-groupage-datepicker-portal"
                           />
                         </div>
                       </Col>
@@ -2112,6 +2147,7 @@ const handlePurchaseModeChange = (e) => {
                           <tr style={{ background: "linear-gradient(135deg, #1e67a8 0%, #2d9cdb 100%)" }}>
                             {[
                               { label: t("Action"), align: "left" },
+                              { label: t("Distribution Date"), align: "left" },
                               { label: t("Buyer Type"), align: "left" },
                               { label: t("License Number/Address/Grainage/Name"), align: "left" },
                               { label: t("Quantity of Cocoons(In Kgs)"), align: "right" },
@@ -2142,6 +2178,9 @@ const handlePurchaseModeChange = (e) => {
                                 >
                                   ✏️ {t("Edit")}
                                 </button>
+                              </td>
+                              <td style={{ padding: "10px 14px", color: "#4a5568", whiteSpace: "nowrap" }}>
+                                {item.auctionDate ? formatAuctionDate(item.auctionDate) : "—"}
                               </td>
                               <td style={{ padding: "10px 14px", color: "#2d3748", fontWeight: 500 }}>
                                 <span style={{ background: "#ebf4ff", color: "#1e67a8", borderRadius: "6px", padding: "2px 10px", fontSize: "12px", fontWeight: 700 }}>{item.buyerType}</span>

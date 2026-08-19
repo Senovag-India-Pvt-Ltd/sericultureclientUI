@@ -14,6 +14,8 @@ import axios from "axios";
 import api from "../../services/auth/api";
 import { useTranslation } from "react-i18next";
 import ViewAllApplication from "../services-module/application-component/ViewAllApplication";
+import CreditedBankDetailsButton from "./CreditedBankDetailsButton";
+import { isPaymentSuccessInDbt } from "../../utils/dbtStatus";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -949,8 +951,10 @@ function AllApplicationList() {
 
     {
       name: t("Action"),
-      cell: (row) => (
-        //   Button style
+      cell: (row) =>
+        isPaymentSuccessInDbt(row.applicationStatus) ? (
+          <CreditedBankDetailsButton applicationFormId={row.scApplicationFormId} />
+        ) : (
         <div className="text-start w-100">
           {/* <Button variant="primary" size="sm" onClick={() => handleView(row.id)}> */}
           <Button
@@ -978,7 +982,7 @@ function AllApplicationList() {
             {t("Delete")}
           </Button>
         </div>
-      ),
+        ),
       sortable: false,
       hide: "md",
         grow: 2,

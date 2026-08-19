@@ -13,6 +13,8 @@ import { useEffect } from "react";
 import axios from "axios";
 import api from "../../services/auth/api";
 import { useTranslation } from "react-i18next";
+import CreditedBankDetailsButton from "./CreditedBankDetailsButton";
+import { isPaymentSuccessInDbt } from "../../utils/dbtStatus";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -727,8 +729,10 @@ const getFinancialDefaultDetails = () => {
    
     {
       name: t("Action"),
-      cell: (row) => (
-        //   Button style
+      cell: (row) =>
+        isPaymentSuccessInDbt(row.applicationStatus) ? (
+          <CreditedBankDetailsButton applicationFormId={row.scApplicationFormId} />
+        ) : (
         <div className="text-start w-100">
           {/* {!(
             row.applicationStatus === "ACKNOWLEDGEMENT SUCCESS" ||
@@ -763,7 +767,7 @@ const getFinancialDefaultDetails = () => {
                {t("View")}
             </Button>
         </div>
-      ),
+        ),
       sortable: false,
       hide: "md",
       grow: 2,

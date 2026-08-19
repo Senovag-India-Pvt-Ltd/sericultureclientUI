@@ -865,6 +865,7 @@ function BiddingSlip() {
                               selected={new Date()}
                               // className="form-control"
                               readOnly
+                              portalId="seri-datepicker-portal"
                             />
                           </div>
                         </Col>
@@ -1082,6 +1083,7 @@ function BiddingSlip() {
                                   dateFormat="dd/MM/yyyy"
                                   selected={new Date()}
                                   readOnly
+                                  portalId="seri-datepicker-portal"
                                 />
                               </div>
                             </Col>

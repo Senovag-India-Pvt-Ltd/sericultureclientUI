@@ -163,6 +163,7 @@ function SeedMarketTripletReport() {
                     onChange={(d) => setAuctionDate(d)}
                     className="form-control"
                     maxDate={new Date()}
+                    portalId="seri-datepicker-portal"
                   />
                 </Col>
               </Row>

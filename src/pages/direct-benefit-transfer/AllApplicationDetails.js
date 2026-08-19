@@ -18,6 +18,8 @@ import React from "react";
 import DatePicker from "react-datepicker";
 import { useMemo, useCallback } from "react";
 import { useState } from "react";
+import CreditedBankDetailsButton from "./CreditedBankDetailsButton";
+import { isPaymentSuccessInDbt } from "../../utils/dbtStatus";
 import { useEffect } from "react";
 import axios from "axios";
 import api from "../../services/auth/api";
@@ -751,7 +753,7 @@ useEffect(() => {
     { name: colHeader(t("Category")),          selector: (row) => row.categoryName,        cell: (row) => <span>{row.categoryName}</span>,        sortable: true, hide: "md" },
     { name: colHeader(t("Sanction Number")),   selector: (row) => row.sanctionNumber,      cell: (row) => <span>{row.sanctionNumber}</span>,      sortable: true, hide: "md" },
     { name: colHeader(t("Subsidy Amount")),    selector: (row) => row.actualAmount,        cell: (row) => <span>{row.actualAmount}</span>,        sortable: true, hide: "md" },
-    { name: colHeader(t("Application Status")),selector: (row) => row.applicationStatus,   cell: (row) => <span style={{ color: "green", fontWeight: "bold" }}>{row.applicationStatus}</span>, sortable: true, hide: "md" },
+    { name: colHeader(t("Application Status")),selector: (row) => row.applicationStatus,   cell: (row) => isPaymentSuccessInDbt(row.applicationStatus) ? <CreditedBankDetailsButton applicationFormId={row.scApplicationFormId} /> : <span style={{ color: "green", fontWeight: "bold" }}>{row.applicationStatus}</span>, sortable: true, hide: "md" },
   ];
 
    return (

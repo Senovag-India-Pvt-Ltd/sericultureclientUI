@@ -3,6 +3,7 @@ import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
 import LoginLogo from "../../components/Logo/LoginLogo";
 import Swal from "sweetalert2";
+import CreditedBankDetailsButton from "./CreditedBankDetailsButton";
 
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
@@ -471,7 +472,11 @@ function DbtApplicationStatusCheck() {
                                 : "appstatus-status-pending"
                             }
                           >
-                            {item.applicationStatus}
+                            {isPaymentSuccess ? (
+                              <CreditedBankDetailsButton arn={item.arn} />
+                            ) : (
+                              item.applicationStatus
+                            )}
                           </td>
                           {!allPaymentSuccess && <td>{item.userName}</td>}
                         </tr>

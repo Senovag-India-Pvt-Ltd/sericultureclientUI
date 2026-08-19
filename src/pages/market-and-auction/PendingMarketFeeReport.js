@@ -267,6 +267,7 @@ function PendingMarketFeeReport() {
                       dateFormat="dd/MM/yyyy"
                       className="form-control"
                       placeholderText={t("From Date")}
+                      portalId="seri-datepicker-portal"
                     />
                   </Form.Group>
                 </Col>
@@ -280,6 +281,7 @@ function PendingMarketFeeReport() {
                       dateFormat="dd/MM/yyyy"
                       className="form-control"
                       placeholderText={t("To Date")}
+                      portalId="seri-datepicker-portal"
                     />
                   </Form.Group>
                 </Col>

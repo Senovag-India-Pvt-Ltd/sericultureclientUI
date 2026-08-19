@@ -451,6 +451,7 @@ function LotGroupageEdit() {
                             onChange={handleDateChange}
                             maxDate={new Date()}
                             className="form-control"
+                            portalId="seri-datepicker-portal"
                           />
                         </div>
                       </Col>

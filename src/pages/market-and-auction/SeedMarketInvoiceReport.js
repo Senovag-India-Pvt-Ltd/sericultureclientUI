@@ -160,11 +160,11 @@ function SeedMarketInvoiceReport() {
               <Row className="mb-4">
                 <Col md={4} style={fieldGroupStyle}>
                   <label style={labelStyle}>From Date <span style={{ color: "#e53e3e" }}>*</span></label>
-                  <DatePicker dateFormat="dd/MM/yyyy" selected={data.fromDate} onChange={(d) => setData({ ...data, fromDate: d })} className="form-control" style={inputStyle} maxDate={new Date()} />
+                  <DatePicker dateFormat="dd/MM/yyyy" selected={data.fromDate} onChange={(d) => setData({ ...data, fromDate: d })} className="form-control" style={inputStyle} maxDate={new Date()} portalId="seri-datepicker-portal" />
                 </Col>
                 <Col md={4} style={fieldGroupStyle}>
                   <label style={labelStyle}>To Date <span style={{ color: "#e53e3e" }}>*</span></label>
-                  <DatePicker dateFormat="dd/MM/yyyy" selected={data.toDate} onChange={(d) => setData({ ...data, toDate: d })} className="form-control" style={inputStyle} maxDate={new Date()} />
+                  <DatePicker dateFormat="dd/MM/yyyy" selected={data.toDate} onChange={(d) => setData({ ...data, toDate: d })} className="form-control" style={inputStyle} maxDate={new Date()} portalId="seri-datepicker-portal" />
                 </Col>
               </Row>
 

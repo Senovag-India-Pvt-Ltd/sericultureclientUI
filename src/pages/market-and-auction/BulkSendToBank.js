@@ -354,6 +354,7 @@ function BulkSendToBank() {
                       <DatePicker
                         selected={data.marketAuctionDate}
                         onChange={handleDateChange}
+                        portalId="seri-datepicker-portal"
                       />
                     </div>
                   </Col>

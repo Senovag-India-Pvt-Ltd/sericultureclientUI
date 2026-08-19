@@ -133,7 +133,7 @@ function SeedMarketCashReceiptReport() {
               <Row className="mb-3">
                 <Col md={4} style={fieldGroupStyle}>
                   <label style={labelStyle}>Auction Date <span style={{ color: "#e53e3e" }}>*</span></label>
-                  <DatePicker dateFormat="dd/MM/yyyy" selected={data.auctionDate} onChange={(d) => setData({ ...data, auctionDate: d })} className="form-control" maxDate={new Date()} required />
+                  <DatePicker dateFormat="dd/MM/yyyy" selected={data.auctionDate} onChange={(d) => setData({ ...data, auctionDate: d })} className="form-control" maxDate={new Date()} required portalId="seri-datepicker-portal" />
                 </Col>
                 <Col md={4} style={fieldGroupStyle}>
                   <label style={labelStyle}>Bidding Slip Lot No <span style={{ color: "#e53e3e" }}>*</span></label>

@@ -2889,6 +2889,7 @@ const saveRejectSuccess = (message) => {
                 showMonthDropdown
                 showYearDropdown
                 dropdownMode="select"
+                portalId="seri-datepicker-portal"
               />
             </Form.Group>
           </Col>
@@ -2910,6 +2911,7 @@ const saveRejectSuccess = (message) => {
                       showMonthDropdown
                       showYearDropdown
                       dropdownMode="select"
+                      portalId="seri-datepicker-portal"
                     />
                   </Form.Group>
                 </Col>
