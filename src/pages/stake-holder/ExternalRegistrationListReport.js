@@ -19,7 +19,7 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function ExternalRegistrationListReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 //   const [listData, setListData] = useState({});
 const [listData, setListData] = useState([]);
   const [listFarmerData, setListFarmerData] = useState({});
@@ -352,14 +352,14 @@ const handleInputs = (e) => {
   );
 
   const ReelerDataColumns = [
-    { name: colHeader("Serial No"),                      selector: (row) => row.serialNumber,       cell: (row) => <span>{row.serialNumber}</span>,       sortable: true },
-    { name: colHeader("External Unit"),                  selector: (row) => row.externalUnitTypeName, cell: (row) => <span>{row.externalUnitTypeName}</span>, sortable: true },
-    { name: colHeader("Race"),                           selector: (row) => row.raceMasterName,     cell: (row) => <span>{row.raceMasterName}</span>,     sortable: true },
-    { name: colHeader("Name of the Unit"),               selector: (row) => row.name,               cell: (row) => <span>{row.name}</span>,               sortable: true },
-    { name: colHeader("Address"),                        selector: (row) => row.address,            cell: (row) => <span>{row.address}</span>,            sortable: true },
-    { name: colHeader("Name of Owner/Organisation"),     selector: (row) => row.organisationName,   cell: (row) => <span>{row.organisationName}</span>,   sortable: true },
-    { name: colHeader("License/Registration Number"),    selector: (row) => row.licenseNumber,      cell: (row) => <span>{row.licenseNumber}</span>,      sortable: true },
-    { name: colHeader("External Units ID"),              selector: (row) => row.externalUnitNumber, cell: (row) => <span>{row.externalUnitNumber}</span>, sortable: true },
+    { name: colHeader(t("Serial No")),                      selector: (row) => row.serialNumber,       cell: (row) => <span>{row.serialNumber}</span>,       sortable: true },
+    { name: colHeader(t("External Unit")),                  selector: (row) => row.externalUnitTypeName, cell: (row) => <span>{row.externalUnitTypeName}</span>, sortable: true },
+    { name: colHeader(t("Race")),                           selector: (row) => row.raceMasterName,     cell: (row) => <span>{row.raceMasterName}</span>,     sortable: true },
+    { name: colHeader(t("Name of the Unit")),               selector: (row) => row.name,               cell: (row) => <span>{row.name}</span>,               sortable: true },
+    { name: colHeader(t("Address")),                        selector: (row) => row.address,            cell: (row) => <span>{row.address}</span>,            sortable: true },
+    { name: colHeader(t("Name of Owner/Organisation")),     selector: (row) => row.organisationName,   cell: (row) => <span>{row.organisationName}</span>,   sortable: true },
+    { name: colHeader(t("License/Registration Number")),    selector: (row) => row.licenseNumber,      cell: (row) => <span>{row.licenseNumber}</span>,      sortable: true },
+    { name: colHeader(t("External Units ID")),              selector: (row) => row.externalUnitNumber, cell: (row) => <span>{row.externalUnitNumber}</span>, sortable: true },
     // { name: colHeader("Virtual Account Number"),         selector: (row) => row.virtualAccountNumber, cell: (row) => <span>{row.virtualAccountNumber}</span>, sortable: true },
     // { name: colHeader("Branch Name"),                    selector: (row) => row.branchName,         cell: (row) => <span>{row.branchName}</span>,         sortable: true },
     // { name: colHeader("IFSC Code"),                      selector: (row) => row.ifscCode,           cell: (row) => <span>{row.ifscCode}</span>,           sortable: true },
@@ -387,8 +387,8 @@ const handleInputs = (e) => {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>🏭</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>RSP / CRC / NSSO Registration Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export external unit registration data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("RSP / CRC / NSSO Registration Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export external unit registration data")}</div>
             </div>
           </div>
 
@@ -399,7 +399,9 @@ const handleInputs = (e) => {
                 <Form.Select name="raceMasterId" value={data.raceMasterId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select Race")}</option>
                   {raceListData?.map((list) => (
-                    <option key={list.raceMasterId} value={list.raceMasterId}>{list.raceMasterName}</option>
+                    <option key={list.raceMasterId} value={list.raceMasterId}>
+                      {i18n.language === "kn" ? list.raceNameInKannada : list.raceMasterName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -409,7 +411,9 @@ const handleInputs = (e) => {
                 <Form.Select name="externalUnitTypeId" value={data.externalUnitTypeId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select External Unit Type")}</option>
                   {externalUnitTypeListData?.map((list) => (
-                    <option key={list.externalUnitTypeId} value={list.externalUnitTypeId}>{list.externalUnitTypeName}</option>
+                    <option key={list.externalUnitTypeId} value={list.externalUnitTypeId}>
+                      {i18n.language === "kn" ? list.externalUnitTypeNameInKannada : list.externalUnitTypeName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>

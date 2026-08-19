@@ -79,7 +79,7 @@ function DivisionMaster() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     }).then(() => navigate("#"));
   };
@@ -93,7 +93,7 @@ function DivisionMaster() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -148,7 +148,7 @@ function DivisionMaster() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        {t("Name")}
+                        {t("Division Name")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">

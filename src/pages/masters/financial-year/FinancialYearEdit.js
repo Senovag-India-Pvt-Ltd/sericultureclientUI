@@ -9,10 +9,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 import FinancialYear from "./FinancialYear";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function FinancialYearEdit() {
+  const { t } = useTranslation();
   // Fetching id from URL params
   const { id } = useParams();
   const [data, setData] = useState({});
@@ -120,7 +122,7 @@ function FinancialYearEdit() {
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Updated successfully",
+      title: t("Updated successfully"),
     }).then(() => navigate("#"));
   };
 
@@ -134,7 +136,7 @@ function FinancialYearEdit() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -144,18 +146,18 @@ function FinancialYearEdit() {
     Swal.fire({
       icon: "error",
       title: message,
-      text: "Something went wrong!",
+      text: t("Something went wrong!"),
     }).then(() => navigate("#"));
   };
 
   return (
-    <Layout title="Edit financialyear">
+    <Layout title={t("Edit Financial Year")}>
       <style>{financialYearEditStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Edit Financial Year</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Edit Financial Year")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -165,7 +167,7 @@ function FinancialYearEdit() {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
                 <li>
@@ -174,7 +176,7 @@ function FinancialYearEdit() {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
               </ul>
@@ -189,19 +191,19 @@ function FinancialYearEdit() {
             <Card>
               <Card.Header className="sh-section-header">
                 <Icon name="edit" />
-                <span>Financial Year Details</span>
+                <span>{t("Financial Year Details")}</span>
               </Card.Header>
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="title">
-                          Edit Financial Year
+                          {t("Edit Financial Year")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -211,11 +213,11 @@ function FinancialYearEdit() {
                             value={data.financialYear}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Title"
+                            placeholder={t("Enter Title")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Financial Year is required.
+                            {t("Financial Year is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -229,7 +231,7 @@ function FinancialYearEdit() {
                           id="isDefault"
                           checked={data.isDefault}
                           name="isDefault"
-                          label="Is Default"
+                          label={t("Is Default")}
                           onChange={handleCheckBox}
                         />
                       </Col>
@@ -244,13 +246,13 @@ function FinancialYearEdit() {
                 <li>
                   <Button type="submit" variant="primary" className="sh-save-btn">
                     <Icon name="save" />
-                    Update
+                    {t("Update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear} className="sh-cancel-btn">
                     <Icon name="cross" />
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

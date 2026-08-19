@@ -109,7 +109,7 @@ function DivisionMasterView() {
                         <td>{Division.name}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>{t("Division Name In Kannada")}:</td> {/* Modify this line */}
+                        <td style={styles.ctstyle}>{t("Division Name in Kannada")}:</td> {/* Modify this line */}
                         <td>{Division.nameInKannada}</td>
                       </tr>
                     </tbody>

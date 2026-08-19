@@ -19,7 +19,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function ReelerCountList() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState([]);
   const [page, setPage] = useState(0);
   const countPerPage = 25;
@@ -217,49 +217,49 @@ function ReelerCountList() {
 
   const ReelerDataColumns = [
     {
-      name: colHeader("Sl.No"),
+      name: colHeader(t("Sl.No")),
       selector: (row) => row.serialNumber,
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
     },
     {
-      name: colHeader("First Name"),
+      name: colHeader(t("First Name")),
       selector: (row) => row.firstName,
       cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
     },
     {
-      name: colHeader("Father Name"),
+      name: colHeader(t("Father Name")),
       selector: (row) => row.fatherName,
       cell: (row) => <span>{row.fatherName}</span>,
       sortable: true,
     },
     {
-      name: colHeader("Fruits Id"),
+      name: colHeader(t("Fruits Id")),
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
     },
     {
-      name: colHeader("Caste"),
+      name: colHeader(t("Caste")),
       selector: (row) => row.caste,
       cell: (row) => <span>{row.caste}</span>,
       sortable: true,
     },
     {
-      name: colHeader("Reeler License Number"),
+      name: colHeader(t("Reeler License Number")),
       selector: (row) => row.reelerLicenseNumber,
       cell: (row) => <span>{row.reelerLicenseNumber}</span>,
       sortable: true,
     },
     {
-      name: colHeader("Reeler Number"),
+      name: colHeader(t("Reeler Number")),
       selector: (row) => row.reelerNumber,
       cell: (row) => <span>{row.reelerNumber}</span>,
       sortable: true,
     },
     {
-      name: colHeader("Mobile Number"),
+      name: colHeader(t("Mobile Number")),
       selector: (row) => row.reelerMobileNumber,
       cell: (row) => <span>{row.reelerMobileNumber}</span>,
       sortable: true,
@@ -271,19 +271,19 @@ function ReelerCountList() {
     //   sortable: true,
     // },
     {
-      name: colHeader("District Name"),
+      name: colHeader(t("District Name")),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
     },
     {
-      name: colHeader("Taluk Name"),
+      name: colHeader(t("Taluk Name")),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
     },
     {
-      name: colHeader("Village Name"),
+      name: colHeader(t("Village Name")),
       selector: (row) => row.villageName,
       cell: (row) => <span>{row.villageName}</span>,
       sortable: true,
@@ -311,8 +311,8 @@ function ReelerCountList() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>🧵</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Reeler Wise Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export reeler registration data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Reeler Wise Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export reeler registration data")}</div>
             </div>
           </div>
 
@@ -324,7 +324,9 @@ function ReelerCountList() {
                 <Form.Select name="districtId" value={data.districtId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select District")}</option>
                   {districtListData.map((d) => (
-                    <option key={d.districtId} value={d.districtId}>{d.districtName}</option>
+                    <option key={d.districtId} value={d.districtId}>
+                      {i18n.language === "kn" ? d.districtNameInKannada : d.districtName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -333,8 +335,10 @@ function ReelerCountList() {
                 <label style={lbl}>{t("Taluk")}</label>
                 <Form.Select name="talukId" value={data.talukId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select Taluk")}</option>
-                  {talukListData.map((t) => (
-                    <option key={t.talukId} value={t.talukId}>{t.talukName}</option>
+                  {talukListData.map((tk) => (
+                    <option key={tk.talukId} value={tk.talukId}>
+                      {i18n.language === "kn" ? tk.talukNameInKannada : tk.talukName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -344,7 +348,9 @@ function ReelerCountList() {
                 <Form.Select name="hobliId" value={hobliData.hobliId} onChange={handleHobliInputs} style={sel}>
                   <option value="">{t("Select Hobli")}</option>
                   {hobliListData.map((h) => (
-                    <option key={h.hobliId} value={h.hobliId}>{h.hobliName}</option>
+                    <option key={h.hobliId} value={h.hobliId}>
+                      {i18n.language === "kn" ? h.hobliNameInKannada : h.hobliName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -354,7 +360,9 @@ function ReelerCountList() {
                 <Form.Select name="villageId" value={data.villageId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select Village")}</option>
                   {villageListData.map((v) => (
-                    <option key={v.villageId} value={v.villageId}>{v.villageName}</option>
+                    <option key={v.villageId} value={v.villageId}>
+                      {i18n.language === "kn" ? v.villageNameInKannada : v.villageName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -364,7 +372,9 @@ function ReelerCountList() {
                 <Form.Select name="marketId" value={data.marketId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select Market")}</option>
                   {marketListData.map((m) => (
-                    <option key={m.marketMasterId} value={m.marketMasterId}>{m.marketMasterName}</option>
+                    <option key={m.marketMasterId} value={m.marketMasterId}>
+                      {i18n.language === "kn" ? m.marketNameInKannada : m.marketMasterName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -374,7 +384,9 @@ function ReelerCountList() {
                 <Form.Select name="casteId" value={data.casteId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select Caste")}</option>
                   {casteListData.map((c) => (
-                    <option key={c.id} value={c.id}>{c.title}</option>
+                    <option key={c.id} value={c.id}>
+                      {i18n.language === "kn" ? c.nameInKannada : c.title}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>

@@ -229,7 +229,7 @@ function UpdateBankDetails() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -325,7 +325,7 @@ function UpdateBankDetails() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     });
   };
@@ -338,7 +338,7 @@ function UpdateBankDetails() {
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -352,7 +352,7 @@ function UpdateBankDetails() {
     }
     Swal.fire({
       icon: "error",
-      title: "Details not Found",
+      title: t("Details not Found"),
       html: errorMessage,
     });
   };

@@ -371,7 +371,7 @@ function ExternalUnitRegisterList() {
   ];
 
   return (
-    <Layout title="External Unit List">
+    <Layout title={t("External Unit List")}>
       <style>{externalUnitListStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
@@ -472,6 +472,7 @@ function ExternalUnitRegisterList() {
               }}
               onChangePage={(page) => setPage(page - 1)}
               progressPending={loading}
+              progressComponent={<div className="py-4">{t("Loading...")}</div>}
               theme="solarized"
               customStyles={customStyles}
               noDataComponent={

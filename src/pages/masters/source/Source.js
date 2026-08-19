@@ -71,7 +71,7 @@ function Source() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     }).then(() => navigate("#"));
   };
@@ -84,7 +84,7 @@ function Source() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
     });
   };

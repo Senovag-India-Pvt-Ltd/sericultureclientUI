@@ -19,7 +19,7 @@ const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function TraderLicenseListReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 //   const [listData, setListData] = useState({});
 const [listData, setListData] = useState([]);
   const [listFarmerData, setListFarmerData] = useState({});
@@ -322,19 +322,19 @@ const handleInputs = (e) => {
   );
 
   const ReelerDataColumns = [
-    { name: colHeader("Sl.No"),                   selector: (row) => row.serialNumber,        cell: (row) => <span>{row.serialNumber}</span>,        sortable: true },
-    { name: colHeader("ARN Number"),              selector: (row) => row.arnNumber,            cell: (row) => <span>{row.arnNumber}</span>,            sortable: true },
-    { name: colHeader("Trader Type"),             selector: (row) => row.traderTypeMasterName, cell: (row) => <span>{row.traderTypeMasterName}</span>, sortable: true },
-    { name: colHeader("Name of the Applicant"),   selector: (row) => row.firstName,            cell: (row) => <span>{row.firstName}</span>,            sortable: true },
-    { name: colHeader("Mobile Number"),           selector: (row) => row.mobileNumber,         cell: (row) => <span>{row.mobileNumber}</span>,         sortable: true },
-    { name: colHeader("Address"),                 selector: (row) => row.address,              cell: (row) => <span>{row.address}</span>,              sortable: true },
-    { name: colHeader("District Name"),           selector: (row) => row.districtName,         cell: (row) => <span>{row.districtName}</span>,         sortable: true },
-    { name: colHeader("Silk Type"),               selector: (row) => row.silkType,             cell: (row) => <span>{row.silkType}</span>,             sortable: true },
-    { name: colHeader("Trader License Number"),   selector: (row) => row.traderLicenseNumber,  cell: (row) => <span>{row.traderLicenseNumber}</span>,  sortable: true },
+    { name: colHeader(t("Sl.No")),                   selector: (row) => row.serialNumber,        cell: (row) => <span>{row.serialNumber}</span>,        sortable: true },
+    { name: colHeader(t("ARN Number")),              selector: (row) => row.arnNumber,            cell: (row) => <span>{row.arnNumber}</span>,            sortable: true },
+    { name: colHeader(t("Trader Type")),             selector: (row) => row.traderTypeMasterName, cell: (row) => <span>{row.traderTypeMasterName}</span>, sortable: true },
+    { name: colHeader(t("Name of the Applicant")),   selector: (row) => row.firstName,            cell: (row) => <span>{row.firstName}</span>,            sortable: true },
+    { name: colHeader(t("Mobile Number")),           selector: (row) => row.mobileNumber,         cell: (row) => <span>{row.mobileNumber}</span>,         sortable: true },
+    { name: colHeader(t("Address")),                 selector: (row) => row.address,              cell: (row) => <span>{row.address}</span>,              sortable: true },
+    { name: colHeader(t("District Name")),           selector: (row) => row.districtName,         cell: (row) => <span>{row.districtName}</span>,         sortable: true },
+    { name: colHeader(t("Silk Type")),               selector: (row) => row.silkType,             cell: (row) => <span>{row.silkType}</span>,             sortable: true },
+    { name: colHeader(t("Trader License Number")),   selector: (row) => row.traderLicenseNumber,  cell: (row) => <span>{row.traderLicenseNumber}</span>,  sortable: true },
    // { name: colHeader("Virtual Account Number"),  selector: (row) => row.virtualAccountNumber, cell: (row) => <span>{row.virtualAccountNumber}</span>, sortable: true },
     //{ name: colHeader("Branch Name"),             selector: (row) => row.branchName,           cell: (row) => <span>{row.branchName}</span>,           sortable: true },
    // { name: colHeader("IFSC Code"),               selector: (row) => row.ifscCode,             cell: (row) => <span>{row.ifscCode}</span>,             sortable: true },
-    { name: colHeader("Market"),                  selector: (row) => row.marketMasterName,     cell: (row) => <span>{row.marketMasterName}</span>,     sortable: true },
+    { name: colHeader(t("Market")),                  selector: (row) => row.marketMasterName,     cell: (row) => <span>{row.marketMasterName}</span>,     sortable: true },
   ];
 
   return (
@@ -357,8 +357,8 @@ const handleInputs = (e) => {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>📋</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Trader License Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export trader license data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Trader License Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export trader license data")}</div>
             </div>
           </div>
 
@@ -369,7 +369,9 @@ const handleInputs = (e) => {
                 <Form.Select name="districtId" value={data.districtId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select District")}</option>
                   {districtListData?.map((list) => (
-                    <option key={list.districtId} value={list.districtId}>{list.districtName}</option>
+                    <option key={list.districtId} value={list.districtId}>
+                      {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -379,7 +381,9 @@ const handleInputs = (e) => {
                 <Form.Select name="traderTypeMasterId" value={data.traderTypeMasterId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select Trader Type")}</option>
                   {traderTypeListData?.map((list) => (
-                    <option key={list.traderTypeMasterId} value={list.traderTypeMasterId}>{list.traderTypeMasterName}</option>
+                    <option key={list.traderTypeMasterId} value={list.traderTypeMasterId}>
+                      {i18n.language === "kn" ? list.traderTypeNameInKannada : list.traderTypeMasterName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -388,9 +392,9 @@ const handleInputs = (e) => {
                 <label style={lbl}>{t("Silk Type")}</label>
                 <Form.Select name="silkType" value={data.silkType} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select Silk Type")}</option>
-                  <option value="Raw Silk">Raw Silk</option>
-                  <option value="Twisted">Twisted</option>
-                  <option value="Dupion">Dupion</option>
+                  <option value="Raw Silk">{t("Raw Silk")}</option>
+                  <option value="Twisted">{t("Twisted")}</option>
+                  <option value="Dupion">{t("Dupion")}</option>
                 </Form.Select>
               </Col>
 

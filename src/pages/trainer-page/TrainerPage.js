@@ -10,11 +10,13 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { Icon } from "../../components";
 import api from "../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_TRAINING;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function TrainerPage() {
+  const { t } = useTranslation();
   // Virtual Bank Account
   const [trDetailsList, setTrDetailsList] = useState([]);
   const [trDetails, setTrDetails] = useState({
@@ -445,22 +447,22 @@ function TrainerPage() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     }).then(() => navigate("/seriui/trainer-page-list"));
   };
   const saveError = () => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Save attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
   const saveTrainerError = (message) => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       text: message,
     });
   };
@@ -569,14 +571,14 @@ function TrainerPage() {
   };
 
   return (
-    <Layout title="Trainer Page">
+    <Layout title={t("Trainer Page")}>
       <style>{trainerPageStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
               <Block.Title tag="h2" className="sh-page-title">
-                Trainer Page
+                {t("Trainer Page")}
               </Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
@@ -587,7 +589,7 @@ function TrainerPage() {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
                 <li>
@@ -596,7 +598,7 @@ function TrainerPage() {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
               </ul>
@@ -660,14 +662,14 @@ function TrainerPage() {
           <Card>
             <Card.Header className="sh-section-header">
               <Icon name="book" />
-              <span>Training Details</span>
+              <span>{t("Training Details")}</span>
             </Card.Header>
             <Card.Body>
               <Row className="g-gs">
                 <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label htmlFor="trName">
-                      Trainer Name<span className="text-danger">*</span>
+                      {t("Trainer Name")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -676,20 +678,20 @@ function TrainerPage() {
                         value={data.trName}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Trainer Name"
+                        placeholder={t("Enter Trainer Name")}
                         required
                       />
                     </div>
                   </Form.Group>
                   <Form.Control.Feedback type="invalid">
-                    Trainer Name is required
+                    {t("Trainer Name is required")}
                   </Form.Control.Feedback>
                 </Col>
 
                 <Col lg="6">
                   <Form.Group className="form-group">
                     <Form.Label>
-                      Training Institution<span className="text-danger">*</span>
+                      {t("Training Institution")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -703,7 +705,7 @@ function TrainerPage() {
                           data.trInstitutionMasterId === "0"
                         }
                       >
-                        <option value="">Select Institution</option>
+                        <option value="">{t("Select Institution")}</option>
                         {trInstituteListData.map((list) => (
                           <option
                             key={list.trInstitutionMasterId}
@@ -714,7 +716,7 @@ function TrainerPage() {
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Training Institution is required
+                        {t("Training Institution is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -723,7 +725,7 @@ function TrainerPage() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Training Group<span className="text-danger">*</span>
+                      {t("Training Group")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -737,7 +739,7 @@ function TrainerPage() {
                           data.trGroupMasterId === "0"
                         }
                       >
-                        <option value="">Select Group</option>
+                        <option value="">{t("Select Group")}</option>
                         {trGroupListData.map((list) => (
                           <option
                             key={list.trGroupMasterId}
@@ -748,7 +750,7 @@ function TrainerPage() {
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Training Group is required
+                        {t("Training Group is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -757,7 +759,7 @@ function TrainerPage() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Training Program<span className="text-danger">*</span>
+                      {t("Training Program")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -771,7 +773,7 @@ function TrainerPage() {
                           data.trProgramMasterId === "0"
                         }
                       >
-                        <option value="">Select Program</option>
+                        <option value="">{t("Select Program")}</option>
                         {trProgramListData.map((list) => (
                           <option
                             key={list.trProgramMasterId}
@@ -782,7 +784,7 @@ function TrainerPage() {
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Training Program is required
+                        {t("Training Program is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -791,7 +793,7 @@ function TrainerPage() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Training Course<span className="text-danger">*</span>
+                      {t("Training Course")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -805,7 +807,7 @@ function TrainerPage() {
                           data.trCourseMasterId === "0"
                         }
                       >
-                        <option value="">Select Course</option>
+                        <option value="">{t("Select Course")}</option>
                         {trCourseListData.map((list) => (
                           <option
                             key={list.trCourseMasterId}
@@ -816,7 +818,7 @@ function TrainerPage() {
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Training Course is required
+                        {t("Training Course is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -825,7 +827,7 @@ function TrainerPage() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label>
-                      Training Mode<span className="text-danger">*</span>
+                      {t("Training Mode")}<span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Select
@@ -839,7 +841,7 @@ function TrainerPage() {
                           data.trModeMasterId === "0"
                         }
                       >
-                        <option value="">Select Training Mode</option>
+                        <option value="">{t("Select Training Mode")}</option>
                         {trModeListData.map((list) => (
                           <option
                             key={list.trModeMasterId}
@@ -850,7 +852,7 @@ function TrainerPage() {
                         ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                        Training Mode is required
+                        {t("Training Mode is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -859,7 +861,7 @@ function TrainerPage() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="trDuration">
-                      Training Duration
+                      {t("Training Duration")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -868,7 +870,7 @@ function TrainerPage() {
                         value={data.trDuration}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Training Duration"
+                        placeholder={t("Enter Training Duration")}
                       />
                     </div>
                   </Form.Group>
@@ -876,7 +878,7 @@ function TrainerPage() {
 
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
-                    <Form.Label htmlFor="trPeriod">Training Period</Form.Label>
+                    <Form.Label htmlFor="trPeriod">{t("Training Period")}</Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
                         id="trPeriod"
@@ -884,7 +886,7 @@ function TrainerPage() {
                         value={data.trPeriod}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Training Period"
+                        placeholder={t("Enter Training Period")}
                       />
                     </div>
                   </Form.Group>
@@ -893,7 +895,7 @@ function TrainerPage() {
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="trNoOfParticipant">
-                      Training No Of Participant
+                      {t("Training No Of Participant")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -902,14 +904,14 @@ function TrainerPage() {
                         value={data.trNoOfParticipant}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Training No Of Participant "
+                        placeholder={t("Enter Training No Of Participant")}
                       />
                     </div>
                   </Form.Group>
 
                   <Form.Group className="form-group mt-2">
                     <Form.Label htmlFor="trUploadPath">
-                      Training Upload
+                      {t("Training Upload")}
                     </Form.Label>
                     <div className="form-control-wrap">
                       <Form.Control
@@ -918,7 +920,7 @@ function TrainerPage() {
                         value={data.trUploadPath}
                         onChange={handleInputs}
                         type="text"
-                        placeholder="Enter Training Upload Path"
+                        placeholder={t("Enter Training Upload Path")}
                       />
                     </div>
                   </Form.Group>
@@ -926,7 +928,7 @@ function TrainerPage() {
 
                 <Col lg="6">
                   <Form.Group className="form-group mt-n4">
-                    <Form.Label>Training Period Start Date</Form.Label>
+                    <Form.Label>{t("Training Period Start Date")}</Form.Label>
                     <Row>
                       <Col lg="6">
                         <div className="form-control-wrap">
@@ -953,7 +955,7 @@ function TrainerPage() {
                     <Row>
                       <Col lg="6">
                         {/* <Form.Group className="form-group"> */}
-                        <Form.Label>Date of Completion</Form.Label>
+                        <Form.Label>{t("Date of Completion")}</Form.Label>
                         <div className="form-control-wrap">
                           {/* <DatePicker
                             selected={data.dob}
@@ -986,7 +988,7 @@ function TrainerPage() {
             <Card>
               <Card.Header className="sh-section-header">
                 <Icon name="user-list" />
-                <span>Trainer Details</span>
+                <span>{t("Trainer Details")}</span>
               </Card.Header>
               <Card.Body>
                 {/* <h3>Virtual Bank account</h3> */}
@@ -1009,7 +1011,7 @@ function TrainerPage() {
                               onClick={handleShowModal}
                             >
                               <Icon name="plus" />
-                              <span>Add</span>
+                              <span>{t("Add")}</span>
                             </Button>
                           </li>
                           <li>
@@ -1019,7 +1021,7 @@ function TrainerPage() {
                               onClick={handleShowModal}
                             >
                               <Icon name="plus" />
-                              <span>Add</span>
+                              <span>{t("Add")}</span>
                             </Button>
                           </li>
                         </ul>
@@ -1039,11 +1041,11 @@ function TrainerPage() {
                             <thead>
                               <tr style={{ backgroundColor: "#f1f2f7" }}>
                                 {/* <th></th> */}
-                                <th>Action</th>
-                                <th>Trainee Name</th>
-                                <th>Designation</th>
-                                <th>Office</th>
-                                <th>Mobile Number</th>
+                                <th>{t("Action")}</th>
+                                <th>{t("Trainee Name")}</th>
+                                <th>{t("Designation")}</th>
+                                <th>{t("Office")}</th>
+                                <th>{t("Mobile Number")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1058,7 +1060,7 @@ function TrainerPage() {
                                         className="d-inline-flex align-items-center gap-1 shadow-sm"
                                       >
                                         <Icon name="edit" />
-                                        Edit
+                                        {t("Edit")}
                                       </Button>
                                       <Button
                                         variant="danger"
@@ -1067,7 +1069,7 @@ function TrainerPage() {
                                         className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm"
                                       >
                                         <Icon name="trash" />
-                                        Delete
+                                        {t("Delete")}
                                       </Button>
                                     </div>
                                   </td>
@@ -1096,7 +1098,7 @@ function TrainerPage() {
                 {/* <Button type="button" variant="primary" onClick={postData}> */}
                 <Button type="submit" variant="primary" className="sh-save-btn">
                   <Icon name="save" />
-                  <span>Save</span>
+                  <span>{t("Save")}</span>
                 </Button>
               </li>
               <li>
@@ -1105,7 +1107,7 @@ function TrainerPage() {
                   className="btn btn-secondary border-0 sh-cancel-btn"
                 >
                   <Icon name="cross" />
-                  <span>Cancel</span>
+                  <span>{t("Cancel")}</span>
                 </Link>
               </li>
             </ul>
@@ -1117,7 +1119,7 @@ function TrainerPage() {
         <Modal.Header closeButton className="sh-modal-header">
           <Modal.Title>
             <Icon name="plus" />
-            <span>Add Trainer Details</span>
+            <span>{t("Add Trainer Details")}</span>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -1127,7 +1129,7 @@ function TrainerPage() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="trTraineeName">
-                    Trainee/Official Name<span className="text-danger">*</span>
+                    {t("Trainee/Official Name")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -1136,11 +1138,11 @@ function TrainerPage() {
                       value={trDetails.trTraineeName}
                       onChange={handleTrainerInputs}
                       type="text"
-                      placeholder="Enter Trainee/Official Name"
+                      placeholder={t("Enter Trainee/Official Name")}
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Trainee/Official Name is required
+                      {t("Trainee/Official Name is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1149,7 +1151,7 @@ function TrainerPage() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label>
-                    Designation<span className="text-danger">*</span>
+                    {t("Designation")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -1164,7 +1166,7 @@ function TrainerPage() {
                         trDetails.designationId === "0"
                       }
                     >
-                      <option value="">Select Designation</option>
+                      <option value="">{t("Select Designation")}</option>
                       {designationListData.length
                         ? designationListData.map((list) => (
                             <option
@@ -1177,7 +1179,7 @@ function TrainerPage() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Designation is required
+                      {t("Designation is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1186,7 +1188,7 @@ function TrainerPage() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
                   <Form.Label>
-                    Office<span className="text-danger">*</span>
+                    {t("Office")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -1201,7 +1203,7 @@ function TrainerPage() {
                         trDetails.trOfficeId === "0"
                       }
                     >
-                      <option value="">Select Office</option>
+                      <option value="">{t("Select Office")}</option>
                       {officeListData.length
                         ? officeListData.map((list) => (
                             <option
@@ -1214,7 +1216,7 @@ function TrainerPage() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Office is required
+                      {t("Office is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1222,17 +1224,17 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
-                  <Form.Label>Gender</Form.Label>
+                  <Form.Label>{t("Gender")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="gender"
                       value={data.gender}
                       onChange={handleTrainerInputs}
                     >
-                      <option value="">Select Gender</option>
-                      <option value="1">Male</option>
-                      <option value="2">Female</option>
-                      <option value="3">Third Gender</option>
+                      <option value="">{t("Select Gender")}</option>
+                      <option value="1">{t("Male")}</option>
+                      <option value="2">{t("Female")}</option>
+                      <option value="3">{t("Third Gender")}</option>
                     </Form.Select>
                   </div>
                 </Form.Group>
@@ -1241,7 +1243,7 @@ function TrainerPage() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
                   <Form.Label htmlFor="mobileNumber">
-                    Mobile Number<span className="text-danger">*</span>
+                    {t("Mobile Number")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -1250,11 +1252,11 @@ function TrainerPage() {
                       value={data.mobileNumber}
                       onChange={handleTrainerInputs}
                       type="text"
-                      placeholder="Enter Mobile Number"
+                      placeholder={t("Enter Mobile Number")}
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Mobile Number is required
+                      {t("Mobile Number is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1263,7 +1265,7 @@ function TrainerPage() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
                   <Form.Label htmlFor="place">
-                    Place<span className="text-danger">*</span>
+                    {t("Place")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -1272,11 +1274,11 @@ function TrainerPage() {
                       value={trDetails.place}
                       onChange={handleTrainerInputs}
                       type="text"
-                      placeholder="Enter Place"
+                      placeholder={t("Enter Place")}
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Place is required
+                      {t("Place is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1284,7 +1286,7 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
-                  <Form.Label>State</Form.Label>
+                  <Form.Label>{t("State")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="stateId"
@@ -1292,7 +1294,7 @@ function TrainerPage() {
                       value={trDetails.stateId}
                       onChange={handleStateOption}
                     >
-                      <option value="0">Select State</option>
+                      <option value="0">{t("Select State")}</option>
                       {stateListData.map((list) => (
                         <option key={list.stateId} value={list.stateId}>
                           {list.stateName}
@@ -1305,14 +1307,14 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
-                  <Form.Label>District</Form.Label>
+                  <Form.Label>{t("District")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="districtId"
                       value={`${trDetails.districtId}_${trDetails.districtName}`}
                       onChange={handleDistrictOption}
                     >
-                      <option value="">Select District</option>
+                      <option value="">{t("Select District")}</option>
                       {districtListData && districtListData.length
                         ? districtListData.map((list) => (
                             <option
@@ -1330,14 +1332,14 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
-                  <Form.Label>Taluk</Form.Label>
+                  <Form.Label>{t("Taluk")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="talukId"
                       value={`${trDetails.talukId}_${trDetails.talukName}`}
                       onChange={handleTalukOption}
                     >
-                      <option value="">Select Taluk</option>
+                      <option value="">{t("Select Taluk")}</option>
                       {talukListData && talukListData.length
                         ? talukListData.map((list) => (
                             <option
@@ -1355,14 +1357,14 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5 ">
-                  <Form.Label>Hobli</Form.Label>
+                  <Form.Label>{t("Hobli")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="hobliId"
                       value={`${trDetails.hobliId}_${trDetails.hobliName}`}
                       onChange={handleHobliOption}
                     >
-                      <option value="">Select Hobli</option>
+                      <option value="">{t("Select Hobli")}</option>
                       {hobliListData && hobliListData.length
                         ? hobliListData.map((list) => (
                             <option
@@ -1380,14 +1382,14 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
-                  <Form.Label htmlFor="Village">Village</Form.Label>
+                  <Form.Label htmlFor="Village">{t("Village")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="villageId"
                       value={`${trDetails.villageId}_${trDetails.villageName}`}
                       onChange={handleVillageOption}
                     >
-                      <option value="">Select Village</option>
+                      <option value="">{t("Select Village")}</option>
                       {villageListData && villageListData.length
                         ? villageListData.map((list) => (
                             <option
@@ -1405,7 +1407,7 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
-                  <Form.Label htmlFor="place">Pre Test Score</Form.Label>
+                  <Form.Label htmlFor="place">{t("Pre Test Score")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="preTestScore"
@@ -1413,7 +1415,7 @@ function TrainerPage() {
                       value={trDetails.preTestScore}
                       onChange={handleTrainerInputs}
                       type="text"
-                      placeholder="Enter Pre Test Score"
+                      placeholder={t("Enter Pre Test Score")}
                     />
                   </div>
                 </Form.Group>
@@ -1421,7 +1423,7 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
-                  <Form.Label htmlFor="place">Post Test Score</Form.Label>
+                  <Form.Label htmlFor="place">{t("Post Test Score")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="postTestScore"
@@ -1429,7 +1431,7 @@ function TrainerPage() {
                       value={trDetails.postTestScore}
                       onChange={handleTrainerInputs}
                       type="text"
-                      placeholder="Enter Post Test Score"
+                      placeholder={t("Enter Post Test Score")}
                     />
                   </div>
                 </Form.Group>
@@ -1437,7 +1439,7 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
-                  <Form.Label htmlFor="place">Percentage Improved</Form.Label>
+                  <Form.Label htmlFor="place">{t("Percentage Improved")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="percentageImproved"
@@ -1445,7 +1447,7 @@ function TrainerPage() {
                       value={trDetails.percentageImproved}
                       onChange={handleTrainerInputs}
                       type="text"
-                      placeholder="Enter Improved Percentage"
+                      placeholder={t("Enter Improved Percentage")}
                     />
                   </div>
                 </Form.Group>
@@ -1457,7 +1459,7 @@ function TrainerPage() {
                     {/* <Button variant="success" onClick={handleAdd}> */}
                     <Button type="submit" variant="success" className="sh-save-btn">
                       <Icon name="check" />
-                      <span>Add</span>
+                      <span>{t("Add")}</span>
                     </Button>
                   </div>
                   {/* <div className="gap-col">
@@ -1468,7 +1470,7 @@ function TrainerPage() {
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal} className="sh-cancel-btn">
                       <Icon name="cross" />
-                      <span>Cancel</span>
+                      <span>{t("Cancel")}</span>
                     </Button>
                   </div>
                 </div>
@@ -1482,7 +1484,7 @@ function TrainerPage() {
         <Modal.Header closeButton className="sh-modal-header">
           <Modal.Title>
             <Icon name="edit" />
-            <span>Edit Trainer Details</span>
+            <span>{t("Edit Trainer Details")}</span>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -1496,7 +1498,7 @@ function TrainerPage() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="trTraineeName">
-                    Trainee/Official Name<span className="text-danger">*</span>
+                    {t("Trainee/Official Name")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -1505,11 +1507,11 @@ function TrainerPage() {
                       value={trDetails.trTraineeName}
                       onChange={handleTrainerInputs}
                       type="text"
-                      placeholder="Enter Trainee Name"
+                      placeholder={t("Enter Trainee/Official Name")}
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Trainee Name is required
+                      {t("Trainee/Official Name is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1518,7 +1520,7 @@ function TrainerPage() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label>
-                    Designation<span className="text-danger">*</span>
+                    {t("Designation")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -1533,7 +1535,7 @@ function TrainerPage() {
                         trDetails.designationId === "0"
                       }
                     >
-                      <option value="">Select Designation</option>
+                      <option value="">{t("Select Designation")}</option>
                       {designationListData.length
                         ? designationListData.map((list) => (
                             <option
@@ -1546,7 +1548,7 @@ function TrainerPage() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Designation is required
+                      {t("Designation is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1555,7 +1557,7 @@ function TrainerPage() {
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
                   <Form.Label>
-                    Office<span className="text-danger">*</span>
+                    {t("Office")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -1570,7 +1572,7 @@ function TrainerPage() {
                         trDetails.trOfficeId === "0"
                       }
                     >
-                      <option value="">Select Office</option>
+                      <option value="">{t("Select Office")}</option>
                       {officeListData.length
                         ? officeListData.map((list) => (
                             <option
@@ -1583,7 +1585,7 @@ function TrainerPage() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Office is required
+                      {t("Office is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1591,17 +1593,17 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group  mt-n4">
-                  <Form.Label>Gender</Form.Label>
+                  <Form.Label>{t("Gender")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="gender"
                       value={data.gender}
                       onChange={handleTrainerInputs}
                     >
-                      <option value="">Select Gender</option>
-                      <option value="1">Male</option>
-                      <option value="2">Female</option>
-                      <option value="3">Third Gender</option>
+                      <option value="">{t("Select Gender")}</option>
+                      <option value="1">{t("Male")}</option>
+                      <option value="2">{t("Female")}</option>
+                      <option value="3">{t("Third Gender")}</option>
                     </Form.Select>
                   </div>
                 </Form.Group>
@@ -1610,7 +1612,7 @@ function TrainerPage() {
               <Col lg="6">
                 <Form.Group className="form-group  mt-n4">
                   <Form.Label htmlFor="mobileNumber">
-                    Mobile Number<span className="text-danger">*</span>
+                    {t("Mobile Number")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -1619,11 +1621,11 @@ function TrainerPage() {
                       value={data.mobileNumber}
                       onChange={handleTrainerInputs}
                       type="text"
-                      placeholder="Enter Mobile Number"
+                      placeholder={t("Enter Mobile Number")}
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Mobile Number is required
+                      {t("Mobile Number is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1632,7 +1634,7 @@ function TrainerPage() {
               <Col lg="6">
                 <Form.Group className="form-group  mt-n4">
                   <Form.Label htmlFor="place">
-                    Place<span className="text-danger">*</span>
+                    {t("Place")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
@@ -1641,11 +1643,11 @@ function TrainerPage() {
                       value={trDetails.place}
                       onChange={handleTrainerInputs}
                       type="text"
-                      placeholder="Enter Place"
+                      placeholder={t("Enter Place")}
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Place is required
+                      {t("Place is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1653,7 +1655,7 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group  mt-n4">
-                  <Form.Label>State</Form.Label>
+                  <Form.Label>{t("State")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="stateId"
@@ -1661,7 +1663,7 @@ function TrainerPage() {
                       value={trDetails.stateId}
                       onChange={handleStateOption}
                     >
-                      <option value="0">Select State</option>
+                      <option value="0">{t("Select State")}</option>
                       {stateListData.map((list) => (
                         <option key={list.stateId} value={list.stateId}>
                           {list.stateName}
@@ -1674,14 +1676,14 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
-                  <Form.Label>District</Form.Label>
+                  <Form.Label>{t("District")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="districtId"
                       value={`${trDetails.districtId}_${trDetails.districtName}`}
                       onChange={handleDistrictOption}
                     >
-                      <option value="">Select District</option>
+                      <option value="">{t("Select District")}</option>
                       {districtListData && districtListData.length
                         ? districtListData.map((list) => (
                             <option
@@ -1699,14 +1701,14 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
-                  <Form.Label>Taluk</Form.Label>
+                  <Form.Label>{t("Taluk")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="talukId"
                       value={`${trDetails.talukId}_${trDetails.talukName}`}
                       onChange={handleTalukOption}
                     >
-                      <option value="">Select Taluk</option>
+                      <option value="">{t("Select Taluk")}</option>
                       {talukListData && talukListData.length
                         ? talukListData.map((list) => (
                             <option
@@ -1724,14 +1726,14 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n4 ">
-                  <Form.Label>Hobli</Form.Label>
+                  <Form.Label>{t("Hobli")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="hobliId"
                       value={`${trDetails.hobliId}_${trDetails.hobliName}`}
                       onChange={handleHobliOption}
                     >
-                      <option value="">Select Hobli</option>
+                      <option value="">{t("Select Hobli")}</option>
                       {hobliListData && hobliListData.length
                         ? hobliListData.map((list) => (
                             <option
@@ -1749,14 +1751,14 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="Village">Village</Form.Label>
+                  <Form.Label htmlFor="Village">{t("Village")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="villageId"
                       value={`${trDetails.villageId}_${trDetails.villageName}`}
                       onChange={handleVillageOption}
                     >
-                      <option value="">Select Village</option>
+                      <option value="">{t("Select Village")}</option>
                       {villageListData && villageListData.length
                         ? villageListData.map((list) => (
                             <option
@@ -1774,7 +1776,7 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
-                  <Form.Label htmlFor="place">Pre Test Score</Form.Label>
+                  <Form.Label htmlFor="place">{t("Pre Test Score")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="preTestScore"
@@ -1782,7 +1784,7 @@ function TrainerPage() {
                       value={trDetails.preTestScore}
                       onChange={handleTrainerInputs}
                       type="text"
-                      placeholder="Enter Pre Test Score"
+                      placeholder={t("Enter Pre Test Score")}
                     />
                   </div>
                 </Form.Group>
@@ -1790,7 +1792,7 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
-                  <Form.Label htmlFor="place">Post Test Score</Form.Label>
+                  <Form.Label htmlFor="place">{t("Post Test Score")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="postTestScore"
@@ -1798,7 +1800,7 @@ function TrainerPage() {
                       value={trDetails.postTestScore}
                       onChange={handleTrainerInputs}
                       type="text"
-                      placeholder="Enter Post Test Score"
+                      placeholder={t("Enter Post Test Score")}
                     />
                   </div>
                 </Form.Group>
@@ -1806,7 +1808,7 @@ function TrainerPage() {
 
               <Col lg="6">
                 <Form.Group className="form-group mt-n5">
-                  <Form.Label htmlFor="place">Percentage Improved</Form.Label>
+                  <Form.Label htmlFor="place">{t("Percentage Improved")}</Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="percentageImproved"
@@ -1814,7 +1816,7 @@ function TrainerPage() {
                       value={trDetails.percentageImproved}
                       onChange={handleTrainerInputs}
                       type="text"
-                      placeholder="Enter Improved Percentage"
+                      placeholder={t("Enter Improved Percentage")}
                     />
                   </div>
                 </Form.Group>
@@ -1829,7 +1831,7 @@ function TrainerPage() {
                       > */}
                     <Button type="submit" variant="success" className="sh-save-btn">
                       <Icon name="check" />
-                      <span>Update</span>
+                      <span>{t("Update")}</span>
                     </Button>
                   </div>
                   {/* <div className="gap-col">
@@ -1840,7 +1842,7 @@ function TrainerPage() {
                   <div className="gap-col">
                     <Button variant="secondary" onClick={handleCloseModal2} className="sh-cancel-btn">
                       <Icon name="cross" />
-                      <span>Cancel</span>
+                      <span>{t("Cancel")}</span>
                     </Button>
                   </div>
                 </div>

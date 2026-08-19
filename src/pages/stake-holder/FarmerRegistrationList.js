@@ -20,7 +20,7 @@ const ACCENT_HEADER = "linear-gradient(135deg,#1a5f9e 0%,#2c8fd4 60%,#38b2ac 100
 const ACCENT_TABLE  = "linear-gradient(135deg,#1a5f9e,#2c8fd4)";
 
 function FarmerRegistrationList() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -407,28 +407,28 @@ function FarmerRegistrationList() {
 
   const FarmerDataColumns = [
     {
-      name: colHeader("Sl.No"),
+      name: colHeader(t("Sl.No")),
       selector: (row) => row.serialNumber,
       cell: (row) => <span>{row.serialNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: colHeader("First Name"),
+      name: colHeader(t("First Name")),
       selector: (row) => row.firstName,
       cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: colHeader("Middle Name"),
+      name: colHeader(t("Middle Name")),
       selector: (row) => row.middleName,
       cell: (row) => <span>{row.middleName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: colHeader("Fruits Id"),
+      name: colHeader(t("Fruits Id")),
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
@@ -449,14 +449,14 @@ function FarmerRegistrationList() {
     //   hide: "md",
     // },
     {
-      name: colHeader("Father Name"),
+      name: colHeader(t("Father Name")),
       selector: (row) => row.fatherName,
       cell: (row) => <span>{row.fatherName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: colHeader("Caste"),
+      name: colHeader(t("Caste")),
       selector: (row) => row.caste,
       cell: (row) => <span>{row.caste}</span>,
       sortable: true,
@@ -470,14 +470,14 @@ function FarmerRegistrationList() {
     //   hide: "md",
     // },
     {
-      name: colHeader("District Name"),
+      name: colHeader(t("District Name")),
       selector: (row) => row.districtName,
       cell: (row) => <span>{row.districtName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: colHeader("Taluk Name"),
+      name: colHeader(t("Taluk Name")),
       selector: (row) => row.talukName,
       cell: (row) => <span>{row.talukName}</span>,
       sortable: true,
@@ -533,7 +533,7 @@ function FarmerRegistrationList() {
     //   hide: "md",
     // },
     {
-      name: colHeader("Land Address"),
+      name: colHeader(t("Land Address")),
       selector: (row) => row.landAddress,
       cell: (row) => <span>{row.landAddress}</span>,
       sortable: true,
@@ -547,13 +547,13 @@ function FarmerRegistrationList() {
     //   hide: "md",
     // },
     {
-      name: colHeader("Mobile Number"),
+      name: colHeader(t("Mobile Number")),
       selector: (row) => row.mobileNumber,
       cell: (row) => <span>{row.mobileNumber}</span>,
       sortable: true,
     },
     {
-      name: colHeader("TSC Name"),
+      name: colHeader(t("TSC Name")),
       selector: (row) => row.tscName,
       cell: (row) => <span>{row.tscName}</span>,
       sortable: true,
@@ -600,7 +600,9 @@ function FarmerRegistrationList() {
                 <Form.Select name="districtId" value={data.districtId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select District")}</option>
                   {districtListData && districtListData.map((list) => (
-                    <option key={list.districtId} value={list.districtId}>{list.districtName}</option>
+                    <option key={list.districtId} value={list.districtId}>
+                      {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -609,7 +611,9 @@ function FarmerRegistrationList() {
                 <Form.Select name="talukId" value={data.talukId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select Taluk")}</option>
                   {talukListData && talukListData.map((list) => (
-                    <option key={list.talukId} value={list.talukId}>{list.talukName}</option>
+                    <option key={list.talukId} value={list.talukId}>
+                      {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -618,7 +622,9 @@ function FarmerRegistrationList() {
                 <Form.Select name="hobliId" value={hobliData.hobliId} onChange={handleHobliInputs} style={sel}>
                   <option value="">{t("Select Hobli")}</option>
                   {hobliListData && hobliListData.map((list) => (
-                    <option key={list.hobliId} value={list.hobliId}>{list.hobliName}</option>
+                    <option key={list.hobliId} value={list.hobliId}>
+                      {i18n.language === "kn" ? list.hobliNameInKannada : list.hobliName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -627,7 +633,9 @@ function FarmerRegistrationList() {
                 <Form.Select name="villageId" value={data.villageId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select Village")}</option>
                   {villageListData && villageListData.map((list) => (
-                    <option key={list.villageId} value={list.villageId}>{list.villageName}</option>
+                    <option key={list.villageId} value={list.villageId}>
+                      {i18n.language === "kn" ? list.villageNameInKannada : list.villageName}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -636,7 +644,9 @@ function FarmerRegistrationList() {
                 <Form.Select name="tscMasterId" value={data.tscMasterId} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select TSC")}</option>
                   {tscListData && tscListData.map((list) => (
-                    <option key={list.tscMasterId} value={list.tscMasterId}>{list.name}</option>
+                    <option key={list.tscMasterId} value={list.tscMasterId}>
+                      {i18n.language === "kn" ? list.nameInKannada : list.name}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
@@ -645,7 +655,9 @@ function FarmerRegistrationList() {
                 <Form.Select name="casteId" value={data.casteId} onChange={handleInputs} style={sel}>
                   <option value="0">{t("Select Caste")}</option>
                   {casteListData.map((list) => (
-                    <option key={list.id} value={list.id}>{list.title}</option>
+                    <option key={list.id} value={list.id}>
+                      {i18n.language === "kn" ? list.nameInKannada : list.title}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>

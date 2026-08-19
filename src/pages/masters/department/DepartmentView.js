@@ -5,10 +5,12 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DepartmentView() {
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -49,13 +51,13 @@ function DepartmentView() {
   }, [id]);
 
   return (
-    <Layout title="View Department Details">
+    <Layout title={t("View Department Details")}>
       <style>{departmentViewStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">View Department Details</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("View Department Details")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -65,7 +67,7 @@ function DepartmentView() {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
                 <li>
@@ -74,7 +76,7 @@ function DepartmentView() {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
               </ul>
@@ -87,7 +89,7 @@ function DepartmentView() {
         <Card>
           <Card.Header className="sh-section-header">
             <Icon name="eye" />
-            <span>View Department Details</span>
+            <span>{t("View Department Details")}</span>
           </Card.Header>
           <Card.Body>
             <Row className="g-gs">
@@ -95,23 +97,23 @@ function DepartmentView() {
                 <table className="table small table-bordered">
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}> ID:</td>
+                      <td style={styles.ctstyle}> {t("ID")}:</td>
                       <td>{department.departmentId}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Department Code:</td>
+                      <td style={styles.ctstyle}>{t("Department Code")}:</td>
                       <td>{department.departmentCode}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Department Name:</td>
+                      <td style={styles.ctstyle}>{t("Department Name")}:</td>
                       <td>{department.departmentName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> Department Name In Kannada:</td>
+                      <td style={styles.ctstyle}> {t("Department Name In Kannada")}:</td>
                       <td>{department.departmentNameInKannada}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Department Details:</td>
+                      <td style={styles.ctstyle}>{t("Department Details")}:</td>
                       <td>{department.departmentDetails}</td>
                     </tr>
                   </tbody>

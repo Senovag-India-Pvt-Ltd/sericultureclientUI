@@ -130,7 +130,7 @@ function GovtAccount() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        {t("BankName")}
+                        {t("Bank Name")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -143,7 +143,7 @@ function GovtAccount() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          {t("Bank is required")}
+                          {t("Bank Name is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

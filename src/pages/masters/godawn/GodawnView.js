@@ -110,11 +110,11 @@ function GodawnView() {
                       <td>{Godawn.marketMasterName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> {t("Godown name")}:</td>
+                      <td style={styles.ctstyle}> {t("Godown Name")}:</td>
                       <td>{Godawn.godownName}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}> {t("Godown name In Kannada")}:</td>
+                      <td style={styles.ctstyle}> {t("Godown Name In Kannada")}:</td>
                       <td>{Godawn.godownNameInKannada}</td>
                     </tr>
                   </tbody>

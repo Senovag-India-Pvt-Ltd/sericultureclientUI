@@ -7,10 +7,12 @@ import Swal from "sweetalert2";
 import { Icon, Select } from "../../../components";
 import { useState, useEffect } from "react";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function DepartmentEdit() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -103,7 +105,7 @@ function DepartmentEdit() {
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Updated successfully",
+      title: t("Updated successfully"),
       // text: "You clicked the button!",
     }).then(() => navigate("#"));
   };
@@ -116,20 +118,20 @@ function DepartmentEdit() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
     });
   };
   
 
   return (
-    <Layout title="Department">
+    <Layout title={t("Department")}>
       <style>{editDepartmentStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Department</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Department")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -139,7 +141,7 @@ function DepartmentEdit() {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
                 <li>
@@ -148,7 +150,7 @@ function DepartmentEdit() {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
               </ul>
@@ -164,7 +166,7 @@ function DepartmentEdit() {
             <Card>
               <Card.Header className="sh-section-header">
                 <Icon name="edit" />
-                <span>Department Details</span>
+                <span>{t("Department Details")}</span>
               </Card.Header>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
@@ -172,7 +174,7 @@ function DepartmentEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                        Department Code
+                        {t("Department Code")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -182,11 +184,11 @@ function DepartmentEdit() {
                           value={data.departmentCode}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Department Code"
+                          placeholder={t("Enter Department Code")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Department Code is required.
+                        {t("Department Code is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -195,7 +197,7 @@ function DepartmentEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                        Department Name
+                        {t("Department Name")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -205,11 +207,11 @@ function DepartmentEdit() {
                           value={data.departmentName}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Department Name"
+                          placeholder={t("Enter Department Name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Department Name is required.
+                        {t("Department Name is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -218,7 +220,7 @@ function DepartmentEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                        Department Name In Kannada
+                        {t("Department Name In Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -228,11 +230,11 @@ function DepartmentEdit() {
                           value={data.departmentNameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Department Name In Kannada"
+                          placeholder={t("Enter Department Name In Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Department Name In Kannada is required.
+                        {t("Department Name In Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -241,7 +243,7 @@ function DepartmentEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="approxWeightPerCrate">
-                        Department Details
+                        {t("Department Details")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -251,11 +253,11 @@ function DepartmentEdit() {
                           value={data.departmentDetails}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Department Details"
+                          placeholder={t("Enter Department Details")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        Department Details is required.
+                        {t("Department Details is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -269,7 +271,7 @@ function DepartmentEdit() {
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary" className="sh-save-btn">
                     <Icon name="save" />
-                    Update
+                    {t("Update")}
                   </Button>
                 </li>
                 <li>
@@ -281,7 +283,7 @@ function DepartmentEdit() {
                   </Link> */}
                   <Button type="button" variant="secondary" onClick={clear} className="sh-cancel-btn">
                     <Icon name="cross" />
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                 </li>
               </ul>

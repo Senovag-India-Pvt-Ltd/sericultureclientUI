@@ -235,7 +235,7 @@ function TraderActivate() {
           } else {
             Swal.fire({
               icon: "warning",
-              title: "Details not Found",
+              title: t("Details not Found"),
             });
             setLoading(false);
           }
@@ -253,7 +253,7 @@ function TraderActivate() {
           } else {
             Swal.fire({
               icon: "warning",
-              title: "Details not Found",
+              title: t("Details not Found"),
             });
           }
           setLoading(false);
@@ -409,8 +409,8 @@ function TraderActivate() {
         } else {
           Swal.fire({
             icon: "error",
-            title: "Attempt was not successful",
-            text: "Record Not Found!!!",
+            title: t("Attempt was not successful"),
+            text: t("Record Not Found!!!"),
           });
         }
       })
@@ -473,49 +473,49 @@ function TraderActivate() {
 
   const TraderDataColumns = [
     {
-      name: "User Type Id",
+      name: t("User Type Id"),
       selector: (row) => row.userTypeId,
       cell: (row) => <span>{row.userTypeId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "User ID",
+      name: t("User ID"),
       selector: (row) => row.userMasterId,
       cell: (row) => <span>{row.userMasterId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Name",
+      name: t("Name"),
       selector: (row) => row.firstName,
       cell: (row) => <span>{row.firstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Market",
+      name: t("Market"),
       selector: (row) => row.marketMasterId,
       cell: (row) => <span>{row.marketMasterId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Mobile Number",
+      name: t("Mobile Number"),
       selector: (row) => row.phoneNumber,
       cell: (row) => <span>{row.phoneNumber}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Device Id",
+      name: t("Device Id"),
       selector: (row) => row.deviceId,
       cell: (row) => <span>{row.deviceId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Action",
+      name: t("Action"),
       width: "300px",
       headerStyle: (selector, id) => {
         return { textAlign: "center" };
@@ -529,7 +529,7 @@ function TraderActivate() {
             // onClick={handleShowModal}
             onClick={() => getEdit(row)}
           >
-            Edit
+            {t("Edit")}
           </Button>
         </div>
       ),
@@ -601,7 +601,7 @@ function TraderActivate() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     });
   };
@@ -614,7 +614,7 @@ function TraderActivate() {
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -628,13 +628,13 @@ function TraderActivate() {
     }
     Swal.fire({
       icon: "error",
-      title: "Details not Found",
+      title: t("Details not Found"),
       html: errorMessage,
     });
   };
 
   return (
-    <Layout title="Activate Trader">
+    <Layout title={t('Activate Trader')}>
       <style>{traderActivateStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
@@ -701,7 +701,7 @@ function TraderActivate() {
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        Field Value is Required
+                        {t('Field Value is Required')}
                       </Form.Control.Feedback>
                     </Col>
                     <Col sm={2} lg={3}>
@@ -963,6 +963,8 @@ function TraderActivate() {
                   }}
                   onChangePage={(page) => setPage(page - 1)}
                   progressPending={loading}
+                  progressComponent={<div className="py-4">{t("Loading...")}</div>}
+                  noDataComponent={<div className="py-4">{t("There are no records to display")}</div>}
                   theme="solarized"
                   customStyles={customStyles}
                 />
