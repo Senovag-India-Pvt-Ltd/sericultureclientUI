@@ -92,7 +92,7 @@ function ScCategoryView() {
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -133,7 +133,7 @@ function ScCategoryView() {
                       </tr>
                       
                       <tr>
-                        <td style={styles.ctstyle}>  {t("Code  Number")}</td>
+                        <td style={styles.ctstyle}>  {t("Code Number")}</td>
                         <td>{ScCategory.codeNumber}</td>
                       </tr>
                       <tr>

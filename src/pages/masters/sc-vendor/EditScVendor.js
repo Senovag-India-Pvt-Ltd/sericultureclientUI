@@ -178,7 +178,7 @@ function ScVendorEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
@@ -217,7 +217,7 @@ function ScVendorEdit() {
                             value={data.nameInKannada}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("Enter  Vendor Name in Kannada")}
+                            placeholder={t("Enter Vendor Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -338,7 +338,7 @@ function ScVendorEdit() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        {t("Agency District Codeis required.")}
+                        {t("Agency District Code is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

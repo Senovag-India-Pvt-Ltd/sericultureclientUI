@@ -419,7 +419,7 @@ function ScSubSchemeDetails() {
                    <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Calculation Based On
+                          {t("Calculation Based On")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -434,7 +434,7 @@ function ScSubSchemeDetails() {
                             // }
                           >
                             <option value="">
-                              Select Calculation Based On
+                              {t("Select Calculation Based On")}
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
@@ -479,7 +479,7 @@ function ScSubSchemeDetails() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Scheme For Work Order
+                          {t("Scheme For Work Order")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -494,7 +494,7 @@ function ScSubSchemeDetails() {
                             // }
                           >
                             <option value="">
-                              Select Scheme For Work Order
+                              {t("Select Scheme For Work Order")}
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
@@ -539,7 +539,7 @@ function ScSubSchemeDetails() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Scheme For Sanction Order 
+                          {t("Scheme For Sanction Order")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -554,7 +554,7 @@ function ScSubSchemeDetails() {
                             // }
                           >
                             <option value="">
-                              Select Scheme For Sanction Order
+                              {t("Select Scheme For Sanction Order")}
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
@@ -599,7 +599,7 @@ function ScSubSchemeDetails() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Scheme For Acknowledgement
+                          {t("Scheme For Acknowledgement")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -614,7 +614,7 @@ function ScSubSchemeDetails() {
                             // }
                           >
                             <option value="">
-                              Select Scheme For Acknowledgement
+                              {t("Select Scheme For Acknowledgement")}
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
@@ -659,7 +659,7 @@ function ScSubSchemeDetails() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Scheme For Unit Cost
+                          {t("Scheme For Unit Cost")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -674,7 +674,7 @@ function ScSubSchemeDetails() {
                             // }
                           >
                             <option value="">
-                              Select Scheme For Unit Cost
+                              {t("Select Scheme For Unit Cost")}
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
@@ -719,7 +719,7 @@ function ScSubSchemeDetails() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Scheme For ARM Advance Payment
+                          {t("Scheme For ARM Advance Payment")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -728,7 +728,7 @@ function ScSubSchemeDetails() {
                             onChange={handleInputs}
                           >
                             <option value="">
-                              Select Scheme For ARM Advance Payment
+                              {t("Select Scheme For ARM Advance Payment")}
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
@@ -769,7 +769,7 @@ function ScSubSchemeDetails() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Scheme For ARM First Release
+                          {t("Scheme For ARM First Release")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -778,7 +778,7 @@ function ScSubSchemeDetails() {
                             onChange={handleInputs}
                           >
                             <option value="">
-                              Select Scheme For ARM First Release
+                              {t("Select Scheme For ARM First Release")}
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
@@ -819,7 +819,7 @@ function ScSubSchemeDetails() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Scheme For ARM Final Release
+                          {t("Scheme For ARM Final Release")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -828,7 +828,7 @@ function ScSubSchemeDetails() {
                             onChange={handleInputs}
                           >
                             <option value="">
-                              Select Scheme For ARM Final Release
+                              {t("Select Scheme For ARM Final Release")}
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>

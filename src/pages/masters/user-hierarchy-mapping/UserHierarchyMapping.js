@@ -14,7 +14,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function UserHierarchyMapping() {
   // Translation
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [data, setData] = useState({
     actualDesignationId: "",
@@ -513,15 +513,15 @@ function UserHierarchyMapping() {
                   </Link>
                 </li>
                 <li>
-                  <Button variant="success" onClick={downloadPending} className="sh-save-btn">
+                  <Button variant="primary" onClick={downloadPending} className="sh-cta-btn">
                     <Icon name="download" />
-                    <span>Pending List</span>
+                    <span>{t("Pending List")}</span>
                   </Button>
                 </li>
                 <li>
-                  <Button variant="info" onClick={downloadCompleted} className="sh-save-btn">
+                  <Button variant="primary" onClick={downloadCompleted} className="sh-cta-btn">
                     <Icon name="download" />
-                    <span>Completed List</span>
+                    <span>{t("Completed List")}</span>
                   </Button>
                 </li>
               </ul>
@@ -534,7 +534,8 @@ function UserHierarchyMapping() {
         {/* <Form action="#"> */}
         <Form noValidate validated={validated} onSubmit={postData}>
           {/* <Row className="g-3 "> */}
-          <Card className="sh-section-card">
+          <Block className="mt-3">
+          <Card className="sh-section-card" style={{ marginTop: "28px" }}>
             <Card.Header className="sh-section-header">
               <Icon name="user" />
               <span>{t("Employee")}</span>
@@ -566,7 +567,9 @@ function UserHierarchyMapping() {
                                 key={list.designationId}
                                 value={list.designationId}
                               >
-                                {list.name}
+                                {i18n.language === "kn"
+                                  ? list.designationNameInKannada || list.name
+                                  : list.name}
                               </option>
                             ))
                           : ""}
@@ -603,7 +606,10 @@ function UserHierarchyMapping() {
                                 key={list.districtId}
                                 value={list.districtId}
                               >
-                                {list.districtName}
+                                {i18n.language === "kn"
+                                  ? list.districtNameInKannada ||
+                                    list.districtName
+                                  : list.districtName}
                               </option>
                             ))
                           : ""}
@@ -669,7 +675,7 @@ function UserHierarchyMapping() {
                         readOnly
                       />
                       <Form.Control.Feedback type="invalid">
-                        {"First Name is required"}
+                        {t("First Name is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -677,13 +683,13 @@ function UserHierarchyMapping() {
               </Row>
             </Card.Body>
           </Card>
-          {/* </Block> */}
+          </Block>
 
-          {/* <Block> */}
+          <Block className="mt-3">
           <Card className="sh-section-card">
             <Card.Header className="sh-section-header">
               <Icon name="user-list" />
-              <span>{t("Reports To(Manager)")}</span>
+              <span>{t("Reports To (Manager)")}</span>
             </Card.Header>
             <Card.Body>
               <Row className="g-gs">
@@ -712,7 +718,9 @@ function UserHierarchyMapping() {
                                 key={list.designationId}
                                 value={list.designationId}
                               >
-                                {list.name}
+                                {i18n.language === "kn"
+                                  ? list.designationNameInKannada || list.name
+                                  : list.name}
                               </option>
                             ))
                           : ""}
@@ -749,7 +757,10 @@ function UserHierarchyMapping() {
                                 key={list.districtId}
                                 value={list.districtId}
                               >
-                                {list.districtName}
+                                {i18n.language === "kn"
+                                  ? list.districtNameInKannada ||
+                                    list.districtName
+                                  : list.districtName}
                               </option>
                             ))
                           : ""}
@@ -815,7 +826,7 @@ function UserHierarchyMapping() {
                         readOnly
                       />
                       <Form.Control.Feedback type="invalid">
-                        {"First Name is required"}
+                        {t("First Name is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -823,6 +834,7 @@ function UserHierarchyMapping() {
               </Row>
             </Card.Body>
           </Card>
+          </Block>
 
           <div className="gap-col">
             <ul className="d-flex align-items-center justify-content-center gap g-3">

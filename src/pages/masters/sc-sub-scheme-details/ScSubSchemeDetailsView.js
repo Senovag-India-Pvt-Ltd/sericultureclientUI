@@ -95,7 +95,7 @@ function ScSubSchemeDetailsView() {
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -149,7 +149,7 @@ function ScSubSchemeDetailsView() {
                       </tr>
 
                       <tr>
-  <td style={styles.ctstyle}>{t("Administrative Govt Order No")}</td>
+  <td style={styles.ctstyle}>{t("Administrative Government Order No")}</td>
   <td>{ScSubSchemeDetails.admGovtOrder || "-"}</td>
 </tr>
 <tr>

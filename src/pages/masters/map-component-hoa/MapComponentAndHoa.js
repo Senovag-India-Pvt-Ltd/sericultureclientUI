@@ -644,7 +644,7 @@ function MapComponent() {
                           ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                      {t("Component  is required")}
+                      {t("Component is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -698,7 +698,7 @@ function MapComponent() {
                               value={data.unitCostInRupees}
                               onChange={handleInputs}
                               type="text"
-                              placeholder={t("Enter  Unit Cost")}
+                              placeholder={t("Enter Unit Cost")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
@@ -1589,20 +1589,20 @@ function MapComponent() {
                               value={mapComponent.shareInPercentage}
                               onChange={handleMapInputs}
                               type="number"
-                              placeholder="Enter Share in %"
+                              placeholder={t("Enter Share in %")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
                             {t("Share in % is required")}
                             </Form.Control.Feedback>
-                           
+
                           </div>
                         </Form.Group>
                       </Col>
 
                       <Col lg="12" className="mt-4">
                       <Card>
-                        <Card.Header className="sh-section-header"><Icon name="edit" /><span>{t("Edit Drawing Officers details")}</span></Card.Header>
+                        <Card.Header className="sh-section-header"><Icon name="edit" /><span>{t("Edit Drawing Officers Details")}</span></Card.Header>
                         <Card.Body>
                           <Row className="g-3">
                             <Col lg="6">

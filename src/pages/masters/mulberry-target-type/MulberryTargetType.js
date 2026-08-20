@@ -8,10 +8,13 @@ import { Icon } from "../../../components";
 import { useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MulberryTargetType() {
+ // Translation
+ const { t } = useTranslation();
  const [data, setData] = useState({
   mulberryTargetTypeName: "",
   mulberryTargetTypeNameInKannada: "",
@@ -116,7 +119,7 @@ function MulberryTargetType() {
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Target</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Target")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -126,7 +129,7 @@ function MulberryTargetType() {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
                 <li>
@@ -135,7 +138,7 @@ function MulberryTargetType() {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
               </ul>
@@ -151,7 +154,7 @@ function MulberryTargetType() {
             <Card>
               <Card.Header className="sh-section-header">
                 <Icon name="setting" />
-                <span>Target Details</span>
+                <span>{t("Target Details")}</span>
               </Card.Header>
               <Card.Body>
                 {/* <h3>Farmers Details</h3> */}
@@ -159,7 +162,7 @@ function MulberryTargetType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="variety">
-                        Target<span className="text-danger">*</span>
+                        {t("Target")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -168,11 +171,11 @@ function MulberryTargetType() {
                           type="text"
                           value={data.mulberryTargetTypeName}
                           onChange={handleInputs}
-                          placeholder="Enter Target"
+                          placeholder={t("Enter Target")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Target is required.
+                          {t("Target is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -181,7 +184,7 @@ function MulberryTargetType() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="variety">
-                        Target Name in Kannada
+                        {t("Target Name in Kannada")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -191,11 +194,11 @@ function MulberryTargetType() {
                           type="text"
                           value={data.mulberryTargetTypeNameInKannada}
                           onChange={handleInputs}
-                          placeholder="Enter Target Name in Kannada"
+                          placeholder={t("Enter Target Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          Target Name in Kannada is required.
+                          {t("Target Name in Kannada is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>
@@ -203,7 +206,7 @@ function MulberryTargetType() {
                   <Col lg="6">
   <Form.Group className="form-group">
     <Form.Label htmlFor="variety">
-      Unit
+      {t("Unit")}
       {/* Removed mandatory asterisk */}
     </Form.Label>
     <div className="form-control-wrap">
@@ -213,7 +216,7 @@ function MulberryTargetType() {
         type="text"
         value={data.unit}
         onChange={handleInputs}
-        placeholder="Enter Unit"
+        placeholder={t("Enter Unit")}
         // Removed 'required'
       />
       {/* Removed validation feedback since field is not mandatory */}
@@ -228,7 +231,7 @@ function MulberryTargetType() {
       type="checkbox"
       name="mulberryRequired"
       id="mulberryRequired"
-      label="True"
+      label={t("True")}
       checked={data.mulberryRequired}
       onChange={handleInputs}
     />
@@ -245,13 +248,13 @@ function MulberryTargetType() {
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary" className="sh-save-btn">
                     <Icon name="save" />
-                    Save
+                    {t("save")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear} className="sh-cancel-btn">
                     <Icon name="cross" />
-                    Cancel
+                    {t("cancel")}
                   </Button>
                 </li>
               </ul>

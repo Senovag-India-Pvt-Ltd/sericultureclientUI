@@ -522,7 +522,7 @@ function MapComponentAndHoaEdit() {
                           ))}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
-                      {t("Component  is required")}
+                      {t("Component is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -543,7 +543,7 @@ function MapComponentAndHoaEdit() {
                               value={data.unitCostInRupees}
                               onChange={handleInputs}
                               type="text"
-                              placeholder={t("Enter  Unit Cost")}
+                              placeholder={t("Enter Unit Cost")}
                               required
                             />
                             <Form.Control.Feedback type="invalid">

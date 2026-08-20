@@ -193,7 +193,7 @@ function ScVendor() {
                           value={data.nameInKannada}
                           onChange={handleInputs}
                           type="text"
-                          placeholder={t("Enter  Vendor Name in Kannada")}
+                          placeholder={t("Enter Vendor Name in Kannada")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
@@ -312,7 +312,7 @@ function ScVendor() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        {t("Agency District Codeis required.")}
+                        {t("Agency District Code is required.")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

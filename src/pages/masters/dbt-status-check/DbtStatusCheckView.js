@@ -52,7 +52,7 @@ function DbtStatusCheckView() {
   }, [id]);
 
   return (
-    <Layout title="Dbt Status Check View" content="container">
+    <Layout title="Dbt Status Check View">
       <style>{dbtStatusCheckViewStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
@@ -96,7 +96,7 @@ function DbtStatusCheckView() {
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">

@@ -281,6 +281,7 @@ useEffect(() => {
             }}
             onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}
+            noDataComponent={<div className="py-4">{t("There are no records to display")}</div>}
             theme="solarized"
             customStyles={customStyles}
             />

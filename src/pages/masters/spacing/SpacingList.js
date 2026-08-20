@@ -199,7 +199,7 @@ function SpacingList() {
       hide: "md",
     },
     {
-      name: "Metre",
+      name: t("Metre"),
       selector: (row) => row.metre,
       cell: (row) => <span>{row.metre}</span>,
       sortable: true,
@@ -207,7 +207,7 @@ function SpacingList() {
     },
 
     {
-      name: "Length",
+      name: t("Length"),
       selector: (row) => row.length,
       cell: (row) => <span>{row.length}</span>,
       sortable: true,
@@ -215,7 +215,7 @@ function SpacingList() {
     },
 
     {
-      name: "Breadth",
+      name: t("Breadth"),
       selector: (row) => row.breadth,
       cell: (row) => <span>{row.breadth}</span>,
       sortable: true,
@@ -275,6 +275,8 @@ function SpacingList() {
               }}
               onChangePage={(page) => setPage(page - 1)}
               progressPending={loading}
+              progressComponent={<div className="py-4">{t("Loading...")}</div>}
+              noDataComponent={<div className="py-4">{t("There are no records to display")}</div>}
               theme="solarized"
               customStyles={customStyles}
             />

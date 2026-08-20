@@ -8,10 +8,13 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MulberryTargetTypeEdit() {
+  // Translation
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -195,7 +198,7 @@ const handleSave = () => {
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Edit Mulberry Target Type</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Edit Mulberry Target Type")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -205,7 +208,7 @@ const handleSave = () => {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
                 <li>
@@ -214,7 +217,7 @@ const handleSave = () => {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
               </ul>
@@ -230,19 +233,19 @@ const handleSave = () => {
             <Card>
               <Card.Header className="sh-section-header">
                 <Icon name="edit" />
-                <span>Mulberry Target Type Details</span>
+                <span>{t("Mulberry Target Type Details")}</span>
               </Card.Header>
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="mulberryVariety">
-                          Mulberry Target Type<span className="text-danger">*</span>
+                          {t("Mulberry Target Type")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -251,11 +254,11 @@ const handleSave = () => {
                             value={data.mulberryTargetTypeName}
                             onChange={handleInputs}
                             type="text"
-                            placeholder="Enter Mulberry Target Type"
+                            placeholder={t("Enter Mulberry Target Type")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Mulberry Target Type is required.
+                            {t("Mulberry Target Type is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -264,7 +267,7 @@ const handleSave = () => {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="variety">
-                          Mulberry Target Type Name in Kannada
+                          {t("Mulberry Target Type Name in Kannada")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -274,20 +277,20 @@ const handleSave = () => {
                             type="text"
                             value={data.mulberryTargetTypeNameInKannada}
                             onChange={handleInputs}
-                            placeholder="Enter Mulberry Target Type Name in Kannada"
+                            placeholder={t("Enter Mulberry Target Type Name in Kannada")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Mulberry Target Type Name in Kannada is required.
+                            {t("Mulberry Target Type Name in Kannada is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
                     </Col>
-                  
+
   <Col lg="6">
   <Form.Group className="form-group">
     <Form.Label htmlFor="unit">
-      Unit
+      {t("Unit")}
       {/* Removed mandatory asterisk */}
     </Form.Label>
     <div className="form-control-wrap">
@@ -297,7 +300,7 @@ const handleSave = () => {
         value={data.unit}
         onChange={handleInputs}
         type="text"
-        placeholder="Enter Unit"
+        placeholder={t("Enter Unit")}
         // removed required attribute
       />
       {/* Optional: remove or uncomment the feedback below if validation is needed */}
@@ -336,7 +339,7 @@ const handleSave = () => {
                           type="checkbox"
                           name="mulberryRequired"
                           id="mulberryRequired"
-                          label="True"
+                          label={t("True")}
                           checked={data.mulberryRequired}
                           onChange={handleInputs}
                         />
@@ -353,13 +356,13 @@ const handleSave = () => {
                   {/* <Button type="button" variant="primary" onClick={postData}> */}
                   <Button type="submit" variant="primary" className="sh-save-btn">
                     <Icon name="save" />
-                    Update
+                    {t("update")}
                   </Button>
                 </li>
                 <li>
                   <Button type="button" variant="secondary" onClick={clear} className="sh-cancel-btn">
                     <Icon name="cross" />
-                    Cancel
+                    {t("cancel")}
                   </Button>
                 </li>
               </ul>

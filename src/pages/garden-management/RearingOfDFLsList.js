@@ -2033,7 +2033,7 @@ const [showModal8, setShowModal8] = useState(false);
       hide: "md",
     },
     {
-      name: t(" Lot Number"),
+      name: t("Lot Number"),
       selector: (row) => row.lotNumber,
       cell: (row) => <span>{row.lotNumber}</span>,
       sortable: true,
@@ -2041,7 +2041,7 @@ const [showModal8, setShowModal8] = useState(false);
     },
     
     {
-      name: t(" Number Of DFLs"),
+      name: t("Number Of DFLs"),
       selector: (row) => row.numberOfDfls,
       cell: (row) => <span>{row.numberOfDfls}</span>,
       sortable: true,

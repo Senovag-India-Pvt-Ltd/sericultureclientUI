@@ -576,7 +576,7 @@ const handleUpdateAllDates = (row) => {
       hide: "md",
     },
     {
-      name: t(" Area(In Hectares)"),
+      name: t("Area(In Hectares)"),
       selector: (row) => row.areaUnderEachVariety,
       cell: (row) => <span>{row.areaUnderEachVariety}</span>,
       sortable: true,
@@ -977,6 +977,7 @@ const handleUpdateAllDates = (row) => {
               }}
               onChangePage={(page) => setPage(page - 1)}
               progressPending={loading}
+              progressComponent={<div className="py-4">{t("Loading...")}</div>}
               theme="solarized"
               customStyles={customStyles}
               noDataComponent={
@@ -1018,6 +1019,7 @@ const handleUpdateAllDates = (row) => {
                   }}
                   onChangePage={(page) => setPage(page - 1)}
                   progressPending={loading}
+                  progressComponent={<div className="py-4">{t("Loading...")}</div>}
                   theme="solarized"
                   customStyles={customStyles}
                 />
@@ -1055,6 +1057,7 @@ const handleUpdateAllDates = (row) => {
                   }}
                   onChangePage={(page) => setPage(page - 1)}
                   progressPending={loading}
+                  progressComponent={<div className="py-4">{t("Loading...")}</div>}
                   theme="solarized"
                   customStyles={customStyles}
                 />
