@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SchemeDocumentView() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -35,8 +35,20 @@ function SchemeDocumentView() {
 
   const fields = record
     ? [
-        { label: "Scheme", value: record.schemeName, icon: "📁", color: "#e8f0fe", textColor: "#1e67a8" },
-        { label: "Sub Scheme", value: record.subSchemeName, icon: "📂", color: "#fef3e2", textColor: "#d97706" },
+        {
+          label: "Scheme",
+          value: i18n.language === "kn" ? record.schemeNameInKannada || record.schemeName : record.schemeName,
+          icon: "📁",
+          color: "#e8f0fe",
+          textColor: "#1e67a8",
+        },
+        {
+          label: "Sub Scheme",
+          value: i18n.language === "kn" ? record.subSchemeNameInKannada || record.subSchemeName : record.subSchemeName,
+          icon: "📂",
+          color: "#fef3e2",
+          textColor: "#d97706",
+        },
         { label: "Document", value: record.documentMasterName, icon: "📄", color: "#e6f4ea", textColor: "#2e7d32" },
       ]
     : [];

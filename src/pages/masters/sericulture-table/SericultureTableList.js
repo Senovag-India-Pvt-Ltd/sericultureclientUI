@@ -4,18 +4,55 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import Swal from "sweetalert2/src/sweetalert2.js";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import api from "../../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SericultureTableList() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  // Master lists — used only to look up the Kannada name for a scheme/sub
+  // scheme/approval stage by id, since the joined sericultureTable/get-all
+  // response doesn't reliably carry the *InKannada fields.
+  const [schemeMasterList, setSchemeMasterList] = useState([]);
+  const [subSchemeMasterList, setSubSchemeMasterList] = useState([]);
+  const [stageMasterList, setStageMasterList] = useState([]);
+
+  useEffect(() => {
+    api
+      .get(baseURL + `scSchemeDetails/get-all`)
+      .then((res) => setSchemeMasterList(res.data.content.ScSchemeDetails || []))
+      .catch(() => setSchemeMasterList([]));
+
+    api
+      .get(baseURL + `scSubSchemeDetails/get-all`)
+      .then((res) => setSubSchemeMasterList(res.data.content.scSubSchemeDetails || []))
+      .catch(() => setSubSchemeMasterList([]));
+
+    api
+      .get(baseURL + `scApprovalStage/get-all`)
+      .then((res) => setStageMasterList(res.data.content.scApprovalStage || []))
+      .catch(() => setStageMasterList([]));
+  }, []);
+
+  const schemeKannadaById = useMemo(
+    () => Object.fromEntries(schemeMasterList.map((s) => [s.scSchemeDetailsId, s.schemeNameInKannada])),
+    [schemeMasterList]
+  );
+  const subSchemeKannadaById = useMemo(
+    () => Object.fromEntries(subSchemeMasterList.map((s) => [s.scSubSchemeDetailsId, s.subSchemeNameInKannada])),
+    [subSchemeMasterList]
+  );
+  const stageKannadaById = useMemo(
+    () => Object.fromEntries(stageMasterList.map((s) => [s.scApprovalStageId, s.stageNameInKannada])),
+    [stageMasterList]
+  );
 
   const fetchAndGroup = () => {
     setLoading(true);
@@ -34,13 +71,17 @@ function SericultureTableList() {
               schemeId:     rec.schemeId,
               subSchemeId:  rec.subSchemeId,
               schemeName:   rec.schemeName    || `Scheme ${rec.schemeId}`,
+              schemeNameInKannada: rec.schemeNameInKannada,
               subSchemeName: rec.subSchemeName || `Sub Scheme ${rec.subSchemeId}`,
+              subSchemeNameInKannada: rec.subSchemeNameInKannada,
               stages: [],
             };
           }
           map[key].stages.push({
             sericultureTableId: rec.sericultureTableId,
+            stepId:             rec.stepId,
             stageName:          rec.approvalStageName || `Stage ${rec.stepId}`,
+            stageNameInKannada: rec.approvalStageNameInKannada || rec.stageNameInKannada,
             daysCount:          rec.daysCount,
             groupNo:            rec.groupNo,
           });
@@ -101,37 +142,40 @@ function SericultureTableList() {
 
   return (
     <Layout title="Sericulture Table List">
+      <style>{sericultureTableListStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("Sericulture Table List")}</Block.Title>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link to="/seriui/sericulture-table" className="btn btn-primary btn-md d-md-none">
-                  <Icon name="plus" /><span>{t("Create")}</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/seriui/sericulture-table" className="btn btn-primary d-none d-md-inline-flex">
-                  <Icon name="plus" /><span>{t("Create")}</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">{t("Sericulture Table List")}</Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Link to="/seriui/sericulture-table" className="btn btn-primary btn-md d-md-none sh-cta-btn">
+                    <Icon name="plus" /><span>{t("Create")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/seriui/sericulture-table" className="btn btn-primary d-none d-md-inline-flex sh-cta-btn">
+                    <Icon name="plus" /><span>{t("Create")}</span>
+                  </Link>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-3">
+      <Block className="mt-n4 sh-form-wrap">
         {loading ? (
           <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "200px" }}>
             <span className="spinner-border text-primary" />
           </div>
         ) : groups.length === 0 ? (
-          <Card style={{ borderRadius: "12px", border: "none", boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
+          <Card className="sh-section-card">
             <Card.Body className="text-center py-5 text-muted">
-              No records found. <Link to="/seriui/sericulture-table">Create one</Link>.
+              {t("No records found.")} <Link to="/seriui/sericulture-table">{t("Create one")}</Link>.
             </Card.Body>
           </Card>
         ) : (
@@ -140,32 +184,28 @@ function SericultureTableList() {
               const daysSubGroups = getDaysSubGroups(group.stages);
               return (
                 <Col lg="12" key={group.key}>
-                  <Card
-                    style={{
-                      borderRadius: "12px",
-                      boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-                      border: "none",
-                      overflow: "hidden",
-                    }}
-                  >
+                  <Card className="sh-section-card">
                     {/* Card Header */}
                     <Card.Header
+                      className="sh-section-header sh-list-card-header"
                       style={{
-                        background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)",
-                        padding: "14px 20px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
                         flexWrap: "wrap",
                         gap: "8px",
                       }}
                     >
                       <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
                         <span style={{ color: "white", fontWeight: 700, fontSize: "0.92rem" }}>
-                          📋 {group.schemeName}
+                          📋 {i18n.language === "kn"
+                            ? group.schemeNameInKannada || schemeKannadaById[group.schemeId] || group.schemeName
+                            : group.schemeName}
                         </span>
                         <span style={{ color: "#cce4ff", fontSize: "0.82rem" }}>
-                          Sub Scheme: <strong style={{ color: "white" }}>{group.subSchemeName}</strong>
+                          {t("Sub Scheme")}:{" "}
+                          <strong style={{ color: "white" }}>
+                            {i18n.language === "kn"
+                              ? group.subSchemeNameInKannada || subSchemeKannadaById[group.subSchemeId] || group.subSchemeName
+                              : group.subSchemeName}
+                          </strong>
                         </span>
                       </div>
                       <span
@@ -178,7 +218,7 @@ function SericultureTableList() {
                           fontWeight: 600,
                         }}
                       >
-                        {group.stages.length} stage(s)
+                        {group.stages.length} {t("stage(s)")}
                       </span>
                     </Card.Header>
 
@@ -217,7 +257,9 @@ function SericultureTableList() {
                                 }}
                               >
                                 <span style={{ fontSize: "0.82rem", color: "#1e67a8", fontWeight: 600 }}>
-                                  {stage.stageName}
+                                  {i18n.language === "kn"
+                                    ? stage.stageNameInKannada || stageKannadaById[stage.stepId] || stage.stageName
+                                    : stage.stageName}
                                 </span>
                               </div>
                             ))}
@@ -278,5 +320,69 @@ function SericultureTableList() {
     </Layout>
   );
 }
+
+const sericultureTableListStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card,
+  .sh-section-card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+  .sh-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.3px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-left: none !important;
+    border-bottom: none !important;
+    color: #ffffff !important;
+    padding: 14px 20px !important;
+  }
+  .sh-list-card-header {
+    justify-content: space-between;
+  }
+`;
 
 export default SericultureTableList;

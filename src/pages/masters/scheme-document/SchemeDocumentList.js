@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SchemeDocumentList() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   const [listData, setListData] = useState([]);
@@ -72,54 +72,39 @@ function SchemeDocumentList() {
 
   return (
     <Layout title="Scheme Document List">
+      <style>{schemeDocumentListStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("Scheme Document List")}</Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/">{t("Home")}</Link>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">{t("Scheme Document List")}</Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Link to="/seriui/scheme-document" className="btn btn-primary btn-md d-md-none sh-cta-btn">
+                    <Icon name="plus" />
+                    <span>{t("Add New")}</span>
+                  </Link>
                 </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  {t("Scheme Document List")}
+                <li>
+                  <Link to="/seriui/scheme-document" className="btn btn-primary d-none d-md-inline-flex sh-cta-btn">
+                    <Icon name="plus" />
+                    <span>{t("Add New")}</span>
+                  </Link>
                 </li>
-              </ol>
-            </nav>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link to="/seriui/scheme-document" className="btn btn-primary btn-md d-md-none">
-                  <Icon name="plus" />
-                  <span>{t("Add New")}</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/seriui/scheme-document" className="btn btn-primary d-none d-md-inline-flex">
-                  <Icon name="plus" />
-                  <span>{t("Add New")}</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-3">
-        <Card style={{ borderRadius: "12px", boxShadow: "0 2px 12px rgba(0,0,0,0.08)", border: "none" }}>
-          <Card.Header
-            style={{
-              background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)",
-              borderRadius: "12px 12px 0 0",
-              padding: "14px 20px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <span style={{ color: "white", fontWeight: 700, fontSize: "1rem" }}>
-              📋 {t("Scheme Document List")}
+      <Block className="mt-n4 sh-form-wrap">
+        <Card className="sh-section-card">
+          <Card.Header className="sh-section-header sh-list-card-header">
+            <span>
+              <Icon name="list" />
+              {t("Scheme Document List")}
             </span>
             <InputGroup style={{ width: "260px" }}>
               <InputGroup.Text style={{ background: "rgba(255,255,255,0.15)", border: "none", color: "white" }}>
@@ -180,10 +165,16 @@ function SchemeDocumentList() {
                               fontWeight: 600,
                             }}
                           >
-                            {row.schemeName || "—"}
+                            {(i18n.language === "kn"
+                              ? row.schemeNameInKannada || row.schemeName
+                              : row.schemeName) || "—"}
                           </span>
                         </td>
-                        <td style={{ padding: "12px 16px", color: "#444" }}>{row.subSchemeName || "—"}</td>
+                        <td style={{ padding: "12px 16px", color: "#444" }}>
+                          {(i18n.language === "kn"
+                            ? row.subSchemeNameInKannada || row.subSchemeName
+                            : row.subSchemeName) || "—"}
+                        </td>
                         <td style={{ padding: "12px 16px" }}>
                           <span
                             style={{
@@ -258,5 +249,86 @@ function SchemeDocumentList() {
     </Layout>
   );
 }
+
+const schemeDocumentListStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card,
+  .sh-section-card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+  .sh-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.3px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-left: none !important;
+    border-bottom: none !important;
+    color: #ffffff !important;
+    padding: 14px 20px !important;
+  }
+  .sh-section-header svg,
+  .sh-section-header .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 15px;
+  }
+  .sh-list-card-header {
+    justify-content: space-between;
+  }
+  .sh-list-card-header span {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+`;
 
 export default SchemeDocumentList;

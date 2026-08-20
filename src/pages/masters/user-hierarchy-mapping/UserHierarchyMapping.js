@@ -486,8 +486,8 @@ function UserHierarchyMapping() {
   return (
     <Layout title="User Hierarchy Mapping">
       <style>{userHierarchyMappingStyles}</style>
-      <div className="sh-page-header">
-        <Block.Head>
+      <Block.Head>
+        <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
               <Block.Title tag="h2" className="sh-page-title">{t("User Hierarchy Mapping")}</Block.Title>
@@ -527,8 +527,8 @@ function UserHierarchyMapping() {
               </ul>
             </Block.HeadContent>
           </Block.HeadBetween>
-        </Block.Head>
-      </div>
+        </div>
+      </Block.Head>
 
       <Block className="mt-n4 sh-form-wrap">
         {/* <Form action="#"> */}

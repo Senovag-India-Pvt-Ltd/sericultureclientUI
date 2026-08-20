@@ -301,8 +301,8 @@ const downloadCompleted = async () => {
   return (
     <Layout title="User Hierarchy Mapping List">
       <style>{userHierarchyMappingListStyles}</style>
-      <div className="sh-page-header">
-        <Block.Head>
+      <Block.Head>
+        <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
               <Block.Title tag="h2" className="sh-page-title">{t("User Hierarchy Mapping List")}</Block.Title>
@@ -330,8 +330,8 @@ const downloadCompleted = async () => {
               </ul>
             </Block.HeadContent>
           </Block.HeadBetween>
-        </Block.Head>
-      </div>
+        </div>
+      </Block.Head>
       <Block className="mt-n4 sh-list-wrap">
         <Card className="mt-1 sh-list-card">
           {/* 🔥 FILTER SECTION (Village Style) */}

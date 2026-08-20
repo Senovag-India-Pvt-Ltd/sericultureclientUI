@@ -379,7 +379,7 @@ function ScProgramApprovalMappingList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By Component Type
+                  {t("Search By Component Type")}
                 </Form.Label>
                 <Col sm={3}>
                   {/* <Form.Group className="form-group mt-n4"> */}
@@ -438,6 +438,7 @@ function ScProgramApprovalMappingList() {
               progressPending={loading}
               theme="solarized"
               customStyles={customStyles}
+              noDataComponent={t("There are no records to display")}
             />
           </div>
         </Card>
