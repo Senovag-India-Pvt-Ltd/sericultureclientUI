@@ -483,7 +483,7 @@ const getFinancialDefaultDetails = () => {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
 }; 
@@ -620,15 +620,15 @@ const getFinancialDefaultDetails = () => {
   const deleteError = () => {
     Swal.fire({
       icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Delete attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
   const deleteConfirm = (_id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "It will delete permanently!",
+      text: t("It will delete permanently!"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, delete it!",
@@ -755,7 +755,7 @@ const getFinancialDefaultDetails = () => {
   const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       text: message,
     });
   };
@@ -768,7 +768,7 @@ const getFinancialDefaultDetails = () => {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -1171,7 +1171,7 @@ const getFinancialDefaultDetails = () => {
                   className="btn btn-primary btn-md d-md-none"
                 >
                   <Icon name="plus" />
-                  <span>New Application</span>
+                  <span>{t("New Application")}</span>
                 </Link>
               </li>
               <li>
@@ -1180,7 +1180,7 @@ const getFinancialDefaultDetails = () => {
                   className="btn btn-primary d-none d-md-inline-flex"
                 >
                   <Icon name="plus" />
-                  <span>New Application</span>
+                  <span>{t("New Application")}</span>
                 </Link>
               </li>
             </ul>
@@ -1214,7 +1214,7 @@ const getFinancialDefaultDetails = () => {
                               data.financialYearMasterId === "0"
                             }
                           >
-                            <option value="">Select Year</option>
+                            <option value="">{t("Select Year")}</option>
                             {financialyearListData.map((list) => (
                               <option
                                 key={list.financialYearMasterId}
@@ -1248,7 +1248,7 @@ const getFinancialDefaultDetails = () => {
                               data.scSubSchemeDetailsId === "0"
                             }
                           >
-                            <option value="">Select Component Type</option>
+                            <option value="">{t("Select Component Type")}</option>
                             {scSubSchemeDetailsListData.map((list) => (
                               <option
                                 key={list.scSubSchemeDetailsId}
@@ -1283,7 +1283,7 @@ const getFinancialDefaultDetails = () => {
                               data.scSchemeDetailsId === "0"
                             }
                           >
-                            <option value="">Select Scheme Names</option>
+                            <option value="">{t("Select Scheme Names")}</option>
                             {scSchemeDetailsListData.map((list) => (
                               <option
                                 key={list.scSchemeDetailsId}
@@ -1319,7 +1319,7 @@ const getFinancialDefaultDetails = () => {
                               data.scHeadAccountId === "0"
                             }
                           >
-                            <option value="">Select Head of Account</option>
+                            <option value="">{t("Select Head of Account")}</option>
                             {scHeadAccountListData.map((list) => (
                               <option
                                 key={list.scHeadAccountId}
@@ -1353,7 +1353,7 @@ const getFinancialDefaultDetails = () => {
                               data.scCategoryId === "0"
                             }
                           >
-                            <option value="">Select Category</option>
+                            <option value="">{t("Select Category")}</option>
                             {scCategoryListData.map((list) => (
                               <option
                                 key={list.scCategoryId}
@@ -1387,7 +1387,7 @@ const getFinancialDefaultDetails = () => {
                               data.scComponentId === "0"
                             }
                           >
-                            <option value="">Select Component</option>
+                            <option value="">{t("Select Component")}</option>
                             {scComponentListData.map((list) => (
                               <option
                                 key={list.scComponentId}
@@ -1417,7 +1417,7 @@ const getFinancialDefaultDetails = () => {
                             name="schemeAmount"
                             value={data.schemeAmount}
                             onChange={handleInputs}
-                            placeholder="Enter Scheme Amount"
+                            placeholder={t("Enter Scheme Amount")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -1440,7 +1440,7 @@ const getFinancialDefaultDetails = () => {
                             name="sanctionNumber"
                             value={data.sanctionNumber}
                             onChange={handleInputs}
-                            placeholder="Enter Sanction Number"
+                            placeholder={t("Enter Sanction Number")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -1582,7 +1582,7 @@ const getFinancialDefaultDetails = () => {
                     value={searchData.text}
                     onChange={handleInputsSearch}
                     type="text"
-                    placeholder="Search"
+                    placeholder={t("Search")}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
@@ -1718,7 +1718,7 @@ const getFinancialDefaultDetails = () => {
                             data.userMasterId === "0"
                           }
                         >
-                          <option value="">Select User</option>
+                          <option value="">{t("Select User")}</option>
                           {userListData.map((list) => (
                             <option
                               key={list.userMasterId}

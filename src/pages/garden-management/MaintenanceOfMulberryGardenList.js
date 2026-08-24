@@ -1347,7 +1347,7 @@ const handleUpdateAllDates = (row) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      {t("Foilar Spray 1")}
+                      {t("Foliar Spray 1")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -1371,7 +1371,7 @@ const handleUpdateAllDates = (row) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                    {t("Foilar Spray 2")}
+                    {t("Foliar Spray 2")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">

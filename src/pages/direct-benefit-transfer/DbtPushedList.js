@@ -378,7 +378,7 @@ function DbtPushedList() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
   };
@@ -515,15 +515,15 @@ function DbtPushedList() {
   const deleteError = () => {
     Swal.fire({
       icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Delete attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
   const deleteConfirm = (_id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "It will delete permanently!",
+      text: t("It will delete permanently!"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, delete it!",
@@ -617,7 +617,7 @@ function DbtPushedList() {
   const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       text: message,
     });
   };
@@ -630,7 +630,7 @@ function DbtPushedList() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -1019,12 +1019,12 @@ function DbtPushedList() {
                       onChange={handleInputsSearch}
                       style={{ width: "100%", marginLeft: "-14%" }}
                     >
-                      <option value="0">All</option>
-                      <option value="1">Fruits Id</option>
-                      <option value="2">Beneficiary Id</option>
-                      <option value="3">Application Status</option>
-                      <option value="4">Component</option>
-                      <option value="5">Component Type</option>
+                      <option value="0">{t("All")}</option>
+                      <option value="1">{t("FRUITS ID")}</option>
+                      <option value="2">{t("Beneficiary ID")}</option>
+                      <option value="3">{t("Application Status")}</option>
+                      <option value="4">{t("Component")}</option>
+                      <option value="5">{t("Component Type")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -1062,7 +1062,7 @@ function DbtPushedList() {
                          searchData.text === "0"
                        }
                      >
-                       <option value="">Select Status</option>
+                       <option value="">{t("Select Status")}</option>
                        {statusListData && statusListData.map((list) => (
                          <option
                            key={list.statusList}
@@ -1220,7 +1220,7 @@ function DbtPushedList() {
                       onChange={handleInputsaddress}
                       style={{ width: "100%", marginLeft: "-14%" }}
                     >
-                      <option value="0">Select District</option>
+                      <option value="0">{t("Select District")}</option>
                       {districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
                           {list.districtName}
@@ -1242,7 +1242,7 @@ function DbtPushedList() {
                       // style={{ marginLeft: "-14%" }}
                       style={{ width: "100%", marginLeft: "-14%" }}
                     >
-                      <option value="0">Select Taluk</option>
+                      <option value="0">{t("Select Taluk")}</option>
                       {talukListData.map((list) => (
                         <option key={list.talukId} value={list.talukId}>
                           {list.talukName}
@@ -1263,7 +1263,7 @@ function DbtPushedList() {
                       onChange={handleInputsaddress}
                       style={{ marginLeft: "-14%" }}
                     >
-                      <option value="0">Select Financial Year</option>
+                      <option value="0">{t("Select Financial Year")}</option>
                       {financialyearListData.map((list) => (
                         <option
                           key={list.financialYearMasterId}
@@ -1304,7 +1304,7 @@ function DbtPushedList() {
                       onChange={handleInputsaddress}
                       style={{ width: "100%", marginLeft: "-14%" }}
                     >
-                      <option value="0">Select District</option>
+                      <option value="0">{t("Select District")}</option>
                       {districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
                           {list.districtName}
@@ -1326,7 +1326,7 @@ function DbtPushedList() {
                       // style={{ marginLeft: "-14%" }}
                       style={{ width: "100%", marginLeft: "-14%" }}
                     >
-                      <option value="0">Select Taluk</option>
+                      <option value="0">{t("Select Taluk")}</option>
                       {talukListData.map((list) => (
                         <option key={list.talukId} value={list.talukId}>
                           {list.talukName}
@@ -1347,7 +1347,7 @@ function DbtPushedList() {
                       onChange={handleInputsaddress}
                       style={{ marginLeft: "-14%" }}
                     >
-                      <option value="0">Select Financial Year</option>
+                      <option value="0">{t("Select Financial Year")}</option>
                       {financialyearListData.map((list) => (
                         <option key={list.financialYearMasterId} value={list.financialYearMasterId}>
                           {list.financialYear}

@@ -219,7 +219,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
 }; 
@@ -231,8 +231,8 @@ const [currentPushId, setCurrentPushId] = useState(null);
 const handlePush = (id) => {
   // Step 1: Show SweetAlert confirmation
   Swal.fire({
-    title: "Confirmation",
-    text: "Please review the DDO Code and other details carefully before proceeding.",
+    title: t("Confirmation"),
+    text: t("Please review the DDO Code and other details carefully before proceeding."),
     icon: "warning",
     showCancelButton: true,
     confirmButtonText: "OK",
@@ -279,7 +279,7 @@ const handlePush = (id) => {
       );
     } else {
       Swal.fire({
-        title: "Action Required!",
+        title: t("Action Required!"),
         text: `Please Save the Data from "Push to DBT" Block and then try to view the details.`,
         icon: "warning",
         confirmButtonText: "OK",
@@ -583,27 +583,27 @@ const [searchClicked, setSearchClicked] = useState(false);
 // Validation function for critical fields
 const validateSelectionFields = (showAlert = true) => {
   if (!addressDetails.scSchemeDetailsId || addressDetails.scSchemeDetailsId === 0) {
-    if (showAlert) Swal.fire({ icon: "warning", title: "Please select Scheme", text: "Scheme is required before selecting rows." });
+    if (showAlert) Swal.fire({ icon: "warning", title: t("Please select Scheme"), text: t("Scheme is required before selecting rows.") });
     return false;
   }
 
   if (!addressDetails.subSchemeId || addressDetails.subSchemeId === 0) {
-    if (showAlert) Swal.fire({ icon: "warning", title: "Please select Component Type", text: "Component Type is required before selecting rows." });
+    if (showAlert) Swal.fire({ icon: "warning", title: t("Please select Component Type"), text: t("Component Type is required before selecting rows.") });
     return false;
   }
 
   if (!addressDetails.componentId || addressDetails.componentId === 0) {
-    if (showAlert) Swal.fire({ icon: "warning", title: "Please select Component", text: "Component is required before selecting rows." });
+    if (showAlert) Swal.fire({ icon: "warning", title: t("Please select Component"), text: t("Component is required before selecting rows.") });
     return false;
   }
 
   if (!addressDetails.scCategoryId || addressDetails.scCategoryId === 0) {
-    if (showAlert) Swal.fire({ icon: "warning", title: "Please select Sub Component", text: "Sub Component is required before selecting rows." });
+    if (showAlert) Swal.fire({ icon: "warning", title: t("Please select Sub Component"), text: t("Sub Component is required before selecting rows.") });
     return false;
   }
 
   if (!addressDetails.financialYearId || addressDetails.financialYearId === 0) {
-    if (showAlert) Swal.fire({ icon: "warning", title: "Please select Financial Year", text: "Financial Year is required before selecting rows." });
+    if (showAlert) Swal.fire({ icon: "warning", title: t("Please select Financial Year"), text: t("Financial Year is required before selecting rows.") });
     return false;
   }
 
@@ -777,8 +777,8 @@ const [isSaving, setIsSaving] = useState(false);
   //         // ✅ show success popup first
   //         Swal.fire({
   //           icon: "success",
-  //           title: "Pushed Successfully",
-  //           text: "Your data has been Pushed.",
+  //           title: t("Pushed successfully"),
+  //           text: t("Your data has been Pushed."),
   //         }).then(() => {
   //           // only after OK button clicked
   //           handleCloseModal6();
@@ -829,8 +829,8 @@ const [isSaving, setIsSaving] = useState(false);
       } else {
         Swal.fire({
           icon: "success",
-          title: "Pushed Successfully",
-          text: "Your data has been Pushed.",
+          title: t("Pushed successfully"),
+          text: t("Your data has been Pushed."),
         }).then(() => {
           handleCloseModal6();
           window.location.reload();
@@ -999,7 +999,7 @@ const getFinancialDefaultDetails = () => {
       categoryId
     ) => {
       Swal.fire({
-        title: "Generate Sanction Order",
+        title: t("Generate Sanction Order"),
         text: "Select the recipient:",
         showCancelButton: true,
         confirmButtonText: "Farmer/Reeler",
@@ -1323,15 +1323,15 @@ const getFinancialDefaultDetails = () => {
   const deleteError = () => {
     Swal.fire({
       icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Delete attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
   const deleteConfirm = (_id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "It will delete permanently!",
+      text: t("It will delete permanently!"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, delete it!",
@@ -1399,7 +1399,7 @@ const getFinancialDefaultDetails = () => {
   
     Swal.fire({
       icon: "success",
-      title: "Pushed successfully",
+      title: t("Pushed successfully"),
       html: `Application Details:<br>${details}`,
       confirmButtonText: "OK", // show OK button
     }).then(() => {
@@ -1418,7 +1418,7 @@ const getFinancialDefaultDetails = () => {
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -2440,16 +2440,16 @@ const getFinancialDefaultDetails = () => {
                   >
                     <thead style={styles.headerStyle}>
                       <tr>
-                        <th style={{ width: "10%" }}>Fruits Id</th>
-                        <th style={{ width: "10%" }}>Beneficiary Id</th>
-                        <th style={{ width: "10%" }}>Scheme Amount</th>
-                        <th style={{ width: "10%" }}>Sanction No</th>
-                        <th style={{ width: "10%" }}>Financial Year</th>
-                        <th style={{ width: "10%" }}>Payment Mode</th>
-                        <th style={{ width: "10%" }}>File Name</th>
-                        <th style={{ width: "10%" }}>DBT Push Type</th>
-                        <th style={{ width: "10%" }}>Status</th>
-                        <th style={{ width: "10%" }}>Remarks</th>
+                        <th style={{ width: "10%" }}>{t("FRUITS ID")}</th>
+                        <th style={{ width: "10%" }}>{t("Beneficiary ID")}</th>
+                        <th style={{ width: "10%" }}>{t("Scheme Amount")}</th>
+                        <th style={{ width: "10%" }}>{t("Sanction Number")}</th>
+                        <th style={{ width: "10%" }}>{t("Financial Year")}</th>
+                        <th style={{ width: "10%" }}>{t("Payment Mode")}</th>
+                        <th style={{ width: "10%" }}>{t("File Name")}</th>
+                        <th style={{ width: "10%" }}>{t("DBT Push Type")}</th>
+                        <th style={{ width: "10%" }}>{t("Status")}</th>
+                        <th style={{ width: "10%" }}>{t("Remarks")}</th>
                       </tr>
                     </thead>
                     <tbody>
