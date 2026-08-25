@@ -98,7 +98,7 @@ function MaintenanceofMulberryfarmAlert() {
   const updateSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       text: message,
     });
   };
@@ -112,7 +112,7 @@ function MaintenanceofMulberryfarmAlert() {
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -234,7 +234,7 @@ function MaintenanceofMulberryfarmAlert() {
             className="ms-2"
             onClick={() => handleEdit(row)}
           >
-            Edit
+            {t("Edit")}
           </Button>
         </div>
       ),
@@ -261,10 +261,10 @@ function MaintenanceofMulberryfarmAlert() {
       cell: (row) => (
         <span>
           {row.fertilizerApplicationStatus === 0
-            ? "Pending"
+            ? t("Pending")
             : row.fertilizerApplicationStatus === 1
-            ? "Completed"
-            : "Other"}
+            ? t("Completed")
+            : t("Other")}
         </span>
       ),
       sortable: true,
@@ -276,10 +276,10 @@ function MaintenanceofMulberryfarmAlert() {
       cell: (row) => (
         <span>
           {row.fymApplicationStatus === 0
-            ? "Pending"
+            ? t("Pending")
             : row.fymApplicationStatus === 1
-            ? "Completed"
-            : "Other"}
+            ? t("Completed")
+            : t("Other")}
         </span>
       ),
       sortable: true,
@@ -291,10 +291,10 @@ function MaintenanceofMulberryfarmAlert() {
       cell: (row) => (
         <span>
           {row.irrigationStatus === 0
-            ? "Pending"
+            ? t("Pending")
             : row.irrigationStatus === 1
-            ? "Completed"
-            : "Other"}
+            ? t("Completed")
+            : t("Other")}
         </span>
       ),
       sortable: true,
@@ -306,10 +306,10 @@ function MaintenanceofMulberryfarmAlert() {
       cell: (row) => (
         <span>
           {row.brushingStatus === 0
-            ? "Pending"
+            ? t("Pending")
             : row.brushingStatus === 1
-            ? "Completed"
-            : "Other"}
+            ? t("Completed")
+            : t("Other")}
         </span>
       ),
       sortable: true,

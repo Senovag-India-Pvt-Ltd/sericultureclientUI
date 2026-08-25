@@ -557,7 +557,7 @@ function MaintenanceOfLineRecordsForEachRaceForGrainageEdit() {
                                   value={data.numberOfDfls}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder={t("Enter  Number Of DFLs")}
+                                  placeholder={t("Enter Number Of DFLs")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -890,7 +890,7 @@ function MaintenanceOfLineRecordsForEachRaceForGrainageEdit() {
                                   value={data.numberOfDflsMale}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder={t("Enter  Number Of DFLs")}
+                                  placeholder={t("Enter Number Of DFLs")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">

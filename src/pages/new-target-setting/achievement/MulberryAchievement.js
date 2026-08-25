@@ -2568,6 +2568,8 @@ useEffect(() => {
                 paginationPerPage={countPerPage}
                 onChangePage={handlePageChangeReportee}
                 progressPending={loadingReportee}
+                progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                noDataComponent={t("There are no records to display")}
                 paginationComponentOptions={{ noRowsPerPage: true }}
                 customStyles={customStyles}
               />
@@ -2592,8 +2594,10 @@ useEffect(() => {
             paginationTotalRows={totalRowsNarega}
             paginationPerPage={countPerPage} 
             paginationComponentOptions={{ noRowsPerPage: true }}
-            onChangePage={handlePageChangeNarega} 
-            progressPending={loadingNarega} 
+            onChangePage={handlePageChangeNarega}
+            progressPending={loadingNarega}
+            progressComponent={<div className="p-3">{t("Loading...")}</div>}
+            noDataComponent={t("There are no records to display")}
             theme="solarized"
             customStyles={customStyles}
           />
@@ -2603,12 +2607,14 @@ useEffect(() => {
             data={listViewNnTargetData}
             highlightOnHover
             pagination
-            paginationServer 
-            paginationTotalRows={totalRowsNonNarega} 
-            paginationPerPage={countPerPage} 
+            paginationServer
+            paginationTotalRows={totalRowsNonNarega}
+            paginationPerPage={countPerPage}
             paginationComponentOptions={{ noRowsPerPage: true }}
-            onChangePage={handlePageChangeNonNarega} 
-            progressPending={loadingNonNarega} 
+            onChangePage={handlePageChangeNonNarega}
+            progressPending={loadingNonNarega}
+            progressComponent={<div className="p-3">{t("Loading...")}</div>}
+            noDataComponent={t("There are no records to display")}
             theme="solarized"
             customStyles={customStyles}
           />

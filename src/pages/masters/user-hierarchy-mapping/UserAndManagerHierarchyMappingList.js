@@ -566,6 +566,8 @@ const handleExportClick = () => {
           }}
           onChangePage={(page) => setPage(page - 1)}
           progressPending={loading}
+          progressComponent={<div className="p-3">{t("Loading...")}</div>}
+          noDataComponent={t("There are no records to display")}
           theme="solarized"
           customStyles={customStyles}
         />
@@ -586,6 +588,8 @@ const handleExportClick = () => {
           }}
           onChangePage={(page) => setPage(page - 1)}
           progressPending={loading}
+          progressComponent={<div className="p-3">{t("Loading...")}</div>}
+          noDataComponent={t("There are no records to display")}
           theme="solarized"
           customStyles={customStyles}
         />

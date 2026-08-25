@@ -1502,7 +1502,7 @@ const handleShowModal = () => {
                               <th style={styles.ctstyle}>
                                 {t("Farm Yearly Targets (Brushing)")}:{" "}
                                 {viewTotalTargetsDataBrushing[0]?.yearlyFarmValue ||
-                                  "N/A"}
+                                  t("N/A")}
                               </th>
                             </tr>
                           </thead>
@@ -1516,7 +1516,7 @@ const handleShowModal = () => {
                               <th style={styles.ctstyle}>
                                 {t("Farm Yearly Targets (Cocoon Production)")}:{" "}
                                 {viewTotalTargetsDataCocoonProduction[0]?.yearlyFarmValue ||
-                                  "N/A"}
+                                  t("N/A")}
                               </th>
                             </tr>
                           </thead>
@@ -1529,8 +1529,8 @@ const handleShowModal = () => {
                             <tr>
                               <th style={styles.ctstyle}>
                                 {t("Total Farm Yearly Targets")}:{" "}
-                                {!isNaN(parseFloat(viewTotalTargetsDataCocoonProduction[0]?.yearlyFarmValue)) && !isNaN(parseFloat(viewTotalTargetsDataBrushing[0]?.yearlyFarmValue)) ? ((parseFloat(viewTotalTargetsDataCocoonProduction[0]?.yearlyFarmValue))+(parseFloat(viewTotalTargetsDataBrushing[0]?.yearlyFarmValue))).toFixed(2):"N/A" ||
-                                  "N/A"}
+                                {!isNaN(parseFloat(viewTotalTargetsDataCocoonProduction[0]?.yearlyFarmValue)) && !isNaN(parseFloat(viewTotalTargetsDataBrushing[0]?.yearlyFarmValue)) ? ((parseFloat(viewTotalTargetsDataCocoonProduction[0]?.yearlyFarmValue))+(parseFloat(viewTotalTargetsDataBrushing[0]?.yearlyFarmValue))).toFixed(2):t("N/A") ||
+                                  t("N/A")}
                               </th>
                             </tr>
                           </thead>
@@ -2887,6 +2887,8 @@ const handleShowModal = () => {
                 }}
                 onChangePage={(page) => setPage2(page - 1)}
                 progressPending={loading}
+                progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                noDataComponent={t("There are no records to display")}
                 theme="solarized"
                 customStyles={customStyles}
               />
@@ -2905,6 +2907,8 @@ const handleShowModal = () => {
                 }}
                 onChangePage={(page) => setPage1(page - 1)}
                 progressPending={loading}
+                progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                noDataComponent={t("There are no records to display")}
                 theme="solarized"
                 customStyles={customStyles}
               />
@@ -2947,6 +2951,8 @@ const handleShowModal = () => {
                   }}
                   onChangePage={(page) => setPage4(page - 1)}
                   progressPending={loading}
+                  progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                  noDataComponent={t("There are no records to display")}
                   theme="solarized"
                   customStyles={customStyles}
                 />
@@ -2964,6 +2970,8 @@ const handleShowModal = () => {
                   }}
                   onChangePage={(page) => setPage3(page - 1)}
                   progressPending={loading}
+                  progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                  noDataComponent={t("There are no records to display")}
                   theme="solarized"
                   customStyles={customStyles}
                 />

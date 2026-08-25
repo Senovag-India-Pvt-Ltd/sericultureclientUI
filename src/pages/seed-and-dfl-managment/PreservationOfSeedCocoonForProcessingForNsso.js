@@ -794,14 +794,14 @@ function PreservationofseedcocoonforprocessingListForNsso() {
   ];
 
   return (
-    <Layout title={t("List Of Preservation of seed cocoon for processing")}>
+    <Layout title={t("List Of Preservation of Seed Cocoon for Processing")}>
       <style>{preservationSeedCocoonNssoListStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
               <Block.Title tag="h2" className="sh-page-title">
-                {t("List Of Preservation of seed cocoon for processing")}
+                {t("List Of Preservation of Seed Cocoon for Processing")}
               </Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>

@@ -241,7 +241,7 @@ function RegisteredSeedProducerNssoGrainagesList() {
       hide: "md",
     },
     {
-      name: t("Number of Cocoons (MSC,Fc1,Fc2)"),
+      name: t("Number of Cocoons (MSC, Fc1, Fc2)"),
       selector: (row) => row.numberOfCocoonsCB,
       cell: (row) => <span>{row.numberOfCocoonsCB}</span>,
       sortable: true,
@@ -385,6 +385,7 @@ function RegisteredSeedProducerNssoGrainagesList() {
                 }}
                 onChangePage={(page) => setPage(page - 1)}
                 progressPending={loading}
+                progressComponent={<div className="p-3">{t("Loading...")}</div>}
                 theme="solarized"
                 customStyles={customStyles}
                 noDataComponent={

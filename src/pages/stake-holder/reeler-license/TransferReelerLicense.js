@@ -16,7 +16,7 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function TransferReelerLicense() {
   // Translation
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [data, setData] = useState({
     reelerName: "",
     wardNumber: "",
@@ -698,9 +698,9 @@ function TransferReelerLicense() {
                             onChange={handleInputs}
                           >
                             <option value="">{t("select_gender")}</option>
-                            <option value="1">Male</option>
-                            <option value="2">Female</option>
-                            <option value="3">Third Gender</option>
+                            <option value="1">{t("Male")}</option>
+                            <option value="2">{t("Female")}</option>
+                            <option value="3">{t("Third Gender")}</option>
                           </Form.Select>
                         </div>
                       </Form.Group>
@@ -716,7 +716,9 @@ function TransferReelerLicense() {
                             <option value="0">{t("select_Caste")}</option>
                             {casteListData.map((list) => (
                               <option key={list.id} value={list.id}>
-                                {list.title}
+                                {i18n.language === "kn"
+                                  ? list.nameInKannada
+                                  : list.title}
                               </option>
                             ))}
                           </Form.Select>
@@ -739,7 +741,7 @@ function TransferReelerLicense() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Mobile Number is required
+                            {t("Mobile Number is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -784,7 +786,9 @@ function TransferReelerLicense() {
                                   key={list.tscMasterId}
                                   value={list.tscMasterId}
                                 >
-                                  {list.name}
+                                  {i18n.language === "kn"
+                                    ? list.nameInKannada
+                                    : list.name}
                                 </option>
                               ))}
                           </Form.Select>
@@ -915,7 +919,9 @@ function TransferReelerLicense() {
                             <option value="0">{t("select_education")}</option>
                             {educationListData.map((list) => (
                               <option key={list.id} value={list.id}>
-                                {list.name}
+                                {i18n.language === "kn"
+                                  ? list.educationNameInKannada
+                                  : list.name}
                               </option>
                             ))}
                           </Form.Select>
@@ -1078,7 +1084,9 @@ function TransferReelerLicense() {
                                 key={list.relationshipId}
                                 value={list.relationshipId}
                               >
-                                {list.relationshipName}
+                                {i18n.language === "kn"
+                                  ? list.relationshipNameInKannada
+                                  : list.relationshipName}
                               </option>
                             ))}
                           </Form.Select>
@@ -1147,7 +1155,9 @@ function TransferReelerLicense() {
                                 key={list.machineTypeId}
                                 value={list.machineTypeId}
                               >
-                                {list.machineTypeName}
+                                {i18n.language === "kn"
+                                  ? list.machineTypeNameInKannada
+                                  : list.machineTypeName}
                               </option>
                             ))}
                           </Form.Select>
@@ -1286,7 +1296,9 @@ function TransferReelerLicense() {
                             <option value="">{t("select_state")}</option>
                             {stateListData.map((list) => (
                               <option key={list.stateId} value={list.stateId}>
-                                {list.stateName}
+                                {i18n.language === "kn"
+                                  ? list.stateNameInKannada
+                                  : list.stateName}
                               </option>
                             ))}
                           </Form.Select>
@@ -1320,7 +1332,9 @@ function TransferReelerLicense() {
                                     key={list.districtId}
                                     value={list.districtId}
                                   >
-                                    {list.districtName}
+                                    {i18n.language === "kn"
+                                      ? list.districtNameInKannada
+                                      : list.districtName}
                                   </option>
                                 ))
                               : ""}
@@ -1353,7 +1367,9 @@ function TransferReelerLicense() {
                                     key={list.talukId}
                                     value={list.talukId}
                                   >
-                                    {list.talukName}
+                                    {i18n.language === "kn"
+                                      ? list.talukNameInKannada
+                                      : list.talukName}
                                   </option>
                                 ))
                               : ""}
@@ -1388,7 +1404,9 @@ function TransferReelerLicense() {
                                     key={list.hobliId}
                                     value={list.hobliId}
                                   >
-                                    {list.hobliName}
+                                    {i18n.language === "kn"
+                                      ? list.hobliNameInKannada
+                                      : list.hobliName}
                                   </option>
                                 ))
                               : ""}
@@ -1422,7 +1440,9 @@ function TransferReelerLicense() {
                                     key={list.villageId}
                                     value={list.villageId}
                                   >
-                                    {list.villageName}
+                                    {i18n.language === "kn"
+                                      ? list.villageNameInKannada
+                                      : list.villageName}
                                   </option>
                                 ))
                               : ""}
@@ -1563,8 +1583,8 @@ function TransferReelerLicense() {
                             onChange={handleInputs}
                           >
                             <option value="">{t("select")}</option>
-                            <option value="1">Yes</option>
-                            <option value="2">No</option>
+                            <option value="1">{t("Yes")}</option>
+                            <option value="2">{t("No")}</option>
                           </Form.Select>
                         </div>
                       </Form.Group>

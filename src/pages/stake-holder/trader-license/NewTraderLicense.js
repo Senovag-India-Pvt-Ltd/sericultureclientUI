@@ -16,7 +16,7 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function NewTraderLicense() {
   // Translation
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [vbAccountList, setVbAccountList] = useState([]);
   const [vbAccount, setVbAccount] = useState({
@@ -456,7 +456,9 @@ function NewTraderLicense() {
                               key={list.traderTypeMasterId}
                               value={list.traderTypeMasterId}
                             >
-                              {list.traderTypeMasterName}
+                              {i18n.language === "kn"
+                                ? list.traderTypeNameInKannada
+                                : list.traderTypeMasterName}
                             </option>
                           ))}
                         </Form.Select>
@@ -569,7 +571,9 @@ function NewTraderLicense() {
                           <option value="0">{t("select_state")}</option>
                           {stateListData.map((list) => (
                             <option key={list.stateId} value={list.stateId}>
-                              {list.stateName}
+                              {i18n.language === "kn"
+                                ? list.stateNameInKannada
+                                : list.stateName}
                             </option>
                           ))}
                         </Form.Select>
@@ -593,7 +597,9 @@ function NewTraderLicense() {
                                   key={list.districtId}
                                   value={list.districtId}
                                 >
-                                  {list.districtName}
+                                  {i18n.language === "kn"
+                                    ? list.districtNameInKannada
+                                    : list.districtName}
                                 </option>
                               ))
                             : ""}
@@ -642,7 +648,9 @@ function NewTraderLicense() {
                                 key={list.marketMasterId}
                                 value={list.marketMasterId}
                               >
-                                {list.marketMasterName}
+                                {i18n.language === "kn"
+                                  ? list.marketNameInKannada
+                                  : list.marketMasterName}
                               </option>
                             ))}
                           </Form.Select>
@@ -683,9 +691,9 @@ function NewTraderLicense() {
                             onChange={handleInputs}
                           >
                             <option value="">{t("Select Silk Type")}</option>
-                            <option value="Raw Silk">Raw Silk</option>
-                            <option value="Twisted">Twisted</option>
-                            <option value="Dupion">Dupion</option>
+                            <option value="Raw Silk">{t("Raw Silk")}</option>
+                            <option value="Twisted">{t("Twisted")}</option>
+                            <option value="Dupion">{t("Dupion")}</option>
                           </Form.Select>
                         </div>
                       </Form.Group>
@@ -1077,7 +1085,9 @@ function NewTraderLicense() {
                                     key={list.marketMasterId}
                                     value={`${list.marketMasterId}_${list.marketMasterName}`}
                                   >
-                                    {list.marketMasterName}
+                                    {i18n.language === "kn"
+                                      ? list.marketNameInKannada
+                                      : list.marketMasterName}
                                   </option>
                                 ))
                               : ""}
@@ -1218,7 +1228,9 @@ function NewTraderLicense() {
                                     key={list.marketMasterId}
                                     value={`${list.marketMasterId}_${list.marketMasterName}`}
                                   >
-                                    {list.marketMasterName}
+                                    {i18n.language === "kn"
+                                      ? list.marketNameInKannada
+                                      : list.marketMasterName}
                                   </option>
                                 ))
                               : ""}

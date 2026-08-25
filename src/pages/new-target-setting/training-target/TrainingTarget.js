@@ -1679,7 +1679,7 @@ const totalTarget = () => {
           <Block.HeadBetween>
             <Block.HeadContent>
               <Block.Title tag="h2" className="sh-page-title">
-                {t("Sericulture Training Institute  Wise Target Setting")}
+                {t("Sericulture Training Institute Wise Target Setting")}
               </Block.Title>
             </Block.HeadContent>
             <ul className="d-flex">
@@ -1711,7 +1711,7 @@ const totalTarget = () => {
                   <Card className="sh-section-card">
                     <Card.Header className="sh-section-header">
                       <Icon name="activity-round" />
-                      <span>{t("Sericulture Training Institute  Wise Target Setting")}</span>
+                      <span>{t("Sericulture Training Institute Wise Target Setting")}</span>
                     </Card.Header>
                     {/* <Card.Body> */}
                     {/* <div
@@ -1771,7 +1771,7 @@ const totalTarget = () => {
     <table className="table table-bordered table-striped" style={{ width: '300px', textAlign: 'center' }}>
       <thead>
         <tr>
-          <th>{t("Yearly Physical Target")}: {viewTotalTargetsDataPhysical[0]?.yearlyTrainingValue || "N/A"}</th>
+          <th>{t("Yearly Physical Target")}: {viewTotalTargetsDataPhysical[0]?.yearlyTrainingValue || t("N/A")}</th>
         </tr>
       </thead>
     </table>
@@ -1780,7 +1780,7 @@ const totalTarget = () => {
     <table className="table table-bordered table-striped" style={{ width: '300px', textAlign: 'center' }}>
       <thead>
         <tr>
-          <th>{t("Yearly Financial Target")}: {viewTotalTargetsDataFinancial[0]?.yearlyTrainingValue || "N/A"}</th>
+          <th>{t("Yearly Financial Target")}: {viewTotalTargetsDataFinancial[0]?.yearlyTrainingValue || t("N/A")}</th>
         </tr>
       </thead>
     </table>
@@ -1795,7 +1795,7 @@ const totalTarget = () => {
                !isNaN(parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTrainingValue)))
                 ? (parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyTrainingValue) + 
                    parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTrainingValue)).toFixed(2)
-                : "N/A"
+                : t("N/A")
             }
           </th>
         </tr>
@@ -2611,7 +2611,7 @@ const totalTarget = () => {
         <Modal.Header closeButton className="sh-modal-header">
           <Modal.Title>
             <Icon name="edit" />
-            <span>{t("Sericulture Training Institute  Wise Target Setting")}</span>
+            <span>{t("Sericulture Training Institute Wise Target Setting")}</span>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -2926,8 +2926,10 @@ const totalTarget = () => {
         paginationComponentOptions={{
           noRowsPerPage: true,
         }}
-        onChangePage={(page) => setPage2(page - 1)}   
+        onChangePage={(page) => setPage2(page - 1)}
         progressPending={loading}
+        progressComponent={<div className="p-3">{t("Loading...")}</div>}
+        noDataComponent={t("There are no records to display")}
         theme="solarized"
         customStyles={customStyles}
       />
@@ -2943,8 +2945,10 @@ const totalTarget = () => {
         paginationComponentOptions={{
           noRowsPerPage: true,
         }}
-        onChangePage={(page) => setPage1(page - 1)}   
+        onChangePage={(page) => setPage1(page - 1)}
         progressPending={loading}
+        progressComponent={<div className="p-3">{t("Loading...")}</div>}
+        noDataComponent={t("There are no records to display")}
         theme="solarized"
         customStyles={customStyles}
       />
@@ -2985,8 +2989,10 @@ const totalTarget = () => {
           paginationComponentOptions={{
             noRowsPerPage: true,
           }}
-          onChangePage={(page) => setPage4(page - 1)}   
+          onChangePage={(page) => setPage4(page - 1)}
           progressPending={loading}
+          progressComponent={<div className="p-3">{t("Loading...")}</div>}
+          noDataComponent={t("There are no records to display")}
           theme="solarized"
           customStyles={customStyles}
         />
@@ -3002,8 +3008,10 @@ const totalTarget = () => {
           paginationComponentOptions={{
             noRowsPerPage: true,
           }}
-          onChangePage={(page) => setPage3(page - 1)}   
+          onChangePage={(page) => setPage3(page - 1)}
           progressPending={loading}
+          progressComponent={<div className="p-3">{t("Loading...")}</div>}
+          noDataComponent={t("There are no records to display")}
           theme="solarized"
           customStyles={customStyles}
         />

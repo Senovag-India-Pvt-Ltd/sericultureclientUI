@@ -251,6 +251,7 @@ const { t } = useTranslation();
               }}
               onChangePage={(page) => setPage(page - 1)}
               progressPending={loading}
+              progressComponent={<div className="p-3">{t("Loading...")}</div>}
               theme="solarized"
               customStyles={customStyles}
             />

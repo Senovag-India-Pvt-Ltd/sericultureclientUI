@@ -2048,7 +2048,7 @@ const styles = {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="weightPupa">
-                                {t(" Weight of Single Pupa")}
+                                {t("Weight of Single Pupa")}
         
                               </Form.Label>
                               <div className="form-control-wrap">

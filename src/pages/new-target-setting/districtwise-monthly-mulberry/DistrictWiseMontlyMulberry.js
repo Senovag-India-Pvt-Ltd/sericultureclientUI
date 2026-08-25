@@ -1857,7 +1857,7 @@ useEffect(() => {
                               <th style={styles.ctstyle}>
                                 {t("Mulberry Yearly Targets (NAREGA)")}:{" "}
                                 {viewTotalTargetsDataNarega[0]?.mulberryValue ||
-                                  "N/A"}
+                                  t("N/A")}
                               </th>
                             </tr>
                           </thead>
@@ -1871,7 +1871,7 @@ useEffect(() => {
                               <th style={styles.ctstyle}>
                                 {t("Mulberry Yearly Targets (NON NAREGA)")}:{" "}
                                 {viewTotalTargetsDataNonNarega[0]?.mulberryValue ||
-                                  "N/A"}
+                                  t("N/A")}
                               </th>
                             </tr>
                           </thead>
@@ -1884,8 +1884,8 @@ useEffect(() => {
                             <tr>
                               <th style={styles.ctstyle}>
                                 {t("Total Mulberry Yearly Targets")}:{" "}
-                                {!isNaN(parseFloat(viewTotalTargetsDataNonNarega[0]?.mulberryValue)) && !isNaN(parseFloat(viewTotalTargetsDataNarega[0]?.mulberryValue)) ? ((parseFloat(viewTotalTargetsDataNonNarega[0]?.mulberryValue))+(parseFloat(viewTotalTargetsDataNarega[0]?.mulberryValue))).toFixed(2):"N/A" ||
-                                  "N/A"}
+                                {!isNaN(parseFloat(viewTotalTargetsDataNonNarega[0]?.mulberryValue)) && !isNaN(parseFloat(viewTotalTargetsDataNarega[0]?.mulberryValue)) ? ((parseFloat(viewTotalTargetsDataNonNarega[0]?.mulberryValue))+(parseFloat(viewTotalTargetsDataNarega[0]?.mulberryValue))).toFixed(2):t("N/A") ||
+                                  t("N/A")}
                               </th>
                             </tr>
                           </thead>

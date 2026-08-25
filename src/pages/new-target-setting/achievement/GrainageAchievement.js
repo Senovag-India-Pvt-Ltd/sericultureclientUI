@@ -1934,6 +1934,8 @@ const [pageHierarchy, setPageHierarchy] = useState(0);
                 onChangePage={(page) => setPageView(page - 1)}
                 // onChangePage={(page) => setPage(page - 1)}
                 progressPending={loading}
+                progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                noDataComponent={t("There are no records to display")}
                 theme="solarized"
                 customStyles={customStyles}
               />
@@ -1977,6 +1979,8 @@ const [pageHierarchy, setPageHierarchy] = useState(0);
                   // onChangePage={(page) => setPage(page - 1)}
                   onChangePage={(page) => setPageHierarchy(page - 1)}
                   progressPending={loading}
+                  progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                  noDataComponent={t("There are no records to display")}
                   theme="solarized"
                   customStyles={customStyles}
                 />

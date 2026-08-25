@@ -1907,9 +1907,9 @@ useEffect(() => {
                             <tbody>
                               {viewTotalTargetsData.length > 0 ? (
                                 <tr>
-                                <td>{viewTotalTargetsData[0].sisdValue || "N/A"}</td>
-                                <td>{viewTotalTargetsData[0].tscValue || "N/A"}</td>
-                                <td>{viewTotalTargetsData[0].remainingValue || "N/A"}</td>
+                                <td>{viewTotalTargetsData[0].sisdValue || t("N/A")}</td>
+                                <td>{viewTotalTargetsData[0].tscValue || t("N/A")}</td>
+                                <td>{viewTotalTargetsData[0].remainingValue || t("N/A")}</td>
                                 </tr>
                               ) : (
                                 <tr>
@@ -2977,6 +2977,8 @@ required
   paginationComponentOptions={{ noRowsPerPage: true }}
   onChangePage={(page) => setPageReportee(page - 1)} // ⬅️ updated
   progressPending={loading}
+  progressComponent={<div className="p-3">{t("Loading...")}</div>}
+  noDataComponent={t("There are no records to display")}
   theme="solarized"
   customStyles={customStyles}
 />
@@ -3003,6 +3005,8 @@ required
   paginationComponentOptions={{ noRowsPerPage: true }}
   onChangePage={(page) => setPageNormal(page - 1)} // ⬅️ updated
   progressPending={loading}
+  progressComponent={<div className="p-3">{t("Loading...")}</div>}
+  noDataComponent={t("There are no records to display")}
   theme="solarized"
   customStyles={customStyles}
 />

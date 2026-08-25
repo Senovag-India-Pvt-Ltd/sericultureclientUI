@@ -15,7 +15,7 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 function ExternalUnitRegister() {
   // Translation
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [vbAccountList, setVbAccountList] = useState([]);
   const [vbAccount, setVbAccount] = useState({
@@ -519,7 +519,9 @@ function ExternalUnitRegister() {
                               key={list.externalUnitTypeId}
                               value={list.externalUnitTypeId}
                             >
-                              {list.externalUnitTypeName}
+                              {i18n.language === "kn"
+                                ? list.externalUnitTypeNameInKannada
+                                : list.externalUnitTypeName}
                             </option>
                           ))}
                         </Form.Select>
@@ -592,7 +594,9 @@ function ExternalUnitRegister() {
                               key={list.raceMasterId}
                               value={list.raceMasterId}
                             >
-                              {list.raceMasterName}
+                              {i18n.language === "kn"
+                                ? list.raceNameInKannada
+                                : list.raceMasterName}
                             </option>
                           ))}
                         </Form.Select>
@@ -622,7 +626,9 @@ function ExternalUnitRegister() {
                                   key={list.districtId}
                                   value={list.districtId}
                                 >
-                                  {list.districtName}
+                                  {i18n.language === "kn"
+                                    ? list.districtNameInKannada
+                                    : list.districtName}
                                 </option>
                               ))
                             : ""}
@@ -656,7 +662,9 @@ function ExternalUnitRegister() {
                               key={list.tscMasterId}
                               value={list.tscMasterId}
                             >
-                              {list.name}
+                              {i18n.language === "kn"
+                                ? list.nameInKannada
+                                : list.name}
                             </option>
                           ))}
                         </Form.Select>
@@ -749,7 +757,9 @@ function ExternalUnitRegister() {
                           {talukListData && talukListData.length
                             ? talukListData.map((list) => (
                                 <option key={list.talukId} value={list.talukId}>
-                                  {list.talukName}
+                                  {i18n.language === "kn"
+                                    ? list.talukNameInKannada
+                                    : list.talukName}
                                 </option>
                               ))
                             : ""}
@@ -1144,7 +1154,9 @@ function ExternalUnitRegister() {
                               key={list.marketMasterId}
                               value={`${list.marketMasterId}_${list.marketMasterName}`}
                             >
-                              {list.marketMasterName}
+                              {i18n.language === "kn"
+                                ? list.marketNameInKannada
+                                : list.marketMasterName}
                             </option>
                           ))
                         : ""}
@@ -1340,7 +1352,9 @@ function ExternalUnitRegister() {
                               key={list.marketMasterId}
                               value={`${list.marketMasterId}_${list.marketMasterName}`}
                             >
-                              {list.marketMasterName}
+                              {i18n.language === "kn"
+                                ? list.marketNameInKannada
+                                : list.marketMasterName}
                             </option>
                           ))
                         : ""}

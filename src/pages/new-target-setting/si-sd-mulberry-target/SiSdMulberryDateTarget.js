@@ -1873,13 +1873,13 @@ const fetchNaregaData = (page) => {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Total Range Yearly Targets (NAREGA)")}:{" "}
-                              {viewTotalTargetsDataNarega[0]?.sisdValue ||"N/A"}
+                              {viewTotalTargetsDataNarega[0]?.sisdValue || t("N/A")}
                             </th>
                           </tr>
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Total Range Yearly Targets (NON NAREGA)")}:{" "}
-                              {viewTotalTargetsDataNonNarega[0]?.sisdValue ||"N/A"}
+                              {viewTotalTargetsDataNonNarega[0]?.sisdValue || t("N/A")}
                             </th>
                           </tr>
                           <tr>
@@ -1891,7 +1891,7 @@ const fetchNaregaData = (page) => {
                                     parseFloat(viewTotalTargetsDataNonNarega[0]?.sisdValue) +
                                     parseFloat(viewTotalTargetsDataNarega[0]?.sisdValue)
                                   ).toFixed(2)
-                                : "N/A"}
+                                : t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1900,14 +1900,14 @@ const fetchNaregaData = (page) => {
                         <thead>
                         <tr>
                             <th style={styles.ctstyle}>
-                              {t("Remaining Range Yearly Targets(NAREGA)")}:{" "}
-                              {viewTotalTargetsDataNarega[0]?.remainingValue || "N/A"}
+                              {t("Remaining Range Yearly Targets (NAREGA)")}:{" "}
+                              {viewTotalTargetsDataNarega[0]?.remainingValue || t("N/A")}
                             </th>
                           </tr>
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Remaining Range Yearly Targets (NON NAREGA)")}:{" "}
-                              {viewTotalTargetsDataNonNarega[0]?.remainingValue || "N/A"}
+                              {viewTotalTargetsDataNonNarega[0]?.remainingValue || t("N/A")}
                             </th>
                           </tr>
                           <tr>
@@ -1919,7 +1919,7 @@ const fetchNaregaData = (page) => {
                                     parseFloat(viewTotalTargetsDataNonNarega[0]?.remainingValue) +
                                     parseFloat(viewTotalTargetsDataNarega[0]?.remainingValue)
                                   ).toFixed(2)
-                                : "N/A"}
+                                : t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1944,7 +1944,7 @@ const fetchNaregaData = (page) => {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Range Daily Yearly Targets (NAREGA)")}:{" "}
-                              {viewTotalTargetsDataNarega[0]?.sisdDayValue || "N/A"}
+                              {viewTotalTargetsDataNarega[0]?.sisdDayValue || t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1954,7 +1954,7 @@ const fetchNaregaData = (page) => {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Range Daily Yearly Targets (NON NAREGA)")}:{" "}
-                              {viewTotalTargetsDataNonNarega[0]?.sisdDayValue || "N/A"}
+                              {viewTotalTargetsDataNonNarega[0]?.sisdDayValue || t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1970,7 +1970,7 @@ const fetchNaregaData = (page) => {
                                     parseFloat(viewTotalTargetsDataNonNarega[0]?.sisdDayValue) +
                                     parseFloat(viewTotalTargetsDataNarega[0]?.sisdDayValue)
                                   ).toFixed(2)
-                                : "N/A"}
+                                : t("N/A")}
                             </th>
                           </tr>
                         </thead>

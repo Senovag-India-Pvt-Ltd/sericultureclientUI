@@ -1262,7 +1262,7 @@ const handleShowModal = () => {
 
   const ProductionPhysicalDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -1280,7 +1280,7 @@ const handleShowModal = () => {
             className="ms-2"
             onClick={() => handleEdit(row.targetsId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -1288,7 +1288,7 @@ const handleShowModal = () => {
             onClick={() => deleteConfirm(row.targetsId)}
             className="ms-2"
           >
-            Delete
+            {t("Delete")}
           </Button>
         </div>
       ),
@@ -1296,7 +1296,7 @@ const handleShowModal = () => {
       hide: "md",
     },
     {
-      name: "Financial Year",
+      name: t("Financial Year"),
       selector: (row) => row.financialYearMaster,
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
@@ -1317,14 +1317,14 @@ const handleShowModal = () => {
     //   hide: "md",
     // },
     {
-      name: "Farm",
+      name: t("Farm"),
       selector: (row) => row.farmName,
       cell: (row) => <span>{row.farmName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Race",
+      name: t("Race"),
       selector: (row) => row.raceMasterName,
       cell: (row) => <span>{row.raceMasterName}</span>,
       sortable: true,
@@ -1332,21 +1332,21 @@ const handleShowModal = () => {
     },
 
     {
-      name: "Month",
+      name: t("Month"),
       selector: (row) => row.month,
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " User Name",
+      name: t("User Name"),
       selector: (row) => row.userMasterName,
       cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target No.",
+      name: t("Target No."),
       selector: (row) => row.value,
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
@@ -1356,49 +1356,49 @@ const handleShowModal = () => {
 
   const ProductionPhysicalDataColumnsView = [
     {
-      name: "Financial Year",
+      name: t("Financial Year"),
       selector: (row) => row.financialYearMaster,
       cell: (row) => <span>{row.financialYearMaster}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Farm",
+      name: t("Farm"),
       selector: (row) => row.farmName,
       cell: (row) => <span>{row.farmName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Race",
+      name: t("Race"),
       selector: (row) => row.raceMasterName,
       cell: (row) => <span>{row.raceMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Month",
+      name: t("Month"),
       selector: (row) => row.month,
       cell: (row) => <span>{row.month}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " Target Type",
+      name: t("Target Type"),
       selector: (row) => row.target,
       cell: (row) => <span>{row.target}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: " User Name",
+      name: t("User Name"),
       selector: (row) => row.userMasterName,
       cell: (row) => <span>{row.userMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Target No.",
+      name: t("Target No."),
       selector: (row) => row.value,
       cell: (row) => <span>{row.value}</span>,
       sortable: true,
@@ -1699,8 +1699,8 @@ const handleShowModal = () => {
                               
                             >
                               <option value="">{t("Select Target Type")}</option>
-                              <option value="Brushing">BRUSHING</option>
-                              <option value="Cocoon Production">COCOON PRODUCTION</option>
+                              <option value="Brushing">{t("BRUSHING")}</option>
+                              <option value="Cocoon Production">{t("COCOON PRODUCTION")}</option>
                             </Form.Select>
                           </div>
                         </Form.Group>
@@ -2031,8 +2031,8 @@ const handleShowModal = () => {
                       // }
                     >
                       <option value="">{t("Select Target Type")}</option>
-                      <option value="Brushing">BRUSHING</option>
-                      <option value="Cocoon Production">COCOON PRODUCTION</option>
+                      <option value="Brushing">{t("BRUSHING")}</option>
+                      <option value="Cocoon Production">{t("COCOON PRODUCTION")}</option>
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {t("Target Type is required")}
@@ -2236,6 +2236,8 @@ const handleShowModal = () => {
                 }}
                 onChangePage={(page) => setPage2(page - 1)}
                 progressPending={loading}
+                progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                noDataComponent={t("There are no records to display")}
                 theme="solarized"
                 customStyles={customStyles}
               />
@@ -2254,6 +2256,8 @@ const handleShowModal = () => {
                 }}
                 onChangePage={(page) => setPage1(page - 1)}
                 progressPending={loading}
+                progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                noDataComponent={t("There are no records to display")}
                 theme="solarized"
                 customStyles={customStyles}
               />
@@ -2296,6 +2300,8 @@ const handleShowModal = () => {
                   }}
                   onChangePage={(page) => setPage4(page - 1)}
                   progressPending={loading}
+                  progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                  noDataComponent={t("There are no records to display")}
                   theme="solarized"
                   customStyles={customStyles}
                 />
@@ -2313,6 +2319,8 @@ const handleShowModal = () => {
                   }}
                   onChangePage={(page) => setPage3(page - 1)}
                   progressPending={loading}
+                  progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                  noDataComponent={t("There are no records to display")}
                   theme="solarized"
                   customStyles={customStyles}
                 />
