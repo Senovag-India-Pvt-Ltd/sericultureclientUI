@@ -990,7 +990,7 @@ function NewTraderLicense() {
               <Modal.Header closeButton>
                 <Modal.Title>
                   <Icon name="wallet" className="me-1" />
-                  Add Virtual Bank Account Details
+                  {t("Add Virtual Bank Account Details")}
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body>
@@ -1033,7 +1033,7 @@ function NewTraderLicense() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Branch Name is required
+                            {t("Branch Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1056,7 +1056,7 @@ function NewTraderLicense() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            IFSC Code is required and equals to 11 digit
+                            {t("IFSC Code is required and equals to 11 digit")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1177,7 +1177,7 @@ function NewTraderLicense() {
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            Branch Name is required
+                            {t("Branch Name is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

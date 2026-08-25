@@ -1020,7 +1020,7 @@ function ExternalUnitRegister() {
         <Modal.Header closeButton className="px-4 py-3 border-bottom">
           <Modal.Title className="fw-semibold">
             <Icon name="wallet" className="me-1" />
-            Add Virtual Bank Account Details
+            {t("Add Virtual Bank Account Details")}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="px-4 py-3">

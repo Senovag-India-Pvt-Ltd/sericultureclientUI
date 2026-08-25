@@ -2528,7 +2528,7 @@ function NewReelerLicense() {
         <Modal.Header closeButton>
           <Modal.Title>
             <Icon name="wallet" className="me-1" />
-            Add Virtual Bank Account Details
+            {t("Add Virtual Bank Account Details")}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

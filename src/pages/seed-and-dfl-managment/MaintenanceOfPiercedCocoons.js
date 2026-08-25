@@ -124,7 +124,7 @@ function MaintenanceOfPiercedCocoons() {
   const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       text: message,
     });
   };
@@ -137,7 +137,7 @@ function MaintenanceOfPiercedCocoons() {
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };

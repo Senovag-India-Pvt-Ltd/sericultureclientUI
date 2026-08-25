@@ -225,7 +225,7 @@ function ReelerLicenseView() {
                   {Reeler.fruitsId ? (
                     <span className="sh-chip sh-chip-primary">
                       <Icon name="hash" />
-                      <span className="ms-1">FRUITS: {Reeler.fruitsId}</span>
+                      <span className="ms-1">{t("FRUITS")}: {Reeler.fruitsId}</span>
                     </span>
                   ) : null}
                   {Reeler.reelerNumber ? (
@@ -245,7 +245,7 @@ function ReelerLicenseView() {
                   {Reeler.tscName ? (
                     <span className="sh-chip sh-chip-warning">
                       <Icon name="building" />
-                      <span className="ms-1">TSC: {Reeler.tscName}</span>
+                      <span className="ms-1">{t("tsc")}: {Reeler.tscName}</span>
                     </span>
                   ) : null}
                 </div>
