@@ -111,8 +111,8 @@ function FitnessCertificateEdit() {
           const apiMsg =
             resData.errorMessages[0]?.message?.[0]?.message ||
             resData.errorMessages[0]?.message ||
-            "Validation error from server.";
-          Swal.fire({ icon: "warning", title: "Not Found", text: apiMsg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
+            t("Validation error from server.");
+          Swal.fire({ icon: "warning", title: t("Not Found"), text: apiMsg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
           setSearchLoading(false);
           return;
         }
@@ -123,7 +123,7 @@ function FitnessCertificateEdit() {
           loadFitnessList(found.farmerId);
           setSearchLoading(false);
         } else {
-          Swal.fire({ icon: "warning", title: "Details not Found", text: "No details found", customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
+          Swal.fire({ icon: "warning", title: t("Details not Found"), text: t("No details found"), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
           setSearchLoading(false);
         }
       })
@@ -133,10 +133,10 @@ function FitnessCertificateEdit() {
           const apiMsg =
             errData.errorMessages[0]?.message?.[0]?.message ||
             errData.errorMessages[0]?.message ||
-            "Validation error from server.";
-          Swal.fire({ icon: "warning", title: "Not Found", text: apiMsg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
+            t("Validation error from server.");
+          Swal.fire({ icon: "warning", title: t("Not Found"), text: apiMsg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
         } else {
-          Swal.fire({ icon: "warning", title: "Details not Found", customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
+          Swal.fire({ icon: "warning", title: t("Details not Found"), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
         }
         setSearchLoading(false);
       });
@@ -207,9 +207,9 @@ function FitnessCertificateEdit() {
       .then((response) => {
         setSaving(false);
         if (response.data.content?.error) {
-          Swal.fire({ icon: "error", title: "Update failed", text: response.data.content.error_description || "Something went wrong!", customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
+          Swal.fire({ icon: "error", title: t("Update failed"), text: response.data.content.error_description || t("Something went wrong!"), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
         } else {
-          Swal.fire({ icon: "success", title: "Updated successfully", customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } }).then(() => {
+          Swal.fire({ icon: "success", title: t("Updated successfully"), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } }).then(() => {
             setEditData(null);
             if (farmerDetails?.farmerId) loadFitnessList(farmerDetails.farmerId);
           });
@@ -217,7 +217,7 @@ function FitnessCertificateEdit() {
       })
       .catch(() => {
         setSaving(false);
-        Swal.fire({ icon: "error", title: "Update attempt was not successful", text: "Something went wrong!", customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
+        Swal.fire({ icon: "error", title: t("Update attempt was not successful"), text: t("Something went wrong!"), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
       });
   };
 

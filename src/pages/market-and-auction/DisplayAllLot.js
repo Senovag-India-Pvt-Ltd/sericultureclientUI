@@ -16,7 +16,8 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function DisplayAllLot() {
-  const { marketId } = useParams();
+  const { marketId: marketIdParam } = useParams();
+  const marketId = marketIdParam || localStorage.getItem("marketId");
   const styles = {
     top: {
       backgroundColor: "rgb(248 248 249)",

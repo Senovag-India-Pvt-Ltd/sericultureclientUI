@@ -1112,11 +1112,11 @@ const [showModal8, setShowModal8] = useState(false);
 
     const deleteConfirmForMoult = (_id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "It will delete permanently!",
+      title: t("Are you sure?"),
+      text: t("It will delete permanently!"),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: t("Yes, delete it!"),
     }).then((result) => {
       if (result.value) {
         console.log("hello");
@@ -1126,8 +1126,8 @@ const [showModal8, setShowModal8] = useState(false);
             // deleteConfirm(_id);
             getOnlyMoultingList();
             Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
+              t("Deleted"),
+              t("You successfully deleted this record"),
               "success"
             );
           })
@@ -1137,18 +1137,18 @@ const [showModal8, setShowModal8] = useState(false);
         // Swal.fire("Deleted", "You successfully deleted this record", "success");
       } else {
         console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
+        Swal.fire(t("Cancelled"), t("Your record is not deleted"), "info");
       }
     });
   };
 
   const deleteConfirmForFeeding = (_id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "It will delete permanently!",
+      title: t("Are you sure?"),
+      text: t("It will delete permanently!"),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: t("Yes, delete it!"),
     }).then((result) => {
       if (result.value) {
         console.log("hello");
@@ -1158,8 +1158,8 @@ const [showModal8, setShowModal8] = useState(false);
             // deleteConfirm(_id);
             getMoultList();
             Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
+              t("Deleted"),
+              t("You successfully deleted this record"),
               "success"
             );
           })
@@ -1169,18 +1169,18 @@ const [showModal8, setShowModal8] = useState(false);
         // Swal.fire("Deleted", "You successfully deleted this record", "success");
       } else {
         console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
+        Swal.fire(t("Cancelled"), t("Your record is not deleted"), "info");
       }
     });
   };
 
    const deleteConfirmForTemperature = (_id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "It will delete permanently!",
+      title: t("Are you sure?"),
+      text: t("It will delete permanently!"),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: t("Yes, delete it!"),
     }).then((result) => {
       if (result.value) {
         console.log("hello");
@@ -1190,8 +1190,8 @@ const [showModal8, setShowModal8] = useState(false);
             // deleteConfirm(_id);
             getOnlyTemperatureList();
             Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
+              t("Deleted"),
+              t("You successfully deleted this record"),
               "success"
             );
           })
@@ -1201,7 +1201,7 @@ const [showModal8, setShowModal8] = useState(false);
         // Swal.fire("Deleted", "You successfully deleted this record", "success");
       } else {
         console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
+        Swal.fire(t("Cancelled"), t("Your record is not deleted"), "info");
       }
     });
   };
@@ -1209,7 +1209,7 @@ const [showModal8, setShowModal8] = useState(false);
   const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       text: message,
     });
   };
@@ -1223,7 +1223,7 @@ const [showModal8, setShowModal8] = useState(false);
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -1233,18 +1233,18 @@ const [showModal8, setShowModal8] = useState(false);
   const deleteError = () => {
     Swal.fire({
       icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Delete attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
   const deleteConfirm = (_id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "It will delete permanently!",
+      title: t("Are you sure?"),
+      text: t("It will delete permanently!"),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: t("Yes, delete it!"),
     }).then((result) => {
       if (result.value) {
         console.log("hello");
@@ -1254,8 +1254,8 @@ const [showModal8, setShowModal8] = useState(false);
             // deleteConfirm(_id);
             getList();
             Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
+              t("Deleted"),
+              t("You successfully deleted this record"),
               "success"
             );
           })
@@ -1265,7 +1265,7 @@ const [showModal8, setShowModal8] = useState(false);
         // Swal.fire("Deleted", "You successfully deleted this record", "success");
       } else {
         console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
+        Swal.fire(t("Cancelled"), t("Your record is not deleted"), "info");
       }
     });
   };
@@ -2235,6 +2235,7 @@ const [showModal8, setShowModal8] = useState(false);
               }}
               onChangePage={(page) => setPage(page - 1)}
               progressPending={loading}
+              progressComponent={<div className="p-3 text-center">{t("Loading...")}</div>}
               theme="solarized"
               customStyles={customStyles}
               noDataComponent={
@@ -2276,8 +2277,15 @@ const [showModal8, setShowModal8] = useState(false);
             }}
             onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}
+            progressComponent={<div className="p-3 text-center">{t("Loading...")}</div>}
             theme="solarized"
             customStyles={customStyles}
+            noDataComponent={
+              <div className="sh-empty">
+                <Icon name="inbox" />
+                <p className="mt-2 mb-0">{t("No records found")}</p>
+              </div>
+            }
           />
         </div>
       </Card>
@@ -2836,8 +2844,15 @@ const [showModal8, setShowModal8] = useState(false);
             }}
             onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}
+            progressComponent={<div className="p-3 text-center">{t("Loading...")}</div>}
             theme="solarized"
             customStyles={customStyles}
+            noDataComponent={
+              <div className="sh-empty">
+                <Icon name="inbox" />
+                <p className="mt-2 mb-0">{t("No records found")}</p>
+              </div>
+            }
           />
         </div>
       </Card>
@@ -3637,8 +3652,15 @@ const [showModal8, setShowModal8] = useState(false);
                               }}
                               onChangePage={(page) => setPage(page - 1)}
                               progressPending={loading}
+                              progressComponent={<div className="p-3 text-center">{t("Loading...")}</div>}
                               theme="solarized"
                               customStyles={customStyles}
+                              noDataComponent={
+                                <div className="sh-empty">
+                                  <Icon name="inbox" />
+                                  <p className="mt-2 mb-0">{t("No records found")}</p>
+                                </div>
+                              }
                             />
                           </div>
                         </Card>

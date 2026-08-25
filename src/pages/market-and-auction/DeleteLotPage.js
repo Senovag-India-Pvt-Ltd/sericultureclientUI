@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import DataTable from "react-data-table-component";
 import api from "../../../src/services/auth/api";
 import Swal from "sweetalert2";
+import { Icon } from "../../components";
 
 
 
@@ -57,11 +58,11 @@ function DeleteLotPage() {
     } catch (err) {
        let errorMsg =
       err?.response?.data?.errorMessages?.[0]?.message?.[0]?.reason ||
-      "Something went wrong";
+      t("Something went wrong");
       setLotList([]);
           Swal.fire({
       icon: "error",
-      title: "Error",
+      title: t("Error"),
       text: errorMsg
     });
     } finally {
@@ -132,12 +133,12 @@ function DeleteLotPage() {
 const handleDelete = async (lotId, transactionDate) => {
 
   Swal.fire({
-    title: "Are you sure?",
-    text: "It will delete permanently!",
+    title: t("Are you sure?"),
+    text: t("It will delete permanently!"),
     icon: "warning",
     showCancelButton: true,
-    confirmButtonText: "Yes, delete it!",
-    cancelButtonText: "No",
+    confirmButtonText: t("Yes, delete it!"),
+    cancelButtonText: t("No"),
   }).then(async (result) => {
 
     if (result.isConfirmed) {
@@ -155,8 +156,8 @@ const handleDelete = async (lotId, transactionDate) => {
 
           Swal.fire({
       icon: "success",
-      title: "Deleted!",
-      text: "Lot has been deleted successfully.",
+      title: t("Deleted!"),
+      text: t("Lot has been deleted successfully."),
       timer: 2000,
       showConfirmButton: false
     });
@@ -173,18 +174,18 @@ const handleDelete = async (lotId, transactionDate) => {
      const message =
     err.response?.data?.errorMessages?.[0]?.message?.[0]?.reason ||
     err.response?.data?.errorMessages?.[0]?.message?.[0]?.message ||
-    "You cannot delete this lot as it is already distributed";
+    t("You cannot delete this lot as it is already distributed");
 
         Swal.fire({
           icon: "error",
-          title: "Delete Failed",
+          title: t("Delete Failed"),
           text: message,
         });
 
       }
 
     } else {
-      Swal.fire("Cancelled", "Your record is safe", "info");
+      Swal.fire(t("Cancelled"), t("Your record is safe"), "info");
     }
 
   });
@@ -244,7 +245,7 @@ const handleDelete = async (lotId, transactionDate) => {
           disabled=  {row.status === "DISTRIBUTED"}
           onClick={() => handleDelete(row.lotId, row.transactionDate)}
         >
-          Delete
+          {t("Delete")}
         </Button>
       ),
     },
@@ -288,7 +289,7 @@ const handleDelete = async (lotId, transactionDate) => {
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-  Lot No is required
+  {t("Lot No is required")}
 </Form.Control.Feedback>
                 </Col>
 
@@ -306,6 +307,13 @@ const handleDelete = async (lotId, transactionDate) => {
           columns={DeleteLotColumns}
           data={lotList}
           progressPending={loading}
+          progressComponent={<div className="py-4">{t("Loading...")}</div>}
+          noDataComponent={
+            <div className="sh-empty">
+              <Icon name="inbox" />
+              <p className="mt-2 mb-0">{t("No records found")}</p>
+            </div>
+          }
           highlightOnHover
           responsive
           customStyles={customStyles}

@@ -187,7 +187,7 @@ const handleDateChange = (date) => {
     } else {
       Swal.fire({
         icon: "warning",
-        title: "Price not available. Please perform a search first.",
+        title: t("Price not available. Please perform a search first."),
       });
     }
     return;
@@ -523,25 +523,24 @@ const handleUpdateLotDetails = (e, i, changes) => {
             }
           } else {
             Swal.fire({
-              title: "No Records Found",
+              title: t("No Records Found"),
               html: `
                 <div style="padding:6px 4px 8px">
                   <div style="background:linear-gradient(135deg,#fffaf0,#fff);border:1.5px solid #fbd38d;border-radius:14px;padding:18px 20px;display:flex;align-items:flex-start;gap:14px;text-align:left">
                     <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#ed8936,#f6ad55);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 4px 12px rgba(237,137,54,0.30)">🔍</div>
                     <div>
-                      <p style="color:#7b341e;font-size:14px;font-weight:700;margin:0 0 6px">We couldn't find any details</p>
+                      <p style="color:#7b341e;font-size:14px;font-weight:700;margin:0 0 6px">${t("We couldn't find any details")}</p>
                       <p style="color:#9c4221;font-size:13px;margin:0 0 8px;line-height:1.6">
-                        No lot information is available for the selected
-                        <b>Bidding Slip Lot Number</b> and <b>Auction Date</b>.
+                        ${t("No lot information is available for the selected Bidding Slip Lot Number and Auction Date.")}
                       </p>
                       <p style="color:#9c4221;font-size:12px;margin:0;line-height:1.55">
-                        Please verify the lot number and date, then try again.
+                        ${t("Please verify the lot number and date, then try again.")}
                       </p>
                     </div>
                   </div>
                 </div>`,
               showCloseButton: true,
-              confirmButtonText: "OK",
+              confirmButtonText: t("OK"),
               confirmButtonColor: "#ed8936",
               background: "#fff",
               showClass: { popup: "animate__animated animate__fadeInDown animate__faster" },
@@ -640,7 +639,7 @@ const hasRemaining = remainingQty > 0;
 
 
  
-   const searchError = (message = "Something went wrong!") => {
+   const searchError = (message = t("Something went wrong!")) => {
      let errorMessage;
      if (typeof message === "object") {
        errorMessage = Object.values(message).join("<br>");
@@ -649,7 +648,7 @@ const hasRemaining = remainingQty > 0;
      }
      Swal.fire({
        icon: "error",
-       title: "Details not Found",
+       title: t("Details not Found"),
        html: errorMessage,
      });
    };
@@ -826,17 +825,17 @@ const hasRemaining = remainingQty > 0;
 
     // === Front-end validation: distributed quantity cannot exceed final weighment ===
     if (lotWeightAfterWeighmentVal > 0 && distributedQuantity > lotWeightAfterWeighmentVal) {
-      saveError(`Distributed Quantity (${distributedQuantity} Kg) cannot exceed Final Weighment (${lotWeightAfterWeighmentVal} Kg).`);
+      saveError(t("Distributed Quantity ({{distributedQuantity}} Kg) cannot exceed Final Weighment ({{lotWeightAfterWeighmentVal}} Kg).", { distributedQuantity, lotWeightAfterWeighmentVal }));
       return;
     }
     if (isRemainingNegative) {
-      saveError("Remaining Quantity cannot be negative. Please review the distributed quantities.");
+      saveError(t("Remaining Quantity cannot be negative. Please review the distributed quantities."));
       return;
     }
 
     // Reason is required when "Moving to another market" is ticked.
     if (!!movingToAnotherMarket && !(movingMarketReason || "").trim()) {
-      saveError("Please enter a Reason for moving to another market.");
+      saveError(t("Please enter a Reason for moving to another market."));
       return;
     }
 
@@ -888,8 +887,8 @@ const hasRemaining = remainingQty > 0;
     if (selectedSaleDisposalId == null) {
       Swal.fire({
         icon: "warning",
-        title: "Please select a disposal record",
-        text: "Choose which disposal record to mark as disposed to continue.",
+        title: t("Please select a disposal record"),
+        text: t("Choose which disposal record to mark as disposed to continue."),
         confirmButtonColor: "#1e67a8",
       });
       return;
@@ -963,14 +962,14 @@ const hasRemaining = remainingQty > 0;
           .then(response => {
             const updatedList = response.data.content;
             const invoiceRows = updatedList
-              .map(item => `<tr><td style="padding:6px 12px;color:#2d3748;font-weight:600">${item.buyerType}</td><td style="padding:6px 12px;color:#1e67a8;font-weight:700">${item.invoiceNumber || 'No Invoice Available'}</td></tr>`)
+              .map(item => `<tr><td style="padding:6px 12px;color:#2d3748;font-weight:600">${item.buyerType}</td><td style="padding:6px 12px;color:#1e67a8;font-weight:700">${item.invoiceNumber || t('No Invoice Available')}</td></tr>`)
               .join("");
             setIsSaving(false);
             Swal.fire({
               icon: 'success',
-              title: 'Updated Successfully',
-              html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#f0fff4,#f6fffa);border:1.5px solid #9ae6b4;border-radius:14px;padding:16px 20px;text-align:left"><p style="color:#276749;font-size:13px;font-weight:700;margin:0 0 10px">Invoice Details</p><table style="width:100%;border-collapse:collapse"><thead><tr style="background:#e6ffed"><th style="padding:6px 12px;color:#22543d;font-size:12px;text-align:left">Buyer Type</th><th style="padding:6px 12px;color:#22543d;font-size:12px;text-align:left">Invoice Number</th></tr></thead><tbody>${invoiceRows}</tbody></table></div></div>`,
-              confirmButtonText: 'OK', confirmButtonColor: '#1e67a8', background: '#fff',
+              title: t('Updated Successfully'),
+              html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#f0fff4,#f6fffa);border:1.5px solid #9ae6b4;border-radius:14px;padding:16px 20px;text-align:left"><p style="color:#276749;font-size:13px;font-weight:700;margin:0 0 10px">${t('Invoice Details')}</p><table style="width:100%;border-collapse:collapse"><thead><tr style="background:#e6ffed"><th style="padding:6px 12px;color:#22543d;font-size:12px;text-align:left">${t('Buyer Type')}</th><th style="padding:6px 12px;color:#22543d;font-size:12px;text-align:left">${t('Invoice Number')}</th></tr></thead><tbody>${invoiceRows}</tbody></table></div></div>`,
+              confirmButtonText: t('OK'), confirmButtonColor: '#1e67a8', background: '#fff',
               showClass: { popup: 'animate__animated animate__bounceIn animate__faster' },
               customClass: { popup: 'swal-pop' },
             }).then(() => {
@@ -983,9 +982,9 @@ const hasRemaining = remainingQty > 0;
           .catch(error => {
             setIsSaving(false);
             Swal.fire({
-              icon: 'error', title: 'Update Failed',
-              html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">❌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Update Not Saved</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">There was an error updating the lot groupage details. Please try again.</p></div></div></div>`,
-              confirmButtonText: 'Close', confirmButtonColor: '#e53e3e', background: '#fff',
+              icon: 'error', title: t('Update Failed'),
+              html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">❌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t('Update Not Saved')}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${t('There was an error updating the lot groupage details. Please try again.')}</p></div></div></div>`,
+              confirmButtonText: t('Close'), confirmButtonColor: '#e53e3e', background: '#fff',
               showClass: { popup: 'animate__animated animate__shakeX animate__faster' },
               customClass: { popup: 'swal-pop' },
             });
@@ -1056,7 +1055,7 @@ const hasRemaining = remainingQty > 0;
                 Object.keys(err.response.data.validationErrors).length > 0) {
               saveError(err.response.data.validationErrors);
             } else {
-              saveError("There was an error saving the lot groupage details.");
+              saveError(t("There was an error saving the lot groupage details."));
             }
           });
       }
@@ -1165,13 +1164,13 @@ const hasRemaining = remainingQty > 0;
     }
     Swal.fire({
       icon: "warning",
-      title: "Insufficient Balance",
+      title: t("Insufficient Balance"),
       html: `
         <div style="text-align:center;padding:4px 0">
           <p style="color:#c53030;font-size:15px;font-weight:600;margin:0;line-height:1.7">${message}</p>
-          <p style="color:#a0aec0;font-size:12px;margin:10px 0 0">Please ask the buyer to recharge their account.</p>
+          <p style="color:#a0aec0;font-size:12px;margin:10px 0 0">${t("Please ask the buyer to recharge their account.")}</p>
         </div>`,
-      confirmButtonText: "OK, Got it",
+      confirmButtonText: t("OK, Got it"),
       confirmButtonColor: "#e53e3e",
       background: "#fff",
       customClass: { popup: "swal-balance-alert" },
@@ -1526,9 +1525,9 @@ setAllottedLotId("");
       .join("");
     Swal.fire({
       icon: "success",
-      title: "Saved Successfully",
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#f0fff4,#f6fffa);border:1.5px solid #9ae6b4;border-radius:14px;padding:16px 20px;text-align:left"><p style="color:#276749;font-size:13px;font-weight:700;margin:0 0 10px">Invoice Details</p><table style="width:100%;border-collapse:collapse"><thead><tr style="background:#e6ffed"><th style="padding:6px 12px;color:#22543d;font-size:12px;text-align:left">Buyer Type</th><th style="padding:6px 12px;color:#22543d;font-size:12px;text-align:left">Invoice Number</th></tr></thead><tbody>${invoiceRows}</tbody></table></div></div>`,
-      confirmButtonText: "OK", confirmButtonColor: "#1e67a8", background: "#fff",
+      title: t("Saved Successfully"),
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#f0fff4,#f6fffa);border:1.5px solid #9ae6b4;border-radius:14px;padding:16px 20px;text-align:left"><p style="color:#276749;font-size:13px;font-weight:700;margin:0 0 10px">${t("Invoice Details")}</p><table style="width:100%;border-collapse:collapse"><thead><tr style="background:#e6ffed"><th style="padding:6px 12px;color:#22543d;font-size:12px;text-align:left">${t("Buyer Type")}</th><th style="padding:6px 12px;color:#22543d;font-size:12px;text-align:left">${t("Invoice Number")}</th></tr></thead><tbody>${invoiceRows}</tbody></table></div></div>`,
+      confirmButtonText: t("OK"), confirmButtonColor: "#1e67a8", background: "#fff",
       showClass: { popup: "animate__animated animate__bounceIn animate__faster" },
       customClass: { popup: "swal-pop" },
     }).then(() => { window.location.reload(); });
@@ -1548,9 +1547,9 @@ const handlePurchaseModeChange = (e) => {
       ? Object.values(message).join("<br>")
       : message;
     Swal.fire({
-      icon: "error", title: "Save Not Successful",
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">❌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Could Not Save</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${errorMessage}</p></div></div></div>`,
-      confirmButtonText: "Close", confirmButtonColor: "#e53e3e", background: "#fff",
+      icon: "error", title: t("Save Not Successful"),
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">❌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Could Not Save")}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${errorMessage}</p></div></div></div>`,
+      confirmButtonText: t("Close"), confirmButtonColor: "#e53e3e", background: "#fff",
       showClass: { popup: "animate__animated animate__shakeX animate__faster" },
       customClass: { popup: "swal-pop" },
     });
@@ -1599,7 +1598,7 @@ const handlePurchaseModeChange = (e) => {
                 <div style={{ width: "38px", height: "38px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px" }}>🔍</div>
                 <div>
                   <div style={{ color: "#fff", fontWeight: 700, fontSize: "16px" }}>{t("Lot Distribution")}</div>
-                  <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px" }}>Search by bidding slip lot number and auction date</div>
+                  <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px" }}>{t("Search by bidding slip lot number and auction date")}</div>
                 </div>
               </div>
               <Card.Body style={{ padding: "14px 20px" }}>
@@ -1682,8 +1681,7 @@ const handlePurchaseModeChange = (e) => {
                                 <td style={styles.cell}>{farmerdetails.lotParentLevel}</td>
                                 <td style={styles.ctstyle}>{t("No OF DFLs:")}</td>
                                 <td style={styles.cell}>{farmerdetails.noOfDFLs}</td>
-                                {/* <td style={styles.ctstyle}>{t("Price:")}</td> */}
-                                <td style={styles.ctstyle}>Price:</td>
+                                <td style={styles.ctstyle}>{t("Price:")}</td>
                                 <td style={styles.cell}>{farmerdetails.price}</td>
                               </tr>
                               <tr style={styles.tableRow}>
@@ -2301,7 +2299,7 @@ const handlePurchaseModeChange = (e) => {
                                 data.buyerId === "0"
                               }
                             >
-                              <option value="">Select Reeler</option>
+                              <option value="">{t("Select Reeler")}</option>
                               {reelerListData.map((list) => (
                                 <option
                                   key={`{list.reelerId}_${list.reelerName}`}
@@ -2312,7 +2310,7 @@ const handlePurchaseModeChange = (e) => {
                               ))}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Reeler is required
+                              {t("Reeler is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -2324,7 +2322,7 @@ const handlePurchaseModeChange = (e) => {
                       <Col lg="6">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label>
-                          External Stake Holders<span className="text-danger">*</span>
+                          {t("External Stake Holders")}<span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Select
@@ -2338,7 +2336,7 @@ const handlePurchaseModeChange = (e) => {
                                 data.buyerId === "0"
                               }
                             >
-                              <option value="">Select External Stake Holders</option>
+                              <option value="">{t("Select External Stake Holders")}</option>
                               {externalListData.map((list) => (
                                 <option
                                   key={list.externalUnitRegistrationId}
@@ -2349,7 +2347,7 @@ const handlePurchaseModeChange = (e) => {
                               ))}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                            External Stake Holders is required
+                            {t("External Stake Holders is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -2829,7 +2827,7 @@ const handlePurchaseModeChange = (e) => {
                                 data.buyerId === "0"
                               }
                             >
-                              <option value="">Select Reeler</option>
+                              <option value="">{t("Select Reeler")}</option>
                               {reelerListData.map((list) => (
                                 <option
                                   key={`{list.reelerId}_${list.reelerName}`}
@@ -2840,7 +2838,7 @@ const handlePurchaseModeChange = (e) => {
                               ))}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                              Reeler is required
+                              {t("Reeler is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -2852,7 +2850,7 @@ const handlePurchaseModeChange = (e) => {
                       <Col lg="6">
                         <Form.Group className="form-group mt-n4">
                           <Form.Label>
-                          External Stake Holders<span className="text-danger">*</span>
+                          {t("External Stake Holders")}<span className="text-danger">*</span>
                           </Form.Label>
                           <div className="form-control-wrap">
                             <Form.Select
@@ -2866,7 +2864,7 @@ const handlePurchaseModeChange = (e) => {
                                 data.buyerId === "0"
                               }
                             >
-                              <option value="">Select External Stake Holders</option>
+                              <option value="">{t("Select External Stake Holders")}</option>
                               {externalListData.map((list) => (
                                 <option
                                   key={list.externalUnitRegistrationId}
@@ -2877,7 +2875,7 @@ const handlePurchaseModeChange = (e) => {
                               ))}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
-                            External Stake Holders is required
+                            {t("External Stake Holders is required")}
                             </Form.Control.Feedback>
                           </div>
                         </Form.Group>
@@ -3321,15 +3319,15 @@ const handlePurchaseModeChange = (e) => {
                     )}
                   </div>
                   <Row className="g-2" style={{ fontSize: "12.5px", color: "#2d3748" }}>
-                    <Col xs={6} md={4}><b>Lot No:</b> {c.lotNumber ?? "-"}</Col>
-                    <Col xs={6} md={4}><b>No. of DFLs:</b> {c.numberOfDflsDisposed ?? "-"}</Col>
-                    <Col xs={6} md={4}><b>Race ID:</b> {c.raceId ?? "-"}</Col>
-                    <Col xs={6} md={4}><b>Egg Sheets:</b> {c.eggSheetNumbers ?? "-"}</Col>
-                    <Col xs={6} md={4}><b>Release Date:</b> {c.releaseDate ?? "-"}</Col>
-                    <Col xs={6} md={4}><b>Disposal Date:</b> {c.dateOfDisposal ?? "-"}</Col>
-                    <Col xs={12} md={8}><b>Farm:</b> {c.nameAndAddressOfTheFarm ?? "-"}</Col>
-                    <Col xs={6} md={4}><b>Invoice:</b> {c.invoiceNumber ?? "-"}</Col>
-                    <Col xs={6} md={4}><b>Receipt No:</b> {c.receiptNo ?? "-"}</Col>
+                    <Col xs={6} md={4}><b>{t("Lot No:")}</b> {c.lotNumber ?? "-"}</Col>
+                    <Col xs={6} md={4}><b>{t("No. of DFLs:")}</b> {c.numberOfDflsDisposed ?? "-"}</Col>
+                    <Col xs={6} md={4}><b>{t("Race ID:")}</b> {c.raceId ?? "-"}</Col>
+                    <Col xs={6} md={4}><b>{t("Egg Sheets:")}</b> {c.eggSheetNumbers ?? "-"}</Col>
+                    <Col xs={6} md={4}><b>{t("Release Date:")}</b> {c.releaseDate ?? "-"}</Col>
+                    <Col xs={6} md={4}><b>{t("Disposal Date:")}</b> {c.dateOfDisposal ?? "-"}</Col>
+                    <Col xs={12} md={8}><b>{t("Farm:")}</b> {c.nameAndAddressOfTheFarm ?? "-"}</Col>
+                    <Col xs={6} md={4}><b>{t("Invoice:")}</b> {c.invoiceNumber ?? "-"}</Col>
+                    <Col xs={6} md={4}><b>{t("Receipt No:")}</b> {c.receiptNo ?? "-"}</Col>
                   </Row>
                 </div>
               );

@@ -13,12 +13,13 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
-const REPORT_TYPES = [
-  { id: "invoice",       label: "Invoice",        icon: "🧾", desc: "By Grainage & Date Range"   },
-  { id: "permit",        label: "Permit",          icon: "📋", desc: "By External User & Date"    },
-  { id: "cashReceipt",   label: "Cash Receipt",    icon: "💵", desc: "By Auction Date & Lot No"   },
-  { id: "marketReceipt", label: "Market Receipt",  icon: "🏪", desc: "By Auction Date & Lot No"   },
-];
+const REPORT_TYPE_IDS = ["invoice", "permit", "cashReceipt", "marketReceipt"];
+const REPORT_TYPE_META = {
+  invoice:       { labelKey: "Invoice",        icon: "🧾" },
+  permit:        { labelKey: "Permit",          icon: "📋" },
+  cashReceipt:   { labelKey: "Cash Receipt",    icon: "💵" },
+  marketReceipt: { labelKey: "Market Receipt",  icon: "🏪" },
+};
 
 function InvoicePermitAndMarketReceipt() {
   const { t } = useTranslation();
@@ -80,17 +81,17 @@ function InvoicePermitAndMarketReceipt() {
   const showError = (title, body) =>
     Swal.fire({
       icon: "warning", title,
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Required Field</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${body}</p></div></div></div>`,
-      confirmButtonText: "Got it", confirmButtonColor: "#d97706", background: "#fff",
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Required Field")}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${body}</p></div></div></div>`,
+      confirmButtonText: t("Got it"), confirmButtonColor: "#d97706", background: "#fff",
       showClass: { popup: "animate__animated animate__headShake animate__faster" },
       customClass: { popup: "swal-pop" },
     });
 
   const showFail = () =>
     Swal.fire({
-      icon: "error", title: "Generation Failed",
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left;margin-bottom:10px"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Could Not Generate</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">Failed to generate the report. Please check your connection and try again.</p></div></div><div style="background:#f7fafc;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px"><span style="font-size:16px">💡</span><span style="color:#4a5568;font-size:12.5px">If the problem persists, contact your system administrator.</span></div></div>`,
-      confirmButtonText: "Close", confirmButtonColor: "#e53e3e", background: "#fff",
+      icon: "error", title: t("Generation Failed"),
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left;margin-bottom:10px"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Could Not Generate")}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${t("Failed to generate the report. Please check your connection and try again.")}</p></div></div><div style="background:#f7fafc;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px"><span style="font-size:16px">💡</span><span style="color:#4a5568;font-size:12.5px">${t("If the problem persists, contact your system administrator.")}</span></div></div>`,
+      confirmButtonText: t("Close"), confirmButtonColor: "#e53e3e", background: "#fff",
       showClass: { popup: "animate__animated animate__shakeX animate__faster" },
       customClass: { popup: "swal-pop" },
     });
@@ -104,16 +105,16 @@ function InvoicePermitAndMarketReceipt() {
     try {
       let response;
       if (selectedCategory === "invoice") {
-        if (!data.grainageMasterId) { showError("Grainage Required", "Please select a Grainage before generating the Invoice report."); return; }
+        if (!data.grainageMasterId) { showError(t("Grainage Required"), t("Please select a Grainage before generating the Invoice report.")); return; }
         response = await api.post(baseURLReport + `get-Invoice`, { marketId: data.marketId, grainageMasterId: data.grainageMasterId, fromDate: fmt(data.fromDate), toDate: fmt(data.toDate) }, { responseType: "blob" });
       } else if (selectedCategory === "permit") {
-        if (!data.externalUnitRegistrationId) { showError("External User Required", "Please select an External User before generating the Permit report."); return; }
+        if (!data.externalUnitRegistrationId) { showError(t("External User Required"), t("Please select an External User before generating the Permit report.")); return; }
         response = await api.post(baseURLReport + `get-Permit`, { marketId: data.marketId, externalUnitRegistrationId: data.externalUnitRegistrationId, fromDate: fmt(data.fromDate), toDate: fmt(data.toDate) }, { responseType: "blob" });
       } else if (selectedCategory === "cashReceipt") {
-        if (!data.allottedLotId) { showError("Lot No Required", "Please enter the Bidding Slip Lot No before generating the Cash Receipt report."); return; }
+        if (!data.allottedLotId) { showError(t("Lot No Required"), t("Please enter the Bidding Slip Lot No before generating the Cash Receipt report.")); return; }
         response = await api.post(baseURLReport + `get-Rasheedi`, { marketId: data.marketId, allottedLotId: data.allottedLotId, auctionDate: fmt(data.auctionDate) }, { responseType: "blob" });
       } else if (selectedCategory === "marketReceipt") {
-        if (!data.allottedLotId) { showError("Lot No Required", "Please enter the Bidding Slip Lot No before generating the Market Receipt report."); return; }
+        if (!data.allottedLotId) { showError(t("Lot No Required"), t("Please enter the Bidding Slip Lot No before generating the Market Receipt report.")); return; }
         response = await api.post(baseURLReport + `get-market-reciept`, { marketId: data.marketId, allottedLotId: data.allottedLotId, auctionDate: fmt(data.auctionDate) }, { responseType: "blob" });
       }
       openPdf(response.data);
@@ -149,7 +150,7 @@ function InvoicePermitAndMarketReceipt() {
     }),
   };
 
-  const selectedType = REPORT_TYPES.find((r) => r.id === selectedCategory);
+  const selectedType = REPORT_TYPE_META[selectedCategory];
 
   return (
     <Layout title={t("Seed Market Reports")}>
@@ -183,20 +184,21 @@ function InvoicePermitAndMarketReceipt() {
               {selectedType?.icon}
             </div>
             <div>
-              <div style={{ color: "#fff", fontWeight: 700, fontSize: "16px", lineHeight: 1.2 }}>{selectedType?.label} Report</div>
-              <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "2px" }}>Seed Market</div>
+              <div style={{ color: "#fff", fontWeight: 700, fontSize: "16px", lineHeight: 1.2 }}>{t(selectedType?.labelKey)} {t("Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "2px" }}>{t("Seed Market")}</div>
             </div>
           </div>
 
           {/* ── Report Type Tabs ── */}
           <div style={{ borderBottom: "1.5px solid #e2e8f0", padding: "0 28px", background: "#fff", display: "flex", gap: "4px" }}>
-            {REPORT_TYPES.map((type) => {
-              const active = selectedCategory === type.id;
+            {REPORT_TYPE_IDS.map((id) => {
+              const meta = REPORT_TYPE_META[id];
+              const active = selectedCategory === id;
               return (
                 <button
-                  key={type.id}
+                  key={id}
                   type="button"
-                  onClick={() => setSelectedCategory(type.id)}
+                  onClick={() => setSelectedCategory(id)}
                   style={{
                     background: "none", border: "none", padding: "10px 16px",
                     fontSize: "13px", fontWeight: active ? 700 : 500,
@@ -207,8 +209,8 @@ function InvoicePermitAndMarketReceipt() {
                     display: "flex", alignItems: "center", gap: "6px",
                   }}
                 >
-                  <span style={{ fontSize: "14px" }}>{type.icon}</span>
-                  {type.label}
+                  <span style={{ fontSize: "14px" }}>{meta.icon}</span>
+                  {t(meta.labelKey)}
                 </button>
               );
             })}
@@ -222,9 +224,9 @@ function InvoicePermitAndMarketReceipt() {
                 <>
                   <Row className="mb-3">
                     <Col md={6} style={fieldGroupStyle}>
-                      <label style={labelStyle}>Grainage <span style={{ color: "#e53e3e" }}>*</span></label>
+                      <label style={labelStyle}>{t("Grainage")} <span style={{ color: "#e53e3e" }}>*</span></label>
                       <Form.Select name="grainageMasterId" value={data.grainageMasterId} onChange={(e) => setData({ ...data, grainageMasterId: e.target.value })} style={inputStyle}>
-                        <option value="">— Select Grainage —</option>
+                        <option value="">{t("— Select Grainage —")}</option>
                         {grainageListData?.map((g) => (
                           <option key={g.grainageMasterId} value={g.grainageMasterId}>{g.grainageMasterName}</option>
                         ))}
@@ -233,11 +235,11 @@ function InvoicePermitAndMarketReceipt() {
                   </Row>
                   <Row className="mb-2">
                     <Col md={4} style={fieldGroupStyle}>
-                      <label style={labelStyle}>From Date <span style={{ color: "#e53e3e" }}>*</span></label>
+                      <label style={labelStyle}>{t("From Date")} <span style={{ color: "#e53e3e" }}>*</span></label>
                       <DatePicker dateFormat="dd/MM/yyyy" selected={data.fromDate} onChange={(d) => setData({ ...data, fromDate: d })} className="form-control" maxDate={new Date()} portalId="seri-datepicker-portal" />
                     </Col>
                     <Col md={4} style={fieldGroupStyle}>
-                      <label style={labelStyle}>To Date <span style={{ color: "#e53e3e" }}>*</span></label>
+                      <label style={labelStyle}>{t("To Date")} <span style={{ color: "#e53e3e" }}>*</span></label>
                       <DatePicker dateFormat="dd/MM/yyyy" selected={data.toDate} onChange={(d) => setData({ ...data, toDate: d })} className="form-control" maxDate={new Date()} portalId="seri-datepicker-portal" />
                     </Col>
                   </Row>
@@ -249,10 +251,10 @@ function InvoicePermitAndMarketReceipt() {
                 <>
                   <Row className="mb-3">
                     <Col md={6} style={fieldGroupStyle}>
-                      <label style={labelStyle}>External User <span style={{ color: "#e53e3e" }}>*</span></label>
+                      <label style={labelStyle}>{t("External User")} <span style={{ color: "#e53e3e" }}>*</span></label>
                       <ReactSelect
                         options={externalUserOptions}
-                        placeholder="— Select External User —"
+                        placeholder={t("— Select External User —")}
                         isSearchable
                         menuPlacement="auto"
                         styles={reactSelectStyles}
@@ -263,11 +265,11 @@ function InvoicePermitAndMarketReceipt() {
                   </Row>
                   <Row className="mb-2">
                     <Col md={4} style={fieldGroupStyle}>
-                      <label style={labelStyle}>From Date <span style={{ color: "#e53e3e" }}>*</span></label>
+                      <label style={labelStyle}>{t("From Date")} <span style={{ color: "#e53e3e" }}>*</span></label>
                       <DatePicker dateFormat="dd/MM/yyyy" selected={data.fromDate} onChange={(d) => setData({ ...data, fromDate: d })} className="form-control" maxDate={new Date()} portalId="seri-datepicker-portal" />
                     </Col>
                     <Col md={4} style={fieldGroupStyle}>
-                      <label style={labelStyle}>To Date <span style={{ color: "#e53e3e" }}>*</span></label>
+                      <label style={labelStyle}>{t("To Date")} <span style={{ color: "#e53e3e" }}>*</span></label>
                       <DatePicker dateFormat="dd/MM/yyyy" selected={data.toDate} onChange={(d) => setData({ ...data, toDate: d })} className="form-control" maxDate={new Date()} portalId="seri-datepicker-portal" />
                     </Col>
                   </Row>
@@ -278,12 +280,12 @@ function InvoicePermitAndMarketReceipt() {
               {(selectedCategory === "cashReceipt" || selectedCategory === "marketReceipt") && (
                 <Row className="mb-2">
                   <Col md={4} style={fieldGroupStyle}>
-                    <label style={labelStyle}>Auction Date <span style={{ color: "#e53e3e" }}>*</span></label>
+                    <label style={labelStyle}>{t("Auction Date")} <span style={{ color: "#e53e3e" }}>*</span></label>
                     <DatePicker dateFormat="dd/MM/yyyy" selected={data.auctionDate} onChange={(d) => setData({ ...data, auctionDate: d })} className="form-control" maxDate={new Date()} portalId="seri-datepicker-portal" />
                   </Col>
                   <Col md={4} style={fieldGroupStyle}>
-                    <label style={labelStyle}>Bidding Slip Lot No <span style={{ color: "#e53e3e" }}>*</span></label>
-                    <Form.Control type="text" name="allottedLotId" value={data.allottedLotId} onChange={(e) => setData({ ...data, allottedLotId: e.target.value })} placeholder="Enter Bidding Slip Lot No" style={inputStyle} />
+                    <label style={labelStyle}>{t("Bidding Slip Lot No")} <span style={{ color: "#e53e3e" }}>*</span></label>
+                    <Form.Control type="text" name="allottedLotId" value={data.allottedLotId} onChange={(e) => setData({ ...data, allottedLotId: e.target.value })} placeholder={t("Enter Bidding Slip Lot No")} style={inputStyle} />
                   </Col>
                 </Row>
               )}
@@ -306,14 +308,14 @@ function InvoicePermitAndMarketReceipt() {
                   }}
                 >
                   {isGenerating ? (
-                    <><span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" /> Generating…</>
+                    <><span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" /> {t("Generating…")}</>
                   ) : (
-                    <>📄 Generate {selectedType?.label} Report</>
+                    <>📄 {t("Generate")} {t(selectedType?.labelKey)} {t("Report")}</>
                   )}
                 </button>
                 {!isGenerating && (
                   <span style={{ fontSize: "12.5px", color: "#718096" }}>
-                    Report will open in a new tab as PDF
+                    {t("Report will open in a new tab as PDF")}
                   </span>
                 )}
               </div>
