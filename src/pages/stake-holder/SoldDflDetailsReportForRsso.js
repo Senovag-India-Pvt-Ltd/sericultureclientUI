@@ -19,7 +19,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function SoldDflDetailsReportForRsso() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -300,7 +300,7 @@ function SoldDflDetailsReportForRsso() {
                   <option value="">{t("Select Grainage")}</option>
                   {grainageListData && grainageListData.length ? grainageListData.map((list) => (
                     <option key={list.grainageMasterId} value={list.grainageMasterId}>
-                      {list.grainageMasterName}
+                      {i18n.language === "kn" ? list.grainageMasterNameInKannada : list.grainageMasterName}
                     </option>
                   )) : ""}
                 </Form.Select>
@@ -311,7 +311,7 @@ function SoldDflDetailsReportForRsso() {
                   <option value="">{t("Select Race")}</option>
                   {raceListData.map((list) => (
                     <option key={list.raceMasterId} value={list.raceMasterId}>
-                      {list.raceMasterName}
+                      {i18n.language === "kn" ? list.raceNameInKannada : list.raceMasterName}
                     </option>
                   ))}
                 </Form.Select>

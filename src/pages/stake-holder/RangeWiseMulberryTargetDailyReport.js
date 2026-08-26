@@ -18,7 +18,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function RangeWiseMulberryTargetDailyReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -308,7 +308,7 @@ function RangeWiseMulberryTargetDailyReport() {
                   {districtListData && districtListData.length
                     ? districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
-                          {list.districtName}
+                          {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                         </option>
                       ))
                     : ""}
@@ -320,7 +320,7 @@ function RangeWiseMulberryTargetDailyReport() {
                   <option value="">{t("select_tsc")}</option>
                   {tscListData.map((list) => (
                     <option key={list.tscMasterId} value={list.tscMasterId}>
-                      {list.name}
+                      {i18n.language === "kn" ? list.nameInKannada : list.name}
                     </option>
                   ))}
                 </Form.Select>
@@ -332,7 +332,7 @@ function RangeWiseMulberryTargetDailyReport() {
                   {mulberryTargetTypeData && mulberryTargetTypeData.length
                     ? mulberryTargetTypeData.map((list) => (
                         <option key={list.mulberryTargetTypeId} value={list.mulberryTargetTypeId}>
-                          {list.mulberryTargetTypeName}
+                          {i18n.language === "kn" ? list.mulberryTargetTypeNameInKannada : list.mulberryTargetTypeName}
                         </option>
                       ))
                     : ""}

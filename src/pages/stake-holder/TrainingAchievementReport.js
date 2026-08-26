@@ -19,7 +19,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function TrainingAchievementReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -448,7 +448,7 @@ useEffect(() => {
                   {trInstituteListData && trInstituteListData.length
                     ? trInstituteListData.map((list) => (
                         <option key={list.trInstitutionMasterId} value={list.trInstitutionMasterId}>
-                          {list.trInstitutionMasterName}
+                          {i18n.language === "kn" ? list.trInstitutionNameInKannada : list.trInstitutionMasterName}
                         </option>
                       ))
                     : ""}
@@ -461,7 +461,7 @@ useEffect(() => {
                   {trCourseListData && trCourseListData.length
                     ? trCourseListData.map((list) => (
                         <option key={list.trCourseMasterId} value={list.trCourseMasterId}>
-                          {list.trCourseMasterName}
+                          {i18n.language === "kn" ? list.trCourseNameInKannada : list.trCourseMasterName}
                         </option>
                       ))
                     : ""}

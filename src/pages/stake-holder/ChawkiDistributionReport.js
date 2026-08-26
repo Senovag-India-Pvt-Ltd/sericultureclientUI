@@ -18,7 +18,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function ChawkiDistributionReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 25;
@@ -326,7 +326,7 @@ function ChawkiDistributionReport() {
                   {districtListData && districtListData.length
                     ? districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
-                          {list.districtName}
+                          {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                         </option>
                       ))
                     : ""}
@@ -339,7 +339,7 @@ function ChawkiDistributionReport() {
                   {talukListData && talukListData.length
                     ? talukListData.map((list) => (
                         <option key={list.talukId} value={list.talukId}>
-                          {list.talukName}
+                          {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
                         </option>
                       ))
                     : ""}
@@ -352,7 +352,7 @@ function ChawkiDistributionReport() {
                   {hobliListData && hobliListData.length
                     ? hobliListData.map((list) => (
                         <option key={list.hobliId} value={list.hobliId}>
-                          {list.hobliName}
+                          {i18n.language === "kn" ? list.hobliNameInKannada : list.hobliName}
                         </option>
                       ))
                     : ""}
@@ -365,7 +365,7 @@ function ChawkiDistributionReport() {
                   {villageListData && villageListData.length
                     ? villageListData.map((list) => (
                         <option key={list.villageId} value={list.villageId}>
-                          {list.villageName}
+                          {i18n.language === "kn" ? list.villageNameInKannada : list.villageName}
                         </option>
                       ))
                     : ""}

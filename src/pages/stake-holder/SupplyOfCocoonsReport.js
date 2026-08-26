@@ -20,7 +20,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function SupplyOfCocoonsReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 25;
@@ -259,7 +259,7 @@ function SupplyOfCocoonsReport() {
                   <option value="">{t("Select Farm")}</option>
                   {farmListData.map((list) => (
                     <option key={list.farmId} value={list.farmId}>
-                      {list.farmName}
+                      {i18n.language === "kn" ? list.farmNameInKannada : list.farmName}
                     </option>
                   ))}
                 </Form.Select>
@@ -271,7 +271,7 @@ function SupplyOfCocoonsReport() {
                   {lineYearListData && lineYearListData.length
                     ? lineYearListData.map((list) => (
                         <option key={list.lineNameId} value={list.lineNameId}>
-                          {list.lineName}
+                          {i18n.language === "kn" ? list.lineNameInKannada : list.lineName}
                         </option>
                       ))
                     : ""}

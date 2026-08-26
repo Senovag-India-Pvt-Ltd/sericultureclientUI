@@ -18,7 +18,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function MaintenanceOfMulberryGardenReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 25;
@@ -233,7 +233,7 @@ function MaintenanceOfMulberryGardenReport() {
                   <option value="">{t("Select Mulberry Variety")}</option>
                   {varietyListData.map((list) => (
                     <option key={list.mulberryVarietyId} value={list.mulberryVarietyId}>
-                      {list.mulberryVarietyName}
+                      {i18n.language === "kn" ? list.mulberryVarietyNameInKannada : list.mulberryVarietyName}
                     </option>
                   ))}
                 </Form.Select>
@@ -244,7 +244,7 @@ function MaintenanceOfMulberryGardenReport() {
                   <option value="">{t("Select Soil Type")}</option>
                   {soilTypeListData.map((list) => (
                     <option key={list.soilTypeId} value={list.soilTypeId}>
-                      {list.soilTypeName}
+                      {i18n.language === "kn" ? list.soilTypeNameInKannada : list.soilTypeName}
                     </option>
                   ))}
                 </Form.Select>
