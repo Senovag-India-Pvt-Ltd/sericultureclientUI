@@ -5,7 +5,7 @@ import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import api from "../../../src/services/auth/api";
 import Swal from "sweetalert2";
 import { Icon } from "../../components";

@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 // import { ChartDoughnut } from "../../components/Chart/Charts";
 // import { ChartLegend } from "../../components";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import { Colors } from "../../utilities/index";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";

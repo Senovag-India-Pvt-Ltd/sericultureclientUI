@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function ChawkiManagementReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -98,7 +98,7 @@ function ChawkiManagementReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
   };
@@ -286,19 +286,19 @@ function ChawkiManagementReport() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),            selector: (row) => row.serialNumber,  cell: (row) => <span>{row.serialNumber}</span>,  sortable: true },
-    { name: colHeader("First Name"),       selector: (row) => row.farmerName,    cell: (row) => <span>{row.farmerName}</span>,    sortable: true },
-    { name: colHeader("Father Name"),      selector: (row) => row.fatherName,    cell: (row) => <span>{row.fatherName}</span>,    sortable: true },
-    { name: colHeader("Fruits Id"),        selector: (row) => row.fruitsId,      cell: (row) => <span>{row.fruitsId}</span>,      sortable: true },
-    { name: colHeader("Source of DFLs"),   selector: (row) => row.dflsSource,    cell: (row) => <span>{row.dflsSource}</span>,    sortable: true },
-    { name: colHeader("Race"),             selector: (row) => row.raceName,      cell: (row) => <span>{row.raceName}</span>,      sortable: true },
-    { name: colHeader("Number of DFLs"),   selector: (row) => row.numbersOfDfls, cell: (row) => <span>{row.numbersOfDfls}</span>, sortable: true },
-    { name: colHeader("RSP Lot Number"),   selector: (row) => row.lotNumberRsp,  cell: (row) => <span>{row.lotNumberRsp}</span>,  sortable: true },
-    { name: colHeader("CRC Lot Number"),   selector: (row) => row.lotNumberCrc,  cell: (row) => <span>{row.lotNumberCrc}</span>,  sortable: true },
-    { name: colHeader("District"),         selector: (row) => row.districtName,  cell: (row) => <span>{row.districtName}</span>,  sortable: true },
-    { name: colHeader("Taluk"),            selector: (row) => row.talukName,     cell: (row) => <span>{row.talukName}</span>,     sortable: true },
-    { name: colHeader("Village"),          selector: (row) => row.villageName,   cell: (row) => <span>{row.villageName}</span>,   sortable: true },
-    { name: colHeader("TSC"),              selector: (row) => row.tscName,       cell: (row) => <span>{row.tscName}</span>,       sortable: true },
+    { name: colHeader(t("Sl.No")),            selector: (row) => row.serialNumber,  cell: (row) => <span>{row.serialNumber}</span>,  sortable: true },
+    { name: colHeader(t("First Name")),       selector: (row) => row.farmerName,    cell: (row) => <span>{row.farmerName}</span>,    sortable: true },
+    { name: colHeader(t("Father Name")),      selector: (row) => row.fatherName,    cell: (row) => <span>{row.fatherName}</span>,    sortable: true },
+    { name: colHeader(t("Fruits Id")),        selector: (row) => row.fruitsId,      cell: (row) => <span>{row.fruitsId}</span>,      sortable: true },
+    { name: colHeader(t("Source of DFLs")),   selector: (row) => row.dflsSource,    cell: (row) => <span>{row.dflsSource}</span>,    sortable: true },
+    { name: colHeader(t("Race")),             selector: (row) => row.raceName,      cell: (row) => <span>{row.raceName}</span>,      sortable: true },
+    { name: colHeader(t("Number of DFLs")),   selector: (row) => row.numbersOfDfls, cell: (row) => <span>{row.numbersOfDfls}</span>, sortable: true },
+    { name: colHeader(t("RSP Lot Number")),   selector: (row) => row.lotNumberRsp,  cell: (row) => <span>{row.lotNumberRsp}</span>,  sortable: true },
+    { name: colHeader(t("CRC Lot Number")),   selector: (row) => row.lotNumberCrc,  cell: (row) => <span>{row.lotNumberCrc}</span>,  sortable: true },
+    { name: colHeader(t("District")),         selector: (row) => row.districtName,  cell: (row) => <span>{row.districtName}</span>,  sortable: true },
+    { name: colHeader(t("Taluk")),            selector: (row) => row.talukName,     cell: (row) => <span>{row.talukName}</span>,     sortable: true },
+    { name: colHeader(t("Village")),          selector: (row) => row.villageName,   cell: (row) => <span>{row.villageName}</span>,   sortable: true },
+    { name: colHeader(t("TSC")),              selector: (row) => row.tscName,       cell: (row) => <span>{row.tscName}</span>,       sortable: true },
   ];
 
   return (
@@ -320,8 +320,8 @@ function ChawkiManagementReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>🐛</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Chawki Management Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export chawki management data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Chawki Management Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export chawki management data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -332,7 +332,7 @@ function ChawkiManagementReport() {
                   <option value="">{t("Select District")}</option>
                   {districtListData && districtListData.length ? districtListData.map((list) => (
                     <option key={list.districtId} value={list.districtId}>
-                      {list.districtName}
+                      {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                     </option>
                   )) : ""}
                 </Form.Select>
@@ -344,7 +344,7 @@ function ChawkiManagementReport() {
                   <option value="">{t("Select Taluk")}</option>
                   {talukListData && talukListData.length ? talukListData.map((list) => (
                     <option key={list.talukId} value={list.talukId}>
-                      {list.talukName}
+                      {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
                     </option>
                   )) : ""}
                 </Form.Select>
@@ -356,7 +356,7 @@ function ChawkiManagementReport() {
                   <option value="">{t("Select hobli")}</option>
                   {hobliListData && hobliListData.length ? hobliListData.map((list) => (
                     <option key={list.hobliId} value={list.hobliId}>
-                      {list.hobliName}
+                      {i18n.language === "kn" ? list.hobliNameInKannada : list.hobliName}
                     </option>
                   )) : ""}
                 </Form.Select>
@@ -368,7 +368,7 @@ function ChawkiManagementReport() {
                   <option value="">{t("Select village")}</option>
                   {villageListData && villageListData.length ? villageListData.map((list) => (
                     <option key={list.villageId} value={list.villageId}>
-                      {list.villageName}
+                      {i18n.language === "kn" ? list.villageNameInKannada : list.villageName}
                     </option>
                   )) : ""}
                 </Form.Select>
@@ -380,7 +380,7 @@ function ChawkiManagementReport() {
                   <option value="">{t("Select TSC")}</option>
                   {tscListData && tscListData.length ? tscListData.map((list) => (
                     <option key={list.tscMasterId} value={list.tscMasterId}>
-                      {list.name}
+                      {i18n.language === "kn" ? list.nameInKannada : list.name}
                     </option>
                   )) : ""}
                 </Form.Select>

@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function TrainerDetailsReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState([]);
   const [page, setPage] = useState(0);
   const countPerPage = 25;
@@ -93,7 +93,7 @@ function TrainerDetailsReport() {
         window.URL.revokeObjectURL(link.href);
       })
       .catch(() => {
-        Swal.fire({ icon: "warning", title: "No record found!!!" });
+        Swal.fire({ icon: "warning", title: t("No record found!!!") });
       });
   };
 
@@ -210,24 +210,24 @@ function TrainerDetailsReport() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),                selector: (row) => row.serialNumber,    cell: (row) => <span>{row.serialNumber}</span>,    sortable: true, hide: "md" },
-    { name: colHeader("Training Institution"), selector: (row) => row.institutionName, cell: (row) => <span>{row.institutionName}</span>, sortable: true, hide: "md" },
-    { name: colHeader("Training Group"),       selector: (row) => row.groupName,       cell: (row) => <span>{row.groupName}</span>,       sortable: true, hide: "md" },
-    { name: colHeader("Training Program"),     selector: (row) => row.programName,     cell: (row) => <span>{row.programName}</span>,     sortable: true, hide: "md" },
-    { name: colHeader("Training Course"),      selector: (row) => row.courseName,      cell: (row) => <span>{row.courseName}</span>,      sortable: true, hide: "md" },
-    { name: colHeader("Training Mode"),        selector: (row) => row.modeName,        cell: (row) => <span>{row.modeName}</span>,        sortable: true, hide: "md" },
-    { name: colHeader("Duration"),             selector: (row) => row.duration,        cell: (row) => <span>{row.duration}</span>,        sortable: true, hide: "md" },
-    { name: colHeader("Period"),               selector: (row) => row.period,          cell: (row) => <span>{row.period}</span>,          sortable: true, hide: "md" },
-    { name: colHeader("Training Name"),        selector: (row) => row.trainingName,    cell: (row) => <span>{row.trainingName}</span>,    sortable: true, hide: "md" },
-    { name: colHeader("Trainer"),              selector: (row) => row.username,        cell: (row) => <span>{row.username}</span>,        sortable: true, hide: "md" },
+    { name: colHeader(t("Sl.No")),                selector: (row) => row.serialNumber,    cell: (row) => <span>{row.serialNumber}</span>,    sortable: true, hide: "md" },
+    { name: colHeader(t("Training Institution")), selector: (row) => row.institutionName, cell: (row) => <span>{row.institutionName}</span>, sortable: true, hide: "md" },
+    { name: colHeader(t("Training Group")),       selector: (row) => row.groupName,       cell: (row) => <span>{row.groupName}</span>,       sortable: true, hide: "md" },
+    { name: colHeader(t("Training Program")),     selector: (row) => row.programName,     cell: (row) => <span>{row.programName}</span>,     sortable: true, hide: "md" },
+    { name: colHeader(t("Training Course")),      selector: (row) => row.courseName,      cell: (row) => <span>{row.courseName}</span>,      sortable: true, hide: "md" },
+    { name: colHeader(t("Training Mode")),        selector: (row) => row.modeName,        cell: (row) => <span>{row.modeName}</span>,        sortable: true, hide: "md" },
+    { name: colHeader(t("Duration")),             selector: (row) => row.duration,        cell: (row) => <span>{row.duration}</span>,        sortable: true, hide: "md" },
+    { name: colHeader(t("Period")),               selector: (row) => row.period,          cell: (row) => <span>{row.period}</span>,          sortable: true, hide: "md" },
+    { name: colHeader(t("Training Name")),        selector: (row) => row.trainingName,    cell: (row) => <span>{row.trainingName}</span>,    sortable: true, hide: "md" },
+    { name: colHeader(t("Trainer")),              selector: (row) => row.username,        cell: (row) => <span>{row.username}</span>,        sortable: true, hide: "md" },
     {
-      name: colHeader("Start Date"),
+      name: colHeader(t("Start Date")),
       selector: (row) => row.startDate,
       cell: (row) => <span>{row.startDate ? row.startDate.toString().split(" ")[0] : ""}</span>,
       sortable: true, hide: "md",
     },
     {
-      name: colHeader("Date Of Completion"),
+      name: colHeader(t("Date Of Completion")),
       selector: (row) => row.completionDate,
       cell: (row) => <span>{row.completionDate ? row.completionDate.toString().split(" ")[0] : ""}</span>,
       sortable: true, hide: "md",
@@ -253,8 +253,8 @@ function TrainerDetailsReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>🎓</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Trainer Details Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export trainer details data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Trainer Details Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export trainer details data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -265,7 +265,7 @@ function TrainerDetailsReport() {
                   <option value="">{t("Select Institution")}</option>
                   {trInstitutionListData.map((list) => (
                     <option key={list.trInstitutionMasterId} value={list.trInstitutionMasterId}>
-                      {list.trInstitutionMasterName}
+                      {i18n.language === "kn" ? list.trInstitutionNameInKannada : list.trInstitutionMasterName}
                     </option>
                   ))}
                 </Form.Select>
@@ -276,7 +276,7 @@ function TrainerDetailsReport() {
                   <option value="">{t("Select Group")}</option>
                   {trGroupListData.map((list) => (
                     <option key={list.trGroupMasterId} value={list.trGroupMasterId}>
-                      {list.trGroupMasterName}
+                      {i18n.language === "kn" ? list.trGroupNameInKannada : list.trGroupMasterName}
                     </option>
                   ))}
                 </Form.Select>
@@ -287,7 +287,7 @@ function TrainerDetailsReport() {
                   <option value="">{t("Select Program")}</option>
                   {trProgramListData.map((list) => (
                     <option key={list.trProgramMasterId} value={list.trProgramMasterId}>
-                      {list.trProgramMasterName}
+                      {i18n.language === "kn" ? list.trProgramNameInKannada : list.trProgramMasterName}
                     </option>
                   ))}
                 </Form.Select>
@@ -298,7 +298,7 @@ function TrainerDetailsReport() {
                   <option value="">{t("Select Course")}</option>
                   {trCourseListData.map((list) => (
                     <option key={list.trCourseMasterId} value={list.trCourseMasterId}>
-                      {list.trCourseMasterName}
+                      {i18n.language === "kn" ? list.trCourseNameInKannada : list.trCourseMasterName}
                     </option>
                   ))}
                 </Form.Select>

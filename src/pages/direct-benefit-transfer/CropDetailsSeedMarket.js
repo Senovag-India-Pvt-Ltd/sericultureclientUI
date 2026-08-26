@@ -6,7 +6,8 @@ import Block from "../../components/Block/Block";
 import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import DataTable, { createTheme } from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
+import { createTheme } from "react-data-table-component";
 
 import { Icon, Select } from "../../components";
 import { useTranslation } from "react-i18next";

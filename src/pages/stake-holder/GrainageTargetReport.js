@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function GrainageTargetReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -123,7 +123,7 @@ function GrainageTargetReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
 };
@@ -346,13 +346,13 @@ function GrainageTargetReport() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),          selector: (row) => row.serialNumber,  cell: (row) => <span>{row.serialNumber}</span>,  sortable: true, hide: "md" },
-    { name: colHeader("Financial Year"), selector: (row) => row.financialYear,  cell: (row) => <span>{row.financialYear}</span>,  sortable: true, hide: "md" },
-    { name: colHeader("Race Name"),      selector: (row) => row.raceName,       cell: (row) => <span>{row.raceName}</span>,       sortable: true, hide: "md" },
-    { name: colHeader("Grainage Name"),  selector: (row) => row.grainageName,   cell: (row) => <span>{row.grainageName}</span>,   sortable: true, hide: "md" },
-    { name: colHeader("User"),           selector: (row) => row.username,       cell: (row) => <span>{row.username}</span>,       sortable: true, hide: "md" },
-    { name: colHeader("Target"),         selector: (row) => row.value,          cell: (row) => <span>{row.value}</span>,          sortable: true, hide: "md" },
-    { name: colHeader("Month"),          selector: (row) => row.month,          cell: (row) => <span>{row.month}</span>,          sortable: true, hide: "md" },
+    { name: colHeader(t("Sl.No")),          selector: (row) => row.serialNumber,  cell: (row) => <span>{row.serialNumber}</span>,  sortable: true, hide: "md" },
+    { name: colHeader(t("Financial Year")), selector: (row) => row.financialYear,  cell: (row) => <span>{row.financialYear}</span>,  sortable: true, hide: "md" },
+    { name: colHeader(t("Race Name")),      selector: (row) => row.raceName,       cell: (row) => <span>{row.raceName}</span>,       sortable: true, hide: "md" },
+    { name: colHeader(t("Grainage Name")),  selector: (row) => row.grainageName,   cell: (row) => <span>{row.grainageName}</span>,   sortable: true, hide: "md" },
+    { name: colHeader(t("User")),           selector: (row) => row.username,       cell: (row) => <span>{row.username}</span>,       sortable: true, hide: "md" },
+    { name: colHeader(t("Target")),         selector: (row) => row.value,          cell: (row) => <span>{row.value}</span>,          sortable: true, hide: "md" },
+    { name: colHeader(t("Month")),          selector: (row) => row.month,          cell: (row) => <span>{row.month}</span>,          sortable: true, hide: "md" },
   ];
 
   return (
@@ -374,8 +374,8 @@ function GrainageTargetReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>🏭</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Grainage Target Details Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export grainage target data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Grainage Target Details Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export grainage target data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -400,7 +400,7 @@ function GrainageTargetReport() {
                   {grainageListData && grainageListData.length
                     ? grainageListData.map((list) => (
                         <option key={list.grainageMasterId} value={list.grainageMasterId}>
-                          {list.grainageMasterName}
+                          {i18n.language === "kn" ? list.grainageMasterNameInKannada : list.grainageMasterName}
                         </option>
                       ))
                     : ""}
@@ -412,7 +412,7 @@ function GrainageTargetReport() {
                   <option value="">{t("Select Race")}</option>
                   {raceListData.map((list) => (
                     <option key={list.raceMasterId} value={list.raceMasterId}>
-                      {list.raceMasterName}
+                      {i18n.language === "kn" ? list.raceNameInKannada : list.raceMasterName}
                     </option>
                   ))}
                 </Form.Select>

@@ -4,7 +4,7 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import { createTheme } from "react-data-table-component";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";

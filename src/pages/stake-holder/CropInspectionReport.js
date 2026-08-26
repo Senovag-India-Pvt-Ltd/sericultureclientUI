@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function CropInspectionReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 25;
@@ -81,7 +81,7 @@ function CropInspectionReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
   };
@@ -242,16 +242,16 @@ function CropInspectionReport() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),        selector: (row) => row.serialNumber,      cell: (row) => <span>{row.serialNumber}</span>,      sortable: true, hide: "md" },
-    { name: colHeader("Farmer Name"),  selector: (row) => row.farmerName,        cell: (row) => <span>{row.farmerName}</span>,        sortable: true, hide: "md" },
-    { name: colHeader("Father Name"),  selector: (row) => row.fatherName,        cell: (row) => <span>{row.fatherName}</span>,        sortable: true, hide: "md" },
-    { name: colHeader("Fruits Id"),    selector: (row) => row.fruitsId,          cell: (row) => <span>{row.fruitsId}</span>,          sortable: true, hide: "md" },
-    { name: colHeader("Date"),         selector: (row) => row.cropInspectionDate,cell: (row) => <span>{row.cropInspectionDate}</span>,sortable: true, hide: "md" },
-    { name: colHeader("Note"),         selector: (row) => row.note,              cell: (row) => <span>{row.note}</span>,              sortable: true, hide: "md" },
-    { name: colHeader("Crop Status"),  selector: (row) => row.cropStatusName,    cell: (row) => <span>{row.cropStatusName}</span>,    sortable: true, hide: "md" },
-    { name: colHeader("Mount"),        selector: (row) => row.mountName,         cell: (row) => <span>{row.mountName}</span>,         sortable: true, hide: "md" },
-    { name: colHeader("Reason"),       selector: (row) => row.reasonName,        cell: (row) => <span>{row.reasonName}</span>,        sortable: true, hide: "md" },
-    { name: colHeader("TSC"),          selector: (row) => row.tscName,           cell: (row) => <span>{row.tscName}</span>,           sortable: true, hide: "md" },
+    { name: colHeader(t("Sl.No")),        selector: (row) => row.serialNumber,      cell: (row) => <span>{row.serialNumber}</span>,      sortable: true, hide: "md" },
+    { name: colHeader(t("Farmer Name")),  selector: (row) => row.farmerName,        cell: (row) => <span>{row.farmerName}</span>,        sortable: true, hide: "md" },
+    { name: colHeader(t("Father Name")),  selector: (row) => row.fatherName,        cell: (row) => <span>{row.fatherName}</span>,        sortable: true, hide: "md" },
+    { name: colHeader(t("Fruits Id")),    selector: (row) => row.fruitsId,          cell: (row) => <span>{row.fruitsId}</span>,          sortable: true, hide: "md" },
+    { name: colHeader(t("Date")),         selector: (row) => row.cropInspectionDate,cell: (row) => <span>{row.cropInspectionDate}</span>,sortable: true, hide: "md" },
+    { name: colHeader(t("Note")),         selector: (row) => row.note,              cell: (row) => <span>{row.note}</span>,              sortable: true, hide: "md" },
+    { name: colHeader(t("Crop Status")),  selector: (row) => row.cropStatusName,    cell: (row) => <span>{row.cropStatusName}</span>,    sortable: true, hide: "md" },
+    { name: colHeader(t("Mount")),        selector: (row) => row.mountName,         cell: (row) => <span>{row.mountName}</span>,         sortable: true, hide: "md" },
+    { name: colHeader(t("Reason")),       selector: (row) => row.reasonName,        cell: (row) => <span>{row.reasonName}</span>,        sortable: true, hide: "md" },
+    { name: colHeader(t("TSC")),          selector: (row) => row.tscName,           cell: (row) => <span>{row.tscName}</span>,           sortable: true, hide: "md" },
   ];
 
   return (
@@ -273,8 +273,8 @@ function CropInspectionReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>🔍</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Crop Inspection Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export crop inspection data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Crop Inspection Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export crop inspection data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -285,7 +285,7 @@ function CropInspectionReport() {
                   <option value="">{t("select_tsc")}</option>
                   {tscListData.map((list) => (
                     <option key={list.tscMasterId} value={list.tscMasterId}>
-                      {list.name}
+                      {i18n.language === "kn" ? list.nameInKannada : list.name}
                     </option>
                   ))}
                 </Form.Select>

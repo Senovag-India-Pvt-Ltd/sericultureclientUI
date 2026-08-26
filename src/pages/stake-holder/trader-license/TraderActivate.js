@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../../layout/default";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 import Block from "../../../components/Block/Block";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";

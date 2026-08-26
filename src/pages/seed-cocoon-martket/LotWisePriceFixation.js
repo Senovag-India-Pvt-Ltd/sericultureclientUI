@@ -2,7 +2,7 @@ import { Card, Form, Row, Col } from "react-bootstrap";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React, { useState, useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";

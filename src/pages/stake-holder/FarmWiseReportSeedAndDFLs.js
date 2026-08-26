@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function FarmWiseReportForSeedAndDFLs() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -90,7 +90,7 @@ function FarmWiseReportForSeedAndDFLs() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
   };
@@ -218,22 +218,22 @@ function FarmWiseReportForSeedAndDFLs() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),                  selector: (row) => row.serialNumber,          cell: (row) => <span>{row.serialNumber}</span>,          sortable: true },
-    { name: colHeader("Lot Number"),             selector: (row) => row.lotNumber,              cell: (row) => <span>{row.lotNumber}</span>,              sortable: true },
-    { name: colHeader("Crop Number"),            selector: (row) => row.cropNumber,             cell: (row) => <span>{row.cropNumber}</span>,             sortable: true },
-    { name: colHeader("Laid On Date"),           selector: (row) => row.laidOnDate,             cell: (row) => <span>{row.laidOnDate}</span>,             sortable: true },
-    { name: colHeader("Number Of DFLs"),         selector: (row) => row.numberOfDfls,           cell: (row) => <span>{row.numberOfDfls}</span>,           sortable: true },
-    { name: colHeader("No of DFLs Released"),    selector: (row) => row.numberOfDflsReleased,   cell: (row) => <span>{row.numberOfDflsReleased}</span>,   sortable: true },
-    { name: colHeader("Race"),                   selector: (row) => row.raceName,               cell: (row) => <span>{row.raceName}</span>,               sortable: true },
-    { name: colHeader("Grainage"),               selector: (row) => row.grainageMasterName,     cell: (row) => <span>{row.grainageMasterName}</span>,     sortable: true },
-    { name: colHeader("Spun On Date(From)"),     selector: (row) => row.spunOnDate,             cell: (row) => <span>{row.spunOnDate}</span>,             sortable: true },
-    { name: colHeader("Spun On Date(To)"),       selector: (row) => row.spunOnToDate,           cell: (row) => <span>{row.spunOnToDate}</span>,           sortable: true },
-    { name: colHeader("Hatching Date"),          selector: (row) => row.hatchingDate,           cell: (row) => <span>{row.hatchingDate}</span>,           sortable: true },
-    { name: colHeader("Disinfectant"),           selector: (row) => row.disinfectantMasterName, cell: (row) => <span>{row.disinfectantMasterName}</span>, sortable: true },
-    { name: colHeader("Chawki Percentage"),      selector: (row) => row.chawkiPercentage,       cell: (row) => <span>{row.chawkiPercentage}</span>,       sortable: true },
-    { name: colHeader("Released Date"),          selector: (row) => row.releasedOnDate,         cell: (row) => <span>{row.releasedOnDate}</span>,         sortable: true },
-    { name: colHeader("Farm"),                   selector: (row) => row.farmNameInKannada,      cell: (row) => <span>{row.farmNameInKannada}</span>,      sortable: true },
-    { name: colHeader("Line"),                   selector: (row) => row.lineName,               cell: (row) => <span>{row.lineName}</span>,               sortable: true },
+    { name: colHeader(t("Sl.No")),                  selector: (row) => row.serialNumber,          cell: (row) => <span>{row.serialNumber}</span>,          sortable: true },
+    { name: colHeader(t("Lot Number")),             selector: (row) => row.lotNumber,              cell: (row) => <span>{row.lotNumber}</span>,              sortable: true },
+    { name: colHeader(t("Crop Number")),            selector: (row) => row.cropNumber,             cell: (row) => <span>{row.cropNumber}</span>,             sortable: true },
+    { name: colHeader(t("Laid On Date")),           selector: (row) => row.laidOnDate,             cell: (row) => <span>{row.laidOnDate}</span>,             sortable: true },
+    { name: colHeader(t("Number Of DFLs")),         selector: (row) => row.numberOfDfls,           cell: (row) => <span>{row.numberOfDfls}</span>,           sortable: true },
+    { name: colHeader(t("No of DFLs Released")),    selector: (row) => row.numberOfDflsReleased,   cell: (row) => <span>{row.numberOfDflsReleased}</span>,   sortable: true },
+    { name: colHeader(t("Race")),                   selector: (row) => row.raceName,               cell: (row) => <span>{row.raceName}</span>,               sortable: true },
+    { name: colHeader(t("Grainage")),               selector: (row) => row.grainageMasterName,     cell: (row) => <span>{row.grainageMasterName}</span>,     sortable: true },
+    { name: colHeader(t("Spun On Date(From)")),     selector: (row) => row.spunOnDate,             cell: (row) => <span>{row.spunOnDate}</span>,             sortable: true },
+    { name: colHeader(t("Spun On Date(To)")),       selector: (row) => row.spunOnToDate,           cell: (row) => <span>{row.spunOnToDate}</span>,           sortable: true },
+    { name: colHeader(t("Hatching Date")),          selector: (row) => row.hatchingDate,           cell: (row) => <span>{row.hatchingDate}</span>,           sortable: true },
+    { name: colHeader(t("Disinfectant")),           selector: (row) => row.disinfectantMasterName, cell: (row) => <span>{row.disinfectantMasterName}</span>, sortable: true },
+    { name: colHeader(t("Chawki Percentage")),      selector: (row) => row.chawkiPercentage,       cell: (row) => <span>{row.chawkiPercentage}</span>,       sortable: true },
+    { name: colHeader(t("Released Date")),          selector: (row) => row.releasedOnDate,         cell: (row) => <span>{row.releasedOnDate}</span>,         sortable: true },
+    { name: colHeader(t("Farm")),                   selector: (row) => row.farmNameInKannada,      cell: (row) => <span>{row.farmNameInKannada}</span>,      sortable: true },
+    { name: colHeader(t("Line")),                   selector: (row) => row.lineName,               cell: (row) => <span>{row.lineName}</span>,               sortable: true },
   ];
 
   return (
@@ -255,8 +255,8 @@ function FarmWiseReportForSeedAndDFLs() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>🌱</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Seed And DFL- Farm Wise Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export seed and DFL farm wise data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Seed And DFL- Farm Wise Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export seed and DFL farm wise data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -267,7 +267,7 @@ function FarmWiseReportForSeedAndDFLs() {
                   <option value="">{t("Select Farm")}</option>
                   {farmListData && farmListData.length ? farmListData.map((list) => (
                     <option key={list.farmId} value={list.farmId}>
-                      {list.farmName}
+                      {i18n.language === "kn" ? list.farmNameInKannada : list.farmName}
                     </option>
                   )) : ""}
                 </Form.Select>
@@ -278,7 +278,7 @@ function FarmWiseReportForSeedAndDFLs() {
                   <option value="">{t("Select Line Details")}</option>
                   {lineYearListData && lineYearListData.length ? lineYearListData.map((list) => (
                     <option key={list.lineNameId} value={list.lineNameId}>
-                      {list.lineName}
+                      {i18n.language === "kn" ? list.lineNameInKannada : list.lineName}
                     </option>
                   )) : ""}
                 </Form.Select>
@@ -289,7 +289,7 @@ function FarmWiseReportForSeedAndDFLs() {
                   <option value="">{t("Select Race")}</option>
                   {raceListData && raceListData.length ? raceListData.map((list) => (
                     <option key={list.raceMasterId} value={list.raceMasterId}>
-                      {list.raceMasterName}
+                      {i18n.language === "kn" ? list.raceNameInKannada : list.raceMasterName}
                     </option>
                   )) : ""}
                 </Form.Select>

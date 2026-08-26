@@ -11,7 +11,8 @@ import {
 } from "../../components";
 import axios from "axios";
 
-import DataTable, { createTheme } from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
+import { createTheme } from "react-data-table-component";
 import Swal from "sweetalert2/src/sweetalert2.js";
 // import DatePicker from "react-datepicker";
 import api from "../../services/auth/api";

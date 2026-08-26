@@ -4,7 +4,8 @@ import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Dropdown } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable, { createTheme } from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
+import { createTheme } from "react-data-table-component";
 import { useTranslation } from "react-i18next"; // Import useTranslation
 // import axios from "axios";
 

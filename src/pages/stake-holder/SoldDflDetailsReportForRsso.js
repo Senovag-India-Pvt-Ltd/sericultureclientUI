@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -91,7 +91,7 @@ function SoldDflDetailsReportForRsso() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
 };
@@ -254,19 +254,19 @@ function SoldDflDetailsReportForRsso() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),                    selector: (row) => row.serialNumber,        cell: (row) => <span>{row.serialNumber}</span>,        sortable: true },
-    { name: colHeader("Farmer Name"),              selector: (row) => row.farmNameAndAddress,   cell: (row) => <span>{row.farmNameAndAddress}</span>,   sortable: true },
-    { name: colHeader("Father Name"),              selector: (row) => row.fatherName,           cell: (row) => <span>{row.fatherName}</span>,           sortable: true },
-    { name: colHeader("Fruits Id"),                selector: (row) => row.fatherName,           cell: (row) => <span>{row.fatherName}</span>,           sortable: true },
-    { name: colHeader("Lot Number"),               selector: (row) => row.lotNumber,            cell: (row) => <span>{row.lotNumber}</span>,            sortable: true },
-    { name: colHeader("Laid On Date"),             selector: (row) => row.laidOnDate,           cell: (row) => <span>{row.laidOnDate}</span>,           sortable: true },
-    { name: colHeader("Number Of DFLs Disposed"),  selector: (row) => row.numberOfDFLsDisposed, cell: (row) => <span>{row.numberOfDFLsDisposed}</span>, sortable: true },
-    { name: colHeader("No of Cocoons"),            selector: (row) => row.numberOfCocoonsCB,    cell: (row) => <span>{row.numberOfCocoonsCB}</span>,    sortable: true },
-    { name: colHeader("Race"),                     selector: (row) => row.raceName,             cell: (row) => <span>{row.raceName}</span>,             sortable: true },
-    { name: colHeader("Grainage"),                 selector: (row) => row.grainageMasterName,   cell: (row) => <span>{row.grainageMasterName}</span>,   sortable: true },
-    { name: colHeader("Release Date"),             selector: (row) => row.dateOfRelease,        cell: (row) => <span>{row.dateOfRelease}</span>,        sortable: true },
-    { name: colHeader("Rate Per 100 DFLS Price"),  selector: (row) => row.ratePer100DflsPrice,  cell: (row) => <span>{row.ratePer100DflsPrice}</span>,  sortable: true },
-    { name: colHeader("Name and Address"),         selector: (row) => row.nameAndAddress,       cell: (row) => <span>{row.nameAndAddress}</span>,       sortable: true },
+    { name: colHeader(t("Sl.No")),                    selector: (row) => row.serialNumber,        cell: (row) => <span>{row.serialNumber}</span>,        sortable: true },
+    { name: colHeader(t("Farmer Name")),              selector: (row) => row.farmNameAndAddress,   cell: (row) => <span>{row.farmNameAndAddress}</span>,   sortable: true },
+    { name: colHeader(t("Father Name")),              selector: (row) => row.fatherName,           cell: (row) => <span>{row.fatherName}</span>,           sortable: true },
+    { name: colHeader(t("Fruits Id")),                selector: (row) => row.fatherName,           cell: (row) => <span>{row.fatherName}</span>,           sortable: true },
+    { name: colHeader(t("Lot Number")),               selector: (row) => row.lotNumber,            cell: (row) => <span>{row.lotNumber}</span>,            sortable: true },
+    { name: colHeader(t("Laid On Date")),             selector: (row) => row.laidOnDate,           cell: (row) => <span>{row.laidOnDate}</span>,           sortable: true },
+    { name: colHeader(t("Number Of DFLs Disposed")),  selector: (row) => row.numberOfDFLsDisposed, cell: (row) => <span>{row.numberOfDFLsDisposed}</span>, sortable: true },
+    { name: colHeader(t("No of Cocoons")),            selector: (row) => row.numberOfCocoonsCB,    cell: (row) => <span>{row.numberOfCocoonsCB}</span>,    sortable: true },
+    { name: colHeader(t("Race")),                     selector: (row) => row.raceName,             cell: (row) => <span>{row.raceName}</span>,             sortable: true },
+    { name: colHeader(t("Grainage")),                 selector: (row) => row.grainageMasterName,   cell: (row) => <span>{row.grainageMasterName}</span>,   sortable: true },
+    { name: colHeader(t("Release Date")),             selector: (row) => row.dateOfRelease,        cell: (row) => <span>{row.dateOfRelease}</span>,        sortable: true },
+    { name: colHeader(t("Rate Per 100 DFLS Price")),  selector: (row) => row.ratePer100DflsPrice,  cell: (row) => <span>{row.ratePer100DflsPrice}</span>,  sortable: true },
+    { name: colHeader(t("Name and Address")),         selector: (row) => row.nameAndAddress,       cell: (row) => <span>{row.nameAndAddress}</span>,       sortable: true },
   ];
 
   return (
@@ -288,8 +288,8 @@ function SoldDflDetailsReportForRsso() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>🏷️</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Sold DFLs Report For Rsso/NSSO</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export sold DFLs for RSSO/NSSO data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Sold DFLs Report For Rsso/NSSO")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export sold DFLs for RSSO/NSSO data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">

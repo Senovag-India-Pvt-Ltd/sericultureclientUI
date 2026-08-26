@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function TrainingDeputationTrackerReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -87,7 +87,7 @@ function TrainingDeputationTrackerReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
   };
@@ -204,18 +204,18 @@ function TrainingDeputationTrackerReport() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),            selector: (row) => row.serialNumber,      cell: (row) => <span>{row.serialNumber}</span>,      sortable: true, hide: "md" },
-    { name: colHeader("Name"),             selector: (row) => row.officialName,      cell: (row) => <span>{row.officialName}</span>,      sortable: true, hide: "md" },
-    { name: colHeader("Designation"),      selector: (row) => row.designationName,   cell: (row) => <span>{row.designationName}</span>,   sortable: true, hide: "md" },
-    { name: colHeader("Deputed Institute"),selector: (row) => row.deputedInstituteName, cell: (row) => <span>{row.deputedInstituteName}</span>, sortable: true, hide: "md" },
-    { name: colHeader("Program"),          selector: (row) => row.programName,       cell: (row) => <span>{row.programName}</span>,       sortable: true, hide: "md" },
-    { name: colHeader("Course"),           selector: (row) => row.courseName,        cell: (row) => <span>{row.courseName}</span>,        sortable: true, hide: "md" },
-    { name: colHeader("Address"),          selector: (row) => row.officialAddress,   cell: (row) => <span>{row.officialAddress}</span>,   sortable: true, hide: "md" },
-    { name: colHeader("Mobile Number"),    selector: (row) => row.mobileNumber,      cell: (row) => <span>{row.mobileNumber}</span>,      sortable: true, hide: "md" },
-    { name: colHeader("From Date"),        selector: (row) => row.deputedFromDate,   cell: (row) => <span>{row.deputedFromDate}</span>,   sortable: true, hide: "md" },
-    { name: colHeader("To Date"),          selector: (row) => row.deputedToDate,     cell: (row) => <span>{row.deputedToDate}</span>,     sortable: true, hide: "md" },
-    { name: colHeader("Attended"),         selector: (row) => row.deputedAttended,   cell: (row) => <span>{row.deputedAttended}</span>,   sortable: true, hide: "md" },
-    { name: colHeader("Remarks"),          selector: (row) => row.deputedRemarks,    cell: (row) => <span>{row.deputedRemarks}</span>,    sortable: true, hide: "md" },
+    { name: colHeader(t("Sl.No")),            selector: (row) => row.serialNumber,      cell: (row) => <span>{row.serialNumber}</span>,      sortable: true, hide: "md" },
+    { name: colHeader(t("Name")),             selector: (row) => row.officialName,      cell: (row) => <span>{row.officialName}</span>,      sortable: true, hide: "md" },
+    { name: colHeader(t("Designation")),      selector: (row) => row.designationName,   cell: (row) => <span>{row.designationName}</span>,   sortable: true, hide: "md" },
+    { name: colHeader(t("Deputed Institute")),selector: (row) => row.deputedInstituteName, cell: (row) => <span>{row.deputedInstituteName}</span>, sortable: true, hide: "md" },
+    { name: colHeader(t("Program")),          selector: (row) => row.programName,       cell: (row) => <span>{row.programName}</span>,       sortable: true, hide: "md" },
+    { name: colHeader(t("Course")),           selector: (row) => row.courseName,        cell: (row) => <span>{row.courseName}</span>,        sortable: true, hide: "md" },
+    { name: colHeader(t("Address")),          selector: (row) => row.officialAddress,   cell: (row) => <span>{row.officialAddress}</span>,   sortable: true, hide: "md" },
+    { name: colHeader(t("Mobile Number")),    selector: (row) => row.mobileNumber,      cell: (row) => <span>{row.mobileNumber}</span>,      sortable: true, hide: "md" },
+    { name: colHeader(t("From Date")),        selector: (row) => row.deputedFromDate,   cell: (row) => <span>{row.deputedFromDate}</span>,   sortable: true, hide: "md" },
+    { name: colHeader(t("To Date")),          selector: (row) => row.deputedToDate,     cell: (row) => <span>{row.deputedToDate}</span>,     sortable: true, hide: "md" },
+    { name: colHeader(t("Attended")),         selector: (row) => row.deputedAttended,   cell: (row) => <span>{row.deputedAttended}</span>,   sortable: true, hide: "md" },
+    { name: colHeader(t("Remarks")),          selector: (row) => row.deputedRemarks,    cell: (row) => <span>{row.deputedRemarks}</span>,    sortable: true, hide: "md" },
   ];
 
   return (
@@ -237,8 +237,8 @@ function TrainingDeputationTrackerReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>📋</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Training Deputation Tracker Details Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export deputation tracker data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Training Deputation Tracker Details Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export deputation tracker data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -249,7 +249,7 @@ function TrainingDeputationTrackerReport() {
                   <option value="">{t("Select Program")}</option>
                   {trProgramListData.map((list) => (
                     <option key={list.trProgramMasterId} value={list.trProgramMasterId}>
-                      {list.trProgramMasterName}
+                      {i18n.language === "kn" ? list.trProgramNameInKannada : list.trProgramMasterName}
                     </option>
                   ))}
                 </Form.Select>
@@ -260,7 +260,7 @@ function TrainingDeputationTrackerReport() {
                   <option value="">{t("Select Course")}</option>
                   {trCourseListData.map((list) => (
                     <option key={list.trCourseMasterId} value={list.trCourseMasterId}>
-                      {list.trCourseMasterName}
+                      {i18n.language === "kn" ? list.trCourseNameInKannada : list.trCourseMasterName}
                     </option>
                   ))}
                 </Form.Select>

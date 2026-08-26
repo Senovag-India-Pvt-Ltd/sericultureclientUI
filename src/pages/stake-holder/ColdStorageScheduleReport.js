@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function ColdStorageScheduleReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -85,7 +85,7 @@ function ColdStorageScheduleReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
 };
@@ -247,19 +247,19 @@ function ColdStorageScheduleReport() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),                    selector: (row) => row.serialNumber,        cell: (row) => <span>{row.serialNumber}</span>,        sortable: true },
-    { name: colHeader("Lot Number"),               selector: (row) => row.lotNumber,            cell: (row) => <span>{row.lotNumber}</span>,            sortable: true },
-    { name: colHeader("Date Of Deposit"),          selector: (row) => row.dateOfDeposit,        cell: (row) => <span>{row.dateOfDeposit}</span>,        sortable: true },
-    { name: colHeader("Date Of Release"),          selector: (row) => row.dateOfRelease,        cell: (row) => <span>{row.dateOfRelease}</span>,        sortable: true },
-    { name: colHeader("Laid On Date"),             selector: (row) => row.laidOnDate,           cell: (row) => <span>{row.laidOnDate}</span>,           sortable: true },
-    { name: colHeader("Schedule Type"),            selector: (row) => row.scheduleType,         cell: (row) => <span>{row.scheduleType}</span>,         sortable: true },
-    { name: colHeader("Storage Temperature"),      selector: (row) => row.storageTemperature,   cell: (row) => <span>{row.storageTemperature}</span>,   sortable: true },
-    { name: colHeader("DFLs Obtained"),            selector: (row) => row.dflsObtained,         cell: (row) => <span>{row.dflsObtained}</span>,         sortable: true },
-    { name: colHeader("Egg Sheet Serial Number"),  selector: (row) => row.eggSheetSerialNumber, cell: (row) => <span>{row.eggSheetSerialNumber}</span>, sortable: true },
-    { name: colHeader("Grainage"),                 selector: (row) => row.grainageMasterName,   cell: (row) => <span>{row.grainageMasterName}</span>,   sortable: true },
-    { name: colHeader("Storage Duration (in days)"), selector: (row) => row.storageDuration,   cell: (row) => <span>{row.storageDuration}</span>,      sortable: true },
-    { name: colHeader("Days"),                     selector: (row) => row.days,                 cell: (row) => <span>{row.days}</span>,                 sortable: true },
-    { name: colHeader("Number Of Cocoons"),        selector: (row) => row.numberOfCocoonscb,    cell: (row) => <span>{row.numberOfCocoonscb}</span>,    sortable: true },
+    { name: colHeader(t("Sl.No")),                    selector: (row) => row.serialNumber,        cell: (row) => <span>{row.serialNumber}</span>,        sortable: true },
+    { name: colHeader(t("Lot Number")),               selector: (row) => row.lotNumber,            cell: (row) => <span>{row.lotNumber}</span>,            sortable: true },
+    { name: colHeader(t("Date Of Deposit")),          selector: (row) => row.dateOfDeposit,        cell: (row) => <span>{row.dateOfDeposit}</span>,        sortable: true },
+    { name: colHeader(t("Date Of Release")),          selector: (row) => row.dateOfRelease,        cell: (row) => <span>{row.dateOfRelease}</span>,        sortable: true },
+    { name: colHeader(t("Laid On Date")),             selector: (row) => row.laidOnDate,           cell: (row) => <span>{row.laidOnDate}</span>,           sortable: true },
+    { name: colHeader(t("Schedule Type")),            selector: (row) => row.scheduleType,         cell: (row) => <span>{row.scheduleType}</span>,         sortable: true },
+    { name: colHeader(t("Storage Temperature")),      selector: (row) => row.storageTemperature,   cell: (row) => <span>{row.storageTemperature}</span>,   sortable: true },
+    { name: colHeader(t("DFLs Obtained")),            selector: (row) => row.dflsObtained,         cell: (row) => <span>{row.dflsObtained}</span>,         sortable: true },
+    { name: colHeader(t("Egg Sheet Serial Number")),  selector: (row) => row.eggSheetSerialNumber, cell: (row) => <span>{row.eggSheetSerialNumber}</span>, sortable: true },
+    { name: colHeader(t("Grainage")),                 selector: (row) => row.grainageMasterName,   cell: (row) => <span>{row.grainageMasterName}</span>,   sortable: true },
+    { name: colHeader(t("Storage Duration (in days)")), selector: (row) => row.storageDuration,   cell: (row) => <span>{row.storageDuration}</span>,      sortable: true },
+    { name: colHeader(t("Days")),                     selector: (row) => row.days,                 cell: (row) => <span>{row.days}</span>,                 sortable: true },
+    { name: colHeader(t("Number Of Cocoons")),        selector: (row) => row.numberOfCocoonscb,    cell: (row) => <span>{row.numberOfCocoonscb}</span>,    sortable: true },
   ];
 
   return (
@@ -281,8 +281,8 @@ function ColdStorageScheduleReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>❄️</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Cold Storage Schedule Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export cold storage schedule data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Cold Storage Schedule Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export cold storage schedule data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -293,7 +293,7 @@ function ColdStorageScheduleReport() {
                   <option value="">{t("Select Grainage")}</option>
                   {grainageListData && grainageListData.length ? grainageListData.map((list) => (
                     <option key={list.grainageMasterId} value={list.grainageMasterId}>
-                      {list.grainageMasterName}
+                      {i18n.language === "kn" ? list.grainageMasterNameInKannada : list.grainageMasterName}
                     </option>
                   )) : ""}
                 </Form.Select>

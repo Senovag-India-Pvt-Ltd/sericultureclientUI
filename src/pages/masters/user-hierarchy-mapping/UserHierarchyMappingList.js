@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Button, Col, Row, Form } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 import { useNavigate, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import api from "../../../../src/services/auth/api";

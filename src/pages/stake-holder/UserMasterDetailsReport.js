@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -17,7 +17,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function UserMasterDetailsReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listDispatchOfCocoonsData, setListDispatchOfCocoonsData] = useState({});
   const [page, setPage] = useState(0);
@@ -96,7 +96,7 @@ function UserMasterDetailsReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
   };
@@ -227,18 +227,18 @@ function UserMasterDetailsReport() {
   );
 
   const DispatchOfCocoonsDataColumns = [
-    { name: colHeader("Sl.No"),                  selector: (row) => row.serialNumber,             cell: (row) => <span>{row.serialNumber}</span>,             sortable: true, hide: "md" },
-    { name: colHeader("First Name"),             selector: (row) => row.firstName,               cell: (row) => <span>{row.firstName}</span>,               sortable: true, hide: "md" },
-    { name: colHeader("Last Name"),              selector: (row) => row.lastName,                cell: (row) => <span>{row.lastName}</span>,                sortable: true, hide: "md" },
-    { name: colHeader("User Name"),              selector: (row) => row.username,                cell: (row) => <span>{row.username}</span>,                sortable: true, hide: "md" },
-    { name: colHeader("Designation"),            selector: (row) => row.designationName,         cell: (row) => <span>{row.designationName}</span>,         sortable: true, hide: "md" },
-    { name: colHeader("District"),               selector: (row) => row.districtName,            cell: (row) => <span>{row.districtName}</span>,            sortable: true, hide: "md" },
-    { name: colHeader("Taluk"),                  selector: (row) => row.talukName,               cell: (row) => <span>{row.talukName}</span>,               sortable: true, hide: "md" },
-    { name: colHeader("TSC"),                    selector: (row) => row.tscName,                 cell: (row) => <span>{row.tscName}</span>,                 sortable: true, hide: "md" },
-    { name: colHeader("Mobile Number"),          selector: (row) => row.phoneNumber,             cell: (row) => <span>{row.phoneNumber}</span>,             sortable: true, hide: "md" },
-    { name: colHeader("DDO Code"),               selector: (row) => row.ddoCode,                 cell: (row) => <span>{row.ddoCode || "—"}</span>,          sortable: true, hide: "md" },
-    { name: colHeader("Email"),                  selector: (row) => row.emailId,                 cell: (row) => <span>{row.emailId}</span>,                 sortable: true, hide: "md" },
-    { name: colHeader("Working Institution"),    selector: (row) => row.workingInstitutionName,  cell: (row) => <span>{row.workingInstitutionName}</span>,  sortable: true, hide: "md" },
+    { name: colHeader(t("Sl.No")),                  selector: (row) => row.serialNumber,             cell: (row) => <span>{row.serialNumber}</span>,             sortable: true, hide: "md" },
+    { name: colHeader(t("First Name")),             selector: (row) => row.firstName,               cell: (row) => <span>{row.firstName}</span>,               sortable: true, hide: "md" },
+    { name: colHeader(t("Last Name")),              selector: (row) => row.lastName,                cell: (row) => <span>{row.lastName}</span>,                sortable: true, hide: "md" },
+    { name: colHeader(t("User Name")),              selector: (row) => row.username,                cell: (row) => <span>{row.username}</span>,                sortable: true, hide: "md" },
+    { name: colHeader(t("Designation")),            selector: (row) => row.designationName,         cell: (row) => <span>{row.designationName}</span>,         sortable: true, hide: "md" },
+    { name: colHeader(t("District")),               selector: (row) => row.districtName,            cell: (row) => <span>{row.districtName}</span>,            sortable: true, hide: "md" },
+    { name: colHeader(t("Taluk")),                  selector: (row) => row.talukName,               cell: (row) => <span>{row.talukName}</span>,               sortable: true, hide: "md" },
+    { name: colHeader(t("TSC")),                    selector: (row) => row.tscName,                 cell: (row) => <span>{row.tscName}</span>,                 sortable: true, hide: "md" },
+    { name: colHeader(t("Mobile Number")),          selector: (row) => row.phoneNumber,             cell: (row) => <span>{row.phoneNumber}</span>,             sortable: true, hide: "md" },
+    { name: colHeader(t("DDO Code")),               selector: (row) => row.ddoCode,                 cell: (row) => <span>{row.ddoCode || "—"}</span>,          sortable: true, hide: "md" },
+    { name: colHeader(t("Email")),                  selector: (row) => row.emailId,                 cell: (row) => <span>{row.emailId}</span>,                 sortable: true, hide: "md" },
+    { name: colHeader(t("Working Institution")),    selector: (row) => row.workingInstitutionName,  cell: (row) => <span>{row.workingInstitutionName}</span>,  sortable: true, hide: "md" },
   ];
 
   return (
@@ -260,8 +260,8 @@ function UserMasterDetailsReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>👤</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>User Master Details Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export user master data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("User Master Details Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export user master data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -273,7 +273,7 @@ function UserMasterDetailsReport() {
                   {designationListData && designationListData.length
                     ? designationListData.map((list) => (
                         <option key={list.designationId} value={list.designationId}>
-                          {list.name}
+                          {i18n.language === "kn" ? list.designationNameInKannada : list.name}
                         </option>
                       ))
                     : ""}
@@ -286,7 +286,7 @@ function UserMasterDetailsReport() {
                   {districtListData && districtListData.length
                     ? districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
-                          {list.districtName}
+                          {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                         </option>
                       ))
                     : ""}
@@ -299,7 +299,7 @@ function UserMasterDetailsReport() {
                   {talukListData && talukListData.length
                     ? talukListData.map((list) => (
                         <option key={list.talukId} value={list.talukId}>
-                          {list.talukName}
+                          {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
                         </option>
                       ))
                     : ""}

@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function DispatchOfCocoonsToGrainageReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listDispatchOfCocoonsData, setListDispatchOfCocoonsData] = useState({});
   const [page, setPage] = useState(0);
@@ -85,7 +85,7 @@ function DispatchOfCocoonsToGrainageReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
 };
@@ -175,18 +175,18 @@ function DispatchOfCocoonsToGrainageReport() {
   );
 
   const DispatchOfCocoonsDataColumns = [
-    { name: colHeader("Sl.No"),                     selector: (row) => row.serialNumber,              cell: (row) => <span>{row.serialNumber}</span>,              sortable: true },
-    { name: colHeader("Lot Number"),                 selector: (row) => row.lotNumber,                 cell: (row) => <span>{row.lotNumber}</span>,                 sortable: true },
-    { name: colHeader("Date Of Supply"),             selector: (row) => row.dateOfSupply,              cell: (row) => <span>{row.dateOfSupply}</span>,              sortable: true },
-    { name: colHeader("Dispatch Date"),              selector: (row) => row.dispatchDate,              cell: (row) => <span>{row.dispatchDate}</span>,              sortable: true },
-    { name: colHeader("Grainage"),                   selector: (row) => row.grainageMasterName,        cell: (row) => <span>{row.grainageMasterName}</span>,        sortable: true },
-    { name: colHeader("Line"),                       selector: (row) => row.lineYear,                  cell: (row) => <span>{row.lineYear}</span>,                  sortable: true },
-    { name: colHeader("No Of Cocoons Dispatched"),   selector: (row) => row.numberOfCocoonsDispatched, cell: (row) => <span>{row.numberOfCocoonsDispatched}</span>, sortable: true },
-    { name: colHeader("Screeing Batch No"),          selector: (row) => row.screeningBatchNo,          cell: (row) => <span>{row.screeningBatchNo}</span>,          sortable: true },
-    { name: colHeader("Spun On Date(From)"),         selector: (row) => row.spunOnDate,                cell: (row) => <span>{row.spunOnDate}</span>,                sortable: true },
-    { name: colHeader("Spun On Date(To)"),           selector: (row) => row.spunOnToDate,              cell: (row) => <span>{row.spunOnToDate}</span>,              sortable: true },
-    { name: colHeader("Cocoon Supplied In Kg"),      selector: (row) => row.cocoonSuppliedInKg,        cell: (row) => <span>{row.cocoonSuppliedInKg}</span>,        sortable: true },
-    { name: colHeader("Generation Number"),          selector: (row) => row.generationNumber,          cell: (row) => <span>{row.generationNumber}</span>,          sortable: true },
+    { name: colHeader(t("Sl.No")),                     selector: (row) => row.serialNumber,              cell: (row) => <span>{row.serialNumber}</span>,              sortable: true },
+    { name: colHeader(t("Lot Number")),                 selector: (row) => row.lotNumber,                 cell: (row) => <span>{row.lotNumber}</span>,                 sortable: true },
+    { name: colHeader(t("Date Of Supply")),             selector: (row) => row.dateOfSupply,              cell: (row) => <span>{row.dateOfSupply}</span>,              sortable: true },
+    { name: colHeader(t("Dispatch Date")),              selector: (row) => row.dispatchDate,              cell: (row) => <span>{row.dispatchDate}</span>,              sortable: true },
+    { name: colHeader(t("Grainage")),                   selector: (row) => row.grainageMasterName,        cell: (row) => <span>{row.grainageMasterName}</span>,        sortable: true },
+    { name: colHeader(t("Line")),                       selector: (row) => row.lineYear,                  cell: (row) => <span>{row.lineYear}</span>,                  sortable: true },
+    { name: colHeader(t("No Of Cocoons Dispatched")),   selector: (row) => row.numberOfCocoonsDispatched, cell: (row) => <span>{row.numberOfCocoonsDispatched}</span>, sortable: true },
+    { name: colHeader(t("Screeing Batch No")),          selector: (row) => row.screeningBatchNo,          cell: (row) => <span>{row.screeningBatchNo}</span>,          sortable: true },
+    { name: colHeader(t("Spun On Date(From)")),         selector: (row) => row.spunOnDate,                cell: (row) => <span>{row.spunOnDate}</span>,                sortable: true },
+    { name: colHeader(t("Spun On Date(To)")),           selector: (row) => row.spunOnToDate,              cell: (row) => <span>{row.spunOnToDate}</span>,              sortable: true },
+    { name: colHeader(t("Cocoon Supplied In Kg")),      selector: (row) => row.cocoonSuppliedInKg,        cell: (row) => <span>{row.cocoonSuppliedInKg}</span>,        sortable: true },
+    { name: colHeader(t("Generation Number")),          selector: (row) => row.generationNumber,          cell: (row) => <span>{row.generationNumber}</span>,          sortable: true },
   ];
 
   return (
@@ -208,8 +208,8 @@ function DispatchOfCocoonsToGrainageReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>🐛</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Dispatch Of Cocoons To P4 Grainage Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export dispatch of cocoons data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Dispatch Of Cocoons To P4 Grainage Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export dispatch of cocoons data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -220,7 +220,7 @@ function DispatchOfCocoonsToGrainageReport() {
                   <option value="">{t("Select Grainage")}</option>
                   {grainageListData && grainageListData.length ? grainageListData.map((list) => (
                     <option key={list.grainageMasterId} value={list.grainageMasterId}>
-                      {list.grainageMasterName}
+                      {i18n.language === "kn" ? list.grainageMasterNameInKannada : list.grainageMasterName}
                     </option>
                   )) : ""}
                 </Form.Select>

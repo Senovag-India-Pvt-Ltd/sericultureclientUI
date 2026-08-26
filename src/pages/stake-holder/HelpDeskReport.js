@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -95,7 +95,7 @@ function HelpDeskReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
   };
@@ -249,17 +249,17 @@ function HelpDeskReport() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),             selector: (row) => row.serialNumber,     cell: (row) => <span>{row.serialNumber}</span>,     sortable: true, hide: "md" },
-    { name: colHeader("Ticket Arn Number"), selector: (row) => row.ticketArn,        cell: (row) => <span>{row.ticketArn}</span>,        sortable: true, hide: "md" },
-    { name: colHeader("Users Affected"),    selector: (row) => row.usersAffected,    cell: (row) => <span>{row.usersAffected}</span>,    sortable: true, hide: "md" },
-    { name: colHeader("Query"),             selector: (row) => row.query,            cell: (row) => <span>{row.query}</span>,            sortable: true, hide: "md" },
-    { name: colHeader("Module"),            selector: (row) => row.moduleName,       cell: (row) => <span>{row.moduleName}</span>,       sortable: true, hide: "md" },
-    { name: colHeader("Feature"),           selector: (row) => row.featureName,      cell: (row) => <span>{row.featureName}</span>,      sortable: true, hide: "md" },
-    { name: colHeader("Broad Category"),    selector: (row) => row.boardCategoryName,cell: (row) => <span>{row.boardCategoryName}</span>,sortable: true, hide: "md" },
-    { name: colHeader("Created By"),        selector: (row) => row.onBehalfUsername, cell: (row) => <span>{row.onBehalfUsername}</span>, sortable: true, hide: "md" },
-    { name: colHeader("Status"),            selector: (row) => row.statusName,       cell: (row) => <span>{row.statusName}</span>,       sortable: true, hide: "md" },
-    { name: colHeader("Solution"),          selector: (row) => row.solution,         cell: (row) => <span>{row.solution}</span>,         sortable: true, hide: "md" },
-    { name: colHeader("Severity"),          selector: (row) => row.severityName,     cell: (row) => <span>{row.severityName}</span>,     sortable: true, hide: "md" },
+    { name: colHeader(t("Sl.No")),             selector: (row) => row.serialNumber,     cell: (row) => <span>{row.serialNumber}</span>,     sortable: true, hide: "md" },
+    { name: colHeader(t("Ticket Arn Number")), selector: (row) => row.ticketArn,        cell: (row) => <span>{row.ticketArn}</span>,        sortable: true, hide: "md" },
+    { name: colHeader(t("Users Affected")),    selector: (row) => row.usersAffected,    cell: (row) => <span>{row.usersAffected}</span>,    sortable: true, hide: "md" },
+    { name: colHeader(t("Query")),             selector: (row) => row.query,            cell: (row) => <span>{row.query}</span>,            sortable: true, hide: "md" },
+    { name: colHeader(t("Module")),            selector: (row) => row.moduleName,       cell: (row) => <span>{row.moduleName}</span>,       sortable: true, hide: "md" },
+    { name: colHeader(t("Feature")),           selector: (row) => row.featureName,      cell: (row) => <span>{row.featureName}</span>,      sortable: true, hide: "md" },
+    { name: colHeader(t("Broad Category")),    selector: (row) => row.boardCategoryName,cell: (row) => <span>{row.boardCategoryName}</span>,sortable: true, hide: "md" },
+    { name: colHeader(t("Created By")),        selector: (row) => row.onBehalfUsername, cell: (row) => <span>{row.onBehalfUsername}</span>, sortable: true, hide: "md" },
+    { name: colHeader(t("Status")),            selector: (row) => row.statusName,       cell: (row) => <span>{row.statusName}</span>,       sortable: true, hide: "md" },
+    { name: colHeader(t("Solution")),          selector: (row) => row.solution,         cell: (row) => <span>{row.solution}</span>,         sortable: true, hide: "md" },
+    { name: colHeader(t("Severity")),          selector: (row) => row.severityName,     cell: (row) => <span>{row.severityName}</span>,     sortable: true, hide: "md" },
   ];
 
   return (
@@ -281,8 +281,8 @@ function HelpDeskReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>🎫</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Ticket Details Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export helpdesk ticket data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Ticket Details Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export helpdesk ticket data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">

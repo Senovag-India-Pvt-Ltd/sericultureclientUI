@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function UpdatedDFLsReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -88,7 +88,7 @@ function UpdatedDFLsReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
 };
@@ -251,19 +251,19 @@ function UpdatedDFLsReport() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),                      selector: (row) => row.serialNumber,               cell: (row) => <span>{row.serialNumber}</span>,               sortable: true },
-    { name: colHeader("Farmer Name"),                selector: (row) => row.farmerName,                 cell: (row) => <span>{row.farmerName}</span>,                 sortable: true },
-    { name: colHeader("Father Name"),                selector: (row) => row.fatherName,                 cell: (row) => <span>{row.fatherName}</span>,                 sortable: true },
-    { name: colHeader("Fruits Id"),                  selector: (row) => row.fruitsId,                   cell: (row) => <span>{row.fruitsId}</span>,                   sortable: true },
-    { name: colHeader("Lot Number"),                 selector: (row) => row.lotNumber,                  cell: (row) => <span>{row.lotNumber}</span>,                  sortable: true },
-    { name: colHeader("Number Of DFLs"),             selector: (row) => row.numbersOfDfls,              cell: (row) => <span>{row.numbersOfDfls}</span>,              sortable: true },
-    { name: colHeader("Rate Per 100 DFLs"),          selector: (row) => row.ratePer100Dfls,             cell: (row) => <span>{row.ratePer100Dfls}</span>,             sortable: true },
-    { name: colHeader("Race"),                       selector: (row) => row.raceName,                   cell: (row) => <span>{row.raceName}</span>,                   sortable: true },
-    { name: colHeader("Expected Date Of Hatching"),  selector: (row) => row.expectedHatchingDate,       cell: (row) => <span>{row.expectedHatchingDate}</span>,       sortable: true },
-    { name: colHeader("Date Of Disposal"),           selector: (row) => row.dateOfDisposal,             cell: (row) => <span>{row.dateOfDisposal}</span>,             sortable: true },
-    { name: colHeader("DFLs Source"),                selector: (row) => row.dflsSource,                 cell: (row) => <span>{row.dflsSource}</span>,                 sortable: true },
-    { name: colHeader("Name And Address"),           selector: (row) => row.nameAndAddressOfTheFarm,    cell: (row) => <span>{row.nameAndAddressOfTheFarm}</span>,    sortable: true },
-    { name: colHeader("TSC"),                        selector: (row) => row.tscName,                    cell: (row) => <span>{row.tscName}</span>,                    sortable: true },
+    { name: colHeader(t("Sl.No")),                      selector: (row) => row.serialNumber,               cell: (row) => <span>{row.serialNumber}</span>,               sortable: true },
+    { name: colHeader(t("Farmer Name")),                selector: (row) => row.farmerName,                 cell: (row) => <span>{row.farmerName}</span>,                 sortable: true },
+    { name: colHeader(t("Father Name")),                selector: (row) => row.fatherName,                 cell: (row) => <span>{row.fatherName}</span>,                 sortable: true },
+    { name: colHeader(t("Fruits Id")),                  selector: (row) => row.fruitsId,                   cell: (row) => <span>{row.fruitsId}</span>,                   sortable: true },
+    { name: colHeader(t("Lot Number")),                 selector: (row) => row.lotNumber,                  cell: (row) => <span>{row.lotNumber}</span>,                  sortable: true },
+    { name: colHeader(t("Number Of DFLs")),             selector: (row) => row.numbersOfDfls,              cell: (row) => <span>{row.numbersOfDfls}</span>,              sortable: true },
+    { name: colHeader(t("Rate Per 100 DFLs")),          selector: (row) => row.ratePer100Dfls,             cell: (row) => <span>{row.ratePer100Dfls}</span>,             sortable: true },
+    { name: colHeader(t("Race")),                       selector: (row) => row.raceName,                   cell: (row) => <span>{row.raceName}</span>,                   sortable: true },
+    { name: colHeader(t("Expected Date Of Hatching")),  selector: (row) => row.expectedHatchingDate,       cell: (row) => <span>{row.expectedHatchingDate}</span>,       sortable: true },
+    { name: colHeader(t("Date Of Disposal")),           selector: (row) => row.dateOfDisposal,             cell: (row) => <span>{row.dateOfDisposal}</span>,             sortable: true },
+    { name: colHeader(t("DFLs Source")),                selector: (row) => row.dflsSource,                 cell: (row) => <span>{row.dflsSource}</span>,                 sortable: true },
+    { name: colHeader(t("Name And Address")),           selector: (row) => row.nameAndAddressOfTheFarm,    cell: (row) => <span>{row.nameAndAddressOfTheFarm}</span>,    sortable: true },
+    { name: colHeader(t("TSC")),                        selector: (row) => row.tscName,                    cell: (row) => <span>{row.tscName}</span>,                    sortable: true },
   ];
 
   return (
@@ -285,8 +285,8 @@ function UpdatedDFLsReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>✅</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Verified DFL Details Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export verified DFL details data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Verified DFL Details Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export verified DFL details data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -297,7 +297,7 @@ function UpdatedDFLsReport() {
                   <option value="">{t("Select Race")}</option>
                   {raceListData.map((list) => (
                     <option key={list.raceMasterId} value={list.raceMasterId}>
-                      {list.raceMasterName}
+                      {i18n.language === "kn" ? list.raceNameInKannada : list.raceMasterName}
                     </option>
                   ))}
                 </Form.Select>
@@ -308,7 +308,7 @@ function UpdatedDFLsReport() {
                   <option value="">{t("select_tsc")}</option>
                   {tscListData.map((list) => (
                     <option key={list.tscMasterId} value={list.tscMasterId}>
-                      {list.name}
+                      {i18n.language === "kn" ? list.nameInKannada : list.name}
                     </option>
                   ))}
                 </Form.Select>

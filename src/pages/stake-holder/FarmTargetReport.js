@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function FarmTargetReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -94,7 +94,7 @@ function FarmTargetReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
   };
@@ -259,14 +259,14 @@ function FarmTargetReport() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),          selector: (row) => row.serialNumber, cell: (row) => <span>{row.serialNumber}</span>, sortable: true, hide: "md" },
-    { name: colHeader("Financial Year"), selector: (row) => row.financialYear, cell: (row) => <span>{row.financialYear}</span>, sortable: true, hide: "md" },
-    { name: colHeader("Race Name"),      selector: (row) => row.raceName,      cell: (row) => <span>{row.raceName}</span>,      sortable: true, hide: "md" },
-    { name: colHeader("Farm Name"),      selector: (row) => row.farmName,      cell: (row) => <span>{row.farmName}</span>,      sortable: true, hide: "md" },
-    { name: colHeader("Month"),          selector: (row) => row.month,         cell: (row) => <span>{row.month}</span>,         sortable: true, hide: "md" },
-    { name: colHeader("Target Type"),    selector: (row) => row.targetType,    cell: (row) => <span>{row.targetType}</span>,    sortable: true, hide: "md" },
-    { name: colHeader("Target"),         selector: (row) => row.value,         cell: (row) => <span>{row.value}</span>,         sortable: true, hide: "md" },
-    { name: colHeader("User"),           selector: (row) => row.username,      cell: (row) => <span>{row.username}</span>,      sortable: true, hide: "md" },
+    { name: colHeader(t("Sl.No")),          selector: (row) => row.serialNumber, cell: (row) => <span>{row.serialNumber}</span>, sortable: true, hide: "md" },
+    { name: colHeader(t("Financial Year")), selector: (row) => row.financialYear, cell: (row) => <span>{row.financialYear}</span>, sortable: true, hide: "md" },
+    { name: colHeader(t("Race Name")),      selector: (row) => row.raceName,      cell: (row) => <span>{row.raceName}</span>,      sortable: true, hide: "md" },
+    { name: colHeader(t("Farm Name")),      selector: (row) => row.farmName,      cell: (row) => <span>{row.farmName}</span>,      sortable: true, hide: "md" },
+    { name: colHeader(t("Month")),          selector: (row) => row.month,         cell: (row) => <span>{row.month}</span>,         sortable: true, hide: "md" },
+    { name: colHeader(t("Target Type")),    selector: (row) => row.targetType,    cell: (row) => <span>{row.targetType}</span>,    sortable: true, hide: "md" },
+    { name: colHeader(t("Target")),         selector: (row) => row.value,         cell: (row) => <span>{row.value}</span>,         sortable: true, hide: "md" },
+    { name: colHeader(t("User")),           selector: (row) => row.username,      cell: (row) => <span>{row.username}</span>,      sortable: true, hide: "md" },
   ];
 
   return (
@@ -288,8 +288,8 @@ function FarmTargetReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>🌾</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Farm Target Details Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export farm target data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Farm Target Details Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export farm target data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -314,7 +314,7 @@ function FarmTargetReport() {
                   {farmListData && farmListData
                     ? farmListData.map((list) => (
                         <option key={list.farmId} value={list.farmId}>
-                          {list.farmName}
+                          {i18n.language === "kn" ? list.farmNameInKannada : list.farmName}
                         </option>
                       ))
                     : ""}
@@ -326,7 +326,7 @@ function FarmTargetReport() {
                   <option value="">{t("Select Race")}</option>
                   {raceListData.map((list) => (
                     <option key={list.raceMasterId} value={list.raceMasterId}>
-                      {list.raceMasterName}
+                      {i18n.language === "kn" ? list.raceNameInKannada : list.raceMasterName}
                     </option>
                   ))}
                 </Form.Select>
@@ -335,8 +335,8 @@ function FarmTargetReport() {
                 <label style={lbl}>{t("Target Type")}</label>
                 <Form.Select name="targetType" value={data.targetType} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select Target Type")}</option>
-                  <option value="Brushing">BRUSHING</option>
-                  <option value="Cocoon Production">Cocoon Production</option>
+                  <option value="Brushing">{t("BRUSHING")}</option>
+                  <option value="Cocoon Production">{t("Cocoon Production")}</option>
                 </Form.Select>
               </Col>
               <Col xs="auto" style={{ paddingTop: "20px" }}>
