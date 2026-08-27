@@ -228,9 +228,9 @@ function CropDetailsForSeedMarket() {
     if (transactionList.length === 0) {
       Swal.fire({
         icon: "warning",
-        title: "Transaction Details Required",
-        text: "Please add at least one transaction detail before saving.",
-        confirmButtonText: "OK",
+        title: t("Transaction Details Required"),
+        text: t("Please add at least one transaction detail before saving."),
+        confirmButtonText: t("OK"),
       });
       return;
     }
@@ -570,7 +570,7 @@ function CropDetailsForSeedMarket() {
                   <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label htmlFor="farmerName">
-                        {t("Farmer's name")}<span className="text-danger">*</span>
+                        {t("Farmer’s name")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -579,7 +579,7 @@ function CropDetailsForSeedMarket() {
                           type="text"
                           value={data.farmerName}
                           onChange={handleInputs}
-                          placeholder={t("Enter Farmer's name")}
+                          placeholder={t("Enter Farmer’s name")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">

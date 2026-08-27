@@ -4651,6 +4651,8 @@
     "Please fill the transaction details before saving.": "Please fill the transaction details before saving.",
     "No Of DFL's is required": "No Of DFL's is required",
     "Bidding Slip Number is required": "Bidding Slip Number is required",
-    "Crop Details-Commercial Market": "Crop Details-Commercial Market"
+    "Crop Details-Commercial Market": "Crop Details-Commercial Market",
+    "Please add at least one transaction detail before saving.": "Please add at least one transaction detail before saving.",
+    "Entered in main form": "Entered in main form"
   }
 }

@@ -4774,6 +4774,8 @@
     "Please fill the transaction details before saving.": "ಉಳಿಸುವ ಮೊದಲು ವಹಿವಾಟಿನ ವಿವರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ.",
     "No Of DFL's is required": "DFLಗಳ ಸಂಖ್ಯೆ ಅಗತ್ಯವಿದೆ",
     "Bidding Slip Number is required": "ಬಿಡ್ಡಿಂಗ್ ಸ್ಲಿಪ್ ಸಂಖ್ಯೆ ಅಗತ್ಯವಿದೆ",
-    "Crop Details-Commercial Market": "ಬೆಳೆ ವಿವರಗಳು-ವಾಣಿಜ್ಯ ಮಾರುಕಟ್ಟೆ"
+    "Crop Details-Commercial Market": "ಬೆಳೆ ವಿವರಗಳು-ವಾಣಿಜ್ಯ ಮಾರುಕಟ್ಟೆ",
+    "Please add at least one transaction detail before saving.": "ಉಳಿಸುವ ಮೊದಲು ಕನಿಷ್ಠ ಒಂದು ವಹಿವಾಟಿನ ವಿವರವನ್ನು ಸೇರಿಸಿ.",
+    "Entered in main form": "ಮುಖ್ಯ ನಮೂನೆಯಲ್ಲಿ ನಮೂದಿಸಲಾಗಿದೆ"
   }
 }
