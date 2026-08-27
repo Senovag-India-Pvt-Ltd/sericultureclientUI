@@ -122,9 +122,7 @@
     "add_farmer_land_details": "Add Farmer Land Details",
     "category_no": "Category Number",
     "enter_category_no": "Enter Category Number",
-
     "select_ownership": "Select Ownership",
-
     "hissa": "Hissa",
     "enter_hissa": "Enter Hissa Number",
     "source_of_mulberry": "Source of Mulberry",
@@ -307,7 +305,6 @@
     "Rearing House (In Sq ft)": "Rearing House (In Sq ft)",
     "Farmer View": "Farmer View",
     "Family Members": "Family Members",
-
     "Farmers Land Details": "Farmers Land Details",
     "Farmer Personal Info": "Farmer Personal Info",
     "Action": "Action",
@@ -364,7 +361,6 @@
     "Fee Amount": "Fee Amount",
     "Enter Fee Amount": "Enter Fee Amount",
     "Function of the Unit": "Function of the Unit",
-    "select":"Select",
     "License Expiry Date": "License Expiry Date",
     "Chakbandi Details": "Chakbandi Details",
     "East": "East",
@@ -2145,7 +2141,6 @@
     "Edit Reeler Type": "Edit Reeler Type",
     "Reeler Type View": "Reeler Type View",
     "Reeler Type Details": "Reeler Type Details",
-    "Edit Reeler Type": "Edit Reeler Type",
     "Update Bank Details": "Update Bank Details",
     "Search Farmer Details By": "Search Farmer Details By",
     "Fruits Id": "FRUITS ID",
@@ -2449,7 +2444,6 @@
     "Rearing of DFLs for the 8 lines View": "Rearing of DFLs for the 8 lines View",
     "Rearing of DFLs for the 8 lines List": "Rearing of DFLs for the 8 lines List",
     "Disinfectant Usage": "Disinfectant Usage",
-    "Spun on date(From)": "Spun on date(From)",
     "First Feeding": "First Feeding",
     "Second Feeding": "Second Feeding",
     "Third Feeding": "Third Feeding",
@@ -2483,14 +2477,12 @@
     "Race Mapping View": "Race Mapping View",
     "View Rearing of DFLs for the 8 lines Details": "View Rearing of DFLs for the 8 lines Details",
     "Worm Test Results": "Worm Test Results",
-    "Spun on date(From)": "Spun on date(From)",
     "Reason for Lot Cancellation": "Reason for Lot Cancellation",
     "Enter Reason for Lot Cancellation": "Enter Reason for Lot Cancellation",
     "Reason for Lot Cancellation is required": "Reason for Lot Cancellation is required",
     "Edit Reason for Lot Cancellation": "Edit Reason for Lot Cancellation",
     "Reason for Lot Cancellation List": "Reason for Lot Cancellation List",
     "Reason for Lot Cancellation View": "Reason for Lot Cancellation View",
-    "Reason for Lot Cancellation Details": "Reason for Lot Cancellation Details",
     "Reason for Lot Cancellation Details": "Reason for Lot Cancellation Details",
     "View Reason for Lot Cancellation Details": "View Reason for Lot Cancellation Details",
     "Reason for Lot Cancellation is required.": "Reason for Lot Cancellation is required.",
@@ -2540,7 +2532,6 @@
     "User Type Id": "User Type Id",
     "User ID": "User ID",
     "Device Id": "Device Id",
-    "All": "All",
     "SL No": "SL No",
     "Reeler ID": "Reeler ID",
     "Contact Number": "Contact Number",
@@ -3376,8 +3367,6 @@
     "Approximate weight of Silk yarn": "Approximate weight of Silk yarn",
     "Type Of Silk is required": "Type Of Silk is required",
     "Reeler Personal Info": "Reeler Personal Info",
-    "Male": "Male",
-    "Female": "Female",
     "Virtual Account No.": "Virtual Account No.",
     "Reeler Address": "Reeler Address",
     "Hobli": "Hobli",
@@ -3488,7 +3477,6 @@
     "Enter ERR After 3rd Moult": "Enter ERR After 3rd Moult",
     "Seed Cocoons": "Seed Cocoons",
     "Enter Seed Cocoons": "Enter Seed Cocoons",
-    "Reeling Cocoons": "Reeling Cocoons",
     "Enter Reeling Cocoons": "Enter Reeling Cocoons",
     "Reeling Cocoons Weight (kg)": "Reeling Cocoons Weight (kg)",
     "Enter Reeling Cocoons Weight (kg)": "Enter Reeling Cocoons Weight (kg)",
@@ -4072,7 +4060,6 @@
     "Percentage Improved": "Percentage Improved",
     "Enter Improved Percentage": "Enter Improved Percentage",
     "Raise a Ticket": "Raise a Ticket",
-
     "Master": "Master",
     "Education": "Education",
     "Relationship": "Relationship",
@@ -4088,7 +4075,6 @@
     "List of Reject Reason": "List of Reject Reason",
     "Training": "Training",
     "HelpDesk": "HelpDesk",
-
     "Board Category": "Broad Category",
     "Help Desk FAQ": "Help Desk FAQ",
     "Garden Management": "Garden Management",
@@ -4128,7 +4114,6 @@
     "Dtr Report": "Dtr Report",
     "Real Time Dtr Report": "Real Time Dtr Report",
     "Reeler Credit Report": "Reeler Credit Report",
-
     "Farmer Details Direct From Fruits": "Farmer Details Direct From Fruits",
     "Reeler Pending Report": "Reeler Pending Report",
     "Average Report": "Average Report",
@@ -4138,7 +4123,6 @@
     "Market Report": "Market Report",
     "District Report": "District Report",
     "Average Cocoon Report": "Average Cocoon Report",
-
     "Add Preparation of Eggs (DFLs)": "Add Preparation of Eggs (DFLs)",
     "Line Details is required": "Line Details is required",
     "Cocoon's Purchased (in Kg's / Nos)": "Cocoon's Purchased (in Kg's / Nos)",
@@ -4250,7 +4234,6 @@
     "Enter Fuel Cost": "Enter Fuel Cost",
     "Mysore Race Eggs Value": "Mysore Race Eggs Value",
     "Enter Mysore Race Eggs Value": "Enter Mysore Race Eggs Value",
-
     "Fruits Id:": "Fruits Id:",
     "Bidding Slip Issued Date:": "Bidding Slip Issued Date:",
     "No OF DFLs:": "No OF DFLs:",
@@ -4390,9 +4373,7 @@
     "No. of DFLs:": "No. of DFLs:",
     "Release Date:": "Release Date:",
     "Receipt No:": "Receipt No:",
-
     "Payment Settlement": "Payment Settlement",
-
     "No Records": "No Records",
     "No pending lots found for the given date and market.": "No pending lots found for the given date and market.",
     "Failed to fetch records.": "Failed to fetch records.",
@@ -4416,7 +4397,6 @@
     "Transfer to Govt Account": "Transfer to Govt Account",
     "Download Preview CSV": "Download Preview CSV",
     "Download Bank CSV": "Download Bank CSV",
-
     "Not Allowed": "Not Allowed",
     "You are not assigned to a market. Please contact your administrator.": "You are not assigned to a market. Please contact your administrator.",
     "Buyer not found.": "Buyer not found.",
@@ -4528,7 +4508,6 @@
     "User Details Report": "User Details Report",
     "User Master Details Report": "User Master Details Report",
     "Select filters to view and export user master data": "Select filters to view and export user master data",
-
     "Trainer Details Report": "Trainer Details Report",
     "Select filters to view and export trainer details data": "Select filters to view and export trainer details data",
     "Trainee Details Report": "Trainee Details Report",
@@ -4545,7 +4524,6 @@
     "Select filters to view and export farmer mulberry extension data": "Select filters to view and export farmer mulberry extension data",
     "Supply Of Disinfectant Report": "Supply Of Disinfectant Report",
     "Select filters to view and export supply of disinfectant data": "Select filters to view and export supply of disinfectant data",
-
     "Duration": "Duration",
     "Training Name": "Training Name",
     "Trainer": "Trainer",
@@ -4668,6 +4646,11 @@
     "Mulberry Expansion Report": "Mulberry Expansion Report",
     "Supply Of Disinfectants Report": "Supply Of Disinfectants Report",
     "Training Deputation Tracket Report": "Training Deputation Tracket Report",
-    "Select User Type": "Select User Type"
+    "Select User Type": "Select User Type",
+    "Transaction Details Required": "Transaction Details Required",
+    "Please fill the transaction details before saving.": "Please fill the transaction details before saving.",
+    "No Of DFL's is required": "No Of DFL's is required",
+    "Bidding Slip Number is required": "Bidding Slip Number is required",
+    "Crop Details-Commercial Market": "Crop Details-Commercial Market"
   }
 }

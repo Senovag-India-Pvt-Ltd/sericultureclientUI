@@ -40,7 +40,7 @@
     "Enter Name in Kannada": "ಕನ್ನಡದಲ್ಲಿ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
     "Name in Kannada is required": "ಕನ್ನಡದಲ್ಲಿ ಹೆಸರು ಅಗತ್ಯವಿದೆ",
     "Male": "ಪುರುಷ",
-    "Female": "ಸ್ತ್ರೀ",
+    "Female": "ಮಹಿಳೆ",
     "Third Gender": "ತೃತೀಯ ಲಿಂಗ",
     "logoTitle2": "ಕರ್ನಾಟಕ ಸರ್ಕಾರ",
     "registration": "ನೋಂದಣಿ",
@@ -130,7 +130,7 @@
     "landholding_categotry": "ಭೂಮಿ ಹಿಡುವಳಿ",
     "select_landholding_categotry": "ವರ್ಗವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
     "education": "ಶಿಕ್ಷಣ",
-    "select": "ಆಯ್ಕೆ ಮಾಡಿ",
+    "select": "ಆಯ್ಕೆಮಾಡಿ",
     "representative_agent": "ಪ್ರತಿನಿಧಿಗಳು / ಏಜೆಂಟ್",
     "recipient_id": "ಸ್ವೀಕರಿಸುವವರ ಐಡಿ (ಖಜಾನೆ II)",
     "enter_recipient_id": "ಸ್ವೀಕರಿಸುವವರ ಐಡಿ (ಖಜಾನೆ II) ನಮೂದಿಸಿ",
@@ -205,7 +205,7 @@
     "Sub Component is required before selecting rows.": "ಸಾಲುಗಳನ್ನು ಆಯ್ಕೆಮಾಡುವ ಮೊದಲು ಉಪ ಘಟಕ ಅಗತ್ಯವಿದೆ.",
     "Financial Year is required before selecting rows.": "ಸಾಲುಗಳನ್ನು ಆಯ್ಕೆಮಾಡುವ ಮೊದಲು ಆರ್ಥಿಕ ವರ್ಷ ಅಗತ್ಯವಿದೆ.",
     "Select Irrigation Source": "ನೀರಾವರಿ ಮೂಲವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
-    "Area Under Each Variety": "ಪ್ರತಿ ತಳಿಯ ಅಡಿಯಲ್ಲಿನ ವಿಸ್ತೀರ್ಣ",
+    "Area Under Each Variety": "ಪ್ರತಿ ತಳಿಯ ಅಡಿಯಲ್ಲಿ ವಿಸ್ತೀರ್ಣ",
     "FYM Application Date": "ಕೊಟ್ಟಿಗೆ ಗೊಬ್ಬರ ಅನ್ವಯ ದಿನಾಂಕ",
     "Foliar Spray 1": "ಎಲೆ ಸಿಂಪಡಣೆ 1",
     "Foliar Spray 2": "ಎಲೆ ಸಿಂಪಡಣೆ 2",
@@ -281,7 +281,6 @@
     "Caste": "ಜಾತಿ",
     "select_Caste": "ಜಾತಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
     "caste_is_required": "ಜಾತಿ ಅಗತ್ಯವಿದೆ",
-
     "select_education": "ಶಿಕ್ಷಣವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
     "Inspection Type": "ತಪಾಸಣೆ ಪ್ರಕಾರ",
     "tsc": "ತಾಂತ್ರಿಕ ಸೇವಾ ಕೇಂದ್ರ",
@@ -289,30 +288,21 @@
     "tsc_is_required": "ತಾಂ.ಸೇ.ಕೇ ಯ ಅಗತ್ಯವಿದೆ",
     "Farmer_Photo_(PDF/jpg/png)_(Max: 5MB)": "ರೈತರ ಭಾವಚಿತ್ರ (PDF/jpg/png) (ಗರಿಷ್ಠ: 5MB)",
     "upload_bank": "ಬ್ಯಾಂಕ್ ಪಾಸ್‌ಬುಕ್ ಅಪ್ಲೋಡ್ ಮಾಡಿ (PDF/jpg/png) (ಗರಿಷ್ಠ: 5MB)",
-
     "relationship_is_required": "ಸಂಬಂಧ ಅಗತ್ಯವಿದೆ",
-
     "select_village": "ಗ್ರಾಮವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
     "Chawki Sales Details": "ಚಾಕಿ ಮಾರಾಟದ ವಿವರಗಳು",
-
     "taluk_is_required": "ತಾಲ್ಲೂಕು ಅಗತ್ಯವಿದೆ",
     "hobli_is_required": "ಹೋಬಳಿ ಅಗತ್ಯವಿದೆ",
-
     "state_is_required": "ರಾಜ್ಯ ಅಗತ್ಯವಿದೆ",
     "village_is_required": "ಗ್ರಾಮ ಅಗತ್ಯವಿದೆ",
     "district_is_required": "ಜಿಲ್ಲೆ ಅಗತ್ಯವಿದೆ",
-
     "rearing_required": "ಸಾಕುವ ಸಾಮರ್ಥ್ಯ (ಬೆಳೆಗಳಿಗೆ ಡಿಎಫ್ಎಲ್‌ಗಳು) ಅಗತ್ಯವಿದೆ",
     "select_silk_worm_variety": "ರೇಷ್ಮೆ ಹುಳುವಿನ ತಳಿ ಆಯ್ಕೆಮಾಡಿ",
     "silk_worm": "ರೇಷ್ಮೆ ಹುಳುವಿನ ತಳಿ ಆಯ್ಕೆಮಾಡಿ",
     "silk_worm_required": "ರೇಷ್ಮೆ ಹುಳುವಿನ ತಳಿ ಅಗತ್ಯವಿದೆ",
-
     "irrigation_type_required": "ನೀರಾವರಿ ಪ್ರಕಾರ ಅಗತ್ಯವಿದೆ",
-
     "irrigation_source_required": "ನೀರಾವರಿ ಮೂಲ ಅಗತ್ಯವಿದೆ",
-
     "plantation_type_required": "ನಾಟಿ ಮಾಡಿದ ವಿಧಾನ ಅಗತ್ಯವಿದೆ",
-
     "Mulberry_Variety_required": "ಹಿಪ್ಪುನೇರಳೆಯ ತಳಿ ಅಗತ್ಯವಿದೆ",
     "select_Mulberry_Variety": " ಹಿಪ್ಪುನೇರಳೆಯ ತಳಿ ಆಯ್ಕೆಮಾಡಿ",
     "Mulberry_Variety": "  ಹಿಪ್ಪುನೇರಳೆಯ ತಳಿ ",
@@ -322,10 +312,8 @@
     "source_of_Mulberry": "ಹಿಪ್ಪುನೇರಳೆ ತಳಿಯ  ಮೂಲ",
     "select_source_of_Mulberry": "ಹಿಪ್ಪುನೇರಳೆ ತಳಿಯ  ಮೂಲ ಆಯ್ಕೆಮಾಡಿ",
     "soil_type_required": "ಮಣ್ಣಿನ ವಿಧ ಅಗತ್ಯವಿದೆ",
-
     "land_ownership_required": "ಭೂಮಿಯ ಮಾಲೀಕತ್ವ ಅಗತ್ಯವಿದೆ",
     "select_land_ownership": "ಭೂಮಿಯ ಮಾಲೀಕತ್ವ ಆಯ್ಕೆಮಾಡಿ",
-
     "rearing_house_roof_type_required": "ಹಿಂಭಾಗದ ಮನೆ ಮೇಲ್ಛಾವಣಿಯ ಮಾದರಿ ಅಗತ್ಯವಿದೆ",
     "Clear": "ತೆರವುಗೊಳಿಸಿ",
     "Generate_FRUITS_ID": " ಫ್ರೂಟ್ಸ್ ಐಡಿ ರಚಿಸಿ",
@@ -363,7 +351,7 @@
     "Bank Account Number": "ಬ್ಯಾಂಕ್ ಖಾತೆ ಸಂಖ್ಯೆ",
     "Branch Name": "ಶಾಖೆಯ ಹೆಸರು ",
     "IFSC Code": "ಐಎಫ್‌ಎಸ್‌ಸಿ ಕೋಡ್",
-    "Bank Passbook": "ಬ್ಯಾಂಕ್ ಪಾಸ್‌ಬುಕ್", 
+    "Bank Passbook": "ಬ್ಯಾಂಕ್ ಪಾಸ್‌ಬುಕ್",
     "Rearing House (In Sq ft)": "ರೇಷ್ಮೆ ಹುಳು ಸಾಕಣೆ ಮನೆಯ ವಿಸ್ತೀರ್ಣ(ಚದರ ಅಡಿ)",
     "Farmer View": "ರೈತ ನೋಂದಣಿ ದೃಶ್ಯ",
     "Family Members": "ಕುಟುಂಬದ ಸದಸ್ಯರು",
@@ -378,7 +366,6 @@
     "Farmer without Fruits Id List": "ಫ್ರೂಟ್ಸ್ ಐಡಿಯಿಲ್ಲದ ರೈತರ ಪಟ್ಟಿ",
     "Update Fruits Id": "ಅಪ್‌ ಡೇಟ್‌ ಫ್ರೂಟ್ಸ್  ಐಡಿ",
     "Edit Famer without Fruits": "ತಿದ್ದುಪಡಿ ಫ್ರೂಟ್ಸ್ ಐಡಿಯಿಲ್ಲದ ರೈತರು",
-
     "Reeler Personal info": "ರೀಲರ್ ವೈಯಕ್ತಿಕ ಮಾಹಿತಿ",
     "Reeler Name": "ರೀಲರ್ ಹೆಸರು",
     "Enter Reeler Name": "ರೀಲರ್ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
@@ -425,7 +412,6 @@
     "Fee Amount": "ಶುಲ್ಕ ಮೊತ್ತ",
     "Enter Fee Amount": "ಶುಲ್ಕ ಮೊತ್ತವನ್ನು ನಮೂದಿಸಿ",
     "Function of the Unit": "ಘಟಕದ ಕಾರ್ಯ",
-    "select":"ಆಯ್ಕೆಮಾಡಿ",
     "License Expiry Date": "ಪರವಾನಿಗಿ ಅವಧಿ ಮುಗಿಯುವ ದಿನಾಂಕ",
     "Chakbandi Details": "ಚಕ್‌ಬಂದಿ ವಿವರಗಳು",
     "East": "ಪೂರ್ವ",
@@ -454,7 +440,6 @@
     "Rejection Percentage must be between 0 and 100": "ತಿರಸ್ಕರಣೆಯ ಶೇಕಡಾವಾರು 0 ಮತ್ತು 100 ರ ನಡುವೆ ಇರಬೇಕು",
     "Select Market": "ಮಾರುಕಟ್ಟೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
     "Market is required": "ಮಾರುಕಟ್ಟೆ ಅಗತ್ಯವಿದೆ",
-
     "Receipt Date": "ರಶೀದಿ ದಿನಾಂಕ",
     "User Name": "ಬಳಕೆದಾರರ ಹೆಸರು",
     "Reeler License List": "ರೀಲರ್ ಪರವಾನಿಗಿ ಪಟ್ಟಿ",
@@ -536,7 +521,6 @@
     "Race": "ತಳಿ",
     "External Unit Registration View": "ಹೊರಗಿನ ಘಟಕ ನೋಂದಣಿ ವೀಕ್ಷಿಸು",
     "External Unit Registration Details": "ಹೊರಗಿನ ಘಟಕ ನೋಂದಣಿ ವಿವರಗಳು",
-
     "Scheme Details Form": "ಯೋಜನೆ ವಿವರಗಳು ಫಾರ್ಮ್",
     "Applications List": "ಅರ್ಜಿಗಳ ಪಟ್ಟಿ",
     "Submit": "ಸಲ್ಲಿಸು",
@@ -716,7 +700,6 @@
     "Enter Sanction Number": "ಮಂಜೂರಾತಿ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
     "Select Category": "ವರ್ಗವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
     "Category is required": "ವರ್ಗ ಅಗತ್ಯವಿದೆ",
-
     "Remarks": "ಟಿಪ್ಪಣಿಗಳು",
     "View Details": "ವಿವರಗಳನ್ನು ವೀಕ್ಷಿಸಿ",
     "Application Details": "ಅರ್ಜಿಯ ವಿವರಗಳು",
@@ -2207,7 +2190,6 @@
     "Save attempt was not successful": "ಉಳಿಸುವ ಪ್ರಯತ್ನ ಯಶಸ್ವಿಯಾಗಿಲ್ಲ",
     "Something went wrong!": "ಏನೋ ತಪ್ಪಾಗಿದೆ!",
     "External Unit Type List": "ಬಾಹ್ಯ ಘಟಕದ ವಿಧಗಳ ಪಟ್ಟಿ",
-
     "External Unit Type Name": "ಬಾಹ್ಯ ಘಟಕದ ಹೆಸರು",
     "External Unit Type View": "ಬಾಹ್ಯ ಘಟಕದ ವಿಧದ ವೀಕ್ಷಣೆ",
     "External Unit Type Details": "ಬಾಹ್ಯ ಘಟಕದ ವಿಧದ ವಿವರಗಳು",
@@ -2290,7 +2272,6 @@
     "Update Dates": "ದಿನಾಂಕಗಳನ್ನು ನವೀಕರಿಸಿ",
     "Activity Logs": "ಚಟುವಟಿಕೆ ದಾಖಲೆಗಳು",
     "Variety": "ತಳಿ",
-    "Area Under Each Variety": "ಪ್ರತಿ ತಳಿಯ ಅಡಿಯಲ್ಲಿ ವಿಸ್ತೀರ್ಣ",
     "FYM Date": "FYM ದಿನಾಂಕ",
     "Fertilizer Application Date": "ರಸಗೊಬ್ಬರ ಅನ್ವಯಿಸಿದ ದಿನಾಂಕ",
     "Irrigation Date": "ನೀರಾವರಿ ದಿನಾಂಕ",
@@ -2421,7 +2402,6 @@
     "Incubation Date is required": "ಇಂಕ್ಯುಬೇಶನ್ ದಿನಾಂಕ ಅಗತ್ಯವಿದೆ",
     "Black Boxing Date is required": "ಬ್ಲ್ಯಾಕ್ ಬಾಕ್ಸಿಂಗ್ ದಿನಾಂಕ ಅಗತ್ಯವಿದೆ",
     "Brushed on date is required": "ಬ್ರಷ್ ಮಾಡಿದ ದಿನಾಂಕ ಅಗತ್ಯವಿದೆ",
-
     "Spun on date(From) is required": "ಸ್ಪನ್ ಆನ್ ದಿನಾಂಕ ಅಗತ್ಯವಿದೆ",
     "Crop Failure Details": "ಬೆಳೆ ವಿಫಲತೆಯ ವಿವರಗಳು",
     "Edit Maintenance of Mulberry Garden in the Farms": "ಫಾರ್ಮ್‌ಗಳಲ್ಲಿ ಶಾಲ್ಮಲ ತೋಟದ ನಿರ್ವಹಣೆಯನ್ನು ತಿದ್ದು",
@@ -2552,9 +2532,7 @@
     "Select Crop Number": "ಬೆಳೆ ಸಂಖ್ಯೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
     "Select Number of DFLs": "DFL ಗಳ ಸಂಖ್ಯೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
     "Select Worm weight (In grms)": "ಹುಳು ತೂಕ (ಗ್ರಾಂಗಳಲ್ಲಿ) ಆಯ್ಕೆಮಾಡಿ",
-    "Spun on date(From)": "ಗೂಡು ಕಟ್ಟಿದ ದಿನಾಂಕ (ಇಂದ)",
     "Enter Spun on date(From)": "ಸ್ಪನ್ ಆನ್ ದಿನಾಂಕವನ್ನು ನಮೂದಿಸಿ",
-    "Spun on date(From) is required": "ಸ್ಪನ್ ಆನ್ ದಿನಾಂಕ ಅಗತ್ಯವಿದೆ",
     "Brushed on Date": "ಬ್ರಷ್ಡ್ ಆನ್ ದಿನಾಂಕ",
     "Enter Brushed on Date": "ಬ್ರಷ್ಡ್ ಆನ್ ದಿನಾಂಕವನ್ನು ನಮೂದಿಸಿ",
     "Brushed on Date is required": "ಬ್ರಷ್ಡ್ ಆನ್ ದಿನಾಂಕ ಅಗತ್ಯವಿದೆ",
@@ -2596,14 +2574,12 @@
     "Race Mapping View": "ತಳಿ ಸಂಯೋಜನೆ ವೀಕ್ಷಣೆ",
     "Race Mapping Details": "ತಳಿ ಸಂಯೋಜನೆಯ ವಿವರಗಳು",
     "View Rearing of DFLs for the 8 lines Details": "8 ಸಾಲುಗಳ ರೋಗಮುಕ್ತ ಮೊಟ್ಟೆಗಳ ಸಾಕಣೆಯ ವಿವರಗಳನ್ನು ವೀಕ್ಷಿಸಿ",
-    "Spun on date(From)": "ಗೂಡು ಕಟ್ಟಿದ ದಿನಾಂಕ (ಇಂದ)",
     "Worm Test Results": "ಹುಳು ಪರೀಕ್ಷಾ ಫಲಿತಾಂಶಗಳು",
     "Edit Race Mapping": "ತಳಿ ಸಂಯೋಜನೆಯನ್ನು ತಿದ್ದುಪಡಿ ಮಾಡಿ",
     "Reason for Lot Cancellation": "ಲಾಟ್ ರದ್ದುಗೊಳಿಸುವ ಕಾರಣ",
     "Enter Reason for Lot Cancellation": "ಲಾಟ್ ರದ್ದುಗೊಳಿಸುವ ಕಾರಣವನ್ನು ನಮೂದಿಸಿ",
     "Reason for Lot Cancellation is required": "ಲಾಟ್ ರದ್ದುಗೊಳಿಸುವ ಕಾರಣ ಅಗತ್ಯವಾಗಿದೆ",
     "Select Reason for Lot Cancellation": "ಲಾಟ್ ರದ್ದುಪಡಿಸುವ ಕಾರಣವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
-    "Select Spun on date(From)": "ಸ್ಪನ್ ಆನ್ ದಿನಾಂಕವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
     "Select Worm Test Results": "ಹುಳು ಪರೀಕ್ಷಾ ಫಲಿತಾಂಶಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ",
     "Edit Reason for Lot Cancellation": "ಲಾಟ್ ರದ್ದುಗೊಳಿಸುವ ಕಾರಣವನ್ನು ತಿದ್ದುಪಡಿ ಮಾಡಿ",
     "Reason for Lot Cancellation List": "ಲಾಟ್ ರದ್ದುಗೊಳಿಸುವ ಕಾರಣಗಳ ಪಟ್ಟಿ",
@@ -2658,7 +2634,6 @@
     "User Type Id": "ಬಳಕೆದಾರ ಪ್ರಕಾರ ಐಡಿ",
     "User ID": "ಬಳಕೆದಾರ ಐಡಿ",
     "Device Id": "ಸಾಧನದ ಗುರುತಿನ ಸಂಖ್ಯೆ",
-    "All": "ಎಲ್ಲಾ",
     "SL No": "ಕ್ರಮ ಸಂಖ್ಯೆ",
     "Reeler ID": "ರೀಲರ್ ಐಡಿ",
     "Contact Number": "ಸಂಪರ್ಕ ಸಂಖ್ಯೆ",
@@ -3494,8 +3469,6 @@
     "Approximate weight of Silk yarn": "ರೇಷ್ಮೆ ನೂಲಿನ ಅಂದಾಜು ತೂಕ",
     "Type Of Silk is required": "ರೇಷ್ಮೆಯ ವಿಧ ಅಗತ್ಯವಿದೆ",
     "Reeler Personal Info": "ರೀಲರ್ ವೈಯಕ್ತಿಕ ಮಾಹಿತಿ",
-    "Male": "ಪುರುಷ",
-    "Female": "ಮಹಿಳೆ",
     "Virtual Account No.": "ವರ್ಚುವಲ್ ಖಾತೆ ಸಂಖ್ಯೆ",
     "Reeler Address": "ರೀಲರ್ ವಿಳಾಸ",
     "Hobli": "ಹೋಬಳಿ",
@@ -3597,7 +3570,6 @@
     "Enter ERR After 3rd Moult": "ಮೂರನೇ ಚರ್ಮಬದಲಾವಣೆಯ ನಂತರದ ERR ಅನ್ನು ನಮೂದಿಸಿ",
     "Seed Cocoons": "ಬೀಜ ಕೋಶಗಳು",
     "Enter Seed Cocoons": "ಬೀಜ ಕೋಶಗಳ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
-    "Reeling Cocoons": "ರೀಲಿಂಗ್ ಗೂಡುಗಳು",
     "Enter Reeling Cocoons": "ರೀಲಿಂಗ್ ಕೋಶಗಳ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
     "Reeling Cocoons Weight (kg)": "ರೀಲಿಂಗ್ ಕೋಶಗಳ ತೂಕ (ಕೆ.ಜಿ.)",
     "Enter Reeling Cocoons Weight (kg)": "ರೀಲಿಂಗ್ ಕೋಶಗಳ ತೂಕವನ್ನು ನಮೂದಿಸಿ (ಕೆ.ಜಿ.)",
@@ -4217,11 +4189,9 @@
     "Training": "ತರಬೇತಿ",
     "Deputed Institute Training": "ನಿಯೋಜಿತ ಸಂಸ್ಥೆ ತರಬೇತಿ",
     "HelpDesk": "ಸಹಾಯವಾಣಿ",
-
     "Board Category": "ವ್ಯಾಪಕ ವರ್ಗ",
     "Help Desk FAQ": "ಸಹಾಯ ಕೇಂದ್ರದ ಸಾಮಾನ್ಯವಾಗಿ ಕೇಳಲಾಗುವ ಪ್ರಶ್ನೆಗಳು",
     "Garden Management": "ತೋಟ ನಿರ್ವಹಣೆ",
-
     "Market & Auction": "ಮಾರುಕಟ್ಟೆ ಮತ್ತು ಹರಾಜು",
     "Exception Time": "ವಿನಾಯಿತಿ ಸಮಯ",
     "Empaneled Vendors": "ನೋಂದಾಯಿತ ಮಾರಾಟಗಾರರು",
@@ -4375,7 +4345,6 @@
     "Enter Fuel Cost": "ಇಂಧನ ವೆಚ್ಚವನ್ನು ನಮೂದಿಸಿ",
     "Mysore Race Eggs Value": "ಮೈಸೂರು ತಳಿ ಮೊಟ್ಟೆಗಳ ಮೌಲ್ಯ",
     "Enter Mysore Race Eggs Value": "ಮೈಸೂರು ತಳಿ ಮೊಟ್ಟೆಗಳ ಮೌಲ್ಯವನ್ನು ನಮೂದಿಸಿ",
-
     "Lot Number is required.": "ಲಾಟ್ ಸಂಖ್ಯೆ ಅಗತ್ಯವಿದೆ.",
     "Fruits Id:": "ಫ್ರೂಟ್ಸ್ ಐಡಿ:",
     "Farmer Name:": "ರೈತರ ಹೆಸರು:",
@@ -4526,13 +4495,10 @@
     "No. of DFLs:": "DFL ಗಳ ಸಂಖ್ಯೆ:",
     "Release Date:": "ಬಿಡುಗಡೆ ದಿನಾಂಕ:",
     "Receipt No:": "ರಸೀದಿ ಸಂಖ್ಯೆ:",
-
     "Payment Settlement": "ಪಾವತಿ ಇತ್ಯರ್ಥ",
-
     "Distribute the Lot": "ಲಾಟ್ ವಿತರಿಸಿ",
     "Please try again later.": "ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
     "Bulk Send successfully Completed": "ಬಲ್ಕ್ ಕಳುಹಿಸುವಿಕೆ ಯಶಸ್ವಿಯಾಗಿ ಪೂರ್ಣಗೊಂಡಿದೆ",
-
     "No Records": "ದಾಖಲೆಗಳಿಲ್ಲ",
     "No pending lots found for the given date and market.": "ಈ ದಿನಾಂಕ ಮತ್ತು ಮಾರುಕಟ್ಟೆಗೆ ಯಾವುದೇ ಬಾಕಿ ಲಾಟ್‌ಗಳು ಕಂಡುಬಂದಿಲ್ಲ.",
     "Failed to fetch records.": "ದಾಖಲೆಗಳನ್ನು ಪಡೆಯಲು ವಿಫಲವಾಗಿದೆ.",
@@ -4556,7 +4522,6 @@
     "Transfer to Govt Account": "ಸರ್ಕಾರಿ ಖಾತೆಗೆ ವರ್ಗಾಯಿಸಿ",
     "Download Preview CSV": "ಪೂರ್ವವೀಕ್ಷಣೆ CSV ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
     "Download Bank CSV": "ಬ್ಯಾಂಕ್ CSV ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
-
     "Not Allowed": "ಅನುಮತಿ ಇಲ್ಲ",
     "You are not assigned to a market. Please contact your administrator.": "ನಿಮಗೆ ಯಾವುದೇ ಮಾರುಕಟ್ಟೆ ನಿಯೋಜಿಸಲಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ನಿರ್ವಾಹಕರನ್ನು ಸಂಪರ್ಕಿಸಿ.",
     "Buyer not found.": "ಖರೀದಿದಾರರು ಕಂಡುಬಂದಿಲ್ಲ.",
@@ -4666,7 +4631,6 @@
     "User Details Report": "ಬಳಕೆದಾರ ವಿವರಗಳ ವರದಿ",
     "User Master Details Report": "ಬಳಕೆದಾರ ಮಾಸ್ಟರ್ ವಿವರಗಳ ವರದಿ",
     "Select filters to view and export user master data": "ಬಳಕೆದಾರ ಮಾಸ್ಟರ್ ಮಾಹಿತಿಯನ್ನು ವೀಕ್ಷಿಸಲು ಮತ್ತು ರಫ್ತು ಮಾಡಲು ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ",
-
     "Trainer Details Report": "ತರಬೇತುದಾರರ ವಿವರಗಳ ವರದಿ",
     "Select filters to view and export trainer details data": "ತರಬೇತಿದಾರರ ವಿವರಗಳ ಮಾಹಿತಿಯನ್ನು ವೀಕ್ಷಿಸಲು ಮತ್ತು ರಫ್ತು ಮಾಡಲು ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ",
     "Trainee Details Report": "ತರಬೇತಿ ಪಡೆಯುವವರ ವಿವರಗಳ ವರದಿ",
@@ -4683,7 +4647,6 @@
     "Select filters to view and export farmer mulberry extension data": "ರೈತರ ಹಿಪ್ಪುನೇರಳೆ ವಿಸ್ತರಣೆ ಮಾಹಿತಿಯನ್ನು ವೀಕ್ಷಿಸಲು ಮತ್ತು ರಫ್ತು ಮಾಡಲು ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ",
     "Supply Of Disinfectant Report": "ಸೋಂಕುನಾಶಕ ಪೂರೈಕೆ ವರದಿ",
     "Select filters to view and export supply of disinfectant data": "ಸೋಂಕುನಾಶಕ ಪೂರೈಕೆ ಮಾಹಿತಿಯನ್ನು ವೀಕ್ಷಿಸಲು ಮತ್ತು ರಫ್ತು ಮಾಡಲು ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ",
-
     "Duration": "ಅವಧಿ",
     "Training Name": "ತರಬೇತಿ ಹೆಸರು",
     "Trainer": "ತರಬೇತಿದಾರ",
@@ -4806,6 +4769,11 @@
     "Mulberry Expansion Report": "ಹಿಪ್ಪುನೇರಳೆ ವಿಸ್ತರಣೆ ವರದಿ",
     "Supply Of Disinfectants Report": "ಸೋಂಕುನಿವಾರಕಗಳ ಪೂರೈಕೆ ವರದಿ",
     "Training Deputation Tracket Report": "ತರಬೇತಿ ನಿಯೋಜನೆ ವಿವರಗಳ ವರದಿ",
-    "Select User Type": "ಬಳಕೆದಾರ ಪ್ರಕಾರವನ್ನು ಆಯ್ಕೆಮಾಡಿ"
+    "Select User Type": "ಬಳಕೆದಾರ ಪ್ರಕಾರವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+    "Transaction Details Required": "ವಹಿವಾಟಿನ ವಿವರಗಳು ಅಗತ್ಯವಿದೆ",
+    "Please fill the transaction details before saving.": "ಉಳಿಸುವ ಮೊದಲು ವಹಿವಾಟಿನ ವಿವರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ.",
+    "No Of DFL's is required": "DFLಗಳ ಸಂಖ್ಯೆ ಅಗತ್ಯವಿದೆ",
+    "Bidding Slip Number is required": "ಬಿಡ್ಡಿಂಗ್ ಸ್ಲಿಪ್ ಸಂಖ್ಯೆ ಅಗತ್ಯವಿದೆ",
+    "Crop Details-Commercial Market": "ಬೆಳೆ ವಿವರಗಳು-ವಾಣಿಜ್ಯ ಮಾರುಕಟ್ಟೆ"
   }
 }
