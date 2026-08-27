@@ -2277,7 +2277,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     },
 
     {
-      name: "DevAcre",
+      name: t("DevAcre"),
       selector: (row) => row.devAcre,
       // cell: (row) => (
       //   <Form.Control
@@ -2294,7 +2294,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       hide: "md",
     },
     {
-      name: "DevGunta",
+      name: t("DevGunta"),
       selector: (row) => row.devGunta,
       // cell: (row) => (
       //   <Form.Control
@@ -2311,7 +2311,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       hide: "md",
     },
     {
-      name: "DevFGunta",
+      name: t("DevFGunta"),
       selector: (row) => row.devFGunta,
       // cell: (row) => (
       //   <Form.Control
@@ -2370,18 +2370,18 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
   const deleteError = () => {
     Swal.fire({
       icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Delete attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
   const deleteConfirm = (id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "It will delete permanently!",
+      title: t("Are you sure?"),
+      text: t("It will delete permanently!"),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: t("Yes, delete it!"),
     }).then((result) => {
       if (result.value) {
         const response = api
@@ -2390,8 +2390,8 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
             // deleteConfirm(_id);
             handleView();
             Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
+              t("Deleted"),
+              t("You successfully deleted this record"),
               "success"
             );
           })
@@ -2401,22 +2401,22 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         // Swal.fire("Deleted", "You successfully deleted this record", "success");
       } else {
         console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
+        Swal.fire(t("Cancelled"), t("Your record is not deleted"), "info");
       }
     });
   };
 
   const DocumentsUploaded = [
-    
+
     {
-      name: "Document Name",
-      selector: (row) => row.documentName,  
+      name: t("Document Name"),
+      selector: (row) => row.documentName,
       cell: (row) => <span>{row.documentName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Document Path",
+      name: t("Document Path"),
       selector: (row) => row.documentPath,
       cell: (row) => <span>{row.documentPath}</span>,
       sortable: true,
@@ -2424,7 +2424,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     },
 
     {
-      name: "Documents",
+      name: t("Documents"),
       selector: (row) => row.documentPath,
       cell: (row) => (
         <div>
@@ -2448,7 +2448,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                 className="ms-2"
                 onClick={() => downloadFile(row.documentPath)}
               >
-                Download Selected File
+                {t("Download Selected File")}
               </Button>
             </>
           )}
@@ -2603,7 +2603,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
   `;
 
   return (
-    <Layout title=" Edit Scheme Details Form">
+    <Layout title={t("Edit Scheme Details Form")}>
       <style>{serviceApplicationEditStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
@@ -3772,7 +3772,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                 onClick={() => handleAttachFileUpload(uploadDocuments.documentTypeId)}
                 disabled={uploadStatus[uploadDocuments.documentTypeId]} // Disable button if this document is uploaded
               >
-                {uploadStatus[uploadDocuments.documentTypeId] ? "Uploaded" : "Upload"}
+                {uploadStatus[uploadDocuments.documentTypeId] ? t("Uploaded") : t("Upload")}
               </Button>
                 </li>
         </ul>
