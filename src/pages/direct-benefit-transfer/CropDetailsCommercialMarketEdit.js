@@ -247,7 +247,7 @@ const { t } = useTranslation();
   const updateSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Updated successfully",
+      title: t("Updated successfully"),
       // text: "You clicked the button!",
     }).then(() => navigate("#"));
   };
@@ -255,25 +255,25 @@ const { t } = useTranslation();
     Swal.fire({
       icon: "error",
       title: message,
-      text: "Something went wrong!",
+      text: t("Something went wrong!"),
     });
   };
   const editError = (message) => {
     Swal.fire({
       icon: "error",
       title: message,
-      text: "Something went wrong!",
+      text: t("Something went wrong!"),
     }).then(() => navigate("#"));
   };
 
   return (
-    <Layout title="Edit Crop Details-Commercial Market">
+    <Layout title={t("Edit Crop Details-Commercial Market")}>
       <style>{cropDetailsCommercialMarketEditStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Edit Crop Details-Commercial Market</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Edit Crop Details-Commercial Market")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -283,7 +283,7 @@ const { t } = useTranslation();
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
                 <li>
@@ -292,7 +292,7 @@ const { t } = useTranslation();
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
               </ul>
@@ -560,7 +560,7 @@ const { t } = useTranslation();
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Lot No is required
+                          {t("Lot No is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -582,7 +582,7 @@ const { t } = useTranslation();
                                 required
                               />
                               <Form.Control.Feedback type="invalid">
-                              Bidding Slip Number is required
+                              {t("Bidding Slip Number is required")}
                               </Form.Control.Feedback>
                             </div>
                           </Form.Group>
@@ -606,7 +606,7 @@ const { t } = useTranslation();
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Chawki Percentage is required
+                          {t("Chawki Percentage is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -672,7 +672,7 @@ const { t } = useTranslation();
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          No Of DFL's is required
+                          {t("No Of DFL's is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -735,7 +735,7 @@ const { t } = useTranslation();
                         <Col lg="4">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label htmlFor="sordfl">
-                          {t("Bidding Slip LOt No")}<span className="text-danger">*</span>
+                          {t("Bidding Slip Lot No")}<span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Control
@@ -744,11 +744,11 @@ const { t } = useTranslation();
                             value={data.biddingSlipNo}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("Bidding Slip LOt No")}
+                            placeholder={t("Bidding Slip Lot No")}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Bidding Slip LOt No is required
+                          {t("Bidding Slip Lot No is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -766,7 +766,7 @@ const { t } = useTranslation();
                             value={data.cocoonRatePerKg}
                             onChange={handleInputs}
                             type="text"
-                            placeholder={t("Bidding Slip No")}
+                            placeholder={t("Enter Cocoon Rate Per Kg")}
                             // required
                           />
                           {/* <Form.Control.Feedback type="invalid">
