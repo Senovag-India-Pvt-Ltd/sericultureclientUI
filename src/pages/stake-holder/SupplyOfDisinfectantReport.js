@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function 
 SupplyOfDisinfectantReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 25;
@@ -82,7 +82,7 @@ SupplyOfDisinfectantReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
   };
@@ -243,18 +243,18 @@ SupplyOfDisinfectantReport() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),                 selector: (row) => row.serialNumber,         cell: (row) => <span>{row.serialNumber}</span>,         sortable: true, hide: "md" },
-    { name: colHeader("Farmer Name"),           selector: (row) => row.farmerName,           cell: (row) => <span>{row.farmerName}</span>,           sortable: true, hide: "md" },
-    { name: colHeader("Father Name"),           selector: (row) => row.fatherName,           cell: (row) => <span>{row.fatherName}</span>,           sortable: true, hide: "md" },
-    { name: colHeader("Fruits Id"),             selector: (row) => row.fruitsId,             cell: (row) => <span>{row.fruitsId}</span>,             sortable: true, hide: "md" },
-    { name: colHeader("Quantity"),              selector: (row) => row.quantity,             cell: (row) => <span>{row.quantity}</span>,             sortable: true, hide: "md" },
-    { name: colHeader("Disinfectant Name"),     selector: (row) => row.disinfectantName,     cell: (row) => <span>{row.disinfectantName}</span>,     sortable: true, hide: "md" },
-    { name: colHeader("Quantity Supplied"),     selector: (row) => row.quantitySupplied,     cell: (row) => <span>{row.quantitySupplied}</span>,     sortable: true, hide: "md" },
-    { name: colHeader("Supply Date"),           selector: (row) => row.supplyDate,           cell: (row) => <span>{row.supplyDate}</span>,           sortable: true, hide: "md" },
-    { name: colHeader("Size Of Rearing House"), selector: (row) => row.sizeOfRearingHouse,   cell: (row) => <span>{row.sizeOfRearingHouse}</span>,   sortable: true, hide: "md" },
-    { name: colHeader("Number of DFLs"),        selector: (row) => row.noOfDfls,             cell: (row) => <span>{row.noOfDfls}</span>,             sortable: true, hide: "md" },
-    { name: colHeader("Disinfectant"),          selector: (row) => row.disinfectantMasterName,cell: (row) => <span>{row.disinfectantMasterName}</span>,sortable: true, hide: "md" },
-    { name: colHeader("TSC"),                   selector: (row) => row.tscName,              cell: (row) => <span>{row.tscName}</span>,              sortable: true, hide: "md" },
+    { name: colHeader(t("Sl.No")),                 selector: (row) => row.serialNumber,         cell: (row) => <span>{row.serialNumber}</span>,         sortable: true, hide: "md" },
+    { name: colHeader(t("Farmer Name")),           selector: (row) => row.farmerName,           cell: (row) => <span>{row.farmerName}</span>,           sortable: true, hide: "md" },
+    { name: colHeader(t("Father Name")),           selector: (row) => row.fatherName,           cell: (row) => <span>{row.fatherName}</span>,           sortable: true, hide: "md" },
+    { name: colHeader(t("Fruits Id")),             selector: (row) => row.fruitsId,             cell: (row) => <span>{row.fruitsId}</span>,             sortable: true, hide: "md" },
+    { name: colHeader(t("Quantity")),              selector: (row) => row.quantity,             cell: (row) => <span>{row.quantity}</span>,             sortable: true, hide: "md" },
+    { name: colHeader(t("Disinfectant Name")),     selector: (row) => row.disinfectantName,     cell: (row) => <span>{row.disinfectantName}</span>,     sortable: true, hide: "md" },
+    { name: colHeader(t("Quantity Supplied")),     selector: (row) => row.quantitySupplied,     cell: (row) => <span>{row.quantitySupplied}</span>,     sortable: true, hide: "md" },
+    { name: colHeader(t("Supply Date")),           selector: (row) => row.supplyDate,           cell: (row) => <span>{row.supplyDate}</span>,           sortable: true, hide: "md" },
+    { name: colHeader(t("Size Of Rearing House")), selector: (row) => row.sizeOfRearingHouse,   cell: (row) => <span>{row.sizeOfRearingHouse}</span>,   sortable: true, hide: "md" },
+    { name: colHeader(t("Number of DFLs")),        selector: (row) => row.noOfDfls,             cell: (row) => <span>{row.noOfDfls}</span>,             sortable: true, hide: "md" },
+    { name: colHeader(t("Disinfectant")),          selector: (row) => row.disinfectantMasterName,cell: (row) => <span>{row.disinfectantMasterName}</span>,sortable: true, hide: "md" },
+    { name: colHeader(t("TSC")),                   selector: (row) => row.tscName,              cell: (row) => <span>{row.tscName}</span>,              sortable: true, hide: "md" },
   ];
 
   return (
@@ -276,8 +276,8 @@ SupplyOfDisinfectantReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>🧴</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Supply Of Disinfectant Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export supply of disinfectant data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Supply Of Disinfectant Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export supply of disinfectant data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -288,7 +288,7 @@ SupplyOfDisinfectantReport() {
                   <option value="">{t("select_tsc")}</option>
                   {tscListData.map((list) => (
                     <option key={list.tscMasterId} value={list.tscMasterId}>
-                      {list.name}
+                      {i18n.language === "kn" ? list.nameInKannada : list.name}
                     </option>
                   ))}
                 </Form.Select>

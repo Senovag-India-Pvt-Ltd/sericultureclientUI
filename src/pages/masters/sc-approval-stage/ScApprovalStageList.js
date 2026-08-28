@@ -6,7 +6,7 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import SearchableSelect from "../../../components/SearchableSelect/SearchableSelect";
 // import DataTable from "../../../components/DataTable/DataTable";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 import StateDatas from "../../../store/masters/state/StateData";
 import { useNavigate } from "react-router-dom";
 import React from "react";
@@ -333,7 +333,7 @@ function ScApprovalStageList() {
                 options={stageOptions}
                 value={stageFilter}
                 onChange={setStageFilter}
-                placeholder="All Stages"
+                placeholder={t("All Stages")}
               />
             </div>
 
@@ -371,7 +371,7 @@ function ScApprovalStageList() {
                 >
                   <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "180px" }}>
                     {checkboxFilters.length === 0
-                      ? "Select Actions"
+                      ? t("Select Actions")
                       : `${checkboxFilters.length} selected`}
                   </span>
                 </Dropdown.Toggle>
@@ -474,6 +474,8 @@ function ScApprovalStageList() {
               paginationPerPage={50}
               paginationRowsPerPageOptions={[50, 100, 200]}
               progressPending={loading}
+              progressComponent={<div className="py-4">{t("Loading...")}</div>}
+              noDataComponent={<div className="py-4">{t("There are no records to display")}</div>}
               theme="solarized"
               customStyles={customStyles}
             />

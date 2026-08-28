@@ -5,7 +5,7 @@ import Block from "../../../components/Block/Block";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../../../src/services/auth/api";
 import { Icon } from "../../../components";
 import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -31,7 +31,7 @@ function DocumentsEdit() {
       documentMasterId: id,
       documentMasterName: data.documentMasterName,
     };
-    axios
+    api
       .post(baseURL + `documentMaster/edit`, datas, {
         headers: _header,
       })
@@ -47,7 +47,7 @@ function DocumentsEdit() {
   //   to get data from api
   const getIdList = () => {
     setLoading(true);
-    axios
+    api
       .get(baseURL + `documentMaster/get/${id}`)
       .then((response) => {
         setData(response.data.content);
@@ -91,7 +91,7 @@ function DocumentsEdit() {
   };
 
   return (
-    <Layout title="Edit Document" content="container">
+    <Layout title="Edit Document">
       <style>{documentEditStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
@@ -149,7 +149,7 @@ function DocumentsEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">

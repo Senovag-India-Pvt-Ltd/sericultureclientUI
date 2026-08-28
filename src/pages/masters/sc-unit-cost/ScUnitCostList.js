@@ -6,7 +6,7 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import { createTheme } from "react-data-table-component";
 // import DataTable from "../../../components/DataTable/DataTable";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
@@ -338,7 +338,7 @@ function ScUnitCostList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By
+                  {t("Search By")}
                 </Form.Label>
                 <Col sm={3}>
                   <div className="form-control-wrap">
@@ -361,7 +361,7 @@ function ScUnitCostList() {
                     value={data.text}
                     onChange={handleInputs}
                     type="text"
-                    placeholder="Search"
+                    placeholder={t("Search")}
                   />
                 </Col>
                 <Col sm={3}>
@@ -388,6 +388,8 @@ function ScUnitCostList() {
               }}
               onChangePage={(page) => setPage(page - 1)}
               progressPending={loading}
+              progressComponent={<div className="py-4">{t("Loading...")}</div>}
+              noDataComponent={<div className="py-4">{t("There are no records to display")}</div>}
               theme="solarized"
               customStyles={customStyles}
             />

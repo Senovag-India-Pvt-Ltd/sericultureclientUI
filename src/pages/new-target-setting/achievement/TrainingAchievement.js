@@ -7,7 +7,7 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 import { useTranslation } from "react-i18next";
 // import axios from "axios";
 import api from "../../../services/auth/api";
@@ -1378,14 +1378,14 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
     });
   };
  return (
-  <Layout title={t("Training Institute  Wise Achievement")}>
+  <Layout title={t("Training Institute Wise Achievement")}>
     <style>{trainingAchievementStyles}</style>
     <Block.Head>
       <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2" className="sh-page-title">
-              {t("Training Institute  Wise Achievement")}
+              {t("Training Institute Wise Achievement")}
             </Block.Title>
           </Block.HeadContent>
           {/* Removed View button */}
@@ -1405,7 +1405,7 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
                   <Card className="sh-section-card">
                     <Card.Header className="sh-section-header">
                       <Icon name="activity-round" />
-                      <span>{t("Training Institute  Wise Achievement")}</span>
+                      <span>{t("Training Institute Wise Achievement")}</span>
                     </Card.Header>
                     <Card.Body>
                     
@@ -1628,7 +1628,7 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
           });
         }}
         type="number"
-        placeholder={t("Enter Value")}
+        placeholder={t("Enter Financial Achievement Value")}
         required
       />
       <Form.Control.Feedback type="invalid">
@@ -1663,7 +1663,7 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
           });
         }}
         type="number"
-        placeholder={t("Enter Value")}
+        placeholder={t("Enter Physical Achievement Value")}
         required
       />
       <Form.Control.Feedback type="invalid">
@@ -1786,7 +1786,7 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
         <Modal.Header closeButton className="sh-modal-header">
           <Modal.Title>
             <Icon name="edit" />
-            <span>{t("Training Institute  Wise Achievement")}</span>
+            <span>{t("Training Institute Wise Achievement")}</span>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -2068,8 +2068,10 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
         paginationComponentOptions={{
           noRowsPerPage: true,
         }}
-        onChangePage={(page) => setPage2(page - 1)}   
+        onChangePage={(page) => setPage2(page - 1)}
         progressPending={loading}
+        progressComponent={<div className="p-3">{t("Loading...")}</div>}
+        noDataComponent={t("There are no records to display")}
         theme="solarized"
         customStyles={customStyles}
       />
@@ -2085,8 +2087,10 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
         paginationComponentOptions={{
           noRowsPerPage: true,
         }}
-        onChangePage={(page) => setPage1(page - 1)}   
+        onChangePage={(page) => setPage1(page - 1)}
         progressPending={loading}
+        progressComponent={<div className="p-3">{t("Loading...")}</div>}
+        noDataComponent={t("There are no records to display")}
         theme="solarized"
         customStyles={customStyles}
       />
@@ -2127,8 +2131,10 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
           paginationComponentOptions={{
             noRowsPerPage: true,
           }}
-          onChangePage={(page) => setPage4(page - 1)}   
+          onChangePage={(page) => setPage4(page - 1)}
           progressPending={loading}
+          progressComponent={<div className="p-3">{t("Loading...")}</div>}
+          noDataComponent={t("There are no records to display")}
           theme="solarized"
           customStyles={customStyles}
         />
@@ -2144,8 +2150,10 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
           paginationComponentOptions={{
             noRowsPerPage: true,
           }}
-          onChangePage={(page) => setPage3(page - 1)}   
+          onChangePage={(page) => setPage3(page - 1)}
           progressPending={loading}
+          progressComponent={<div className="p-3">{t("Loading...")}</div>}
+          noDataComponent={t("There are no records to display")}
           theme="solarized"
           customStyles={customStyles}
         />

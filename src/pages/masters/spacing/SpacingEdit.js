@@ -171,7 +171,7 @@ function SpacingEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
@@ -200,7 +200,7 @@ function SpacingEdit() {
                     <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Metre
+                        {t("Metre")}
                         {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -210,7 +210,7 @@ function SpacingEdit() {
                           type="text"
                           value={data.metre}
                           onChange={handleInputs}
-                          placeholder="Enter Metre"
+                          placeholder={t("Enter Metre")}
                           // required
                         />
                         {/* <Form.Control.Feedback type="invalid">
@@ -223,7 +223,7 @@ function SpacingEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Length
+                        {t("Length")}
                         {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -233,7 +233,7 @@ function SpacingEdit() {
                           type="text"
                           value={data.length}
                           onChange={handleInputs}
-                          placeholder="Enter Length"
+                          placeholder={t("Enter Length")}
                           // required
                         />
                         {/* <Form.Control.Feedback type="invalid">
@@ -246,7 +246,7 @@ function SpacingEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="title">
-                        Breadth
+                        {t("Breadth")}
                         {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -256,7 +256,7 @@ function SpacingEdit() {
                           type="text"
                           value={data.breadth}
                           onChange={handleInputs}
-                          placeholder="Enter Breadth"
+                          placeholder={t("Enter Breadth")}
                           // required
                         />
                         {/* <Form.Control.Feedback type="invalid">

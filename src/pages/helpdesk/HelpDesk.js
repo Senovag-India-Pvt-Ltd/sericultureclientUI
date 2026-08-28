@@ -20,7 +20,7 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_HELPDESK;
 function HelpDesk() {
 
   // Translation
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [data, setData] = useState({
     hdModuleId: "",
     hdFeatureId: "",
@@ -56,6 +56,15 @@ function HelpDesk() {
       });
     }
   }, [quill]);
+
+  // useQuill only reads `placeholder` once at init, so it never picks up
+  // a language switch on its own — update the DOM placeholder directly
+  // whenever quill mounts or the active language changes.
+  useEffect(() => {
+    if (quill) {
+      quill.root.dataset.placeholder = t("Enter your Query");
+    }
+  }, [quill, i18n.language, t]);
 
   const [validated, setValidated] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -787,7 +796,7 @@ const handleAttachFileUpload = async (hdTicketId) => {
                 </div>
                 <div style={{ lineHeight: 1.4 }}>
                   <div style={{ fontSize: "13px", fontWeight: 700, color: "#1e67a8", textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: "3px" }}>
-                    Helpdesk Number
+                    {t("Helpdesk Number")}
                   </div>
                   <div style={{ fontSize: "20px", fontWeight: 900, color: "#0f3060" }}>
                     080-24413900
@@ -824,7 +833,7 @@ const handleAttachFileUpload = async (hdTicketId) => {
                     </div>
                     <div style={{ lineHeight: 1.4 }}>
                       <div style={{ fontSize: "13px", fontWeight: 700, color: "#1e67a8", textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: "3px" }}>
-                        Seed Market Support For Sunday
+                        {t("Seed Market Support For Sunday")}
                       </div>
                       <div style={{ fontSize: "20px", fontWeight: 900, color: "#0f3060" }}>
                         {person}
@@ -1533,7 +1542,7 @@ const handleAttachFileUpload = async (hdTicketId) => {
                               )}
                             </>
                           ) : (
-                            <p>No file selected or file was canceled.</p>
+                            <p>{t("No file selected or file was canceled.")}</p>
                           )}
                         </Form.Group>
 

@@ -4061,7 +4061,7 @@ function Menu() {
       {showMenu.TargetSetting_Dashboard ? (
         <MenuItem>
           <MenuItemLink
-            text={t("Target Setting Dahboard")}
+            text={t("Target Setting Dashboard")}
             to="/seriui/target-setting-dashboard"
           />
         </MenuItem>

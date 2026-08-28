@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Card, Button, Col, Row, Form } from "react-bootstrap";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 import { useNavigate, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import api from "../../../../src/services/auth/api";
 import { Icon } from "../../../components";
 import { createTheme } from "react-data-table-component";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -66,6 +67,8 @@ const customStyles = {
   pagination: { style: { borderTop: "1px solid #eef1f6", fontSize: "13px", color: "#5a6577" } },
 };
 function UserHierarchyMappingList() {
+  // Translation
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   const [filters, setFilters] = useState({
@@ -231,16 +234,16 @@ const downloadCompleted = async () => {
   // ---------------- TABLE COLUMNS ----------------
   const managerColumns = [
     {
-      name: "Reports To (Manager)",
+      name: t("Reports To (Manager)"),
       selector: (row) => row.managerName,
     },
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         <>
           <Button size="sm" onClick={() => handleEdit(row)} className="d-inline-flex align-items-center gap-1 shadow-sm">
             <Icon name="edit" />
-            <span>Edit</span>
+            <span>{t("Edit")}</span>
           </Button>
           <Button
             size="sm"
@@ -249,7 +252,7 @@ const downloadCompleted = async () => {
             onClick={() => deleteMapping(row.userHierarchyMappingId)}
           >
             <Icon name="trash" />
-            <span>Delete</span>
+            <span>{t("delete")}</span>
           </Button>
         </>
       ),
@@ -258,11 +261,11 @@ const downloadCompleted = async () => {
 
   const reporteeColumns = [
     {
-      name: "Reportee Name",
+      name: t("Reportee Name"),
       selector: (row) => row.employeeName,
     },
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         <Button
           size="sm"
@@ -271,7 +274,7 @@ const downloadCompleted = async () => {
           onClick={() => deleteMapping(row.userHierarchyMappingId)}
         >
           <Icon name="trash" />
-          <span>Delete</span>
+          <span>{t("delete")}</span>
         </Button>
       ),
     },
@@ -298,11 +301,11 @@ const downloadCompleted = async () => {
   return (
     <Layout title="User Hierarchy Mapping List">
       <style>{userHierarchyMappingListStyles}</style>
-      <div className="sh-page-header">
-        <Block.Head>
+      <Block.Head>
+        <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">User Hierarchy Mapping List</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("User Hierarchy Mapping List")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -312,7 +315,7 @@ const downloadCompleted = async () => {
                     className="btn btn-primary btn-md  d-md-none sh-cta-btn"
                   >
                     <Icon name="plus" />
-                    <span>Create</span>
+                    <span>{t("create")}</span>
                   </Link>
                 </li>
                 <li>
@@ -321,26 +324,28 @@ const downloadCompleted = async () => {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="plus" />
-                    <span>Create</span>
+                    <span>{t("create")}</span>
                   </Link>
                 </li>
               </ul>
             </Block.HeadContent>
           </Block.HeadBetween>
-        </Block.Head>
-      </div>
+        </div>
+      </Block.Head>
       <Block className="mt-n4 sh-list-wrap">
         <Card className="mt-1 sh-list-card">
           {/* 🔥 FILTER SECTION (Village Style) */}
           <Row className="m-4">
             <Col sm={2}>
               <Form.Group className="form-group mt-n4">
-                <Form.Label>Designation</Form.Label>
+                <Form.Label>{t("Designation")}</Form.Label>
                 <Form.Select name="designationId" onChange={handleInputs}>
-                  <option value="">Select</option>
+                  <option value="">{t("Select")}</option>
                   {designationList.map((d) => (
                     <option key={d.designationId} value={d.designationId}>
-                      {d.name}
+                      {i18n.language === "kn"
+                        ? d.designationNameInKannada || d.name
+                        : d.name}
                     </option>
                   ))}
                 </Form.Select>
@@ -349,12 +354,14 @@ const downloadCompleted = async () => {
 
             <Col sm={2}>
               <Form.Group className="form-group mt-n4">
-                <Form.Label>District</Form.Label>
+                <Form.Label>{t("District")}</Form.Label>
                 <Form.Select name="districtId" onChange={handleInputs}>
-                  <option value="">Select</option>
+                  <option value="">{t("Select")}</option>
                   {districtList.map((d) => (
                     <option key={d.districtId} value={d.districtId}>
-                      {d.districtName}
+                      {i18n.language === "kn"
+                        ? d.districtNameInKannada || d.districtName
+                        : d.districtName}
                     </option>
                   ))}
                 </Form.Select>
@@ -363,9 +370,9 @@ const downloadCompleted = async () => {
 
             <Col sm={2}>
               <Form.Group className="form-group mt-n4">
-                <Form.Label>User</Form.Label>
+                <Form.Label>{t("User")}</Form.Label>
                 <Form.Select name="userId" onChange={handleInputs}>
-                  <option value="">Select</option>
+                  <option value="">{t("Select")}</option>
                   {userList.map((u) => (
                     <option key={u.userMasterId} value={u.userMasterId}>
                       {u.username}
@@ -378,7 +385,7 @@ const downloadCompleted = async () => {
             <Col sm={2}>
               <Button className="mt-2 w-100 sh-save-btn" onClick={search}>
                 <Icon name="search" />
-                <span>Search</span>
+                <span>{t("search")}</span>
               </Button>
             </Col>
           </Row>
@@ -387,7 +394,7 @@ const downloadCompleted = async () => {
           {showTable && (
             <>
               <div className="px-4 sh-table-wrap">
-                <h5 className="mb-3 sh-table-heading">Manager Details</h5>
+                <h5 className="mb-3 sh-table-heading">{t("Manager Details")}</h5>
               </div>
 
               <div className="px-4 sh-table-wrap">
@@ -398,12 +405,12 @@ const downloadCompleted = async () => {
                   highlightOnHover
                   theme="solarized"
                   customStyles={customStyles}
-                  noDataComponent="No Manager Found"
+                  noDataComponent={t("No Manager Found")}
                 />
               </div>
 
               <div className="px-4 mt-4 sh-table-wrap">
-                <h5 className="mb-3 sh-table-heading">Reportees</h5>
+                <h5 className="mb-3 sh-table-heading">{t("Reportees")}</h5>
               </div>
 
               <div className="px-4 sh-table-wrap">
@@ -414,7 +421,7 @@ const downloadCompleted = async () => {
                   highlightOnHover
                   theme="solarized"
                   customStyles={customStyles}
-                  noDataComponent="No Reportees Found"
+                  noDataComponent={t("No Reportees Found")}
                 />
               </div>
             </>

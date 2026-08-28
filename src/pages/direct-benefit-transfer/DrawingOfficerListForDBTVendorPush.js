@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
-import DataTable, { defaultThemes } from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
+import { defaultThemes } from "react-data-table-component";
 import Swal from "sweetalert2";
 import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
@@ -92,8 +93,8 @@ const handleCheckXmlFile = (rows, ddoCode) => {
 
   if (!appIds || appIds.length === 0) {
     Swal.fire({
-      title: "No Applications Selected",
-      text: "Please select at least one application to check.",
+      title: t("No Applications Selected"),
+      text: t("Please select at least one application to check."),
       icon: "warning",
       confirmButtonText: "OK",
     });
@@ -134,7 +135,7 @@ const handleCheckXmlFile = (rows, ddoCode) => {
       );
     } else {
       Swal.fire({
-        title: "Action Required!",
+        title: t("Action Required!"),
         text: `Please Save the Data from "Push to DBT" Block and then try to view the details.`,
         icon: "warning",
         confirmButtonText: "OK",
@@ -295,7 +296,7 @@ const [showCheckboxes, setShowCheckboxes] = useState(false);
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
 }; 
@@ -498,27 +499,27 @@ const [searchClicked, setSearchClicked] = useState(false);
 // Validation function for critical fields
 const validateSelectionFields = (showAlert = true) => {
   if (!addressDetails.scSchemeDetailsId || addressDetails.scSchemeDetailsId === 0) {
-    if (showAlert) Swal.fire({ icon: "warning", title: "Please select Scheme", text: "Scheme is required before selecting rows." });
+    if (showAlert) Swal.fire({ icon: "warning", title: t("Please select Scheme"), text: t("Scheme is required before selecting rows.") });
     return false;
   }
 
   if (!addressDetails.subSchemeId || addressDetails.subSchemeId === 0) {
-    if (showAlert) Swal.fire({ icon: "warning", title: "Please select Component Type", text: "Component Type is required before selecting rows." });
+    if (showAlert) Swal.fire({ icon: "warning", title: t("Please select Component Type"), text: t("Component Type is required before selecting rows.") });
     return false;
   }
 
   if (!addressDetails.componentId || addressDetails.componentId === 0) {
-    if (showAlert) Swal.fire({ icon: "warning", title: "Please select Component", text: "Component is required before selecting rows." });
+    if (showAlert) Swal.fire({ icon: "warning", title: t("Please select Component"), text: t("Component is required before selecting rows.") });
     return false;
   }
 
   if (!addressDetails.scCategoryId || addressDetails.scCategoryId === 0) {
-    if (showAlert) Swal.fire({ icon: "warning", title: "Please select Sub Component", text: "Sub Component is required before selecting rows." });
+    if (showAlert) Swal.fire({ icon: "warning", title: t("Please select Sub Component"), text: t("Sub Component is required before selecting rows.") });
     return false;
   }
 
   if (!addressDetails.financialYearId || addressDetails.financialYearId === 0) {
-    if (showAlert) Swal.fire({ icon: "warning", title: "Please select Financial Year", text: "Financial Year is required before selecting rows." });
+    if (showAlert) Swal.fire({ icon: "warning", title: t("Please select Financial Year"), text: t("Financial Year is required before selecting rows.") });
     return false;
   }
 
@@ -1039,7 +1040,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
       categoryId
     ) => {
       Swal.fire({
-        title: "Generate Sanction Order",
+        title: t("Generate Sanction Order"),
         text: "Select the recipient:",
         showCancelButton: true,
         confirmButtonText: "Farmer/Reeler",
@@ -1328,7 +1329,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
   const deleteApplicationConfirm = (_id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "This will permanently delete the application from all records!",
+      text: t("This will permanently delete the application from all records!"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -1353,15 +1354,15 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
   const deleteError = () => {
     Swal.fire({
       icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Delete attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
   const deleteConfirm = (_id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "It will delete permanently!",
+      text: t("It will delete permanently!"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, delete it!",
@@ -1445,7 +1446,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
   const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Pushed successfully",
+      title: t("Pushed successfully"),
       text: message,
     });
   };
@@ -1453,7 +1454,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
   // const pushedSuccess = (b,f) => {
   //   Swal.fire({
   //     icon: "success",
-  //     title: "Pushed successfully",
+  //     title: t("Pushed successfully"),
   //     text:  `Beneficiary Id is ${b} and Fruits Id is ${f}`,
   //     // text: message,
   //   });
@@ -1468,7 +1469,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
 
   Swal.fire({
     icon: "success",
-    title: "Pushed successfully",
+    title: t("Pushed successfully"),
     html: `Application Details:<br>${details}`,
     confirmButtonText: "OK", // show OK button
   }).then(() => {
@@ -1488,7 +1489,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -2557,16 +2558,16 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
                   >
                     <thead style={styles.headerStyle}>
                       <tr>
-                        <th style={{ width: "10%" }}>Fruits Id</th>
-                        <th style={{ width: "10%" }}>Beneficiary Id</th>
-                        <th style={{ width: "10%" }}>Scheme Amount</th>
-                        <th style={{ width: "10%" }}>Sanction No</th>
-                        <th style={{ width: "10%" }}>Financial Year</th>
-                        <th style={{ width: "10%" }}>Payment Mode</th>
-                        <th style={{ width: "10%" }}>File Name</th>
-                        <th style={{ width: "10%" }}>DBT Push Type</th>
-                        <th style={{ width: "10%" }}>Status</th>
-                        <th style={{ width: "10%" }}>Remarks</th>
+                        <th style={{ width: "10%" }}>{t("FRUITS ID")}</th>
+                        <th style={{ width: "10%" }}>{t("Beneficiary ID")}</th>
+                        <th style={{ width: "10%" }}>{t("Scheme Amount")}</th>
+                        <th style={{ width: "10%" }}>{t("Sanction Number")}</th>
+                        <th style={{ width: "10%" }}>{t("Financial Year")}</th>
+                        <th style={{ width: "10%" }}>{t("Payment Mode")}</th>
+                        <th style={{ width: "10%" }}>{t("File Name")}</th>
+                        <th style={{ width: "10%" }}>{t("DBT Push Type")}</th>
+                        <th style={{ width: "10%" }}>{t("Status")}</th>
+                        <th style={{ width: "10%" }}>{t("Remarks")}</th>
                       </tr>
                     </thead>
                     <tbody>

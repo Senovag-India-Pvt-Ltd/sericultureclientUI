@@ -231,14 +231,14 @@ function RegisteredSeedProducerNssoGrainages() {
   };
 
   return (
-    <Layout title={t("Preparation Of Eggs (DFLs) RSP/NSSO")}>
+    <Layout title={t("Preparation of Eggs (DFLs) RSP/NSSO")}>
       <style>{registeredSeedProducerNssoFormStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
               <Block.Title tag="h2" className="sh-page-title">
-                {t("Preparation Of Eggs (DFLs) RSP/NSSO")}
+                {t("Preparation of Eggs (DFLs) RSP/NSSO")}
               </Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
@@ -272,14 +272,14 @@ function RegisteredSeedProducerNssoGrainages() {
           <Card className="sh-section-card">
             <Card.Header className="sh-section-header">
               <Icon name="grid" />
-              <span>{t("Preparation Of Eggs (DFLs) RSP/NSSO")}</span>
+              <span>{t("Preparation of Eggs (DFLs) RSP/NSSO")}</span>
             </Card.Header>
             <Card.Body>
               <Row className="g-gs">
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      {t("Cocoon Lot Number(MSC,Fc1,Fc2)")}
+                      {t("Cocoon Lot Number (MSC, Fc1, Fc2)")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -289,11 +289,11 @@ function RegisteredSeedProducerNssoGrainages() {
                         type="number"
                         value={data.cocoonLotNumber}
                         onChange={handleInputs}
-                        placeholder={t("Enter Cocoon Lot Number(MSC,Fc1,Fc2)")}
+                        placeholder={t("Enter Cocoon Lot Number (MSC, Fc1, Fc2)")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        {t("Cocoon Lot Number(MSC,Fc1,Fc2) is required")}
+                        {t("Cocoon Lot Number (MSC, Fc1, Fc2) is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>
@@ -301,7 +301,7 @@ function RegisteredSeedProducerNssoGrainages() {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      {t("Number of Cocoons (MSC,Fc1,Fc2)")}
+                      {t("Number of Cocoons (MSC, Fc1, Fc2)")}
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -311,11 +311,11 @@ function RegisteredSeedProducerNssoGrainages() {
                         type="number"
                         value={data.numberOfCocoonsCB}
                         onChange={handleInputs}
-                        placeholder={t("Enter Number of Cocoons (MSC,Fc1,Fc2)")}
+                        placeholder={t("Enter Number of Cocoons (MSC, Fc1, Fc2)")}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        {t("Number of Cocoons (MSC,Fc1,Fc2) is required")}
+                        {t("Number of Cocoons (MSC, Fc1, Fc2) is required")}
                       </Form.Control.Feedback>
                     </div>
                   </Form.Group>

@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SericultureTable() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -192,8 +192,13 @@ function SericultureTable() {
         .filter((g) => g.stageIds.length > 0)
     );
 
-  const stageName = (stageId) =>
-    approvalStages.find((s) => s.scApprovalStageId === stageId)?.stageName || `Stage ${stageId}`;
+  const stageName = (stageId) => {
+    const stage = approvalStages.find((s) => s.scApprovalStageId === stageId);
+    if (!stage) return `Stage ${stageId}`;
+    return i18n.language === "kn"
+      ? stage.stageNameInKannada || stage.stageName
+      : stage.stageName;
+  };
 
   // ── Save — each group's stages get that group's own daysCount ────────────
   const postData = async () => {
@@ -260,43 +265,36 @@ function SericultureTable() {
 
   return (
     <Layout title="Sericulture Table">
+      <style>{sericultureTableStyles}</style>
       <Block.Head>
-        <Block.HeadBetween>
-          <Block.HeadContent>
-            <Block.Title tag="h2">{t("Sericulture Table")}</Block.Title>
-            <nav>
-              <ol className="breadcrumb breadcrumb-arrow mb-0">
-                <li className="breadcrumb-item"><Link to="/seriui/">{t("Home")}</Link></li>
-                <li className="breadcrumb-item">
-                  <Link to="/seriui/sericulture-table-list">{t("Sericulture Table List")}</Link>
+        <div className="sh-page-header">
+          <Block.HeadBetween>
+            <Block.HeadContent>
+              <Block.Title tag="h2" className="sh-page-title">{t("Sericulture Table")}</Block.Title>
+            </Block.HeadContent>
+            <Block.HeadContent>
+              <ul className="d-flex">
+                <li>
+                  <Link to="/seriui/sericulture-table-list" className="btn btn-primary btn-md d-md-none sh-cta-btn">
+                    <Icon name="arrow-long-left" /><span>{t("Go To List")}</span>
+                  </Link>
                 </li>
-                <li className="breadcrumb-item active" aria-current="page">{t("Add New")}</li>
-              </ol>
-            </nav>
-          </Block.HeadContent>
-          <Block.HeadContent>
-            <ul className="d-flex">
-              <li>
-                <Link to="/seriui/sericulture-table-list" className="btn btn-primary btn-md d-md-none">
-                  <Icon name="arrow-long-left" /><span>{t("Go To List")}</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/seriui/sericulture-table-list" className="btn btn-primary d-none d-md-inline-flex">
-                  <Icon name="arrow-long-left" /><span>{t("Go To List")}</span>
-                </Link>
-              </li>
-            </ul>
-          </Block.HeadContent>
-        </Block.HeadBetween>
+                <li>
+                  <Link to="/seriui/sericulture-table-list" className="btn btn-primary d-none d-md-inline-flex sh-cta-btn">
+                    <Icon name="arrow-long-left" /><span>{t("Go To List")}</span>
+                  </Link>
+                </li>
+              </ul>
+            </Block.HeadContent>
+          </Block.HeadBetween>
+        </div>
       </Block.Head>
 
-      <Block className="mt-3">
-        <Card style={{ borderRadius: "12px", boxShadow: "0 2px 12px rgba(0,0,0,0.08)", border: "none", overflow: "hidden" }}>
-          <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", padding: "16px 24px" }}>
-            <span style={{ color: "white", fontWeight: 700, fontSize: "1rem" }}>
-              ➕ {t("Add Sericulture Table Mapping")}
-            </span>
+      <Block className="mt-n4 sh-form-wrap">
+        <Card className="sh-section-card">
+          <Card.Header className="sh-section-header">
+            <Icon name="plus" />
+            <span>{t("Add Sericulture Table Mapping")}</span>
           </Card.Header>
 
           <Card.Body style={{ padding: "28px 24px" }}>
@@ -396,8 +394,8 @@ function SericultureTable() {
                     {availableStages.length === 0 ? (
                       <p className="text-muted mb-0 text-center" style={{ padding: "20px 0" }}>
                         {approvalStages.length === 0
-                          ? "No approval stages available."
-                          : "All approval stages are already assigned to a group below."}
+                          ? t("No approval stages available.")
+                          : t("All approval stages are already assigned to a group below.")}
                       </p>
                     ) : (
                       <Row className="g-2">
@@ -439,7 +437,9 @@ function SericultureTable() {
                                     lineHeight: 1.3,
                                   }}
                                 >
-                                  {stage.stageName}
+                                  {i18n.language === "kn"
+                                    ? stage.stageNameInKannada || stage.stageName
+                                    : stage.stageName}
                                 </span>
                               </div>
                             </Col>
@@ -518,7 +518,7 @@ function SericultureTable() {
                         >
                           <div className="d-flex align-items-center justify-content-between flex-wrap" style={{ gap: "8px", marginBottom: "8px" }}>
                             <span style={{ fontWeight: 700, color: "#2e7d32", fontSize: "0.85rem" }}>
-                              Group {gi + 1} — ⏱ {group.daysCount} {t("day(s)")} — {group.stageIds.length} {t("stage(s)")}
+                              {t("Group")} {gi + 1} — ⏱ {group.daysCount} {t("day(s)")} — {group.stageIds.length} {t("stage(s)")}
                             </span>
                             <Button
                               size="sm"
@@ -563,8 +563,6 @@ function SericultureTable() {
 
           <Card.Footer
             style={{
-              background: "#fafbff",
-              borderTop: "1px solid #eef0f5",
               padding: "14px 24px",
               display: "flex",
               justifyContent: "center",
@@ -575,15 +573,7 @@ function SericultureTable() {
               type="button"
               onClick={postData}
               disabled={saving}
-              style={{
-                background: "linear-gradient(135deg, #1e67a8, #0d4f8a)",
-                border: "none",
-                borderRadius: "8px",
-                padding: "9px 32px",
-                fontWeight: 700,
-                fontSize: "0.9rem",
-                minWidth: "120px",
-              }}
+              className="sh-save-btn"
             >
               {saving ? (
                 <><span className="spinner-border spinner-border-sm me-2" />{t("Saving...")}</>
@@ -591,16 +581,7 @@ function SericultureTable() {
             </Button>
             <Link
               to="/seriui/sericulture-table-list"
-              className="btn"
-              style={{
-                background: "#f1f3f5",
-                border: "none",
-                borderRadius: "8px",
-                padding: "9px 28px",
-                fontWeight: 600,
-                fontSize: "0.9rem",
-                color: "#555",
-              }}
+              className="btn sh-cancel-btn"
             >
               {t("Cancel")}
             </Link>
@@ -610,5 +591,110 @@ function SericultureTable() {
     </Layout>
   );
 }
+
+const sericultureTableStyles = `
+  .sh-page-header {
+    padding: 20px 24px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
+    margin-bottom: 22px;
+  }
+  .sh-page-title {
+    margin-bottom: 4px;
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .sh-cta-btn {
+    background: #ffffff;
+    color: #1e67a8 !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(12, 40, 68, 0.25);
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .sh-cta-btn:hover {
+    background: #eef6ff;
+    color: #1e67a8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(12, 40, 68, 0.32);
+  }
+  .sh-form-wrap {
+    background: #eef2f8;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .sh-form-wrap .card,
+  .sh-section-card {
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1);
+    overflow: hidden;
+  }
+  .sh-form-wrap .card-header {
+    border-bottom: none !important;
+  }
+  .sh-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.3px;
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border-left: none !important;
+    color: #ffffff !important;
+    padding: 14px 20px !important;
+  }
+  .sh-section-header svg,
+  .sh-section-header .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 15px;
+  }
+  .sh-save-btn {
+    background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%) !important;
+    border: none !important;
+    font-weight: 700;
+    padding: 9px 32px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 120px;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(30, 103, 168, 0.25);
+  }
+  .sh-cancel-btn {
+    background: #ffffff !important;
+    color: #c43257 !important;
+    border: 1px solid #e3496a !important;
+    font-weight: 600;
+    padding: 9px 28px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s ease;
+  }
+  .sh-cancel-btn:hover {
+    background: linear-gradient(135deg, #e3496a 0%, #c43257 100%) !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+  }
+`;
 
 export default SericultureTable;

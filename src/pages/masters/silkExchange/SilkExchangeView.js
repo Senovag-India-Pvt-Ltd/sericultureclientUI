@@ -50,7 +50,7 @@ function SilkExchangeView() {
   }, [id]);
 
   return (
-    <Layout title="Silk Exchange View" content="container">
+    <Layout title="Silk Exchange View">
       <style>{silkExchangeViewStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
@@ -93,7 +93,7 @@ function SilkExchangeView() {
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -109,7 +109,7 @@ function SilkExchangeView() {
                         <td>{SilkExchange.silkExchangeName}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> {t("Silk  Exchange Name in Kannada")}</td>
+                        <td style={styles.ctstyle}> {t("Silk Exchange Name in Kannada")}</td>
                         <td>{SilkExchange.silkExchNameInKannada}</td>
                       </tr>
                     </tbody>

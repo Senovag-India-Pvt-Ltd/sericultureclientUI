@@ -323,7 +323,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">
@@ -370,7 +370,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                           name="subSchemeName"
                           value={data.subSchemeName}
                           onChange={handleInputs}
-                          placeholder={t("Enter  Component Type")}
+                          placeholder={t("Enter Component Type")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
@@ -458,7 +458,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                    <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Calculation Based On
+                          {t("Calculation Based On")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -473,7 +473,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             // }
                           >
                             <option value="">
-                              Select Calculation Based On
+                              {t("Select Calculation Based On")}
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
@@ -518,7 +518,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Scheme For Work Order
+                          {t("Scheme For Work Order")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -533,7 +533,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             // }
                           >
                             <option value="">
-                              Select Scheme For Work Order
+                              {t("Select Scheme For Work Order")}
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
@@ -578,7 +578,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Scheme For Sanction Order 
+                          {t("Scheme For Sanction Order")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -593,7 +593,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             // }
                           >
                             <option value="">
-                              Select Scheme For Sanction Order
+                              {t("Select Scheme For Sanction Order")}
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
@@ -638,7 +638,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Scheme For Acknowledgement
+                          {t("Scheme For Acknowledgement")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -653,7 +653,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             // }
                           >
                             <option value="">
-                              Select Scheme For Acknowledgement
+                              {t("Select Scheme For Acknowledgement")}
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
@@ -698,7 +698,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Scheme For Unit Cost
+                          {t("Scheme For Unit Cost")}
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -713,7 +713,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             // }
                           >
                             <option value="">
-                              Select Scheme For Unit Cost
+                              {t("Select Scheme For Unit Cost")}
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
@@ -758,7 +758,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Scheme For ARM Advance Payment
+                          {t("Scheme For ARM Advance Payment")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -767,7 +767,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             onChange={handleInputs}
                           >
                             <option value="">
-                              Select Scheme For ARM Advance Payment
+                              {t("Select Scheme For ARM Advance Payment")}
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
@@ -808,7 +808,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Scheme For ARM First Release
+                          {t("Scheme For ARM First Release")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -817,7 +817,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             onChange={handleInputs}
                           >
                             <option value="">
-                              Select Scheme For ARM First Release
+                              {t("Select Scheme For ARM First Release")}
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
@@ -858,7 +858,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          Scheme For ARM Final Release
+                          {t("Scheme For ARM Final Release")}
                         </Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
@@ -867,7 +867,7 @@ sanctionEnable: content.sanctionEnable === 0 || content.sanctionEnable == null,
                             onChange={handleInputs}
                           >
                             <option value="">
-                              Select Scheme For ARM Final Release
+                              {t("Select Scheme For ARM Final Release")}
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>

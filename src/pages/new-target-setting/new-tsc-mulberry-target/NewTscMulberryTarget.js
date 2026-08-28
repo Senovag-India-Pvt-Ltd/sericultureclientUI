@@ -7,7 +7,7 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 // import axios from "axios";
 import api from "../../../services/auth/api";
 import { useTranslation } from "react-i18next";
@@ -1788,7 +1788,7 @@ useEffect(() => {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Mulberry Yearly Targets (NAREGA)")}:{" "}
-                              {viewTotalTargetsDataNarega[0]?.mulberryValue || "N/A"}
+                              {viewTotalTargetsDataNarega[0]?.mulberryValue || t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1808,13 +1808,13 @@ useEffect(() => {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Total Mulberry Yearly Targets (NAREGA)")}:{" "}
-                              {viewTotalTargetsDataNarega[0]?.mulberryValue ||"N/A"}
+                              {viewTotalTargetsDataNarega[0]?.mulberryValue || t("N/A")}
                             </th>
                           </tr>
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Total Mulberry Yearly Targets (NON NAREGA)")}:{" "}
-                              {viewTotalTargetsDataNonNarega[0]?.mulberryValue ||"N/A"}
+                              {viewTotalTargetsDataNonNarega[0]?.mulberryValue || t("N/A")}
                             </th>
                           </tr>
                           <tr>
@@ -1826,7 +1826,7 @@ useEffect(() => {
                                     parseFloat(viewTotalTargetsDataNonNarega[0]?.mulberryValue) +
                                     parseFloat(viewTotalTargetsDataNarega[0]?.mulberryValue)
                                   ).toFixed(2)
-                                : "N/A"}
+                                : t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1835,14 +1835,14 @@ useEffect(() => {
                         <thead>
                         <tr>
                             <th style={styles.ctstyle}>
-                              {t("Remaining Mulberry Yearly Targets(NAREGA)")}:{" "}
-                              {viewTotalTargetsDataNarega[0]?.remainingValue || "N/A"}
+                              {t("Remaining Mulberry Yearly Targets (NAREGA)")}:{" "}
+                              {viewTotalTargetsDataNarega[0]?.remainingValue || t("N/A")}
                             </th>
                           </tr>
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Remaining Mulberry Yearly Targets (NON NAREGA)")}:{" "}
-                              {viewTotalTargetsDataNonNarega[0]?.remainingValue || "N/A"}
+                              {viewTotalTargetsDataNonNarega[0]?.remainingValue || t("N/A")}
                             </th>
                           </tr>
                           <tr>
@@ -1854,7 +1854,7 @@ useEffect(() => {
                                     parseFloat(viewTotalTargetsDataNonNarega[0]?.remainingValue) +
                                     parseFloat(viewTotalTargetsDataNarega[0]?.remainingValue)
                                   ).toFixed(2)
-                                : "N/A"}
+                                : t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1879,7 +1879,7 @@ useEffect(() => {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("TSC Yearly Targets (NAREGA)")}:{" "}
-                              {viewTotalTargetsDataNarega[0]?.tscValue || "N/A"}
+                              {viewTotalTargetsDataNarega[0]?.tscValue || t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1889,7 +1889,7 @@ useEffect(() => {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("TSC Yearly Targets (NON NAREGA)")}:{" "}
-                              {viewTotalTargetsDataNonNarega[0]?.tscValue || "N/A"}
+                              {viewTotalTargetsDataNonNarega[0]?.tscValue || t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1905,7 +1905,7 @@ useEffect(() => {
                                     parseFloat(viewTotalTargetsDataNonNarega[0]?.tscValue) +
                                     parseFloat(viewTotalTargetsDataNarega[0]?.tscValue)
                                   ).toFixed(2)
-                                : "N/A"}
+                                : t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -2280,7 +2280,7 @@ useEffect(() => {
                     </Card.Header>
                     <Card.Body>
                       <div className="w-100 mb-3" style={{ backgroundColor: "#fff", paddingLeft: "0.10rem" }}>
-  <h5 className="mb-0 fw-bold text-start">{t("Please enter the below field  Physical in Hectares")}</h5>
+  <h5 className="mb-0 fw-bold text-start">{t("Please enter the below field Physical in Hectares")}</h5>
 </div>
                       {/* <h3>Farmers Details</h3> */}
                       <Row className="g-gs">

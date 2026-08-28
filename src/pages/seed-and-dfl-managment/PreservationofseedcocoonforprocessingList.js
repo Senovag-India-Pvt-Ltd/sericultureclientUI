@@ -2,7 +2,7 @@ import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import Swal from "sweetalert2";
@@ -521,12 +521,12 @@ const handleCloseViewModal = () => {
       cell: (row) => (
         <span>
           {row.isAccepted === 0
-            ? "Pending"
+            ? t("Pending")
             : row.isAccepted === 1
-            ? "Accepted"
+            ? t("Accepted")
             : row.isAccepted === 2
-            ? "Rejected"
-            : "Unknown"}
+            ? t("Rejected")
+            : t("Unknown")}
         </span>
       ),
       sortable: true,
@@ -639,18 +639,18 @@ const handleCloseViewModal = () => {
       cell: (row) => (
         <span>
           {row.isAccepted === 0
-            ? "Pending"
+            ? t("Pending")
             : row.isAccepted === 1
-            ? "Accepted"
+            ? t("Accepted")
             : row.isAccepted === 2
-            ? "Rejected"
-            : "Unknown"}
+            ? t("Rejected")
+            : t("Unknown")}
         </span>
       ),
       sortable: true,
       hide: "md",
     },
-   
+
   ];
 
   const PreservationOfRejectedSeedCocoonGardenDataColumns = [
@@ -737,12 +737,12 @@ const handleCloseViewModal = () => {
       cell: (row) => (
         <span style={{ color: row.isAccepted === 2 ? 'red' : 'inherit', fontWeight: row.isAccepted === 2 ? 'bold' : 'normal' }}>
           {row.isAccepted === 0
-            ? "Pending"
+            ? t("Pending")
             : row.isAccepted === 1
-            ? "Accepted"
+            ? t("Accepted")
             : row.isAccepted === 2
-            ? "Rejected"
-            : "Unknown"}
+            ? t("Rejected")
+            : t("Unknown")}
         </span>
       ),
       sortable: true,
@@ -1189,12 +1189,12 @@ const handleCloseViewModal = () => {
                         <td style={{ fontWeight: "bold" }}>{t("Accepted Status")}</td>
                         <td>
                           {selectedRow.isAccepted === 0
-                            ? "Pending"
+                            ? t("Pending")
                             : selectedRow.isAccepted === 1
-                            ? "Accepted"
+                            ? t("Accepted")
                             : selectedRow.isAccepted === 2
-                            ? "Rejected"
-                            : "Unknown"}
+                            ? t("Rejected")
+                            : t("Unknown")}
                         </td>
                       </tr>
                     </tbody>

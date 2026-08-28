@@ -12,7 +12,8 @@ import { Icon } from "../../components";
 import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
 
-import DataTable, { createTheme } from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
+import { createTheme } from "react-data-table-component";
 
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;

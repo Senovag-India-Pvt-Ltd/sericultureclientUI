@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function FitnessCertificateReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 25;
@@ -81,7 +81,7 @@ function FitnessCertificateReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
   };
@@ -242,15 +242,15 @@ function FitnessCertificateReport() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),                    selector: (row) => row.serialNumber,        cell: (row) => <span>{row.serialNumber}</span>,        sortable: true, hide: "md" },
-    { name: colHeader("Farmer Name"),              selector: (row) => row.farmerName,          cell: (row) => <span>{row.farmerName}</span>,          sortable: true, hide: "md" },
-    { name: colHeader("Father Name"),              selector: (row) => row.fatherName,          cell: (row) => <span>{row.fatherName}</span>,          sortable: true, hide: "md" },
-    { name: colHeader("Fruits Id"),                selector: (row) => row.fruitsId,            cell: (row) => <span>{row.fruitsId}</span>,            sortable: true, hide: "md" },
-    { name: colHeader("Lot Number"),               selector: (row) => row.lotNumber,           cell: (row) => <span>{row.lotNumber}</span>,           sortable: true, hide: "md" },
-    { name: colHeader("Rate Per 100 DFLs"),        selector: (row) => row.ratePer100Dfls,      cell: (row) => <span>{row.ratePer100Dfls}</span>,      sortable: true, hide: "md" },
-    { name: colHeader("Number Of DFLs Disposed"),  selector: (row) => row.numberOfDflsDisposed,cell: (row) => <span>{row.numberOfDflsDisposed}</span>,sortable: true, hide: "md" },
-    { name: colHeader("Race"),                     selector: (row) => row.raceName,            cell: (row) => <span>{row.raceName}</span>,            sortable: true, hide: "md" },
-    { name: colHeader("TSC"),                      selector: (row) => row.tscName,             cell: (row) => <span>{row.tscName}</span>,             sortable: true, hide: "md" },
+    { name: colHeader(t("Sl.No")),                    selector: (row) => row.serialNumber,        cell: (row) => <span>{row.serialNumber}</span>,        sortable: true, hide: "md" },
+    { name: colHeader(t("Farmer Name")),              selector: (row) => row.farmerName,          cell: (row) => <span>{row.farmerName}</span>,          sortable: true, hide: "md" },
+    { name: colHeader(t("Father Name")),              selector: (row) => row.fatherName,          cell: (row) => <span>{row.fatherName}</span>,          sortable: true, hide: "md" },
+    { name: colHeader(t("Fruits Id")),                selector: (row) => row.fruitsId,            cell: (row) => <span>{row.fruitsId}</span>,            sortable: true, hide: "md" },
+    { name: colHeader(t("Lot Number")),               selector: (row) => row.lotNumber,           cell: (row) => <span>{row.lotNumber}</span>,           sortable: true, hide: "md" },
+    { name: colHeader(t("Rate Per 100 DFLs")),        selector: (row) => row.ratePer100Dfls,      cell: (row) => <span>{row.ratePer100Dfls}</span>,      sortable: true, hide: "md" },
+    { name: colHeader(t("Number Of DFLs Disposed")),  selector: (row) => row.numberOfDflsDisposed,cell: (row) => <span>{row.numberOfDflsDisposed}</span>,sortable: true, hide: "md" },
+    { name: colHeader(t("Race")),                     selector: (row) => row.raceName,            cell: (row) => <span>{row.raceName}</span>,            sortable: true, hide: "md" },
+    { name: colHeader(t("TSC")),                      selector: (row) => row.tscName,             cell: (row) => <span>{row.tscName}</span>,             sortable: true, hide: "md" },
   ];
 
   return (
@@ -272,8 +272,8 @@ function FitnessCertificateReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>📋</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Fitness Details Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export fitness certificate data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Fitness Details Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export fitness certificate data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -284,7 +284,7 @@ function FitnessCertificateReport() {
                   <option value="">{t("select_tsc")}</option>
                   {tscListData.map((list) => (
                     <option key={list.tscMasterId} value={list.tscMasterId}>
-                      {list.name}
+                      {i18n.language === "kn" ? list.nameInKannada : list.name}
                     </option>
                   ))}
                 </Form.Select>

@@ -164,7 +164,7 @@ function RejectionList() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          {t("rejectionListName is required")}
+                          {t("Reason is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

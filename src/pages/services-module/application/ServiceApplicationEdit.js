@@ -5,7 +5,7 @@ import ReactSelect from "react-select";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import DatePicker from "react-datepicker";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 import { Icon, Select } from "../../../components";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
@@ -403,8 +403,8 @@ useEffect(() => {
 const showBeneficiaryLoadError = () => {
   Swal.fire({
     icon: "warning",
-    title: "Could not load beneficiary details",
-    text: "The FRUITS/registration lookup for this application's beneficiary failed. Please try again or contact support.",
+    title: t("Could not load beneficiary details"),
+    text: t("The FRUITS/registration lookup for this application's beneficiary failed. Please try again or contact support."),
   });
 };
 
@@ -1665,12 +1665,12 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         const isHtml = typeof response.data === "string"
           && /<html/i.test(response.data);
         if (isHtml || !response.data || typeof response.data !== "object") {
-          saveError("Update was blocked by the server (received non-JSON response). Please contact support.");
+          saveError(t("Update was blocked by the server (received non-JSON response). Please contact support."));
           return;
         }
         const body = response.data.content;
         if (body && body.error) {
-          saveError(body.errorDescription || "Update failed");
+          saveError(body.errorDescription || t("Update failed"));
           return;
         }
         saveSuccess();
@@ -1680,14 +1680,14 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         if (err.response?.status === 409) {
           saveError(
             err.response.data?.content?.errorDescription ||
-              "Application has already been pushed and cannot be edited"
+              t("Application has already been pushed and cannot be edited")
           );
         } else if (err.response?.data?.content?.errorDescription) {
           saveError(err.response.data.content.errorDescription);
         } else if (err.response?.data?.validationErrors) {
           saveError(err.response.data.validationErrors);
         } else {
-          saveError("Update failed");
+          saveError(t("Update failed"));
         }
       });
     setValidated(true);
@@ -1841,7 +1841,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     } else {
       lines = String(message || "").split(/;\s*|<br\s*\/?>/i).filter(Boolean);
     }
-    if (lines.length === 0) lines = ["Something went wrong. Please try again."];
+    if (lines.length === 0) lines = [t("Something went wrong. Please try again.")];
     const html =
       `<div class="svc-swal-errlist">` +
       lines.map((l) => `<div class="svc-swal-errline">${l}</div>`).join("") +
@@ -1979,7 +1979,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       //     checked={landDetailsIds.includes(row.farmerLandDetailsId)}
       //     onChange={() => handleCheckboxChange(row.farmerLandDetailsId)}
       //   />
-      name: "Select",
+      name: t("Select"),
       selector: "select",
       cell: (row, i) => (
         <input
@@ -2127,7 +2127,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
   //   },
   // ];
   {
-    name: "Developed Area (Acre/Gunta/FGunta)",
+    name: t("Developed Area (Acre/Gunta/FGunta)"),
     // selector: (row) => row.acre,
     cell: (row, i) => (
       <>
@@ -2136,7 +2136,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
           type="text"
           value={developedArea[i]?.devAcre || ""}
           onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
-          placeholder="Acre"
+          placeholder={t("Acre")}
           className="m-1"
         />
         <Form.Control
@@ -2144,7 +2144,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
           type="text"
           value={developedArea[i]?.devGunta || ""}
           onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
-          placeholder="Gunta"
+          placeholder={t("Gunta")}
           className="m-1"
         />
         <Form.Control
@@ -2152,7 +2152,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
           type="text"
           value={developedArea[i]?.devFGunta || ""}
           onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
-          placeholder="FGunta"
+          placeholder={t("FGunta")}
           className="m-1"
         />
       </>
@@ -2277,7 +2277,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     },
 
     {
-      name: "DevAcre",
+      name: t("DevAcre"),
       selector: (row) => row.devAcre,
       // cell: (row) => (
       //   <Form.Control
@@ -2294,7 +2294,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       hide: "md",
     },
     {
-      name: "DevGunta",
+      name: t("DevGunta"),
       selector: (row) => row.devGunta,
       // cell: (row) => (
       //   <Form.Control
@@ -2311,7 +2311,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       hide: "md",
     },
     {
-      name: "DevFGunta",
+      name: t("DevFGunta"),
       selector: (row) => row.devFGunta,
       // cell: (row) => (
       //   <Form.Control
@@ -2370,18 +2370,18 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
   const deleteError = () => {
     Swal.fire({
       icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Delete attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
   const deleteConfirm = (id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "It will delete permanently!",
+      title: t("Are you sure?"),
+      text: t("It will delete permanently!"),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: t("Yes, delete it!"),
     }).then((result) => {
       if (result.value) {
         const response = api
@@ -2390,8 +2390,8 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
             // deleteConfirm(_id);
             handleView();
             Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
+              t("Deleted"),
+              t("You successfully deleted this record"),
               "success"
             );
           })
@@ -2401,22 +2401,22 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         // Swal.fire("Deleted", "You successfully deleted this record", "success");
       } else {
         console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
+        Swal.fire(t("Cancelled"), t("Your record is not deleted"), "info");
       }
     });
   };
 
   const DocumentsUploaded = [
-    
+
     {
-      name: "Document Name",
-      selector: (row) => row.documentName,  
+      name: t("Document Name"),
+      selector: (row) => row.documentName,
       cell: (row) => <span>{row.documentName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Document Path",
+      name: t("Document Path"),
       selector: (row) => row.documentPath,
       cell: (row) => <span>{row.documentPath}</span>,
       sortable: true,
@@ -2424,7 +2424,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     },
 
     {
-      name: "Documents",
+      name: t("Documents"),
       selector: (row) => row.documentPath,
       cell: (row) => (
         <div>
@@ -2448,7 +2448,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                 className="ms-2"
                 onClick={() => downloadFile(row.documentPath)}
               >
-                Download Selected File
+                {t("Download Selected File")}
               </Button>
             </>
           )}
@@ -2603,7 +2603,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
   `;
 
   return (
-    <Layout title=" Edit Scheme Details Form">
+    <Layout title={t("Edit Scheme Details Form")}>
       <style>{serviceApplicationEditStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
@@ -3772,7 +3772,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                 onClick={() => handleAttachFileUpload(uploadDocuments.documentTypeId)}
                 disabled={uploadStatus[uploadDocuments.documentTypeId]} // Disable button if this document is uploaded
               >
-                {uploadStatus[uploadDocuments.documentTypeId] ? "Uploaded" : "Upload"}
+                {uploadStatus[uploadDocuments.documentTypeId] ? t("Uploaded") : t("Upload")}
               </Button>
                 </li>
         </ul>

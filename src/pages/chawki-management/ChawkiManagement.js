@@ -19,7 +19,7 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 function ChawkiManagement() {
   
 // Translation
-const { t } = useTranslation();
+const { t, i18n } = useTranslation();
   const [data, setData] = useState({
     farmerName: "",
     fatherName: "",
@@ -654,7 +654,9 @@ const { t } = useTranslation();
                                   key={list.raceMasterId}
                                   value={list.raceMasterId}
                                 >
-                                  {list.raceMasterName}
+                                  {i18n.language === "kn"
+                                    ? list.raceNameInKannada
+                                    : list.raceMasterName}
                                 </option>
                               ))}
                             </Form.Select>
@@ -688,7 +690,9 @@ const { t } = useTranslation();
                                 key={list.tscMasterId}
                                 value={list.tscMasterId}
                               >
-                                {list.name}
+                                {i18n.language === "kn"
+                                  ? list.nameInKannada
+                                  : list.name}
                               </option>
                             ))}
                           </Form.Select>
@@ -712,7 +716,7 @@ const { t } = useTranslation();
                             value={data.soldAfter1stOr2ndMould}
                             onChange={handleInputs}
                           >
-                            <option value="">Select</option>
+                            <option value="">{t("Select")}</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -827,7 +831,9 @@ const { t } = useTranslation();
                             <option value="">{t("select_state")}</option>
                             {stateListData.map((list) => (
                               <option key={list.stateId} value={list.stateId}>
-                                {list.stateName}
+                                {i18n.language === "kn"
+                                  ? list.stateNameInKannada
+                                  : list.stateName}
                               </option>
                             ))}
                           </Form.Select>
@@ -862,7 +868,9 @@ const { t } = useTranslation();
                                     key={list.districtId}
                                     value={list.districtId}
                                   >
-                                    {list.districtName}
+                                    {i18n.language === "kn"
+                                      ? list.districtNameInKannada
+                                      : list.districtName}
                                   </option>
                                 ))
                               : ""}
@@ -897,7 +905,9 @@ const { t } = useTranslation();
                                     key={list.talukId}
                                     value={list.talukId}
                                   >
-                                    {list.talukName}
+                                    {i18n.language === "kn"
+                                      ? list.talukNameInKannada
+                                      : list.talukName}
                                   </option>
                                 ))
                               : ""}
@@ -932,7 +942,9 @@ const { t } = useTranslation();
                                     key={list.hobliId}
                                     value={list.hobliId}
                                   >
-                                    {list.hobliName}
+                                    {i18n.language === "kn"
+                                      ? list.hobliNameInKannada
+                                      : list.hobliName}
                                   </option>
                                 ))
                               : ""}
@@ -967,7 +979,9 @@ const { t } = useTranslation();
                                     key={list.villageId}
                                     value={list.villageId}
                                   >
-                                    {list.villageName}
+                                    {i18n.language === "kn"
+                                      ? list.villageNameInKannada
+                                      : list.villageName}
                                   </option>
                                 ))
                               : ""}

@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import React from "react";
@@ -52,7 +52,7 @@ function DbtBApplication() {
   });
 
   // Translation
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   // const [data, setData] = useState({
   //   userMasterId: "",
@@ -588,7 +588,7 @@ function DbtBApplication() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
   };
@@ -722,18 +722,18 @@ function DbtBApplication() {
   const deleteError = () => {
     Swal.fire({
       icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Delete attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
   const deleteConfirm = (_id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "It will delete permanently!",
+      title: t("Are you sure?"),
+      text: t("It will delete permanently!"),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: t("Yes, delete it!"),
     }).then((result) => {
       if (result.value) {
         const response = api
@@ -742,8 +742,8 @@ function DbtBApplication() {
             // deleteConfirm(_id);
             getList();
             Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
+              t("Deleted"),
+              t("You successfully deleted this record"),
               "success"
             );
           })
@@ -753,7 +753,7 @@ function DbtBApplication() {
         // Swal.fire("Deleted", "You successfully deleted this record", "success");
       } else {
         console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
+        Swal.fire(t("Cancelled"), t("Your record is not deleted"), "info");
       }
     });
   };
@@ -840,7 +840,7 @@ function DbtBApplication() {
         const content = response.data.content[0];
 
         if (content.applicationDetailsResponses.length <= 0) {
-          saveError("No Details Found!!!");
+          saveError(t("No Details Found!!!"));
         } else {
           handleShowModal();
           setViewDetailsData({
@@ -859,7 +859,7 @@ function DbtBApplication() {
   const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       text: message,
     });
   };
@@ -872,7 +872,7 @@ function DbtBApplication() {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -943,7 +943,7 @@ function DbtBApplication() {
   ];
 
 return (
-  <Layout title="DBT B Application Report">
+  <Layout title={t("DBT B Application Report")}>
     <style>{dbtBApplicationStyles}</style>
     <Block.Head>
       <div className="sh-page-header">
@@ -960,8 +960,8 @@ return (
         <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
           <span style={{ fontSize: "20px" }}>📋</span>
           <div>
-            <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>DBT B Application Report</div>
-            <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to search and export B application data</div>
+            <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("DBT B Application Report")}</div>
+            <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to search and export B application data")}</div>
           </div>
         </div>
         <Card.Body className="pb-2">
@@ -992,18 +992,18 @@ return (
                   <Form.Select name="text" value={searchData.text} onChange={handleInputsSearch} style={sel}>
                     <option value="">{t("Select Component")}</option>
                     {scComponentListData.map((list) => (
-                      <option key={list.scComponentId} value={list.scComponentId}>{list.scComponentName}</option>
+                      <option key={list.scComponentId} value={list.scComponentId}>{i18n.language === "kn" ? list.scComponentNameInKannada : list.scComponentName}</option>
                     ))}
                   </Form.Select>
                 ) : Number(searchData.type) === 7 ? (
                   <Form.Select name="text" value={searchData.text} onChange={handleInputsSearch} style={sel}>
                     <option value="">{t("Select Component Type")}</option>
                     {scSubSchemeDetailsListData.map((list) => (
-                      <option key={list.scSubSchemeDetailsId} value={list.scSubSchemeDetailsId}>{list.subSchemeName}</option>
+                      <option key={list.scSubSchemeDetailsId} value={list.scSubSchemeDetailsId}>{i18n.language === "kn" ? list.subSchemeNameInKannada : list.subSchemeName}</option>
                     ))}
                   </Form.Select>
                 ) : (
-                  <Form.Control id="fruitsId" name="text" value={searchData.text} onChange={handleInputsSearch} type="text" placeholder="Search" style={sel} />
+                  <Form.Control id="fruitsId" name="text" value={searchData.text} onChange={handleInputsSearch} type="text" placeholder={t("Search")} style={sel} />
                 )}
               </Form.Group>
             </Col>
@@ -1013,7 +1013,7 @@ return (
                 <Form.Select name="districtId" value={addressDetails.districtId} onChange={handleInputsaddress} style={sel}>
                   <option value="0">{t("select_district")}</option>
                   {districtListData.map((list) => (
-                    <option key={list.districtId} value={list.districtId}>{list.districtName}</option>
+                    <option key={list.districtId} value={list.districtId}>{i18n.language === "kn" ? list.districtNameInKannada : list.districtName}</option>
                   ))}
                 </Form.Select>
               </Form.Group>
@@ -1024,7 +1024,7 @@ return (
                 <Form.Select name="talukId" value={addressDetails.talukId} onChange={handleInputsaddress} style={sel}>
                   <option value="0">{t("select_taluk")}</option>
                   {talukListData.map((list) => (
-                    <option key={list.talukId} value={list.talukId}>{list.talukName}</option>
+                    <option key={list.talukId} value={list.talukId}>{i18n.language === "kn" ? list.talukNameInKannada : list.talukName}</option>
                   ))}
                 </Form.Select>
               </Form.Group>
@@ -1035,7 +1035,7 @@ return (
                 <Form.Select name="hobliId" value={addressDetails.hobliId} onChange={handleInputsaddress} style={sel}>
                   <option value="0">{t("select_hobli")}</option>
                   {hobliListData.map((list) => (
-                    <option key={list.hobliId} value={list.hobliId}>{list.hobliName}</option>
+                    <option key={list.hobliId} value={list.hobliId}>{i18n.language === "kn" ? list.hobliNameInKannada : list.hobliName}</option>
                   ))}
                 </Form.Select>
               </Form.Group>
@@ -1046,7 +1046,7 @@ return (
                 <Form.Select name="villageId" value={addressDetails.villageId} onChange={handleInputsaddress} style={sel}>
                   <option value="0">{t("select_village")}</option>
                   {villageListData.map((list) => (
-                    <option key={list.villageId} value={list.villageId}>{list.villageName}</option>
+                    <option key={list.villageId} value={list.villageId}>{i18n.language === "kn" ? list.villageNameInKannada : list.villageName}</option>
                   ))}
                 </Form.Select>
               </Form.Group>
@@ -1057,7 +1057,7 @@ return (
                 <Form.Select name="scCategoryId" value={searchData.scCategoryId} onChange={handleInputsSearch} style={sel}>
                   <option value="">{t("Select Category")}</option>
                   {scCategoryListData.map((list) => (
-                    <option key={list.scCategoryId} value={list.scCategoryId}>{list.categoryName}</option>
+                    <option key={list.scCategoryId} value={list.scCategoryId}>{i18n.language === "kn" ? list.categoryNameInKannada : list.categoryName}</option>
                   ))}
                 </Form.Select>
               </Form.Group>
@@ -1085,6 +1085,7 @@ return (
             data={listData}
             highlightOnHover
             progressPending={loading}
+            progressComponent={<div className="py-4">{t("Loading...")}</div>}
             customStyles={customStyles}
           />
         </Card>
@@ -1348,7 +1349,7 @@ return (
         <Modal.Body>
           {loading ? (
             <h1 className="d-flex justify-content-center align-items-center">
-              Loading...
+              {t("Loading...")}
             </h1>
           ) : (
             <Accordion defaultActiveKey="0">

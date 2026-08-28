@@ -4,7 +4,7 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import { createTheme } from "react-data-table-component";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import Swal from "sweetalert2";
@@ -566,6 +566,8 @@ const handleExportClick = () => {
           }}
           onChangePage={(page) => setPage(page - 1)}
           progressPending={loading}
+          progressComponent={<div className="p-3">{t("Loading...")}</div>}
+          noDataComponent={t("There are no records to display")}
           theme="solarized"
           customStyles={customStyles}
         />
@@ -586,6 +588,8 @@ const handleExportClick = () => {
           }}
           onChangePage={(page) => setPage(page - 1)}
           progressPending={loading}
+          progressComponent={<div className="p-3">{t("Loading...")}</div>}
+          noDataComponent={t("There are no records to display")}
           theme="solarized"
           customStyles={customStyles}
         />

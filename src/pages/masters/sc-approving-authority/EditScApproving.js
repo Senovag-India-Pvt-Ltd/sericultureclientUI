@@ -156,7 +156,7 @@ function ScApprovingAuthorityEdit() {
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">{t("Edit  Approving Authority")}</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Edit Approving Authority")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -196,7 +196,7 @@ function ScApprovingAuthorityEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">

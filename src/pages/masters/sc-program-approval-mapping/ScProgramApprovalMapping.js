@@ -819,7 +819,7 @@ function ScProgramApprovalMapping() {
             <Row className="g-5">
               <Col lg="6">
                 <Form.Group className="form-group mt-n4">
-                  <Form.Label htmlFor="sordfl">{("Designation")}<span className="text-danger">*</span></Form.Label>
+                  <Form.Label htmlFor="sordfl">{t("Designation")}<span className="text-danger">*</span></Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
                       name="designationId"

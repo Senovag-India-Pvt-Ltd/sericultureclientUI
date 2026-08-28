@@ -2782,8 +2782,8 @@ function StakeHolderRegister() {
                             disabled
                           >
                             <option value="">{t("select")}</option>
-                            <option value="true">Yes</option>
-                            <option value="false">No</option>
+                            <option value="true">{t("Yes")}</option>
+                            <option value="false">{t("No")}</option>
                           </Form.Select>
                         </div>
                       </Form.Group>
@@ -3823,7 +3823,7 @@ function StakeHolderRegister() {
                         familyMembers.relationshipId === "0"
                       }
                     >
-                      <option value="">Select Relationship</option>
+                      <option value="">{t("select_relationship")}</option>
                       {relationshipListData.map((list) => (
                         <option
                           key={list.relationshipId}
@@ -6152,7 +6152,7 @@ function StakeHolderRegister() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label>
-                    State<span className="text-danger">*</span>
+                    {t("State")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -6166,7 +6166,7 @@ function StakeHolderRegister() {
                         farmerAddress.stateId === "0"
                       }
                     >
-                      <option value="0">Select State</option>
+                      <option value="0">{t("Select State")}</option>
                       {addressStateListData.map((list) => (
                         <option
                           key={list.stateId}
@@ -6179,7 +6179,7 @@ function StakeHolderRegister() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      State Name is required.
+                      {t("State Name is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -6187,7 +6187,7 @@ function StakeHolderRegister() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label>
-                    District<span className="text-danger">*</span>
+                    {t("District")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -6201,7 +6201,7 @@ function StakeHolderRegister() {
                         farmerAddress.districtId === "0"
                       }
                     >
-                      <option value="">Select District</option>
+                      <option value="">{t("Select District")}</option>
                       {addressdistrictListData && addressdistrictListData.length
                         ? addressdistrictListData.map((list) => (
                             <option
@@ -6216,7 +6216,7 @@ function StakeHolderRegister() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      District Name is required
+                      {t("District Name is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -6224,7 +6224,7 @@ function StakeHolderRegister() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label>
-                    Taluk<span className="text-danger">*</span>
+                    {t("Taluk")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -6238,7 +6238,7 @@ function StakeHolderRegister() {
                         farmerAddress.talukId === "0"
                       }
                     >
-                      <option value="">Select Taluk</option>
+                      <option value="">{t("Select Taluk")}</option>
                       {addressTalukListData && addressTalukListData.length
                         ? addressTalukListData.map((list) => (
                             <option
@@ -6253,7 +6253,7 @@ function StakeHolderRegister() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Taluk Name is required
+                      {t("Taluk Name is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -6261,7 +6261,7 @@ function StakeHolderRegister() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label>
-                    Hobli<span className="text-danger">*</span>
+                    {t("Hobli")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -6275,7 +6275,7 @@ function StakeHolderRegister() {
                         farmerAddress.hobliId === "0"
                       }
                     >
-                      <option value="">Select Hobli</option>
+                      <option value="">{t("Select Hobli")}</option>
                       {addressHobliListData && addressHobliListData.length
                         ? addressHobliListData.map((list) => (
                             <option
@@ -6290,7 +6290,7 @@ function StakeHolderRegister() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Hobli Name is required
+                      {t("Hobli Name is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -6298,7 +6298,7 @@ function StakeHolderRegister() {
               <Col lg="6">
                 <Form.Group className="form-group">
                   <Form.Label htmlFor="Village">
-                    Village<span className="text-danger">*</span>
+                    {t("Village")}<span className="text-danger">*</span>
                   </Form.Label>
                   <div className="form-control-wrap">
                     <Form.Select
@@ -6312,7 +6312,7 @@ function StakeHolderRegister() {
                         farmerAddress.villageId === "0"
                       }
                     >
-                      <option value="">Select Village</option>
+                      <option value="">{t("Select Village")}</option>
                       {addressVillageListData && addressVillageListData.length
                         ? addressVillageListData.map((list) => (
                             <option
@@ -6327,7 +6327,7 @@ function StakeHolderRegister() {
                         : ""}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Village Name is required
+                      {t("Village Name is required")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>

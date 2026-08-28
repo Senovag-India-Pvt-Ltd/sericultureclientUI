@@ -181,7 +181,7 @@ useEffect(() => {
                     }
                 } else {
                     // Handle unexpected error codes if necessary
-                    saveError("Unexpected error occurred.");
+                    saveError(t("Unexpected error occurred."));
                 }
             })
             .catch((err) => {
@@ -533,8 +533,8 @@ if (form.checkValidity() === false) {
 const saveSuccess = () => {
   Swal.fire({
     icon: "success",
-    title: "Pupa Testing And Cocoon Assessment Completed  Successfully",
-    text: "You Can Proceed To Allotment",
+    title: t("Pupa Testing And Cocoon Assessment Completed  Successfully"),
+    text: t("You Can Proceed To Allotment"),
     customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
   }).then(() => {
       // navigate("#");
@@ -542,10 +542,10 @@ const saveSuccess = () => {
     });
 };
 
-const saveError = (message = "Something went wrong!") => {
+const saveError = (message = t("Something went wrong!")) => {
   Swal.fire({
     icon: "error",
-    title: "Save attempt was not successful",
+    title: t("Save attempt was not successful"),
     text: message,
     customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
   });

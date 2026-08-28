@@ -286,7 +286,7 @@ function RearingOfDFLsEdit() {
                 <Col lg="4">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        {t("Disinfactant Usage Details")}
+                        {t("Disinfectant Usage Details")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col>
@@ -297,7 +297,7 @@ function RearingOfDFLsEdit() {
                             onChange={handleInputs}
                             onBlur={() => handleInputs}
                           >
-                            <option value="">{t("Select Disinfactant Usage")}</option>
+                            <option value="">{t("Select Disinfectant Usage")}</option>
                             {disinfactantListData.map((list) => (
                               <option
                                 key={list.disinfectantMasterId}
@@ -308,7 +308,7 @@ function RearingOfDFLsEdit() {
                             ))}
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            {t("Disinfactant Usage Details is required")}
+                            {t("Disinfectant Usage Details is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Col>

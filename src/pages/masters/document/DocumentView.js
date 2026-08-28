@@ -52,7 +52,7 @@ function DocumentsView() {
   }, [id]);
 
   return (
-    <Layout title="Documents View" content="container">
+    <Layout title="Documents View">
       <style>{documentViewStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
@@ -96,7 +96,7 @@ function DocumentsView() {
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">

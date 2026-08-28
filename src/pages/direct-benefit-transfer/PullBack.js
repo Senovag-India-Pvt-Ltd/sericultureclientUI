@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DatePicker from "react-datepicker";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import { Icon, Select } from "../../components";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";

@@ -7,9 +7,11 @@ import { Icon } from "../../../components";
 import axios from "axios";
 import ReasonBidRejectionDatas from "../../../store/masters/reason-bid-rejection/ReasonBidRejectionData";
 
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ReasonBidRejectionView() {
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -102,7 +104,7 @@ function ReasonBidRejectionView() {
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">

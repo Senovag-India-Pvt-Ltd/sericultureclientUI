@@ -4,7 +4,7 @@ import Swal from "sweetalert2/src/sweetalert2.js";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React, { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";

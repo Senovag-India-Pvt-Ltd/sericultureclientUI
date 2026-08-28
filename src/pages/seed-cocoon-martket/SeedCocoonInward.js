@@ -474,7 +474,7 @@ function SeedCocoonInward() {
           } else {
             Swal.fire({
               icon: "warning",
-              title: "Details not Found",
+              title: t("Details not Found"),
             });
           }
           setFarmerDetails({});
@@ -609,19 +609,18 @@ const getIdList = (farmerId) => {
         setCropDetailsEmpty(true);
         Swal.fire({
           icon: "warning",
-          title: "No Crop Details Available",
+          title: t("No Crop Details Available"),
           html: `
             <div style="text-align:center; padding: 4px 0 8px;">
               <div style="font-size:48px; margin-bottom:12px;">🌱</div>
               <p style="font-size:15px; color:#444; margin-bottom:8px; font-weight:500;">
-                Crop inspection details are not available for this farmer.
+                ${t("Crop inspection details are not available for this farmer.")}
               </p>
               <p style="font-size:13px; color:#718096;">
-                Please contact the <strong style="color:#1e67a8;">TSC (Technical Service Centre)</strong>
-                to conduct the crop inspection and update the records before proceeding.
+                ${t("Please contact the TSC (Technical Service Centre) to conduct the crop inspection and update the records before proceeding.")}
               </p>
             </div>`,
-          confirmButtonText: "Understood",
+          confirmButtonText: t("Understood"),
           confirmButtonColor: "#1e67a8",
           customClass: {
             popup: "swal-pop",
@@ -1229,7 +1228,7 @@ const getIdList = (farmerId) => {
 
     Swal.fire({
       icon: "success",
-      title: "Bidding Slip has been generated",
+      title: t("Bidding Slip has been generated"),
       text: `${lot} ${big} ${small}`,
       width: 300,
     }).then(() => {
@@ -1238,10 +1237,10 @@ const getIdList = (farmerId) => {
     });
 };
 
-  const saveError = (message = "Something went wrong!") => {
+  const saveError = (message = t("Something went wrong!")) => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       text: message,
     });
   };
@@ -1312,7 +1311,7 @@ const getIdList = (farmerId) => {
               ">${message}</p>
               <p style="
                 color:#718096; font-size:12.5px; margin:0; line-height:1.6;
-              ">Please resolve the issue before proceeding with the submission.</p>
+              ">${t("Please resolve the issue before proceeding with the submission.")}</p>
             </div>
           </div>
           <div style="
@@ -1321,11 +1320,11 @@ const getIdList = (farmerId) => {
             border-left:4px solid #e53e3e;
           ">
             <p style="color:#742a2a; font-size:12px; margin:0; font-weight:600;">
-              ⚠ Submit button has been disabled until this is resolved.
+              ⚠ ${t("Submit button has been disabled until this is resolved.")}
             </p>
           </div>
         </div>`,
-      confirmButtonText: "OK, Understood",
+      confirmButtonText: t("OK, Understood"),
       confirmButtonColor: "#e53e3e",
       background: "#fff",
       customClass: { popup: "swal-farmer-error" },
@@ -1335,7 +1334,7 @@ const getIdList = (farmerId) => {
     });
   };
 
-  const searchError = (message = "Something went wrong!") => {
+  const searchError = (message = t("Something went wrong!")) => {
     let errorMessage;
     if (typeof message === "object") {
       errorMessage = Object.values(message).join("<br>");
@@ -1344,7 +1343,7 @@ const getIdList = (farmerId) => {
     }
     Swal.fire({
       icon: "error",
-      title: "Details not Found",
+      title: t("Details not Found"),
       html: errorMessage,
     });
   };
@@ -1507,7 +1506,7 @@ const getIdList = (farmerId) => {
               <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "17px" }}>🌾</div>
               <div>
                 <div style={{ color: "#fff", fontWeight: 700, fontSize: "15px" }}>{t("Seed Cocoon E-Inward")}</div>
-                <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px" }}>Search farmer by mobile number, Fruits ID or CSB number</div>
+                <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px" }}>{t("Search farmer by mobile number, Fruits ID or CSB number")}</div>
               </div>
             </div>
             <Card.Body style={{ padding: "14px 20px" }}>
@@ -2166,7 +2165,7 @@ const getIdList = (farmerId) => {
         </div>
       </div>
     )) : (
-      <div style={{ textAlign: "center", color: "#a0aec0", padding: "24px 0", fontSize: "14px" }}>No FC details available</div>
+      <div style={{ textAlign: "center", color: "#a0aec0", padding: "24px 0", fontSize: "14px" }}>{t("No FC details available")}</div>
     )}
   </Modal.Body>
 </Modal>

@@ -1336,8 +1336,10 @@ function Router() {
         <Route path={APP_ROUTES.home} element={<SeriUiHomePage />} />
         {/* Display All Lot */}
         <Route
-          // path="/seriui/display-all-lot/:marketId"
-          // element={<DisplayAllLot />}   
+          path={APP_ROUTES.displayAllLotPrefix}
+          element={<DisplayAllLot />}
+        />
+        <Route
           path={`${APP_ROUTES.displayAllLotPrefix}/:marketId`}
           element={<DisplayAllLot />}
         />

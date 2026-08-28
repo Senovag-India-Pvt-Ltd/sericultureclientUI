@@ -7,7 +7,7 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 // import axios from "axios";
 import api from "../../../services/auth/api";
 import { useTranslation } from "react-i18next";
@@ -1856,7 +1856,7 @@ useEffect(() => {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Total Mulberry Yearly Targets")}:{" "}
-                              {viewTotalTargetsData[0]?.mulberryValue ||"N/A"}
+                              {viewTotalTargetsData[0]?.mulberryValue || t("N/A")}
                             </th>
                           </tr>
                          
@@ -1867,7 +1867,7 @@ useEffect(() => {
                         <tr>
                             <th style={styles.ctstyle}>
                               {t("Remaining Mulberry Yearly Targets")}:{" "}
-                              {viewTotalTargetsData[0]?.remainingValue || "N/A"}
+                              {viewTotalTargetsData[0]?.remainingValue || t("N/A")}
                             </th>
                           </tr> 
                         </thead>
@@ -1892,7 +1892,7 @@ useEffect(() => {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("TSC Yearly Targets")}:{" "}
-                              {viewTotalTargetsForTSCData[0]?.tscValue || "N/A"}
+                              {viewTotalTargetsForTSCData[0]?.tscValue || t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -2553,7 +2553,7 @@ useEffect(() => {
                         <Col lg="4">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="value">
-                              {t("Febrauary")}
+                              {t("February")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2646,7 +2646,7 @@ useEffect(() => {
         <Modal.Header closeButton className="sh-modal-header">
           <Modal.Title>
             <Icon name="edit" />
-            <span>{t("TSC wise Physical Target Setting")}</span>
+            <span>{t("TSC Wise Physical Target Setting")}</span>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -3078,6 +3078,8 @@ useEffect(() => {
   paginationComponentOptions={{ noRowsPerPage: true }}
   onChangePage={(page) => setPageReportee(page - 1)} // ⬅️ updated
   progressPending={loading}
+  progressComponent={<div className="p-3">{t("Loading...")}</div>}
+  noDataComponent={t("There are no records to display")}
   theme="solarized"
   customStyles={customStyles}
 />
@@ -3104,6 +3106,8 @@ useEffect(() => {
   paginationComponentOptions={{ noRowsPerPage: true }}
   onChangePage={(page) => setPageNormal(page - 1)} // ⬅️ updated
   progressPending={loading}
+  progressComponent={<div className="p-3">{t("Loading...")}</div>}
+  noDataComponent={t("There are no records to display")}
   theme="solarized"
   customStyles={customStyles}
 />

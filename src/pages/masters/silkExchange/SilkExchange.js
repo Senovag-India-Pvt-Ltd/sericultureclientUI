@@ -142,7 +142,7 @@ function SilkExchange() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label htmlFor="silkExchange">
-                      {t("silkExchange")}<span className="text-danger">*</span>
+                      {t("Silk Exchange")}<span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -155,7 +155,7 @@ function SilkExchange() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                        {t("silkExchange is required")}
+                        {t("Silk Exchange is required")}
                         </Form.Control.Feedback>
                       </div>
                     </Form.Group>

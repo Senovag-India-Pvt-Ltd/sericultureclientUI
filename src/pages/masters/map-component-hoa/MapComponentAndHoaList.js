@@ -5,7 +5,7 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 // import DataTable from "../../../components/DataTable/DataTable";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 import StateDatas from "../../../store/masters/state/StateData";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
@@ -258,7 +258,7 @@ const [searchData, setSearchData] = useState({
 
   const ScSchemeDetailsDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="d-flex flex-nowrap align-items-center text-start w-100">
@@ -277,7 +277,7 @@ const [searchData, setSearchData] = useState({
             onClick={() => handleEdit(row.id)}
           >
             <Icon name="edit" />
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -286,7 +286,7 @@ const [searchData, setSearchData] = useState({
             className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
             <Icon name="trash" />
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -368,7 +368,7 @@ const [searchData, setSearchData] = useState({
       //   hide: "md",
       // },
       {
-        name: t("Unit Cost In  Rupees"),
+        name: t("Unit Cost in Rupees"),
         selector: (row) => row.unitCostInRupees,
         cell: (row) => <span>{row.unitCostInRupees}</span>,
         sortable: true,
@@ -565,6 +565,8 @@ const [searchData, setSearchData] = useState({
               }}
               onChangePage={(page) => setPage(page - 1)}
               progressPending={loading}
+              progressComponent={<div className="py-4">{t("Loading...")}</div>}
+              noDataComponent={<div className="py-4">{t("There are no records to display")}</div>}
               theme="solarized"
               customStyles={customStyles}
             />

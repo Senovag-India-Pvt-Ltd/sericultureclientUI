@@ -2,7 +2,7 @@ import { Card, Form, Row, Col } from "react-bootstrap";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React, { useState, useEffect } from "react";
 import api from "../../../src/services/auth/api";
 import DatePicker from "react-datepicker";
@@ -131,9 +131,9 @@ function LotWisePriceFixation() {
   const acceptSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Price Fixed Successfully",
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#f0fff4,#fff);border:1.5px solid #9ae6b4;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#38a169,#48bb78);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">✅</div><div><p style="color:#22543d;font-size:14px;font-weight:700;margin:0 0 5px">Price Added Successfully</p><p style="color:#276749;font-size:13px;margin:0;line-height:1.65">The lot wise price has been recorded successfully.</p></div></div></div>`,
-      confirmButtonText: "OK",
+      title: t("Price Fixed Successfully"),
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#f0fff4,#fff);border:1.5px solid #9ae6b4;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#38a169,#48bb78);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">✅</div><div><p style="color:#22543d;font-size:14px;font-weight:700;margin:0 0 5px">${t("Price Added Successfully")}</p><p style="color:#276749;font-size:13px;margin:0;line-height:1.65">${t("The lot wise price has been recorded successfully.")}</p></div></div></div>`,
+      confirmButtonText: t("OK"),
       confirmButtonColor: "#38a169",
       background: "#fff",
       customClass: { popup: "swal-pop" },
@@ -147,9 +147,9 @@ function LotWisePriceFixation() {
         : message;
     Swal.fire({
       icon: "error",
-      title: "Submission Failed",
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">❌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Could Not Save</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${errorMessage}</p></div></div></div>`,
-      confirmButtonText: "Close",
+      title: t("Submission Failed"),
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">❌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Could Not Save")}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${errorMessage}</p></div></div></div>`,
+      confirmButtonText: t("Close"),
       confirmButtonColor: "#e53e3e",
       background: "#fff",
       customClass: { popup: "swal-pop" },
@@ -158,11 +158,11 @@ function LotWisePriceFixation() {
 
   const deleteConfirm = (_id) => {
     Swal.fire({
-      title: "Delete this record?",
-      text: "This action cannot be undone.",
+      title: t("Delete this record?"),
+      text: t("This action cannot be undone."),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it",
+      confirmButtonText: t("Yes, delete it"),
       confirmButtonColor: "#e53e3e",
       cancelButtonColor: "#718096",
       customClass: { popup: "swal-pop" },
@@ -174,16 +174,16 @@ function LotWisePriceFixation() {
             getList();
             Swal.fire({
               icon: "success",
-              title: "Deleted",
-              text: "Record deleted successfully.",
+              title: t("Deleted"),
+              text: t("Record deleted successfully."),
               customClass: { popup: "swal-pop" },
             });
           })
           .catch(() => {
             Swal.fire({
               icon: "error",
-              title: "Delete Failed",
-              text: "Something went wrong!",
+              title: t("Delete Failed"),
+              text: t("Something went wrong!"),
               customClass: { popup: "swal-pop" },
             });
           });
@@ -276,14 +276,14 @@ function LotWisePriceFixation() {
       sortable: true,
     },
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         <button
           type="button"
           className="lwpf-delete-btn"
           onClick={() => deleteConfirm(row.id)}
         >
-          🗑 Delete
+          🗑 {t("Delete")}
         </button>
       ),
     },
@@ -349,10 +349,10 @@ function LotWisePriceFixation() {
             </div>
             <div>
               <div style={{ color: "#fff", fontWeight: 700, fontSize: "13px" }}>
-                Lot Wise Price Fixation
+                {t("Lot Wise Price Fixation")}
               </div>
               <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "11px", marginTop: "1px" }}>
-                Set price per kg for a bidding slip lot
+                {t("Set price per kg for a bidding slip lot")}
               </div>
             </div>
             <div
@@ -366,7 +366,7 @@ function LotWisePriceFixation() {
               <span
                 style={{ color: "#fff", fontSize: "12px", fontWeight: 600 }}
               >
-                Seed Market
+                {t("Seed Market")}
               </span>
             </div>
           </div>
@@ -394,14 +394,14 @@ function LotWisePriceFixation() {
                   display: "inline-block",
                 }}
               />
-              Price Details
+              {t("Price Details")}
             </div>
 
             <Form noValidate validated={validated} onSubmit={postData}>
               <Row className="g-3 align-items-end">
                 <Col md={3} style={fieldGroupStyle}>
                   <label style={labelStyle}>
-                    Bidding Slip Lot No{" "}
+                    {t("Bidding Slip Lot No")}{" "}
                     <span style={{ color: "#e53e3e" }}>*</span>
                   </label>
                   <Form.Select
@@ -442,7 +442,7 @@ function LotWisePriceFixation() {
 
                 <Col md={3} style={fieldGroupStyle}>
                   <label style={labelStyle}>
-                    Price Per Kg (₹) <span style={{ color: "#e53e3e" }}>*</span>
+                    {t("Price Per Kg (₹)")} <span style={{ color: "#e53e3e" }}>*</span>
                   </label>
                   <Form.Control
                     id="pricePerKg"
@@ -477,7 +477,7 @@ function LotWisePriceFixation() {
 
                 <Col md={3} style={fieldGroupStyle}>
                   <label style={labelStyle}>
-                    Transaction Date <span style={{ color: "#e53e3e" }}>*</span>
+                    {t("Transaction Date")} <span style={{ color: "#e53e3e" }}>*</span>
                   </label>
                   <DatePicker
                     selected={data.fixationDate}
@@ -531,7 +531,7 @@ function LotWisePriceFixation() {
                     {isSaving ? (
                       <>
                         <span className="spinner-border spinner-border-sm" />{" "}
-                        Saving…
+                        {t("Saving…")}
                       </>
                     ) : (
                       <>✅ {t("Submit")}</>
@@ -577,7 +577,7 @@ function LotWisePriceFixation() {
               📋
             </div>
             <div style={{ color: "#fff", fontWeight: 700, fontSize: "13px" }}>
-              Price Fixation Records
+              {t("Price Fixation Records")}
             </div>
           </div>
 
@@ -587,6 +587,7 @@ function LotWisePriceFixation() {
               data={listData}
               highlightOnHover
               progressPending={loading}
+              progressComponent={<div className="py-4">{t("Loading...")}</div>}
               customStyles={customTableStyles}
               noDataComponent={
                 <div
@@ -597,7 +598,7 @@ function LotWisePriceFixation() {
                     fontSize: "14px",
                   }}
                 >
-                  📭 No price fixation records found.
+                  📭 {t("No price fixation records found.")}
                 </div>
               }
             />

@@ -346,7 +346,7 @@ function InspectionConfig() {
                             />
                           </Col>
                           <Form.Label column sm={11} className="mt-n2 ms-n4">
-                            {doc.documentMasterName}
+                            {t(doc.documentMasterName)}
                           </Form.Label>
                         </Form.Group>
                       </div>

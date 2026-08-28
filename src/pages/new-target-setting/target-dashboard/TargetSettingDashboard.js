@@ -395,7 +395,7 @@ function TargetSettingDashboard() {
                     <div>
                       <div className="card-title">
                         <h4 className="title mb-1 bold" style={{ color: "white" }}>
-                          {dashboard.stepName}
+                          {t(dashboard.stepName)}
                         </h4>
                       </div>
                       <div className="my-3">

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { createTheme } from "react-data-table-component";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
@@ -437,12 +437,12 @@ function ReceiptofDFLsfromtheP4grainage() {
       cell: (row) => (
         <span>
           {row.isAccepted === 0
-            ? "Pending"
+            ? t("Pending")
             : row.isAccepted === 1
-            ? "Accepted"
+            ? t("Accepted")
             : row.isAccepted === 2
-            ? "Rejected"
-            : "Unknown"}
+            ? t("Rejected")
+            : t("Unknown")}
         </span>
       ),
       sortable: true,
@@ -510,6 +510,7 @@ function ReceiptofDFLsfromtheP4grainage() {
               }}
               onChangePage={(page) => setPage(page - 1)}
               progressPending={loading}
+              progressComponent={<div className="p-3">{t("Loading...")}</div>}
               theme="solarized"
               customStyles={customStyles}
               noDataComponent={
@@ -688,6 +689,7 @@ function ReceiptofDFLsfromtheP4grainage() {
                 }}
                 onChangePage={(page) => setPage(page - 1)}
                 progressPending={loading}
+                progressComponent={<div className="p-3">{t("Loading...")}</div>}
                 theme="solarized"
                 customStyles={customStyles}
               />

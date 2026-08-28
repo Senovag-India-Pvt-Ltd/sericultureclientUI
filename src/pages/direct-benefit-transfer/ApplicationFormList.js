@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import Swal from "sweetalert2";
 import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
@@ -367,19 +367,19 @@ const getFinancialDefaultDetails = () => {
   const deleteError = () => {
     Swal.fire({
       icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Delete attempt was not successful"),
+      text: t("Something went wrong!"),
       customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
     });
   };
 
   const deleteConfirm = (_id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "It will delete permanently!",
+      title: t("Are you sure?"),
+      text: t("It will delete permanently!"),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: t("Yes, delete it!"),
       customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     }).then((result) => {
       if (result.value) {
@@ -389,8 +389,8 @@ const getFinancialDefaultDetails = () => {
             // deleteConfirm(_id);
             getList();
             Swal.fire({
-              title: "Deleted",
-              text: "You successfully deleted this record",
+              title: t("Deleted"),
+              text: t("You successfully deleted this record"),
               icon: "success",
               customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
             });
@@ -401,8 +401,8 @@ const getFinancialDefaultDetails = () => {
       } else {
         console.log(result.value);
         Swal.fire({
-          title: "Cancelled",
-          text: "Your record is not deleted",
+          title: t("Cancelled"),
+          text: t("Your record is not deleted"),
           icon: "info",
           customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
         });
@@ -413,7 +413,7 @@ const getFinancialDefaultDetails = () => {
   const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       text: message,
       customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
     });
@@ -427,7 +427,7 @@ const getFinancialDefaultDetails = () => {
     }
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
+      title: t("Save attempt was not successful"),
       html: errorMessage,
       customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
     });
@@ -597,7 +597,7 @@ const getFinancialDefaultDetails = () => {
         const content = response.data.content[0];
         
         if (content.applicationDetailsResponses.length <= 0) {
-          saveError("No Details Found!!!");
+          saveError(t("No Details Found!!!"));
         } else {
           handleShowModal();
           setViewDetailsData({
@@ -775,7 +775,7 @@ const getFinancialDefaultDetails = () => {
   ];
 
   return (
-    <Layout title="Application Form List">
+    <Layout title={t("Application Form List")}>
       <style>{applicationFormListStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
@@ -825,12 +825,12 @@ const getFinancialDefaultDetails = () => {
                       onChange={handleInputsSearch}
                     >
                       {/* <option value="0">All</option> */}
-                      <option value="1">Sanction No.</option>
-                      <option value="2">FruitsId</option>
-                      <option value="3">Beneficiary Id</option>
-                      <option value="4">Financial Year</option>
-                      <option value="5">Component</option>
-                      <option value="6">Component Type</option>
+                      <option value="1">{t("Sanction No.")}</option>
+                      <option value="2">{t("FRUITS ID")}</option>
+                      <option value="3">{t("Beneficiary ID")}</option>
+                      <option value="4">{t("Financial Year")}</option>
+                      <option value="5">{t("Component")}</option>
+                      <option value="6">{t("Component Type")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -1163,7 +1163,7 @@ const getFinancialDefaultDetails = () => {
   <Modal.Body>
     {loading ? (
       <h1 className="d-flex justify-content-center align-items-center">
-        Loading...
+        {t("Loading...")}
       </h1>
     ) : (
       <Accordion defaultActiveKey="0">
@@ -1313,7 +1313,7 @@ const getFinancialDefaultDetails = () => {
           <Accordion.Item eventKey="land">
             <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
                         className="mb-2" >{t("Land Details")}</Accordion.Header>
-            <Accordion.Body>No Land Details Available</Accordion.Body>
+            <Accordion.Body>{t("No Land Details Available")}</Accordion.Body>
           </Accordion.Item>
         )}
 
@@ -1355,7 +1355,7 @@ const getFinancialDefaultDetails = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="10" className="text-center">No Transaction Details Available</td>
+              <td colSpan="10" className="text-center">{t("No Transaction Details Available")}</td>
             </tr>
           )}
         </tbody>

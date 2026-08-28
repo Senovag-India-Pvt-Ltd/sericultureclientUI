@@ -7,9 +7,12 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { createTheme } from "react-data-table-component";
 import { Icon } from "../../../components";
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function UserHierarchyMappingEdit() {
+  // Translation
+  const { t, i18n } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -186,11 +189,11 @@ function UserHierarchyMappingEdit() {
   return (
     <Layout title="User Hierarchy Mapping">
       <style>{userHierarchyMappingEditStyles}</style>
-      <div className="sh-page-header">
-        <Block.Head>
+      <Block.Head>
+        <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">User Hierarchy Mapping</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("User Hierarchy Mapping")}</Block.Title>
             </Block.HeadContent>
 
             <Block.HeadContent>
@@ -203,7 +206,7 @@ function UserHierarchyMappingEdit() {
                     }
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Button>
                 </li>
                 <li>
@@ -214,14 +217,14 @@ function UserHierarchyMappingEdit() {
                     }
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Button>
                 </li>
               </ul>
             </Block.HeadContent>
           </Block.HeadBetween>
-        </Block.Head>
-      </div>
+        </div>
+      </Block.Head>
 
       <Block className="mt-n4 sh-form-wrap">
         <Form>
@@ -229,15 +232,15 @@ function UserHierarchyMappingEdit() {
             <Card className="sh-section-card">
               <Card.Header className="sh-section-header">
                 <Icon name="edit" />
-                <span>Update Hierarchy Mapping</span>
+                <span>{t("Update Hierarchy Mapping")}</span>
               </Card.Header>
               <Card.Body>
                 <Row className="g-gs">
-                 
+
                     <Col lg="6">
                       <Form.Group>
                         <Form.Label>
-                          <b>Employee</b>
+                          <b>{t("Employee")}</b>
                         </Form.Label>
                         <Form.Control value={employeeName} disabled />
                       </Form.Group>
@@ -246,18 +249,18 @@ function UserHierarchyMappingEdit() {
                     <Col lg="6">
                       <Form.Group>
                         <Form.Label>
-                          <b>Existing Manager</b>
+                          <b>{t("Existing Manager")}</b>
                         </Form.Label>
                         <Form.Control value={existingManagerName} disabled />
                       </Form.Group>
                     </Col>
-                  
+
 
                   {/* DESIGNATION */}
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        Designation <span className="text-danger">*</span>
+                        {t("Designation")} <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -266,13 +269,15 @@ function UserHierarchyMappingEdit() {
                           onChange={handleChange}
                           required
                         >
-                          <option value="">Select Designation</option>
+                          <option value="">{t("Select Designation")}</option>
                           {designationList.map((d) => (
                             <option
                               key={d.designationId}
                               value={d.designationId}
                             >
-                              {d.name}
+                              {i18n.language === "kn"
+                                ? d.designationNameInKannada || d.name
+                                : d.name}
                             </option>
                           ))}
                         </Form.Select>
@@ -284,7 +289,7 @@ function UserHierarchyMappingEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        District <span className="text-danger">*</span>
+                        {t("District")} <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">
                         <Form.Select
@@ -293,10 +298,12 @@ function UserHierarchyMappingEdit() {
                           onChange={handleChange}
                           required
                         >
-                          <option value="">Select District</option>
+                          <option value="">{t("Select District")}</option>
                           {districtList.map((d) => (
                             <option key={d.districtId} value={d.districtId}>
-                              {d.districtName}
+                              {i18n.language === "kn"
+                                ? d.districtNameInKannada || d.districtName
+                                : d.districtName}
                             </option>
                           ))}
                         </Form.Select>
@@ -308,7 +315,7 @@ function UserHierarchyMappingEdit() {
                   <Col lg="6">
                     <Form.Group>
                       <Form.Label>
-                        Change Manager <span className="text-danger">*</span>
+                        {t("Change Manager")} <span className="text-danger">*</span>
                       </Form.Label>
 
                       <Form.Select
@@ -317,7 +324,7 @@ function UserHierarchyMappingEdit() {
                         onChange={handleChange}
                         required
                       >
-                        <option value="">Select Manager</option>
+                        <option value="">{t("Select Manager")}</option>
 
                         {managerList.map((m) => (
                           <option key={m.userMasterId} value={m.userMasterId}>
@@ -342,7 +349,7 @@ function UserHierarchyMappingEdit() {
                     className="sh-save-btn"
                   >
                     <Icon name="save" />
-                    <span>Update</span>
+                    <span>{t("update")}</span>
                   </Button>
                 </li>
 
@@ -357,7 +364,7 @@ function UserHierarchyMappingEdit() {
                     className="sh-cancel-btn"
                   >
                     <Icon name="cross" />
-                    <span>Cancel</span>
+                    <span>{t("cancel")}</span>
                   </Button>
                 </li>
               </ul>

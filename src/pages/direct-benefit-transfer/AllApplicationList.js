@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import Swal from "sweetalert2";
 import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
@@ -669,7 +669,7 @@ function AllApplicationList() {
         const content = response.data.content[0];
         
         if (content.applicationDetailsResponses.length <= 0) {
-          saveError("No Details Found!!!");
+          saveError(t("No Details Found!!!"));
         } else {
           handleShowModal();
           setViewDetailsData({
@@ -700,14 +700,14 @@ function AllApplicationList() {
 
   const deleteApplicationConfirm = (_id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "This will permanently delete the application from all records!",
+      title: t("Are you sure?"),
+      text: t("This will permanently delete the application from all records!"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "Cancel",
+      confirmButtonText: t("Yes, delete it!"),
+      cancelButtonText: t("Cancel"),
       customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
     }).then((result) => {
       if (result.isConfirmed) {
@@ -715,8 +715,8 @@ function AllApplicationList() {
           .post(baseURLDBT + `service/deleteApplicationForm/${_id}`)
           .then((response) => {
             Swal.fire({
-              title: "Deleted!",
-              text: "Application has been deleted successfully.",
+              title: t("Deleted!"),
+              text: t("Application has been deleted successfully."),
               icon: "success",
               customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
             });
@@ -724,8 +724,8 @@ function AllApplicationList() {
           })
           .catch((err) => {
             Swal.fire({
-              title: "Error!",
-              text: "Failed to delete the application. Please try again.",
+              title: t("Error!"),
+              text: t("Failed to delete the application. Please try again."),
               icon: "error",
               customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
             });
@@ -737,7 +737,7 @@ function AllApplicationList() {
   const saveSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Selected Application list will be proceeded for preinspection",
+      title: t("Selected Application list will be proceeded for preinspection"),
       text: message,
       customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
     });
@@ -751,7 +751,7 @@ function AllApplicationList() {
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
       customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
     });
@@ -856,7 +856,7 @@ function AllApplicationList() {
     //   button: true,
     // },
     {
-      name: "Sl.No",
+      name: t("Sl.No"),
       selector: (row,i) => row.serialNumber,
       cell: (row, i) => <span>{row.serialNumber}</span>,
       sortable: true,
@@ -871,7 +871,7 @@ function AllApplicationList() {
       hide: "md",
     },
     {
-      name: "Beneficiary ID",
+      name: t("Beneficiary ID"),
       selector: (row) => row.beneficiaryId,
       cell: (row) => <span>{row.beneficiaryId}</span>,
       sortable: true,
@@ -920,7 +920,7 @@ function AllApplicationList() {
       hide: "md",
     },
     {
-      name: "Sanction No.",
+      name: t("Sanction No."),
       selector: (row) => row.sanctionNo,
       cell: (row) => <span>{row.sanctionNo}</span>,
       sortable: true,
@@ -928,7 +928,7 @@ function AllApplicationList() {
     },
   
     {
-      name: "Subsidy Amount",
+      name: t("Subsidy Amount"),
       selector: (row) => row.schemeAmount,
       cell: (row) => <span>{row.schemeAmount}</span>,
       sortable: true,
@@ -1047,7 +1047,7 @@ function AllApplicationList() {
 
 
   return (
-    <Layout title="Application List">
+    <Layout title={t("Application List")}>
       <style>{allApplicationListStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
@@ -1097,12 +1097,12 @@ function AllApplicationList() {
                       onChange={handleInputsSearch}
                     >
                       {/* <option value="0">All</option> */}
-                      <option value="1">Sanction No.</option>
-                      <option value="2">FruitsId</option>
-                      <option value="3">Beneficiary Id</option>
-                      <option value="4">Financial Year</option>
-                      <option value="5">Component</option>
-                      <option value="6">Component Type</option>
+                      <option value="1">{t("Sanction No.")}</option>
+                      <option value="2">{t("FruitsId")}</option>
+                      <option value="3">{t("Beneficiary Id")}</option>
+                      <option value="4">{t("Financial Year")}</option>
+                      <option value="5">{t("Component")}</option>
+                      <option value="6">{t("Component Type")}</option>
                     </Form.Select>
                   </div>
                 </Col>
@@ -1154,7 +1154,7 @@ function AllApplicationList() {
                               searchData.searchText === "0"
                             }
                           >
-                            <option value="">Select Component</option>
+                            <option value="">{t("Select Component")}</option>
                             {scComponentListData.map((list) => (
                               <option
                                 key={list.scComponentId}
@@ -1184,7 +1184,7 @@ function AllApplicationList() {
                          searchData.searchText === "0"
                        }
                   >
-                    <option value="">Select Component Type</option>
+                    <option value="">{t("Select Component Type")}</option>
                     {scSubSchemeDetailsListData &&
                       scSubSchemeDetailsListData.map((list, i) => (
                         <option 
@@ -1207,11 +1207,11 @@ function AllApplicationList() {
                     value={searchData.searchText}
                     onChange={handleInputsSearch}
                     type="searchText"
-                    placeholder="Search"
+                    placeholder={t("search")}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    Field Value is Required
+                    {t("Field Value is Required")}
                   </Form.Control.Feedback>
                 </Col>
               )}
@@ -1276,19 +1276,19 @@ function AllApplicationList() {
       // </Modal> */}
      <Modal show={showModal} onHide={handleCloseModal} size="xl" contentClassName="sh-modal-content">
   <Modal.Header closeButton>
-    <Modal.Title>View Details</Modal.Title>
+    <Modal.Title>{t("View Details")}</Modal.Title>
   </Modal.Header>
   <Modal.Body>
     {loading ? (
       <h1 className="d-flex justify-content-center align-items-center">
-        Loading...
+        {t("Loading...")}
       </h1>
     ) : (
       <Accordion defaultActiveKey="0">
         {/* Application Details Accordion */}
         <Accordion.Item eventKey="0">
           <Accordion.Header style={{ backgroundColor: "#0F6CBE",color:"white",fontWeight: "bold" }}
-                        className="mb-2">Application Details</Accordion.Header>
+                        className="mb-2">{t("Application Details")}</Accordion.Header>
           <Accordion.Body>
             <table className="table small table-bordered">
               <tbody>
@@ -1301,95 +1301,95 @@ function AllApplicationList() {
                   <td>{viewDetailsData?.applicationDetails?.[0]?.farmerFirstName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>ARN Number:</td>
+                  <td style={styles.ctstyle}>{t("ARN Number")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.arn || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Sanction No:</td>
+                  <td style={styles.ctstyle}>{t("Sanction No")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.sanctionNo || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Sub Scheme Name:</td>
+                  <td style={styles.ctstyle}>{t("Sub Scheme Name")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.subSchemeName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Component:</td>
+                  <td style={styles.ctstyle}>{t("Component")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.scComponentName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Scheme Name:</td>
+                  <td style={styles.ctstyle}>{t("Scheme Name")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.schemeName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Sub Component:</td>
+                  <td style={styles.ctstyle}>{t("Sub Component")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.categoryName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Scheme Amount:</td>
+                  <td style={styles.ctstyle}>{t("Scheme Amount")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.schemeAmount || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Eligible Amount:</td>
+                  <td style={styles.ctstyle}>{t("Eligible Amount")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.eligibleAmount || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Hectare:</td>
+                  <td style={styles.ctstyle}>{t("Hectare")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.hectareName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Spacing:</td>
+                  <td style={styles.ctstyle}>{t("Spacing")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.spacingName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Period From:</td>
+                  <td style={styles.ctstyle}>{t("Period From")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.periodFrom || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Period To:</td>
+                  <td style={styles.ctstyle}>{t("Period To")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.periodTo || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>District Name:</td>
+                  <td style={styles.ctstyle}>{t("District Name")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.districtName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Taluk Name:</td>
+                  <td style={styles.ctstyle}>{t("Taluk Name")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.talukName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Village Name:</td>
+                  <td style={styles.ctstyle}>{t("Village Name")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.villageName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Created Date:</td>
+                  <td style={styles.ctstyle}>{t("Created Date")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.createdDate || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Modified Date:</td>
+                  <td style={styles.ctstyle}>{t("Modified Date")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.modifiedDate || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Application Status:</td>
+                  <td style={styles.ctstyle}>{t("Application Status")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.applicationStatus || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Month(Silk Incentive):</td>
+                  <td style={styles.ctstyle}>{t("Month(Silk Incentive)")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.month || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Machine Quantity(Silk Incentive):</td>
+                  <td style={styles.ctstyle}>{t("Machine Quantity(Silk Incentive)")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.machineQuantity || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Machine Type(Silk Incentive):</td>
+                  <td style={styles.ctstyle}>{t("Machine Type(Silk Incentive)")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.machineTypeName || 'N/A'}</td>
                 </tr>
                 <tr>
-                  <td style={styles.ctstyle}>Remarks:</td>
+                  <td style={styles.ctstyle}>{t("Remarks")}:</td>
                   <td>{viewDetailsData?.applicationDetails?.[0]?.remarks || 'N/A'}</td>
                 </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Proposal Date</td>
+                        <td style={styles.ctstyle}>{t("Proposal Date")}</td>
                         <td>{viewDetailsData?.applicationDetails?.[0]?.proposalDate || "N/A"}</td>
                       </tr>
               </tbody>
@@ -1401,49 +1401,49 @@ function AllApplicationList() {
                   className="fw-bold text-white" 
                   style={{ backgroundColor: "#0F6CBE" }}
                 >
-                  Kanesh Land Details
+                  {t("Kanesh Land Details")}
                 </Card.Header>
                 <Card.Body>
                   <table className="table table-bordered table-striped small">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>District Name</td>
+                        <td style={styles.ctstyle}>{t("District Name")}</td>
                         <td>{viewDetailsData?.applicationDetails?.[0]?.kaneshDistrictName || "N/A"}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Taluk Name</td>
+                        <td style={styles.ctstyle}>{t("Taluk Name")}</td>
                         <td>{viewDetailsData?.applicationDetails?.[0]?.kaneshTalukName || "N/A"}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Village Name</td>
+                        <td style={styles.ctstyle}>{t("Village Name")}</td>
                         <td>{viewDetailsData?.applicationDetails?.[0]?.kaneshVillageName || "N/A"}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Kanesh No</td>
+                        <td style={styles.ctstyle}>{t("Kanesh No")}</td>
                         <td>{viewDetailsData?.applicationDetails?.[0]?.kaneshNo || "N/A"}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Panchayat Name</td>
+                        <td style={styles.ctstyle}>{t("Panchayat Name")}</td>
                         <td>{viewDetailsData?.applicationDetails?.[0]?.panchaytName || "N/A"}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Square Feet</td>
+                        <td style={styles.ctstyle}>{t("Square Feet")}</td>
                         <td>{viewDetailsData?.applicationDetails?.[0]?.sqft || "N/A"}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>East</td>
+                        <td style={styles.ctstyle}>{t("East")}</td>
                         <td>{viewDetailsData?.applicationDetails?.[0]?.east || "N/A"}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>West</td>
+                        <td style={styles.ctstyle}>{t("West")}</td>
                         <td>{viewDetailsData?.applicationDetails?.[0]?.west || "N/A"}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>North</td>
+                        <td style={styles.ctstyle}>{t("North")}</td>
                         <td>{viewDetailsData?.applicationDetails?.[0]?.north || "N/A"}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>South</td>
+                        <td style={styles.ctstyle}>{t("South")}</td>
                         <td>{viewDetailsData?.applicationDetails?.[0]?.south || "N/A"}</td>
                       </tr>
 
@@ -1459,25 +1459,25 @@ function AllApplicationList() {
                   className="fw-bold text-white" 
                   style={{ backgroundColor: "#0F6CBE" }}
                 >
-                  Constructed Area
+                  {t("Constructed Area")}
                 </Card.Header>
                 <Card.Body>
                   <table className="table table-bordered table-striped small">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>Extent Of Mulberry</td>
+                        <td style={styles.ctstyle}>{t("Extent Of Mulberry")}</td>
                         <td>{viewDetailsData?.applicationDetails?.[0]?.extentOfMulberry || "N/A"}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>RH Sqft</td>
+                        <td style={styles.ctstyle}>{t("RH Sqft")}</td>
                         <td>{viewDetailsData?.applicationDetails?.[0]?.rhSqft || "N/A"}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Estimated Cost</td>
+                        <td style={styles.ctstyle}>{t("Estimated Cost")}</td>
                         <td>{viewDetailsData?.applicationDetails?.[0]?.estimatedCost || "N/A"}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}>Roof Type</td>
+                        <td style={styles.ctstyle}>{t("Roof Type")}</td>
                         <td>{viewDetailsData?.applicationDetails?.[0]?.roofTypeName || "N/A"}</td>
                       </tr>
                       
@@ -1572,66 +1572,66 @@ function AllApplicationList() {
               style={{ backgroundColor: "#0F6CBE", color: "white", fontWeight: "bold" }}
               className="mb-2"
             >
-              Land Details
+              {t("Land Details")}
             </Accordion.Header>
             <Accordion.Body>
               {viewDetailsData.landDetails.map((landDetail, index) => (
                 <table className="table small table-bordered mb-3" key={index}>
                   <tbody>
                     <tr>
-                      <td style={styles.ctstyle}>Survey Number:</td>
+                      <td style={styles.ctstyle}>{t("Survey Number")}:</td>
                       <td>{landDetail.surveyNumber || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>District Name:</td>
+                      <td style={styles.ctstyle}>{t("District Name")}:</td>
                       <td>{landDetail.districtName || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Taluk Name:</td>
+                      <td style={styles.ctstyle}>{t("Taluk Name")}:</td>
                       <td>{landDetail.talukName || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Village Name:</td>
+                      <td style={styles.ctstyle}>{t("Village Name")}:</td>
                       <td>{landDetail.villageName || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Acre:</td>
+                      <td style={styles.ctstyle}>{t("Acre")}:</td>
                       <td>{landDetail.acre || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>F Gunta:</td>
+                      <td style={styles.ctstyle}>{t("F Gunta")}:</td>
                       <td>{landDetail.fGunta || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Gunta:</td>
+                      <td style={styles.ctstyle}>{t("Gunta")}:</td>
                       <td>{landDetail.gunta || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Developed Area Acre:</td>
+                      <td style={styles.ctstyle}>{t("Developed Area Acre")}:</td>
                       <td>{landDetail.devAcre || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Developed Area F Gunta:</td>
+                      <td style={styles.ctstyle}>{t("Developed Area F Gunta")}:</td>
                       <td>{landDetail.devFGunta || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Developed Area Gunta:</td>
+                      <td style={styles.ctstyle}>{t("Developed Area Gunta")}:</td>
                       <td>{landDetail.devGunta || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Hissa:</td>
+                      <td style={styles.ctstyle}>{t("Hissa")}:</td>
                       <td>{landDetail.hissa || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Land Code:</td>
+                      <td style={styles.ctstyle}>{t("Land Code")}:</td>
                       <td>{landDetail.landCode || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Main Owner No:</td>
+                      <td style={styles.ctstyle}>{t("Main Owner No")}:</td>
                       <td>{landDetail.mainOwnerNo || "N/A"}</td>
                     </tr>
                     <tr>
-                      <td style={styles.ctstyle}>Owner Name:</td>
+                      <td style={styles.ctstyle}>{t("Owner Name")}:</td>
                       <td>{landDetail.ownerName || "N/A"}</td>
                     </tr>
                   </tbody>
@@ -1645,9 +1645,9 @@ function AllApplicationList() {
               style={{ backgroundColor: "#0F6CBE", color: "white", fontWeight: "bold" }}
               className="mb-2"
             >
-              Land Details
+              {t("Land Details")}
             </Accordion.Header>
-            <Accordion.Body>No Land Details Available</Accordion.Body>
+            <Accordion.Body>{t("No Land Details Available")}</Accordion.Body>
           </Accordion.Item>
         )}
 
@@ -1733,16 +1733,16 @@ function AllApplicationList() {
 
         <Accordion.Item eventKey="documents">
   <Accordion.Header style={{ backgroundColor: "#0F6CBE", color: "white", fontWeight: "bold" }} className="mb-2">
-    Documents
+    {t("Documents")}
   </Accordion.Header>
   <Accordion.Body>
     {viewDetailsData?.documents?.length > 0 ? (
       <table className="table small table-bordered">
         <thead>
           <tr>
-            <th>Document Name</th>
+            <th>{t("Document Name")}</th>
             {/* <th>Document Path</th> */}
-            <th>Action</th>
+            <th>{t("Action")}</th>
           </tr>
         </thead>
         <tbody>
@@ -1756,7 +1756,7 @@ function AllApplicationList() {
                   size="sm"
                   onClick={() => handleDocumentClick(fileDocuments.documentPath)}
                 >
-                  View Document
+                  {t("View Document")}
                 </Button>
                 {currentDocumentPath === fileDocuments.documentPath && selectedDocumentFile && (
                   <>
@@ -1771,7 +1771,7 @@ function AllApplicationList() {
                       className="ms-2"
                       onClick={() => downloadFile(fileDocuments.documentPath)}
                     >
-                      Download Selected File
+                      {t("Download Selected File")}
                     </Button>
                   </>
                 )}
@@ -1781,7 +1781,7 @@ function AllApplicationList() {
         </tbody>
       </table>
     ) : (
-      <p>No Documents Available</p>
+      <p>{t("No Documents Available")}</p>
     )}
   </Accordion.Body>
 </Accordion.Item>
@@ -1796,30 +1796,30 @@ function AllApplicationList() {
                     }}
                     className="mb-2"
                   >
-                    Work Flow Details
+                    {t("Work Flow Details")}
                   </Accordion.Header>
                   <Accordion.Body>
                     {viewDetailsData.workflowDetails.map((workFlow, index) => (
                       <table className="table small table-bordered" key={index}>
                         <tbody>
                           <tr>
-                            <td style={styles.ctstyle}>Step Name:</td>
+                            <td style={styles.ctstyle}>{t("Step Name")}:</td>
                             <td>{workFlow.stepName || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Status:</td>
+                            <td style={styles.ctstyle}>{t("Status")}:</td>
                             <td>{workFlow.status || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Assigned By:</td>
+                            <td style={styles.ctstyle}>{t("Assigned By")}:</td>
                             <td>{workFlow.assignedBy || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Reject Reason:</td>
+                            <td style={styles.ctstyle}>{t("Reject Reason")}:</td>
                             <td>{workFlow.rejectReason || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Rejected By:</td>
+                            <td style={styles.ctstyle}>{t("Rejected By")}:</td>
                             <td>{workFlow.rejectReason || "N/A"}</td>
                           </tr>
                           <tr>
@@ -1830,18 +1830,18 @@ function AllApplicationList() {
                                 color: "green",
                               }}
                             >
-                              Comment:
+                              {t("Comment")}:
                             </td>
                             <td style={{ fontWeight: "bold", color: "green" }}>
                               {workFlow.comment || "N/A"}
                             </td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Reason:</td>
+                            <td style={styles.ctstyle}>{t("Reason")}:</td>
                             <td>{workFlow.reason || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Assigned To:</td>
+                            <td style={styles.ctstyle}>{t("Assigned To")}:</td>
                             <td>{workFlow.assignedTo || "N/A"}</td>
                           </tr>
                         </tbody>
@@ -1859,10 +1859,10 @@ function AllApplicationList() {
                     }}
                     className="mb-2"
                   >
-                    Work Flow Details
+                    {t("Work Flow Details")}
                   </Accordion.Header>
                   <Accordion.Body>
-                    No Work Flow Details Available
+                    {t("No Work Flow Details Available")}
                   </Accordion.Body>
                 </Accordion.Item>
               )}
@@ -1922,7 +1922,7 @@ function AllApplicationList() {
   </Modal.Body>
   <Modal.Footer>
     <Button variant="secondary" onClick={handleCloseModal}>
-      Close
+      {t("Close")}
     </Button>
   </Modal.Footer>
 </Modal>

@@ -6,7 +6,8 @@ import Block from "../../components/Block/Block";
 import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import DataTable, { createTheme } from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
+import { createTheme } from "react-data-table-component";
 
 import { Link, useParams } from "react-router-dom";
 
@@ -557,7 +558,7 @@ function MaintenanceOfLineRecordsForEachRaceForGrainageEdit() {
                                   value={data.numberOfDfls}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder={t("Enter  Number Of DFLs")}
+                                  placeholder={t("Enter Number Of DFLs")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -890,7 +891,7 @@ function MaintenanceOfLineRecordsForEachRaceForGrainageEdit() {
                                   value={data.numberOfDflsMale}
                                   onChange={handleInputs}
                                   type="text"
-                                  placeholder={t("Enter  Number Of DFLs")}
+                                  placeholder={t("Enter Number Of DFLs")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">

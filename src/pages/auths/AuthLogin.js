@@ -57,6 +57,10 @@ const AuthLoginPage = () => {
       setValidated(true);
       return;
     }
+    if (/\s/.test(data.username)) {
+      showAuthAlert({ icon: "error", title: "Invalid Username", text: "Username should not contain spaces." });
+      return;
+    }
     if (isGeneratingOTP) return;
     setIsGeneratingOTP(true);
     axios

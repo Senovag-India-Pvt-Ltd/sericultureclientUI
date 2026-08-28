@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function RemittanceReportForGrainage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -85,7 +85,7 @@ function RemittanceReportForGrainage() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
 };
@@ -247,15 +247,15 @@ function RemittanceReportForGrainage() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),               selector: (row) => row.serialNumber,    cell: (row) => <span>{row.serialNumber}</span>,    sortable: true },
-    { name: colHeader("Lot Number"),           selector: (row) => row.lotNumber,       cell: (row) => <span>{row.lotNumber}</span>,       sortable: true },
-    { name: colHeader("Race"),                 selector: (row) => row.raceName,        cell: (row) => <span>{row.raceName}</span>,        sortable: true },
-    { name: colHeader("Number of DFLs"),       selector: (row) => row.numberOfDfls,    cell: (row) => <span>{row.numberOfDfls}</span>,    sortable: true },
-    { name: colHeader("Total Amount"),         selector: (row) => row.totalAmount,     cell: (row) => <span>{row.totalAmount}</span>,     sortable: true },
-    { name: colHeader("Bill Number"),          selector: (row) => row.billNumber,      cell: (row) => <span>{row.billNumber}</span>,      sortable: true },
-    { name: colHeader("Bank Challan Number"),  selector: (row) => row.bankChallanNumber, cell: (row) => <span>{row.bankChallanNumber}</span>, sortable: true },
-    { name: colHeader("RTC 25"),               selector: (row) => row.rtc25,           cell: (row) => <span>{row.rtc25}</span>,           sortable: true },
-    { name: colHeader("Date"),                 selector: (row) => row.date,            cell: (row) => <span>{row.date}</span>,            sortable: true },
+    { name: colHeader(t("Sl.No")),               selector: (row) => row.serialNumber,    cell: (row) => <span>{row.serialNumber}</span>,    sortable: true },
+    { name: colHeader(t("Lot Number")),           selector: (row) => row.lotNumber,       cell: (row) => <span>{row.lotNumber}</span>,       sortable: true },
+    { name: colHeader(t("Race")),                 selector: (row) => row.raceName,        cell: (row) => <span>{row.raceName}</span>,        sortable: true },
+    { name: colHeader(t("Number of DFLs")),       selector: (row) => row.numberOfDfls,    cell: (row) => <span>{row.numberOfDfls}</span>,    sortable: true },
+    { name: colHeader(t("Total Amount")),         selector: (row) => row.totalAmount,     cell: (row) => <span>{row.totalAmount}</span>,     sortable: true },
+    { name: colHeader(t("Bill Number")),          selector: (row) => row.billNumber,      cell: (row) => <span>{row.billNumber}</span>,      sortable: true },
+    { name: colHeader(t("Bank Challan Number")),  selector: (row) => row.bankChallanNumber, cell: (row) => <span>{row.bankChallanNumber}</span>, sortable: true },
+    { name: colHeader(t("RTC 25")),               selector: (row) => row.rtc25,           cell: (row) => <span>{row.rtc25}</span>,           sortable: true },
+    { name: colHeader(t("Date")),                 selector: (row) => row.date,            cell: (row) => <span>{row.date}</span>,            sortable: true },
   ];
 
   return (
@@ -277,8 +277,8 @@ function RemittanceReportForGrainage() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>💰</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Remittance Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export remittance data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Remittance Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export remittance data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -289,7 +289,7 @@ function RemittanceReportForGrainage() {
                   <option value="">{t("Select Race")}</option>
                   {raceListData.map((list) => (
                     <option key={list.raceMasterId} value={list.raceMasterId}>
-                      {list.raceMasterName}
+                      {i18n.language === "kn" ? list.raceNameInKannada : list.raceMasterName}
                     </option>
                   ))}
                 </Form.Select>

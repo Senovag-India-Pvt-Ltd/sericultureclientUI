@@ -117,8 +117,8 @@ function CropInspectionEdit() {
           const apiMsg =
             resData.errorMessages[0]?.message?.[0]?.message ||
             resData.errorMessages[0]?.message ||
-            "Validation error from server.";
-          Swal.fire({ icon: "warning", title: "Not Found", text: apiMsg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
+            t("Validation error from server.");
+          Swal.fire({ icon: "warning", title: t("Not Found"), text: apiMsg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
           setSearchLoading(false);
           return;
         }
@@ -129,7 +129,7 @@ function CropInspectionEdit() {
           loadInspectionList(found.farmerId);
           setSearchLoading(false);
         } else {
-          Swal.fire({ icon: "warning", title: "Details not Found", text: "No details found", customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
+          Swal.fire({ icon: "warning", title: t("Details not Found"), text: t("No details found"), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
           setSearchLoading(false);
         }
       })
@@ -139,10 +139,10 @@ function CropInspectionEdit() {
           const apiMsg =
             errData.errorMessages[0]?.message?.[0]?.message ||
             errData.errorMessages[0]?.message ||
-            "Validation error from server.";
-          Swal.fire({ icon: "warning", title: "Not Found", text: apiMsg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
+            t("Validation error from server.");
+          Swal.fire({ icon: "warning", title: t("Not Found"), text: apiMsg, customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
         } else {
-          Swal.fire({ icon: "warning", title: "Details not Found", customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
+          Swal.fire({ icon: "warning", title: t("Details not Found"), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
         }
         setSearchLoading(false);
       });
@@ -261,7 +261,7 @@ function CropInspectionEdit() {
       });
 
       if (response.data.content?.error) {
-        Swal.fire({ icon: "error", title: "Update failed", text: response.data.content.error_description || "Something went wrong!", customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
+        Swal.fire({ icon: "error", title: t("Update failed"), text: response.data.content.error_description || t("Something went wrong!"), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
         setSaving(false);
         return;
       }
@@ -276,14 +276,14 @@ function CropInspectionEdit() {
       }
 
       setSaving(false);
-      Swal.fire({ icon: "success", title: "Updated successfully", customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } }).then(() => {
+      Swal.fire({ icon: "success", title: t("Updated successfully"), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } }).then(() => {
         setEditData(null);
         clearImageState();
         if (farmerDetails?.farmerId) loadInspectionList(farmerDetails.farmerId);
       });
     } catch {
       setSaving(false);
-      Swal.fire({ icon: "error", title: "Update attempt was not successful", text: "Something went wrong!", customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
+      Swal.fire({ icon: "error", title: t("Update attempt was not successful"), text: t("Something went wrong!"), customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" } });
     }
   };
 
@@ -585,7 +585,7 @@ function CropInspectionEdit() {
                             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", padding: "16px" }}>
                               <span style={{ fontSize: "2.5rem" }}>📄</span>
                               <span style={{ fontSize: "0.75rem", color: "#c2410c", fontWeight: 700, textAlign: "center", wordBreak: "break-all" }}>{getFileName(editData.cropInspectionPath)}</span>
-                              <a href={cropInspectionImageUrl} target="_blank" rel="noreferrer" style={{ fontSize: "0.78rem", color: "#1e67a8", fontWeight: 600 }}>View PDF →</a>
+                              <a href={cropInspectionImageUrl} target="_blank" rel="noreferrer" style={{ fontSize: "0.78rem", color: "#1e67a8", fontWeight: 600 }}>{t("View PDF →")}</a>
                             </div>
                           )}
                           {/* No photo yet */}
@@ -613,14 +613,14 @@ function CropInspectionEdit() {
                             display: "flex", alignItems: "center", justifyContent: "center",
                             marginBottom: "10px",
                           }}>
-                            <div style={{ position: "absolute", top: "8px", left: "8px", zIndex: 2, background: "#1e67a8", color: "#fff", borderRadius: "5px", padding: "2px 8px", fontSize: "0.68rem", fontWeight: 700 }}>NEW</div>
+                            <div style={{ position: "absolute", top: "8px", left: "8px", zIndex: 2, background: "#1e67a8", color: "#fff", borderRadius: "5px", padding: "2px 8px", fontSize: "0.68rem", fontWeight: 700 }}>{t("NEW")}</div>
                             {newImageFile.type.startsWith("image/") ? (
                               <img src={newImagePreviewUrl} alt="New" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                             ) : (
                               <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", padding: "16px" }}>
                                 <span style={{ fontSize: "2.5rem" }}>📄</span>
                                 <span style={{ fontSize: "0.75rem", color: "#1e67a8", fontWeight: 700, textAlign: "center", wordBreak: "break-all" }}>{newImageFile.name}</span>
-                                <span style={{ fontSize: "0.7rem", color: "#64748b" }}>Ready to upload on Save</span>
+                                <span style={{ fontSize: "0.7rem", color: "#64748b" }}>{t("Ready to upload on Save")}</span>
                               </div>
                             )}
                           </div>

@@ -2,7 +2,7 @@ import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import Swal from "sweetalert2";
@@ -136,8 +136,8 @@ function FarmerDetailsListFromSeedAndDFL() {
   const deleteError = () => {
     Swal.fire({
       icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Delete attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
@@ -229,8 +229,8 @@ function FarmerDetailsListFromSeedAndDFL() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>🌱</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>List of Sold DFL Details</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select a category to view farmer DFL details</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("List of Sold DFL Details")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select a category to view farmer DFL details")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">

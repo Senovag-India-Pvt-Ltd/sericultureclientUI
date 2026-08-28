@@ -8,7 +8,7 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 import api from "../../../services/auth/api";
 import { useTranslation } from "react-i18next";
 

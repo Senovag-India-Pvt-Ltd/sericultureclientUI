@@ -9,9 +9,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 
+import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function GrainageTypeEdit() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -176,7 +178,7 @@ function GrainageTypeEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Row className="g-gs">

@@ -2,7 +2,7 @@ import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Link,useParams} from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import Swal from "sweetalert2";
@@ -761,10 +761,10 @@ const handleUpdateAllDates = (row) => {
       cell: (row) => (
         <span>
           {row.fymApplicationStatus === 0
-            ? "Pending"
+            ? t("Pending")
             : row.fymApplicationStatus === 1
-            ? "Completed"
-            : "Other"}
+            ? t("Completed")
+            : t("Other")}
         </span>
       ),
       sortable: true,
@@ -776,26 +776,26 @@ const handleUpdateAllDates = (row) => {
       cell: (row) => (
         <span>
           {row.fertilizerApplicationStatus === 0
-            ? "Pending"
+            ? t("Pending")
             : row.fertilizerApplicationStatus === 1
-            ? "Completed"
-            : "Other"}
+            ? t("Completed")
+            : t("Other")}
         </span>
       ),
       sortable: true,
       hide: "md",
     },
-    
+
     {
       name: t("Irrigation Status"),
       selector: (row) => row.irrigationStatus,
       cell: (row) => (
         <span>
           {row.irrigationStatus === 0
-            ? "Pending"
+            ? t("Pending")
             : row.irrigationStatus === 1
-            ? "Completed"
-            : "Other"}
+            ? t("Completed")
+            : t("Other")}
         </span>
       ),
       sortable: true,
@@ -807,10 +807,10 @@ const handleUpdateAllDates = (row) => {
       cell: (row) => (
         <span>
           {row.brushingStatus === 0
-            ? "Pending"
+            ? t("Pending")
             : row.brushingStatus === 1
-            ? "Completed"
-            : "Other"}
+            ? t("Completed")
+            : t("Other")}
         </span>
       ),
       sortable: true,
@@ -822,10 +822,10 @@ const handleUpdateAllDates = (row) => {
       cell: (row) => (
         <span>
           {row.foliarSpray1Status === 0
-            ? "Pending"
+            ? t("Pending")
             : row.foliarSpray1Status === 1
-            ? "Completed"
-            : "Other"}
+            ? t("Completed")
+            : t("Other")}
         </span>
       ),
       sortable: true,
@@ -837,10 +837,10 @@ const handleUpdateAllDates = (row) => {
       cell: (row) => (
         <span>
           {row.foliarSpray2Status === 0
-            ? "Pending"
+            ? t("Pending")
             : row.foliarSpray2Status === 1
-            ? "Completed"
-            : "Other"}
+            ? t("Completed")
+            : t("Other")}
         </span>
       ),
       sortable: true,
@@ -914,12 +914,12 @@ const handleUpdateAllDates = (row) => {
       cell: (row) => (
         <span>
           {row.fertilizerApplicationStatus === 0
-            ? "Pending"
+            ? t("Pending")
             : row.fertilizerApplicationStatus === 1
-            ? "Completed"
+            ? t("Completed")
             : row.fertilizerApplicationStatus === 2
-            ? "Activity Not Required"
-            : "Other"}
+            ? t("Activity Not Required")
+            : t("Other")}
         </span>
       ),
       sortable: true,
@@ -931,12 +931,12 @@ const handleUpdateAllDates = (row) => {
       cell: (row) => (
         <span>
           {row.fymApplicationStatus === 0
-            ? "Pending"
+            ? t("Pending")
             : row.fymApplicationStatus === 1
-            ? "Completed"
+            ? t("Completed")
             : row.fymApplicationStatus === 2
-            ? "Activity Not Required"
-            : "Other"}
+            ? t("Activity Not Required")
+            : t("Other")}
         </span>
       ),
       sortable: true,
@@ -948,12 +948,12 @@ const handleUpdateAllDates = (row) => {
       cell: (row) => (
         <span>
           {row.irrigationStatus === 0
-            ? "Pending"
+            ? t("Pending")
             : row.irrigationStatus === 1
-            ? "Completed"
+            ? t("Completed")
             : row.irrigationStatus === 2
-            ? "Activity Not Required"
-            : "Other"}
+            ? t("Activity Not Required")
+            : t("Other")}
         </span>
       ),
       sortable: true,
@@ -965,12 +965,12 @@ const handleUpdateAllDates = (row) => {
       cell: (row) => (
         <span>
           {row.brushingStatus === 0
-            ? "Pending"
+            ? t("Pending")
             : row.brushingStatus === 1
-            ? "Completed"
+            ? t("Completed")
             : row.brushingStatus === 2
-            ? "Activity Not Required"
-            : "Other"}
+            ? t("Activity Not Required")
+            : t("Other")}
         </span>
       ),
       sortable: true,
@@ -982,12 +982,12 @@ const handleUpdateAllDates = (row) => {
       cell: (row) => (
         <span>
           {row.foliarSpray1Status === 0
-            ? "Pending"
+            ? t("Pending")
             : row.foliarSpray1Status === 1
-            ? "Completed"
+            ? t("Completed")
             : row.foliarSpray1Status === 2
-            ? "Activity Not Required"
-            : "Other"}
+            ? t("Activity Not Required")
+            : t("Other")}
         </span>
       ),
       sortable: true,
@@ -999,12 +999,12 @@ const handleUpdateAllDates = (row) => {
       cell: (row) => (
         <span>
           {row.foliarSpray2Status === 0
-            ? "Pending"
+            ? t("Pending")
             : row.foliarSpray2Status === 1
-            ? "Completed"
+            ? t("Completed")
             : row.foliarSpray2Status === 2
-            ? "Activity Not Required"
-            : "Other"}
+            ? t("Activity Not Required")
+            : t("Other")}
         </span>
       ),
       sortable: true,

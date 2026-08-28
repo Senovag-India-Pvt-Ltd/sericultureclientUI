@@ -7,7 +7,7 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 import { useTranslation } from "react-i18next";
 // import axios from "axios";
 import api from "../../../services/auth/api";
@@ -1842,13 +1842,13 @@ function TscwiseSchemeTargetSetting() {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Total Scheme Yearly Targets (PHYSICAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataPhysical[0]?.yearlySchemeValue ||"N/A"}
+                              {viewTotalTargetsDataPhysical[0]?.yearlySchemeValue || t("N/A")}
                             </th>
                           </tr>
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Total Scheme Yearly Targets (FINANCIAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataFinancial[0]?.yearlySchemeValue ||"N/A"}
+                              {viewTotalTargetsDataFinancial[0]?.yearlySchemeValue || t("N/A")}
                             </th>
                           </tr>
                           <tr>
@@ -1860,7 +1860,7 @@ function TscwiseSchemeTargetSetting() {
                                     parseFloat(viewTotalTargetsDataFinancial[0]?.yearlySchemeValue) +
                                     parseFloat(viewTotalTargetsDataPhysical[0]?.yearlySchemeValue)
                                   ).toFixed(2)
-                                : "N/A"}
+                                : t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1869,14 +1869,14 @@ function TscwiseSchemeTargetSetting() {
                         <thead>
                         <tr>
                             <th style={styles.ctstyle}>
-                              {t("Remaining Scheme Yearly Targets(PHYSICAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataPhysical[0]?.remainingYearlyValue || "N/A"}
+                              {t("Remaining Scheme Yearly Targets (PHYSICAL TARGET)")}:{" "}
+                              {viewTotalTargetsDataPhysical[0]?.remainingYearlyValue || t("N/A")}
                             </th>
                           </tr>
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Remaining Scheme Yearly Targets (FINANCIAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataFinancial[0]?.remainingYearlyValue || "N/A"}
+                              {viewTotalTargetsDataFinancial[0]?.remainingYearlyValue || t("N/A")}
                             </th>
                           </tr>
                           <tr>
@@ -1888,7 +1888,7 @@ function TscwiseSchemeTargetSetting() {
                                     parseFloat(viewTotalTargetsDataFinancial[0]?.remainingYearlyValue) +
                                     parseFloat(viewTotalTargetsDataPhysical[0]?.remainingYearlyValue)
                                   ).toFixed(2)
-                                : "N/A"}
+                                : t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1913,7 +1913,7 @@ function TscwiseSchemeTargetSetting() {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("TSC Yearly Targets (PHYSICAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataPhysical[0]?.yearlyTscValue || "N/A"}
+                              {viewTotalTargetsDataPhysical[0]?.yearlyTscValue || t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1923,7 +1923,7 @@ function TscwiseSchemeTargetSetting() {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("TSC Yearly Targets (FINANCIAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataFinancial[0]?.yearlyTscValue || "N/A"}
+                              {viewTotalTargetsDataFinancial[0]?.yearlyTscValue || t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1939,7 +1939,7 @@ function TscwiseSchemeTargetSetting() {
                                     parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTscValue) +
                                     parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyTscValue)
                                   ).toFixed(2)
-                                : "N/A"}
+                                : t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -3200,7 +3200,7 @@ function TscwiseSchemeTargetSetting() {
         <Modal.Header closeButton className="sh-modal-header">
           <Modal.Title>
             <Icon name="edit" />
-            <span>{t("Tsc Wise Target Setting for Subsidies")}</span>
+            <span>{t("TSC Wise Target Setting for Subsidies")}</span>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -3811,6 +3811,8 @@ function TscwiseSchemeTargetSetting() {
                 }}
                 onChangePage={(page) => setPage2(page - 1)}
                 progressPending={loading}
+                progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                noDataComponent={t("There are no records to display")}
                 theme="solarized"
                 customStyles={customStyles}
               />
@@ -3828,6 +3830,8 @@ function TscwiseSchemeTargetSetting() {
                 }}
                 onChangePage={(page) => setPage1(page - 1)}
                 progressPending={loading}
+                progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                noDataComponent={t("There are no records to display")}
                 theme="solarized"
                 customStyles={customStyles}
               />
@@ -3870,6 +3874,8 @@ function TscwiseSchemeTargetSetting() {
                   }}
                   onChangePage={(page) => setPage3(page - 1)}
                   progressPending={loading}
+                  progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                  noDataComponent={t("There are no records to display")}
                   theme="solarized"
                   customStyles={customStyles}
                 />
@@ -3887,6 +3893,8 @@ function TscwiseSchemeTargetSetting() {
                   }}
                   onChangePage={(page) => setPage4(page - 1)}
                   progressPending={loading}
+                  progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                  noDataComponent={t("There are no records to display")}
                   theme="solarized"
                   customStyles={customStyles}
                 />

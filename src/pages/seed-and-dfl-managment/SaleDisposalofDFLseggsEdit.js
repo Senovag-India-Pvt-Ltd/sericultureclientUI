@@ -678,7 +678,7 @@ function SaleDisposalofDFLseggsEdit() {
               <Card className="sh-section-card">
                 <Card.Header className="sh-section-header">
                   <Icon name="cart" />
-                  <span>{t("Sale / Disposal of DFLs 's (egg) s")}</span>
+                  <span>{t("Sale / Disposal of DFL's(eggs)")}</span>
                 </Card.Header>
                 <Card.Body>
                   <Row className="g-gs">

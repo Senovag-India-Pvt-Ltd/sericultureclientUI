@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function MaintenanceOfMulberryGardenReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 25;
@@ -84,7 +84,7 @@ function MaintenanceOfMulberryGardenReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
   };
@@ -189,17 +189,17 @@ function MaintenanceOfMulberryGardenReport() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),                      selector: (row) => row.serialNumber,             cell: (row) => <span>{row.serialNumber}</span>,             sortable: true, hide: "md" },
-    { name: colHeader("Plot Number"),                 selector: (row) => row.plotNumber,               cell: (row) => <span>{row.plotNumber}</span>,               sortable: true, hide: "md" },
-    { name: colHeader("Mulberry Variety"),            selector: (row) => row.varietyName,              cell: (row) => <span>{row.varietyName}</span>,              sortable: true, hide: "md" },
-    { name: colHeader("Area Under Each Variety"),     selector: (row) => row.areaUnderEachVariety,     cell: (row) => <span>{row.areaUnderEachVariety}</span>,     sortable: true, hide: "md" },
-    { name: colHeader("Pruning Date"),                selector: (row) => row.pruningDate,              cell: (row) => <span>{row.pruningDate}</span>,              sortable: true, hide: "md" },
-    { name: colHeader("Plantation Date"),             selector: (row) => row.plantationDate,           cell: (row) => <span>{row.plantationDate}</span>,           sortable: true, hide: "md" },
-    { name: colHeader("Soil Type"),                   selector: (row) => row.soilTypeName,             cell: (row) => <span>{row.soilTypeName}</span>,             sortable: true, hide: "md" },
-    { name: colHeader("Mulberry Spacing"),            selector: (row) => row.mulberrySpacing,          cell: (row) => <span>{row.mulberrySpacing}</span>,          sortable: true, hide: "md" },
-    { name: colHeader("Fertilizer Application Date"), selector: (row) => row.fertilizerApplicationDate, cell: (row) => <span>{row.fertilizerApplicationDate}</span>, sortable: true, hide: "md" },
-    { name: colHeader("FYM Application Date"),        selector: (row) => row.fymApplicationDate,       cell: (row) => <span>{row.fymApplicationDate}</span>,       sortable: true, hide: "md" },
-    { name: colHeader("Irrigation Date"),             selector: (row) => row.irrigationDate,           cell: (row) => <span>{row.irrigationDate}</span>,           sortable: true, hide: "md" },
+    { name: colHeader(t("Sl.No")),                      selector: (row) => row.serialNumber,             cell: (row) => <span>{row.serialNumber}</span>,             sortable: true, hide: "md" },
+    { name: colHeader(t("Plot Number")),                 selector: (row) => row.plotNumber,               cell: (row) => <span>{row.plotNumber}</span>,               sortable: true, hide: "md" },
+    { name: colHeader(t("Mulberry Variety")),            selector: (row) => row.varietyName,              cell: (row) => <span>{row.varietyName}</span>,              sortable: true, hide: "md" },
+    { name: colHeader(t("Area Under Each Variety")),     selector: (row) => row.areaUnderEachVariety,     cell: (row) => <span>{row.areaUnderEachVariety}</span>,     sortable: true, hide: "md" },
+    { name: colHeader(t("Pruning Date")),                selector: (row) => row.pruningDate,              cell: (row) => <span>{row.pruningDate}</span>,              sortable: true, hide: "md" },
+    { name: colHeader(t("Plantation Date")),             selector: (row) => row.plantationDate,           cell: (row) => <span>{row.plantationDate}</span>,           sortable: true, hide: "md" },
+    { name: colHeader(t("Soil Type")),                   selector: (row) => row.soilTypeName,             cell: (row) => <span>{row.soilTypeName}</span>,             sortable: true, hide: "md" },
+    { name: colHeader(t("Mulberry Spacing")),            selector: (row) => row.mulberrySpacing,          cell: (row) => <span>{row.mulberrySpacing}</span>,          sortable: true, hide: "md" },
+    { name: colHeader(t("Fertilizer Application Date")), selector: (row) => row.fertilizerApplicationDate, cell: (row) => <span>{row.fertilizerApplicationDate}</span>, sortable: true, hide: "md" },
+    { name: colHeader(t("FYM Application Date")),        selector: (row) => row.fymApplicationDate,       cell: (row) => <span>{row.fymApplicationDate}</span>,       sortable: true, hide: "md" },
+    { name: colHeader(t("Irrigation Date")),             selector: (row) => row.irrigationDate,           cell: (row) => <span>{row.irrigationDate}</span>,           sortable: true, hide: "md" },
   ];
 
   return (
@@ -221,8 +221,8 @@ function MaintenanceOfMulberryGardenReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>🌿</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Mulberry Garden Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export mulberry garden data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Mulberry Garden Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export mulberry garden data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -233,7 +233,7 @@ function MaintenanceOfMulberryGardenReport() {
                   <option value="">{t("Select Mulberry Variety")}</option>
                   {varietyListData.map((list) => (
                     <option key={list.mulberryVarietyId} value={list.mulberryVarietyId}>
-                      {list.mulberryVarietyName}
+                      {i18n.language === "kn" ? list.mulberryVarietyNameInKannada : list.mulberryVarietyName}
                     </option>
                   ))}
                 </Form.Select>
@@ -244,7 +244,7 @@ function MaintenanceOfMulberryGardenReport() {
                   <option value="">{t("Select Soil Type")}</option>
                   {soilTypeListData.map((list) => (
                     <option key={list.soilTypeId} value={list.soilTypeId}>
-                      {list.soilTypeName}
+                      {i18n.language === "kn" ? list.soilTypeNameInKannada : list.soilTypeName}
                     </option>
                   ))}
                 </Form.Select>

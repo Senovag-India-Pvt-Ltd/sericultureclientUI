@@ -225,7 +225,7 @@ function ScCategory() {
                           type="text"
                           value={data.categoryName}
                           onChange={handleInputs}
-                          placeholder="Enter Sub Component"
+                          placeholder={t("Enter Sub Component")}
                           required
                         />
                         <Form.Control.Feedback type="invalid">
@@ -282,7 +282,7 @@ function ScCategory() {
                   <Col lg="6">
                     <Form.Group className="form-group">
                       <Form.Label>
-                        {t("Code  Number")}
+                        {t("Code Number")}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <div className="form-control-wrap">

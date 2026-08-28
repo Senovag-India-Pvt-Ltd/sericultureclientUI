@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 // import axios from "axios";
 import { createTheme } from "react-data-table-component";
 import { Icon } from "../../components";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next"; // Add this line
 

@@ -255,7 +255,7 @@ function ScCategoryEdit() {
               <Card.Body>
                 {loading ? (
                   <h5 className="d-flex justify-content-center align-items-center py-4">
-                    Loading...
+                    {t("Loading...")}
                   </h5>
                 ) : (
                   <Row className="g-gs">
@@ -330,7 +330,7 @@ function ScCategoryEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          {t("Code  Number")}
+                          {t("Code Number")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">

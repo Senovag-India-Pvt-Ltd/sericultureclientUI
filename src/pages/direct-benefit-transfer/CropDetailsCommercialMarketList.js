@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import { createTheme } from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import React from "react";
@@ -11,10 +11,12 @@ import Swal from "sweetalert2";
 import api from "../../../src/services/auth/api";
 import { useState, useEffect } from "react";
 import CropDetailsForCommercialMarket from "./CropDetailsForCommercialMarket";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function CropDetailsForCommercialMarketList() {
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 50;
@@ -54,18 +56,18 @@ function CropDetailsForCommercialMarketList() {
   const deleteError = () => {
     Swal.fire({
       icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Delete attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
   const deleteConfirm = (_id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "It will delete permanently!",
+      title: t("Are you sure?"),
+      text: t("It will delete permanently!"),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: t("Yes, delete it!"),
     }).then((result) => {
       if (result.value) {
         const response = api
@@ -74,8 +76,8 @@ function CropDetailsForCommercialMarketList() {
             // deleteConfirm(_id);
             getList();
             Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
+              t("Deleted"),
+              t("You successfully deleted this record"),
               "success"
             );
           })
@@ -85,7 +87,7 @@ function CropDetailsForCommercialMarketList() {
         // Swal.fire("Deleted", "You successfully deleted this record", "success");
       } else {
         console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
+        Swal.fire(t("Cancelled"), t("Your record is not deleted"), "info");
       }
     });
   };
@@ -147,7 +149,7 @@ function CropDetailsForCommercialMarketList() {
 
   const RaceMappingDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="text-start w-100">
@@ -165,7 +167,7 @@ function CropDetailsForCommercialMarketList() {
             className="ms-2"
             onClick={() => handleEdit(row.cropDetailsCommercialMarketId)}
           >
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -173,7 +175,7 @@ function CropDetailsForCommercialMarketList() {
             onClick={() => deleteConfirm(row.cropDetailsCommercialMarketId)}
             className="ms-2"
           >
-            Delete
+            {t("Delete")}
           </Button>
         </div>
       ),
@@ -183,7 +185,7 @@ function CropDetailsForCommercialMarketList() {
     },
 
 {
-      name: "Fruits Id",
+      name: t("Fruits Id"),
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
@@ -197,21 +199,21 @@ function CropDetailsForCommercialMarketList() {
     //   hide: "md",
     // },
     {
-      name: "Race",
+      name: t("Race"),
       selector: (row) => row.raceName,
       cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Grainage",
+      name: t("Grainage"),
       selector: (row) => row.grainageMasterName,
       cell: (row) => <span>{row.grainageMasterName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-        name: "Receipt No",
+        name: t("Receipt No"),
         selector: (row) => row.receiptNo,
         cell: (row) => <span>{row.receiptNo}</span>,
         sortable: true,
@@ -219,7 +221,7 @@ function CropDetailsForCommercialMarketList() {
       },
 
       {
-        name: "Transaction date",
+        name: t("Transaction Date"),
         selector: (row) => row.transactionDate,
         cell: (row) => <span>{row.transactionDate}</span>,
         sortable: true,
@@ -227,84 +229,84 @@ function CropDetailsForCommercialMarketList() {
       },
 
       {
-        name: "Lot No",
+        name: t("Lot No"),
         selector: (row) => row.lotNo,
         cell: (row) => <span>{row.lotNo}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "No Of DFLs",
+        name: t("No Of DFLs"),
         selector: (row) => row.noOfDfls,
         cell: (row) => <span>{row.noOfDfls}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Date Of Brushing",
+        name: t("Brushing Date"),
         selector: (row) => row.dateOfBrushing,
         cell: (row) => <span>{row.dateOfBrushing}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Date Of Chawki Distribution",
+        name: t("Date Of Chawki Distribution"),
         selector: (row) => row.dateOfDistributionOfChawkiWorms,
         cell: (row) => <span>{row.dateOfDistributionOfChawkiWorms}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Chawki Percentage",
+        name: t("Chawki Percentage"),
         selector: (row) => row.chawkiPercentage,
         cell: (row) => <span>{row.chawkiPercentage}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Spun On Date",
+        name: t("Spun On Date"),
         selector: (row) => row.spunOnDate,
         cell: (row) => <span>{row.spunOnDate}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Spun On To Date",
+        name: t("Spun On To Date"),
         selector: (row) => row.spunOnToDate,
         cell: (row) => <span>{row.spunOnToDate}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Quantity Of Cocoons Produced",
+        name: t("Quantity Of Cocoons Produced"),
         selector: (row) => row.quantityOfCocoonsProduced,
         cell: (row) => <span>{row.quantityOfCocoonsProduced}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Average Yield",
+        name: t("Average Yield"),
         selector: (row) => row.averageYield,
         cell: (row) => <span>{row.averageYield}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Market Name",
+        name: t("Market Name"),
         selector: (row) => row.marketName,
         cell: (row) => <span>{row.marketName}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Bidding Slip LOt No",
+        name: t("Bidding Slip Lot No"),
         selector: (row) => row.biddingSlipNo,
         cell: (row) => <span>{row.biddingSlipNo}</span>,
         sortable: true,
         hide: "md",
       },
       {
-        name: "Cocoon Rate Per Kg",
+        name: t("Cocoon Rate Per Kg"),
         selector: (row) => row.cocoonRatePerKg,
         cell: (row) => <span>{row.cocoonRatePerKg}</span>,
         sortable: true,
@@ -313,13 +315,13 @@ function CropDetailsForCommercialMarketList() {
   ];
 
   return (
-    <Layout title="List of Crop Details-Commercial Market">
+    <Layout title={t("List of Crop Details-Commercial Market")}>
       <style>{cropDetailsCommercialMarketListStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">List of Crop Details-Commercial Market</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("List of Crop Details-Commercial Market")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -329,7 +331,7 @@ function CropDetailsForCommercialMarketList() {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="plus" />
-                    <span>Create</span>
+                    <span>{t("Create")}</span>
                   </Link>
                 </li>
                 <li>
@@ -338,7 +340,7 @@ function CropDetailsForCommercialMarketList() {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="plus" />
-                    <span>Create</span>
+                    <span>{t("Create")}</span>
                   </Link>
                 </li>
               </ul>
@@ -364,6 +366,13 @@ function CropDetailsForCommercialMarketList() {
             }}
             onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}
+            progressComponent={<div className="p-3 text-center">{t("Loading...")}</div>}
+            noDataComponent={
+              <div className="sh-empty">
+                <Icon name="inbox" />
+                <p className="mt-2 mb-0">{t("No records found")}</p>
+              </div>
+            }
             theme="solarized"
             customStyles={customStyles}
           />

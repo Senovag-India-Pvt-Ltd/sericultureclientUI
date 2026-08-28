@@ -7,7 +7,7 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 // import axios from "axios";
 import api from "../../../services/auth/api";
 import { useTranslation } from "react-i18next";
@@ -2420,7 +2420,7 @@ useEffect(() => {
                         <Col lg="4">
                           <Form.Group className="form-group mt-n4">
                             <Form.Label htmlFor="value">
-                              {t("Febrauary")}
+                              {t("February")}
                               <span className="text-danger">*</span>
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -2887,6 +2887,8 @@ useEffect(() => {
   paginationComponentOptions={{ noRowsPerPage: true }}
   onChangePage={(page) => setPageReportee(page - 1)} // ⬅️ updated
   progressPending={loading}
+  progressComponent={<div className="p-3">{t("Loading...")}</div>}
+  noDataComponent={t("There are no records to display")}
   theme="solarized"
   customStyles={customStyles}
 />
@@ -2914,6 +2916,8 @@ useEffect(() => {
   paginationComponentOptions={{ noRowsPerPage: true }}
   onChangePage={(page) => setPageNormal(page - 1)} // ⬅️ updated
   progressPending={loading}
+  progressComponent={<div className="p-3">{t("Loading...")}</div>}
+  noDataComponent={t("There are no records to display")}
   theme="solarized"
   customStyles={customStyles}
 />

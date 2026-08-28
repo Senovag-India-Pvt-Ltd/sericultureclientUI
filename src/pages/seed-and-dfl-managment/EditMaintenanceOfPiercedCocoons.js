@@ -18,6 +18,7 @@ function EditMaintenanceOfPiercedCocoons() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const [validated, setValidated] = useState(false);
 
@@ -139,7 +140,7 @@ function EditMaintenanceOfPiercedCocoons() {
   const updateSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Updated successfully",
+      title: t("Updated successfully"),
       text: message,
     });
   };
@@ -152,7 +153,7 @@ function EditMaintenanceOfPiercedCocoons() {
     }
     Swal.fire({
       icon: "error",
-      title: "Attempt was not successful",
+      title: t("Attempt was not successful"),
       html: errorMessage,
     });
   };
@@ -160,11 +161,9 @@ function EditMaintenanceOfPiercedCocoons() {
     Swal.fire({
       icon: "error",
       title: message,
-      text: "Something went wrong!",
+      text: t("Something went wrong!"),
     }).then(() => navigate("#"));
   };
-
-  const { t } = useTranslation();
 
   return (
     <Layout title={t("Edit Maintenance Of Pierced Cocoon")}>

@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function MaintenanceofScreeningBatchRecordsReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -102,7 +102,7 @@ function MaintenanceofScreeningBatchRecordsReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
   };
@@ -194,19 +194,19 @@ function MaintenanceofScreeningBatchRecordsReport() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),       selector: (row) => row.serialNumber, cell: (row) => <span>{row.serialNumber}</span>, sortable: true },
-    { name: colHeader("Lot Number"),  selector: (row) => row.lotNumber,    cell: (row) => <span>{row.lotNumber}</span>,    sortable: true },
-    { name: colHeader("Line"),        selector: (row) => row.lineName,     cell: (row) => <span>{row.lineName}</span>,     sortable: true },
-    { name: colHeader("Bed 1"),       selector: (row) => row.bed1,         cell: (row) => <span>{row.bed1}</span>,         sortable: true },
-    { name: colHeader("Bed 2"),       selector: (row) => row.bed2,         cell: (row) => <span>{row.bed2}</span>,         sortable: true },
-    { name: colHeader("Bed 3"),       selector: (row) => row.bed3,         cell: (row) => <span>{row.bed3}</span>,         sortable: true },
-    { name: colHeader("Bed 4"),       selector: (row) => row.bed4,         cell: (row) => <span>{row.bed4}</span>,         sortable: true },
-    { name: colHeader("Bed 5"),       selector: (row) => row.bed5,         cell: (row) => <span>{row.bed5}</span>,         sortable: true },
-    { name: colHeader("Bed 6"),       selector: (row) => row.bed6,         cell: (row) => <span>{row.bed6}</span>,         sortable: true },
-    { name: colHeader("Bed 7"),       selector: (row) => row.bed7,         cell: (row) => <span>{row.bed7}</span>,         sortable: true },
-    { name: colHeader("Bed 8"),       selector: (row) => row.bed8,         cell: (row) => <span>{row.bed8}</span>,         sortable: true },
-    { name: colHeader("Bed 9"),       selector: (row) => row.bed9,         cell: (row) => <span>{row.bed9}</span>,         sortable: true },
-    { name: colHeader("Bed 10"),      selector: (row) => row.bed10,        cell: (row) => <span>{row.bed10}</span>,        sortable: true },
+    { name: colHeader(t("Sl.No")),       selector: (row) => row.serialNumber, cell: (row) => <span>{row.serialNumber}</span>, sortable: true },
+    { name: colHeader(t("Lot Number")),  selector: (row) => row.lotNumber,    cell: (row) => <span>{row.lotNumber}</span>,    sortable: true },
+    { name: colHeader(t("Line")),        selector: (row) => row.lineName,     cell: (row) => <span>{row.lineName}</span>,     sortable: true },
+    { name: colHeader(t("Bed 1")),       selector: (row) => row.bed1,         cell: (row) => <span>{row.bed1}</span>,         sortable: true },
+    { name: colHeader(t("Bed 2")),       selector: (row) => row.bed2,         cell: (row) => <span>{row.bed2}</span>,         sortable: true },
+    { name: colHeader(t("Bed 3")),       selector: (row) => row.bed3,         cell: (row) => <span>{row.bed3}</span>,         sortable: true },
+    { name: colHeader(t("Bed 4")),       selector: (row) => row.bed4,         cell: (row) => <span>{row.bed4}</span>,         sortable: true },
+    { name: colHeader(t("Bed 5")),       selector: (row) => row.bed5,         cell: (row) => <span>{row.bed5}</span>,         sortable: true },
+    { name: colHeader(t("Bed 6")),       selector: (row) => row.bed6,         cell: (row) => <span>{row.bed6}</span>,         sortable: true },
+    { name: colHeader(t("Bed 7")),       selector: (row) => row.bed7,         cell: (row) => <span>{row.bed7}</span>,         sortable: true },
+    { name: colHeader(t("Bed 8")),       selector: (row) => row.bed8,         cell: (row) => <span>{row.bed8}</span>,         sortable: true },
+    { name: colHeader(t("Bed 9")),       selector: (row) => row.bed9,         cell: (row) => <span>{row.bed9}</span>,         sortable: true },
+    { name: colHeader(t("Bed 10")),      selector: (row) => row.bed10,        cell: (row) => <span>{row.bed10}</span>,        sortable: true },
   ];
 
   return (
@@ -228,8 +228,8 @@ function MaintenanceofScreeningBatchRecordsReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>🔍</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Maintenance Of Screening Batch Records Bed Wise Details Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export screening batch bed wise details data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Maintenance Of Screening Batch Records Bed Wise Details Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export screening batch bed wise details data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -240,7 +240,7 @@ function MaintenanceofScreeningBatchRecordsReport() {
                   <option value="">{t("Select Line Details")}</option>
                   {lineYearListData && lineYearListData.length ? lineYearListData.map((list) => (
                     <option key={list.lineNameId} value={list.lineNameId}>
-                      {list.lineName}
+                      {i18n.language === "kn" ? list.lineNameInKannada : list.lineName}
                     </option>
                   )) : ""}
                 </Form.Select>

@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SchemeDocumentEdit() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -166,7 +166,7 @@ function SchemeDocumentEdit() {
             <Card>
               <Card.Body>
                 {loading ? (
-                  <h1 className="d-flex justify-content-center align-items-center">Loading...</h1>
+                  <h1 className="d-flex justify-content-center align-items-center">{t("Loading...")}</h1>
                 ) : (
                   <Row className="g-gs">
                     <Col lg="6">
@@ -183,7 +183,9 @@ function SchemeDocumentEdit() {
                             <option value="">{t("Select Scheme")}</option>
                             {scSchemeDetailsListData.map((item) => (
                               <option key={item.scSchemeDetailsId} value={item.scSchemeDetailsId}>
-                                {item.schemeName}
+                                {i18n.language === "kn"
+                                  ? item.schemeNameInKannada || item.schemeName
+                                  : item.schemeName}
                               </option>
                             ))}
                           </Form.Select>
@@ -205,7 +207,9 @@ function SchemeDocumentEdit() {
                             <option value="">{t("Select Sub Scheme")}</option>
                             {scSubSchemeDetailsListData.map((item) => (
                               <option key={item.scSubSchemeDetailsId} value={item.scSubSchemeDetailsId}>
-                                {item.subSchemeName}
+                                {i18n.language === "kn"
+                                  ? item.subSchemeNameInKannada || item.subSchemeName
+                                  : item.subSchemeName}
                               </option>
                             ))}
                           </Form.Select>

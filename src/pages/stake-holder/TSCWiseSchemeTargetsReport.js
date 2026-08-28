@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function TSCWiseSchemeTargetsReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -110,7 +110,7 @@ function TSCWiseSchemeTargetsReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
   };
@@ -436,22 +436,22 @@ function TSCWiseSchemeTargetsReport() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),           selector: (row) => row.serialNumber,   cell: (row) => <span>{row.serialNumber}</span>,   sortable: true, hide: "md" },
-    { name: colHeader("Financial Year"),  selector: (row) => row.financialYear,   cell: (row) => <span>{row.financialYear}</span>,   sortable: true, hide: "md" },
-    { name: colHeader("District"),        selector: (row) => row.districtName,    cell: (row) => <span>{row.districtName}</span>,    sortable: true, hide: "md" },
-    { name: colHeader("Taluk"),           selector: (row) => row.talukName,       cell: (row) => <span>{row.talukName}</span>,       sortable: true, hide: "md" },
-    { name: colHeader("TSC"),             selector: (row) => row.tscName,         cell: (row) => <span>{row.tscName}</span>,         sortable: true, hide: "md" },
-    { name: colHeader("Scheme"),          selector: (row) => row.schemeName,      cell: (row) => <span>{row.schemeName}</span>,      sortable: true, hide: "md" },
-    { name: colHeader("Component Type"),  selector: (row) => row.subSchemeName,   cell: (row) => <span>{row.subSchemeName}</span>,   sortable: true, hide: "md" },
-    { name: colHeader("Component"),       selector: (row) => row.componentName,   cell: (row) => <span>{row.componentName}</span>,   sortable: true, hide: "md" },
-    { name: colHeader("Sub Component"),   selector: (row) => row.categoryName,    cell: (row) => <span>{row.categoryName}</span>,    sortable: true, hide: "md" },
-    { name: colHeader("Head of Account"), selector: (row) => row.headAccountName, cell: (row) => <span>{row.headAccountName}</span>, sortable: true, hide: "md" },
-    { name: colHeader("State Share"),     selector: (row) => row.stateShare,      cell: (row) => <span>{row.stateShare}</span>,      sortable: true, hide: "md" },
-    { name: colHeader("Central Share"),   selector: (row) => row.centralShare,    cell: (row) => <span>{row.centralShare}</span>,    sortable: true, hide: "md" },
-    { name: colHeader("Target Type"),     selector: (row) => row.targetType,      cell: (row) => <span>{row.targetType}</span>,      sortable: true, hide: "md" },
-    { name: colHeader("Month"),           selector: (row) => row.month,           cell: (row) => <span>{row.month}</span>,           sortable: true, hide: "md" },
-    { name: colHeader("Value"),           selector: (row) => row.value,           cell: (row) => <span>{row.value}</span>,           sortable: true, hide: "md" },
-    { name: colHeader("User Name"),       selector: (row) => row.userName,        cell: (row) => <span>{row.userName}</span>,        sortable: true, hide: "md" },
+    { name: colHeader(t("Sl.No")),           selector: (row) => row.serialNumber,   cell: (row) => <span>{row.serialNumber}</span>,   sortable: true, hide: "md" },
+    { name: colHeader(t("Financial Year")),  selector: (row) => row.financialYear,   cell: (row) => <span>{row.financialYear}</span>,   sortable: true, hide: "md" },
+    { name: colHeader(t("District")),        selector: (row) => row.districtName,    cell: (row) => <span>{row.districtName}</span>,    sortable: true, hide: "md" },
+    { name: colHeader(t("Taluk")),           selector: (row) => row.talukName,       cell: (row) => <span>{row.talukName}</span>,       sortable: true, hide: "md" },
+    { name: colHeader(t("TSC")),             selector: (row) => row.tscName,         cell: (row) => <span>{row.tscName}</span>,         sortable: true, hide: "md" },
+    { name: colHeader(t("Scheme")),          selector: (row) => row.schemeName,      cell: (row) => <span>{row.schemeName}</span>,      sortable: true, hide: "md" },
+    { name: colHeader(t("Component Type")),  selector: (row) => row.subSchemeName,   cell: (row) => <span>{row.subSchemeName}</span>,   sortable: true, hide: "md" },
+    { name: colHeader(t("Component")),       selector: (row) => row.componentName,   cell: (row) => <span>{row.componentName}</span>,   sortable: true, hide: "md" },
+    { name: colHeader(t("Sub Component")),   selector: (row) => row.categoryName,    cell: (row) => <span>{row.categoryName}</span>,    sortable: true, hide: "md" },
+    { name: colHeader(t("Head of Account")), selector: (row) => row.headAccountName, cell: (row) => <span>{row.headAccountName}</span>, sortable: true, hide: "md" },
+    { name: colHeader(t("State Share")),     selector: (row) => row.stateShare,      cell: (row) => <span>{row.stateShare}</span>,      sortable: true, hide: "md" },
+    { name: colHeader(t("Central Share")),   selector: (row) => row.centralShare,    cell: (row) => <span>{row.centralShare}</span>,    sortable: true, hide: "md" },
+    { name: colHeader(t("Target Type")),     selector: (row) => row.targetType,      cell: (row) => <span>{row.targetType}</span>,      sortable: true, hide: "md" },
+    { name: colHeader(t("Month")),           selector: (row) => row.month,           cell: (row) => <span>{row.month}</span>,           sortable: true, hide: "md" },
+    { name: colHeader(t("Value")),           selector: (row) => row.value,           cell: (row) => <span>{row.value}</span>,           sortable: true, hide: "md" },
+    { name: colHeader(t("User Name")),       selector: (row) => row.userName,        cell: (row) => <span>{row.userName}</span>,        sortable: true, hide: "md" },
   ];
 
   return (
@@ -473,8 +473,8 @@ function TSCWiseSchemeTargetsReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>📋</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>TSC Wise Scheme Target Details Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export TSC wise scheme target data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("TSC Wise Scheme Target Details Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export TSC wise scheme target data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -499,7 +499,7 @@ function TSCWiseSchemeTargetsReport() {
                   {districtListData && districtListData.length
                     ? districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
-                          {list.districtName}
+                          {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                         </option>
                       ))
                     : ""}
@@ -511,7 +511,7 @@ function TSCWiseSchemeTargetsReport() {
                   <option value="">{t("select_tsc")}</option>
                   {tscListData.map((list) => (
                     <option key={list.tscMasterId} value={list.tscMasterId}>
-                      {list.name}
+                      {i18n.language === "kn" ? list.nameInKannada : list.name}
                     </option>
                   ))}
                 </Form.Select>
@@ -523,7 +523,7 @@ function TSCWiseSchemeTargetsReport() {
                   {scSchemeDetailsListData && scSchemeDetailsListData.length
                     ? scSchemeDetailsListData.map((list) => (
                         <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
-                          {list.schemeName}
+                          {i18n.language === "kn" ? list.schemeNameInKannada : list.schemeName}
                         </option>
                       ))
                     : ""}
@@ -536,7 +536,7 @@ function TSCWiseSchemeTargetsReport() {
                   {scSubSchemeDetailsListData && scSubSchemeDetailsListData.length
                     ? scSubSchemeDetailsListData.map((list, i) => (
                         <option key={i} value={list.subSchemeId}>
-                          {list.subSchemeName}
+                          {i18n.language === "kn" ? list.subSchemeNameInKannada : list.subSchemeName}
                         </option>
                       ))
                     : ""}
@@ -549,7 +549,7 @@ function TSCWiseSchemeTargetsReport() {
                   {scComponentListData && scComponentListData.length
                     ? scComponentListData.map((list) => (
                         <option key={list.scComponentId} value={list.scComponentId}>
-                          {list.scComponentName}
+                          {i18n.language === "kn" ? list.scComponentNameInKannada : list.scComponentName}
                         </option>
                       ))
                     : ""}
@@ -575,7 +575,7 @@ function TSCWiseSchemeTargetsReport() {
                   {scHeadAccountListData && scHeadAccountListData.length
                     ? scHeadAccountListData.map((list) => (
                         <option key={list.headOfAccountId} value={list.headOfAccountId}>
-                          {list.scHeadAccountName}
+                          {i18n.language === "kn" ? list.scHeadAccountNameInKannada : list.scHeadAccountName}
                         </option>
                       ))
                     : ""}
@@ -585,8 +585,8 @@ function TSCWiseSchemeTargetsReport() {
                 <label style={lbl}>{t("Target Type")}</label>
                 <Form.Select name="targetType" value={data.targetType} onChange={handleInputs} style={sel}>
                   <option value="">{t("Select Target Type")}</option>
-                  <option value="PHYSICAL TARGET">PHYSICAL TARGET</option>
-                  <option value="FINANCIAL TARGET">FINANCIAL TARGET</option>
+                  <option value="PHYSICAL TARGET">{t("PHYSICAL TARGET")}</option>
+                  <option value="FINANCIAL TARGET">{t("FINANCIAL TARGET")}</option>
                 </Form.Select>
               </Col>
             </Row>

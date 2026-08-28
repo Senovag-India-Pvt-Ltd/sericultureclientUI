@@ -7,7 +7,7 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 // import axios from "axios";
 import api from "../../../services/auth/api";
 import { t } from "i18next";
@@ -1768,14 +1768,14 @@ const fetchHierarchyData = (targetType, page) => {
     });
   };
   return (
-    <Layout title={t("Reeling Tsc  Wise Target Setting for Subsidies")}>
+    <Layout title={t("Reeling TSC Wise Target Setting for Subsidies")}>
       <style>{siSdWiseSchemeTargetSettingStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
               <Block.Title tag="h2" className="sh-page-title">
-                {t("Reeling Tsc Target Setting for Subsidies")}
+                {t("Reeling TSC Target Setting for Subsidies")}
               </Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
@@ -1823,7 +1823,7 @@ const fetchHierarchyData = (targetType, page) => {
                   <Card className="sh-section-card">
                     <Card.Header className="sh-section-header">
                       <Icon name="activity-round" />
-                      <span>{t("Reeling Tsc Wise Target Setting for Subsidies")}{" "}</span>
+                      <span>{t("Reeling TSC Wise Target Setting for Subsidies")}{" "}</span>
                     </Card.Header>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'flex-start' }}>
                     <div
@@ -1844,13 +1844,13 @@ const fetchHierarchyData = (targetType, page) => {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Total TSC Yearly Targets (PHYSICAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataPhysical[0]?.yearlyTscValue ||"N/A"}
+                              {viewTotalTargetsDataPhysical[0]?.yearlyTscValue || t("N/A")}
                             </th>
                           </tr>
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Total TSC Yearly Targets (FINANCIAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataFinancial[0]?.yearlyTscValue ||"N/A"}
+                              {viewTotalTargetsDataFinancial[0]?.yearlyTscValue || t("N/A")}
                             </th>
                           </tr>
                           <tr>
@@ -1862,7 +1862,7 @@ const fetchHierarchyData = (targetType, page) => {
                                     parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTscValue) +
                                     parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyTscValue)
                                   ).toFixed(2)
-                                : "N/A"}
+                                : t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1871,14 +1871,14 @@ const fetchHierarchyData = (targetType, page) => {
                         <thead>
                         <tr>
                             <th style={styles.ctstyle}>
-                              {t("Remaining TSC Yearly Targets(PHYSICAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataPhysical[0]?.remainingYearlyValue || "N/A"}
+                              {t("Remaining TSC Yearly Targets (PHYSICAL TARGET)")}:{" "}
+                              {viewTotalTargetsDataPhysical[0]?.remainingYearlyValue || t("N/A")}
                             </th>
                           </tr>
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Remaining TSC Yearly Targets (FINANCIAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataFinancial[0]?.remainingYearlyValue || "N/A"}
+                              {viewTotalTargetsDataFinancial[0]?.remainingYearlyValue || t("N/A")}
                             </th>
                           </tr>
                           <tr>
@@ -1890,7 +1890,7 @@ const fetchHierarchyData = (targetType, page) => {
                                     parseFloat(viewTotalTargetsDataFinancial[0]?.remainingYearlyValue) +
                                     parseFloat(viewTotalTargetsDataPhysical[0]?.remainingYearlyValue)
                                   ).toFixed(2)
-                                : "N/A"}
+                                : t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1915,7 +1915,7 @@ const fetchHierarchyData = (targetType, page) => {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Reeling Yearly Targets (PHYSICAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataPhysical[0]?.yearlyInstValue || "N/A"}
+                              {viewTotalTargetsDataPhysical[0]?.yearlyInstValue || t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1925,7 +1925,7 @@ const fetchHierarchyData = (targetType, page) => {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Reeling Yearly Targets (FINANCIAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataFinancial[0]?.yearlyInstValue || "N/A"}
+                              {viewTotalTargetsDataFinancial[0]?.yearlyInstValue || t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1941,7 +1941,7 @@ const fetchHierarchyData = (targetType, page) => {
                                     parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyInstValue) +
                                     parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyInstValue)
                                   ).toFixed(2)
-                                : "N/A"}
+                                : t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -3853,6 +3853,8 @@ const fetchHierarchyData = (targetType, page) => {
                 }}
                 onChangePage={(page) => setPage2(page - 1)}
                 progressPending={loading}
+                progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                noDataComponent={t("There are no records to display")}
                 theme="solarized"
                 customStyles={customStyles}
               />
@@ -3870,6 +3872,8 @@ const fetchHierarchyData = (targetType, page) => {
                 }}
                 onChangePage={(page) => setPage1(page - 1)}
                 progressPending={loading}
+                progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                noDataComponent={t("There are no records to display")}
                 theme="solarized"
                 customStyles={customStyles}
               />
@@ -3882,7 +3886,7 @@ const fetchHierarchyData = (targetType, page) => {
                   className="ms-2"
                   onClick={() => toggle()}
                 >
-                  {!toggleButton ? "Show" : "Hide"} {t("Hierarchical Assigned Targets")}
+                  {!toggleButton ? t("Show") : t("Hide")} {t("Hierarchical Assigned Targets")}
                 </Button>
               </Col>
             )}
@@ -3912,6 +3916,8 @@ const fetchHierarchyData = (targetType, page) => {
                   }}
                   onChangePage={(page) => setPage3(page - 1)}
                   progressPending={loading}
+                  progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                  noDataComponent={t("There are no records to display")}
                   theme="solarized"
                   customStyles={customStyles}
                 />
@@ -3929,6 +3935,8 @@ const fetchHierarchyData = (targetType, page) => {
                   }}
                   onChangePage={(page) => setPage4(page - 1)}
                   progressPending={loading}
+                  progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                  noDataComponent={t("There are no records to display")}
                   theme="solarized"
                   customStyles={customStyles}
                 />

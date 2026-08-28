@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function FarmerMulberryExtensionReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 25;
@@ -90,7 +90,7 @@ function FarmerMulberryExtensionReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
   };
@@ -296,23 +296,23 @@ function FarmerMulberryExtensionReport() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),              selector: (row) => row.serialNumber,        cell: (row) => <span>{row.serialNumber}</span>,        sortable: true, hide: "md" },
-    { name: colHeader("Farmer Name"),        selector: (row) => row.firstName,           cell: (row) => <span>{row.firstName}</span>,           sortable: true, hide: "md" },
-    { name: colHeader("Father Name"),        selector: (row) => row.fatherName,          cell: (row) => <span>{row.fatherName}</span>,          sortable: true, hide: "md" },
-    { name: colHeader("Fruits Id"),          selector: (row) => row.fruitsId,            cell: (row) => <span>{row.fruitsId}</span>,            sortable: true, hide: "md" },
-    { name: colHeader("Address"),            selector: (row) => row.addressText,         cell: (row) => <span>{row.addressText}</span>,         sortable: true, hide: "md" },
-    { name: colHeader("Scheme"),             selector: (row) => row.scheme,              cell: (row) => <span>{row.scheme}</span>,              sortable: true, hide: "md" },
-    { name: colHeader("Mulberry Area"),      selector: (row) => row.mulberryArea,        cell: (row) => <span>{row.mulberryArea}</span>,        sortable: true, hide: "md" },
-    { name: colHeader("Mulberry Variety"),   selector: (row) => row.mulberryVarietyName, cell: (row) => <span>{row.mulberryVarietyName}</span>, sortable: true, hide: "md" },
-    { name: colHeader("Plantation Date"),    selector: (row) => row.plantationDate,      cell: (row) => <span>{row.plantationDate}</span>,      sortable: true, hide: "md" },
-    { name: colHeader("Number of Saplings"), selector: (row) => row.numberOfSaplings,    cell: (row) => <span>{row.numberOfSaplings}</span>,    sortable: true, hide: "md" },
-    { name: colHeader("Spacing"),            selector: (row) => row.spacing,             cell: (row) => <span>{row.spacing}</span>,             sortable: true, hide: "md" },
-    { name: colHeader("Application Type"),   selector: (row) => row.applicationType,     cell: (row) => <span>{row.applicationType}</span>,     sortable: true, hide: "md" },
-    { name: colHeader("Uprooting Reason"),   selector: (row) => row.uprootingReason,     cell: (row) => <span>{row.uprootingReason}</span>,     sortable: true, hide: "md" },
-    { name: colHeader("Uprooting Date"),     selector: (row) => row.uprootingDate,       cell: (row) => <span>{row.uprootingDate}</span>,       sortable: true, hide: "md" },
-    { name: colHeader("District"),           selector: (row) => row.districtName,        cell: (row) => <span>{row.districtName}</span>,        sortable: true, hide: "md" },
-    { name: colHeader("Taluk"),              selector: (row) => row.talukName,           cell: (row) => <span>{row.talukName}</span>,           sortable: true, hide: "md" },
-    { name: colHeader("TSC"),                selector: (row) => row.tscName,             cell: (row) => <span>{row.tscName}</span>,             sortable: true, hide: "md" },
+    { name: colHeader(t("Sl.No")),              selector: (row) => row.serialNumber,        cell: (row) => <span>{row.serialNumber}</span>,        sortable: true, hide: "md" },
+    { name: colHeader(t("Farmer Name")),        selector: (row) => row.firstName,           cell: (row) => <span>{row.firstName}</span>,           sortable: true, hide: "md" },
+    { name: colHeader(t("Father Name")),        selector: (row) => row.fatherName,          cell: (row) => <span>{row.fatherName}</span>,          sortable: true, hide: "md" },
+    { name: colHeader(t("Fruits Id")),          selector: (row) => row.fruitsId,            cell: (row) => <span>{row.fruitsId}</span>,            sortable: true, hide: "md" },
+    { name: colHeader(t("Address")),            selector: (row) => row.addressText,         cell: (row) => <span>{row.addressText}</span>,         sortable: true, hide: "md" },
+    { name: colHeader(t("Scheme")),             selector: (row) => row.scheme,              cell: (row) => <span>{row.scheme}</span>,              sortable: true, hide: "md" },
+    { name: colHeader(t("Mulberry Area")),      selector: (row) => row.mulberryArea,        cell: (row) => <span>{row.mulberryArea}</span>,        sortable: true, hide: "md" },
+    { name: colHeader(t("Mulberry Variety")),   selector: (row) => row.mulberryVarietyName, cell: (row) => <span>{row.mulberryVarietyName}</span>, sortable: true, hide: "md" },
+    { name: colHeader(t("Plantation Date")),    selector: (row) => row.plantationDate,      cell: (row) => <span>{row.plantationDate}</span>,      sortable: true, hide: "md" },
+    { name: colHeader(t("Number of Saplings")), selector: (row) => row.numberOfSaplings,    cell: (row) => <span>{row.numberOfSaplings}</span>,    sortable: true, hide: "md" },
+    { name: colHeader(t("Spacing")),            selector: (row) => row.spacing,             cell: (row) => <span>{row.spacing}</span>,             sortable: true, hide: "md" },
+    { name: colHeader(t("Application Type")),   selector: (row) => row.applicationType,     cell: (row) => <span>{row.applicationType}</span>,     sortable: true, hide: "md" },
+    { name: colHeader(t("Uprooting Reason")),   selector: (row) => row.uprootingReason,     cell: (row) => <span>{row.uprootingReason}</span>,     sortable: true, hide: "md" },
+    { name: colHeader(t("Uprooting Date")),     selector: (row) => row.uprootingDate,       cell: (row) => <span>{row.uprootingDate}</span>,       sortable: true, hide: "md" },
+    { name: colHeader(t("District")),           selector: (row) => row.districtName,        cell: (row) => <span>{row.districtName}</span>,        sortable: true, hide: "md" },
+    { name: colHeader(t("Taluk")),              selector: (row) => row.talukName,           cell: (row) => <span>{row.talukName}</span>,           sortable: true, hide: "md" },
+    { name: colHeader(t("TSC")),                selector: (row) => row.tscName,             cell: (row) => <span>{row.tscName}</span>,             sortable: true, hide: "md" },
   ];
 
   return (
@@ -334,8 +334,8 @@ function FarmerMulberryExtensionReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>🌿</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Farmer Mulberry Expansion Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export farmer mulberry extension data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Farmer Mulberry Expansion Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export farmer mulberry extension data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -347,7 +347,7 @@ function FarmerMulberryExtensionReport() {
                   {districtListData && districtListData.length
                     ? districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
-                          {list.districtName}
+                          {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                         </option>
                       ))
                     : ""}
@@ -360,7 +360,7 @@ function FarmerMulberryExtensionReport() {
                   {talukListData && talukListData.length
                     ? talukListData.map((list) => (
                         <option key={list.talukId} value={list.talukId}>
-                          {list.talukName}
+                          {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
                         </option>
                       ))
                     : ""}
@@ -372,7 +372,7 @@ function FarmerMulberryExtensionReport() {
                   <option value="">{t("select_tsc")}</option>
                   {tscListData.map((list) => (
                     <option key={list.tscMasterId} value={list.tscMasterId}>
-                      {list.name}
+                      {i18n.language === "kn" ? list.nameInKannada : list.name}
                     </option>
                   ))}
                 </Form.Select>
@@ -381,10 +381,10 @@ function FarmerMulberryExtensionReport() {
                 <label style={lbl}>{t("Application Type")}</label>
                 <Form.Select name="applicationType" value={data.applicationType} onChange={handleInputs} style={sel}>
                   <option value="0">{t("Application Type")}</option>
-                  <option value="Mulberry Extension">Mulberry Extension</option>
-                  <option value="New Plantation">New Plantation</option>
-                  <option value="Uprooting">Uprooting</option>
-                  <option value="Nursery">Nursery</option>
+                  <option value="Mulberry Extension">{t("Mulberry Extension")}</option>
+                  <option value="New Plantation">{t("New Plantation")}</option>
+                  <option value="Uprooting">{t("Uprooting")}</option>
+                  <option value="Nursery">{t("Nursery")}</option>
                 </Form.Select>
               </Col>
               <Col xs="auto" style={{ paddingTop: "20px" }}>

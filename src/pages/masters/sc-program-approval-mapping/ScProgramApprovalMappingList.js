@@ -4,7 +4,7 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import { createTheme } from "react-data-table-component";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
@@ -379,7 +379,7 @@ function ScProgramApprovalMappingList() {
             <Col>
               <Form.Group as={Row} className="form-group" id="fid">
                 <Form.Label column sm={1}>
-                  Search By Component Type
+                  {t("Search By Component Type")}
                 </Form.Label>
                 <Col sm={3}>
                   {/* <Form.Group className="form-group mt-n4"> */}
@@ -436,8 +436,10 @@ function ScProgramApprovalMappingList() {
               }}
               onChangePage={(page) => setPage(page - 1)}
               progressPending={loading}
+              progressComponent={<div className="p-3">{t("Loading...")}</div>}
               theme="solarized"
               customStyles={customStyles}
+              noDataComponent={t("There are no records to display")}
             />
           </div>
         </Card>

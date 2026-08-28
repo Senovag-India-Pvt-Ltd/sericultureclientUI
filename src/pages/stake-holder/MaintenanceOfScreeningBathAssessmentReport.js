@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import React from "react";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ const lbl = { fontSize: "12px", fontWeight: 600, color: "#212529", marginBottom:
 const sel = { height: CTRL_H, fontSize: "14px", backgroundColor: "#fff" };
 
 function MaintenanceOfScreeningBatchAssessmentReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [listData, setListData] = useState({});
   const [listFarmerData, setListFarmerData] = useState({});
   const [page, setPage] = useState(0);
@@ -101,7 +101,7 @@ function MaintenanceOfScreeningBatchAssessmentReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
   };
@@ -193,23 +193,23 @@ function MaintenanceOfScreeningBatchAssessmentReport() {
   );
 
   const FarmerDataColumns = [
-    { name: colHeader("Sl.No"),                    selector: (row) => row.serialNumber,       cell: (row) => <span>{row.serialNumber}</span>,       sortable: true },
-    { name: colHeader("Lot Number"),               selector: (row) => row.lotNumber,           cell: (row) => <span>{row.lotNumber}</span>,           sortable: true },
-    { name: colHeader("Line"),                     selector: (row) => row.lineName,            cell: (row) => <span>{row.lineName}</span>,            sortable: true },
-    { name: colHeader("Spun On Date(From)"),       selector: (row) => row.spunOnDate,          cell: (row) => <span>{row.spunOnDate}</span>,          sortable: true },
-    { name: colHeader("Spun On Date(To)"),         selector: (row) => row.spunOnToDate,        cell: (row) => <span>{row.spunOnToDate}</span>,        sortable: true },
-    { name: colHeader("Bed"),                      selector: (row) => row.bedName,             cell: (row) => <span>{row.bedName}</span>,             sortable: true },
-    { name: colHeader("Weight Of 25 Cocoons"),     selector: (row) => row.weightCacoons,       cell: (row) => <span>{row.weightCacoons}</span>,       sortable: true },
-    { name: colHeader("Weight Of 25 Pupa"),        selector: (row) => row.weightPupa,          cell: (row) => <span>{row.weightPupa}</span>,          sortable: true },
-    { name: colHeader("Weight Of 25 Shells"),      selector: (row) => row.weightShells,        cell: (row) => <span>{row.weightShells}</span>,        sortable: true },
-    { name: colHeader("Single Weight Of Cocoon"),  selector: (row) => row.singleWeightCacoons, cell: (row) => <span>{row.singleWeightCacoons}</span>, sortable: true },
-    { name: colHeader("Single Weight Pupa"),       selector: (row) => row.singleWeightPupa,    cell: (row) => <span>{row.singleWeightPupa}</span>,    sortable: true },
-    { name: colHeader("Single Weight Shells"),     selector: (row) => row.singleWeightShells,  cell: (row) => <span>{row.singleWeightShells}</span>,  sortable: true },
-    { name: colHeader("Male Ratio"),               selector: (row) => row.maleRatio,           cell: (row) => <span>{row.maleRatio}</span>,           sortable: true },
-    { name: colHeader("Female Ratio"),             selector: (row) => row.femaleRatio,         cell: (row) => <span>{row.femaleRatio}</span>,         sortable: true },
-    { name: colHeader("Shell Percentage"),         selector: (row) => row.shellPercentage,     cell: (row) => <span>{row.shellPercentage}</span>,     sortable: true },
-    { name: colHeader("Cocoons Formed"),           selector: (row) => row.cacoonsFormed,       cell: (row) => <span>{row.cacoonsFormed}</span>,       sortable: true },
-    { name: colHeader("Worms Brushed"),            selector: (row) => row.wormsBrushed,        cell: (row) => <span>{row.wormsBrushed}</span>,        sortable: true },
+    { name: colHeader(t("Sl.No")),                    selector: (row) => row.serialNumber,       cell: (row) => <span>{row.serialNumber}</span>,       sortable: true },
+    { name: colHeader(t("Lot Number")),               selector: (row) => row.lotNumber,           cell: (row) => <span>{row.lotNumber}</span>,           sortable: true },
+    { name: colHeader(t("Line")),                     selector: (row) => row.lineName,            cell: (row) => <span>{row.lineName}</span>,            sortable: true },
+    { name: colHeader(t("Spun On Date(From)")),       selector: (row) => row.spunOnDate,          cell: (row) => <span>{row.spunOnDate}</span>,          sortable: true },
+    { name: colHeader(t("Spun On Date(To)")),         selector: (row) => row.spunOnToDate,        cell: (row) => <span>{row.spunOnToDate}</span>,        sortable: true },
+    { name: colHeader(t("Bed")),                      selector: (row) => row.bedName,             cell: (row) => <span>{row.bedName}</span>,             sortable: true },
+    { name: colHeader(t("Weight Of 25 Cocoons")),     selector: (row) => row.weightCacoons,       cell: (row) => <span>{row.weightCacoons}</span>,       sortable: true },
+    { name: colHeader(t("Weight Of 25 Pupa")),        selector: (row) => row.weightPupa,          cell: (row) => <span>{row.weightPupa}</span>,          sortable: true },
+    { name: colHeader(t("Weight Of 25 Shells")),      selector: (row) => row.weightShells,        cell: (row) => <span>{row.weightShells}</span>,        sortable: true },
+    { name: colHeader(t("Single Weight Of Cocoon")),  selector: (row) => row.singleWeightCacoons, cell: (row) => <span>{row.singleWeightCacoons}</span>, sortable: true },
+    { name: colHeader(t("Single Weight Pupa")),       selector: (row) => row.singleWeightPupa,    cell: (row) => <span>{row.singleWeightPupa}</span>,    sortable: true },
+    { name: colHeader(t("Single Weight Shells")),     selector: (row) => row.singleWeightShells,  cell: (row) => <span>{row.singleWeightShells}</span>,  sortable: true },
+    { name: colHeader(t("Male Ratio")),               selector: (row) => row.maleRatio,           cell: (row) => <span>{row.maleRatio}</span>,           sortable: true },
+    { name: colHeader(t("Female Ratio")),             selector: (row) => row.femaleRatio,         cell: (row) => <span>{row.femaleRatio}</span>,         sortable: true },
+    { name: colHeader(t("Shell Percentage")),         selector: (row) => row.shellPercentage,     cell: (row) => <span>{row.shellPercentage}</span>,     sortable: true },
+    { name: colHeader(t("Cocoons Formed")),           selector: (row) => row.cacoonsFormed,       cell: (row) => <span>{row.cacoonsFormed}</span>,       sortable: true },
+    { name: colHeader(t("Worms Brushed")),            selector: (row) => row.wormsBrushed,        cell: (row) => <span>{row.wormsBrushed}</span>,        sortable: true },
   ];
 
   return (
@@ -231,8 +231,8 @@ function MaintenanceOfScreeningBatchAssessmentReport() {
           <div style={{ background: ACCENT_HEADER, padding: "11px 18px", display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px 12px 0 0" }}>
             <span style={{ fontSize: "20px" }}>📋</span>
             <div>
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>Maintenance Of Screening Batch Assessment Details Report</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>Select filters to view and export screening batch assessment details data</div>
+              <div style={{ color: "#fff", fontWeight: 800, fontSize: "14px" }}>{t("Maintenance Of Screening Batch Assessment Details Report")}</div>
+              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "11px" }}>{t("Select filters to view and export screening batch assessment details data")}</div>
             </div>
           </div>
           <Card.Body className="pb-2">
@@ -243,7 +243,7 @@ function MaintenanceOfScreeningBatchAssessmentReport() {
                   <option value="">{t("Select Line Details")}</option>
                   {lineYearListData && lineYearListData.length ? lineYearListData.map((list) => (
                     <option key={list.lineNameId} value={list.lineNameId}>
-                      {list.lineName}
+                      {i18n.language === "kn" ? list.lineNameInKannada : list.lineName}
                     </option>
                   )) : ""}
                 </Form.Select>

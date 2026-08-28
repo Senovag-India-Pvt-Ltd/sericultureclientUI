@@ -7,7 +7,7 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 // import axios from "axios";
 import api from "../../../services/auth/api";
 import { useTranslation } from "react-i18next";
@@ -1340,7 +1340,7 @@ api.post(
 <tbody>
   {viewMonthlyTargetsData.length > 0 ? (
     <tr>
-      <td>{viewMonthlyTargetsData[0]?.yearlyGrainageValue || "N/A"}</td>
+      <td>{viewMonthlyTargetsData[0]?.yearlyGrainageValue || t("N/A")}</td>
     </tr>
   ) : (
     <tr>
@@ -2017,6 +2017,8 @@ api.post(
                 onChangePage={(page) => setPageView(page - 1)}
                 // onChangePage={(page) => setPage(page - 1)}
                 progressPending={loading}
+                progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                noDataComponent={t("There are no records to display")}
                 theme="solarized"
                 customStyles={customStyles}
               />
@@ -2060,6 +2062,8 @@ api.post(
                   // onChangePage={(page) => setPage(page - 1)}
                   onChangePage={(page) => setPageHierarchy(page - 1)}
                   progressPending={loading}
+                  progressComponent={<div className="p-3">{t("Loading...")}</div>}
+                  noDataComponent={t("There are no records to display")}
                   theme="solarized"
                   customStyles={customStyles}
                 />

@@ -6,10 +6,13 @@ import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MulberryTargetTypeView() {
+  // Translation
+  const { t } = useTranslation();
   const styles = {
     ctstyle: {
       backgroundColor: "rgb(248, 248, 249, 1)",
@@ -49,7 +52,7 @@ function MulberryTargetTypeView() {
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Mulberry Target Type View</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Mulberry Target Type View")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -59,7 +62,7 @@ function MulberryTargetTypeView() {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
                 <li>
@@ -68,7 +71,7 @@ function MulberryTargetTypeView() {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="arrow-long-left" />
-                    <span>Go To List</span>
+                    <span>{t("Go To List")}</span>
                   </Link>
                 </li>
               </ul>
@@ -81,12 +84,12 @@ function MulberryTargetTypeView() {
         <Card>
           <Card.Header className="sh-section-header">
             <Icon name="eye" />
-            <span>Mulberry Target Type Details</span>
+            <span>{t("Mulberry Target Type Details")}</span>
           </Card.Header>
           <Card.Body>
             {loading ? (
               <h1 className="d-flex justify-content-center align-items-center">
-                Loading...
+                {t("Loading...")}
               </h1>
             ) : (
               <Row className="g-gs">
@@ -94,22 +97,22 @@ function MulberryTargetTypeView() {
                   <table className="table small table-bordered">
                     <tbody>
                       <tr>
-                        <td style={styles.ctstyle}>ID:</td>
+                        <td style={styles.ctstyle}>{t("ID")}:</td>
                         <td>{mulberryTargetType.mulberryTargetTypeId}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Mulberry Target Type:</td>
+                        <td style={styles.ctstyle}> {t("Mulberry Target Type")}:</td>
                         <td>{mulberryTargetType.mulberryTargetTypeName}</td>
                       </tr>
                       <tr>
                         <td style={styles.ctstyle}>
                           {" "}
-                          Mulberry Target Type Name in Kannada:
+                          {t("Mulberry Target Type Name in Kannada")}:
                         </td>
                         <td>{mulberryTargetType.mulberryTargetTypeNameInKannada}</td>
                       </tr>
                       <tr>
-                        <td style={styles.ctstyle}> Unit:</td>
+                        <td style={styles.ctstyle}> {t("Unit")}:</td>
                         <td>{mulberryTargetType.unit}</td>
                       </tr>
                     </tbody>

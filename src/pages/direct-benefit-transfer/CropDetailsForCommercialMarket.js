@@ -6,7 +6,8 @@ import Block from "../../components/Block/Block";
 import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import DataTable, { createTheme } from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
+import { createTheme } from "react-data-table-component";
 
 import { Icon, Select } from "../../components";
 import { useTranslation } from "react-i18next";
@@ -276,9 +277,9 @@ const [showModal, setShowModal] = useState(false);
   if (transactionList.length === 0) {
     Swal.fire({
       icon: "warning",
-      title: "Transaction Details Required",
-      text: "Please fill the transaction details before saving.",
-      confirmButtonText: "OK",
+      title: t("Transaction Details Required"),
+      text: t("Please fill the transaction details before saving."),
+      confirmButtonText: t("OK"),
     });
     return; // ⛔ stop save
   }
@@ -948,7 +949,7 @@ const [showModal, setShowModal] = useState(false);
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Lot No is required
+                          {t("Lot No is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -975,7 +976,7 @@ const [showModal, setShowModal] = useState(false);
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Chawki Percentage is required
+                          {t("Chawki Percentage is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1038,7 +1039,7 @@ const [showModal, setShowModal] = useState(false);
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            No Of DFL's is required
+                            {t("No Of DFL's is required")}
                             </Form.Control.Feedback>
                          
                         </div>
@@ -1328,7 +1329,7 @@ const [showModal, setShowModal] = useState(false);
                                               <th>{t("Bidding Slip Number")}</th>
                                               <th>{t("Bidding Slip Lot No")}</th>
                                               <th>{t("Cocoon Rate Per Kg")}</th>
-                                              <th>{t("Quantity Of Cocoon Produced")}</th>
+                                              <th>{t("Quantity Of Cocoons Produced")}</th>
                                               <th>{t("Transaction Date")}</th>
                                               
                                               {/* <th>Share in %</th> */}
@@ -1462,7 +1463,7 @@ const [showModal, setShowModal] = useState(false);
 
                     <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="sordfl">{("Market")}<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="sordfl">{t("Market")}<span className="text-danger">*</span></Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="marketId"
@@ -1508,7 +1509,7 @@ const [showModal, setShowModal] = useState(false);
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Bidding Slip Number is required
+                          {t("Bidding Slip Number is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1528,7 +1529,7 @@ const [showModal, setShowModal] = useState(false);
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            {t("Bidding Slip Lot No is required")}
+                            {t("Bidding Slip Lot No is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1574,9 +1575,9 @@ const [showModal, setShowModal] = useState(false);
                       </Form.Group>
                     </Col>
 
-                    
 
-                    
+
+
 
                     <Col lg="2">
                     <Form.Group className="form-group mt-n4">
@@ -1602,9 +1603,9 @@ const [showModal, setShowModal] = useState(false);
                     </Form.Group>
                     </Col>
 
-      
-                   
-      
+
+
+
                     <Col lg="12">
                       <div className="d-flex justify-content-center gap g-2">
                         <div className="gap-col">
@@ -1647,7 +1648,7 @@ const [showModal, setShowModal] = useState(false);
 
                   <Col lg="6">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="sordfl">{("Market")}<span className="text-danger">*</span></Form.Label>
+                        <Form.Label htmlFor="sordfl">{t("Market")}<span className="text-danger">*</span></Form.Label>
                         <div className="form-control-wrap">
                           <Form.Select
                             name="marketId"
@@ -1693,7 +1694,7 @@ const [showModal, setShowModal] = useState(false);
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                          Bidding Slip Number is required
+                          {t("Bidding Slip Number is required")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1713,7 +1714,7 @@ const [showModal, setShowModal] = useState(false);
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            {t("Bidding Slip Lot No is required")}
+                            {t("Bidding Slip Lot No is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>

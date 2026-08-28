@@ -2,7 +2,7 @@ import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import Swal from "sweetalert2";
@@ -61,18 +61,18 @@ function MaintenanceOfPiercedCocoonsList() {
   const deleteError = () => {
     Swal.fire({
       icon: "error",
-      title: "Delete attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Delete attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
   const deleteConfirm = (_id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "It will delete permanently!",
+      title: t("Are you sure?"),
+      text: t("It will delete permanently!"),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: t("Yes, delete it!"),
     }).then((result) => {
       if (result.value) {
         console.log("hello");
@@ -82,8 +82,8 @@ function MaintenanceOfPiercedCocoonsList() {
             // deleteConfirm(_id);
             getList();
             Swal.fire(
-              "Deleted",
-              "You successfully deleted this record",
+              t("Deleted"),
+              t("You successfully deleted this record"),
               "success"
             );
           })
@@ -93,7 +93,7 @@ function MaintenanceOfPiercedCocoonsList() {
         // Swal.fire("Deleted", "You successfully deleted this record", "success");
       } else {
         console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not deleted", "info");
+        Swal.fire(t("Cancelled"), t("Your record is not deleted"), "info");
       }
     });
   };

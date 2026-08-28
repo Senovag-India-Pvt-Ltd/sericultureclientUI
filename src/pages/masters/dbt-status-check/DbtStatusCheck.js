@@ -249,7 +249,7 @@ function DbtStatusCheck() {
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-3">
-                      <Form.Label htmlFor="username">{("User Name")}</Form.Label>
+                      <Form.Label htmlFor="username">{t("User Name")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="username"
@@ -266,7 +266,7 @@ function DbtStatusCheck() {
 
                   <Col lg="6">
                     <Form.Group className="form-group mt-3">
-                      <Form.Label htmlFor="password">{("Password")}</Form.Label>
+                      <Form.Label htmlFor="password">{t("Password")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
                           id="password"

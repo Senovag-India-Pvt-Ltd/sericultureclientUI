@@ -11,7 +11,8 @@ import {
 } from "../../components";
 import axios from "axios";
 
-import DataTable, { createTheme } from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
+import { createTheme } from "react-data-table-component";
 import Swal from "sweetalert2/src/sweetalert2.js";
 // import DatePicker from "react-datepicker";
 import api from "../../services/auth/api";
@@ -30,6 +31,8 @@ const bankStatementStyles = `
     margin-bottom: 22px;
   }
   .sh-page-title { margin-bottom: 4px; color: #ffffff !important; font-weight: 700; letter-spacing: 0.2px; }
+  .sh-empty { padding: 36px 12px; text-align: center; color: #8a96a8; font-size: 14px; }
+  .sh-empty svg { width: 40px; height: 40px; opacity: 0.5; }
   .sh-form-wrap { background: #eef2f8; border-radius: 14px; padding: 18px; }
   .sh-form-wrap .card { border: none; border-radius: 12px !important; box-shadow: 0 4px 14px rgba(30, 103, 168, 0.1); overflow: hidden; }
   .sh-form-wrap .form-label { font-weight: 600; color: #2b3a55; font-size: 13.5px; }
@@ -425,7 +428,7 @@ function BankStatement() {
         .catch((err) => {
           Swal.fire({
             icon: "warning",
-            title: "No record found!!!",
+            title: t("No record found!!!"),
             customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
           });
         });
@@ -440,7 +443,7 @@ function BankStatement() {
       if (paymentDate === "") {
         return Swal.fire({
           icon: "warning",
-          title: "Date Not Selected",
+          title: t("Date Not Selected"),
           customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
         });
       }
@@ -456,7 +459,7 @@ function BankStatement() {
           if (response.data.errorCode === 0) {
             Swal.fire({
               icon: "success",
-              title: "Request has been sent to Bank",
+              title: t("Request has been sent to Bank"),
               customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
             });
           }
@@ -489,7 +492,7 @@ function BankStatement() {
       if (paymentDate === "") {
         return Swal.fire({
           icon: "warning",
-          title: "Date Not Selected",
+          title: t("Date Not Selected"),
           customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
         });
       }
@@ -562,7 +565,7 @@ function BankStatement() {
         .catch((err) => {
           Swal.fire({
             icon: "warning",
-            title: "Either file name is incorrect or Wait for few minutes!!!",
+            title: t("Either file name is incorrect or Wait for few minutes!!!"),
             customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
           });
         });
@@ -749,8 +752,15 @@ function BankStatement() {
             }}
             onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}
+            progressComponent={<div className="py-4">{t("Loading...")}</div>}
             theme="solarized"
             customStyles={customStyles}
+            noDataComponent={
+              <div className="sh-empty">
+                <Icon name="inbox" />
+                <p className="mt-2 mb-0">{t("No records found")}</p>
+              </div>
+            }
           />
         </Card>
       </Block>

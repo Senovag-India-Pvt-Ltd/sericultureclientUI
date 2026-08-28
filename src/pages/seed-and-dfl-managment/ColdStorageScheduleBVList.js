@@ -2,7 +2,7 @@ import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import Swal from "sweetalert2";
@@ -320,7 +320,7 @@ function ColdStorageScheduleBVList() {
             onClick={() => acceptConfirm(row.cssId)}
             className="text-nowrap"
           >
-            Accept
+            {t("Accept")}
           </Button>
 
           {/* <Button
@@ -383,10 +383,10 @@ function ColdStorageScheduleBVList() {
       cell: (row) => (
         <span>
           {row.isChanged === 0
-            ? "Pending"
+            ? t("Pending")
             : row.isChanged === 1
-            ? "Accepted"
-            : "Unknown"}
+            ? t("Accepted")
+            : t("Unknown")}
         </span>
       ),
       sortable: true,
@@ -519,7 +519,7 @@ function ColdStorageScheduleBVList() {
             onClick={() => getCalendarList(row.lotNumber,row.laidOnDate)}
             className="text-nowrap"
           >
-           Schedule Table
+           {t("Schedule Table")}
           </Button>
           </div>
           ),

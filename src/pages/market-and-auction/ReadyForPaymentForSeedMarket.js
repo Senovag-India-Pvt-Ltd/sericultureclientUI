@@ -4,7 +4,8 @@ import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Dropdown } from "react-bootstrap";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable, { createTheme } from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
+import { createTheme } from "react-data-table-component";
 // import axios from "axios";
 
 import {
@@ -71,7 +72,7 @@ function ReadyForPaymentForSeedMarket() {
     if(!date){
       Swal.fire({
         icon: 'warning',
-        title: 'This Lot is not distributed',
+        title: t("This Lot is not distributed"),
         customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm", cancelButton: "sh-swal-cancel" },
       });
       return;
@@ -351,6 +352,13 @@ function ReadyForPaymentForSeedMarket() {
             }}
             onChangePage={(page) => setPage(page - 1)}
             progressPending={loading}
+            progressComponent={<div className="py-4">{t("Loading...")}</div>}
+            noDataComponent={
+              <div className="sh-empty">
+                <Icon name="inbox" />
+                <p className="mt-2 mb-0">{t("No records found")}</p>
+              </div>
+            }
             theme="solarized"
             customStyles={customStyles}
           />

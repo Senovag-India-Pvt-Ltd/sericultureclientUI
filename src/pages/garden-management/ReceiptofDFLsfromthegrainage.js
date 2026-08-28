@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { createTheme } from "react-data-table-component";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
@@ -88,18 +88,18 @@ function ReceiptofDFLsfromthegrainage() {
   const deleteError = () => {
     Swal.fire({
       icon: "error",
-      title: "Reject attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Reject attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
   const deleteConfirm = (_sodId, status) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "It will Reject permanently!",
+      title: t("Are you sure?"),
+      text: t("It will Reject permanently!"),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, Reject it!",
+      confirmButtonText: t("Yes, Reject it!"),
     }).then((result) => {
       if (result.value) {
         console.log("hello");
@@ -109,8 +109,8 @@ function ReceiptofDFLsfromthegrainage() {
             // deleteConfirm(_id);
             // getList();
             Swal.fire(
-              "Rejected",
-              "You successfully rejected this record",
+              t("Rejected"),
+              t("You successfully rejected this record"),
               "success"
             );
             getList();
@@ -122,7 +122,7 @@ function ReceiptofDFLsfromthegrainage() {
         // Swal.fire("Deleted", "You successfully deleted this record", "success");
       } else {
         console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not rejected", "info");
+        Swal.fire(t("Cancelled"), t("Your record is not rejected"), "info");
       }
     });
   };
@@ -130,18 +130,18 @@ function ReceiptofDFLsfromthegrainage() {
   const acceptError = () => {
     Swal.fire({
       icon: "error",
-      title: "Accept attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Accept attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
 
   const acceptConfirm = (_sodId, status) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "It will Accept!",
+      title: t("Are you sure?"),
+      text: t("It will Accept!"),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, Accept it!",
+      confirmButtonText: t("Yes, Accept it!"),
     }).then((result) => {
       if (result.value) {
         console.log("hello");
@@ -151,8 +151,8 @@ function ReceiptofDFLsfromthegrainage() {
             // deleteConfirm(_id);
             // getList();
             Swal.fire(
-              "Accepted",
-              "You successfully Accepted this record",
+              t("Accepted"),
+              t("You successfully Accepted this record"),
               "success"
             );
             getList();
@@ -164,7 +164,7 @@ function ReceiptofDFLsfromthegrainage() {
         // Swal.fire("Deleted", "You successfully deleted this record", "success");
       } else {
         console.log(result.value);
-        Swal.fire("Cancelled", "Your record is not accepted", "info");
+        Swal.fire(t("Cancelled"), t("Your record is not accepted"), "info");
       }
     });
   };
@@ -492,6 +492,7 @@ function ReceiptofDFLsfromthegrainage() {
               }}
               onChangePage={(page) => setPage(page - 1)}
               progressPending={loading}
+              progressComponent={<div className="p-3 text-center">{t("Loading...")}</div>}
               theme="solarized"
               customStyles={customStyles}
               noDataComponent={
@@ -673,8 +674,15 @@ function ReceiptofDFLsfromthegrainage() {
                   }}
                   onChangePage={(page) => setPage(page - 1)}
                   progressPending={loading}
+                  progressComponent={<div className="p-3 text-center">{t("Loading...")}</div>}
                   theme="solarized"
                   customStyles={customStyles}
+                  noDataComponent={
+                    <div className="sh-empty">
+                      <Icon name="inbox" />
+                      <p className="mt-2 mb-0">{t("No records found")}</p>
+                    </div>
+                  }
                 />
               </div>
             </Card>

@@ -5,7 +5,7 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 // import DataTable from "../../../components/DataTable/DataTable";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 import StateDatas from "../../../store/masters/state/StateData";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
@@ -296,6 +296,7 @@ function ScSchemeDetailsList() {
               }}
               onChangePage={(page) => setPage(page - 1)}
               progressPending={loading}
+              progressComponent={<div className="py-4">{t("Loading...")}</div>}
               theme="solarized"
               customStyles={customStyles}
             />

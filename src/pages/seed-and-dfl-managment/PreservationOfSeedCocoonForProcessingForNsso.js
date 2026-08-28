@@ -2,7 +2,7 @@ import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import { useState, useEffect } from "react";
 // import axios from "axios";
 import Swal from "sweetalert2";
@@ -794,14 +794,14 @@ function PreservationofseedcocoonforprocessingListForNsso() {
   ];
 
   return (
-    <Layout title={t("List Of Preservation of seed cocoon for processing")}>
+    <Layout title={t("List Of Preservation of Seed Cocoon for Processing")}>
       <style>{preservationSeedCocoonNssoListStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
               <Block.Title tag="h2" className="sh-page-title">
-                {t("List Of Preservation of seed cocoon for processing")}
+                {t("List Of Preservation of Seed Cocoon for Processing")}
               </Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>

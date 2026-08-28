@@ -4,17 +4,20 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { Icon } from "../../../components";
 import { createTheme } from "react-data-table-component";
-import DataTable from "react-data-table-component";
+import DataTable from "../../../components/AppDataTable";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function MulberryTargetTypeList() {
+  // Translation
+  const { t } = useTranslation();
   const [listData, setListData] = useState({});
   const [page, setPage] = useState(0);
   const countPerPage = 5;
@@ -147,7 +150,7 @@ function MulberryTargetTypeList() {
 
   const MulberryVarietyDataColumns = [
     {
-      name: "Action",
+      name: t("Action"),
       cell: (row) => (
         //   Button style
         <div className="d-flex flex-nowrap align-items-center text-start w-100">
@@ -159,7 +162,7 @@ function MulberryTargetTypeList() {
             className="d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
             <Icon name="eye" />
-            View
+            {t("View")}
           </Button>
           <Button
             variant="primary"
@@ -168,7 +171,7 @@ function MulberryTargetTypeList() {
             onClick={() => handleEdit(row.mulberryTargetTypeId)}
           >
             <Icon name="edit" />
-            Edit
+            {t("Edit")}
           </Button>
           <Button
             variant="danger"
@@ -177,7 +180,7 @@ function MulberryTargetTypeList() {
             className="ms-2 d-inline-flex align-items-center gap-1 shadow-sm text-nowrap"
           >
             <Icon name="trash" />
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ),
@@ -187,14 +190,14 @@ function MulberryTargetTypeList() {
       grow: 0,
     },
     {
-      name: "Mulberry Target Type",
+      name: t("Mulberry Target Type"),
       selector: (row) => row.mulberryTargetTypeName,
       cell: (row) => <span>{row.mulberryTargetTypeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Mulberry Target Type Name in Kannada",
+      name: t("Mulberry Target Type Name in Kannada"),
       selector: (row) => row.mulberryTargetTypeNameInKannada,
       cell: (row) => <span>{row.mulberryTargetTypeNameInKannada}</span>,
       sortable: true,
@@ -202,7 +205,7 @@ function MulberryTargetTypeList() {
     },
 
     {
-      name: "unit",
+      name: t("Unit"),
       selector: (row) => row.unit,
       cell: (row) => <span>{row.unit}</span>,
       sortable: true,
@@ -217,7 +220,7 @@ function MulberryTargetTypeList() {
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Mulberry Target Type List</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Mulberry Target Type List")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               <ul className="d-flex">
@@ -227,7 +230,7 @@ function MulberryTargetTypeList() {
                     className="btn btn-primary btn-md d-md-none sh-cta-btn"
                   >
                     <Icon name="plus" />
-                    <span>Create</span>
+                    <span>{t("create")}</span>
                   </Link>
                 </li>
                 <li>
@@ -236,7 +239,7 @@ function MulberryTargetTypeList() {
                     className="btn btn-primary d-none d-md-inline-flex sh-cta-btn"
                   >
                     <Icon name="plus" />
-                    <span>Create</span>
+                    <span>{t("create")}</span>
                   </Link>
                 </li>
               </ul>
@@ -262,6 +265,8 @@ function MulberryTargetTypeList() {
               }}
               onChangePage={(page) => setPage(page - 1)}
               progressPending={loading}
+              progressComponent={<div className="py-4">{t("Loading...")}</div>}
+              noDataComponent={<div className="py-4">{t("There are no records to display")}</div>}
               theme="solarized"
               customStyles={customStyles}
             />

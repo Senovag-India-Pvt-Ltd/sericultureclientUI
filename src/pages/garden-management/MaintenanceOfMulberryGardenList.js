@@ -2,7 +2,7 @@ import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import Swal from "sweetalert2";
@@ -576,7 +576,7 @@ const handleUpdateAllDates = (row) => {
       hide: "md",
     },
     {
-      name: t(" Area(In Hectares)"),
+      name: t("Area(In Hectares)"),
       selector: (row) => row.areaUnderEachVariety,
       cell: (row) => <span>{row.areaUnderEachVariety}</span>,
       sortable: true,
@@ -977,6 +977,7 @@ const handleUpdateAllDates = (row) => {
               }}
               onChangePage={(page) => setPage(page - 1)}
               progressPending={loading}
+              progressComponent={<div className="py-4">{t("Loading...")}</div>}
               theme="solarized"
               customStyles={customStyles}
               noDataComponent={
@@ -1018,6 +1019,7 @@ const handleUpdateAllDates = (row) => {
                   }}
                   onChangePage={(page) => setPage(page - 1)}
                   progressPending={loading}
+                  progressComponent={<div className="py-4">{t("Loading...")}</div>}
                   theme="solarized"
                   customStyles={customStyles}
                 />
@@ -1055,6 +1057,7 @@ const handleUpdateAllDates = (row) => {
                   }}
                   onChangePage={(page) => setPage(page - 1)}
                   progressPending={loading}
+                  progressComponent={<div className="py-4">{t("Loading...")}</div>}
                   theme="solarized"
                   customStyles={customStyles}
                 />
@@ -1344,7 +1347,7 @@ const handleUpdateAllDates = (row) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                      {t("Foilar Spray 1")}
+                      {t("Foliar Spray 1")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">
@@ -1368,7 +1371,7 @@ const handleUpdateAllDates = (row) => {
                 <Col lg="4">
                   <Form.Group className="form-group mt-n4">
                     <Form.Label htmlFor="sordfl">
-                    {t("Foilar Spray 2")}
+                    {t("Foliar Spray 2")}
                       {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     <div className="form-control-wrap">

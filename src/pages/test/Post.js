@@ -1,5 +1,5 @@
 // import DataTable from '../../components/DataTable/DataTableErp';
-import DataTable from "react-data-table-component";
+import DataTable from "../../components/AppDataTable";
 import axios from "axios";
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
