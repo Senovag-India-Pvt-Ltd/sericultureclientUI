@@ -1,4 +1,4 @@
-import { Card, Button } from "react-bootstrap";
+import { Card, Button, Row, Col, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
@@ -22,12 +22,26 @@ function CropDetailsForSeedMarketList() {
   const countPerPage = 50;
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
-  const _params = { params: { pageNumber: page, pageSize: countPerPage } };
+  const [searchData, setSearchData] = useState({ type: 1, searchText: "" });
+
+  const handleInputsSearch = (e) => {
+    const { name, value } = e.target;
+    setSearchData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const getList = () => {
     setLoading(true);
-    const response = api
-      .get(baseURL + `cropDetailsSeedMarket/getListOfCropDetailsSeedMarketDetails`, _params)
+    const effectiveType =
+      searchData.searchText.trim() === "" ? 0 : Number(searchData.type);
+    api
+      .get(baseURL + `cropDetailsSeedMarket/getListOfCropDetailsSeedMarketDetails`, {
+        params: {
+          pageNumber: page,
+          pageSize: countPerPage,
+          type: effectiveType,
+          searchText: searchData.searchText.trim(),
+        },
+      })
       .then((response) => {
         setListData(response.data.content);
         setTotalRows(response.data.totalRecords);
@@ -37,6 +51,14 @@ function CropDetailsForSeedMarketList() {
         setListData({});
         setLoading(false);
       });
+  };
+
+  const search = () => {
+    if (page === 0) {
+      getList();
+    } else {
+      setPage(0);
+    }
   };
 
   useEffect(() => {
@@ -366,6 +388,45 @@ function CropDetailsForSeedMarketList() {
 
       <Block className="mt-n4 sh-form-wrap">
         <Card>
+          <Row className="m-2">
+            <Col>
+              <Form.Group as={Row} className="form-group" id="fid">
+                <Form.Label column sm={1}>
+                  {t("Search By")}
+                </Form.Label>
+                <Col sm={3}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="type"
+                      value={searchData.type}
+                      onChange={handleInputsSearch}
+                    >
+                      <option value="1">{t("Fruits Id")}</option>
+                      <option value="2">{t("Lot No")}</option>
+                      <option value="3">{t("Bonus Receipt No")}</option>
+                      <option value="4">{t("Incentive Receipt No")}</option>
+                    </Form.Select>
+                  </div>
+                </Col>
+
+                <Col sm={2} lg={2}>
+                  <Form.Control
+                    name="searchText"
+                    value={searchData.searchText}
+                    onChange={handleInputsSearch}
+                    type="text"
+                    placeholder={t("search")}
+                  />
+                </Col>
+
+                <Col sm={3}>
+                  <Button type="button" variant="primary" onClick={search}>
+                    {t("search")}
+                  </Button>
+                </Col>
+              </Form.Group>
+            </Col>
+          </Row>
           <DataTable
             // title="Crate List"
             tableClassName="data-table-head-light table-responsive"
