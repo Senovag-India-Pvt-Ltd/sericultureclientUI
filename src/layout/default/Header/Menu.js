@@ -6371,7 +6371,7 @@ function Menu() {
              {showMenu.Reports_Format_Reports ? (
                 <MenuItem sub>
                   <MenuItemLink
-                    text={t("Format Reports")}
+                    text={t("Format Reports", { ns: "reports" })}
                     onClick={menuToggle}
                     onMouseEnter={menuHover}
                     sub
@@ -6381,7 +6381,7 @@ function Menu() {
                     showMenu.Reports_Format_Reports_Seed_Market ? (
                       <MenuItem sub>
                         <MenuItemLink
-                          text={t("Seed Market")}
+                          text={t("Seed Market", { ns: "reports" })}
                           onClick={menuToggle}
                           onMouseEnter={menuHover}
                           sub
@@ -6391,7 +6391,7 @@ function Menu() {
                           showMenu.Reports_Export_Report_Seed_Market_Invoice ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Invoice")}
+                                text={t("Invoice", { ns: "reports" })}
                                 to="/seriui/seed-market-invoice-report"
                               />
                             </MenuItem>
@@ -6400,7 +6400,7 @@ function Menu() {
                           showMenu.Reports_Export_Report_Seed_Market_Permit ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Permit")}
+                                text={t("Permit", { ns: "reports" })}
                                 to="/seriui/seed-market-permit-report"
                               />
                             </MenuItem>
@@ -6409,7 +6409,7 @@ function Menu() {
                           showMenu.Reports_Export_Report_Seed_Market_Cash_Receipt ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Cash Receipt")}
+                                text={t("Cash Receipt", { ns: "reports" })}
                                 to="/seriui/seed-market-cash-receipt-report"
                               />
                             </MenuItem>
@@ -6418,7 +6418,7 @@ function Menu() {
                           showMenu.Reports_Export_Report_Seed_Market_Market_Receipt ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Market Receipt")}
+                                text={t("Market Receipt", { ns: "reports" })}
                                 to="/seriui/seed-market-market-receipt-report"
                               />
                             </MenuItem>
@@ -6427,7 +6427,7 @@ function Menu() {
                           showMenu.Reports_Export_Report_Seed_Market_DTR_Report ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("DTR Report")}
+                                text={t("DTR Report", { ns: "reports" })}
                                 to="/seriui/seed-dtr-report"
                               />
                             </MenuItem>
@@ -6435,7 +6435,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_Fitness_Certificate ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Fitness Certificate")}
+                              text={t("Fitness Certificate", { ns: "reports" })}
                               to="/seriui/fitness-certificate-report"
                             />
                           </MenuItem>
@@ -6443,7 +6443,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_Bidding_Slip ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Bidding Slip")}
+                              text={t("Bidding Slip", { ns: "reports" })}
                               to="/seriui/seed-market-bidding-slip-report"
                             />
                           </MenuItem>
@@ -6451,7 +6451,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_Triplet ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Triplet")}
+                              text={t("Triplet", { ns: "reports" })}
                               to="/seriui/seed-market-triplet-report"
                             />
                           </MenuItem>
@@ -6460,7 +6460,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_External_Unit_Balance_Report ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("External Unit Balance Report")}
+                                text={t("External Unit Balance Report", { ns: "reports" })}
                                 to="/seriui/external-unit-balance"
                               />
                             </MenuItem>
@@ -6468,7 +6468,7 @@ function Menu() {
                            {showMenu.Reports_Export_Report_Seed_Market_Reeler_Balance_Report ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Reeler Balance Report")}
+                                text={t("Reeler Balance Report", { ns: "reports" })}
                                 to="/seriui/reeler-balance"
                               />
                             </MenuItem>
@@ -6476,7 +6476,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_Weekly_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Market Weekly Report")}
+                              text={t("Market Weekly Report", { ns: "reports" })}
                               to="/seriui/market-weekly-report"
                             />
                           </MenuItem>
@@ -6484,7 +6484,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_Pending_Fee_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Pending Market Fee Report")}
+                              text={t("Pending Market Fee Report", { ns: "reports" })}
                               to="/seriui/pending-market-fee-report"
                             />
                           </MenuItem>
@@ -6492,7 +6492,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_MF_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Seed MF Report")}
+                              text={t("Seed MF Report", { ns: "reports" })}
                               to="/seriui/seed-mf-report"
                             />
                           </MenuItem>
@@ -6500,7 +6500,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_Transaction_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Seed Market Transaction Report")}
+                              text={t("Seed Market Transaction Report", { ns: "reports" })}
                               to="/seriui/seed-market-transaction-report"
                             />
                           </MenuItem>
@@ -6508,7 +6508,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_Credit_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Seed Market Credit Report")}
+                              text={t("Seed Market Credit Report", { ns: "reports" })}
                               to="/seriui/seed-market-credit-report"
                             />
                           </MenuItem>
@@ -6516,7 +6516,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_Monthly_Progress ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Seed Market Monthly Progress (Sheet 1)")}
+                              text={t("Seed Market Monthly Progress (Sheet 1)", { ns: "reports" })}
                               to="/seriui/seed-market-monthly-progress-report"
                             />
                           </MenuItem>
@@ -6524,7 +6524,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_Pricing_Summary ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Seed Market Pricing Summary (Sheet 2 · ₹/kg)")}
+                              text={t("Seed Market Pricing Summary (Sheet 2 · ₹/kg)", { ns: "reports" })}
                               to="/seriui/seed-market-monthly-pricing-report"
                             />
                           </MenuItem>
@@ -6532,7 +6532,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_District_Wise_Sales ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Seed Market District-wise Sales (Sheet 3)")}
+                              text={t("Seed Market District-wise Sales (Sheet 3)", { ns: "reports" })}
                               to="/seriui/seed-market-district-wise-report"
                             />
                           </MenuItem>
@@ -6540,7 +6540,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_Budget_Entry ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Seed Market Budget Remittance (Sheet 2 §C · Entry)")}
+                              text={t("Seed Market Budget Remittance (Sheet 2 §C · Entry)", { ns: "reports" })}
                               to="/seriui/seed-market-budget-entry"
                             />
                           </MenuItem>
@@ -6548,7 +6548,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_Budget_List ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Seed Market Budget Remittance (Sheet 2 §C · List)")}
+                              text={t("Seed Market Budget Remittance (Sheet 2 §C · List)", { ns: "reports" })}
                               to="/seriui/seed-market-budget-list"
                             />
                           </MenuItem>
@@ -6556,7 +6556,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_Staff_Entry ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Seed Market Staff Establishment (Sheet 2 §D · Entry)")}
+                              text={t("Seed Market Staff Establishment (Sheet 2 §D · Entry)", { ns: "reports" })}
                               to="/seriui/seed-market-staff-entry"
                             />
                           </MenuItem>
@@ -6564,7 +6564,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_Staff_List ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Seed Market Staff Establishment (Sheet 2 §D · List)")}
+                              text={t("Seed Market Staff Establishment (Sheet 2 §D · List)", { ns: "reports" })}
                               to="/seriui/seed-market-staff-list"
                             />
                           </MenuItem>
@@ -6573,7 +6573,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_Bidding_Report ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Seed Market Bidding Report")}
+                              text={t("Seed Market Bidding Report", { ns: "reports" })}
                               to="/seriui/seed-market-bidding-report"
                             />
                           </MenuItem>
@@ -6581,7 +6581,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Seed_Market_Dashboard ? (
                           <MenuItem>
                             <MenuItemLink
-                              text={t("Dashboard")}
+                              text={t("Dashboard", { ns: "reports" })}
                               to="/seriui/seed-market-dashboard-report"
                             />
                           </MenuItem>
@@ -6594,7 +6594,7 @@ function Menu() {
                     showMenu.Reports_Format_Reports_Commercial_Market ? (
                       <MenuItem sub>
                         <MenuItemLink
-                          text={t("Commercial Market")}
+                          text={t("Commercial Market", { ns: "reports" })}
                           onClick={menuToggle}
                           onMouseEnter={menuHover}
                           sub
@@ -6603,7 +6603,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_Abstract ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Abstract Report")}
+                                text={t("Abstract Report", { ns: "reports" })}
                                 to="/seriui/abstract-report"
                               />
                             </MenuItem>
@@ -6611,7 +6611,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_District_Abstract ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("District Wise Abstract Report")}
+                                text={t("District Wise Abstract Report", { ns: "reports" })}
                                 to="/seriui/form-13-report-by-dist"
                               />
                             </MenuItem>
@@ -6619,7 +6619,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_DTR_Blank_Report ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Real Time DTR Report")}
+                                text={t("Real Time DTR Report", { ns: "reports" })}
                                 to="/seriui/blank-dtr-online"
                               />
                             </MenuItem>
@@ -6627,7 +6627,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_DTR ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("DTR Online")}
+                                text={t("DTR Online", { ns: "reports" })}
                                 to="/seriui/dtr-online"
                               />
                             </MenuItem>
@@ -6635,7 +6635,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_GeneratedTriplet ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Generated Triplet")}
+                                text={t("Generated Triplet", { ns: "reports" })}
                                 to="/seriui/print-bid-slip"
                               />
                             </MenuItem>
@@ -6643,7 +6643,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_GeneratedFarmerCopy ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Generated Bidding Slip")}
+                                text={t("Generated Bidding Slip", { ns: "reports" })}
                                 to="/seriui/print-farmer-copy"
                               />
                             </MenuItem>
@@ -6652,7 +6652,7 @@ function Menu() {
                           showMenu.Reports_Export_Report_Commercial_Market_Reeler_Current_Balance ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Reeler Current Balance Report")}
+                                text={t("Reeler Current Balance Report", { ns: "reports" })}
                                 to="/seriui/reeler-current-balance"
                               />
                             </MenuItem>
@@ -6661,7 +6661,7 @@ function Menu() {
                           showMenu.Reports_Export_Report_Commercial_Market_Reeler_Credit_Report ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Reeler Credit Report")}
+                                text={t("Reeler Credit Report", { ns: "reports" })}
                                 to="/seriui/reeler-credit-transaction"
                               />
                             </MenuItem>
@@ -6669,7 +6669,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_Unit ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Unit Counter Report")}
+                                text={t("Unit Counter Report", { ns: "reports" })}
                                 to="/seriui/unit-counter-report"
                               />
                             </MenuItem>
@@ -6677,7 +6677,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_Reeler_MF ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Reeler MF Report")}
+                                text={t("Reeler MF Report", { ns: "reports" })}
                                 to="/seriui/reeler-mf-report"
                               />
                             </MenuItem>
@@ -6685,7 +6685,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_District_Wise_Monthly_Report ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("District Wise Monthly Report")}
+                                text={t("District Wise Monthly Report", { ns: "reports" })}
                                 to="/seriui/district-monthly-report"
                               />
                             </MenuItem>
@@ -6693,7 +6693,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_Pending ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Pending Report")}
+                                text={t("Pending Report", { ns: "reports" })}
                                 to="/seriui/pending-reports"
                               />
                             </MenuItem>
@@ -6701,7 +6701,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_Bidding_Report ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Lot Wise Bidding Report")}
+                                text={t("Lot Wise Bidding Report", { ns: "reports" })}
                                 to="/seriui/bidding-report"
                               />
                             </MenuItem>
@@ -6709,7 +6709,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_Bidding_Reeler_Report ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Reeler Bidding Report")}
+                                text={t("Reeler Bidding Report", { ns: "reports" })}
                                 to="/seriui/bidding-report-reeler"
                               />
                             </MenuItem>
@@ -6717,7 +6717,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_Farmer_Transaction_Report ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Farmer Transaction Report")}
+                                text={t("Farmer Transaction Report", { ns: "reports" })}
                                 to="/seriui/farmer-transaction-report"
                               />
                             </MenuItem>
@@ -6725,7 +6725,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_District_Wise_Farmer_Count ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("District Wise Farmer Count")}
+                                text={t("District Wise Farmer Count", { ns: "reports" })}
                                 to="/seriui/district-wise-farmer-count-list"
                               />
                             </MenuItem>
@@ -6733,7 +6733,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_District_Wise_Reeler_Count ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("District Wise Reeler Count")}
+                                text={t("District Wise Reeler Count", { ns: "reports" })}
                                 to="/seriui/district-wise-reeler-count-list"
                               />
                             </MenuItem>
@@ -6741,7 +6741,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_Direct_From_Fruits ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Farmer Details Direct From Fruits")}
+                                text={t("Farmer Details Direct From Fruits", { ns: "reports" })}
                                 to="/seriui/direct-fruits-details"
                               />
                             </MenuItem>
@@ -6749,7 +6749,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_Reeler_Transaction_Report ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Reeler Transaction Report")}
+                                text={t("Reeler Transaction Report", { ns: "reports" })}
                                 to="/seriui/reeler-transaction-reports"
                               />
                             </MenuItem>
@@ -6757,7 +6757,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_ReelerPendingReport ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Reeler Pending Report")}
+                                text={t("Reeler Pending Report", { ns: "reports" })}
                                 to="/seriui/reeler-pending-report"
                               />
                             </MenuItem>
@@ -6765,7 +6765,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_Average_Report ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Average Report")}
+                                text={t("Average Report", { ns: "reports" })}
                                 to="/seriui/average-report"
                               />
                             </MenuItem>
@@ -6773,7 +6773,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_Audio_Visual_Report ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Audio Visual Report")}
+                                text={t("Audio Visual Report", { ns: "reports" })}
                                 to="/seriui/audio-visual-report"
                               />
                             </MenuItem>
@@ -6781,7 +6781,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_B_Report ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("27 B Report")}
+                                text={t("27 B Report", { ns: "reports" })}
                                 to="/seriui/27-b-report"
                               />
                             </MenuItem>
@@ -6789,7 +6789,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_Monthly_Report ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Monthly Report")}
+                                text={t("Monthly Report", { ns: "reports" })}
                                 to="/seriui/monthly-report"
                               />
                             </MenuItem>
@@ -6797,7 +6797,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_Market_Report ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Market Report")}
+                                text={t("Market Report", { ns: "reports" })}
                                 to="/seriui/market-report"
                               />
                             </MenuItem>
@@ -6805,7 +6805,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_District_Report ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("District Report")}
+                                text={t("District Report", { ns: "reports" })}
                                 to="/seriui/district-report"
                               />
                             </MenuItem>
@@ -6813,7 +6813,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_Average_Cocoon_Report ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Average Cocoon Report")}
+                                text={t("Average Cocoon Report", { ns: "reports" })}
                                 to="/seriui/average-cocoon-report"
                               />
                             </MenuItem>
@@ -6822,7 +6822,7 @@ function Menu() {
                           showMenu.Reports_Export_Report_Commercial_Market_Dashboard ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("Daily Dashboard")}
+                                text={t("Daily Dashboard", { ns: "reports" })}
                                 to="/seriui/dashboard-report"
                               />
                             </MenuItem>
@@ -6830,7 +6830,7 @@ function Menu() {
                           {showMenu.Reports_Export_Report_Commercial_Market_Dashboard ? (
                             <MenuItem>
                               <MenuItemLink
-                                text={t("All Market Dashboard")}
+                                text={t("All Market Dashboard", { ns: "reports" })}
                                 to="/seriui/dashboard-report-all-market"
                               />
                             </MenuItem>
@@ -6843,7 +6843,7 @@ function Menu() {
                         {showMenu.Reports_Format_Reports_Schemes ? (
                         <MenuItem sub>
                           <MenuItemLink
-                            text={t("Schemes")}
+                            text={t("Schemes", { ns: "reports" })}
                             onClick={menuToggle}
                             onMouseEnter={menuHover}
                             sub
@@ -6852,7 +6852,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Acknowledgement ? (
                               <MenuItem>
                                 <MenuItemLink
-                                  text={t("Acknowledgements")}
+                                  text={t("Acknowledgements", { ns: "reports" })}
                                   to="/seriui/generate-acknowledgement"
                                 />
                               </MenuItem>
@@ -6861,7 +6861,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_WorkOrder ? (
                               <MenuItem>
                                 <MenuItemLink
-                                  text={t("Work Orders")}
+                                  text={t("Work Orders", { ns: "reports" })}
                                   to="/seriui/generate-work-order"
                                 />
                               </MenuItem>
@@ -6870,7 +6870,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Regenerate_Work_Order ? (
                               <MenuItem>
                                 <MenuItemLink
-                                  text={t("Regenerate Work Order")}
+                                  text={t("Regenerate Work Order", { ns: "reports" })}
                                   to="/seriui/regenerate-work-order"
                                 />
                               </MenuItem>
@@ -6879,7 +6879,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_ARM_Release_Letters ? (
                               <MenuItem>
                                 <MenuItemLink
-                                  text={t("ARM Release Letters")}
+                                  text={t("ARM Release Letters", { ns: "reports" })}
                                   to="/seriui/generate-arm-release-letters"
                                 />
                               </MenuItem>
@@ -6888,7 +6888,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Selection_Letters ? (
                               <MenuItem>
                                 <MenuItemLink
-                                  text={t("Selection Letters")}
+                                  text={t("Selection Letters", { ns: "reports" })}
                                   to="/seriui/generate-selection-letter"
                                 />
                               </MenuItem>
@@ -6897,7 +6897,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Sanction_Order ? (
                               <MenuItem>
                                 <MenuItemLink
-                                  text={t("Sanction Orders")}
+                                  text={t("Sanction Orders", { ns: "reports" })}
                                   to="/seriui/generate-sanction-order"
                                 />
                               </MenuItem>
@@ -6906,7 +6906,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Regenerate_Sanction_Order ? (
                               <MenuItem>
                                 <MenuItemLink
-                                  text={t("Regenerate Sanction Order")}
+                                  text={t("Regenerate Sanction Order", { ns: "reports" })}
                                   to="/seriui/regenerate-sanction-order"
                                 />
                               </MenuItem>
@@ -6919,7 +6919,7 @@ function Menu() {
                         {showMenu.Reports_Format_Reports_Mysore_Seed_Area ? (
                         <MenuItem sub>
                           <MenuItemLink
-                            text={t("Mysore Seed Area")}
+                            text={t("Mysore Seed Area", { ns: "reports" })}
                             onClick={menuToggle}
                             onMouseEnter={menuHover}
                             sub
@@ -6929,7 +6929,7 @@ function Menu() {
                         {(showMenu.Reports_Format_Reports_Mysore_Group_GG_Monthly_Report || showMenu.Reports_Format_Reports_Mysore_Gg_Lotwise_Progress_Report || showMenu.Reports_Format_Reports_Mysore_Gg_Sheet4_Combined_Report || showMenu.Reports_Format_Reports_Mysore_Gg_Production_Cumulative_Report || showMenu.Reports_Format_Reports_Mysore_Gg_Pierced_Cocoons_Report) ? (
 <MenuItem sub>
                           <MenuItemLink
-                            text={t("GG Monthly Report")}
+                            text={t("GG Monthly Report", { ns: "reports" })}
                             onClick={menuToggle}
                             onMouseEnter={menuHover}
                             sub
@@ -6938,7 +6938,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Gg_Lotwise_Progress_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("Sheet 2 — Lot-wise Progress")}
+                                text={t("Sheet 2 — Lot-wise Progress", { ns: "reports" })}
                                 to="/seriui/gg-lotwise-progress-report"
                               />
                             </MenuItem>
@@ -6946,7 +6946,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Gg_Sheet4_Combined_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("Sheet 4 — DCB · Disease · DFL Distribution")}
+                                text={t("Sheet 4 — DCB · Disease · DFL Distribution", { ns: "reports" })}
                                 to="/seriui/gg-sheet4-combined-report"
                               />
                             </MenuItem>
@@ -6954,7 +6954,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Gg_Production_Cumulative_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("Form 7 — DFL Production Cumulative")}
+                                text={t("Form 7 — DFL Production Cumulative", { ns: "reports" })}
                                 to="/seriui/gg-production-cumulative-report"
                               />
                             </MenuItem>
@@ -6962,7 +6962,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Gg_Pierced_Cocoons_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("Form 8 — Pierced Cocoon Details")}
+                                text={t("Form 8 — Pierced Cocoon Details", { ns: "reports" })}
                                 to="/seriui/gg-pierced-cocoons-report"
                               />
                             </MenuItem>
@@ -6973,7 +6973,7 @@ function Menu() {
                         {(showMenu.Reports_Format_Reports_Mysore_Group_P4_Grainage_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Progress_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Lotwise_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Cocoon_Supply_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Cocoon_Butterfly_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Egg_Distribution_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Egg_Production_Report) ? (
 <MenuItem sub>
                           <MenuItemLink
-                            text={t("P4 Grainage Report")}
+                            text={t("P4 Grainage Report", { ns: "reports" })}
                             onClick={menuToggle}
                             onMouseEnter={menuHover}
                             sub
@@ -6982,7 +6982,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_Progress_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P4 Grainage Monthly Progress Report")}
+                                text={t("P4 Grainage Monthly Progress Report", { ns: "reports" })}
                                 to="/seriui/grainage-progress-report"
                               />
                             </MenuItem>
@@ -6990,7 +6990,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_Lotwise_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P4 Monthly Lot Wise Details Report")}
+                                text={t("P4 Monthly Lot Wise Details Report", { ns: "reports" })}
                                 to="/seriui/grainage-lotwise-report"
                               />
                             </MenuItem>
@@ -6998,7 +6998,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_Cocoon_Supply_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P4 Grainage Cocoon Supply Report")}
+                                text={t("P4 Grainage Cocoon Supply Report", { ns: "reports" })}
                                 to="/seriui/grainage-cocoon-supply-report"
                               />
                             </MenuItem>
@@ -7006,7 +7006,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_Cocoon_Butterfly_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P4 Cocoon Butterfly Examination Report")}
+                                text={t("P4 Cocoon Butterfly Examination Report", { ns: "reports" })}
                                 to="/seriui/grainage-cocoon-butterfly-report"
                               />
                             </MenuItem>
@@ -7014,7 +7014,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_Egg_Distribution_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P4 Egg Distribution Report")}
+                                text={t("P4 Egg Distribution Report", { ns: "reports" })}
                                 to="/seriui/grainage-egg-distribution-report"
                               />
                             </MenuItem>
@@ -7022,7 +7022,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_Egg_Production_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P4 Egg Production Report")}
+                                text={t("P4 Egg Production Report", { ns: "reports" })}
                                 to="/seriui/grainage-egg-production-report"
                               />
                             </MenuItem>
@@ -7033,7 +7033,7 @@ function Menu() {
                         {(showMenu.Reports_Format_Reports_Mysore_Group_P4_BSF_Kunigal_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Mulberry_Weekly_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Monthly_Farm_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Monthly_Hatching_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_Crop_Harvest_Report) ? (
 <MenuItem sub>
                           <MenuItemLink
-                            text={t("P4 BSF Kunigal Report")}
+                            text={t("P4 BSF Kunigal Report", { ns: "reports" })}
                             onClick={menuToggle}
                             onMouseEnter={menuHover}
                             sub
@@ -7042,7 +7042,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_Mulberry_Weekly_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("Mulberry Weekly Maintenance Report")}
+                                text={t("Mulberry Weekly Maintenance Report", { ns: "reports" })}
                                 to="/seriui/grainage-mulberry-weekly-report"
                               />
                             </MenuItem>
@@ -7050,7 +7050,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_Monthly_Farm_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("Monthly Farm Report")}
+                                text={t("Monthly Farm Report", { ns: "reports" })}
                                 to="/seriui/grainage-monthly-farm-report"
                               />
                             </MenuItem>
@@ -7058,7 +7058,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_Monthly_Hatching_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("Monthly Hatching Report (Form-27)")}
+                                text={t("Monthly Hatching Report (Form-27)", { ns: "reports" })}
                                 to="/seriui/grainage-monthly-hatching-report"
                               />
                             </MenuItem>
@@ -7066,7 +7066,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_Crop_Harvest_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("Crop Harvest Details Report")}
+                                text={t("Crop Harvest Details Report", { ns: "reports" })}
                                 to="/seriui/grainage-crop-harvest-report"
                               />
                             </MenuItem>
@@ -7077,7 +7077,7 @@ function Menu() {
                         {(showMenu.Reports_Format_Reports_Mysore_Group_P4_Bilidevalaya_Farm_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P4_Form_Summary_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P4_Weekly_Programme_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P4_Crop_Details_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Weekly_Programme_Report) ? (
 <MenuItem sub>
                           <MenuItemLink
-                            text={t("P4 Bilidevalaya Farm Report")}
+                            text={t("P4 Bilidevalaya Farm Report", { ns: "reports" })}
                             onClick={menuToggle}
                             onMouseEnter={menuHover}
                             sub
@@ -7086,7 +7086,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_P4_Form_Summary_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P4 Form-27 B Monthly Summary")}
+                                text={t("P4 Form-27 B Monthly Summary", { ns: "reports" })}
                                 to="/seriui/grainage-p4-form-summary-report"
                               />
                             </MenuItem>
@@ -7094,7 +7094,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_P4_Weekly_Programme_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P4 Weekly Programme")}
+                                text={t("P4 Weekly Programme", { ns: "reports" })}
                                 to="/seriui/grainage-p4-weekly-programme-report"
                               />
                             </MenuItem>
@@ -7102,7 +7102,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_P4_Crop_Details_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P4 Crop Harvest & Hatching Details")}
+                                text={t("P4 Crop Harvest & Hatching Details", { ns: "reports" })}
                                 to="/seriui/grainage-p4-crop-details-report"
                               />
                             </MenuItem>
@@ -7111,7 +7111,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Weekly_Programme_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P3 Weekly Programme")}
+                                text={t("P3 Weekly Programme", { ns: "reports" })}
                                 to="/seriui/grainage-p3-weekly-programme-report"
                               />
                             </MenuItem>
@@ -7123,7 +7123,7 @@ function Menu() {
                         {(showMenu.Reports_Format_Reports_Mysore_Group_P3_Grainage_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Grainage_Monthly_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Lotwise_Monthly_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Distribution_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Cocoon_Supply_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Distribution_Details_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Preparation_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Pupa_Moth_Exam_Report) ? (
 <MenuItem sub>
                           <MenuItemLink
-                            text={t("P3 Grainage Report")}
+                            text={t("P3 Grainage Report", { ns: "reports" })}
                             onClick={menuToggle}
                             onMouseEnter={menuHover}
                             sub
@@ -7133,7 +7133,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Grainage_Monthly_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P3 Grainage Monthly Progress Report")}
+                                text={t("P3 Grainage Monthly Progress Report", { ns: "reports" })}
                                 to="/seriui/grainage-p3-grainage-monthly-report"
                               />
                             </MenuItem>
@@ -7142,7 +7142,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Lotwise_Monthly_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P3 Lotwise Monthly Report")}
+                                text={t("P3 Lotwise Monthly Report", { ns: "reports" })}
                                 to="/seriui/grainage-p3-lotwise-monthly-report"
                               />
                             </MenuItem>
@@ -7151,7 +7151,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Distribution_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P3 DFL Distribution Report")}
+                                text={t("P3 DFL Distribution Report", { ns: "reports" })}
                                 to="/seriui/grainage-p3-dfl-distribution-report"
                               />
                             </MenuItem>
@@ -7160,7 +7160,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Cocoon_Supply_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P3 Cocoon Supply Report")}
+                                text={t("P3 Cocoon Supply Report", { ns: "reports" })}
                                 to="/seriui/grainage-p3-cocoon-supply-report"
                               />
                             </MenuItem>
@@ -7169,7 +7169,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Distribution_Details_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P3 DFL Distribution Details Report")}
+                                text={t("P3 DFL Distribution Details Report", { ns: "reports" })}
                                 to="/seriui/grainage-p3-dfl-distribution-details-report"
                               />
                             </MenuItem>
@@ -7178,7 +7178,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Dfl_Preparation_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P3 DFL Preparation Programme Report")}
+                                text={t("P3 DFL Preparation Programme Report", { ns: "reports" })}
                                 to="/seriui/grainage-p3-dfl-preparation-report"
                               />
                             </MenuItem>
@@ -7187,7 +7187,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_P3_Pupa_Moth_Exam_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P3 Pupa & Moth Examination Report")}
+                                text={t("P3 Pupa & Moth Examination Report", { ns: "reports" })}
                                 to="/seriui/grainage-p3-pupa-moth-exam-report"
                               />
                             </MenuItem>
@@ -7198,7 +7198,7 @@ function Menu() {
                         {(showMenu.Reports_Format_Reports_Mysore_Group_P3_Farms_MSC_Seed_Area_Reports || showMenu.Reports_Format_Reports_Mysore_Farm_Form27b_Report || showMenu.Reports_Format_Reports_Mysore_Farm_Mulberry_Garden_Report || showMenu.Reports_Format_Reports_Mysore_Farm_Chaki_Center_Report || showMenu.Reports_Format_Reports_Mysore_Farm_Weather_Report || showMenu.Reports_Format_Reports_Mysore_Farm_Future_Chawki_Plan_Report) ? (
 <MenuItem sub>
                           <MenuItemLink
-                            text={t("P3 Farms MSC Seed Area Reports")}
+                            text={t("P3 Farms MSC Seed Area Reports", { ns: "reports" })}
                             onClick={menuToggle}
                             onMouseEnter={menuHover}
                             sub
@@ -7207,7 +7207,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Farm_Form27b_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("Farm Form-27 B Report")}
+                                text={t("Farm Form-27 B Report", { ns: "reports" })}
                                 to="/seriui/farm-form27b-report"
                               />
                             </MenuItem>
@@ -7216,7 +7216,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Farm_Mulberry_Garden_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("Farm Mulberry Garden Report")}
+                                text={t("Farm Mulberry Garden Report", { ns: "reports" })}
                                 to="/seriui/farm-mulberry-garden-report"
                               />
                             </MenuItem>
@@ -7225,7 +7225,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Farm_Chaki_Center_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("Farm Chaki Center Monthly Report")}
+                                text={t("Farm Chaki Center Monthly Report", { ns: "reports" })}
                                 to="/seriui/farm-chaki-center-report"
                               />
                             </MenuItem>
@@ -7234,7 +7234,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Farm_Weather_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("Farm Weather Conditions Report")}
+                                text={t("Farm Weather Conditions Report", { ns: "reports" })}
                                 to="/seriui/farm-weather-report"
                               />
                             </MenuItem>
@@ -7243,7 +7243,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Farm_Future_Chawki_Plan_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("Farm Future Chawki Plan Report")}
+                                text={t("Farm Future Chawki Plan Report", { ns: "reports" })}
                                 to="/seriui/farm-future-chawki-plan-report"
                               />
                             </MenuItem>
@@ -7255,7 +7255,7 @@ function Menu() {
                         {(showMenu.Reports_Format_Reports_Mysore_Group_P2_Grainage_Bilidevalaya || showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Production_Income_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Lotwise_Monthly_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Weekly_Production_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Weekly_Tsc_Supply_Report || showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Pebrine_Cases_Report) ? (
 <MenuItem sub>
                           <MenuItemLink
-                            text={t("P2 Grainage Bilidevalaya")}
+                            text={t("P2 Grainage Bilidevalaya", { ns: "reports" })}
                             onClick={menuToggle}
                             onMouseEnter={menuHover}
                             sub
@@ -7264,7 +7264,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Production_Income_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P2 Production & Income Report")}
+                                text={t("P2 Production & Income Report", { ns: "reports" })}
                                 to="/seriui/grainage-p2-production-income-report"
                               />
                             </MenuItem>
@@ -7272,7 +7272,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Lotwise_Monthly_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P2 Lotwise Monthly Report")}
+                                text={t("P2 Lotwise Monthly Report", { ns: "reports" })}
                                 to="/seriui/grainage-p2-lotwise-monthly-report"
                               />
                             </MenuItem>
@@ -7280,7 +7280,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Weekly_Production_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P2 Weekly Production Report")}
+                                text={t("P2 Weekly Production Report", { ns: "reports" })}
                                 to="/seriui/grainage-p2-weekly-production-report"
                               />
                             </MenuItem>
@@ -7288,7 +7288,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Weekly_Tsc_Supply_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P2 Weekly TSC Supply Report")}
+                                text={t("P2 Weekly TSC Supply Report", { ns: "reports" })}
                                 to="/seriui/grainage-p2-weekly-tsc-supply-report"
                               />
                             </MenuItem>
@@ -7296,7 +7296,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Mysore_Grainage_P2_Pebrine_Cases_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("P2 Pebrine Cases Report")}
+                                text={t("P2 Pebrine Cases Report", { ns: "reports" })}
                                 to="/seriui/grainage-p2-pebrine-cases-report"
                               />
                             </MenuItem>
@@ -7312,7 +7312,7 @@ function Menu() {
                         {(showMenu.Reports_Format_Reports_Mysore_Group_ADS_Reports || showMenu.Reports_Format_Reports_Mysore_Ads_Gg1_Report || showMenu.Reports_Format_Reports_Mysore_Ads_Gg2_Report || showMenu.Reports_Format_Reports_Mysore_Ads_Gg3_Report || showMenu.Reports_Format_Reports_Mysore_Ads_Pebrine_Report || showMenu.Reports_Format_Reports_Mysore_Ads_Plantation_Report || showMenu.Reports_Format_Reports_Mysore_Ads_Rearer_Details_Report || showMenu.Reports_Format_Reports_Mysore_Ads_Rearer_Year_Comparison_Report || showMenu.Reports_Format_Reports_Mysore_Ads_Chawki_Report || showMenu.Reports_Format_Reports_Mysore_Dds_Weekly_Chawki_Report) ? (
 <MenuItem sub>
                               <MenuItemLink
-                                text={t("ADS Reports")}
+                                text={t("ADS Reports", { ns: "reports" })}
                                 onClick={menuToggle}
                                 onMouseEnter={menuHover}
                                 sub
@@ -7321,7 +7321,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Mysore_Ads_Gg1_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("ADS · P1 Grainage Monthly Progress (GG-1)")}
+                                    text={t("ADS · P1 Grainage Monthly Progress (GG-1)", { ns: "reports" })}
                                     to="/seriui/ads-gg1-report"
                                   />
                                 </MenuItem>
@@ -7329,7 +7329,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Mysore_Ads_Gg2_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("ADS · Weekly DFL Production Progress (GG-2)")}
+                                    text={t("ADS · Weekly DFL Production Progress (GG-2)", { ns: "reports" })}
                                     to="/seriui/ads-gg2-report"
                                   />
                                 </MenuItem>
@@ -7337,7 +7337,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Mysore_Ads_Gg3_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("ADS · Production Cost & Income (GG-3)")}
+                                    text={t("ADS · Production Cost & Income (GG-3)", { ns: "reports" })}
                                     to="/seriui/ads-gg3-report"
                                   />
                                 </MenuItem>
@@ -7345,7 +7345,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Mysore_Ads_Pebrine_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("ADS · Pebrine Cases Detail")}
+                                    text={t("ADS · Pebrine Cases Detail", { ns: "reports" })}
                                     to="/seriui/ads-pebrine-report"
                                   />
                                 </MenuItem>
@@ -7353,7 +7353,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Mysore_Ads_Plantation_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("ADS · TSC Mulberry Plantation Statistics")}
+                                    text={t("ADS · TSC Mulberry Plantation Statistics", { ns: "reports" })}
                                     to="/seriui/ads-plantation-report"
                                   />
                                 </MenuItem>
@@ -7361,7 +7361,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Mysore_Ads_Rearer_Details_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("ADS · TSC Farmer Demographics")}
+                                    text={t("ADS · TSC Farmer Demographics", { ns: "reports" })}
                                     to="/seriui/ads-rearer-details-report"
                                   />
                                 </MenuItem>
@@ -7369,7 +7369,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Mysore_Ads_Rearer_Year_Comparison_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("ADS · TSC Farmer Demographic — Year Comparison")}
+                                    text={t("ADS · TSC Farmer Demographic — Year Comparison", { ns: "reports" })}
                                     to="/seriui/ads-rearer-year-comparison-report"
                                   />
                                 </MenuItem>
@@ -7377,7 +7377,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Mysore_Ads_Chawki_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("ADS · TSC Chawki Programme & Achievement")}
+                                    text={t("ADS · TSC Chawki Programme & Achievement", { ns: "reports" })}
                                     to="/seriui/ads-chawki-report"
                                   />
                                 </MenuItem>
@@ -7385,7 +7385,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Mysore_Dds_Weekly_Chawki_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("DDS · Weekly Chawki Report")}
+                                    text={t("DDS · Weekly Chawki Report", { ns: "reports" })}
                                     to="/seriui/dds-weekly-chawki-report"
                                   />
                                 </MenuItem>
@@ -7402,7 +7402,7 @@ function Menu() {
                         {showMenu.Reports_Format_Reports_Bivoltine_Seed_Area ? (
                         <MenuItem sub>
                           <MenuItemLink
-                            text={t("Bivoltine Seed Area")}
+                            text={t("Bivoltine Seed Area", { ns: "reports" })}
                             onClick={menuToggle}
                             onMouseEnter={menuHover}
                             sub
@@ -7411,7 +7411,7 @@ function Menu() {
                             {(showMenu.Reports_Format_Reports_Bivoltine_Group_P2_Farms_Reports || showMenu.Reports_Format_Reports_Bivoltine_Farm_P2_Monthly_Progress_Report || showMenu.Reports_Format_Reports_Bivoltine_Farm_P2_Crop_Detail_Report) ? (
 <MenuItem sub>
                               <MenuItemLink
-                                text={t("P2 Farms Reports")}
+                                text={t("P2 Farms Reports", { ns: "reports" })}
                                 onClick={menuToggle}
                                 onMouseEnter={menuHover}
                                 sub
@@ -7420,7 +7420,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Farm_P2_Monthly_Progress_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("P2 Farm Monthly Progress (Sheet-1)")}
+                                    text={t("P2 Farm Monthly Progress (Sheet-1)", { ns: "reports" })}
                                     to="/seriui/farm-p2-monthly-progress-report"
                                   />
                                 </MenuItem>
@@ -7428,7 +7428,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Farm_P2_Crop_Detail_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("P2 Farm Crop Detail — Form-1 (Sheet-2)")}
+                                    text={t("P2 Farm Crop Detail — Form-1 (Sheet-2)", { ns: "reports" })}
                                     to="/seriui/farm-p2-crop-detail-report"
                                   />
                                 </MenuItem>
@@ -7440,7 +7440,7 @@ function Menu() {
                             {(showMenu.Reports_Format_Reports_Bivoltine_Group_P3_Farms_Bivoltine || showMenu.Reports_Format_Reports_Bivoltine_Farm_Form1_Chawki_Report || showMenu.Reports_Format_Reports_Bivoltine_Farm_Form2_Progress_Report || showMenu.Reports_Format_Reports_Bivoltine_Farm_Form3_Performance_Report || showMenu.Reports_Format_Reports_Bivoltine_Farm_Form4_Crop_Progress_Report || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet1_Monthly_Progress_Report || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet3_Annual_Crops_Report || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet4_Production_Target_Report || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet5_Crop_Report_Part1 || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet9_Weekly_Hatching_Report || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet10_Annual_Target_Report || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet12_Rearing_Progress_Report || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet13_Mulberry_Performance_Report || showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet15_Chowki_Target_F1_Report) ? (
 <MenuItem sub>
                               <MenuItemLink
-                                text={t("P3 Farms (Bivoltine)")}
+                                text={t("P3 Farms (Bivoltine)", { ns: "reports" })}
                                 onClick={menuToggle}
                                 onMouseEnter={menuHover}
                                 sub
@@ -7449,7 +7449,7 @@ function Menu() {
                                 {/* {showMenu.Reports_Format_Reports_Bivoltine_Farm_Form1_Chawki_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Form-1 · Monthly Chawki Achievement")}
+                                    text={t("Form-1 · Monthly Chawki Achievement", { ns: "reports" })}
                                     to="/seriui/farm-form1-chawki-report"
                                   />
                                 </MenuItem>
@@ -7457,7 +7457,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Farm_Form2_Progress_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Form F-2 · Monthly Progress (per-lot)")}
+                                    text={t("Form F-2 · Monthly Progress (per-lot)", { ns: "reports" })}
                                     to="/seriui/farm-form2-progress-report"
                                   />
                                 </MenuItem>
@@ -7465,7 +7465,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Farm_Form3_Performance_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Form-3 · Farm Performance (CY vs PY)")}
+                                    text={t("Form-3 · Farm Performance (CY vs PY)", { ns: "reports" })}
                                     to="/seriui/farm-form3-performance-report"
                                   />
                                 </MenuItem>
@@ -7473,7 +7473,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Farm_Form4_Crop_Progress_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Form-4 · Crop Progress (CY vs PY)")}
+                                    text={t("Form-4 · Crop Progress (CY vs PY)", { ns: "reports" })}
                                     to="/seriui/farm-form4-crop-progress-report"
                                   />
                                 </MenuItem>
@@ -7481,7 +7481,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet1_Monthly_Progress_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Sheet-1 · Monthly Progress (Form F-2)")}
+                                    text={t("Sheet-1 · Monthly Progress (Form F-2)", { ns: "reports" })}
                                     to="/seriui/p3-farm-sheet1-monthly-progress-report"
                                   />
                                 </MenuItem>
@@ -7489,7 +7489,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet3_Annual_Crops_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Sheet-3 · Annual Crops Grown")}
+                                    text={t("Sheet-3 · Annual Crops Grown", { ns: "reports" })}
                                     to="/seriui/p3-farm-sheet3-annual-crops-report"
                                   />
                                 </MenuItem>
@@ -7497,7 +7497,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet4_Production_Target_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Sheet-4 · Seed Cocoon Production Target (Form 27)")}
+                                    text={t("Sheet-4 · Seed Cocoon Production Target (Form 27)", { ns: "reports" })}
                                     to="/seriui/p3-farm-sheet4-production-target-report"
                                   />
                                 </MenuItem>
@@ -7505,7 +7505,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet5_Crop_Report_Part1 ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Monthly Crop Report (rows 1–37)")}
+                                    text={t("Monthly Crop Report (rows 1–37)", { ns: "reports" })}
                                     to="/seriui/p3-farm-sheet5-crop-report-part1"
                                   />
                                 </MenuItem>
@@ -7516,7 +7516,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet9_Weekly_Hatching_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Sheet-9 · Weekly Cocoon Hatching Programme")}
+                                    text={t("Sheet-9 · Weekly Cocoon Hatching Programme", { ns: "reports" })}
                                     to="/seriui/p3-farm-sheet9-weekly-hatching-report"
                                   />
                                 </MenuItem>
@@ -7524,7 +7524,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet10_Annual_Target_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Sheet-10 · Annual Target vs Achievement")}
+                                    text={t("Sheet-10 · Annual Target vs Achievement", { ns: "reports" })}
                                     to="/seriui/p3-farm-sheet10-annual-target-report"
                                   />
                                 </MenuItem>
@@ -7532,7 +7532,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet12_Rearing_Progress_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Sheet-12 · Rearing Section Crop Progress")}
+                                    text={t("Sheet-12 · Rearing Section Crop Progress", { ns: "reports" })}
                                     to="/seriui/p3-farm-sheet12-rearing-progress-report"
                                   />
                                 </MenuItem>
@@ -7540,7 +7540,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet13_Mulberry_Performance_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Sheet-13 · Garden / Mulberry Performance")}
+                                    text={t("Sheet-13 · Garden / Mulberry Performance", { ns: "reports" })}
                                     to="/seriui/p3-farm-sheet13-mulberry-performance-report"
                                   />
                                 </MenuItem>
@@ -7548,7 +7548,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_P3_Farm_Sheet15_Chowki_Target_F1_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Sheet-15 · Chowki Target Achievement (Form F-1)")}
+                                    text={t("Sheet-15 · Chowki Target Achievement (Form F-1)", { ns: "reports" })}
                                     to="/seriui/p3-farm-sheet15-chowki-target-f1-report"
                                   />
                                 </MenuItem>
@@ -7560,7 +7560,7 @@ function Menu() {
                             {(showMenu.Reports_Format_Reports_Bivoltine_Group_P1_And_P2_Grainage_Reports_Bivoltine || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Brief_Monthly_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Form1_Detailed_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Form2_Source_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Form10_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Lotwise_Detail_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Race_Progress_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_P1_Lotwise_Detail_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Cocoon_Purchase_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Dfl_Distribution_Location_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Diapause_Availability_Report || showMenu.Reports_Format_Reports_Bivoltine_Grainage_Daywise_Chawki_Report) ? (
 <MenuItem sub>
                               <MenuItemLink
-                                text={t("P1 and P2 Grainage Reports (Bivoltine)")}
+                                text={t("P1 and P2 Grainage Reports (Bivoltine)", { ns: "reports" })}
                                 onClick={menuToggle}
                                 onMouseEnter={menuHover}
                                 sub
@@ -7569,7 +7569,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Brief_Monthly_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Grainage Monthly Brief Progress (CY + PY)")}
+                                    text={t("Grainage Monthly Brief Progress (CY + PY)", { ns: "reports" })}
                                     to="/seriui/grainage-brief-monthly-report"
                                   />
                                 </MenuItem>
@@ -7577,7 +7577,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Form1_Detailed_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Form-1 · Detailed Monthly Progress (race-split)")}
+                                    text={t("Form-1 · Detailed Monthly Progress (race-split)", { ns: "reports" })}
                                     to="/seriui/grainage-form1-detailed-report"
                                   />
                                 </MenuItem>
@@ -7585,7 +7585,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Form2_Source_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Form-2 · Source-split Monthly Progress")}
+                                    text={t("Form-2 · Source-split Monthly Progress", { ns: "reports" })}
                                     to="/seriui/grainage-form2-source-report"
                                   />
                                 </MenuItem>
@@ -7593,7 +7593,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Form10_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Form-10 · Production · PY · Cost · Income")}
+                                    text={t("Form-10 · Production · PY · Cost · Income", { ns: "reports" })}
                                     to="/seriui/grainage-form10-report"
                                   />
                                 </MenuItem>
@@ -7601,7 +7601,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Lotwise_Detail_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Lot-wise Detail (top 4 lots)")}
+                                    text={t("Lot-wise Detail (top 4 lots)", { ns: "reports" })}
                                     to="/seriui/grainage-lotwise-detail-report"
                                   />
                                 </MenuItem>
@@ -7609,7 +7609,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Race_Progress_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Race-wise Progress (CSR-2 / CSR-4)")}
+                                    text={t("Race-wise Progress (CSR-2 / CSR-4)", { ns: "reports" })}
                                     to="/seriui/grainage-race-progress-report"
                                   />
                                 </MenuItem>
@@ -7617,7 +7617,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Grainage_P1_Lotwise_Detail_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("P1 Lot-wise DFL Production Detail")}
+                                    text={t("P1 Lot-wise DFL Production Detail", { ns: "reports" })}
                                     to="/seriui/grainage-p1-lotwise-detail-report"
                                   />
                                 </MenuItem>
@@ -7625,7 +7625,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Cocoon_Purchase_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Cocoon Purchase Report (Farm + Purchased)")}
+                                    text={t("Cocoon Purchase Report (Farm + Purchased)", { ns: "reports" })}
                                     to="/seriui/grainage-cocoon-purchase-report"
                                   />
                                 </MenuItem>
@@ -7633,7 +7633,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Dfl_Distribution_Location_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("DFL Distribution by Taluk / District")}
+                                    text={t("DFL Distribution by Taluk / District", { ns: "reports" })}
                                     to="/seriui/grainage-dfl-distribution-location-report"
                                   />
                                 </MenuItem>
@@ -7641,7 +7641,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Diapause_Availability_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Diapause / Refrigerated DFL Availability (5-mo)")}
+                                    text={t("Diapause / Refrigerated DFL Availability (5-mo)", { ns: "reports" })}
                                     to="/seriui/grainage-diapause-availability-report"
                                   />
                                 </MenuItem>
@@ -7649,7 +7649,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Grainage_Daywise_Chawki_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Day-wise Chawki Distribution (race × week)")}
+                                    text={t("Day-wise Chawki Distribution (race × week)", { ns: "reports" })}
                                     to="/seriui/grainage-daywise-chawki-report"
                                   />
                                 </MenuItem>
@@ -7666,7 +7666,7 @@ function Menu() {
                             {(showMenu.Reports_Format_Reports_Bivoltine_Group_ADS_Reports || showMenu.Reports_Format_Reports_Bivoltine_Tsc_Monthly_Subdivision_Progress_Report || showMenu.Reports_Format_Reports_Bivoltine_Tsc_Monthly_Farmer_Category_Detail_Report || showMenu.Reports_Format_Reports_Bivoltine_Tsc_Monthly_Nrega_Progress_Report) ? (
 <MenuItem sub>
                               <MenuItemLink
-                                text={t("ADS Reports")}
+                                text={t("ADS Reports", { ns: "reports" })}
                                 onClick={menuToggle}
                                 onMouseEnter={menuHover}
                                 sub
@@ -7675,7 +7675,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Tsc_Monthly_Subdivision_Progress_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Subdivision Progress (5 Programmes)")}
+                                    text={t("TSC Monthly Subdivision Progress (5 Programmes)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-subdivision-progress-report"
                                   />
                                 </MenuItem>
@@ -7683,7 +7683,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Tsc_Monthly_Farmer_Category_Detail_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Farmer Category Detail")}
+                                    text={t("TSC Monthly Farmer Category Detail", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-farmer-category-detail-report"
                                   />
                                 </MenuItem>
@@ -7691,7 +7691,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Tsc_Monthly_Nrega_Progress_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("NREGA Progress — Line Department (Block-wise)")}
+                                    text={t("NREGA Progress — Line Department (Block-wise)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-nrega-progress-report"
                                   />
                                 </MenuItem>
@@ -7704,7 +7704,7 @@ function Menu() {
                             {(showMenu.Reports_Format_Reports_Bivoltine_Group_DD_Reports || showMenu.Reports_Format_Reports_Bivoltine_Dd_Mulberry_Area_Report || showMenu.Reports_Format_Reports_Bivoltine_Dd_Crop_Yield_Report || showMenu.Reports_Format_Reports_Bivoltine_Dd_Chawki_Progress_Report || showMenu.Reports_Format_Reports_Bivoltine_Dd_Cocoon_Progress_Report) ? (
 <MenuItem sub>
                               <MenuItemLink
-                                text={t("DD Reports")}
+                                text={t("DD Reports", { ns: "reports" })}
                                 onClick={menuToggle}
                                 onMouseEnter={menuHover}
                                 sub
@@ -7713,7 +7713,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Dd_Mulberry_Area_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("DD · Form 27A · Mulberry Area")}
+                                    text={t("DD · Form 27A · Mulberry Area", { ns: "reports" })}
                                     to="/seriui/dd-mulberry-area-report"
                                   />
                                 </MenuItem>
@@ -7721,7 +7721,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Dd_Crop_Yield_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("DD · Form 27B · Crop Yield Detail")}
+                                    text={t("DD · Form 27B · Crop Yield Detail", { ns: "reports" })}
                                     to="/seriui/dd-crop-yield-report"
                                   />
                                 </MenuItem>
@@ -7729,7 +7729,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Dd_Chawki_Progress_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("DD · Form 28 · Chawki Progress (Bivoltine)")}
+                                    text={t("DD · Form 28 · Chawki Progress (Bivoltine)", { ns: "reports" })}
                                     to="/seriui/dd-chawki-progress-report"
                                   />
                                 </MenuItem>
@@ -7737,7 +7737,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_Bivoltine_Dd_Cocoon_Progress_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("DD · Form 32 · Cocoon Production (Bivoltine)")}
+                                    text={t("DD · Form 32 · Cocoon Production (Bivoltine)", { ns: "reports" })}
                                     to="/seriui/dd-cocoon-progress-report"
                                   />
                                 </MenuItem>
@@ -7759,7 +7759,7 @@ function Menu() {
                         {showMenu.Reports_Format_Reports_TSC_Reports ? (
                         <MenuItem sub>
                           <MenuItemLink
-                            text={t("TSC Reports")}
+                            text={t("TSC Reports", { ns: "reports" })}
                             onClick={menuToggle}
                             onMouseEnter={menuHover}
                             sub
@@ -7769,7 +7769,7 @@ function Menu() {
                             {(showMenu.Reports_Format_Reports_TSC_Group_TSC_Mysore_Seed_Area || showMenu.Reports_Format_Reports_TSC_Tsc_Farmer_Stats_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Mulberry_Area_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Chawki_Harvest_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Seed_Cocoon_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Chawki_Cocoon_Weekly_Report || showMenu.Reports_Format_Reports_TSC_Tsc_New_Mulberry_Plantings_Report || showMenu.Reports_Format_Reports_TSC_Tsc_P2_Brushed_Dfls_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Daily_Chawki_Week_Report) ? (
 <MenuItem sub>
                               <MenuItemLink
-                                text={t("TSC (Mysore Seed Area)")}
+                                text={t("TSC (Mysore Seed Area)", { ns: "reports" })}
                                 onClick={menuToggle}
                                 onMouseEnter={menuHover}
                                 sub
@@ -7778,7 +7778,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Farmer_Stats_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Farmer Statistics Report")}
+                                    text={t("TSC Farmer Statistics Report", { ns: "reports" })}
                                     to="/seriui/tsc-farmer-stats-report"
                                   />
                                 </MenuItem>
@@ -7786,7 +7786,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Mulberry_Area_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Mulberry Area Report")}
+                                    text={t("TSC Mulberry Area Report", { ns: "reports" })}
                                     to="/seriui/tsc-mulberry-area-report"
                                   />
                                 </MenuItem>
@@ -7794,7 +7794,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Chawki_Harvest_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Chawki & Harvest Report")}
+                                    text={t("TSC Chawki & Harvest Report", { ns: "reports" })}
                                     to="/seriui/tsc-chawki-harvest-report"
                                   />
                                 </MenuItem>
@@ -7802,7 +7802,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Seed_Cocoon_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Seed Cocoon Production Report")}
+                                    text={t("TSC Seed Cocoon Production Report", { ns: "reports" })}
                                     to="/seriui/tsc-seed-cocoon-report"
                                   />
                                 </MenuItem>
@@ -7810,7 +7810,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Chawki_Cocoon_Weekly_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Chawki & Cocoon Weekly Report")}
+                                    text={t("TSC Chawki & Cocoon Weekly Report", { ns: "reports" })}
                                     to="/seriui/tsc-chawki-cocoon-weekly-report"
                                   />
                                 </MenuItem>
@@ -7818,7 +7818,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_New_Mulberry_Plantings_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC New Mulberry Plantings Report")}
+                                    text={t("TSC New Mulberry Plantings Report", { ns: "reports" })}
                                     to="/seriui/tsc-new-mulberry-plantings-report"
                                   />
                                 </MenuItem>
@@ -7826,7 +7826,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_P2_Brushed_Dfls_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC P2 Brushed DFLs Report")}
+                                    text={t("TSC P2 Brushed DFLs Report", { ns: "reports" })}
                                     to="/seriui/tsc-p2-brushed-dfls-report"
                                   />
                                 </MenuItem>
@@ -7834,7 +7834,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Daily_Chawki_Week_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Daily Chawki Weekly Report")}
+                                    text={t("TSC Daily Chawki Weekly Report", { ns: "reports" })}
                                     to="/seriui/tsc-daily-chawki-week-report"
                                   />
                                 </MenuItem>
@@ -7847,7 +7847,7 @@ function Menu() {
                             {(showMenu.Reports_Format_Reports_TSC_Group_TSC_Bivoltine || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Mulberry_Area_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Farmer_Categorization_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Demographics_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Mulberry_By_Variety_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Plantation_Detail_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Pure_Brushing_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Cross_Brushing_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Race_Wise_Brushing_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Pure_Cocoon_Production_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Crop_Yield_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Market_Cocoon_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Crc_Brushing_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Weekly_Brushing_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Weekly_Cocoon_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Ns1_Chawki_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Ns2_Cocoon_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_S1_Chawki_Plan_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_S1_Ripe_Eggs_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_S4_Weekly_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_S4_Summary_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_P1_Chawki_Lotwise_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_P1_Cocoon_Lotwise_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Source_Grainage_Chawki_Report || showMenu.Reports_Format_Reports_TSC_Tsc_Cluster_Wise_Report) ? (
 <MenuItem sub>
                               <MenuItemLink
-                                text={t("TSC (Bivoltine)")}
+                                text={t("TSC (Bivoltine)", { ns: "reports" })}
                                 onClick={menuToggle}
                                 onMouseEnter={menuHover}
                                 sub
@@ -7856,7 +7856,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Mulberry_Area_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Mulberry Area (Form 27A)")}
+                                    text={t("TSC Monthly Mulberry Area (Form 27A)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-mulberry-area-report"
                                   />
                                 </MenuItem>
@@ -7864,7 +7864,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Farmer_Categorization_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Farmer Categorization (Sheet 2)")}
+                                    text={t("TSC Monthly Farmer Categorization (Sheet 2)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-farmer-categorization-report"
                                   />
                                 </MenuItem>
@@ -7872,7 +7872,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Demographics_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Demographics (Form 2A)")}
+                                    text={t("TSC Monthly Demographics (Form 2A)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-demographics-report"
                                   />
                                 </MenuItem>
@@ -7880,7 +7880,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Mulberry_By_Variety_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Mulberry by Variety (Sheet 3b)")}
+                                    text={t("TSC Monthly Mulberry by Variety (Sheet 3b)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-mulberry-by-variety-report"
                                   />
                                 </MenuItem>
@@ -7888,7 +7888,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Plantation_Detail_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Plantation Detail (Sheet 4)")}
+                                    text={t("TSC Monthly Plantation Detail (Sheet 4)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-plantation-detail-report"
                                   />
                                 </MenuItem>
@@ -7896,7 +7896,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Pure_Brushing_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Pure-race DFL Brushing (Sheet 5a · Form 28-4)")}
+                                    text={t("TSC Monthly Pure-race DFL Brushing (Sheet 5a · Form 28-4)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-pure-brushing-report"
                                   />
                                 </MenuItem>
@@ -7904,7 +7904,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Cross_Brushing_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Cross/Hybrid DFL Brushing (Sheet 5b · Form 28)")}
+                                    text={t("TSC Monthly Cross/Hybrid DFL Brushing (Sheet 5b · Form 28)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-cross-brushing-report"
                                   />
                                 </MenuItem>
@@ -7912,7 +7912,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Race_Wise_Brushing_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Race-wise DFL Brushing (Sheet 5c · Form 28)")}
+                                    text={t("TSC Monthly Race-wise DFL Brushing (Sheet 5c · Form 28)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-race-wise-brushing-report"
                                   />
                                 </MenuItem>
@@ -7920,7 +7920,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Pure_Cocoon_Production_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Pure-race Cocoon Production (Sheet 5d · Form 32)")}
+                                    text={t("TSC Monthly Pure-race Cocoon Production (Sheet 5d · Form 32)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-pure-cocoon-production-report"
                                   />
                                 </MenuItem>
@@ -7928,7 +7928,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Crop_Yield_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Crop Yield (Sheet 6 · Form 27B)")}
+                                    text={t("TSC Monthly Crop Yield (Sheet 6 · Form 27B)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-crop-yield-report"
                                   />
                                 </MenuItem>
@@ -7936,7 +7936,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Market_Cocoon_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Market-wise Cocoon (Sheet 7)")}
+                                    text={t("TSC Monthly Market-wise Cocoon (Sheet 7)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-market-cocoon-report"
                                   />
                                 </MenuItem>
@@ -7944,7 +7944,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Crc_Brushing_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly CRC Brushing — Govt + Private (Sheet 8)")}
+                                    text={t("TSC Monthly CRC Brushing — Govt + Private (Sheet 8)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-crc-brushing-report"
                                   />
                                 </MenuItem>
@@ -7952,7 +7952,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Weekly_Brushing_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Weekly Brushing (Sheet 10a · Form S-2)")}
+                                    text={t("TSC Monthly Weekly Brushing (Sheet 10a · Form S-2)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-weekly-brushing-report"
                                   />
                                 </MenuItem>
@@ -7960,7 +7960,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Weekly_Cocoon_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Weekly Cocoon Production (Sheet 10b · Form S-3)")}
+                                    text={t("TSC Monthly Weekly Cocoon Production (Sheet 10b · Form S-3)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-weekly-cocoon-report"
                                   />
                                 </MenuItem>
@@ -7968,7 +7968,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Ns1_Chawki_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly NS-1 Chawki Target & Achievement (Sheet 11a)")}
+                                    text={t("TSC Monthly NS-1 Chawki Target & Achievement (Sheet 11a)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-ns1-chawki-report"
                                   />
                                 </MenuItem>
@@ -7976,7 +7976,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Ns2_Cocoon_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly NS-2 Weekly Cocoon Production (Sheet 11b)")}
+                                    text={t("TSC Monthly NS-2 Weekly Cocoon Production (Sheet 11b)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-ns2-cocoon-report"
                                   />
                                 </MenuItem>
@@ -7984,7 +7984,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_S1_Chawki_Plan_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly S-1 Chawki Plan (Sheet 12a · Form S-1)")}
+                                    text={t("TSC Monthly S-1 Chawki Plan (Sheet 12a · Form S-1)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-s1-chawki-plan-report"
                                   />
                                 </MenuItem>
@@ -7992,7 +7992,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_S1_Ripe_Eggs_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Ripe Eggs & Next-Month (Sheet 12b · Form S-1b)")}
+                                    text={t("TSC Monthly Ripe Eggs & Next-Month (Sheet 12b · Form S-1b)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-s1-ripe-eggs-report"
                                   />
                                 </MenuItem>
@@ -8000,7 +8000,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_S4_Weekly_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Seed Cocoon Weekly (Sheet 13a · Form S-4)")}
+                                    text={t("TSC Monthly Seed Cocoon Weekly (Sheet 13a · Form S-4)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-s4-weekly-report"
                                   />
                                 </MenuItem>
@@ -8008,7 +8008,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_S4_Summary_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly S-4 Per-Race Summary (Sheet 13b · Form S-4)")}
+                                    text={t("TSC Monthly S-4 Per-Race Summary (Sheet 13b · Form S-4)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-s4-summary-report"
                                   />
                                 </MenuItem>
@@ -8016,7 +8016,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_P1_Chawki_Lotwise_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly P1 Chawki Lot-wise (Sheet 14)")}
+                                    text={t("TSC Monthly P1 Chawki Lot-wise (Sheet 14)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-p1-chawki-lotwise-report"
                                   />
                                 </MenuItem>
@@ -8024,7 +8024,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_P1_Cocoon_Lotwise_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly P1 Cocoon Lot-wise (Sheet 15)")}
+                                    text={t("TSC Monthly P1 Cocoon Lot-wise (Sheet 15)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-p1-cocoon-lotwise-report"
                                   />
                                 </MenuItem>
@@ -8032,7 +8032,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Monthly_Source_Grainage_Chawki_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("TSC Monthly Source-Grainage Chawki (Sheet 16)")}
+                                    text={t("TSC Monthly Source-Grainage Chawki (Sheet 16)", { ns: "reports" })}
                                     to="/seriui/tsc-monthly-source-grainage-chawki-report"
                                   />
                                 </MenuItem>
@@ -8040,7 +8040,7 @@ function Menu() {
                                 {showMenu.Reports_Format_Reports_TSC_Tsc_Cluster_Wise_Report ? (
 <MenuItem>
                                   <MenuItemLink
-                                    text={t("Bivoltine Cluster Wise Report")}
+                                    text={t("Bivoltine Cluster Wise Report", { ns: "reports" })}
                                     to="/seriui/tsc-cluster-wise-report"
                                   />
                                 </MenuItem>
@@ -8058,7 +8058,7 @@ function Menu() {
                         {showMenu.Reports_Format_Reports_Training_Reports ? (
                         <MenuItem sub>
                           <MenuItemLink
-                            text={t("Training Reports")}
+                            text={t("Training Reports", { ns: "reports" })}
                             onClick={menuToggle}
                             onMouseEnter={menuHover}
                             sub
@@ -8067,7 +8067,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Training_Training_Physical_Progress_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("Training · Form 1 · Physical Progress")}
+                                text={t("Training · Form 1 · Physical Progress", { ns: "reports" })}
                                 to="/seriui/training-physical-progress-report"
                               />
                             </MenuItem>
@@ -8075,7 +8075,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Training_Training_Financial_Progress_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("Training · Form 2 · Financial Progress")}
+                                text={t("Training · Form 2 · Financial Progress", { ns: "reports" })}
                                 to="/seriui/training-financial-progress-report"
                               />
                             </MenuItem>
@@ -8083,7 +8083,7 @@ function Menu() {
                             {showMenu.Reports_Format_Reports_Training_Training_Maintenance_Expense_Report ? (
 <MenuItem>
                               <MenuItemLink
-                                text={t("Training · Form 3 · Maintenance Expense (Item-wise)")}
+                                text={t("Training · Form 3 · Maintenance Expense (Item-wise)", { ns: "reports" })}
                                 to="/seriui/training-maintenance-expense-report"
                               />
                             </MenuItem>
@@ -8094,7 +8094,7 @@ function Menu() {
 
                     {/* <MenuItem>
                       <MenuItemLink
-                        text={t("Format Reports-Old")}
+                        text={t("Format Reports-Old", { ns: "reports" })}
                         to="https://e-reshme.karnataka.gov.in/ssrsreport/ssrsreport/BVM5_Format.aspx"
                         blank={true}
                       />
