@@ -40,7 +40,7 @@ if (!document.getElementById("glwr-styles")) {
 }
 
 function GrainageLotWiseReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({ grainageMasterId: "", financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
@@ -187,6 +187,9 @@ function GrainageLotWiseReport() {
   const monthKn    = filter.month ? MONTH_KN[parseInt(filter.month, 10)] : "";
   const selectedFy = financialYearList.find((f) => String(f.financialYearMasterId) === String(filter.financialYearMasterId));
   const fyLabel    = selectedFy?.financialYear || "—";
+  const grainageName = i18n.language === "kn"
+    ? (selectedGrainage?.grainageMasterNameInKannada || selectedGrainage?.grainageMasterName || "—")
+    : (selectedGrainage?.grainageMasterName || "—");
 
   // button style helper
   const mkBtn = (bg, shadow, busy) => ({
@@ -252,7 +255,7 @@ function GrainageLotWiseReport() {
                   <Form.Select name="grainageMasterId" value={filter.grainageMasterId} onChange={handleChange} style={sel}>
                     <option value="">{`— ${t("Select Grainage", { ns: "reports" })} —`}</option>
                     {grainageList.map((g) => (
-                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{g.grainageMasterName}</option>
+                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName}</option>
                     ))}
                   </Form.Select>
                 </Col>
@@ -299,7 +302,7 @@ function GrainageLotWiseReport() {
             {/* Summary pills */}
             <div className="d-flex flex-wrap gap-2 mb-3 align-items-center">
               {[
-                { label: t("Grainage"), value: selectedGrainage?.grainageMasterName || "—", accent: "#bee3f8", bg: "linear-gradient(135deg,#ebf8ff,#e6fffa)", text: "#2b6cb0" },
+                { label: t("Grainage"), value: grainageName, accent: "#bee3f8", bg: "linear-gradient(135deg,#ebf8ff,#e6fffa)", text: "#2b6cb0" },
                 { label: t("Month"),    value: `${monthLabel} ${monthKn}`,                   accent: "#9ae6b4", bg: "linear-gradient(135deg,#f0fff4,#f7fafc)", text: "#276749" },
                 { label: t("FY", { ns: "reports" }), value: fyLabel,                         accent: "#d6bcfa", bg: "linear-gradient(135deg,#faf5ff,#f5f0ff)", text: "#553c9a" },
               ].map((p) => (
@@ -393,7 +396,7 @@ function GrainageLotWiseReport() {
               {/* Footer */}
               <div style={{ background: "linear-gradient(135deg,#f7fafc,#edf2f7)", padding: "10px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "8px", borderTop: "1.5px solid #e2e8f0" }}>
                 <span style={{ fontSize: "12px", color: "#718096", fontWeight: 600 }}>
-                  ಬಿತ್ತನೆಕೋಠಿ {selectedGrainage?.grainageMasterName || ""} — {monthLabel} {monthKn} · {fyLabel}
+                  ಬಿತ್ತನೆಕೋಠಿ {grainageName} — {monthLabel} {monthKn} · {fyLabel}
                 </span>
                 <div className="d-flex gap-2">
                   <button onClick={handlePdf} disabled={isDownloadingPdf} type="button"

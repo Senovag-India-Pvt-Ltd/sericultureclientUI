@@ -56,7 +56,7 @@ if (!document.getElementById("gedr-styles")) {
 }
 
 function GrainageEggDistributionReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({ grainageMasterId: "", financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
@@ -281,7 +281,7 @@ function GrainageEggDistributionReport() {
                   <Form.Select name="grainageMasterId" value={filter.grainageMasterId} onChange={handleChange} style={selSt}>
                     <option value="">{t("— Select Grainage —", { ns: "reports" })}</option>
                     {grainageList.map((g) => (
-                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{g.grainageMasterName}</option>
+                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName}</option>
                     ))}
                   </Form.Select>
                 </Col>
@@ -333,7 +333,7 @@ function GrainageEggDistributionReport() {
               {/* Info pills */}
               <div style={{ display: "flex", flexDirection: "column", gap: "6px", justifyContent: "center" }}>
                 {[
-                  { label: "Grainage", value: selectedGrainage?.grainageMasterName || "—", accent: "#fbcfe8", bg: "linear-gradient(135deg,#fff0f6,#fce7f3)", text: "#831843" },
+                  { label: "Grainage", value: (i18n.language === "kn" ? (selectedGrainage?.grainageMasterNameInKannada || selectedGrainage?.grainageMasterName) : selectedGrainage?.grainageMasterName) || "—", accent: "#fbcfe8", bg: "linear-gradient(135deg,#fff0f6,#fce7f3)", text: "#831843" },
                   { label: "Month",    value: `${monthLabel} ${monthKn}`,                   accent: "#bee3f8", bg: "linear-gradient(135deg,#ebf8ff,#e6fffa)",    text: "#2b6cb0" },
                   { label: "FY",       value: fyLabel,                                       accent: "#d6bcfa", bg: "linear-gradient(135deg,#faf5ff,#f5f0ff)",    text: "#553c9a" },
                 ].map((p) => (
@@ -468,7 +468,7 @@ function GrainageEggDistributionReport() {
                 borderTop: "1.5px solid #fbcfe8",
               }}>
                 <span style={{ fontSize: "12px", color: "#831843", fontWeight: 600 }}>
-                  ಬಿತ್ತನೆಕೋಠಿ {selectedGrainage?.grainageMasterName || ""} — {monthLabel} {monthKn} · {fyLabel} · {dataRows.length} Farms
+                  ಬಿತ್ತನೆಕೋಠಿ {(i18n.language === "kn" ? (selectedGrainage?.grainageMasterNameInKannada || selectedGrainage?.grainageMasterName) : selectedGrainage?.grainageMasterName) || ""} — {monthLabel} {monthKn} · {fyLabel} · {dataRows.length} Farms
                 </span>
                 <div className="d-flex gap-2">
                   <button onClick={handlePdf} disabled={isDownloadingPdf} type="button"

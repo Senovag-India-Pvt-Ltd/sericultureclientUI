@@ -75,7 +75,7 @@ const isTotalRow = (row) =>
   String(row.sl_no) === "99" || String(row.sl_label || "").trim() === "ಒಟ್ಟು";
 
 function GrainageP2PebrineCasesReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({ grainageId: "", financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
@@ -223,7 +223,9 @@ function GrainageP2PebrineCasesReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const grainageDisplay = selectedGrainage?.grainageMasterName || "ಬಿಳಿದೇವಾಲಯ";
+  const grainageDisplay = i18n.language === "kn"
+    ? (selectedGrainage?.grainageMasterNameInKannada || selectedGrainage?.grainageMasterName || "ಬಿಳಿದೇವಾಲಯ")
+    : (selectedGrainage?.grainageMasterName || "ಬಿಳಿದೇವಾಲಯ");
 
   // KPIs from the totals row
   const kpis = useMemo(() => {
@@ -292,7 +294,7 @@ function GrainageP2PebrineCasesReport() {
                   <Form.Select name="grainageId" value={filter.grainageId} onChange={handleChange} style={sel}>
                     <option value="">{t("— Select Grainage —", { ns: "reports" })}</option>
                     {grainageList.map((g) => (
-                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{g.grainageMasterName}</option>
+                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName}</option>
                     ))}
                   </Form.Select>
                 </Col>

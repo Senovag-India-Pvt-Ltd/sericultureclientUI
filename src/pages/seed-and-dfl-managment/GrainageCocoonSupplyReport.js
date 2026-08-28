@@ -43,7 +43,7 @@ if (!document.getElementById("gcsr-styles")) {
 }
 
 function GrainageCocoonSupplyReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({ grainageMasterId: "", financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
@@ -285,7 +285,7 @@ function GrainageCocoonSupplyReport() {
                   <Form.Select name="grainageMasterId" value={filter.grainageMasterId} onChange={handleChange} style={selSt}>
                     <option value="">{`— ${t("Select Grainage", { ns: "reports" })} —`}</option>
                     {grainageList.map((g) => (
-                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{g.grainageMasterName}</option>
+                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName}</option>
                     ))}
                   </Form.Select>
                 </Col>
@@ -335,7 +335,7 @@ function GrainageCocoonSupplyReport() {
             {/* Summary pills */}
             <div className="d-flex flex-wrap gap-2 mb-3 align-items-center">
               {[
-                { label: t("Grainage"), value: selectedGrainage?.grainageMasterName || "—", accent: "#fde68a", bg: "linear-gradient(135deg,#fffbeb,#fef9ec)", text: "#92400e" },
+                { label: t("Grainage"), value: (i18n.language === "kn" ? (selectedGrainage?.grainageMasterNameInKannada || selectedGrainage?.grainageMasterName) : selectedGrainage?.grainageMasterName) || "—", accent: "#fde68a", bg: "linear-gradient(135deg,#fffbeb,#fef9ec)", text: "#92400e" },
                 { label: t("Month"),    value: `${monthLabel} ${monthKn}`,                   accent: "#9ae6b4", bg: "linear-gradient(135deg,#f0fff4,#f7fafc)",    text: "#276749" },
                 { label: t("FY", { ns: "reports" }), value: fyLabel,                         accent: "#bee3f8", bg: "linear-gradient(135deg,#ebf8ff,#e6fffa)",    text: "#2b6cb0" },
               ].map((p) => (
@@ -437,7 +437,7 @@ function GrainageCocoonSupplyReport() {
                 borderTop: "1.5px solid #fde68a",
               }}>
                 <span style={{ fontSize: "12px", color: "#92400e", fontWeight: 600 }}>
-                  ಬಿತ್ತನೆಕೋಠಿ {selectedGrainage?.grainageMasterName || ""} — {monthLabel} {monthKn} · {fyLabel}
+                  ಬಿತ್ತನೆಕೋಠಿ {(i18n.language === "kn" ? (selectedGrainage?.grainageMasterNameInKannada || selectedGrainage?.grainageMasterName) : selectedGrainage?.grainageMasterName) || ""} — {monthLabel} {monthKn} · {fyLabel}
                 </span>
                 <div className="d-flex gap-2">
                   <button onClick={handlePdf} disabled={isDownloadingPdf} type="button"

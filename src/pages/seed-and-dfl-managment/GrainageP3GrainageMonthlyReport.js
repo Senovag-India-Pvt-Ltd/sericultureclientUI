@@ -88,7 +88,7 @@ const isSectionHeader = (row) => {
 };
 
 function GrainageP3GrainageMonthlyReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({ grainageId: "", financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
@@ -237,7 +237,9 @@ function GrainageP3GrainageMonthlyReport() {
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
   const prevYear   = monthYear ? monthYear - 1 : null;
-  const grainageDisplay = selectedGrainage?.grainageMasterName || "ಬಿಳಿದೇವಾಲಯ";
+  const grainageDisplay = i18n.language === "kn"
+    ? (selectedGrainage?.grainageMasterNameInKannada || selectedGrainage?.grainageMasterName || "ಬಿಳಿದೇವಾಲಯ")
+    : (selectedGrainage?.grainageMasterName || "ಬಿಳಿದೇವಾಲಯ");
 
   // Visual grouping by serial_number — each unique sl_no produces one badge
   // (rendered with rowSpan), but every sub-row keeps its OWN description.
@@ -326,7 +328,7 @@ function GrainageP3GrainageMonthlyReport() {
                   <Form.Select name="grainageId" value={filter.grainageId} onChange={handleChange} style={sel}>
                     <option value="">{t("— Select Grainage —", { ns: "reports" })}</option>
                     {grainageList.map((g) => (
-                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{g.grainageMasterName}</option>
+                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName}</option>
                     ))}
                   </Form.Select>
                 </Col>

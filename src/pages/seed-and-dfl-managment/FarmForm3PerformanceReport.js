@@ -117,7 +117,7 @@ const HUE = {
 };
 
 function FarmForm3PerformanceReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({ farmId: "", financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
@@ -240,7 +240,7 @@ function FarmForm3PerformanceReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const farmName   = selectedFarm?.farmName || "—";
+  const farmName   = (i18n.language === "kn" ? (selectedFarm?.farmNameInKannada || selectedFarm?.farmName) : selectedFarm?.farmName) || "—";
 
   // Group rows by serial_number, preserving backend order
   const grouped = useMemo(() => {
@@ -328,7 +328,7 @@ function FarmForm3PerformanceReport() {
                 <Col md={4}>
                   <label style={lbl}>{t("Farm")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
-                    options={farmList.map((f) => ({ value: String(f.farmId), label: f.farmName }))}
+                    options={farmList.map((f) => ({ value: String(f.farmId), label: i18n.language === "kn" ? (f.farmNameInKannada || f.farmName) : f.farmName }))}
                     placeholder={t("— Search Farm —", { ns: "reports" })}
                     isSearchable isClearable
                     menuPlacement="auto"
@@ -337,7 +337,7 @@ function FarmForm3PerformanceReport() {
                     styles={farmSelectStyles}
                     value={
                       farmList
-                        .map((f) => ({ value: String(f.farmId), label: f.farmName }))
+                        .map((f) => ({ value: String(f.farmId), label: i18n.language === "kn" ? (f.farmNameInKannada || f.farmName) : f.farmName }))
                         .find((o) => o.value === String(filter.farmId)) || null
                     }
                     onChange={(opt) => {

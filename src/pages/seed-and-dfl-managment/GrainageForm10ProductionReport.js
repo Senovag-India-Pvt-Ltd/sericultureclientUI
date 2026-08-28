@@ -135,7 +135,7 @@ const TAB_HUE = {
 };
 
 function GrainageForm10ProductionReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({ grainageId: "", financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
@@ -268,7 +268,9 @@ function GrainageForm10ProductionReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const grainageName = selectedGrainage?.grainageMasterName || "—";
+  const grainageName = i18n.language === "kn"
+    ? (selectedGrainage?.grainageMasterNameInKannada || selectedGrainage?.grainageMasterName || "—")
+    : (selectedGrainage?.grainageMasterName || "—");
 
   // Top-level KPIs across all 4 sections
   const overview = useMemo(() => {
@@ -340,7 +342,7 @@ function GrainageForm10ProductionReport() {
                   <ReactSelect
                     options={grainageList.map((g) => ({
                       value: String(g.grainageMasterId),
-                      label: g.grainageMasterName + (g.grainageType ? ` · ${g.grainageType}` : ""),
+                      label: (i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName) + (g.grainageType ? ` · ${g.grainageType}` : ""),
                     }))}
                     placeholder={t("— Search Grainage —", { ns: "reports" })}
                     isSearchable isClearable
@@ -352,7 +354,7 @@ function GrainageForm10ProductionReport() {
                       grainageList
                         .map((g) => ({
                           value: String(g.grainageMasterId),
-                          label: g.grainageMasterName + (g.grainageType ? ` · ${g.grainageType}` : ""),
+                          label: (i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName) + (g.grainageType ? ` · ${g.grainageType}` : ""),
                         }))
                         .find((o) => o.value === String(filter.grainageId)) || null
                     }

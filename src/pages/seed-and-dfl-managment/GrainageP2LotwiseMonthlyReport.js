@@ -77,7 +77,7 @@ const fmt = (v) => {
 const LOT_KEYS = ["c1", "c2", "c3", "c4", "c5", "c6"];
 
 function GrainageP2LotwiseMonthlyReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({ grainageId: "", financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
@@ -225,7 +225,9 @@ function GrainageP2LotwiseMonthlyReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const grainageDisplay = selectedGrainage?.grainageMasterName || "—";
+  const grainageDisplay = i18n.language === "kn"
+    ? (selectedGrainage?.grainageMasterNameInKannada || selectedGrainage?.grainageMasterName || "—")
+    : (selectedGrainage?.grainageMasterName || "—");
 
   // Split header row (serial_number === 0) from body rows; classify each body row.
   const { lotLabels, bodyRows } = useMemo(() => {
@@ -310,7 +312,7 @@ function GrainageP2LotwiseMonthlyReport() {
                   <Form.Select name="grainageId" value={filter.grainageId} onChange={handleChange} style={sel}>
                     <option value="">{t("— Select Grainage —", { ns: "reports" })}</option>
                     {grainageList.map((g) => (
-                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{g.grainageMasterName}</option>
+                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName}</option>
                     ))}
                   </Form.Select>
                 </Col>

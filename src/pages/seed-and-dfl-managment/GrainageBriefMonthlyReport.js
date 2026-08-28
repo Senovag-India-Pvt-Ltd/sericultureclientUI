@@ -111,7 +111,7 @@ const RACE_STYLE = (race) => {
 };
 
 function GrainageBriefMonthlyReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({ grainageId: "", financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
@@ -234,7 +234,9 @@ function GrainageBriefMonthlyReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const grainageName = selectedGrainage?.grainageMasterName || "—";
+  const grainageName = i18n.language === "kn"
+    ? (selectedGrainage?.grainageMasterNameInKannada || selectedGrainage?.grainageMasterName || "—")
+    : (selectedGrainage?.grainageMasterName || "—");
 
   // Group rows by year_label (year_label is a calendar year string from the backend, e.g. "2026")
   // Order: latest year first → older year second. Within each year, sort by sl_no.
@@ -320,7 +322,7 @@ function GrainageBriefMonthlyReport() {
                   <ReactSelect
                     options={grainageList.map((g) => ({
                       value: String(g.grainageMasterId),
-                      label: g.grainageMasterName + (g.grainageType ? ` · ${g.grainageType}` : ""),
+                      label: (i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName) + (g.grainageType ? ` · ${g.grainageType}` : ""),
                     }))}
                     placeholder={t("— Search Grainage —", { ns: "reports" })}
                     isSearchable isClearable
@@ -332,7 +334,7 @@ function GrainageBriefMonthlyReport() {
                       grainageList
                         .map((g) => ({
                           value: String(g.grainageMasterId),
-                          label: g.grainageMasterName + (g.grainageType ? ` · ${g.grainageType}` : ""),
+                          label: (i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName) + (g.grainageType ? ` · ${g.grainageType}` : ""),
                         }))
                         .find((o) => o.value === String(filter.grainageId)) || null
                     }

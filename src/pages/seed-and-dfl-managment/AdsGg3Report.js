@@ -144,7 +144,7 @@ const HUE_PALETTE = {
 };
 
 function AdsGg3Report() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({ grainageIds: [], financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
@@ -400,7 +400,7 @@ function AdsGg3Report() {
                     isMulti
                     options={grainageList.map((g) => ({
                       value: String(g.grainageMasterId),
-                      label: g.grainageMasterName,
+                      label: i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName,
                     }))}
                     placeholder={t("— Select one or more —", { ns: "reports" })}
                     isSearchable

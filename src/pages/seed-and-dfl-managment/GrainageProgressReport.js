@@ -46,7 +46,7 @@ if (!document.getElementById("gpr-swal-styles")) {
 }
 
 function GrainageProgressReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({
     grainageMasterId: "",
@@ -252,6 +252,9 @@ function GrainageProgressReport() {
   const selectedGrainage = grainageList.find(
     (g) => String(g.grainageMasterId) === String(filter.grainageMasterId)
   );
+  const grainageName = i18n.language === "kn"
+    ? (selectedGrainage?.grainageMasterNameInKannada || selectedGrainage?.grainageMasterName || "—")
+    : (selectedGrainage?.grainageMasterName || "—");
 
   const currFy = fyStartYear ? `${fyStartYear}-${fyStartYear + 1}` : "—";
   const prevFy = fyStartYear ? `${fyStartYear - 1}-${fyStartYear}` : "—";
@@ -324,7 +327,7 @@ function GrainageProgressReport() {
                   <Form.Select name="grainageMasterId" value={filter.grainageMasterId} onChange={handleFilterChange} style={sel}>
                     <option value="">{`— ${t("Select Grainage", { ns: "reports" })} —`}</option>
                     {grainageList.map((g) => (
-                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{g.grainageMasterName}</option>
+                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName}</option>
                     ))}
                   </Form.Select>
                 </Col>
@@ -381,7 +384,7 @@ function GrainageProgressReport() {
                   {t("Grainage")}
                 </span>
                 <span style={{ fontSize: "14px", color: "#1a202c", fontWeight: 700, marginTop: "2px" }}>
-                  {selectedGrainage?.grainageMasterName || "—"}
+                  {grainageName}
                 </span>
               </div>
               <div
@@ -580,7 +583,7 @@ function GrainageProgressReport() {
                 }}
               >
                 <span style={{ fontSize: "12px", color: "#718096", fontWeight: 600 }}>
-                  ಬಿತ್ತನೆಕೋಠಿ {selectedGrainage?.grainageMasterName || ""} — {monthLabel} {monthKn} ಮಾಹೆ
+                  ಬಿತ್ತನೆಕೋಠಿ {grainageName !== "—" ? grainageName : ""} — {monthLabel} {monthKn} ಮಾಹೆ
                 </span>
                 <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
                   <button

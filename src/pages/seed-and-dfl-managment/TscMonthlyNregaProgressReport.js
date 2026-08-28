@@ -88,7 +88,7 @@ const yearOptions = (() => {
 const pctColor = (p) => p >= 100 ? "#16a34a" : p >= 60 ? "#ca8a04" : p > 0 ? "#dc2626" : "#cbd5e1";
 
 function TscMonthlyNregaProgressReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const today = new Date();
   const [filter, setFilter] = useState({ districtId: "", year: today.getFullYear(), month: today.getMonth() + 1 });
@@ -166,7 +166,8 @@ function TscMonthlyNregaProgressReport() {
     } catch { showErr(t("Excel Failed", { ns: "reports" }), t("Could not generate the Excel report.", { ns: "reports" })); } finally { setIsDownloadingExcel(false); }
   };
 
-  const districtName = districtList.find((d) => String(d.districtId) === String(filter.districtId))?.districtName || "—";
+  const selectedDistrict = districtList.find((d) => String(d.districtId) === String(filter.districtId));
+  const districtName = (i18n.language === "kn" ? (selectedDistrict?.districtNameInKannada || selectedDistrict?.districtName) : selectedDistrict?.districtName) || "—";
   const monthLabel   = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
 
   const isTotalRow = (r) => String(r.block_name || "").trim().toLowerCase() === "total";
@@ -241,10 +242,10 @@ function TscMonthlyNregaProgressReport() {
                 <Col md={4}>
                   <label style={lbl}>{t("District")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
-                    options={districtList.map((d) => ({ value: String(d.districtId), label: d.districtName }))}
+                    options={districtList.map((d) => ({ value: String(d.districtId), label: i18n.language === "kn" ? (d.districtNameInKannada || d.districtName) : d.districtName }))}
                     placeholder={t("— Search District —", { ns: "reports" })}
                     isSearchable isClearable menuPlacement="auto" menuPortalTarget={typeof document !== "undefined" ? document.body : null} menuPosition="fixed" styles={reactSelectStyles}
-                    value={districtList.map((d) => ({ value: String(d.districtId), label: d.districtName })).find((o) => o.value === String(filter.districtId)) || null}
+                    value={districtList.map((d) => ({ value: String(d.districtId), label: i18n.language === "kn" ? (d.districtNameInKannada || d.districtName) : d.districtName })).find((o) => o.value === String(filter.districtId)) || null}
                     onChange={(opt) => { setFilter((p) => ({ ...p, districtId: opt?.value || "" })); reset(); }}
                     noOptionsMessage={() => t("No districts", { ns: "reports" })}
                   />

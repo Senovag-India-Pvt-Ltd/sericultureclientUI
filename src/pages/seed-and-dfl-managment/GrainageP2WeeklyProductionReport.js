@@ -82,7 +82,7 @@ const ROW_HINTS = {
 };
 
 function GrainageP2WeeklyProductionReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({ grainageId: "", financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
@@ -230,7 +230,9 @@ function GrainageP2WeeklyProductionReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const grainageDisplay = selectedGrainage?.grainageMasterName || "—";
+  const grainageDisplay = i18n.language === "kn"
+    ? (selectedGrainage?.grainageMasterNameInKannada || selectedGrainage?.grainageMasterName || "—")
+    : (selectedGrainage?.grainageMasterName || "—");
 
   // KPIs from the rows
   const kpis = useMemo(() => {
@@ -298,7 +300,7 @@ function GrainageP2WeeklyProductionReport() {
                   <Form.Select name="grainageId" value={filter.grainageId} onChange={handleChange} style={sel}>
                     <option value="">{t("— Select Grainage —", { ns: "reports" })}</option>
                     {grainageList.map((g) => (
-                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{g.grainageMasterName}</option>
+                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName}</option>
                     ))}
                   </Form.Select>
                 </Col>

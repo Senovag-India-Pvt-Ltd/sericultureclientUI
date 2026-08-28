@@ -65,7 +65,7 @@ if (typeof document !== "undefined" && !document.getElementById("ggf7-swal-style
 }
 
 function GgProductionCumulativeReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({
     grainageMasterId: "",
@@ -171,6 +171,9 @@ function GgProductionCumulativeReport() {
   const selectedGrainage = grainageList.find(
     (g) => String(g.grainageMasterId) === String(filter.grainageMasterId)
   );
+  const selectedGrainageName = i18n.language === "kn"
+    ? (selectedGrainage?.grainageMasterNameInKannada || selectedGrainage?.grainageMasterName)
+    : selectedGrainage?.grainageMasterName;
   const monthLabel = MONTHS.find((m) => Number(m.value) === Number(filter.month))?.label || "";
   const monthKn = MONTH_NAMES_KN[Number(filter.month) || 0] || "";
   const cyLabel = `${filter.year}-${String((Number(filter.year) + 1) % 100).padStart(2, "0")}`;
@@ -231,7 +234,7 @@ function GgProductionCumulativeReport() {
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                 {selectedGrainage && (
                   <span style={{ background: "rgba(255,255,255,0.22)", borderRadius: "20px", padding: "3px 10px", color: "#fff", fontSize: "11px", fontWeight: 700 }}>
-                    {selectedGrainage.grainageMasterName}
+                    {selectedGrainageName}
                   </span>
                 )}
                 <span style={{ background: "rgba(255,255,255,0.22)", borderRadius: "20px", padding: "3px 10px", color: "#fff", fontSize: "11px", fontWeight: 700 }}>
@@ -249,7 +252,7 @@ function GgProductionCumulativeReport() {
                   <Form.Select name="grainageMasterId" value={filter.grainageMasterId} onChange={handleFilterChange} style={sel}>
                     <option value="">{`— ${t("Select Grainage", { ns: "reports" })} —`}</option>
                     {grainageList.map((g) => (
-                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{g.grainageMasterName}</option>
+                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName}</option>
                     ))}
                   </Form.Select>
                 </Col>
@@ -291,7 +294,7 @@ function GgProductionCumulativeReport() {
             <div className="d-flex flex-wrap gap-3 mb-3 align-items-center">
               <div style={{ background: "linear-gradient(135deg,#dcfce7,#f0fff4)", border: "1.5px solid #86efac", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "180px" }}>
                 <span style={{ fontSize: "11px", color: "#166534", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em" }}>{t("Grainage")}</span>
-                <span style={{ fontSize: "14px", color: "#1a202c", fontWeight: 700, marginTop: "2px" }}>{selectedGrainage?.grainageMasterName || "—"}</span>
+                <span style={{ fontSize: "14px", color: "#1a202c", fontWeight: 700, marginTop: "2px" }}>{selectedGrainageName || "—"}</span>
               </div>
               <div style={{ background: "linear-gradient(135deg,#fef3c7,#fffbeb)", border: "1.5px solid #fcd34d", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "160px" }}>
                 <span style={{ fontSize: "11px", color: "#92400e", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em" }}>{t("Period", { ns: "reports" })}</span>
@@ -404,7 +407,7 @@ function GgProductionCumulativeReport() {
                 borderTop: "1.5px solid #86efac",
               }}>
                 <span style={{ fontSize: "12px", color: "#166534", fontWeight: 600 }}>
-                  📈 {selectedGrainage?.grainageMasterName || ""} — {monthLabel} {monthKn} · {filter.year}
+                  📈 {selectedGrainageName || ""} — {monthLabel} {monthKn} · {filter.year}
                 </span>
                 <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
                   <button type="button" onClick={() => downloadFile("pdf")} disabled={loadPdf}

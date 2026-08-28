@@ -58,7 +58,7 @@ const btn = (bg, shadow, disabled) => ({
 });
 
 function GrainageFarmReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({ grainageMasterId: "", financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
@@ -204,6 +204,9 @@ function GrainageFarmReport() {
   const selectedGrainage = grainageList.find((g) => String(g.grainageMasterId) === String(filter.grainageMasterId));
   const monthKn    = MONTH_KN[Number(filter.month)] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
+  const grainageName = i18n.language === "kn"
+    ? (selectedGrainage?.grainageMasterNameInKannada || selectedGrainage?.grainageMasterName || "—")
+    : (selectedGrainage?.grainageMasterName || "—");
 
   return (
     <Layout title={t("Farm Technical Achievement Report")}>
@@ -249,7 +252,7 @@ function GrainageFarmReport() {
                   <Form.Select name="grainageMasterId" value={filter.grainageMasterId} onChange={handleChange} style={sel}>
                     <option value="">— Select Grainage —</option>
                     {grainageList.map((g) => (
-                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{g.grainageMasterName}</option>
+                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName}</option>
                     ))}
                   </Form.Select>
                 </Col>
@@ -296,7 +299,7 @@ function GrainageFarmReport() {
             <div className="d-flex flex-wrap gap-3 mb-3 align-items-center">
               <div style={{ background: "linear-gradient(135deg,#dbeafe,#e0f2fe)", border: "1.5px solid #93c5fd", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "160px" }}>
                 <span style={{ fontSize: "11px", color: "#1e40af", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>Grainage</span>
-                <span style={{ fontSize: "14px", color: "#1a202c", fontWeight: 700, marginTop: "2px" }}>{selectedGrainage?.grainageMasterName || "—"}</span>
+                <span style={{ fontSize: "14px", color: "#1a202c", fontWeight: 700, marginTop: "2px" }}>{grainageName}</span>
               </div>
               <div style={{ background: "linear-gradient(135deg,#e0f2fe,#f0f9ff)", border: "1.5px solid #7dd3fc", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "140px" }}>
                 <span style={{ fontSize: "11px", color: "#0369a1", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>Month</span>
@@ -386,7 +389,7 @@ function GrainageFarmReport() {
               {/* Table footer */}
               <div style={{ background: "linear-gradient(135deg,#f7fafc,#edf2f7)", padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "8px", borderTop: "1.5px solid #e2e8f0" }}>
                 <span style={{ fontSize: "12px", color: "#718096", fontWeight: 600 }}>
-                  {selectedGrainage?.grainageMasterName || ""} — {monthLabel} {monthKn} ಮಾಹೆ
+                  {grainageName} — {monthLabel} {monthKn} ಮಾಹೆ
                 </span>
                 <div className="d-flex gap-2 flex-wrap">
                   <button type="button" onClick={handlePdf} disabled={isDownloadingPdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 2px 8px rgba(185,28,28,.25)", isDownloadingPdf)}>

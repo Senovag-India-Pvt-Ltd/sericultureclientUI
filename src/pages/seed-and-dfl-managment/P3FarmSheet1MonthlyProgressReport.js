@@ -104,7 +104,7 @@ const fmt = (v) => {
 const isEmpty = (v) => { const s = String(v ?? "").trim(); return s === "" || s === "0"; };
 
 function P3FarmSheet1MonthlyProgressReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [filter, setFilter] = useState({ farmId: "", financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
   const [farmList,          setFarmList]          = useState([]);
@@ -197,7 +197,7 @@ function P3FarmSheet1MonthlyProgressReport() {
   };
 
   const selectedFarm = farmList.find((f) => String(f.farmId) === String(filter.farmId));
-  const farmName     = selectedFarm?.farmName || "—";
+  const farmName     = (i18n.language === "kn" ? (selectedFarm?.farmNameInKannada || selectedFarm?.farmName) : selectedFarm?.farmName) || "—";
   const monthNum     = Number(filter.month);
   const monthKn      = MONTH_KN[monthNum] || "";
   const monthLabel   = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
@@ -246,11 +246,11 @@ function P3FarmSheet1MonthlyProgressReport() {
                 <Col md={4}>
                   <label style={lbl}>{t("Farm")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
-                    options={farmList.map((f) => ({ value: String(f.farmId), label: f.farmName }))}
+                    options={farmList.map((f) => ({ value: String(f.farmId), label: i18n.language === "kn" ? (f.farmNameInKannada || f.farmName) : f.farmName }))}
                     placeholder={t("— Search Farm —", { ns: "reports" })} isSearchable isClearable
                     menuPlacement="auto" menuPortalTarget={typeof document !== "undefined" ? document.body : null} menuPosition="fixed"
                     styles={farmSelectStyles}
-                    value={farmList.map((f) => ({ value: String(f.farmId), label: f.farmName })).find((o) => o.value === String(filter.farmId)) || null}
+                    value={farmList.map((f) => ({ value: String(f.farmId), label: i18n.language === "kn" ? (f.farmNameInKannada || f.farmName) : f.farmName })).find((o) => o.value === String(filter.farmId)) || null}
                     onChange={(opt) => { setFilter((p) => ({ ...p, farmId: opt?.value || "" })); setHasReport(false); setDataRows([]); }}
                     noOptionsMessage={() => t("No farm found", { ns: "reports" })}
                   />

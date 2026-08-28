@@ -76,7 +76,7 @@ const fmt = (v) => {
 const isEmpty = (v) => { const s = String(v ?? "").trim(); return s === "" || s === "0" || s === "0.00"; };
 
 function P3FarmSheet10AnnualTargetReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [filter, setFilter] = useState({ farmId: "", financialYearMasterId: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
   const [farmList,          setFarmList]          = useState([]);
@@ -160,7 +160,7 @@ function P3FarmSheet10AnnualTargetReport() {
   };
 
   const selectedFarm = farmList.find((f) => String(f.farmId) === String(filter.farmId));
-  const farmName     = selectedFarm?.farmName || "—";
+  const farmName     = (i18n.language === "kn" ? (selectedFarm?.farmNameInKannada || selectedFarm?.farmName) : selectedFarm?.farmName) || "—";
 
   const kpis = useMemo(() => {
     const sum = (k) => dataRows.reduce((s, r) => s + numOrZero(r[k]), 0);
@@ -230,11 +230,11 @@ function P3FarmSheet10AnnualTargetReport() {
                 <Col md={5}>
                   <label style={lbl}>{t("Farm", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
-                    options={farmList.map((f) => ({ value: String(f.farmId), label: f.farmName }))}
+                    options={farmList.map((f) => ({ value: String(f.farmId), label: i18n.language === "kn" ? (f.farmNameInKannada || f.farmName) : f.farmName }))}
                     placeholder={t("— Search Farm —", { ns: "reports" })} isSearchable isClearable
                     menuPlacement="auto" menuPortalTarget={typeof document !== "undefined" ? document.body : null} menuPosition="fixed"
                     styles={farmSelectStyles}
-                    value={farmList.map((f) => ({ value: String(f.farmId), label: f.farmName })).find((o) => o.value === String(filter.farmId)) || null}
+                    value={farmList.map((f) => ({ value: String(f.farmId), label: i18n.language === "kn" ? (f.farmNameInKannada || f.farmName) : f.farmName })).find((o) => o.value === String(filter.farmId)) || null}
                     onChange={(opt) => { setFilter((p) => ({ ...p, farmId: opt?.value || "" })); setHasReport(false); setDataRows([]); }}
                     noOptionsMessage={() => t("No farm found", { ns: "reports" })}
                   />

@@ -12,7 +12,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function SeedMarketInvoiceReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isGenerating, setIsGenerating] = useState(false);
 
   const [data, setData] = useState({
@@ -151,7 +151,7 @@ function SeedMarketInvoiceReport() {
                   <Form.Select name="grainageMasterId" value={data.grainageMasterId} onChange={(e) => setData({ ...data, grainageMasterId: e.target.value })} style={inputStyle} required>
                     <option value="">{`— ${t("Select Grainage", { ns: "reports" })} —`}</option>
                     {grainageListData?.map((g) => (
-                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{g.grainageMasterName}</option>
+                      <option key={g.grainageMasterId} value={g.grainageMasterId}>{i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName}</option>
                     ))}
                   </Form.Select>
                 </Col>

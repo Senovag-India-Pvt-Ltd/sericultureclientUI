@@ -112,7 +112,7 @@ const raceTone = (raceRaw) => {
 };
 
 function TscMonthlyMarketCocoonReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const today = new Date();
   const [filter, setFilter] = useState({
@@ -216,8 +216,10 @@ function TscMonthlyMarketCocoonReport() {
     finally { setIsDownloadingExcel(false); }
   };
 
-  const districtName = districtList.find((d) => String(d.districtId) === String(filter.districtId))?.districtName || "—";
-  const talukName    = talukList.find((tk) => String(tk.talukId) === String(filter.talukId))?.talukName || "—";
+  const selectedDistrict = districtList.find((d) => String(d.districtId) === String(filter.districtId));
+  const selectedTaluk    = talukList.find((tk) => String(tk.talukId) === String(filter.talukId));
+  const districtName = (i18n.language === "kn" ? (selectedDistrict?.districtNameInKannada || selectedDistrict?.districtName) : selectedDistrict?.districtName) || "—";
+  const talukName    = (i18n.language === "kn" ? (selectedTaluk?.talukNameInKannada || selectedTaluk?.talukName) : selectedTaluk?.talukName) || "—";
   const monthLabel   = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthKn      = MONTH_KN[Number(filter.month)] || "";
 
@@ -303,12 +305,12 @@ function TscMonthlyMarketCocoonReport() {
                 <Col md={3}>
                   <label style={lbl}>{t("District")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
-                    options={districtList.map((d) => ({ value: String(d.districtId), label: d.districtName }))}
+                    options={districtList.map((d) => ({ value: String(d.districtId), label: i18n.language === "kn" ? (d.districtNameInKannada || d.districtName) : d.districtName }))}
                     placeholder={t("— Search District —", { ns: "reports" })}
                     isSearchable isClearable menuPlacement="auto"
                     menuPortalTarget={typeof document !== "undefined" ? document.body : null}
                     menuPosition="fixed" styles={reactSelectStyles}
-                    value={districtList.map((d) => ({ value: String(d.districtId), label: d.districtName })).find((o) => o.value === String(filter.districtId)) || null}
+                    value={districtList.map((d) => ({ value: String(d.districtId), label: i18n.language === "kn" ? (d.districtNameInKannada || d.districtName) : d.districtName })).find((o) => o.value === String(filter.districtId)) || null}
                     onChange={(opt) => { setFilter((p) => ({ ...p, districtId: opt?.value || "", talukId: "" })); reset(); }}
                     noOptionsMessage={() => t("No districts", { ns: "reports" })}
                   />
@@ -316,12 +318,12 @@ function TscMonthlyMarketCocoonReport() {
                 <Col md={3}>
                   <label style={lbl}>{t("Taluk")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
-                    options={talukList.map((tk) => ({ value: String(tk.talukId), label: tk.talukName }))}
+                    options={talukList.map((tk) => ({ value: String(tk.talukId), label: i18n.language === "kn" ? (tk.talukNameInKannada || tk.talukName) : tk.talukName }))}
                     placeholder={filter.districtId ? t("— Search Taluk —", { ns: "reports" }) : t("Select District first", { ns: "reports" })}
                     isSearchable isClearable isDisabled={!filter.districtId} menuPlacement="auto"
                     menuPortalTarget={typeof document !== "undefined" ? document.body : null}
                     menuPosition="fixed" styles={reactSelectStyles}
-                    value={talukList.map((tk) => ({ value: String(tk.talukId), label: tk.talukName })).find((o) => o.value === String(filter.talukId)) || null}
+                    value={talukList.map((tk) => ({ value: String(tk.talukId), label: i18n.language === "kn" ? (tk.talukNameInKannada || tk.talukName) : tk.talukName })).find((o) => o.value === String(filter.talukId)) || null}
                     onChange={(opt) => { setFilter((p) => ({ ...p, talukId: opt?.value || "" })); reset(); }}
                     noOptionsMessage={() => t("No taluks", { ns: "reports" })}
                   />

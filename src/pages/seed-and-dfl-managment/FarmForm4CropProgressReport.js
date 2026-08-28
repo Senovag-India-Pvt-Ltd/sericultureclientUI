@@ -150,7 +150,7 @@ const hasAnyData = (row) => {
 };
 
 function FarmForm4CropProgressReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({ farmId: "", financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
@@ -273,7 +273,7 @@ function FarmForm4CropProgressReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const farmName   = selectedFarm?.farmName || "—";
+  const farmName   = (i18n.language === "kn" ? (selectedFarm?.farmNameInKannada || selectedFarm?.farmName) : selectedFarm?.farmName) || "—";
 
   // Group by serial_number — most groups have a single row (serial 15 has two)
   const grouped = useMemo(() => {
@@ -365,7 +365,7 @@ function FarmForm4CropProgressReport() {
                 <Col md={4}>
                   <label style={lbl}>{t("Farm")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
-                    options={farmList.map((f) => ({ value: String(f.farmId), label: f.farmName }))}
+                    options={farmList.map((f) => ({ value: String(f.farmId), label: i18n.language === "kn" ? (f.farmNameInKannada || f.farmName) : f.farmName }))}
                     placeholder={t("— Search Farm —", { ns: "reports" })}
                     isSearchable isClearable
                     menuPlacement="auto"
@@ -374,7 +374,7 @@ function FarmForm4CropProgressReport() {
                     styles={farmSelectStyles}
                     value={
                       farmList
-                        .map((f) => ({ value: String(f.farmId), label: f.farmName }))
+                        .map((f) => ({ value: String(f.farmId), label: i18n.language === "kn" ? (f.farmNameInKannada || f.farmName) : f.farmName }))
                         .find((o) => o.value === String(filter.farmId)) || null
                     }
                     onChange={(opt) => {

@@ -101,7 +101,7 @@ function MarketFilterCard({
   isDownloadingPdf, isDownloadingExcel,
   onSubmit, onPdf, onExcel, extraTopRight, extraRow,
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthKn    = MONTH_KN[Number(filter.month)] || "";
 
@@ -131,12 +131,12 @@ function MarketFilterCard({
             <Col md={5}>
               <label style={lbl}>{t("Market")} <span style={{ color: "#e53e3e" }}>*</span></label>
               <ReactSelect
-                options={marketList.map((m) => ({ value: String(m.marketMasterId), label: m.marketMasterName }))}
+                options={marketList.map((m) => ({ value: String(m.marketMasterId), label: i18n.language === "kn" ? (m.marketNameInKannada || m.marketMasterName) : m.marketMasterName }))}
                 placeholder={`— ${t("Search Market", { ns: "reports" })} —`}
                 isSearchable isClearable menuPlacement="auto"
                 menuPortalTarget={typeof document !== "undefined" ? document.body : null}
                 menuPosition="fixed" styles={reactSelectStyles}
-                value={marketList.map((m) => ({ value: String(m.marketMasterId), label: m.marketMasterName })).find((o) => o.value === String(filter.marketId)) || null}
+                value={marketList.map((m) => ({ value: String(m.marketMasterId), label: i18n.language === "kn" ? (m.marketNameInKannada || m.marketMasterName) : m.marketMasterName })).find((o) => o.value === String(filter.marketId)) || null}
                 onChange={(opt) => { setFilter((p) => ({ ...p, marketId: opt?.value || "" })); reset(); }}
                 noOptionsMessage={() => t("No markets", { ns: "reports" })}
               />
@@ -184,7 +184,7 @@ function MarketFilterCard({
 // Shared hook — market list + filter state + view/pdf/excel actions
 // ──────────────────────────────────────────────────────────────────────────
 function useSeedMarketReport(endpointKey, filenamePrefix, friendlyTitle) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const today = new Date();
   const [filter, setFilter] = useState({
     marketId: localStorage.getItem("marketId") || "",
@@ -308,7 +308,10 @@ function useSeedMarketReport(endpointKey, filenamePrefix, friendlyTitle) {
     } catch { showErr(t("Excel Failed", { ns: "reports" }), t("Could not generate the Excel report.", { ns: "reports" })); } finally { setIsDownloadingExcel(false); }
   };
 
-  const marketName = marketList.find((m) => String(m.marketMasterId) === String(filter.marketId))?.marketMasterName || "—";
+  const selectedMarket = marketList.find((m) => String(m.marketMasterId) === String(filter.marketId));
+  const marketName = i18n.language === "kn"
+    ? (selectedMarket?.marketNameInKannada || selectedMarket?.marketMasterName || "—")
+    : (selectedMarket?.marketMasterName || "—");
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthKn    = MONTH_KN[Number(filter.month)] || "";
 

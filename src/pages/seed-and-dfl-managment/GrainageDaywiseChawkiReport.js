@@ -126,7 +126,7 @@ const RACE_STYLE = (race) => {
 };
 
 function GrainageDaywiseChawkiReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({ grainageId: "", homeDistrictId: "", financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
@@ -254,8 +254,12 @@ function GrainageDaywiseChawkiReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const grainageName = selectedGrainage?.grainageMasterName || "—";
-  const districtName = selectedDistrict?.districtName || "—";
+  const grainageName = i18n.language === "kn"
+    ? (selectedGrainage?.grainageMasterNameInKannada || selectedGrainage?.grainageMasterName || "—")
+    : (selectedGrainage?.grainageMasterName || "—");
+  const districtName = i18n.language === "kn"
+    ? (selectedDistrict?.districtNameInKannada || selectedDistrict?.districtName || "—")
+    : (selectedDistrict?.districtName || "—");
 
   const totalRow = dataRows.find((r) => RACE_STYLE(r.race).isTotal) || {};
 
@@ -334,7 +338,7 @@ function GrainageDaywiseChawkiReport() {
                   <ReactSelect
                     options={grainageList.map((g) => ({
                       value: String(g.grainageMasterId),
-                      label: g.grainageMasterName + (g.grainageType ? ` · ${g.grainageType}` : ""),
+                      label: (i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName) + (g.grainageType ? ` · ${g.grainageType}` : ""),
                     }))}
                     placeholder={t("— Search Grainage —", { ns: "reports" })}
                     isSearchable isClearable
@@ -346,7 +350,7 @@ function GrainageDaywiseChawkiReport() {
                       grainageList
                         .map((g) => ({
                           value: String(g.grainageMasterId),
-                          label: g.grainageMasterName + (g.grainageType ? ` · ${g.grainageType}` : ""),
+                          label: (i18n.language === "kn" ? (g.grainageMasterNameInKannada || g.grainageMasterName) : g.grainageMasterName) + (g.grainageType ? ` · ${g.grainageType}` : ""),
                         }))
                         .find((o) => o.value === String(filter.grainageId)) || null
                     }
@@ -362,7 +366,7 @@ function GrainageDaywiseChawkiReport() {
                     🏠 {t("Home District", { ns: "reports" })} <span style={{ color: "#94a3b8", fontWeight: 600, textTransform: "none", letterSpacing: 0 }}>{t("(optional · enables home/other split)", { ns: "reports" })}</span>
                   </label>
                   <ReactSelect
-                    options={districtList.map((d) => ({ value: String(d.districtId), label: d.districtName }))}
+                    options={districtList.map((d) => ({ value: String(d.districtId), label: i18n.language === "kn" ? (d.districtNameInKannada || d.districtName) : d.districtName }))}
                     placeholder={t("— Search District —", { ns: "reports" })}
                     isSearchable isClearable
                     menuPlacement="auto"
@@ -371,7 +375,7 @@ function GrainageDaywiseChawkiReport() {
                     styles={districtSelectStyles}
                     value={
                       districtList
-                        .map((d) => ({ value: String(d.districtId), label: d.districtName }))
+                        .map((d) => ({ value: String(d.districtId), label: i18n.language === "kn" ? (d.districtNameInKannada || d.districtName) : d.districtName }))
                         .find((o) => o.value === String(filter.homeDistrictId)) || null
                     }
                     onChange={(opt) => {
