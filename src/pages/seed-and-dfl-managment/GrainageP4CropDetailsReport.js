@@ -58,7 +58,7 @@ const btn = (bg, shadow, disabled) => ({
 const hasVal = (v) => v !== null && v !== undefined && String(v).trim() !== "";
 
 function GrainageP4CropDetailsReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({ farmId: "", financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
@@ -206,7 +206,7 @@ function GrainageP4CropDetailsReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const farmDisplay = selectedFarm?.farmName || "ಬಿಳಿದೇವಾಲಯ";
+  const farmDisplay = (i18n.language === "kn" ? (selectedFarm?.farmNameInKannada || selectedFarm?.farmName) : selectedFarm?.farmName) || "ಬಿಳಿದೇವಾಲಯ";
 
   // Counts for KPI pills — how many rows have a value on each side.
   const harvestedFilled = dataRows.filter((r) => hasVal(r.harvested)).length;
@@ -257,7 +257,7 @@ function GrainageP4CropDetailsReport() {
                   <Form.Select name="farmId" value={filter.farmId} onChange={handleChange} style={sel}>
                     <option value="">— Select Farm —</option>
                     {farmList.map((f) => (
-                      <option key={f.farmId} value={f.farmId}>{f.farmName}</option>
+                      <option key={f.farmId} value={f.farmId}>{i18n.language === "kn" ? (f.farmNameInKannada || f.farmName) : f.farmName}</option>
                     ))}
                   </Form.Select>
                 </Col>
@@ -275,7 +275,7 @@ function GrainageP4CropDetailsReport() {
                   <Form.Select name="month" value={filter.month} onChange={handleChange} style={sel}>
                     <option value="">— Month —</option>
                     {MONTHS.map((m) => (
-                      <option key={m.value} value={m.value}>{m.label}</option>
+                      <option key={m.value} value={m.value}>{t(m.label, { ns: "reports" })}</option>
                     ))}
                   </Form.Select>
                 </Col>

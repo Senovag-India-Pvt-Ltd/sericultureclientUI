@@ -179,25 +179,25 @@ function GrainageForm10ProductionReport() {
   };
 
   const validate = () => {
-    if (!filter.grainageId)            return "Please select a Grainage.";
-    if (!filter.financialYearMasterId) return "Please select a Financial Year.";
-    if (!filter.month)                 return "Please select a Month.";
-    if (!fyStartYear)                  return "Could not determine the financial year start year.";
+    if (!filter.grainageId)            return t("Please select a Grainage.", { ns: "reports" });
+    if (!filter.financialYearMasterId) return t("Please select a Financial Year.", { ns: "reports" });
+    if (!filter.month)                 return t("Please select a Month.", { ns: "reports" });
+    if (!fyStartYear)                  return t("Could not determine the financial year start year.", { ns: "reports" });
     return null;
   };
 
   const showWarn = (msg) =>
     Swal.fire({
-      icon: "warning", title: "Required Fields",
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Missing Selection</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Got it", confirmButtonColor: "#d97706",
+      icon: "warning", title: t("Missing Selection", { ns: "reports" }),
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Missing Selection", { ns: "reports" })}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Got it", { ns: "reports" }), confirmButtonColor: "#d97706",
       background: "#fff", customClass: { popup: "gf10-swal" },
     });
   const showErr = (title, msg) =>
     Swal.fire({
       icon: "error", title,
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Failed</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Close", confirmButtonColor: "#e53e3e",
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Failed", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Close", { ns: "reports" }), confirmButtonColor: "#e53e3e",
       background: "#fff", customClass: { popup: "gf10-swal" },
     });
 
@@ -225,13 +225,13 @@ function GrainageForm10ProductionReport() {
     } catch (err) {
         const status = err?.response?.status;
         if (status === 404 || status === 204) {
-          showErr("No Data Found", "No data found for the selected filters.");
+          showErr(t("No Data Found", { ns: "reports" }), t("No data found for the selected filters.", { ns: "reports" }));
         } else {
           const data = err?.response?.data;
           const backendMsg = typeof data === "string"
             ? data
             : (data?.message || data?.error || data?.errorMessage || data?.error_description);
-          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the Grainage Form-10 report.");
+          showErr(t("Fetch Failed", { ns: "reports" }), backendMsg || err?.message || t("Failed to load the Grainage Form-10 report.", { ns: "reports" }));
         }
       } finally { setIsLoading(false); }
   };
@@ -243,7 +243,7 @@ function GrainageForm10ProductionReport() {
       const tab = TABS.find((x) => x.key === tabKey);
       const res = await api.get(baseURLSeedDFL + `grainage-progress-report/${tab.pathSeg}/pdf`, { params: params(), responseType: "blob" });
       window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
-    } catch { showErr("PDF Failed", "Could not generate the PDF report."); }
+    } catch { showErr(t("PDF Failed", { ns: "reports" }), t("Could not generate the PDF report.", { ns: "reports" })); }
     finally { setPdfLoadingKey(null); }
   };
 
@@ -259,7 +259,7 @@ function GrainageForm10ProductionReport() {
       const year = m >= 4 ? fyStartYear : fyStartYear + 1;
       a.download = `${tab.pathSeg.replace(/-/g, "_")}_${filter.grainageId}_${year}_${m}.xlsx`;
       a.click(); URL.revokeObjectURL(url);
-    } catch { showErr("Excel Failed", "Could not generate the Excel report."); }
+    } catch { showErr(t("Excel Failed", { ns: "reports" }), t("Could not generate the Excel report.", { ns: "reports" })); }
     finally { setExcelLoadingKey(null); }
   };
 
@@ -296,7 +296,7 @@ function GrainageForm10ProductionReport() {
   }, [allData]);
 
   return (
-    <Layout title={t("Grainage Form-10 · Production · PY · Cost · Income")}>
+    <Layout title={t("Grainage Form-10 · Production · PY · Cost · Income", { ns: "reports" })}>
       <Block.Head><Block.HeadBetween><Block.HeadContent>
         <Block.Title tag="h2">
           {t("ಪಾತ ಸಂಖ್ಯೆ-10 · ಬಿತ್ತನೆ ಕೋಠಿ ಮಾಹೆಯ ಪ್ರಗತಿ ವರದಿ — 4 ಭಾಗಗಳು")}
@@ -336,13 +336,13 @@ function GrainageForm10ProductionReport() {
             <Form onSubmit={handleView}>
               <Row className="g-2 align-items-end">
                 <Col md={4}>
-                  <label style={lbl}>Grainage <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Grainage", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
                     options={grainageList.map((g) => ({
                       value: String(g.grainageMasterId),
                       label: g.grainageMasterName + (g.grainageType ? ` · ${g.grainageType}` : ""),
                     }))}
-                    placeholder="— Search Grainage —"
+                    placeholder={t("— Search Grainage —", { ns: "reports" })}
                     isSearchable isClearable
                     menuPlacement="auto"
                     menuPortalTarget={typeof document !== "undefined" ? document.body : null}
@@ -361,27 +361,27 @@ function GrainageForm10ProductionReport() {
                       setHasReport(false);
                       setAllData({ section1_cy: [], section2_py: [], section3_cost: [], section4_income: [] });
                     }}
-                    noOptionsMessage={() => "No grainage found"}
+                    noOptionsMessage={() => t("No grainage found", { ns: "reports" })}
                   />
                 </Col>
                 <Col md={2}>
-                  <label style={lbl}>Financial Year <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Financial Year", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="financialYearMasterId" value={filter.financialYearMasterId} onChange={handleChange} style={sel}>
-                    <option value="">— Select Year —</option>
+                    <option value="">{t("— Select Year —", { ns: "reports" })}</option>
                     {financialYearList.map((f) => (<option key={f.financialYearMasterId} value={f.financialYearMasterId}>{f.financialYear}</option>))}
                   </Form.Select>
                 </Col>
                 <Col md={2}>
-                  <label style={lbl}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Month", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="month" value={filter.month} onChange={handleChange} style={sel}>
-                    <option value="">— Month —</option>
-                    {MONTHS.map((m) => (<option key={m.value} value={m.value}>{m.label}</option>))}
+                    <option value="">{t("— Month —", { ns: "reports" })}</option>
+                    {MONTHS.map((m) => (<option key={m.value} value={m.value}>{t(m.label, { ns: "reports" })}</option>))}
                   </Form.Select>
                 </Col>
                 <Col md={4}>
                   <div className="d-flex gap-2 flex-wrap">
                     <button type="submit" disabled={isLoading} style={btn("linear-gradient(135deg,#0f766e,#14b8a6)", "0 4px 12px rgba(15,118,110,.32)", isLoading)}>
-                      {isLoading ? <><span className="spinner-border spinner-border-sm" /> Loading all 4 sections…</> : <>📋 View All 4 Sections</>}
+                      {isLoading ? <><span className="spinner-border spinner-border-sm" /> {t("Loading all 4 sections…", { ns: "reports" })}</> : <>📋 {t("View All 4 Sections", { ns: "reports" })}</>}
                     </button>
                   </div>
                 </Col>
@@ -395,20 +395,20 @@ function GrainageForm10ProductionReport() {
             {/* Top-line overview KPIs across all sections */}
             <div className="d-flex flex-wrap gap-3 mb-3 align-items-stretch">
               <div style={kpi("#ccfbf1", "#5eead4", "#0f766e")}>
-                <span style={kpiLbl("#0f766e")}>Grainage</span>
+                <span style={kpiLbl("#0f766e")}>{t("Grainage", { ns: "reports" })}</span>
                 <span style={{ ...kpiVal("#134e4a", 14), fontWeight: 800 }}>{grainageName}</span>
               </div>
               <div style={kpi("#fef3c7", "#fcd34d", "#92400e")}>
-                <span style={kpiLbl("#92400e")}>Period</span>
+                <span style={kpiLbl("#92400e")}>{t("Period", { ns: "reports" })}</span>
                 <span style={{ ...kpiVal("#78350f", 13.5), fontWeight: 700 }}>{monthLabel} {monthYear}</span>
               </div>
               <div style={kpi("#a7f3d0", "#6ee7b7", "#065f46")}>
-                <span style={kpiLbl("#065f46")}>📈 CY Total Ach (Month)</span>
+                <span style={kpiLbl("#065f46")}>📈 {t("CY Total Ach (Month)", { ns: "reports" })}</span>
                 <span className="gf10-num" style={kpiVal("#064e3b", 16)}>{overview.cyAchM.toLocaleString()}</span>
                 <span style={{ fontSize: "10.5px", color: "#065f46", fontWeight: 700, marginTop: "1px" }}>FY Cum: {overview.cyAchCum.toLocaleString()}</span>
               </div>
               <div style={kpi("#c7d2fe", "#a5b4fc", "#3730a3")}>
-                <span style={kpiLbl("#3730a3")}>📉 PY Total Ach (Month)</span>
+                <span style={kpiLbl("#3730a3")}>📉 {t("PY Total Ach (Month)", { ns: "reports" })}</span>
                 <span className="gf10-num" style={kpiVal("#312e81", 16)}>{overview.pyAchM.toLocaleString()}</span>
               </div>
               <div style={{
@@ -419,18 +419,18 @@ function GrainageForm10ProductionReport() {
                 ),
               }}>
                 <span style={kpiLbl(overview.yoy >= 0 ? "#14532d" : "#9f1239")}>
-                  {overview.yoy >= 0 ? "↗" : "↘"} YoY (Month)
+                  {overview.yoy >= 0 ? "↗" : "↘"} {t("YoY (Month)", { ns: "reports" })}
                 </span>
                 <span className="gf10-num" style={kpiVal(overview.yoy >= 0 ? "#14532d" : "#881337", 16)}>
                   {(overview.yoy >= 0 ? "+" : "") + overview.yoy.toFixed(2)}%
                 </span>
               </div>
               <div style={kpi("#fecdd3", "#fda4af", "#9f1239")}>
-                <span style={kpiLbl("#9f1239")}>💸 Total Cost (FY Cum)</span>
+                <span style={kpiLbl("#9f1239")}>💸 {t("Total Cost (FY Cum)", { ns: "reports" })}</span>
                 <span className="gf10-num" style={kpiVal("#881337", 15)}>{fmtINR(overview.totalCost)}</span>
               </div>
               <div style={kpi("#bbf7d0", "#86efac", "#166534")}>
-                <span style={kpiLbl("#166534")}>💰 Total Income (FY Cum)</span>
+                <span style={kpiLbl("#166534")}>💰 {t("Total Income (FY Cum)", { ns: "reports" })}</span>
                 <span className="gf10-num" style={kpiVal("#14532d", 15)}>{fmtINR(overview.totalIncome)}</span>
               </div>
               <div style={{
@@ -1144,6 +1144,7 @@ function ValCellINR({ v, color, bg, weight, right }) {
 
 function ActionFooter({ text, tabKey, handlePdf, handleExcel, pdfLoading, excelLoading,
                         bg, border, textColor }) {
+  const { t } = useTranslation();
   return (
     <div style={{ background: bg, padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "8px", borderTop: `1.5px solid ${border}` }}>
       <span style={{ fontSize: "12px", color: textColor, fontWeight: 600 }}>
@@ -1151,10 +1152,10 @@ function ActionFooter({ text, tabKey, handlePdf, handleExcel, pdfLoading, excelL
       </span>
       <div className="d-flex gap-2 flex-wrap">
         <button type="button" onClick={() => handlePdf(tabKey)} disabled={pdfLoading} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 2px 8px rgba(185,28,28,.25)", pdfLoading)}>
-          {pdfLoading ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Generating…</> : <>📄 Download Section PDF</>}
+          {pdfLoading ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> {t("Generating…", { ns: "reports" })}</> : <>📄 {t("Download Section PDF", { ns: "reports" })}</>}
         </button>
         <button type="button" onClick={() => handleExcel(tabKey)} disabled={excelLoading} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 2px 8px rgba(21,128,61,.25)", excelLoading)}>
-          {excelLoading ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Exporting…</> : <>📊 Download Section Excel</>}
+          {excelLoading ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> {t("Exporting…", { ns: "reports" })}</> : <>📊 {t("Download Section Excel", { ns: "reports" })}</>}
         </button>
       </div>
     </div>

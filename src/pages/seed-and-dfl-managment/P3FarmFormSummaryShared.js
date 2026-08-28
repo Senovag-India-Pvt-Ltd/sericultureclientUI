@@ -274,7 +274,7 @@ export function P3FarmFormSummaryReport({ cfg }) {
                   <label style={lbl}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="month" value={filter.month} onChange={handleChange} style={sel}>
                     <option value="">— Month —</option>
-                    {MONTHS.map((m) => (<option key={m.value} value={m.value}>{m.label}</option>))}
+                    {MONTHS.map((m) => (<option key={m.value} value={m.value}>{t(m.label, { ns: "reports" })}</option>))}
                   </Form.Select>
                 </Col>
                 <Col md={4}>

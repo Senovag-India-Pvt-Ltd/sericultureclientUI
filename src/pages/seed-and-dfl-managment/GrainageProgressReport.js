@@ -123,19 +123,19 @@ function GrainageProgressReport() {
   };
 
   const validate = () => {
-    if (!filter.grainageMasterId) return "Please select a Grainage.";
-    if (!filter.financialYearMasterId) return "Please select a Financial Year.";
-    if (!filter.month) return "Please select a Month.";
-    if (!fyStartYear) return "Could not determine the financial year start year.";
+    if (!filter.grainageMasterId) return t("Please select a Grainage.", { ns: "reports" });
+    if (!filter.financialYearMasterId) return t("Please select a Financial Year.", { ns: "reports" });
+    if (!filter.month) return t("Please select a Month.", { ns: "reports" });
+    if (!fyStartYear) return t("Could not determine the financial year start year.", { ns: "reports" });
     return null;
   };
 
   const showValidationError = (msg) => {
     Swal.fire({
       icon: "warning",
-      title: "Required Fields",
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Missing Selection</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Got it",
+      title: t("Required Fields", { ns: "reports" }),
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Missing Selection", { ns: "reports" })}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Got it", { ns: "reports" }),
       confirmButtonColor: "#d97706",
       background: "#fff",
       customClass: { popup: "gpr-swal" },
@@ -165,9 +165,9 @@ function GrainageProgressReport() {
     } catch {
       Swal.fire({
         icon: "error",
-        title: "Fetch Failed",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Could Not Load Report</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">Failed to fetch the progress report data. Please try again.</p></div></div></div>`,
-        confirmButtonText: "Close",
+        title: t("Fetch Failed", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Could Not Load Report", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${t("Failed to fetch the progress report data. Please try again.", { ns: "reports" })}</p></div></div></div>`,
+        confirmButtonText: t("Close"),
         confirmButtonColor: "#e53e3e",
         background: "#fff",
         customClass: { popup: "gpr-swal" },
@@ -197,9 +197,9 @@ function GrainageProgressReport() {
     } catch {
       Swal.fire({
         icon: "error",
-        title: "PDF Generation Failed",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📄</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">PDF Not Generated</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">Could not generate the PDF report. Please verify your selection and try again.</p></div></div></div>`,
-        confirmButtonText: "Close",
+        title: t("PDF Not Generated", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📄</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("PDF Not Generated", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${t("Could not generate the {{kind}} report. Please verify your selection and try again.", { ns: "reports", kind: "PDF" })}</p></div></div></div>`,
+        confirmButtonText: t("Close"),
         confirmButtonColor: "#e53e3e",
         background: "#fff",
         customClass: { popup: "gpr-swal" },
@@ -237,9 +237,9 @@ function GrainageProgressReport() {
     } catch {
       Swal.fire({
         icon: "error",
-        title: "Excel Generation Failed",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📊</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Excel Not Generated</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">Could not generate the Excel report. Please verify your selection and try again.</p></div></div></div>`,
-        confirmButtonText: "Close",
+        title: t("Excel Not Generated", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📊</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Excel Not Generated", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${t("Could not generate the {{kind}} report. Please verify your selection and try again.", { ns: "reports", kind: "Excel" })}</p></div></div></div>`,
+        confirmButtonText: t("Close"),
         confirmButtonColor: "#e53e3e",
         background: "#fff",
         customClass: { popup: "gpr-swal" },
@@ -320,42 +320,42 @@ function GrainageProgressReport() {
             <Form onSubmit={handleViewReport}>
               <Row className="g-2 align-items-end">
                 <Col md={3}>
-                  <label style={lbl}>Grainage <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Grainage")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="grainageMasterId" value={filter.grainageMasterId} onChange={handleFilterChange} style={sel}>
-                    <option value="">— Select Grainage —</option>
+                    <option value="">{`— ${t("Select Grainage", { ns: "reports" })} —`}</option>
                     {grainageList.map((g) => (
                       <option key={g.grainageMasterId} value={g.grainageMasterId}>{g.grainageMasterName}</option>
                     ))}
                   </Form.Select>
                 </Col>
                 <Col md={3}>
-                  <label style={lbl}>Financial Year <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Financial Year", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="financialYearMasterId" value={filter.financialYearMasterId} onChange={handleFilterChange} style={sel}>
-                    <option value="">— Select Year —</option>
+                    <option value="">{t("— Select Year —", { ns: "reports" })}</option>
                     {financialYearList.map((f) => (
                       <option key={f.financialYearMasterId} value={f.financialYearMasterId}>{f.financialYear}</option>
                     ))}
                   </Form.Select>
                 </Col>
                 <Col md={2}>
-                  <label style={lbl}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Month")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="month" value={filter.month} onChange={handleFilterChange} style={sel}>
-                    <option value="">— Month —</option>
+                    <option value="">{t("— Month —", { ns: "reports" })}</option>
                     {MONTHS.map((m) => (
-                      <option key={m.value} value={m.value}>{m.label}</option>
+                      <option key={m.value} value={m.value}>{t(m.label, { ns: "reports" })}</option>
                     ))}
                   </Form.Select>
                 </Col>
                 <Col md={4}>
                   <div className="d-flex gap-2 flex-wrap">
                     <button type="submit" disabled={isLoading} style={btn("linear-gradient(135deg,#1a5f9e,#2c8fd4)", "0 3px 10px rgba(26,95,158,0.30)", isLoading)}>
-                      {isLoading ? <><span className="spinner-border spinner-border-sm" /> Loading…</> : <>📋 View</>}
+                      {isLoading ? <><span className="spinner-border spinner-border-sm" /> {t("Loading…", { ns: "reports" })}</> : <>📋 {t("View")}</>}
                     </button>
                     <button type="button" disabled={isDownloading} onClick={handleDownloadPdf} style={btn("linear-gradient(135deg,#276749,#38a169)", "0 3px 10px rgba(39,103,73,0.28)", isDownloading)}>
-                      {isDownloading ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📥 PDF</>}
+                      {isDownloading ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📥 {t("PDF")}</>}
                     </button>
                     <button type="button" disabled={isDownloadingExcel} onClick={handleDownloadExcel} style={btn("linear-gradient(135deg,#1d6a3a,#22883f)", "0 3px 10px rgba(29,106,58,0.28)", isDownloadingExcel)}>
-                      {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> …</> : <>🟢 Excel</>}
+                      {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> …</> : <>🟢 {t("Excel", { ns: "reports" })}</>}
                     </button>
                   </div>
                 </Col>
@@ -378,7 +378,7 @@ function GrainageProgressReport() {
                 }}
               >
                 <span style={{ fontSize: "11px", color: "#2b6cb0", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em" }}>
-                  Grainage
+                  {t("Grainage")}
                 </span>
                 <span style={{ fontSize: "14px", color: "#1a202c", fontWeight: 700, marginTop: "2px" }}>
                   {selectedGrainage?.grainageMasterName || "—"}
@@ -393,7 +393,7 @@ function GrainageProgressReport() {
                 }}
               >
                 <span style={{ fontSize: "11px", color: "#276749", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em" }}>
-                  Month
+                  {t("Month")}
                 </span>
                 <span style={{ fontSize: "14px", color: "#1a202c", fontWeight: 700, marginTop: "2px" }}>
                   {monthLabel} {monthKn}
@@ -408,7 +408,7 @@ function GrainageProgressReport() {
                 }}
               >
                 <span style={{ fontSize: "11px", color: "#975a16", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em" }}>
-                  Comparing
+                  {t("Comparing", { ns: "reports" })}
                 </span>
                 <span style={{ fontSize: "14px", color: "#1a202c", fontWeight: 700, marginTop: "2px" }}>
                   {currFy} &nbsp;vs&nbsp; {prevFy}
@@ -423,7 +423,7 @@ function GrainageProgressReport() {
                     fontSize: "12px", color: "#4a5568", fontWeight: 600,
                   }}
                 >
-                  {reportRows.length} rows
+                  {reportRows.length} {t("rows", { ns: "reports" })}
                 </span>
               </div>
             </div>
@@ -561,7 +561,7 @@ function GrainageProgressReport() {
                             color: "#a0aec0", fontSize: "14px",
                           }}
                         >
-                          No data available for the selected filters.
+                          {t("No data available for the selected filters.", { ns: "reports" })}
                         </td>
                       </tr>
                     )}
@@ -597,9 +597,9 @@ function GrainageProgressReport() {
                     }}
                   >
                     {isDownloading ? (
-                      <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Generating…</>
+                      <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> {t("Generating…", { ns: "reports" })}</>
                     ) : (
-                      <>📥 Download PDF</>
+                      <>📥 {t("Download PDF")}</>
                     )}
                   </button>
                   <button
@@ -616,9 +616,9 @@ function GrainageProgressReport() {
                     }}
                   >
                     {isDownloadingExcel ? (
-                      <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Exporting…</>
+                      <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> {t("Exporting…", { ns: "reports" })}</>
                     ) : (
-                      <>🟢 Download Excel</>
+                      <>🟢 {t("Download Excel")}</>
                     )}
                   </button>
                 </div>

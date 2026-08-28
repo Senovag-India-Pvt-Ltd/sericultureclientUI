@@ -97,26 +97,26 @@ function GrainageCocoonSupplyReport() {
   };
 
   const validate = () => {
-    if (!filter.grainageMasterId)    return "Please select a Grainage.";
-    if (!filter.financialYearMasterId) return "Please select a Financial Year.";
-    if (!filter.month)               return "Please select a Month.";
-    if (!fyStartYear)                return "Could not determine the financial year start year.";
+    if (!filter.grainageMasterId)    return t("Please select a Grainage.", { ns: "reports" });
+    if (!filter.financialYearMasterId) return t("Please select a Financial Year.", { ns: "reports" });
+    if (!filter.month)               return t("Please select a Month.", { ns: "reports" });
+    if (!fyStartYear)                return t("Could not determine the financial year start year.", { ns: "reports" });
     return null;
   };
 
   const warn = (msg) =>
     Swal.fire({
-      icon: "warning", title: "Required Fields",
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px"><div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 4px">Missing Selection</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.6">${msg}</p></div></div></div>`,
-      confirmButtonText: "Got it", confirmButtonColor: "#d97706",
+      icon: "warning", title: t("Required Fields", { ns: "reports" }),
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px"><div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 4px">${t("Missing Selection", { ns: "reports" })}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.6">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Got it", { ns: "reports" }), confirmButtonColor: "#d97706",
       background: "#fff", customClass: { popup: "gcsr-swal" },
     });
 
   const errAlert = (title, msg) =>
     Swal.fire({
       icon: "error", title,
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px"><div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 4px">Failed</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.6">${msg}</p></div></div></div>`,
-      confirmButtonText: "Close", confirmButtonColor: "#e53e3e",
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px"><div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 4px">${t("Failed", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.6">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Close"), confirmButtonColor: "#e53e3e",
       background: "#fff", customClass: { popup: "gcsr-swal" },
     });
 
@@ -156,13 +156,13 @@ function GrainageCocoonSupplyReport() {
     } catch (err) {
         const status = err?.response?.status;
         if (status === 404 || status === 204) {
-          errAlert("No Data Found", "No data found for the selected filters.");
+          errAlert(t("No Data Found", { ns: "reports" }), t("No data found for the selected filters.", { ns: "reports" }));
         } else {
           const data = err?.response?.data;
           const backendMsg = typeof data === "string"
             ? data
             : (data?.message || data?.error || data?.errorMessage || data?.error_description);
-          errAlert("Fetch Failed", backendMsg || err?.message || "Failed to load the cocoon supply report. Please try again.");
+          errAlert(t("Fetch Failed", { ns: "reports" }), backendMsg || err?.message || t("Failed to load the cocoon supply report. Please try again.", { ns: "reports" }));
         }
       } finally {
       setIsLoading(false);
@@ -180,7 +180,7 @@ function GrainageCocoonSupplyReport() {
       });
       window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
     } catch {
-      errAlert("PDF Failed", "Could not generate the PDF report. Please try again.");
+      errAlert(t("PDF Failed", { ns: "reports" }), t("Could not generate the PDF report. Please try again.", { ns: "reports" }));
     } finally {
       setIsDownloadingPdf(false);
     }
@@ -204,7 +204,7 @@ function GrainageCocoonSupplyReport() {
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      errAlert("Excel Failed", "Could not generate the Excel report. Please try again.");
+      errAlert(t("Excel Failed", { ns: "reports" }), t("Could not generate the Excel report. Please try again.", { ns: "reports" }));
     } finally {
       setIsDownloadingExcel(false);
     }
@@ -242,11 +242,11 @@ function GrainageCocoonSupplyReport() {
   ];
 
   return (
-    <Layout title={t("P4 Grainage Cocoon Supply Report")}>
+    <Layout title={t("P4 Grainage Cocoon Supply Report", { ns: "reports" })}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("P4 Grainage Cocoon Supply Report")}</Block.Title>
+            <Block.Title tag="h2">{t("P4 Grainage Cocoon Supply Report", { ns: "reports" })}</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -281,29 +281,29 @@ function GrainageCocoonSupplyReport() {
             <Form onSubmit={handleView}>
               <Row className="g-2 align-items-end">
                 <Col md={3}>
-                  <label style={lblSt}>Grainage <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lblSt}>{t("Grainage")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="grainageMasterId" value={filter.grainageMasterId} onChange={handleChange} style={selSt}>
-                    <option value="">— Select Grainage —</option>
+                    <option value="">{`— ${t("Select Grainage", { ns: "reports" })} —`}</option>
                     {grainageList.map((g) => (
                       <option key={g.grainageMasterId} value={g.grainageMasterId}>{g.grainageMasterName}</option>
                     ))}
                   </Form.Select>
                 </Col>
                 <Col md={3}>
-                  <label style={lblSt}>Financial Year <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lblSt}>{t("Financial Year", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="financialYearMasterId" value={filter.financialYearMasterId} onChange={handleChange} style={selSt}>
-                    <option value="">— Select Year —</option>
+                    <option value="">{t("— Select Year —", { ns: "reports" })}</option>
                     {financialYearList.map((f) => (
                       <option key={f.financialYearMasterId} value={f.financialYearMasterId}>{f.financialYear}</option>
                     ))}
                   </Form.Select>
                 </Col>
                 <Col md={2}>
-                  <label style={lblSt}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lblSt}>{t("Month")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="month" value={filter.month} onChange={handleChange} style={selSt}>
-                    <option value="">— Month —</option>
+                    <option value="">{t("— Month —", { ns: "reports" })}</option>
                     {MONTHS.map((m) => (
-                      <option key={m.value} value={m.value}>{m.label}</option>
+                      <option key={m.value} value={m.value}>{t(m.label, { ns: "reports" })}</option>
                     ))}
                   </Form.Select>
                 </Col>
@@ -311,15 +311,15 @@ function GrainageCocoonSupplyReport() {
                   <div className="d-flex gap-2 flex-wrap">
                     <button type="submit" disabled={isLoading}
                       style={mkBtn("linear-gradient(135deg,#92400e,#d97706)", "0 3px 10px rgba(146,64,14,0.28)", isLoading)}>
-                      {isLoading ? <><span className="spinner-border spinner-border-sm" /> Loading…</> : <>📋 View</>}
+                      {isLoading ? <><span className="spinner-border spinner-border-sm" /> {t("Loading…", { ns: "reports" })}</> : <>📋 {t("View")}</>}
                     </button>
                     <button type="button" disabled={isDownloadingPdf} onClick={handlePdf}
                       style={mkBtn("linear-gradient(135deg,#276749,#38a169)", "0 3px 10px rgba(39,103,73,0.28)", isDownloadingPdf)}>
-                      {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📥 PDF</>}
+                      {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📥 {t("PDF")}</>}
                     </button>
                     <button type="button" disabled={isDownloadingExcel} onClick={handleExcel}
                       style={mkBtn("linear-gradient(135deg,#1d6a3a,#22883f)", "0 3px 10px rgba(29,106,58,0.28)", isDownloadingExcel)}>
-                      {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> …</> : <>🟢 Excel</>}
+                      {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> …</> : <>🟢 {t("Excel", { ns: "reports" })}</>}
                     </button>
                   </div>
                 </Col>
@@ -335,9 +335,9 @@ function GrainageCocoonSupplyReport() {
             {/* Summary pills */}
             <div className="d-flex flex-wrap gap-2 mb-3 align-items-center">
               {[
-                { label: "Grainage", value: selectedGrainage?.grainageMasterName || "—", accent: "#fde68a", bg: "linear-gradient(135deg,#fffbeb,#fef9ec)", text: "#92400e" },
-                { label: "Month",    value: `${monthLabel} ${monthKn}`,                   accent: "#9ae6b4", bg: "linear-gradient(135deg,#f0fff4,#f7fafc)",    text: "#276749" },
-                { label: "FY",       value: fyLabel,                                       accent: "#bee3f8", bg: "linear-gradient(135deg,#ebf8ff,#e6fffa)",    text: "#2b6cb0" },
+                { label: t("Grainage"), value: selectedGrainage?.grainageMasterName || "—", accent: "#fde68a", bg: "linear-gradient(135deg,#fffbeb,#fef9ec)", text: "#92400e" },
+                { label: t("Month"),    value: `${monthLabel} ${monthKn}`,                   accent: "#9ae6b4", bg: "linear-gradient(135deg,#f0fff4,#f7fafc)",    text: "#276749" },
+                { label: t("FY", { ns: "reports" }), value: fyLabel,                         accent: "#bee3f8", bg: "linear-gradient(135deg,#ebf8ff,#e6fffa)",    text: "#2b6cb0" },
               ].map((p) => (
                 <div key={p.label} style={{ background: p.bg, border: `1.5px solid ${p.accent}`, borderRadius: "10px", padding: "8px 16px", display: "flex", flexDirection: "column", minWidth: "130px" }}>
                   <span style={{ fontSize: "10px", color: p.text, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em" }}>{p.label}</span>
@@ -346,7 +346,7 @@ function GrainageCocoonSupplyReport() {
               ))}
               <div style={{ marginLeft: "auto" }}>
                 <span style={{ background: "#edf2f7", border: "1.5px solid #cbd5e0", borderRadius: "20px", padding: "5px 14px", fontSize: "12px", color: "#4a5568", fontWeight: 600 }}>
-                  {reportRows.length} rows
+                  {reportRows.length} {t("rows", { ns: "reports" })}
                 </span>
               </div>
             </div>
@@ -421,7 +421,7 @@ function GrainageCocoonSupplyReport() {
                     {reportRows.length === 0 && (
                       <tr>
                         <td colSpan={6} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>
-                          No data available for the selected filters.
+                          {t("No data available for the selected filters.", { ns: "reports" })}
                         </td>
                       </tr>
                     )}
@@ -442,11 +442,11 @@ function GrainageCocoonSupplyReport() {
                 <div className="d-flex gap-2">
                   <button onClick={handlePdf} disabled={isDownloadingPdf} type="button"
                     style={{ background: isDownloadingPdf ? "#c8d6e5" : "linear-gradient(135deg,#276749,#38a169)", border: "none", borderRadius: "7px", padding: "6px 16px", fontWeight: 700, fontSize: "12px", color: "#fff", cursor: isDownloadingPdf ? "not-allowed" : "pointer", display: "flex", alignItems: "center", gap: "5px" }}>
-                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: "13px", height: "13px" }} /> …</> : <>📥 PDF</>}
+                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: "13px", height: "13px" }} /> …</> : <>📥 {t("PDF")}</>}
                   </button>
                   <button onClick={handleExcel} disabled={isDownloadingExcel} type="button"
                     style={{ background: isDownloadingExcel ? "#c8d6e5" : "linear-gradient(135deg,#1d6a3a,#22883f)", border: "none", borderRadius: "7px", padding: "6px 16px", fontWeight: 700, fontSize: "12px", color: "#fff", cursor: isDownloadingExcel ? "not-allowed" : "pointer", display: "flex", alignItems: "center", gap: "5px" }}>
-                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: "13px", height: "13px" }} /> …</> : <>🟢 Excel</>}
+                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: "13px", height: "13px" }} /> …</> : <>🟢 {t("Excel", { ns: "reports" })}</>}
                   </button>
                 </div>
               </div>
