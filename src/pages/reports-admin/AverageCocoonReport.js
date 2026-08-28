@@ -8,11 +8,13 @@ import DatePicker from "react-datepicker";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function AverageCocoonReport() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
     startYear: "",
@@ -97,7 +99,7 @@ function AverageCocoonReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!", { ns: "reports" }),
         });
       });
 };
@@ -106,7 +108,7 @@ function AverageCocoonReport() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully", { ns: "reports" }),
       // text: "You clicked the button!",
     }).then(() => {
       navigate("/seriui/caste-list");
@@ -114,13 +116,13 @@ function AverageCocoonReport() {
   };
  
   return (
-    <Layout title="Average Report">
+    <Layout title={t("Average Report", { ns: "reports" })}>
       <style>{averageCocoonReportStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Average Report</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Average Report", { ns: "reports" })}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
 
@@ -141,7 +143,7 @@ function AverageCocoonReport() {
                     <Form.Group as={Row} className="form-group">
                       
                       <Form.Label column sm={1}>
-                        Start Year
+                        {t("Start Year", { ns: "reports" })}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -156,7 +158,7 @@ function AverageCocoonReport() {
                         </div>
                       </Col>
                       <Form.Label column sm={1}>
-                        End Year
+                        {t("End Year", { ns: "reports" })}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -172,7 +174,7 @@ function AverageCocoonReport() {
                       </Col>
                       <Col sm={2}>   
                         <Button type="button" variant="primary" onClick={exportCsv}>
-                        Export
+                        {t("Export", { ns: "reports" })}
                     </Button>
                       </Col>
                     </Form.Group>

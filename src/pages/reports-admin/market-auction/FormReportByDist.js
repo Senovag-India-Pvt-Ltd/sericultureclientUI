@@ -14,7 +14,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function FormReportByDist() {
-  const { t } = useTranslation(); // Add this line
+  const { t, i18n } = useTranslation(); // Add this line
 
   const [data, setData] = useState({
     districtId: localStorage.getItem("districtId"),
@@ -169,15 +169,15 @@ function FormReportByDist() {
           } else {
             Swal.fire({
               icon: "warning",
-              title: "No Record Found",
-              text: "No records were found for the selected district and date.",
+              title: t("No Record Found"),
+              text: t("No records were found for the selected district and date."),
             });
           }
         })
         .catch((err) => {
           Swal.fire({
             icon: "warning",
-            title: "No record found!!!",
+            title: t("No Record Found"),
           });
         });
     }
@@ -188,7 +188,7 @@ function FormReportByDist() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     }).then(() => {
       navigate("/seriui/caste-list");
@@ -197,8 +197,8 @@ function FormReportByDist() {
   const saveError = () => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Save attempt was not successful"),
+      text: t("Something went wrong", { ns: "reports" }),
     });
   };
   return (
@@ -242,7 +242,7 @@ function FormReportByDist() {
                           <option value="">{t("Select District")}</option> {/* Add t function */}
                           {districtListData.map((list) => (
                             <option key={list.districtId} value={list.districtId}>
-                              {list.districtName}
+                              {i18n.language === "kn" ? (list.districtNameInKannada || list.districtName) : list.districtName}
                               </option>
                             ))}
                             </Form.Select>

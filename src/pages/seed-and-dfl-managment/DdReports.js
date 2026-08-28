@@ -114,6 +114,7 @@ function DistrictFilterCard({
   isDownloadingPdf, isDownloadingExcel,
   onSubmit, onPdf, onExcel, extraRow,
 }) {
+  const { t, i18n } = useTranslation();
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthKn    = MONTH_KN[Number(filter.month)] || "";
   return (
@@ -138,33 +139,33 @@ function DistrictFilterCard({
         <Form onSubmit={onSubmit}>
           <Row className="g-2 align-items-end">
             <Col md={5}>
-              <label style={lbl}>District <span style={{ color: "#e53e3e" }}>*</span></label>
+              <label style={lbl}>{t("District")} <span style={{ color: "#e53e3e" }}>*</span></label>
               <ReactSelect
-                options={districtList.map((d) => ({ value: String(d.districtId), label: d.districtName }))}
-                placeholder="— Search District —"
+                options={districtList.map((d) => ({ value: String(d.districtId), label: i18n.language === "kn" ? (d.districtNameInKannada || d.districtName) : d.districtName }))}
+                placeholder={t("— Search District —", { ns: "reports" })}
                 isSearchable isClearable menuPlacement="auto"
                 menuPortalTarget={typeof document !== "undefined" ? document.body : null}
                 menuPosition="fixed" styles={reactSelectStyles}
-                value={districtList.map((d) => ({ value: String(d.districtId), label: d.districtName })).find((o) => o.value === String(filter.districtId)) || null}
+                value={districtList.map((d) => ({ value: String(d.districtId), label: i18n.language === "kn" ? (d.districtNameInKannada || d.districtName) : d.districtName })).find((o) => o.value === String(filter.districtId)) || null}
                 onChange={(opt) => { setFilter((p) => ({ ...p, districtId: opt?.value || "" })); reset(); }}
-                noOptionsMessage={() => "No districts"}
+                noOptionsMessage={() => t("No districts", { ns: "reports" })}
               />
             </Col>
             <Col md={2}>
-              <label style={lbl}>Year <span style={{ color: "#e53e3e" }}>*</span></label>
+              <label style={lbl}>{t("Year", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
               <Form.Select value={filter.year} onChange={(e) => { setFilter((p) => ({ ...p, year: e.target.value })); reset(); }} style={sel}>
                 {yearOptions.map((y) => <option key={y.value} value={y.value}>{y.label}</option>)}
               </Form.Select>
             </Col>
             <Col md={3}>
-              <label style={lbl}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
+              <label style={lbl}>{t("Month")} <span style={{ color: "#e53e3e" }}>*</span></label>
               <Form.Select value={filter.month} onChange={(e) => { setFilter((p) => ({ ...p, month: e.target.value })); reset(); }} style={sel}>
-                {MONTHS.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
+                {MONTHS.map((m) => <option key={m.value} value={m.value}>{t(m.label, { ns: "reports" })}</option>)}
               </Form.Select>
             </Col>
             <Col md={2}>
               <button type="submit" disabled={isLoading} style={btn("linear-gradient(135deg,#0f766e,#14b8a6)", "0 4px 12px rgba(15,118,110,.32)", isLoading)}>
-                {isLoading ? <><span className="spinner-border spinner-border-sm" /> Loading…</> : <>📋 View</>}
+                {isLoading ? <><span className="spinner-border spinner-border-sm" /> {t("Loading…", { ns: "reports" })}</> : <>📋 {t("View", { ns: "reports" })}</>}
               </button>
             </Col>
           </Row>
@@ -174,10 +175,10 @@ function DistrictFilterCard({
               <Col md={extraRow ? 4 : 12}>
                 <div className="d-flex gap-2 flex-wrap justify-content-md-end">
                   <button type="button" disabled={isDownloadingPdf} onClick={onPdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 4px 12px rgba(185,28,28,.30)", isDownloadingPdf)}>
-                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> PDF…</> : <>📄 PDF</>}
+                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> {t("PDF…", { ns: "reports" })}</> : <>📄 {t("PDF", { ns: "reports" })}</>}
                   </button>
                   <button type="button" disabled={isDownloadingExcel} onClick={onExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 4px 12px rgba(21,128,61,.30)", isDownloadingExcel)}>
-                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> Excel…</> : <>📊 Excel</>}
+                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> {t("Excel…", { ns: "reports" })}</> : <>📊 {t("Excel", { ns: "reports" })}</>}
                   </button>
                 </div>
               </Col>
@@ -193,6 +194,7 @@ function DistrictFilterCard({
 // Shared hook
 // ──────────────────────────────────────────────────────────────────────────
 function useDdReport(endpointKey, filenamePrefix, friendlyTitle) {
+  const { t, i18n } = useTranslation();
   const today = new Date();
   const [filter, setFilter] = useState({ districtId: "", year: today.getFullYear(), month: today.getMonth() + 1 });
   const [districtList, setDistrictList] = useState([]);
@@ -210,23 +212,23 @@ function useDdReport(endpointKey, filenamePrefix, friendlyTitle) {
 
   const reset = () => { setHasReport(false); setDataRows([]); };
   const validate = () => {
-    if (!filter.districtId) return "Please select a District.";
-    if (!filter.year)       return "Please select a Year.";
-    if (!filter.month)      return "Please select a Month.";
+    if (!filter.districtId) return t("Please select a District.", { ns: "reports" });
+    if (!filter.year)       return t("Please select a Year.", { ns: "reports" });
+    if (!filter.month)      return t("Please select a Month.", { ns: "reports" });
     return null;
   };
   const showWarn = (msg) =>
     Swal.fire({
-      icon: "warning", title: "Required Fields",
+      icon: "warning", title: t("Required Fields", { ns: "reports" }),
       html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px"><p style="color:#92400e;font-size:14px;font-weight:700;margin:0">${msg}</p></div></div>`,
-      confirmButtonText: "Got it", confirmButtonColor: "#d97706",
+      confirmButtonText: t("Got it", { ns: "reports" }), confirmButtonColor: "#d97706",
       background: "#fff", customClass: { popup: "dd-swal" },
     });
   const showErr = (title, msg) =>
     Swal.fire({
       icon: "error", title,
       html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px"><p style="color:#9b2c2c;font-size:13px;font-weight:600;margin:0">${msg}</p></div></div>`,
-      confirmButtonText: "Close", confirmButtonColor: "#e53e3e",
+      confirmButtonText: t("Close"), confirmButtonColor: "#e53e3e",
       background: "#fff", customClass: { popup: "dd-swal" },
     });
 
@@ -240,13 +242,13 @@ function useDdReport(endpointKey, filenamePrefix, friendlyTitle) {
     } catch (err) {
         const status = err?.response?.status;
         if (status === 404 || status === 204) {
-          showErr("No Data Found", "No data found for the selected filters.");
+          showErr(t("No Data Found", { ns: "reports" }), t("No data found for the selected filters.", { ns: "reports" }));
         } else {
           const data = err?.response?.data;
           const backendMsg = typeof data === "string"
             ? data
             : (data?.message || data?.error || data?.errorMessage || data?.error_description);
-          showErr("Fetch Failed", backendMsg || err?.message || `Failed to load the ${friendlyTitle} report.`);
+          showErr(t("Fetch Failed", { ns: "reports" }), backendMsg || err?.message || t("Failed to load the {{title}} report.", { ns: "reports", title: friendlyTitle }));
         }
       }
     finally { setIsLoading(false); }
@@ -257,7 +259,7 @@ function useDdReport(endpointKey, filenamePrefix, friendlyTitle) {
     try {
       const res = await api.get(baseURLSeedDFL + `grainage-progress-report/${endpointKey}/pdf`, { params: params(), responseType: "blob" });
       window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
-    } catch { showErr("PDF Failed", "Could not generate the PDF report."); } finally { setIsDownloadingPdf(false); }
+    } catch { showErr(t("PDF Failed", { ns: "reports" }), t("Could not generate the PDF report.", { ns: "reports" })); } finally { setIsDownloadingPdf(false); }
   };
   const handleExcel = async () => {
     const err = validate(); if (err) { showWarn(err); return; }
@@ -268,10 +270,11 @@ function useDdReport(endpointKey, filenamePrefix, friendlyTitle) {
       const a = document.createElement("a"); a.href = url;
       a.download = `${filenamePrefix}_${filter.districtId}_${filter.year}_${filter.month}.xlsx`;
       a.click(); URL.revokeObjectURL(url);
-    } catch { showErr("Excel Failed", "Could not generate the Excel report."); } finally { setIsDownloadingExcel(false); }
+    } catch { showErr(t("Excel Failed", { ns: "reports" }), t("Could not generate the Excel report.", { ns: "reports" })); } finally { setIsDownloadingExcel(false); }
   };
 
-  const districtName = districtList.find((d) => String(d.districtId) === String(filter.districtId))?.districtName || "—";
+  const selectedDistrictObj = districtList.find((d) => String(d.districtId) === String(filter.districtId));
+  const districtName = (i18n.language === "kn" ? (selectedDistrictObj?.districtNameInKannada || selectedDistrictObj?.districtName) : selectedDistrictObj?.districtName) || "—";
   const monthLabel   = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthKn      = MONTH_KN[Number(filter.month)] || "";
 
@@ -318,7 +321,7 @@ export function DdMulberryAreaReport() {
   }, [rpt.dataRows]);
 
   return (
-    <Layout title={t("DD Report — Form 27A Mulberry Area")}>
+    <Layout title={t("DD Report — Form 27A Mulberry Area", { ns: "reports" })}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -345,12 +348,12 @@ export function DdMulberryAreaReport() {
           onSubmit={rpt.handleView} onPdf={rpt.handlePdf} onExcel={rpt.handleExcel}
           extraRow={
             <>
-              <Col md={5}><label style={lbl}>Quick Search (Taluk)</label>
-                <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Type to filter…" style={{ ...sel, padding: "8px 12px" }} />
+              <Col md={5}><label style={lbl}>{t("Quick Search (Taluk)", { ns: "reports" })}</label>
+                <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("Type to filter…", { ns: "reports" })} style={{ ...sel, padding: "8px 12px" }} />
               </Col>
-              <Col md={3}><label style={lbl}>Total row</label>
+              <Col md={3}><label style={lbl}>{t("Total row", { ns: "reports" })}</label>
                 <button type="button" onClick={() => setHideTotals((v) => !v)} style={{ width: "100%", padding: "7px 12px", borderRadius: "9px", border: "none", background: hideTotals ? "#f1f5f9" : "linear-gradient(135deg,#fef3c7,#fde68a)", color: hideTotals ? "#475569" : "#854d0e", fontWeight: 800, fontSize: "12.5px", cursor: "pointer" }}>
-                  {hideTotals ? "🚫 Total hidden" : "✓ Total shown"}
+                  {hideTotals ? `🚫 ${t("Total hidden", { ns: "reports" })}` : `✓ ${t("Total shown", { ns: "reports" })}`}
                 </button>
               </Col>
             </>
@@ -419,7 +422,7 @@ export function DdMulberryAreaReport() {
                     ))}
                   </tr></thead>
                   <tbody>
-                    {filteredRows.length === 0 && <tr><td colSpan={14} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0" }}>{rpt.dataRows.length === 0 ? "No records found." : `No matches for "${search}".`}</td></tr>}
+                    {filteredRows.length === 0 && <tr><td colSpan={14} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0" }}>{rpt.dataRows.length === 0 ? t("No records found.", { ns: "reports" }) : t('No matches for "{{search}}".', { ns: "reports", search })}</td></tr>}
                     {filteredRows.map((row, ri) => {
                       const isTotal = isTotalRow(row);
                       const rowBg = isTotal ? "linear-gradient(135deg,#fffbeb,#fef3c7)" : (ri % 2 === 1 ? "#f8fafc" : "#ffffff");
@@ -500,7 +503,7 @@ export function DdCropYieldReport() {
   const idxAt = useMemo(() => { const m = new Map(); merges.forEach((g, gi) => { for (let k = g.start; k < g.start + g.count; k++) m.set(k, gi); }); return m; }, [merges]);
 
   return (
-    <Layout title={t("DD Report — Form 27B Crop Yield")}>
+    <Layout title={t("DD Report — Form 27B Crop Yield", { ns: "reports" })}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -526,8 +529,8 @@ export function DdCropYieldReport() {
           isDownloadingPdf={rpt.isDownloadingPdf} isDownloadingExcel={rpt.isDownloadingExcel}
           onSubmit={rpt.handleView} onPdf={rpt.handlePdf} onExcel={rpt.handleExcel}
           extraRow={
-            <Col md={8}><label style={lbl}>Quick Search (Taluk, Race)</label>
-              <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Type to filter…" style={{ ...sel, padding: "8px 12px" }} />
+            <Col md={8}><label style={lbl}>{t("Quick Search (Taluk, Race)", { ns: "reports" })}</label>
+              <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("Type to filter…", { ns: "reports" })} style={{ ...sel, padding: "8px 12px" }} />
             </Col>
           }
         />
@@ -581,7 +584,7 @@ export function DdCropYieldReport() {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredRows.length === 0 && <tr><td colSpan={17} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0" }}>{rpt.dataRows.length === 0 ? "No records found." : `No matches for "${search}".`}</td></tr>}
+                    {filteredRows.length === 0 && <tr><td colSpan={17} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0" }}>{rpt.dataRows.length === 0 ? t("No records found.", { ns: "reports" }) : t('No matches for "{{search}}".', { ns: "reports", search })}</td></tr>}
                     {filteredRows.map((row, ri) => {
                       const isFirst = firstOfGroup.has(ri);
                       const size = isFirst ? sizeAt.get(ri) : 0;
@@ -680,7 +683,7 @@ function DdCYPYReport({ config }) {
   const pyLabel = `${cyStart - 1}-${cyStart}`;
   const dec = config.decimals ?? 2;   // decimal precision (32=MT→3, 28=DFLs→2) kept consistent with query/PDF/Excel
   return (
-    <Layout title={t(config.layoutTitle)}>
+    <Layout title={t(config.layoutTitle, { ns: "reports" })}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -704,8 +707,8 @@ function DdCYPYReport({ config }) {
           isDownloadingPdf={rpt.isDownloadingPdf} isDownloadingExcel={rpt.isDownloadingExcel}
           onSubmit={rpt.handleView} onPdf={rpt.handlePdf} onExcel={rpt.handleExcel}
           extraRow={
-            <Col md={8}><label style={lbl}>Quick Search (Taluk, Race)</label>
-              <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Type to filter…" style={{ ...sel, padding: "8px 12px" }} />
+            <Col md={8}><label style={lbl}>{t("Quick Search (Taluk, Race)", { ns: "reports" })}</label>
+              <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("Type to filter…", { ns: "reports" })} style={{ ...sel, padding: "8px 12px" }} />
             </Col>
           }
         />
@@ -752,7 +755,7 @@ function DdCYPYReport({ config }) {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredRows.length === 0 && <tr><td colSpan={17} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0" }}>{rpt.dataRows.length === 0 ? "No records found." : `No matches for "${search}".`}</td></tr>}
+                    {filteredRows.length === 0 && <tr><td colSpan={17} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0" }}>{rpt.dataRows.length === 0 ? t("No records found.", { ns: "reports" }) : t('No matches for "{{search}}".', { ns: "reports", search })}</td></tr>}
                     {filteredRows.map((row, ri) => {
                       const isFirst = firstOfGroup.has(ri);
                       const size = isFirst ? sizeAt.get(ri) : 0;

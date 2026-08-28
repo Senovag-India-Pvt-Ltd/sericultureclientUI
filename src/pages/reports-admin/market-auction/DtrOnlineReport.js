@@ -107,7 +107,7 @@ function DtrOnlineReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No Record Found", { ns: "reports" }),
         });
       });
   };
@@ -239,7 +239,7 @@ function DtrOnlineReport() {
                 setListData([]);
                 return Swal.fire({
                   icon: "warning",
-                  title: "No Data Found",
+                  title: t("No Data Found", { ns: "reports" }),
                   // text: "Something went wrong!",
                 });
               }
@@ -259,7 +259,7 @@ function DtrOnlineReport() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     }).then(() => {
       navigate("/seriui/caste-list");
@@ -268,8 +268,8 @@ function DtrOnlineReport() {
   const saveError = () => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Save attempt was not successful"),
+      text: t("Something went wrong", { ns: "reports" }),
     });
   };
   return (
@@ -324,7 +324,7 @@ function DtrOnlineReport() {
                           value={data.reelerId}
                           onChange={handleInputs}
                           type="text"
-                          placeholder="Enter Reeler Number"
+                          placeholder={t("Enter Reeler Number")}
                           // required
                         />
                         {/* <Form.Control.Feedback type="invalid">

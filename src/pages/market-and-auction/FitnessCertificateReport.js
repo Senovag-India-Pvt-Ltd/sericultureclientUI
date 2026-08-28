@@ -45,9 +45,9 @@ function FitnessCertificate() {
     if (!fitnessCertificateId.trim() || !fruitsId.trim()) {
       Swal.fire({
         icon: "warning",
-        title: "Required Fields",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Fields Required</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">Please enter both Fitness Certificate ID and Fruits ID before generating.</p></div></div></div>`,
-        confirmButtonText: "Got it",
+        title: t("Required Fields", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Fields Required", { ns: "reports" })}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${t("Please enter both Fitness Certificate ID and Fruits ID before generating.", { ns: "reports" })}</p></div></div></div>`,
+        confirmButtonText: t("Got it", { ns: "reports" }),
         confirmButtonColor: "#d97706",
         background: "#fff",
         showClass: { popup: "animate__animated animate__headShake animate__faster" },
@@ -67,12 +67,12 @@ function FitnessCertificate() {
       );
       const blobData = response.data;
       if (!blobData || blobData.size === 0) {
-        Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+        Swal.fire({ icon: "info", title: t("No Data Found", { ns: "reports" }), text: t("No records found for the selected criteria.", { ns: "reports" }) });
         return;
       }
       const firstBytes = await blobData.slice(0, 10).text();
       if (!firstBytes.startsWith('%PDF')) {
-        Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+        Swal.fire({ icon: "info", title: t("No Data Found", { ns: "reports" }), text: t("No records found for the selected criteria.", { ns: "reports" }) });
         return;
       }
       const pdfUrl = URL.createObjectURL(blobData);
@@ -87,12 +87,12 @@ function FitnessCertificate() {
       let isNoData = false;
       try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0|No data found/i.test(t); } } catch (_) {}
       if (isNoData) {
-        Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+        Swal.fire({ icon: "info", title: t("No Data Found", { ns: "reports" }), text: t("No records found for the selected criteria.", { ns: "reports" }) });
       } else {
         Swal.fire({
-          icon: "error", title: "Generation Failed",
-          html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Could Not Generate</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">Failed to generate the Fitness Certificate. Please try again.</p></div></div></div>`,
-          confirmButtonText: "Close", confirmButtonColor: "#e53e3e", background: "#fff",
+          icon: "error", title: t("Generation Failed", { ns: "reports" }),
+          html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Could Not Generate", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${t("Failed to generate the Fitness Certificate. Please try again.", { ns: "reports" })}</p></div></div></div>`,
+          confirmButtonText: t("Close", { ns: "reports" }), confirmButtonColor: "#e53e3e", background: "#fff",
           showClass: { popup: "animate__animated animate__shakeX animate__faster" },
           customClass: { popup: "swal-pop" },
         });
@@ -103,13 +103,13 @@ function FitnessCertificate() {
   };
 
   return (
-    <Layout title={t("Fitness Certificate")}>
+    <Layout title={t("Fitness Certificate", { ns: "reports" })}>
       <style>{fitnessCertificateReportStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">{t("Fitness Certificate")}</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Fitness Certificate", { ns: "reports" })}</Block.Title>
             </Block.HeadContent>
           </Block.HeadBetween>
         </div>
@@ -122,43 +122,43 @@ function FitnessCertificate() {
               📜
             </div>
             <div>
-              <div style={{ color: "#fff", fontWeight: 700, fontSize: "17px", lineHeight: 1.2 }}>Fitness Certificate</div>
-              <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "2px" }}>Generate fitness certificate by certificate ID and Fruits ID</div>
+              <div style={{ color: "#fff", fontWeight: 700, fontSize: "17px", lineHeight: 1.2 }}>{t("Fitness Certificate", { ns: "reports" })}</div>
+              <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "2px" }}>{t("Generate fitness certificate by certificate ID and Fruits ID", { ns: "reports" })}</div>
             </div>
             <div style={{ marginLeft: "auto", background: "rgba(255,255,255,0.15)", borderRadius: "20px", padding: "4px 14px" }}>
-              <span style={{ color: "#fff", fontSize: "12px", fontWeight: 600 }}>Seed Market</span>
+              <span style={{ color: "#fff", fontSize: "12px", fontWeight: 600 }}>{t("Seed Market", { ns: "reports" })}</span>
             </div>
           </div>
 
           <Card.Body style={{ padding: "28px 32px 32px" }}>
             <div style={{ fontSize: "12px", fontWeight: 700, color: "#1e67a8", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "20px" }}>
-              Filter Parameters
+              {t("Filter Parameters", { ns: "reports" })}
             </div>
 
             <Form onSubmit={handleGenerate} noValidate>
               <Row className="mb-4">
                 <Col md={6} style={fieldGroupStyle}>
                   <label style={labelStyle}>
-                    Fitness Certificate ID <span style={{ color: "#e53e3e" }}>*</span>
+                    {t("Fitness Certificate ID", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span>
                   </label>
                   <input
                     type="text"
                     value={fitnessCertificateId}
                     onChange={(e) => setFitnessCertificateId(e.target.value)}
-                    placeholder="Enter Fitness Certificate ID"
+                    placeholder={t("Enter Fitness Certificate ID", { ns: "reports" })}
                     style={inputStyle}
                     required
                   />
                 </Col>
                 <Col md={6} style={fieldGroupStyle}>
                   <label style={labelStyle}>
-                    Fruits ID <span style={{ color: "#e53e3e" }}>*</span>
+                    {t("Fruits ID", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span>
                   </label>
                   <input
                     type="text"
                     value={fruitsId}
                     onChange={(e) => setFruitsId(e.target.value)}
-                    placeholder="Enter Fruits ID"
+                    placeholder={t("Enter Fruits ID", { ns: "reports" })}
                     style={inputStyle}
                     required
                   />
@@ -180,8 +180,8 @@ function FitnessCertificate() {
                 }}
               >
                 {isGenerating
-                  ? <><span className="spinner-border spinner-border-sm" /> Generating…</>
-                  : <>📜 Generate Fitness Certificate</>}
+                  ? <><span className="spinner-border spinner-border-sm" /> {t("Generating…", { ns: "reports" })}</>
+                  : <>📜 {t("Generate Fitness Certificate", { ns: "reports" })}</>}
               </button>
             </Form>
           </Card.Body>

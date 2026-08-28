@@ -59,21 +59,21 @@ function SeedMFReports() {
         if (!response.data.content || response.data.content.length === 0) {
           Swal.fire({
             icon: "warning",
-            title: "No Data Found",
+            title: t("No Data Found", { ns: "reports" }),
           });
         }
       })
       .catch(() => {
         Swal.fire({
           icon: "error",
-          title: "Error fetching report",
+          title: t("Error fetching report", { ns: "reports" }),
         });
       });
   };
 
   const downloadExcel = () => {
     if (!counterData || counterData.length === 0) {
-      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      Swal.fire({ icon: "info", title: t("No Data Found", { ns: "reports" }), text: t("No records found for the selected criteria.", { ns: "reports" }) });
       return;
     }
     const { marketId, fromDate, toDate, licenseNumber } = data;
@@ -115,7 +115,7 @@ function SeedMFReports() {
       .catch(() => {
         Swal.fire({
           icon: "error",
-          title: "Error downloading file",
+          title: t("Error downloading file", { ns: "reports" }),
         });
       });
   };
@@ -139,7 +139,7 @@ function SeedMFReports() {
                     <Col md={4}>
                       <Form.Group>
                         <Form.Label className="fw-bold">
-                          License Number
+                          {t("License Number", { ns: "reports" })}
                         </Form.Label>
                         <Form.Control
                           name="licenseNumber"
@@ -151,7 +151,7 @@ function SeedMFReports() {
                             })
                           }
                           type="text"
-                          placeholder="Enter License Number"
+                          placeholder={t("Enter License Number", { ns: "reports" })}
                         />
                       </Form.Group>
                     </Col>
@@ -159,7 +159,7 @@ function SeedMFReports() {
                     {/* FROM DATE */}
                     <Col md={2}>
                       <Form.Group>
-                        <Form.Label className="fw-bold">From Date</Form.Label>
+                        <Form.Label className="fw-bold">{t("From Date")}</Form.Label>
                         <DatePicker
                           selected={data.fromDate}
                           onChange={handleFromDateChange}
@@ -173,7 +173,7 @@ function SeedMFReports() {
                     {/* TO DATE */}
                     <Col md={2}>
                       <Form.Group>
-                        <Form.Label className="fw-bold">To Date</Form.Label>
+                        <Form.Label className="fw-bold">{t("To Date")}</Form.Label>
                         <DatePicker
                           selected={data.toDate}
                           onChange={handleToDateChange}
@@ -191,7 +191,7 @@ function SeedMFReports() {
                         type="submit"
                         className="w-100 mt-2"
                       >
-                        Search
+                        {t("Search", { ns: "reports" })}
                       </Button>
                     </Col>
 
@@ -204,7 +204,7 @@ function SeedMFReports() {
                         className="w-100 mt-2"
                         disabled={!counterData || counterData.length === 0}
                       >
-                        Generate Excel
+                        {t("Generate Excel", { ns: "reports" })}
                       </Button>
                     </Col>
                   </Row>

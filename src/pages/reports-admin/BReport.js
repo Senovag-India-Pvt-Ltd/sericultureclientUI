@@ -8,11 +8,13 @@ import DatePicker from "react-datepicker";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 
 function BReport() {
+  const { t } = useTranslation();
   const [data, setData] = useState({
     startDate: "",
   });
@@ -87,7 +89,7 @@ function BReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!", { ns: "reports" }),
         });
       });
 };
@@ -96,19 +98,19 @@ function BReport() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully", { ns: "reports" }),
       // text: "You clicked the button!",
     });
   };
  
   return (
-    <Layout title="27 B Report">
+    <Layout title={t("27 B Report", { ns: "reports" })}>
       <style>{bReportStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">27 B Report</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("27 B Report", { ns: "reports" })}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
 
@@ -129,7 +131,7 @@ function BReport() {
                     <Form.Group as={Row} className="form-group">
                       
                       <Form.Label column sm={1}>
-                        Start Date
+                        {t("Start Date", { ns: "reports" })}
                         <span className="text-danger">*</span>
                       </Form.Label>
                       <Col sm={2}>
@@ -160,7 +162,7 @@ function BReport() {
                       </Col> */}
                       <Col sm={2}>   
                         <Button type="button" variant="primary" onClick={exportCsv}>
-                        Export
+                        {t("Export", { ns: "reports" })}
                     </Button>
                       </Col>
                     </Form.Group>

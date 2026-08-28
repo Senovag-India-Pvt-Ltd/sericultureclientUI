@@ -1998,7 +1998,7 @@ function DbtApplication() {
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label>
                             {t("Financial Year")}
                               <span className="text-danger">*</span>
@@ -2033,7 +2033,7 @@ function DbtApplication() {
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                             {t("Scheme")}
                               <span className="text-danger">*</span>
@@ -2069,7 +2069,7 @@ function DbtApplication() {
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label>
                               {t("Scheme Type")}
                               <span className="text-danger">*</span>
@@ -2105,7 +2105,7 @@ function DbtApplication() {
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label>
                             {t("Component Type")}
                               <span className="text-danger">*</span>
@@ -2139,7 +2139,7 @@ function DbtApplication() {
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                             {t("Component")}
                               <span className="text-danger">*</span>
@@ -2175,7 +2175,7 @@ function DbtApplication() {
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                             {t("Sub Component")}
                               <span className="text-danger">*</span>
@@ -2211,7 +2211,7 @@ function DbtApplication() {
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                             {t("Head of Account")}
                               <span className="text-danger">*</span>
@@ -2247,7 +2247,7 @@ function DbtApplication() {
                         </Col>
 
                         {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sanctionAmount">
                               Sanction Amount
                               <span className="text-danger">*</span>
@@ -2270,7 +2270,7 @@ function DbtApplication() {
                         </Col> */}
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="schemeAmount">
                             {t("Scheme Amount")}
                               <span className="text-danger">*</span>
@@ -2295,7 +2295,7 @@ function DbtApplication() {
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sanctionNumber">
                               {t("Sanction Number")}
                               <span className="text-danger">*</span>
@@ -2318,7 +2318,7 @@ function DbtApplication() {
                         </Col>
 
                         {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="beneficiaryId">
                               Beneficiary Id
                               <span className="text-danger">*</span>
@@ -2341,7 +2341,7 @@ function DbtApplication() {
                         </Col> */}
 
                         <Col lg="2">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                             {t("From Date")}
                               <span className="text-danger">*</span>
@@ -2367,7 +2367,7 @@ function DbtApplication() {
                           </Form.Group>
                         </Col>
                         <Col lg="2">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                             {t("To Date")}
                               <span className="text-danger">*</span>
@@ -2406,7 +2406,7 @@ function DbtApplication() {
                   <Card.Body>
                     <Row className="g-gs">
                       <Col lg="4">
-                        <Form.Group className="form-group mt-n3">
+                        <Form.Group className="form-group">
                           <Form.Label>
                             Vendor Name<span className="text-danger">*</span>
                           </Form.Label>

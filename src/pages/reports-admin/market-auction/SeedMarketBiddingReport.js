@@ -90,7 +90,7 @@ function SeedMarketBiddingReport() {
 
           Swal.fire({
             icon: "warning",
-            title: "No Record Found",
+            title: t("No Record Found", { ns: "reports" }),
           });
         }
       })
@@ -98,7 +98,7 @@ function SeedMarketBiddingReport() {
 
         Swal.fire({
           icon: "error",
-          title: "Something went wrong",
+          title: t("Something went wrong", { ns: "reports" }),
         });
       });
   };
@@ -106,7 +106,7 @@ function SeedMarketBiddingReport() {
   // GENERATE EXCEL
   const generateReport = () => {
     if (!reportList || reportList.length === 0) {
-      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      Swal.fire({ icon: "info", title: t("No Data Found", { ns: "reports" }), text: t("No records found for the selected criteria.", { ns: "reports" }) });
       return;
     }
 

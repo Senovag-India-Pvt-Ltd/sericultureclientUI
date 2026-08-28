@@ -113,7 +113,7 @@ function BlankDtrReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No Record Found", { ns: "reports" }),
         });
       });
 };
@@ -205,7 +205,7 @@ function BlankDtrReport() {
                 setListData([]);
                 return Swal.fire({
                   icon: "warning",
-                  title: "No Data Found",
+                  title: t("No Data Found", { ns: "reports" }),
                   // text: "Something went wrong!",
                 });
               }
@@ -225,7 +225,7 @@ function BlankDtrReport() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     }).then(() => {
       navigate("/seriui/caste-list");
@@ -234,8 +234,8 @@ function BlankDtrReport() {
   const saveError = () => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Save attempt was not successful"),
+      text: t("Something went wrong", { ns: "reports" }),
     });
   };
   return (

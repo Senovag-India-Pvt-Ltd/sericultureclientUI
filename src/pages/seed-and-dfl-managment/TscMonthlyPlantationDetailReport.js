@@ -141,26 +141,26 @@ function TscMonthlyPlantationDetailReport() {
   const reset = () => { setHasReport(false); setDataRows([]); setSearch(""); };
 
   const validate = () => {
-    if (!filter.districtId) return "Please select a District.";
-    if (!filter.talukId)    return "Please select a Taluk.";
-    if (!filter.year)       return "Please select a Year.";
-    if (!filter.month)      return "Please select a Month.";
+    if (!filter.districtId) return t("Please select a District.", { ns: "reports" });
+    if (!filter.talukId)    return t("Please select a Taluk.", { ns: "reports" });
+    if (!filter.year)       return t("Please select a Year.", { ns: "reports" });
+    if (!filter.month)      return t("Please select a Month.", { ns: "reports" });
     return null;
   };
 
   const showWarn = (msg) =>
     Swal.fire({
-      icon: "warning", title: "Required Fields",
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Missing Selection</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Got it", confirmButtonColor: "#d97706",
+      icon: "warning", title: t("Required Fields", { ns: "reports" }),
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Missing Selection", { ns: "reports" })}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Got it", { ns: "reports" }), confirmButtonColor: "#d97706",
       background: "#fff", customClass: { popup: "tscpld-swal" },
     });
 
   const showErr = (title, msg) =>
     Swal.fire({
       icon: "error", title,
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Failed</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Close", confirmButtonColor: "#e53e3e",
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Failed", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Close"), confirmButtonColor: "#e53e3e",
       background: "#fff", customClass: { popup: "tscpld-swal" },
     });
 
@@ -184,13 +184,13 @@ function TscMonthlyPlantationDetailReport() {
     } catch (err) {
         const status = err?.response?.status;
         if (status === 404 || status === 204) {
-          showErr("No Data Found", "No data found for the selected filters.");
+          showErr(t("No Data Found", { ns: "reports" }), t("No data found for the selected filters.", { ns: "reports" }));
         } else {
           const data = err?.response?.data;
           const backendMsg = typeof data === "string"
             ? data
             : (data?.message || data?.error || data?.errorMessage || data?.error_description);
-          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the TSC Monthly Plantation Detail (Sheet 4) report.");
+          showErr(t("Fetch Failed", { ns: "reports" }), backendMsg || err?.message || t("Failed to load the TSC Monthly Plantation Detail (Sheet 4) report.", { ns: "reports" }));
         }
       } finally {
       setIsLoading(false);
@@ -205,7 +205,7 @@ function TscMonthlyPlantationDetailReport() {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/tsc-monthly/plantation-detail/pdf", { params: params(), responseType: "blob" });
       window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
     } catch {
-      showErr("PDF Failed", "Could not generate the PDF report.");
+      showErr(t("PDF Failed", { ns: "reports" }), t("Could not generate the PDF report.", { ns: "reports" }));
     } finally {
       setIsDownloadingPdf(false);
     }
@@ -224,7 +224,7 @@ function TscMonthlyPlantationDetailReport() {
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      showErr("Excel Failed", "Could not generate the Excel report.");
+      showErr(t("Excel Failed", { ns: "reports" }), t("Could not generate the Excel report.", { ns: "reports" }));
     } finally {
       setIsDownloadingExcel(false);
     }
@@ -311,7 +311,7 @@ function TscMonthlyPlantationDetailReport() {
   };
 
   return (
-    <Layout title={t("TSC Monthly Plantation Detail — Sheet 4")}>
+    <Layout title={t("TSC Monthly Plantation Detail (Sheet 4)", { ns: "reports" })}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -363,10 +363,10 @@ function TscMonthlyPlantationDetailReport() {
             <Form onSubmit={handleView}>
               <Row className="g-2 align-items-end">
                 <Col md={3}>
-                  <label style={lbl}>District <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("District")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
                     options={districtList.map((d) => ({ value: String(d.districtId), label: d.districtName }))}
-                    placeholder="— Search District —"
+                    placeholder={t("— Search District —", { ns: "reports" })}
                     isSearchable isClearable menuPlacement="auto"
                     menuPortalTarget={typeof document !== "undefined" ? document.body : null}
                     menuPosition="fixed" styles={reactSelectStyles}
@@ -376,14 +376,14 @@ function TscMonthlyPlantationDetailReport() {
                         .find((o) => o.value === String(filter.districtId)) || null
                     }
                     onChange={(opt) => { setFilter((p) => ({ ...p, districtId: opt?.value || "", talukId: "" })); reset(); }}
-                    noOptionsMessage={() => "No districts"}
+                    noOptionsMessage={() => t("No districts", { ns: "reports" })}
                   />
                 </Col>
                 <Col md={3}>
-                  <label style={lbl}>Taluk <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Taluk")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
                     options={talukList.map((tk) => ({ value: String(tk.talukId), label: tk.talukName }))}
-                    placeholder={filter.districtId ? "— Search Taluk —" : "Select District first"}
+                    placeholder={filter.districtId ? t("— Search Taluk —", { ns: "reports" }) : t("Select District first", { ns: "reports" })}
                     isSearchable isClearable isDisabled={!filter.districtId} menuPlacement="auto"
                     menuPortalTarget={typeof document !== "undefined" ? document.body : null}
                     menuPosition="fixed" styles={reactSelectStyles}
@@ -393,11 +393,11 @@ function TscMonthlyPlantationDetailReport() {
                         .find((o) => o.value === String(filter.talukId)) || null
                     }
                     onChange={(opt) => { setFilter((p) => ({ ...p, talukId: opt?.value || "" })); reset(); }}
-                    noOptionsMessage={() => "No taluks"}
+                    noOptionsMessage={() => t("No taluks", { ns: "reports" })}
                   />
                 </Col>
                 <Col md={2}>
-                  <label style={lbl}>Year <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Year", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="year" value={filter.year}
                                onChange={(e) => { setFilter((p) => ({ ...p, year: e.target.value })); reset(); }}
                                style={sel}>
@@ -405,17 +405,17 @@ function TscMonthlyPlantationDetailReport() {
                   </Form.Select>
                 </Col>
                 <Col md={2}>
-                  <label style={lbl}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Month")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="month" value={filter.month}
                                onChange={(e) => { setFilter((p) => ({ ...p, month: e.target.value })); reset(); }}
                                style={sel}>
-                    {MONTHS.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
+                    {MONTHS.map((m) => <option key={m.value} value={m.value}>{t(m.label, { ns: "reports" })}</option>)}
                   </Form.Select>
                 </Col>
                 <Col md={2}>
                   <div className="d-flex gap-2 flex-wrap">
                     <button type="submit" disabled={isLoading} style={btn("linear-gradient(135deg,#0f766e,#14b8a6)", "0 4px 12px rgba(15,118,110,.32)", isLoading)}>
-                      {isLoading ? <><span className="spinner-border spinner-border-sm" /> Loading…</> : <>📋 View</>}
+                      {isLoading ? <><span className="spinner-border spinner-border-sm" /> {t("Loading…", { ns: "reports" })}</> : <>📋 {t("View", { ns: "reports" })}</>}
                     </button>
                   </div>
                 </Col>
@@ -423,21 +423,21 @@ function TscMonthlyPlantationDetailReport() {
               {hasReport && (
                 <Row className="g-2 mt-2 align-items-end">
                   <Col md={6}>
-                    <label style={lbl}>Quick Search (TSC, Farmer, Village, Variety…)</label>
+                    <label style={lbl}>{t("Quick Search (TSC, Farmer, Village, Variety…)", { ns: "reports" })}</label>
                     <input
                       type="text" value={search}
                       onChange={(e) => setSearch(e.target.value)}
-                      placeholder="Type to filter the loaded rows…"
+                      placeholder={t("Type to filter the loaded rows…", { ns: "reports" })}
                       style={{ ...sel, padding: "8px 12px" }}
                     />
                   </Col>
                   <Col md={6}>
                     <div className="d-flex gap-2 flex-wrap justify-content-md-end">
                       <button type="button" disabled={isDownloadingPdf} onClick={handlePdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 4px 12px rgba(185,28,28,.30)", isDownloadingPdf)}>
-                        {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> Generating PDF…</> : <>📄 PDF</>}
+                        {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> {t("Generating PDF…", { ns: "reports" })}</> : <>📄 {t("PDF", { ns: "reports" })}</>}
                       </button>
                       <button type="button" disabled={isDownloadingExcel} onClick={handleExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 4px 12px rgba(21,128,61,.30)", isDownloadingExcel)}>
-                        {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> Exporting…</> : <>📊 Excel</>}
+                        {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> {t("Exporting…", { ns: "reports" })}</> : <>📊 {t("Excel", { ns: "reports" })}</>}
                       </button>
                     </div>
                   </Col>
@@ -525,7 +525,7 @@ function TscMonthlyPlantationDetailReport() {
                         <td colSpan={COLS.length} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>
                           {dataRows.length === 0
                             ? "ಯಾವುದೇ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ / No records found."
-                            : `No matches for "${search}".`}
+                            : t('No matches for "{{search}}".', { ns: "reports", search })}
                         </td>
                       </tr>
                     )}
@@ -613,10 +613,10 @@ function TscMonthlyPlantationDetailReport() {
                 </span>
                 <div className="d-flex gap-2 flex-wrap">
                   <button type="button" onClick={handlePdf} disabled={isDownloadingPdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 2px 8px rgba(185,28,28,.25)", isDownloadingPdf)}>
-                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Generating…</> : <>📄 Download PDF</>}
+                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> {t("Generating…", { ns: "reports" })}</> : <>📄 {t("Download PDF", { ns: "reports" })}</>}
                   </button>
                   <button type="button" onClick={handleExcel} disabled={isDownloadingExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 2px 8px rgba(21,128,61,.25)", isDownloadingExcel)}>
-                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Exporting…</> : <>📊 Download Excel</>}
+                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> {t("Exporting…", { ns: "reports" })}</> : <>📊 {t("Download Excel", { ns: "reports" })}</>}
                   </button>
                 </div>
               </div>

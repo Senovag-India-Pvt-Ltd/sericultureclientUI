@@ -41,9 +41,9 @@ function SeedMarketMarketReceiptReport() {
     e.preventDefault();
     if (!data.allottedLotId) {
       Swal.fire({
-        icon: "warning", title: "Required Field",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Bidding Slip Lot No Required</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">Please enter the Bidding Slip Lot No before generating the report.</p></div></div></div>`,
-        confirmButtonText: "Got it", confirmButtonColor: "#d97706", background: "#fff",
+        icon: "warning", title: t("Required Field", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Bidding Slip Lot No Required", { ns: "reports" })}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${t("Please enter the Bidding Slip Lot No before generating the report.", { ns: "reports" })}</p></div></div></div>`,
+        confirmButtonText: t("Got it", { ns: "reports" }), confirmButtonColor: "#d97706", background: "#fff",
         showClass: { popup: "animate__animated animate__headShake animate__faster" },
         customClass: { popup: "swal-pop" },
       });
@@ -58,12 +58,12 @@ function SeedMarketMarketReceiptReport() {
       );
       const blobData = response.data;
       if (!blobData || blobData.size === 0) {
-        Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+        Swal.fire({ icon: "info", title: t("No Data Found", { ns: "reports" }), text: t("No records found for the selected criteria.", { ns: "reports" }) });
         return;
       }
       const firstBytes = await blobData.slice(0, 10).text();
       if (!firstBytes.startsWith('%PDF')) {
-        Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+        Swal.fire({ icon: "info", title: t("No Data Found", { ns: "reports" }), text: t("No records found for the selected criteria.", { ns: "reports" }) });
         return;
       }
       const pdfUrl = URL.createObjectURL(blobData);
@@ -78,12 +78,12 @@ function SeedMarketMarketReceiptReport() {
       let isNoData = false;
       try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0|No data found/i.test(t); } } catch (_) {}
       if (isNoData) {
-        Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+        Swal.fire({ icon: "info", title: t("No Data Found", { ns: "reports" }), text: t("No records found for the selected criteria.", { ns: "reports" }) });
       } else {
         Swal.fire({
-          icon: "error", title: "Generation Failed",
-          html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Could Not Generate</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">Failed to generate the report. Please try again.</p></div></div></div>`,
-          confirmButtonText: "Close", confirmButtonColor: "#e53e3e", background: "#fff",
+          icon: "error", title: t("Generation Failed", { ns: "reports" }),
+          html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Could Not Generate", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${t("Failed to generate the report. Please try again.", { ns: "reports" })}</p></div></div></div>`,
+          confirmButtonText: t("Close", { ns: "reports" }), confirmButtonColor: "#e53e3e", background: "#fff",
           showClass: { popup: "animate__animated animate__shakeX animate__faster" },
           customClass: { popup: "swal-pop" },
         });
@@ -98,13 +98,13 @@ function SeedMarketMarketReceiptReport() {
   const fieldGroupStyle = { display: "flex", flexDirection: "column", marginBottom: "4px" };
 
   return (
-    <Layout title={t("Market Receipt Report")}>
+    <Layout title={t("Market Receipt Report", { ns: "reports" })}>
       <style>{seedMarketMarketReceiptReportStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">{t("Market Receipt Report")}</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Market Receipt Report", { ns: "reports" })}</Block.Title>
             </Block.HeadContent>
           </Block.HeadBetween>
         </div>
@@ -116,28 +116,28 @@ function SeedMarketMarketReceiptReport() {
           <div style={{ background: "linear-gradient(135deg, #1e67a8 0%, #2d9cdb 100%)", padding: "18px 28px", display: "flex", alignItems: "center", gap: "12px", borderRadius: "14px 14px 0 0" }}>
             <div style={{ width: "42px", height: "42px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px" }}>🏪</div>
             <div>
-              <div style={{ color: "#fff", fontWeight: 700, fontSize: "17px", lineHeight: 1.2 }}>Market Receipt Report</div>
-              <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "2px" }}>Generate market receipt by auction date and bidding lot</div>
+              <div style={{ color: "#fff", fontWeight: 700, fontSize: "17px", lineHeight: 1.2 }}>{t("Market Receipt Report", { ns: "reports" })}</div>
+              <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "2px" }}>{t("Generate market receipt by auction date and bidding lot", { ns: "reports" })}</div>
             </div>
             <div style={{ marginLeft: "auto", background: "rgba(255,255,255,0.15)", borderRadius: "20px", padding: "4px 14px" }}>
-              <span style={{ color: "#fff", fontSize: "12px", fontWeight: 600 }}>Seed Market</span>
+              <span style={{ color: "#fff", fontSize: "12px", fontWeight: 600 }}>{t("Seed Market", { ns: "reports" })}</span>
             </div>
           </div>
 
           <Card.Body style={{ padding: "28px 32px 32px" }}>
             <div style={{ fontSize: "12px", fontWeight: 700, color: "#1e67a8", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "20px" }}>
-              Filter Parameters
+              {t("Filter Parameters", { ns: "reports" })}
             </div>
 
             <Form onSubmit={handleGenerate}>
               <Row className="mb-3">
                 <Col md={4} style={fieldGroupStyle}>
-                  <label style={labelStyle}>Auction Date <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={labelStyle}>{t("Auction Date", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <DatePicker dateFormat="dd/MM/yyyy" selected={data.auctionDate} onChange={(d) => setData({ ...data, auctionDate: d })} className="form-control" maxDate={new Date()} required portalId="seri-datepicker-portal" />
                 </Col>
                 <Col md={4} style={fieldGroupStyle}>
-                  <label style={labelStyle}>Bidding Slip Lot No <span style={{ color: "#e53e3e" }}>*</span></label>
-                  <Form.Control type="text" name="allottedLotId" value={data.allottedLotId} onChange={(e) => setData({ ...data, allottedLotId: e.target.value })} placeholder="Enter Bidding Slip Lot No" style={inputStyle} required />
+                  <label style={labelStyle}>{t("Bidding Slip Lot No", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <Form.Control type="text" name="allottedLotId" value={data.allottedLotId} onChange={(e) => setData({ ...data, allottedLotId: e.target.value })} placeholder={t("Enter Bidding Slip Lot No", { ns: "reports" })} style={inputStyle} required />
                 </Col>
               </Row>
 
@@ -145,7 +145,7 @@ function SeedMarketMarketReceiptReport() {
 
               <div className="d-flex gap-3">
                 <button type="submit" disabled={isGenerating} style={{ background: isGenerating ? "#c8d6e5" : "linear-gradient(135deg,#1e67a8,#2d9cdb)", border: "none", borderRadius: "10px", padding: "12px 32px", fontWeight: 700, fontSize: "14px", color: "#fff", cursor: isGenerating ? "not-allowed" : "pointer", boxShadow: isGenerating ? "none" : "0 4px 14px rgba(30,103,168,0.35)", display: "flex", alignItems: "center", gap: "8px" }}>
-                  {isGenerating ? <><span className="spinner-border spinner-border-sm" />Generating…</> : <>📄 Generate Market Receipt Report</>}
+                  {isGenerating ? <><span className="spinner-border spinner-border-sm" />{t("Generating…", { ns: "reports" })}</> : <>📄 {t("Generate Market Receipt Report", { ns: "reports" })}</>}
                 </button>
               </div>
             </Form>

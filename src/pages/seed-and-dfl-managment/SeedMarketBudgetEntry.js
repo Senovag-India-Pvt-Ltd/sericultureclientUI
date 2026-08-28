@@ -48,18 +48,18 @@ function SeedMarketBudgetEntry() {
 
   const save = () => {
     if (!data.marketId || !data.reportYear || !data.reportMonth || !data.headCode) {
-      Swal.fire("Market, Year, Month and Head Code are required");
+      Swal.fire(t("Market, Year, Month and Head Code are required", { ns: "reports" }));
       return;
     }
     api.post(baseURLSeedDfl + `seed-market-budget-remittance/save-info`, data)
       .then((res) => {
         if (res?.data?.error === 0) {
-          Swal.fire("Saved");
+          Swal.fire(t("Saved", { ns: "reports" }));
           setData({ ...emptyForm, marketId: data.marketId, reportYear: data.reportYear, reportMonth: data.reportMonth });
           loadRows();
-        } else Swal.fire(res?.data?.message || "Save failed");
+        } else Swal.fire(res?.data?.message || t("Save failed", { ns: "reports" }));
       })
-      .catch(() => Swal.fire("Save failed"));
+      .catch(() => Swal.fire(t("Save failed", { ns: "reports" })));
   };
 
   const edit = (r) => setData({
@@ -70,11 +70,11 @@ function SeedMarketBudgetEntry() {
   });
 
   const remove = (id) => {
-    Swal.fire({ title: "Delete this entry?", showCancelButton: true, confirmButtonText: "Delete" })
+    Swal.fire({ title: t("Delete this entry?", { ns: "reports" }), showCancelButton: true, confirmButtonText: t("Delete", { ns: "reports" }) })
       .then((res) => {
         if (res.isConfirmed) {
           api.get(baseURLSeedDfl + `seed-market-budget-remittance/delete-info/${id}`)
-            .then(() => loadRows()).catch(() => Swal.fire("Delete failed"));
+            .then(() => loadRows()).catch(() => Swal.fire(t("Delete failed", { ns: "reports" })));
         }
       });
   };
@@ -87,13 +87,13 @@ function SeedMarketBudgetEntry() {
         <Card className="shadow-sm border-0" style={{ borderRadius: "16px" }}>
           <Card.Body>
             <Row className="g-3">
-              <Col md={2}><Form.Label>Market Id *</Form.Label>
+              <Col md={2}><Form.Label>{t("Market ID", { ns: "reports" })} *</Form.Label>
                 <Form.Control type="number" name="marketId" value={data.marketId} onChange={handleInputs} /></Col>
-              <Col md={2}><Form.Label>Year *</Form.Label>
+              <Col md={2}><Form.Label>{t("Year", { ns: "reports" })} *</Form.Label>
                 <Form.Control type="number" name="reportYear" value={data.reportYear} onChange={handleInputs} /></Col>
-              <Col md={2}><Form.Label>Month *</Form.Label>
+              <Col md={2}><Form.Label>{t("Month")} *</Form.Label>
                 <Form.Select name="reportMonth" value={data.reportMonth} onChange={handleInputs}>
-                  {MONTHS.map((m) => (<option key={m.v} value={m.v}>{m.l}</option>))}
+                  {MONTHS.map((m) => (<option key={m.v} value={m.v}>{t(m.l, { ns: "reports" })}</option>))}
                 </Form.Select></Col>
               <Col md={3}><Form.Label>ಲೆಕ್ಕ ಶೀರ್ಷಿಕೆ / Head Code *</Form.Label>
                 <Form.Control name="headCode" value={data.headCode} onChange={handleInputs} placeholder="2851-00-107-1-51-(059)" /></Col>
@@ -109,14 +109,14 @@ function SeedMarketBudgetEntry() {
                 <Form.Control type="number" name="spentCum" value={data.spentCum} onChange={handleInputs} /></Col>
             </Row>
             <Row className="mt-3"><Col className="text-end">
-              <Button variant="primary" onClick={save}>{data.seedMarketBudgetRemittanceId ? "Update" : "Save"}</Button>
+              <Button variant="primary" onClick={save}>{data.seedMarketBudgetRemittanceId ? t("Update", { ns: "reports" }) : t("Save", { ns: "reports" })}</Button>
             </Col></Row>
           </Card.Body>
         </Card>
 
         <Card className="mt-4 border-0" style={{ borderRadius: "16px", boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}>
           <Card.Body>
-            {rows.length === 0 ? (<div className="text-center py-4 text-muted">No entries for this market/month.</div>) : (
+            {rows.length === 0 ? (<div className="text-center py-4 text-muted">{t("No entries for this market/month.", { ns: "reports" })}</div>) : (
               <div className="table-responsive">
                 <table className="table table-bordered align-middle">
                   <thead style={{ backgroundColor: "#1f5fa8", color: "white" }}>

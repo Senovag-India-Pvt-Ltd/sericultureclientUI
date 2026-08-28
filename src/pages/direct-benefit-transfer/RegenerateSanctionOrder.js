@@ -16,7 +16,7 @@ const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 function RegenerateSanctionOrder() {
   const [page] = useState(0);
   const countPerPage = 50;
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [addressDetails, setAddressDetails] = useState({
     fruitsId: "",
@@ -277,7 +277,7 @@ function RegenerateSanctionOrder() {
     if (type === 2) return reportByApplicationIds(`get-Incentive`, selectedSanctionOrder);
     if (type === 3) return reportByApplicationIds(`get-Bonus`, selectedSanctionOrder);
     if (type === 4) return reportByApplicationIds(`get-seed-cocoon`, selectedSanctionOrder);
-    showSchemeError("The selected sub-scheme type is not supported for PDF generation.");
+    showSchemeError(t("The selected sub-scheme type is not supported for PDF generation.", { ns: "reports" }), t("Not Supported", { ns: "reports" }));
     return Promise.resolve();
   };
 
@@ -328,7 +328,7 @@ function RegenerateSanctionOrder() {
         return runGeneratorAligned(sanctionOrderForScheme, recipientType);
 
       default:
-        showSchemeError("No report is configured for the selected Sanction Order scheme.");
+        showSchemeError(t("No report is configured for the selected Sanction Order scheme.", { ns: "reports" }));
         return Promise.resolve();
     }
   };
@@ -340,9 +340,9 @@ function RegenerateSanctionOrder() {
     if (!selectedSanctionOrder) {
       Swal.fire({
         icon: "warning",
-        title: "Selection Required",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Action Needed</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">Please select a <b>Sanction Order Number</b> before regenerating.</p></div></div></div>`,
-        confirmButtonText: "Got it",
+        title: t("Selection Required", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Action Needed", { ns: "reports" })}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${t("Please select a <b>Sanction Order Number</b> before regenerating.", { ns: "reports" })}</p></div></div></div>`,
+        confirmButtonText: t("Got it", { ns: "reports" }),
         confirmButtonColor: "#d97706",
         background: "#fff",
         customClass: { popup: "swal-pop" },
@@ -353,18 +353,18 @@ function RegenerateSanctionOrder() {
     try {
       await runJasper(selectedSanctionOrder);
     } catch (error) {
-      showSchemeError("Could not build the Sanction Order PDF. Please verify the selection and try again.", "Regeneration Failed");
+      showSchemeError(t("Could not build the Sanction Order PDF. Please verify the selection and try again.", { ns: "reports" }), t("Regeneration Failed", { ns: "reports" }));
     } finally {
       setIsGenerating(false);
     }
   };
 
-  const showSchemeError = (msg, title = "Report Not Available") =>
+  const showSchemeError = (msg, title = t("Report Not Available", { ns: "reports" })) =>
     Swal.fire({
       icon: "error",
       title,
       html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📭</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${title}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Close",
+      confirmButtonText: t("Close"),
       confirmButtonColor: "#e53e3e",
       background: "#fff",
       customClass: { popup: "swal-pop" },
@@ -407,11 +407,11 @@ function RegenerateSanctionOrder() {
 
   // ── render ──
   return (
-    <Layout title="Regenerate Sanction Order">
+    <Layout title={t("Regenerate Sanction Order", { ns: "reports" })}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Regenerate Sanction Order</Block.Title>
+            <Block.Title tag="h2">{t("Regenerate Sanction Order", { ns: "reports" })}</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -421,37 +421,37 @@ function RegenerateSanctionOrder() {
           <div style={{ background: "linear-gradient(135deg, #1e67a8 0%, #2d9cdb 100%)", padding: "18px 28px", display: "flex", alignItems: "center", gap: "12px" }}>
             <div style={{ width: "38px", height: "38px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px" }}>🖨️</div>
             <div>
-              <div style={{ color: "#fff", fontWeight: 700, fontSize: "17px", lineHeight: 1.2 }}>Regenerate Sanction Order</div>
-              <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "2px" }}>Builds a fresh PDF</div>
+              <div style={{ color: "#fff", fontWeight: 700, fontSize: "17px", lineHeight: 1.2 }}>{t("Regenerate Sanction Order", { ns: "reports" })}</div>
+              <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "2px" }}>{t("Builds a fresh PDF", { ns: "reports" })}</div>
             </div>
           </div>
 
           <Card.Body style={{ padding: "28px 32px 24px" }}>
             <Row className="mb-3">
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Fruits ID <span style={{ color: "#a0aec0", fontWeight: 400 }}>(optional)</span></label>
-                <Form.Control type="text" name="fruitsId" value={addressDetails.fruitsId || ""} onChange={handleInputsaddress} placeholder="Enter Fruits ID to filter" style={selectStyle} />
+                <label style={labelStyle}>{t("Fruits ID", { ns: "reports" })} <span style={{ color: "#a0aec0", fontWeight: 400 }}>({t("optional", { ns: "reports" })})</span></label>
+                <Form.Control type="text" name="fruitsId" value={addressDetails.fruitsId || ""} onChange={handleInputsaddress} placeholder={t("Enter Fruits ID to filter", { ns: "reports" })} style={selectStyle} />
               </Col>
             </Row>
 
-            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1e67a8", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "18px" }}>Step 1 — Select Scheme Details</div>
+            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1e67a8", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "18px" }}>{t("Step 1 — Select Scheme Details", { ns: "reports" })}</div>
 
             <Row className="mb-3">
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Financial Year</label>
+                <label style={labelStyle}>{t("Financial Year")}</label>
                 <Form.Select name="financialYearId" value={addressDetails.financialYearId || ""} onChange={handleInputsaddress} style={selectStyle}>
-                  <option value="">— Select Financial Year —</option>
+                  <option value="">{`— ${t("Select Financial Year")} —`}</option>
                   {financialyearListData.map((list) => (
                     <option key={list.financialYearMasterId} value={list.financialYearMasterId}>{list.financialYear}</option>
                   ))}
                 </Form.Select>
               </Col>
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Scheme</label>
+                <label style={labelStyle}>{t("Scheme")}</label>
                 <Form.Select name="scSchemeDetailsId" value={addressDetails.scSchemeDetailsId || ""} onChange={handleInputsaddress} style={selectStyle}>
-                  <option value="">— Select Scheme —</option>
+                  <option value="">{`— ${t("Select Scheme")} —`}</option>
                   {scSchemeDetailsListData?.map((list) => (
-                    <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>{list.schemeName}</option>
+                    <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>{i18n.language === "kn" ? (list.schemeNameInKannada || list.schemeName) : list.schemeName}</option>
                   ))}
                 </Form.Select>
               </Col>
@@ -459,20 +459,20 @@ function RegenerateSanctionOrder() {
 
             <Row className="mb-3">
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Component Type</label>
+                <label style={labelStyle}>{t("Component Type")}</label>
                 <Form.Select name="subSchemeId" value={addressDetails.subSchemeId || ""} onChange={handleInputsaddress} style={selectStyle}>
-                  <option value="">— Select Component Type —</option>
+                  <option value="">{`— ${t("Select Component Type")} —`}</option>
                   {scSubSchemeDetailsListData?.map((list) => (
-                    <option key={list.scSubSchemeDetailsId} value={list.subSchemeId}>{list.subSchemeName}</option>
+                    <option key={list.scSubSchemeDetailsId} value={list.subSchemeId}>{i18n.language === "kn" ? (list.subSchemeNameInKannada || list.subSchemeName) : list.subSchemeName}</option>
                   ))}
                 </Form.Select>
               </Col>
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Component</label>
+                <label style={labelStyle}>{t("Component")}</label>
                 <Form.Select name="componentId" value={addressDetails.componentId || ""} onChange={handleInputsaddress} style={selectStyle}>
-                  <option value="">— Select Component —</option>
+                  <option value="">{`— ${t("Select Component")} —`}</option>
                   {scComponentListData?.map((list) => (
-                    <option key={list.scComponentId} value={list.scComponentId}>{list.scComponentName}</option>
+                    <option key={list.scComponentId} value={list.scComponentId}>{i18n.language === "kn" ? (list.scComponentNameInKannada || list.scComponentName) : list.scComponentName}</option>
                   ))}
                 </Form.Select>
               </Col>
@@ -480,25 +480,25 @@ function RegenerateSanctionOrder() {
 
             <Row className="mb-4">
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Sub Component</label>
+                <label style={labelStyle}>{t("Sub Component")}</label>
                 <Form.Select name="scCategoryId" value={addressDetails.scCategoryId || ""} onChange={handleInputsaddress} style={selectStyle}>
-                  <option value="">— Select Sub Component —</option>
+                  <option value="">{`— ${t("Select Sub Component")} —`}</option>
                   {scCategoryListData?.map((list) => (
-                    <option key={list.scCategoryId} value={list.scCategoryId}>{list.categoryName}</option>
+                    <option key={list.scCategoryId} value={list.scCategoryId}>{i18n.language === "kn" ? (list.categoryNameInKannada || list.categoryName) : list.categoryName}</option>
                   ))}
                 </Form.Select>
               </Col>
             </Row>
 
             <div style={{ borderTop: "1.5px dashed #d0d9e8", margin: "8px 0 20px" }} />
-            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1e67a8", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "18px" }}>Step 2 — Select Sanction Order &amp; Regenerate</div>
+            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1e67a8", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "18px" }}>{t("Step 2 — Select Sanction Order & Regenerate", { ns: "reports" })}</div>
 
             <Row className="mb-3 align-items-end">
               <Col md={5} style={fieldGroupStyle}>
                 <label style={labelStyle}>
-                  Sanction Order Number
+                  {t("Sanction Order Number", { ns: "reports" })}
                   {sanctionOrderNumbers.length > 0 && (
-                    <span style={{ marginLeft: "8px", fontSize: "11px", color: "#1e67a8", fontWeight: 500 }}>({sanctionOrderNumbers.length} found)</span>
+                    <span style={{ marginLeft: "8px", fontSize: "11px", color: "#1e67a8", fontWeight: 500 }}>({sanctionOrderNumbers.length} {t("found", { ns: "reports" })})</span>
                   )}
                 </label>
                 <SearchableSelect
@@ -510,7 +510,7 @@ function RegenerateSanctionOrder() {
                     })
                   }
                   isDisabled={!filtersReady}
-                  placeholder={filtersReady ? "— Select Sanction Order —" : "— Fill filters above first —"}
+                  placeholder={filtersReady ? `— ${t("Select Sanction Order", { ns: "reports" })} —` : `— ${t("Fill filters above first", { ns: "reports" })} —`}
                   options={(sanctionOrderNumbers || []).map((num) =>
                     typeof num === "object" ? num.sanctionOrderNumber : num
                   )}
@@ -518,12 +518,12 @@ function RegenerateSanctionOrder() {
               </Col>
               <Col md={4} style={fieldGroupStyle}>
                 <label style={labelStyle}>
-                  Recipient
-                  <span style={{ color: "#a0aec0", fontWeight: 400 }}> (Farmer/Company schemes only)</span>
+                  {t("Recipient", { ns: "reports" })}
+                  <span style={{ color: "#a0aec0", fontWeight: 400 }}> {t("(Farmer/Company schemes only)", { ns: "reports" })}</span>
                 </label>
                 <Form.Select value={recipientType} onChange={(e) => setRecipientType(e.target.value)} style={selectStyle}>
-                  <option value="farmer">Farmer / Beneficiary</option>
-                  <option value="company">Company</option>
+                  <option value="farmer">{t("Farmer / Beneficiary", { ns: "reports" })}</option>
+                  <option value="company">{t("Company", { ns: "reports" })}</option>
                 </Form.Select>
               </Col>
             </Row>
@@ -532,9 +532,9 @@ function RegenerateSanctionOrder() {
               <Col md={12} className="d-flex gap-3 flex-wrap pt-1">
                 <button type="button" onClick={regenerateFromJasper} disabled={!canGenerate} style={btnStyle(canGenerate, "#1e67a8", "#2d9cdb", "rgba(30,103,168,0.35)")}>
                   {isGenerating ? (
-                    <><span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" /> Regenerating…</>
+                    <><span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" /> {t("Regenerating…", { ns: "reports" })}</>
                   ) : (
-                    <>🖨️ Regenerate Sanction Order</>
+                    <>🖨️ {t("Regenerate Sanction Order", { ns: "reports" })}</>
                   )}
                 </button>
               </Col>

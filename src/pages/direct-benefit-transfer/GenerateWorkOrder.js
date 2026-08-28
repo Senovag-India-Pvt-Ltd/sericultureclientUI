@@ -16,7 +16,7 @@ function GenerateWorkOrder() {
   const [page] = useState(0);
   const countPerPage = 50;
   const [loading, setLoading] = useState(false);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [addressDetails, setAddressDetails] = useState({
     fruitsId: "",
@@ -259,9 +259,9 @@ function GenerateWorkOrder() {
     if (!selectedSanctionOrder) {
       Swal.fire({
         icon: "warning",
-        title: "Selection Required",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(245,158,11,0.3)">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Action Needed</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">Please select a <b>Work Order Number</b> from the dropdown before generating the PDF.</p></div></div></div>`,
-        confirmButtonText: "Got it",
+        title: t("Selection Required", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(245,158,11,0.3)">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Action Needed", { ns: "reports" })}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${t("Please select a <b>Work Order Number</b> from the dropdown before generating the PDF.", { ns: "reports" })}</p></div></div></div>`,
+        confirmButtonText: t("Got it", { ns: "reports" }),
         confirmButtonColor: "#d97706",
         background: "#fff",
         showClass: { popup: "animate__animated animate__headShake animate__faster" },
@@ -301,9 +301,9 @@ function GenerateWorkOrder() {
   const showSchemeError = () =>
     Swal.fire({
       icon: "error",
-      title: "Report Not Available",
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(229,62,62,0.3)">📭</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Not Configured</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">No downloadable report is configured for the selected scheme.</p></div></div></div>`,
-      confirmButtonText: "Close",
+      title: t("Report Not Available", { ns: "reports" }),
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(229,62,62,0.3)">📭</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Not Configured", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${t("No downloadable report is configured for the selected scheme.", { ns: "reports" })}</p></div></div></div>`,
+      confirmButtonText: t("Close", { ns: "reports" }),
       confirmButtonColor: "#e53e3e",
       background: "#fff",
       showClass: { popup: "animate__animated animate__shakeX animate__faster" },
@@ -327,9 +327,9 @@ function GenerateWorkOrder() {
     if (!workOrderNumber) {
       Swal.fire({
         icon: "info",
-        title: "No File Found",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#ebf8ff,#fff);border:1.5px solid #90cdf4;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1e67a8,#2d9cdb);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(30,103,168,0.3)">📂</div><div><p style="color:#2c5282;font-size:14px;font-weight:700;margin:0 0 5px">No Pre-Generated PDF</p><p style="color:#2a4365;font-size:13px;margin:0;line-height:1.65">No pre-generated PDF was found for this work order.</p></div></div></div>`,
-        confirmButtonText: "OK",
+        title: t("No File Found", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#ebf8ff,#fff);border:1.5px solid #90cdf4;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1e67a8,#2d9cdb);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(30,103,168,0.3)">📂</div><div><p style="color:#2c5282;font-size:14px;font-weight:700;margin:0 0 5px">${t("No Pre-Generated PDF", { ns: "reports" })}</p><p style="color:#2a4365;font-size:13px;margin:0;line-height:1.65">${t("No pre-generated PDF was found for this work order.", { ns: "reports" })}</p></div></div></div>`,
+        confirmButtonText: t("OK", { ns: "reports" }),
         confirmButtonColor: "#1e67a8",
         background: "#fff",
         showClass: { popup: "animate__animated animate__fadeInDown animate__faster" },
@@ -356,9 +356,9 @@ function GenerateWorkOrder() {
       window.URL.revokeObjectURL(url);
       Swal.fire({
         icon: "success",
-        title: "Download Complete!",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#f0fff4,#fff);border:1.5px solid #9ae6b4;border-radius:14px;padding:18px 20px;text-align:center"><div style="font-size:34px;margin-bottom:10px">🎉</div><p style="color:#276749;font-size:14.5px;font-weight:700;margin:0 0 5px">Work Order PDF Saved!</p><p style="color:#2f855a;font-size:13px;margin:0;line-height:1.6">Your file has been saved to your <b>Downloads</b> folder.</p></div></div>`,
-        confirmButtonText: "✓ Done",
+        title: t("Download Complete!", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#f0fff4,#fff);border:1.5px solid #9ae6b4;border-radius:14px;padding:18px 20px;text-align:center"><div style="font-size:34px;margin-bottom:10px">🎉</div><p style="color:#276749;font-size:14.5px;font-weight:700;margin:0 0 5px">${t("Work Order PDF Saved!", { ns: "reports" })}</p><p style="color:#2f855a;font-size:13px;margin:0;line-height:1.6">${t("Your file has been saved to your <b>Downloads</b> folder.", { ns: "reports" })}</p></div></div>`,
+        confirmButtonText: `✓ ${t("Done", { ns: "reports" })}`,
         confirmButtonColor: "#38a169",
         background: "#fff",
         timer: 3000,
@@ -369,12 +369,12 @@ function GenerateWorkOrder() {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Download Failed",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left;margin-bottom:10px"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(229,62,62,0.3)">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Could Not Download</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">We couldn't retrieve the PDF. Please check your connection and try again.</p></div></div><div style="background:#f7fafc;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px"><span style="font-size:16px">💡</span><span style="color:#4a5568;font-size:12.5px">If the problem persists, contact your system administrator.</span></div></div>`,
-        confirmButtonText: "🔄 Retry",
+        title: t("Download Failed", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left;margin-bottom:10px"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(229,62,62,0.3)">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Could Not Download", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${t("We couldn't retrieve the PDF. Please check your connection and try again.", { ns: "reports" })}</p></div></div><div style="background:#f7fafc;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px"><span style="font-size:16px">💡</span><span style="color:#4a5568;font-size:12.5px">${t("If the problem persists, contact your system administrator.", { ns: "reports" })}</span></div></div>`,
+        confirmButtonText: `🔄 ${t("Retry", { ns: "reports" })}`,
         confirmButtonColor: "#e53e3e",
         showCancelButton: true,
-        cancelButtonText: "Cancel",
+        cancelButtonText: t("Cancel"),
         cancelButtonColor: "#718096",
         background: "#fff",
         showClass: { popup: "animate__animated animate__shakeX animate__faster" },
@@ -556,7 +556,7 @@ function GenerateWorkOrder() {
                   <option value="">— Select Scheme —</option>
                   {scSchemeDetailsListData?.map((list) => (
                     <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
-                      {list.schemeName}
+                      {i18n.language === "kn" ? (list.schemeNameInKannada || list.schemeName) : list.schemeName}
                     </option>
                   ))}
                 </Form.Select>
@@ -576,7 +576,7 @@ function GenerateWorkOrder() {
                   <option value="">— Select Component Type —</option>
                   {scSubSchemeDetailsListData?.map((list) => (
                     <option key={list.scSubSchemeDetailsId} value={list.subSchemeId}>
-                      {list.subSchemeName}
+                      {i18n.language === "kn" ? (list.subSchemeNameInKannada || list.subSchemeName) : list.subSchemeName}
                     </option>
                   ))}
                 </Form.Select>
@@ -592,7 +592,7 @@ function GenerateWorkOrder() {
                   <option value="">— Select Component —</option>
                   {scComponentListData?.map((list) => (
                     <option key={list.scComponentId} value={list.scComponentId}>
-                      {list.scComponentName}
+                      {i18n.language === "kn" ? (list.scComponentNameInKannada || list.scComponentName) : list.scComponentName}
                     </option>
                   ))}
                 </Form.Select>
@@ -612,7 +612,7 @@ function GenerateWorkOrder() {
                   <option value="">— Select Sub Component —</option>
                   {scCategoryListData?.map((list) => (
                     <option key={list.scCategoryId} value={list.scCategoryId}>
-                      {list.categoryName}
+                      {i18n.language === "kn" ? (list.categoryNameInKannada || list.categoryName) : list.categoryName}
                     </option>
                   ))}
                 </Form.Select>

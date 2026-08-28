@@ -101,7 +101,7 @@ function DistrictAndTalukWiseMonthlyReport() {
       .catch((err) => {
         Swal.fire({
           icon: "warning",
-          title: "No record found!!!",
+          title: t("No record found!!!"),
         });
       });
 };
@@ -110,7 +110,7 @@ function DistrictAndTalukWiseMonthlyReport() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     });
   };

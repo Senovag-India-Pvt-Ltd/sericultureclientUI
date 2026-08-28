@@ -101,6 +101,7 @@ function MarketFilterCard({
   isDownloadingPdf, isDownloadingExcel,
   onSubmit, onPdf, onExcel, extraTopRight, extraRow,
 }) {
+  const { t } = useTranslation();
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthKn    = MONTH_KN[Number(filter.month)] || "";
 
@@ -128,33 +129,33 @@ function MarketFilterCard({
         <Form onSubmit={onSubmit} noValidate>
           <Row className="g-2 align-items-end">
             <Col md={5}>
-              <label style={lbl}>Market <span style={{ color: "#e53e3e" }}>*</span></label>
+              <label style={lbl}>{t("Market")} <span style={{ color: "#e53e3e" }}>*</span></label>
               <ReactSelect
                 options={marketList.map((m) => ({ value: String(m.marketMasterId), label: m.marketMasterName }))}
-                placeholder="— Search Market —"
+                placeholder={`— ${t("Search Market", { ns: "reports" })} —`}
                 isSearchable isClearable menuPlacement="auto"
                 menuPortalTarget={typeof document !== "undefined" ? document.body : null}
                 menuPosition="fixed" styles={reactSelectStyles}
                 value={marketList.map((m) => ({ value: String(m.marketMasterId), label: m.marketMasterName })).find((o) => o.value === String(filter.marketId)) || null}
                 onChange={(opt) => { setFilter((p) => ({ ...p, marketId: opt?.value || "" })); reset(); }}
-                noOptionsMessage={() => "No markets"}
+                noOptionsMessage={() => t("No markets", { ns: "reports" })}
               />
             </Col>
             <Col md={2}>
-              <label style={lbl}>Year <span style={{ color: "#e53e3e" }}>*</span></label>
+              <label style={lbl}>{t("Year", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
               <Form.Select value={filter.year} onChange={(e) => { setFilter((p) => ({ ...p, year: e.target.value })); reset(); }} style={sel}>
                 {yearOptions.map((y) => <option key={y.value} value={y.value}>{y.label}</option>)}
               </Form.Select>
             </Col>
             <Col md={3}>
-              <label style={lbl}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
+              <label style={lbl}>{t("Month")} <span style={{ color: "#e53e3e" }}>*</span></label>
               <Form.Select value={filter.month} onChange={(e) => { setFilter((p) => ({ ...p, month: e.target.value })); reset(); }} style={sel}>
-                {MONTHS.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
+                {MONTHS.map((m) => <option key={m.value} value={m.value}>{t(m.label, { ns: "reports" })}</option>)}
               </Form.Select>
             </Col>
             <Col md={2}>
               <button type="submit" disabled={isLoading} style={btn("linear-gradient(135deg,#0f766e,#14b8a6)", "0 4px 12px rgba(15,118,110,.32)", isLoading)}>
-                {isLoading ? <><span className="spinner-border spinner-border-sm" /> Loading…</> : <>📋 View</>}
+                {isLoading ? <><span className="spinner-border spinner-border-sm" /> {t("Loading…", { ns: "reports" })}</> : <>📋 {t("View", { ns: "reports" })}</>}
               </button>
             </Col>
           </Row>
@@ -164,10 +165,10 @@ function MarketFilterCard({
               <Col md={extraRow ? 12 : 12}>
                 <div className="d-flex gap-2 flex-wrap justify-content-md-end">
                   <button type="button" disabled={isDownloadingPdf} onClick={onPdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 4px 12px rgba(185,28,28,.30)", isDownloadingPdf)}>
-                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> PDF…</> : <>📄 PDF</>}
+                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> {t("PDF…", { ns: "reports" })}</> : <>📄 {t("PDF", { ns: "reports" })}</>}
                   </button>
                   <button type="button" disabled={isDownloadingExcel} onClick={onExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 4px 12px rgba(21,128,61,.30)", isDownloadingExcel)}>
-                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> Excel…</> : <>📊 Excel</>}
+                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> {t("Excel…", { ns: "reports" })}</> : <>📊 {t("Excel", { ns: "reports" })}</>}
                   </button>
                 </div>
               </Col>
@@ -183,6 +184,7 @@ function MarketFilterCard({
 // Shared hook — market list + filter state + view/pdf/excel actions
 // ──────────────────────────────────────────────────────────────────────────
 function useSeedMarketReport(endpointKey, filenamePrefix, friendlyTitle) {
+  const { t } = useTranslation();
   const today = new Date();
   const [filter, setFilter] = useState({
     marketId: localStorage.getItem("marketId") || "",
@@ -205,24 +207,24 @@ function useSeedMarketReport(endpointKey, filenamePrefix, friendlyTitle) {
   const reset = () => { setHasReport(false); setDataRows([]); };
 
   const validate = () => {
-    if (!filter.marketId) return "Please select a Market.";
-    if (!filter.year)     return "Please select a Year.";
-    if (!filter.month)    return "Please select a Month.";
+    if (!filter.marketId) return t("Please select a Market.", { ns: "reports" });
+    if (!filter.year)     return t("Please select a Year.", { ns: "reports" });
+    if (!filter.month)    return t("Please select a Month.", { ns: "reports" });
     return null;
   };
 
   const showWarn = (msg) =>
     Swal.fire({
-      icon: "warning", title: "Required Fields",
+      icon: "warning", title: t("Required Fields", { ns: "reports" }),
       html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px"><p style="color:#92400e;font-size:14px;font-weight:700;margin:0">${msg}</p></div></div>`,
-      confirmButtonText: "Got it", confirmButtonColor: "#d97706",
+      confirmButtonText: t("Got it", { ns: "reports" }), confirmButtonColor: "#d97706",
       background: "#fff", customClass: { popup: "smkt-swal" },
     });
   const showErr = (title, msg) =>
     Swal.fire({
       icon: "error", title,
       html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px"><p style="color:#9b2c2c;font-size:13px;font-weight:600;margin:0">${msg}</p></div></div>`,
-      confirmButtonText: "Close", confirmButtonColor: "#e53e3e",
+      confirmButtonText: t("Close", { ns: "reports" }), confirmButtonColor: "#e53e3e",
       background: "#fff", customClass: { popup: "smkt-swal" },
     });
 
@@ -245,7 +247,7 @@ function useSeedMarketReport(endpointKey, filenamePrefix, friendlyTitle) {
         })
       );
       if (!hasAnyData) {
-        Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+        Swal.fire({ icon: "info", title: t("No Data Found", { ns: "reports" }), text: t("No records found for the selected criteria.", { ns: "reports" }) });
         setHasReport(false);
       } else {
         setHasReport(true);
@@ -253,13 +255,13 @@ function useSeedMarketReport(endpointKey, filenamePrefix, friendlyTitle) {
     } catch (err) {
         const status = err?.response?.status;
         if (status === 404 || status === 204) {
-          showErr("No Data Found", "No data found for the selected filters.");
+          showErr(t("No Data Found", { ns: "reports" }), t("No data found for the selected filters.", { ns: "reports" }));
         } else {
           const data = err?.response?.data;
           const backendMsg = typeof data === "string"
             ? data
             : (data?.message || data?.error || data?.errorMessage || data?.error_description);
-          showErr("Fetch Failed", backendMsg || err?.message || `Failed to load the ${friendlyTitle} report.`);
+          showErr(t("Fetch Failed", { ns: "reports" }), backendMsg || err?.message || `Failed to load the ${friendlyTitle} report.`);
         }
       }
     finally { setIsLoading(false); }
@@ -271,12 +273,12 @@ function useSeedMarketReport(endpointKey, filenamePrefix, friendlyTitle) {
       const res = await api.get(baseURLSeedDFL + `grainage-progress-report/${endpointKey}/pdf`, { params: params(), responseType: "blob" });
       const blobData = res.data;
       if (!blobData || blobData.size === 0) {
-        Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+        Swal.fire({ icon: "info", title: t("No Data Found", { ns: "reports" }), text: t("No records found for the selected criteria.", { ns: "reports" }) });
         return;
       }
       const firstBytes = await blobData.slice(0, 10).text();
       if (!firstBytes.startsWith('%PDF')) {
-        Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+        Swal.fire({ icon: "info", title: t("No Data Found", { ns: "reports" }), text: t("No records found for the selected criteria.", { ns: "reports" }) });
         return;
       }
       const pdfUrl = URL.createObjectURL(blobData);
@@ -290,8 +292,8 @@ function useSeedMarketReport(endpointKey, filenamePrefix, friendlyTitle) {
     } catch (err) {
       let isNoData = false;
       try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0|No data found/i.test(t); } } catch (_) {}
-      if (isNoData) Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
-      else showErr("PDF Failed", "Could not generate the PDF report.");
+      if (isNoData) Swal.fire({ icon: "info", title: t("No Data Found", { ns: "reports" }), text: t("No records found for the selected criteria.", { ns: "reports" }) });
+      else showErr(t("PDF Failed", { ns: "reports" }), t("Could not generate the PDF report.", { ns: "reports" }));
     } finally { setIsDownloadingPdf(false); }
   };
   const handleExcel = async () => {
@@ -303,7 +305,7 @@ function useSeedMarketReport(endpointKey, filenamePrefix, friendlyTitle) {
       const a = document.createElement("a"); a.href = url;
       a.download = `${filenamePrefix}_${filter.marketId}_${filter.year}_${filter.month}.xlsx`;
       a.click(); URL.revokeObjectURL(url);
-    } catch { showErr("Excel Failed", "Could not generate the Excel report."); } finally { setIsDownloadingExcel(false); }
+    } catch { showErr(t("Excel Failed", { ns: "reports" }), t("Could not generate the Excel report.", { ns: "reports" })); } finally { setIsDownloadingExcel(false); }
   };
 
   const marketName = marketList.find((m) => String(m.marketMasterId) === String(filter.marketId))?.marketMasterName || "—";

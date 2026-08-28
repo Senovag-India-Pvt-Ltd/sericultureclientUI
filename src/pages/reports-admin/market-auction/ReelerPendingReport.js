@@ -9,12 +9,15 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../services/auth/api";
+import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
 
 function ReelerPendingReport() {
+  const { t } = useTranslation();
+
   const [data, setData] = useState({
     marketId: localStorage.getItem("marketId"),
   });
@@ -97,7 +100,7 @@ function ReelerPendingReport() {
         } else {
           Swal.fire({
             icon: "warning",
-            title: "No Record Found",
+            title: t("No Record Found"),
           });
         }
         //console.log("hello world", response.data);
@@ -164,27 +167,27 @@ function ReelerPendingReport() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     }).then(() => {
       navigate("/seriui/caste-list");
     });
   };
-  const saveError = (message = "Something went wrong!") => {
+  const saveError = (message = t("Something went wrong", { ns: "reports" })) => {
     Swal.fire({
       icon: "warning",
-      title: "Not Found",
+      title: t("Not Found", { ns: "reports" }),
       text: message,
     });
   };
   return (
-    <Layout title="Reeler Pending Report">
+    <Layout title={t("Reeler Pending Report")}>
       <style>{reelerPendingReportStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">Reeler Pending Report</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Reeler Pending Report")}</Block.Title>
             </Block.HeadContent>
             <Block.HeadContent>
               {/* <ul className="d-flex">
@@ -240,7 +243,7 @@ function ReelerPendingReport() {
                         </Form.Control.Feedback>
                       </Col> */}
                       <Form.Label column sm={1} style={{ fontWeight: "bold" }}>
-                        Market<span className="text-danger">*</span>
+                        {t("Market")}<span className="text-danger">*</span>
                       </Form.Label>
                       {/* <div className="form-control-wrap"> */}
                       <Col sm={3}>
@@ -254,7 +257,7 @@ function ReelerPendingReport() {
                             data.marketId === undefined || data.marketId === "0"
                           }
                         >
-                          <option value="">Select Market</option>
+                          <option value="">{t("Select Market")}</option>
                           {marketListData.map((list) => (
                             <option
                               key={list.marketMasterId}
@@ -265,7 +268,7 @@ function ReelerPendingReport() {
                           ))}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
-                          Market Name is required
+                          {t("Market Name is required")}
                         </Form.Control.Feedback>
                       </Col>
                       {/* </div> */}
@@ -277,7 +280,7 @@ function ReelerPendingReport() {
                           onClick={display}
                         > */}
                         <Button type="submit" variant="primary">
-                          Generate Report
+                          {t("Generate Report")}
                         </Button>
                       </Col>
                     </Form.Group>
@@ -310,10 +313,10 @@ function ReelerPendingReport() {
                     style={{ fontWeight: "bold" }}
                   >
                     <span style={{ fontSize: "x-large" }}>
-                      Government Cocoon Market, {amountData.marketName}
+                      {t("Government Cocoon Market,", { ns: "reports" })} {amountData.marketName}
                     </span>
                     <span>
-                      Reeler Balance Report{" "}
+                      {t("Reeler Balance Report", { ns: "reports" })}{" "}
                       {new Date().getDate().toString().padStart(2, "0") +
                         "-" +
                         (new Date().getMonth() + 1)
@@ -333,7 +336,7 @@ function ReelerPendingReport() {
                               sm={12}
                               style={{ fontWeight: "bold" }}
                             >
-                              Reeler Debited Balance:{" "}
+                              {t("Reeler Debited Balance:", { ns: "reports" })}{" "}
                               <span style={{ color: "green" }}>
                                 {" "}
                                 &#8377; {amountData.reelerDebit}
@@ -346,7 +349,7 @@ function ReelerPendingReport() {
                             size="sm"
                             onClick={postData}
                           >
-                            Print
+                            {t("Print")}
                           </Button>
                         </div>
 
@@ -357,7 +360,7 @@ function ReelerPendingReport() {
                               sm={4}
                               style={{ fontWeight: "bold" }}
                             >
-                              Reeler Credit Balance:{" "}
+                              {t("Reeler Credit Balance:", { ns: "reports" })}{" "}
                               <span style={{ color: "green" }}>
                                 {" "}
                                 &#8377; {amountData.reelerCredit}
@@ -372,7 +375,7 @@ function ReelerPendingReport() {
                               sm={4}
                               style={{ fontWeight: "bold" }}
                             >
-                              Reeler Deposit Today:{" "}
+                              {t("Reeler Deposit Today:", { ns: "reports" })}{" "}
                               <span style={{ color: "green" }}>
                                 {" "}
                                 &#8377; {amountData.reelerDepositToday}

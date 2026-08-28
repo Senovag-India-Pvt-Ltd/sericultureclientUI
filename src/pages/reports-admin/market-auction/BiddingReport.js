@@ -102,7 +102,7 @@ function BiddingReport() {
           } else {
             Swal.fire({
               icon: "warning",
-              title: "No Record Found",
+              title: t("No Record Found"),
             });
           }
           //console.log("hello world", response.data);
@@ -117,7 +117,7 @@ function BiddingReport() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     }).then(() => {
       navigate("/seriui/caste-list");
@@ -126,8 +126,8 @@ function BiddingReport() {
   const saveError = () => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Save attempt was not successful"),
+      text: t("Something went wrong!"),
     });
   };
   return (

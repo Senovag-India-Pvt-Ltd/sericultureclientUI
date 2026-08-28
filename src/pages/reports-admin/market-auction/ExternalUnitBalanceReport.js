@@ -5,6 +5,7 @@ import Block from "../../../components/Block/Block";
 import { useState, useEffect } from "react";
 import api from "../../../services/auth/api";
 import { t } from "i18next";
+import i18next from "i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLMarket = process.env.REACT_APP_API_BASE_URL_MARKET_AUCTION;
@@ -54,7 +55,7 @@ function ExternalUnitBalanceReport() {
       })
       .catch(() => {
         setMarketList([]);
-        Swal.fire("Failed to load markets");
+        Swal.fire(t("Failed to load markets", { ns: "reports" }));
       });
   }, [marketTypeMasterId]); // ✅ IMPORTANT
 
@@ -70,11 +71,11 @@ function ExternalUnitBalanceReport() {
   // ✅ Download
   const downloadReport = () => {
     if (!data.marketId) {
-      Swal.fire("Please select Market");
+      Swal.fire(t("Please select Market", { ns: "reports" }));
       return;
     }
     if (!reportData || reportData.length === 0) {
-      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      Swal.fire({ icon: "info", title: t("No Data Found", { ns: "reports" }), text: t("No records found for the selected criteria.", { ns: "reports" }) });
       return;
     }
 
@@ -103,11 +104,11 @@ function ExternalUnitBalanceReport() {
         document.body.appendChild(link);
         link.click();
 
-        Swal.fire("Download successful", "", "success");
+        Swal.fire(t("Download successful", { ns: "reports" }), "", "success");
       })
       .catch((err) => {
         console.error(err);
-        Swal.fire("Download failed", "Please try again", "error");
+        Swal.fire(t("Download failed", { ns: "reports" }), t("Please try again", { ns: "reports" }), "error");
       })
       .finally(() => {
         setLoading(false);
@@ -131,7 +132,7 @@ function ExternalUnitBalanceReport() {
       })
       .catch(() => {
         setReportData([]);
-        Swal.fire("Failed to load data");
+        Swal.fire(t("Failed to load data", { ns: "reports" }));
       });
   };
 
@@ -141,11 +142,11 @@ function ExternalUnitBalanceReport() {
     }
   }, [data.marketId]);
   return (
-    <Layout title={t("External Unit Balance Report")}>
+    <Layout title={t("External Unit Balance Report", { ns: "reports" })}>
       <style>{externalUnitBalanceReportStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
-          <Block.Title tag="h2" className="sh-page-title">External Unit Balance</Block.Title>
+          <Block.Title tag="h2" className="sh-page-title">{t("External Unit Balance", { ns: "reports" })}</Block.Title>
         </div>
       </Block.Head>
 
@@ -157,7 +158,7 @@ function ExternalUnitBalanceReport() {
               <Row className="align-items-end g-3">
                 <Col md={3}>
                   <Form.Label className="fw-semibold text-muted">
-                    Market <span className="text-danger">*</span>
+                    {t("Market")} <span className="text-danger">*</span>
                   </Form.Label>
 
                   <Form.Select
@@ -167,10 +168,10 @@ function ExternalUnitBalanceReport() {
                     className="form-control-lg"
                     style={{ borderRadius: "10px" }}
                   >
-                    <option value="">Select Market</option>
+                    <option value="">{t("Select Market")}</option>
                     {marketList.map((m) => (
                       <option key={m.marketMasterId} value={m.marketMasterId}>
-                        {m.marketMasterName}
+                        {i18next.language === "kn" ? (m.marketNameInKannada || m.marketMasterName) : m.marketMasterName}
                       </option>
                     ))}
                   </Form.Select>
@@ -186,7 +187,7 @@ function ExternalUnitBalanceReport() {
                       borderRadius: "10px",
                     }}
                   >
-                    {loading ? "Downloading..." : "Download Report"}
+                    {loading ? t("Downloading...", { ns: "reports" }) : t("Download Report", { ns: "reports" })}
                   </Button>
                 </Col>
               </Row>

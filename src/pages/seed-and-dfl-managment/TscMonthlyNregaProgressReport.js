@@ -105,23 +105,23 @@ function TscMonthlyNregaProgressReport() {
 
   const reset = () => { setHasReport(false); setDataRows([]); setSearch(""); setHideTotals(false); };
   const validate = () => {
-    if (!filter.districtId) return "Please select a District.";
-    if (!filter.year)       return "Please select a Year.";
-    if (!filter.month)      return "Please select a Month.";
+    if (!filter.districtId) return t("Please select a District.", { ns: "reports" });
+    if (!filter.year)       return t("Please select a Year.", { ns: "reports" });
+    if (!filter.month)      return t("Please select a Month.", { ns: "reports" });
     return null;
   };
 
   const showWarn = (msg) =>
     Swal.fire({
-      icon: "warning", title: "Required Fields",
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Missing Selection</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Got it", confirmButtonColor: "#d97706", background: "#fff", customClass: { popup: "tscnrega-swal" },
+      icon: "warning", title: t("Required Fields", { ns: "reports" }),
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Missing Selection", { ns: "reports" })}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Got it", { ns: "reports" }), confirmButtonColor: "#d97706", background: "#fff", customClass: { popup: "tscnrega-swal" },
     });
   const showErr = (title, msg) =>
     Swal.fire({
       icon: "error", title,
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Failed</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Close", confirmButtonColor: "#e53e3e", background: "#fff", customClass: { popup: "tscnrega-swal" },
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Failed", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Close"), confirmButtonColor: "#e53e3e", background: "#fff", customClass: { popup: "tscnrega-swal" },
     });
 
   const params = () => ({ districtId: filter.districtId, year: Number(filter.year), month: Number(filter.month) });
@@ -135,13 +135,13 @@ function TscMonthlyNregaProgressReport() {
     } catch (err) {
         const status = err?.response?.status;
         if (status === 404 || status === 204) {
-          showErr("No Data Found", "No data found for the selected filters.");
+          showErr(t("No Data Found", { ns: "reports" }), t("No data found for the selected filters.", { ns: "reports" }));
         } else {
           const data = err?.response?.data;
           const backendMsg = typeof data === "string"
             ? data
             : (data?.message || data?.error || data?.errorMessage || data?.error_description);
-          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the NREGA Progress report.");
+          showErr(t("Fetch Failed", { ns: "reports" }), backendMsg || err?.message || t("Failed to load the NREGA Progress report.", { ns: "reports" }));
         }
       }
     finally { setIsLoading(false); }
@@ -152,7 +152,7 @@ function TscMonthlyNregaProgressReport() {
     try {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/tsc-monthly/nrega-progress/pdf", { params: params(), responseType: "blob" });
       window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
-    } catch { showErr("PDF Failed", "Could not generate the PDF report."); } finally { setIsDownloadingPdf(false); }
+    } catch { showErr(t("PDF Failed", { ns: "reports" }), t("Could not generate the PDF report.", { ns: "reports" })); } finally { setIsDownloadingPdf(false); }
   };
   const handleExcel = async () => {
     const err = validate(); if (err) { showWarn(err); return; }
@@ -163,7 +163,7 @@ function TscMonthlyNregaProgressReport() {
       const a = document.createElement("a"); a.href = url;
       a.download = `tsc_monthly_nrega_progress_${filter.districtId}_${filter.year}_${filter.month}.xlsx`;
       a.click(); URL.revokeObjectURL(url);
-    } catch { showErr("Excel Failed", "Could not generate the Excel report."); } finally { setIsDownloadingExcel(false); }
+    } catch { showErr(t("Excel Failed", { ns: "reports" }), t("Could not generate the Excel report.", { ns: "reports" })); } finally { setIsDownloadingExcel(false); }
   };
 
   const districtName = districtList.find((d) => String(d.districtId) === String(filter.districtId))?.districtName || "—";
@@ -201,12 +201,12 @@ function TscMonthlyNregaProgressReport() {
   }, [dataRows]);
 
   return (
-    <Layout title={t("NREGA Progress — Physical/Financial of Line Department")}>
+    <Layout title={t("NREGA Progress — Physical/Financial of Line Department", { ns: "reports" })}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
             <Block.Title tag="h2">
-              {t("NREGA Physical / Financial Progress of Line Department")}
+              {t("NREGA Physical / Financial Progress of Line Department", { ns: "reports" })}
               <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", background: "linear-gradient(135deg,#dcfce7,#bbf7d0)", color: "#14532d", padding: "2px 10px", borderRadius: "20px", fontSize: "10.5px", fontWeight: 800, marginLeft: "8px", border: "1px solid #86efac", verticalAlign: "middle" }}>
                 ADS · Executing Agency: SERICULTURE
               </span>
@@ -239,42 +239,42 @@ function TscMonthlyNregaProgressReport() {
             <Form onSubmit={handleView}>
               <Row className="g-2 align-items-end">
                 <Col md={4}>
-                  <label style={lbl}>District <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("District")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
                     options={districtList.map((d) => ({ value: String(d.districtId), label: d.districtName }))}
-                    placeholder="— Search District —"
+                    placeholder={t("— Search District —", { ns: "reports" })}
                     isSearchable isClearable menuPlacement="auto" menuPortalTarget={typeof document !== "undefined" ? document.body : null} menuPosition="fixed" styles={reactSelectStyles}
                     value={districtList.map((d) => ({ value: String(d.districtId), label: d.districtName })).find((o) => o.value === String(filter.districtId)) || null}
                     onChange={(opt) => { setFilter((p) => ({ ...p, districtId: opt?.value || "" })); reset(); }}
-                    noOptionsMessage={() => "No districts"}
+                    noOptionsMessage={() => t("No districts", { ns: "reports" })}
                   />
                 </Col>
                 <Col md={3}>
-                  <label style={lbl}>Year <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Year", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select value={filter.year} onChange={(e) => { setFilter((p) => ({ ...p, year: e.target.value })); reset(); }} style={sel}>
                     {yearOptions.map((y) => <option key={y.value} value={y.value}>{y.label}</option>)}
                   </Form.Select>
                 </Col>
                 <Col md={3}>
-                  <label style={lbl}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Month")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select value={filter.month} onChange={(e) => { setFilter((p) => ({ ...p, month: e.target.value })); reset(); }} style={sel}>
-                    {MONTHS.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
+                    {MONTHS.map((m) => <option key={m.value} value={m.value}>{t(m.label, { ns: "reports" })}</option>)}
                   </Form.Select>
                 </Col>
                 <Col md={2}>
                   <button type="submit" disabled={isLoading} style={btn("linear-gradient(135deg,#0f766e,#14b8a6)", "0 4px 12px rgba(15,118,110,.32)", isLoading)}>
-                    {isLoading ? <><span className="spinner-border spinner-border-sm" /> Loading…</> : <>📋 View</>}
+                    {isLoading ? <><span className="spinner-border spinner-border-sm" /> {t("Loading…", { ns: "reports" })}</> : <>📋 {t("View", { ns: "reports" })}</>}
                   </button>
                 </Col>
               </Row>
               {hasReport && (
                 <Row className="g-2 mt-2 align-items-end">
                   <Col md={5}>
-                    <label style={lbl}>Quick Search (Block)</label>
-                    <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Type to filter blocks…" style={{ ...sel, padding: "8px 12px" }} />
+                    <label style={lbl}>{t("Quick Search (Block)", { ns: "reports" })}</label>
+                    <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("Type to filter blocks…", { ns: "reports" })} style={{ ...sel, padding: "8px 12px" }} />
                   </Col>
                   <Col md={3}>
-                    <label style={lbl}>Totals row</label>
+                    <label style={lbl}>{t("Totals row", { ns: "reports" })}</label>
                     <button type="button" onClick={() => setHideTotals((v) => !v)}
                       style={{
                         width: "100%", padding: "7px 12px", borderRadius: "9px", border: "none",
@@ -282,16 +282,16 @@ function TscMonthlyNregaProgressReport() {
                         color: hideTotals ? "#475569" : "#854d0e",
                         fontWeight: 800, fontSize: "12.5px", cursor: "pointer",
                       }}>
-                      {hideTotals ? "🚫 Total hidden" : "✓ Total shown"}
+                      {hideTotals ? `🚫 ${t("Total hidden", { ns: "reports" })}` : `✓ ${t("Total shown", { ns: "reports" })}`}
                     </button>
                   </Col>
                   <Col md={4}>
                     <div className="d-flex gap-2 flex-wrap justify-content-md-end">
                       <button type="button" disabled={isDownloadingPdf} onClick={handlePdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 4px 12px rgba(185,28,28,.30)", isDownloadingPdf)}>
-                        {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> PDF…</> : <>📄 PDF</>}
+                        {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> {t("PDF…", { ns: "reports" })}</> : <>📄 {t("PDF", { ns: "reports" })}</>}
                       </button>
                       <button type="button" disabled={isDownloadingExcel} onClick={handleExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 4px 12px rgba(21,128,61,.30)", isDownloadingExcel)}>
-                        {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> Excel…</> : <>📊 Excel</>}
+                        {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> {t("Excel…", { ns: "reports" })}</> : <>📊 {t("Excel", { ns: "reports" })}</>}
                       </button>
                     </div>
                   </Col>
@@ -445,7 +445,7 @@ function TscMonthlyNregaProgressReport() {
                   </thead>
                   <tbody>
                     {filteredRows.length === 0 && (
-                      <tr><td colSpan={12} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>{dataRows.length === 0 ? "No records found." : `No matches for "${search}".`}</td></tr>
+                      <tr><td colSpan={12} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>{dataRows.length === 0 ? t("No records found.", { ns: "reports" }) : t('No matches for "{{search}}".', { ns: "reports", search })}</td></tr>
                     )}
                     {filteredRows.map((row, ri) => {
                       const isTotal = isTotalRow(row);
@@ -544,10 +544,10 @@ function TscMonthlyNregaProgressReport() {
                 </span>
                 <div className="d-flex gap-2 flex-wrap">
                   <button type="button" onClick={handlePdf} disabled={isDownloadingPdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 2px 8px rgba(185,28,28,.25)", isDownloadingPdf)}>
-                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Generating…</> : <>📄 Download PDF</>}
+                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> {t("Generating…", { ns: "reports" })}</> : <>📄 {t("Download PDF", { ns: "reports" })}</>}
                   </button>
                   <button type="button" onClick={handleExcel} disabled={isDownloadingExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 2px 8px rgba(21,128,61,.25)", isDownloadingExcel)}>
-                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Exporting…</> : <>📊 Download Excel</>}
+                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> {t("Exporting…", { ns: "reports" })}</> : <>📊 {t("Download Excel", { ns: "reports" })}</>}
                   </button>
                 </div>
               </div>

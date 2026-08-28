@@ -110,24 +110,24 @@ function TscMonthlyFarmerCategoryDetailReport() {
 
   const reset = () => { setHasReport(false); setDataRows([]); setSearch(""); setHideTotals(false); };
   const validate = () => {
-    if (!filter.districtId) return "Please select a District.";
-    if (!filter.talukId)    return "Please select a Taluk.";
-    if (!filter.year)       return "Please select a Year.";
-    if (!filter.month)      return "Please select a Month.";
+    if (!filter.districtId) return t("Please select a District.", { ns: "reports" });
+    if (!filter.talukId)    return t("Please select a Taluk.", { ns: "reports" });
+    if (!filter.year)       return t("Please select a Year.", { ns: "reports" });
+    if (!filter.month)      return t("Please select a Month.", { ns: "reports" });
     return null;
   };
 
   const showWarn = (msg) =>
     Swal.fire({
-      icon: "warning", title: "Required Fields",
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Missing Selection</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Got it", confirmButtonColor: "#d97706", background: "#fff", customClass: { popup: "tscfcd-swal" },
+      icon: "warning", title: t("Required Fields", { ns: "reports" }),
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Missing Selection", { ns: "reports" })}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Got it", { ns: "reports" }), confirmButtonColor: "#d97706", background: "#fff", customClass: { popup: "tscfcd-swal" },
     });
   const showErr = (title, msg) =>
     Swal.fire({
       icon: "error", title,
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Failed</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Close", confirmButtonColor: "#e53e3e", background: "#fff", customClass: { popup: "tscfcd-swal" },
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Failed", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Close"), confirmButtonColor: "#e53e3e", background: "#fff", customClass: { popup: "tscfcd-swal" },
     });
 
   const params = () => ({ talukId: filter.talukId, year: Number(filter.year), month: Number(filter.month) });
@@ -141,13 +141,13 @@ function TscMonthlyFarmerCategoryDetailReport() {
     } catch (err) {
         const status = err?.response?.status;
         if (status === 404 || status === 204) {
-          showErr("No Data Found", "No data found for the selected filters.");
+          showErr(t("No Data Found", { ns: "reports" }), t("No data found for the selected filters.", { ns: "reports" }));
         } else {
           const data = err?.response?.data;
           const backendMsg = typeof data === "string"
             ? data
             : (data?.message || data?.error || data?.errorMessage || data?.error_description);
-          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the TSC Monthly Farmer Category Detail report.");
+          showErr(t("Fetch Failed", { ns: "reports" }), backendMsg || err?.message || t("Failed to load the TSC Monthly Farmer Category Detail report.", { ns: "reports" }));
         }
       }
     finally { setIsLoading(false); }
@@ -158,7 +158,7 @@ function TscMonthlyFarmerCategoryDetailReport() {
     try {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/tsc-monthly/farmer-category-detail/pdf", { params: params(), responseType: "blob" });
       window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
-    } catch { showErr("PDF Failed", "Could not generate the PDF report."); } finally { setIsDownloadingPdf(false); }
+    } catch { showErr(t("PDF Failed", { ns: "reports" }), t("Could not generate the PDF report.", { ns: "reports" })); } finally { setIsDownloadingPdf(false); }
   };
   const handleExcel = async () => {
     const err = validate(); if (err) { showWarn(err); return; }
@@ -169,7 +169,7 @@ function TscMonthlyFarmerCategoryDetailReport() {
       const a = document.createElement("a"); a.href = url;
       a.download = `tsc_monthly_farmer_category_detail_${filter.talukId}_${filter.year}_${filter.month}.xlsx`;
       a.click(); URL.revokeObjectURL(url);
-    } catch { showErr("Excel Failed", "Could not generate the Excel report."); } finally { setIsDownloadingExcel(false); }
+    } catch { showErr(t("Excel Failed", { ns: "reports" }), t("Could not generate the Excel report.", { ns: "reports" })); } finally { setIsDownloadingExcel(false); }
   };
 
   const districtName = districtList.find((d) => String(d.districtId) === String(filter.districtId))?.districtName || "—";
@@ -209,7 +209,7 @@ function TscMonthlyFarmerCategoryDetailReport() {
   }, [dataRows]);
 
   return (
-    <Layout title={t("TSC Monthly Farmer Category Detail")}>
+    <Layout title={t("TSC Monthly Farmer Category Detail", { ns: "reports" })}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -247,53 +247,53 @@ function TscMonthlyFarmerCategoryDetailReport() {
             <Form onSubmit={handleView}>
               <Row className="g-2 align-items-end">
                 <Col md={3}>
-                  <label style={lbl}>District <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("District")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
                     options={districtList.map((d) => ({ value: String(d.districtId), label: d.districtName }))}
-                    placeholder="— Search District —"
+                    placeholder={t("— Search District —", { ns: "reports" })}
                     isSearchable isClearable menuPlacement="auto" menuPortalTarget={typeof document !== "undefined" ? document.body : null} menuPosition="fixed" styles={reactSelectStyles}
                     value={districtList.map((d) => ({ value: String(d.districtId), label: d.districtName })).find((o) => o.value === String(filter.districtId)) || null}
                     onChange={(opt) => { setFilter((p) => ({ ...p, districtId: opt?.value || "", talukId: "" })); reset(); }}
-                    noOptionsMessage={() => "No districts"}
+                    noOptionsMessage={() => t("No districts", { ns: "reports" })}
                   />
                 </Col>
                 <Col md={3}>
-                  <label style={lbl}>Taluk <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Taluk")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
                     options={talukList.map((tk) => ({ value: String(tk.talukId), label: tk.talukName }))}
-                    placeholder={filter.districtId ? "— Search Taluk —" : "Select District first"}
+                    placeholder={filter.districtId ? t("— Search Taluk —", { ns: "reports" }) : t("Select District first", { ns: "reports" })}
                     isSearchable isClearable isDisabled={!filter.districtId} menuPlacement="auto" menuPortalTarget={typeof document !== "undefined" ? document.body : null} menuPosition="fixed" styles={reactSelectStyles}
                     value={talukList.map((tk) => ({ value: String(tk.talukId), label: tk.talukName })).find((o) => o.value === String(filter.talukId)) || null}
                     onChange={(opt) => { setFilter((p) => ({ ...p, talukId: opt?.value || "" })); reset(); }}
-                    noOptionsMessage={() => "No taluks"}
+                    noOptionsMessage={() => t("No taluks", { ns: "reports" })}
                   />
                 </Col>
                 <Col md={2}>
-                  <label style={lbl}>Year <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Year", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select value={filter.year} onChange={(e) => { setFilter((p) => ({ ...p, year: e.target.value })); reset(); }} style={sel}>
                     {yearOptions.map((y) => <option key={y.value} value={y.value}>{y.label}</option>)}
                   </Form.Select>
                 </Col>
                 <Col md={2}>
-                  <label style={lbl}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Month")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select value={filter.month} onChange={(e) => { setFilter((p) => ({ ...p, month: e.target.value })); reset(); }} style={sel}>
-                    {MONTHS.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
+                    {MONTHS.map((m) => <option key={m.value} value={m.value}>{t(m.label, { ns: "reports" })}</option>)}
                   </Form.Select>
                 </Col>
                 <Col md={2}>
                   <button type="submit" disabled={isLoading} style={btn("linear-gradient(135deg,#0f766e,#14b8a6)", "0 4px 12px rgba(15,118,110,.32)", isLoading)}>
-                    {isLoading ? <><span className="spinner-border spinner-border-sm" /> Loading…</> : <>📋 View</>}
+                    {isLoading ? <><span className="spinner-border spinner-border-sm" /> {t("Loading…", { ns: "reports" })}</> : <>📋 {t("View", { ns: "reports" })}</>}
                   </button>
                 </Col>
               </Row>
               {hasReport && (
                 <Row className="g-2 mt-2 align-items-end">
                   <Col md={5}>
-                    <label style={lbl}>Quick Search (TSC)</label>
-                    <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Type to filter…" style={{ ...sel, padding: "8px 12px" }} />
+                    <label style={lbl}>{t("Quick Search (TSC)", { ns: "reports" })}</label>
+                    <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("Type to filter…", { ns: "reports" })} style={{ ...sel, padding: "8px 12px" }} />
                   </Col>
                   <Col md={3}>
-                    <label style={lbl}>Totals row</label>
+                    <label style={lbl}>{t("Totals row", { ns: "reports" })}</label>
                     <button type="button" onClick={() => setHideTotals((v) => !v)}
                       style={{
                         width: "100%", padding: "7px 12px", borderRadius: "9px", border: "none",
@@ -301,16 +301,16 @@ function TscMonthlyFarmerCategoryDetailReport() {
                         color: hideTotals ? "#475569" : "#854d0e",
                         fontWeight: 800, fontSize: "12.5px", cursor: "pointer",
                       }}>
-                      {hideTotals ? "🚫 Totals hidden" : "✓ Totals shown"}
+                      {hideTotals ? `🚫 ${t("Totals hidden", { ns: "reports" })}` : `✓ ${t("Totals shown", { ns: "reports" })}`}
                     </button>
                   </Col>
                   <Col md={4}>
                     <div className="d-flex gap-2 flex-wrap justify-content-md-end">
                       <button type="button" disabled={isDownloadingPdf} onClick={handlePdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 4px 12px rgba(185,28,28,.30)", isDownloadingPdf)}>
-                        {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> PDF…</> : <>📄 PDF</>}
+                        {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> {t("PDF…", { ns: "reports" })}</> : <>📄 {t("PDF", { ns: "reports" })}</>}
                       </button>
                       <button type="button" disabled={isDownloadingExcel} onClick={handleExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 4px 12px rgba(21,128,61,.30)", isDownloadingExcel)}>
-                        {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> Excel…</> : <>📊 Excel</>}
+                        {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> {t("Excel…", { ns: "reports" })}</> : <>📊 {t("Excel", { ns: "reports" })}</>}
                       </button>
                     </div>
                   </Col>
@@ -324,38 +324,38 @@ function TscMonthlyFarmerCategoryDetailReport() {
           <div className="tscfcd-wrap mt-4">
             <div className="d-flex flex-wrap gap-3 mb-3 align-items-stretch">
               <div style={{ background: "linear-gradient(135deg,#ccfbf1,#ecfdf5)", border: "1.5px solid #5eead4", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "180px" }}>
-                <span style={{ fontSize: "11px", color: "#0f766e", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>District / Taluk</span>
+                <span style={{ fontSize: "11px", color: "#0f766e", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("District / Taluk", { ns: "reports" })}</span>
                 <span style={{ fontSize: "13px", color: "#1a202c", fontWeight: 700, marginTop: "2px" }}>{districtName} · {talukName}</span>
               </div>
               {kpis && (
                 <>
                   <div style={{ background: "linear-gradient(135deg,#dbeafe,#eff6ff)", border: "1.5px solid #93c5fd", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "180px" }}>
-                    <span style={{ fontSize: "11px", color: "#1d4ed8", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>Total Farmers</span>
+                    <span style={{ fontSize: "11px", color: "#1d4ed8", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("Total Farmers", { ns: "reports" })}</span>
                     <span className="tscfcd-num" style={{ fontSize: "18px", color: "#1e3a8a", fontWeight: 800, marginTop: "2px" }}>{fmtInt(kpis.farmer)}</span>
-                    <span style={{ fontSize: "10.5px", color: "#1e40af", marginTop: "1px" }}>Villages: {fmtInt(kpis.villages)} · Area: {fmtDec(kpis.area)} ha</span>
+                    <span style={{ fontSize: "10.5px", color: "#1e40af", marginTop: "1px" }}>{t("Villages", { ns: "reports" })}: {fmtInt(kpis.villages)} · {t("Area", { ns: "reports" })}: {fmtDec(kpis.area)} ha</span>
                   </div>
                   <div style={{ background: "linear-gradient(135deg,#fef3c7,#fef9ec)", border: "1.5px solid #fcd34d", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "170px" }}>
-                    <span style={{ fontSize: "11px", color: "#92400e", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>SC / ST</span>
+                    <span style={{ fontSize: "11px", color: "#92400e", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("SC / ST", { ns: "reports" })}</span>
                     <span className="tscfcd-num" style={{ fontSize: "16px", color: "#78350f", fontWeight: 800, marginTop: "2px" }}>{fmtInt(kpis.sc)} / {fmtInt(kpis.st)}</span>
                   </div>
                   <div style={{ background: "linear-gradient(135deg,#ede9fe,#f5f3ff)", border: "1.5px solid #c4b5fd", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "180px" }}>
-                    <span style={{ fontSize: "11px", color: "#7c3aed", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>Minority / Disabled</span>
+                    <span style={{ fontSize: "11px", color: "#7c3aed", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("Minority / Disabled", { ns: "reports" })}</span>
                     <span className="tscfcd-num" style={{ fontSize: "16px", color: "#4c1d95", fontWeight: 800, marginTop: "2px" }}>{fmtInt(kpis.min)} / {fmtInt(kpis.dis)}</span>
                   </div>
                   <div style={{ background: "linear-gradient(135deg,#fbcfe8,#fce7f3)", border: "1.5px solid #f9a8d4", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "200px" }}>
-                    <span style={{ fontSize: "11px", color: "#9d174d", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>Women / Men</span>
+                    <span style={{ fontSize: "11px", color: "#9d174d", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("Women / Men", { ns: "reports" })}</span>
                     <span className="tscfcd-num" style={{ fontSize: "16px", color: "#831843", fontWeight: 800, marginTop: "2px" }}>{fmtInt(kpis.women)} / {fmtInt(kpis.men)}</span>
                     <span className="tscfcd-num" style={{ fontSize: "10.5px", color: "#be185d", marginTop: "1px", fontWeight: 700 }}>{kpis.womenPct.toFixed(1)}% / {kpis.menPct.toFixed(1)}%</span>
                   </div>
                   <div style={{ background: "linear-gradient(135deg,#bbf7d0,#dcfce7)", border: "1.5px solid #86efac", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "200px" }}>
-                    <span style={{ fontSize: "11px", color: "#166534", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>Marginal ≤ 1 ha</span>
+                    <span style={{ fontSize: "11px", color: "#166534", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("Marginal ≤ 1 ha", { ns: "reports" })}</span>
                     <span className="tscfcd-num" style={{ fontSize: "16px", color: "#14532d", fontWeight: 800, marginTop: "2px" }}>{fmtInt(kpis.marg)}</span>
-                    <span className="tscfcd-num" style={{ fontSize: "10.5px", color: "#15803d", fontWeight: 700, marginTop: "1px" }}>{kpis.margPct.toFixed(1)}% of farmers</span>
+                    <span className="tscfcd-num" style={{ fontSize: "10.5px", color: "#15803d", fontWeight: 700, marginTop: "1px" }}>{t("{{pct}}% of farmers", { ns: "reports", pct: kpis.margPct.toFixed(1) })}</span>
                   </div>
                   <div style={{ background: "linear-gradient(135deg,#fed7aa,#fde68a)", border: "1.5px solid #fdba74", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "200px" }}>
-                    <span style={{ fontSize: "11px", color: "#9a3412", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>Big {">"} 10 ha</span>
+                    <span style={{ fontSize: "11px", color: "#9a3412", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("Big > 10 ha", { ns: "reports" })}</span>
                     <span className="tscfcd-num" style={{ fontSize: "16px", color: "#7c2d12", fontWeight: 800, marginTop: "2px" }}>{fmtInt(kpis.big)}</span>
-                    <span className="tscfcd-num" style={{ fontSize: "10.5px", color: "#9a3412", fontWeight: 700, marginTop: "1px" }}>{kpis.bigPct.toFixed(1)}% of farmers</span>
+                    <span className="tscfcd-num" style={{ fontSize: "10.5px", color: "#9a3412", fontWeight: 700, marginTop: "1px" }}>{t("{{pct}}% of farmers", { ns: "reports", pct: kpis.bigPct.toFixed(1) })}</span>
                   </div>
                 </>
               )}
@@ -469,7 +469,7 @@ function TscMonthlyFarmerCategoryDetailReport() {
                   </thead>
                   <tbody>
                     {filteredRows.length === 0 && (
-                      <tr><td colSpan={17} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>{dataRows.length === 0 ? "ಯಾವುದೇ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ / No records found." : `No matches for "${search}".`}</td></tr>
+                      <tr><td colSpan={17} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>{dataRows.length === 0 ? "ಯಾವುದೇ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ / No records found." : t('No matches for "{{search}}".', { ns: "reports", search })}</td></tr>
                     )}
                     {filteredRows.map((row, ri) => {
                       const isTotal = isTotalRow(row);
@@ -551,14 +551,14 @@ function TscMonthlyFarmerCategoryDetailReport() {
               <div style={{ background: "linear-gradient(135deg,#ecfdf5,#eef2ff)", padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "8px", borderTop: "1.5px solid #c7d2fe" }}>
                 <span style={{ fontSize: "12px", color: "#4338ca", fontWeight: 600 }}>
                   {districtName} · {talukName} — {monthLabel} {monthKn} {filter.year}
-                  &nbsp;·&nbsp; Farmer Category Detail · {filteredRows.length} / {dataRows.length} rows
+                  &nbsp;·&nbsp; {t("Farmer Category Detail", { ns: "reports" })} · {filteredRows.length} / {dataRows.length} {t("rows", { ns: "reports" })}
                 </span>
                 <div className="d-flex gap-2 flex-wrap">
                   <button type="button" onClick={handlePdf} disabled={isDownloadingPdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 2px 8px rgba(185,28,28,.25)", isDownloadingPdf)}>
-                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Generating…</> : <>📄 Download PDF</>}
+                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> {t("Generating…", { ns: "reports" })}</> : <>📄 {t("Download PDF", { ns: "reports" })}</>}
                   </button>
                   <button type="button" onClick={handleExcel} disabled={isDownloadingExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 2px 8px rgba(21,128,61,.25)", isDownloadingExcel)}>
-                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Exporting…</> : <>📊 Download Excel</>}
+                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> {t("Exporting…", { ns: "reports" })}</> : <>📊 {t("Download Excel", { ns: "reports" })}</>}
                   </button>
                 </div>
               </div>

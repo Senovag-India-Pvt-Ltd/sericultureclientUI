@@ -110,17 +110,17 @@ function GgSheet4CombinedReport() {
   };
 
   const validate = () => {
-    if (!filter.grainageMasterId) return "Please select a Grainage.";
-    if (!filter.year) return "Please select a Year.";
-    if (!filter.month) return "Please select a Month.";
+    if (!filter.grainageMasterId) return t("Please select a Grainage.", { ns: "reports" });
+    if (!filter.year) return t("Please select a Year.", { ns: "reports" });
+    if (!filter.month) return t("Please select a Month.", { ns: "reports" });
     return null;
   };
 
   const showValidationError = (msg) =>
     Swal.fire({
-      icon: "warning", title: "Required Fields",
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Missing Selection</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Got it", confirmButtonColor: "#d97706",
+      icon: "warning", title: t("Required Fields", { ns: "reports" }),
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Missing Selection", { ns: "reports" })}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Got it", { ns: "reports" }), confirmButtonColor: "#d97706",
       background: "#fff", customClass: { popup: "ggs4-swal" },
     });
 
@@ -128,7 +128,7 @@ function GgSheet4CombinedReport() {
     Swal.fire({
       icon: "error", title,
       html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${icon}</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${title}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${message}</p></div></div></div>`,
-      confirmButtonText: "Close", confirmButtonColor: "#e53e3e",
+      confirmButtonText: t("Close", { ns: "reports" }), confirmButtonColor: "#e53e3e",
       background: "#fff", customClass: { popup: "ggs4-swal" },
     });
 
@@ -145,8 +145,8 @@ function GgSheet4CombinedReport() {
       setRows(Array.isArray(res.data) ? res.data : []);
       setShown(true);
     } catch {
-      showServerError("🔌", "Could Not Load Report",
-        "Failed to fetch the DCB / Disease / DFL Distribution report. Please try again.");
+      showServerError("🔌", t("Could Not Load Report", { ns: "reports" }),
+        t("Failed to fetch the DCB / Disease / DFL Distribution report. Please try again.", { ns: "reports" }));
     } finally { setLoadView(false); }
   };
 
@@ -173,8 +173,8 @@ function GgSheet4CombinedReport() {
       }
     } catch {
       showServerError(kind === "pdf" ? "📄" : "📊",
-        kind === "pdf" ? "PDF Generation Failed" : "Excel Generation Failed",
-        `Could not generate the ${kind.toUpperCase()} report. Please verify your selection and try again.`);
+        kind === "pdf" ? t("PDF Generation Failed", { ns: "reports" }) : t("Excel Generation Failed", { ns: "reports" }),
+        t("Could not generate the {{kind}} report. Please verify your selection and try again.", { ns: "reports", kind: kind.toUpperCase() }));
     } finally { setter(false); }
   };
 
@@ -203,11 +203,11 @@ function GgSheet4CombinedReport() {
   });
 
   return (
-    <Layout title={t("GG Sheet 4 — DCB · Disease · DFL Distribution")}>
+    <Layout title={t("GG Sheet 4 — DCB · Disease · DFL Distribution", { ns: "reports" })}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("GG Sheet 4 — DCB · Disease · DFL Distribution")}</Block.Title>
+            <Block.Title tag="h2">{t("GG Sheet 4 — DCB · Disease · DFL Distribution", { ns: "reports" })}</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -263,7 +263,7 @@ function GgSheet4CombinedReport() {
                 <Col md={3}>
                   <label style={lbl}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="month" value={filter.month} onChange={handleFilterChange} style={sel}>
-                    {MONTHS.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
+                    {MONTHS.map((m) => <option key={m.value} value={m.value}>{t(m.label, { ns: "reports" })}</option>)}
                   </Form.Select>
                 </Col>
                 <Col md={3}>

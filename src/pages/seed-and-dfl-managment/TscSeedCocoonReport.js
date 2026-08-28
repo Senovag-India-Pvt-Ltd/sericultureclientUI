@@ -173,27 +173,27 @@ function TscSeedCocoonReport() {
   };
 
   const validate = () => {
-    if (!filter.tscId)                 return "Please select a TSC.";
-    if (!filter.grainageId)            return "Please select a Grainage.";
-    if (!filter.financialYearMasterId) return "Please select a Financial Year.";
-    if (!filter.month)                 return "Please select a Month.";
-    if (!fyStartYear)                  return "Could not determine the financial year start year.";
+    if (!filter.tscId)                 return t("Please select a TSC.", { ns: "reports" });
+    if (!filter.grainageId)            return t("Please select a Grainage.", { ns: "reports" });
+    if (!filter.financialYearMasterId) return t("Please select a Financial Year.", { ns: "reports" });
+    if (!filter.month)                 return t("Please select a Month.", { ns: "reports" });
+    if (!fyStartYear)                  return t("Could not determine the financial year start year.", { ns: "reports" });
     return null;
   };
 
   const showWarn = (msg) =>
     Swal.fire({
-      icon: "warning", title: "Required Fields",
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Missing Selection</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Got it", confirmButtonColor: "#d97706",
+      icon: "warning", title: t("Required Fields", { ns: "reports" }),
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Missing Selection", { ns: "reports" })}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Got it", { ns: "reports" }), confirmButtonColor: "#d97706",
       background: "#fff", customClass: { popup: "tscsc-swal" },
     });
 
   const showErr = (title, msg) =>
     Swal.fire({
       icon: "error", title,
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Failed</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Close", confirmButtonColor: "#e53e3e",
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Failed", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Close", { ns: "reports" }), confirmButtonColor: "#e53e3e",
       background: "#fff", customClass: { popup: "tscsc-swal" },
     });
 
@@ -217,13 +217,13 @@ function TscSeedCocoonReport() {
     } catch (err) {
         const status = err?.response?.status;
         if (status === 404 || status === 204) {
-          showErr("No Data Found", "No data found for the selected filters.");
+          showErr(t("No Data Found", { ns: "reports" }), t("No data found for the selected filters.", { ns: "reports" }));
         } else {
           const data = err?.response?.data;
           const backendMsg = typeof data === "string"
             ? data
             : (data?.message || data?.error || data?.errorMessage || data?.error_description);
-          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the TSC Seed Cocoon Production report.");
+          showErr(t("Fetch Failed", { ns: "reports" }), backendMsg || err?.message || t("Failed to load the TSC Seed Cocoon Production report.", { ns: "reports" }));
         }
       } finally {
       setIsLoading(false);
@@ -238,7 +238,7 @@ function TscSeedCocoonReport() {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/tsc-seed-cocoon/pdf", { params: params(), responseType: "blob" });
       window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
     } catch {
-      showErr("PDF Failed", "Could not generate the PDF report.");
+      showErr(t("PDF Failed", { ns: "reports" }), t("Could not generate the PDF report.", { ns: "reports" }));
     } finally {
       setIsDownloadingPdf(false);
     }
@@ -259,7 +259,7 @@ function TscSeedCocoonReport() {
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      showErr("Excel Failed", "Could not generate the Excel report.");
+      showErr(t("Excel Failed", { ns: "reports" }), t("Could not generate the Excel report.", { ns: "reports" }));
     } finally {
       setIsDownloadingExcel(false);
     }
@@ -303,7 +303,7 @@ function TscSeedCocoonReport() {
   }, [dataRows]);
 
   return (
-    <Layout title={t("TSC Seed Cocoon Production Report")}>
+    <Layout title={t("TSC Seed Cocoon Production Report", { ns: "reports" })}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -355,7 +355,7 @@ function TscSeedCocoonReport() {
                   <label style={lbl}>ತಾಂತ್ರಿಕ ಸೇವಾ ಕೇಂದ್ರ (TSC) <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
                     options={tscList.map((tsc) => ({ value: String(tsc.tscMasterId), label: tsc.nameInKannada || tsc.name }))}
-                    placeholder="— Search TSC —"
+                    placeholder={t("— Search TSC —", { ns: "reports" })}
                     isSearchable
                     isClearable
                     menuPlacement="auto"
@@ -372,7 +372,7 @@ function TscSeedCocoonReport() {
                       setHasReport(false);
                       setDataRows([]);
                     }}
-                    noOptionsMessage={() => "No TSC found"}
+                    noOptionsMessage={() => t("No TSC found", { ns: "reports" })}
                   />
                 </Col>
                 <Col md={3}>
@@ -382,7 +382,7 @@ function TscSeedCocoonReport() {
                       value: String(g.grainageMasterId),
                       label: g.grainageMasterName + (g.grainageType ? ` · ${g.grainageType}` : ""),
                     }))}
-                    placeholder="— Search Grainage —"
+                    placeholder={t("— Search Grainage —", { ns: "reports" })}
                     isSearchable
                     isClearable
                     menuPlacement="auto"
@@ -402,13 +402,13 @@ function TscSeedCocoonReport() {
                       setHasReport(false);
                       setDataRows([]);
                     }}
-                    noOptionsMessage={() => "No Grainage found"}
+                    noOptionsMessage={() => t("No grainage found", { ns: "reports" })}
                   />
                 </Col>
                 <Col md={2}>
                   <label style={lbl}>ಆರ್ಥಿಕ ವರ್ಷ (Financial Year) <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="financialYearMasterId" value={filter.financialYearMasterId} onChange={handleChange} style={sel}>
-                    <option value="">— Select Year —</option>
+                    <option value="">{t("— Select Year —", { ns: "reports" })}</option>
                     {financialYearList.map((f) => (
                       <option key={f.financialYearMasterId} value={f.financialYearMasterId}>{f.financialYear}</option>
                     ))}
@@ -426,13 +426,13 @@ function TscSeedCocoonReport() {
                 <Col md={2}>
                   <div className="d-flex gap-2 flex-wrap">
                     <button type="submit" disabled={isLoading} style={btn("linear-gradient(135deg,#0f766e,#14b8a6)", "0 4px 12px rgba(15,118,110,.32)", isLoading)}>
-                      {isLoading ? <><span className="spinner-border spinner-border-sm" /> Loading…</> : <>📋 View</>}
+                      {isLoading ? <><span className="spinner-border spinner-border-sm" /> {t("Loading…", { ns: "reports" })}</> : <>📋 {t("View", { ns: "reports" })}</>}
                     </button>
                     <button type="button" disabled={isDownloadingPdf} onClick={handlePdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 4px 12px rgba(185,28,28,.30)", isDownloadingPdf)}>
-                      {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📄 PDF</>}
+                      {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📄 {t("PDF", { ns: "reports" })}</>}
                     </button>
                     <button type="button" disabled={isDownloadingExcel} onClick={handleExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 4px 12px rgba(21,128,61,.30)", isDownloadingExcel)}>
-                      {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📊 Excel</>}
+                      {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📊 {t("Excel", { ns: "reports" })}</>}
                     </button>
                   </div>
                 </Col>
@@ -723,10 +723,10 @@ function TscSeedCocoonReport() {
                 </span>
                 <div className="d-flex gap-2 flex-wrap">
                   <button type="button" onClick={handlePdf} disabled={isDownloadingPdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 2px 8px rgba(185,28,28,.25)", isDownloadingPdf)}>
-                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Generating…</> : <>📄 Download PDF</>}
+                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> {t("Generating…", { ns: "reports" })}</> : <>📄 {t("Download PDF", { ns: "reports" })}</>}
                   </button>
                   <button type="button" onClick={handleExcel} disabled={isDownloadingExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 2px 8px rgba(21,128,61,.25)", isDownloadingExcel)}>
-                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Exporting…</> : <>📊 Download Excel</>}
+                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> {t("Exporting…", { ns: "reports" })}</> : <>📊 {t("Download Excel", { ns: "reports" })}</>}
                   </button>
                 </div>
               </div>

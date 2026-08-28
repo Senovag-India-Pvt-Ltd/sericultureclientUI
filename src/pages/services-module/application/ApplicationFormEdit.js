@@ -2494,7 +2494,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label>
                               {t("Financial Year")}
                               <span className="text-danger">*</span>
@@ -2529,7 +2529,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                               {t("Scheme")}
                               <span className="text-danger">*</span>
@@ -2572,7 +2572,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                     {/* {schemeDetails.spacing && ( */}
                     {(schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") && (
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group">
                               <Form.Label htmlFor="spacing">
                                 {t("Spacing")} <span className="text-danger">*</span>
                               </Form.Label>
@@ -2610,7 +2610,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         {/* Conditionally Render Hectare Field */}
                         {(schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") && (
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group">
                               <Form.Label htmlFor="hectare">
                                 {t("Hectare")} <span className="text-danger">*</span>
                               </Form.Label>
@@ -2648,7 +2648,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
 
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label>
                             {t("Component Type")}
                               <span className="text-danger">*</span>
@@ -2684,7 +2684,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                           </Form.Group>
                         </Col>
                         {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label>
                               Scheme Type
                               <span className="text-danger">*</span>
@@ -2720,7 +2720,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         </Col> */}
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                             {t("Component")}
                               <span className="text-danger">*</span>
@@ -2756,7 +2756,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                             {t("Sub Component")}
                               <span className="text-danger">*</span>
@@ -2792,7 +2792,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                             {t("Approval Stage")}
                             </Form.Label>
@@ -2818,7 +2818,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                             {t("Head of Account")}
                               <span className="text-danger">*</span>
@@ -2854,7 +2854,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="userMasterId">
                               {t("User Master")}
                             </Form.Label>
@@ -2890,7 +2890,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sanctionAmount">
                               {t("Scheme Amount")}
                               <span className="text-danger">*</span>
@@ -2913,7 +2913,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         </Col>
 
                         {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="schemeAmount">
                               Scheme Amount
                               <span className="text-danger">*</span>
@@ -2936,7 +2936,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         </Col>
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sanctionNumber">
                               Sanction Number
                               <span className="text-danger">*</span>
@@ -2960,7 +2960,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
 
                         {showMonthField && (
                           <Col lg="2">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group">
                               <Form.Label htmlFor="monthYear">
                                 {t("Month")}
                                 <span className="text-danger">*</span>
@@ -2992,7 +2992,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                         )}
 
                         <Col lg="2">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                               {t("From Date")}
                               <span className="text-danger">*</span>
@@ -3016,7 +3016,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                           </Form.Group>
                         </Col>
                         <Col lg="2">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                               {t("To Date")}
                               <span className="text-danger">*</span>
@@ -3083,7 +3083,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="4">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label>
                               Vendor Name
                               <span className="text-danger">*</span>
@@ -3116,7 +3116,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                           </Form.Group>
                         </Col>
                         <Col lg="4">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="description">
                               Description
                               <span className="text-danger">*</span>

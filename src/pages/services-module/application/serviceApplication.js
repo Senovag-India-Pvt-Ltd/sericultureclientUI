@@ -7981,7 +7981,7 @@ const serviceApplicationStyles = `
                     <Card.Body>
                       <Row className="g-gs">
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                               {t("Scheme")}
                               <span className="text-danger">*</span>
@@ -8020,7 +8020,7 @@ const serviceApplicationStyles = `
                         {/* Conditionally Render Spacing Field */}
                         {(schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") && (
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group">
                               <Form.Label htmlFor="spacing">
                                 {t("Spacing")} <span className="text-danger">*</span>
                               </Form.Label>
@@ -8058,7 +8058,7 @@ const serviceApplicationStyles = `
                         {/* Conditionally Render Hectare Field */}
                         {(schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") && (
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group">
                               <Form.Label htmlFor="hectare">
                                 {t("Hectare")} <span className="text-danger">*</span>
                               </Form.Label>
@@ -8096,7 +8096,7 @@ const serviceApplicationStyles = `
                         
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label>
                               {t("Component Type")}
                               <span className="text-danger">*</span>
@@ -8132,7 +8132,7 @@ const serviceApplicationStyles = `
                          {(getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Bivoltine Bonus" ||
                             getIncentiveAndBonusData?.[0]?.calculationBasedOn === "MSC Chawki incentive Unit cost for 100 DFLs Rs.1500") && (
                             <Col lg="6">
-                                <Form.Group className="form-group mt-n4">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="imcbTable">
                                     {t("Manual/Automatic")} <span className="text-danger">*</span>
                                   </Form.Label>
@@ -8157,7 +8157,7 @@ const serviceApplicationStyles = `
                           )}
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                               {t("Component")}
                               <span className="text-danger">*</span>
@@ -8195,7 +8195,7 @@ const serviceApplicationStyles = `
 
                         
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                               {t("Sub Component")}
                               <span className="text-danger">*</span>
@@ -8234,7 +8234,7 @@ const serviceApplicationStyles = `
                         {(getIncentiveAndBonusData?.[0]?.calculationBasedOn === "SDP RH 225" ||
                           getIncentiveAndBonusData?.[0]?.calculationBasedOn === "SDP Low Cost Shed") && (
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group">
                               <Form.Label htmlFor="rhSqft">
                                 {t("Constructed Area in Sqft")}
                               </Form.Label>
@@ -8256,7 +8256,7 @@ const serviceApplicationStyles = `
                             <>
 
                             <Col lg="6">
-                              <Form.Group className="form-group mt-n4">
+                              <Form.Group className="form-group">
                                 <Form.Label htmlFor="sordfl">{("Rearing Equipment Details")}</Form.Label>
                                 <div className="form-control-wrap">
                                   <Form.Select
@@ -8288,7 +8288,7 @@ const serviceApplicationStyles = `
                             </Col>
                             
                             <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 <strong>Tax Invoice Amount (in Rs)</strong>
                                 <span className="text-danger">*</span>
@@ -8321,7 +8321,7 @@ const serviceApplicationStyles = `
                         getIncentiveAndBonusData?.[0]?.unitForScheme !== "Automatic Reeling Machine Unit" && (
                           <>
                             <Col lg="6">
-                              <Form.Group className="form-group mt-n3">
+                              <Form.Group className="form-group">
                                 <Form.Label htmlFor="schemeAmount">
                                   Tax Invoice No
                                   {/* <span className="text-danger">*</span> */}
@@ -8341,7 +8341,7 @@ const serviceApplicationStyles = `
                             </Col>
 
                             <Col lg="2">
-                              <Form.Group className="form-group mt-n3">
+                              <Form.Group className="form-group">
                                 <Form.Label htmlFor="sordfl">
                                   {t("Tax Invoice Date")}
                                   {/* <span className="text-danger">*</span> */}
@@ -8371,7 +8371,7 @@ const serviceApplicationStyles = `
                               ].includes(getIncentiveAndBonusData?.[0]?.calculationBasedOn) &&
                               getIncentiveAndBonusData?.[0]?.unitForScheme !== "Rearing Equipment SS" && (
                             <Col lg="6">
-                              <Form.Group className="form-group mt-n4">
+                              <Form.Group className="form-group">
                                 <Form.Label>
                                   <strong>Tax Invoice Amount (in Rs)</strong>
                                   <span className="text-danger">*</span>
@@ -8399,7 +8399,7 @@ const serviceApplicationStyles = `
                         {getIncentiveAndBonusData?.[0]?.unitForScheme === "Automatic Reeling Machine Unit" && (
                           <>
                             <Col lg="4">
-                              <Form.Group className="form-group mt-n4">
+                              <Form.Group className="form-group">
                                 <Form.Label>{t("ARM Ends")} <span className="text-danger">*</span></Form.Label>
                                 <div className="form-control-wrap">
                                   <Form.Select name="armEnds" value={data.armEnds} onChange={handleInputs} required>
@@ -8414,7 +8414,7 @@ const serviceApplicationStyles = `
                             </Col>
 
                             <Col lg="4">
-                              <Form.Group className="form-group mt-n4">
+                              <Form.Group className="form-group">
                                 <Form.Label>{t("Name of the ARM Unit")} <span className="text-danger">*</span></Form.Label>
                                 <div className="form-control-wrap">
                                   <Form.Control
@@ -8431,7 +8431,7 @@ const serviceApplicationStyles = `
                             </Col>
 
                             <Col lg="4">
-                              <Form.Group className="form-group mt-n4">
+                              <Form.Group className="form-group">
                                 <Form.Label>{t("Address of ARM Unit")}</Form.Label>
                                 <div className="form-control-wrap">
                                   <Form.Control
@@ -8451,7 +8451,7 @@ const serviceApplicationStyles = `
                         {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF" && (
                             <>
                             <Col lg="6">
-                                <Form.Group className="form-group mt-n3">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="schemeAmount">Quantity in kg<span className="text-danger">*</span></Form.Label>
                                   <div className="form-control-wrap">
                                     <Form.Control
@@ -8469,7 +8469,7 @@ const serviceApplicationStyles = `
                               </Col>
 
                               <Col lg="6">
-                                  <Form.Group className="form-group mt-n4">
+                                  <Form.Group className="form-group">
                                 <Form.Label htmlFor="icbBasinEnds">
                                   {t("Year")} 
                                   {/* <span className="text-danger">*</span> */}
@@ -8493,7 +8493,7 @@ const serviceApplicationStyles = `
                             </Col>
 
                               <Col lg="6">
-                                <Form.Group className="form-group mt-n3">
+                                <Form.Group className="form-group">
                                   <Form.Label>
                                     {t('From Month')}<span className="text-danger">*</span>
                                   </Form.Label>
@@ -8523,7 +8523,7 @@ const serviceApplicationStyles = `
                               </Col>
 
                               <Col lg="6">
-                                <Form.Group className="form-group mt-n3">
+                                <Form.Group className="form-group">
                                   <Form.Label>
                                     {t('To Month')}<span className="text-danger">*</span>
                                   </Form.Label>
@@ -8553,7 +8553,7 @@ const serviceApplicationStyles = `
                               </Col>
 
                               <Col lg="6">
-                                <Form.Group className="form-group mt-n3">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="schemeAmount">
                                     {t("Machine Type")}<span className="text-danger">*</span>
                                   </Form.Label>
@@ -8587,7 +8587,7 @@ const serviceApplicationStyles = `
                               </Col>
 
                             <Col lg="6">
-                                <Form.Group className="form-group mt-n3">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="imcbTable">
                                     {t("Table/Basin/Ends")} <span className="text-danger">*</span>
                                   </Form.Label>
@@ -8630,7 +8630,7 @@ const serviceApplicationStyles = `
                               </Col>
 
                               <Col lg="6">
-                                <Form.Group className="form-group mt-n3">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="imcbTable">
                                     {t("Renditta/Grade")} <span className="text-danger">*</span>
                                   </Form.Label>
@@ -8663,7 +8663,7 @@ const serviceApplicationStyles = `
                           {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "ICB-PSF" && (
                             <>
                             <Col lg="6">
-                                  <Form.Group className="form-group mt-n4">
+                                  <Form.Group className="form-group">
                                 <Form.Label htmlFor="icbBasinEnds">
                                   {t("ICB Basin Ends")} <span className="text-danger">*</span>
                                 </Form.Label>
@@ -8686,7 +8686,7 @@ const serviceApplicationStyles = `
                               </Form.Group>
                             </Col>
                             <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 <strong>Tax Invoice Amount (in Rs)</strong>
                                 <span className="text-danger">*</span>
@@ -8711,7 +8711,7 @@ const serviceApplicationStyles = `
                                {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Boiler-PSF" && (
                             <>
                             <Col lg="6">
-                                  <Form.Group className="form-group mt-n4">
+                                  <Form.Group className="form-group">
                                 <Form.Label htmlFor="icbBasinEnds">
                                   {t("Boiler In Kg")} <span className="text-danger">*</span>
                                 </Form.Label>
@@ -8733,7 +8733,7 @@ const serviceApplicationStyles = `
                               </Form.Group>
                             </Col>
                             <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 <strong>Tax Invoice Amount (in Rs)</strong>
                                 <span className="text-danger">*</span>
@@ -8759,7 +8759,7 @@ const serviceApplicationStyles = `
                             {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Reeling Shed-PSF" && (
                             <>
                             <Col lg="6">
-                                <Form.Group className="form-group mt-n3">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="schemeAmount">
                                     {t("Machine Type")}<span className="text-danger">*</span>
                                   </Form.Label>
@@ -8793,7 +8793,7 @@ const serviceApplicationStyles = `
                               </Col>
 
                              {/* <Col lg="6">
-                                  <Form.Group className="form-group mt-n4">
+                                  <Form.Group className="form-group">
                                 <Form.Label htmlFor="icbBasinEnds">
                                   {t("Reeling SQFT")} <span className="text-danger">*</span>
                                 </Form.Label>
@@ -8819,7 +8819,7 @@ const serviceApplicationStyles = `
                             </Col> */}
 
                              <Col lg="6">
-                                <Form.Group className="form-group mt-n3">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="schemeAmount">
                                     {t("Reeling Sqft")}<span className="text-danger">*</span>
                                   </Form.Label>
@@ -8859,7 +8859,7 @@ const serviceApplicationStyles = `
                                {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Silent Generator" && (
                             <>
                             <Col lg="6">
-                                <Form.Group className="form-group mt-n3">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="schemeAmount">
                                     {t("Machine Type")}<span className="text-danger">*</span>
                                   </Form.Label>
@@ -8893,7 +8893,7 @@ const serviceApplicationStyles = `
                               </Col>
 
                              {/* <Col lg="6">
-                                  <Form.Group className="form-group mt-n4">
+                                  <Form.Group className="form-group">
                                 <Form.Label htmlFor="icbBasinEnds">
                                   {t("Reeling SQFT")} <span className="text-danger">*</span>
                                 </Form.Label>
@@ -8919,7 +8919,7 @@ const serviceApplicationStyles = `
                             </Col> */}
 
                             {/* <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 <strong>Silent generator Capacity( KW )</strong>
                                 <span className="text-danger">*</span>
@@ -8941,7 +8941,7 @@ const serviceApplicationStyles = `
                           </Col> */}
 
                           <Col lg="6">
-                                <Form.Group className="form-group mt-n3">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="schemeAmount">
                                     {t("Silent generator Capacity( KW )")}<span className="text-danger">*</span>
                                   </Form.Label>
@@ -8975,7 +8975,7 @@ const serviceApplicationStyles = `
                               </Col>
                               
                               <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 <strong>Tax Invoice Amount (in Rs)</strong>
                                 <span className="text-danger">*</span>
@@ -9000,7 +9000,7 @@ const serviceApplicationStyles = `
                                {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar power Generator" && (
                             <>
                             <Col lg="6">
-                                <Form.Group className="form-group mt-n3">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="schemeAmount">
                                     {t("Machine Type")}<span className="text-danger">*</span>
                                   </Form.Label>
@@ -9034,7 +9034,7 @@ const serviceApplicationStyles = `
                               </Col>
 
                              {/* <Col lg="6">
-                                  <Form.Group className="form-group mt-n4">
+                                  <Form.Group className="form-group">
                                 <Form.Label htmlFor="icbBasinEnds">
                                   {t("Reeling SQFT")} <span className="text-danger">*</span>
                                 </Form.Label>
@@ -9060,7 +9060,7 @@ const serviceApplicationStyles = `
                             </Col> */}
 
                             {/* <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 <strong>Solar Power Generator Capacity(HP)</strong>
                                 <span className="text-danger">*</span>
@@ -9082,7 +9082,7 @@ const serviceApplicationStyles = `
                           </Col> */}
 
                           <Col lg="6">
-                                <Form.Group className="form-group mt-n3">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="schemeAmount">
                                     {t("Solar Power Generator Capacity(HP)")}<span className="text-danger">*</span>
                                   </Form.Label>
@@ -9116,7 +9116,7 @@ const serviceApplicationStyles = `
                               </Col>
 
                             <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 <strong>Tax Invoice Amount (in Rs)</strong>
                                 <span className="text-danger">*</span>
@@ -9141,7 +9141,7 @@ const serviceApplicationStyles = `
                                 {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar Water Heater" && (
                             <>
                             <Col lg="6">
-                                <Form.Group className="form-group mt-n4">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="schemeAmount">
                                     {t("Machine Type")}<span className="text-danger">*</span>
                                   </Form.Label>
@@ -9175,7 +9175,7 @@ const serviceApplicationStyles = `
                               </Col>
 
                              {/* <Col lg="6">
-                                  <Form.Group className="form-group mt-n4">
+                                  <Form.Group className="form-group">
                                 <Form.Label htmlFor="icbBasinEnds">
                                   {t("Reeling SQFT")} <span className="text-danger">*</span>
                                 </Form.Label>
@@ -9201,7 +9201,7 @@ const serviceApplicationStyles = `
                             </Col> */}
 
                             {/* <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 <strong>Solar Power Generator Capacity(HP)</strong>
                                 <span className="text-danger">*</span>
@@ -9223,7 +9223,7 @@ const serviceApplicationStyles = `
                           </Col> */}
 
                            {/* <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 <strong>Solar Water heater Capcity(In Ltrs)</strong>
                                 <span className="text-danger">*</span>
@@ -9245,7 +9245,7 @@ const serviceApplicationStyles = `
                           </Col> */}
 
                            {/* <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 <strong>Model</strong>
                                 <span className="text-danger">*</span>
@@ -9267,7 +9267,7 @@ const serviceApplicationStyles = `
                           </Col> */}
 
                            {/* <Col lg="6">
-                                <Form.Group className="form-group mt-n3">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="schemeAmount">
                                     {t("Solar Water Heater Capcity(In Ltrs)")}<span className="text-danger">*</span>
                                   </Form.Label>
@@ -9304,7 +9304,7 @@ const serviceApplicationStyles = `
 
                          
                           <Col lg="6">
-                                <Form.Group className="form-group mt-n3">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="schemeAmount">
                                     {t("Model")}<span className="text-danger">*</span>
                                   </Form.Label>
@@ -9338,7 +9338,7 @@ const serviceApplicationStyles = `
                               </Col> */}
 
                               <Col lg="6">
-                                  <Form.Group className="form-group mt-n4">
+                                  <Form.Group className="form-group">
                                 <Form.Label htmlFor="icbBasinEnds">
                                   {t("Water Heater Capacity")} <span className="text-danger">*</span>
                                 </Form.Label>
@@ -9366,7 +9366,7 @@ const serviceApplicationStyles = `
 
 
                             <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 <strong>Tax Invoice Amount (in Rs)</strong>
                                 <span className="text-danger">*</span>
@@ -9388,7 +9388,7 @@ const serviceApplicationStyles = `
                           </Col>
 
                             <Col lg="6">
-                                  <Form.Group className="form-group mt-n4">
+                                  <Form.Group className="form-group">
                                 <Form.Label htmlFor="icbBasinEnds">
                                   {t("Model")} <span className="text-danger">*</span>
                                 </Form.Label>
@@ -9418,7 +9418,7 @@ const serviceApplicationStyles = `
                                {getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Heat Recovery Unit-PSF" && (
                             <>
                             <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 <strong>Tax Invoice Amount (in Rs)</strong>
                                 <span className="text-danger">*</span>
@@ -9444,7 +9444,7 @@ const serviceApplicationStyles = `
                             getIncentiveAndBonusData?.[0]?.calculationBasedOn === "MERM-PSF") && (
                             <>
                             <Col lg="6">
-                                <Form.Group className="form-group mt-n4">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="imcbTable">
                                     {t("Imcb Table/Basin")} <span className="text-danger">*</span>
                                   </Form.Label>
@@ -9470,7 +9470,7 @@ const serviceApplicationStyles = `
                                 </Form.Group>
                               </Col>
                             <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 <strong>Tax Invoice Amount (in Rs)</strong>
                                 <span className="text-danger">*</span>
@@ -9494,7 +9494,7 @@ const serviceApplicationStyles = `
 
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                               {t("Head of Account")}
                               {/* <span className="text-danger">*</span> */}
@@ -9533,7 +9533,7 @@ const serviceApplicationStyles = `
                         
 
                         <Col lg="6">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label>
                               {t("Approval Stage")}
                               <span className="text-danger">*</span>
@@ -9574,7 +9574,7 @@ const serviceApplicationStyles = `
                         </Col>
 
                         {/* <Col lg="6">
-                          <Form.Group className="form-group mt-n4">
+                          <Form.Group className="form-group">
                             <Form.Label>
                               {t("User Master")}
                               <span className="text-danger">*</span>
@@ -9614,7 +9614,7 @@ const serviceApplicationStyles = `
                         {/* ============ USER MASTER DROPDOWN ============ */}
                         {!allowAnyUser && (
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 {t("User Master")}
                                 <span className="text-danger">*</span>
@@ -9658,7 +9658,7 @@ const serviceApplicationStyles = `
                         {/* ============ SELECT USER DROPDOWN ============ */}
                         {allowAnyUser && (
                           <Col lg="6">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group">
                               <Form.Label>{t("Select User")}</Form.Label>
 
                               <ReactSelect
@@ -9701,7 +9701,7 @@ const serviceApplicationStyles = `
 
                     {/* {getIncentiveAndBonusData[0]?.allowMultipleSanction && (
                        <Col lg="6">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 <strong>Sanction Number</strong>
                                 <span className="text-danger">*</span>
@@ -9725,7 +9725,7 @@ const serviceApplicationStyles = `
 
                         {getIncentiveAndBonusData?.[0]?.monthlyFrequency === true && (
                           <Col lg="2">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group">
                               <Form.Label htmlFor="monthYear">
                                 {t("Month")}
                                 <span className="text-danger">*</span>
@@ -9757,7 +9757,7 @@ const serviceApplicationStyles = `
                         )}
 
                         <Col lg="2">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                               {t("From Date")}
                               <span className="text-danger">*</span>
@@ -9788,7 +9788,7 @@ const serviceApplicationStyles = `
                           </Form.Group>
                         </Col>
                         <Col lg="2">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="sordfl">
                               {t("To Date")}
                               <span className="text-danger">*</span>
@@ -9900,7 +9900,7 @@ const serviceApplicationStyles = `
                   <Card.Body>
                         <Row className="mt-3">
                         <Col lg="4">
-                          <Form.Group className="form-group mt-n4">
+                          <Form.Group className="form-group">
                             <Form.Label>
                               {t("Race")}<span className="text-danger">*</span>
                             </Form.Label>
@@ -9931,7 +9931,7 @@ const serviceApplicationStyles = `
                         </Col>
 
                         <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 {t("Daily Limit In Kgs")} 
                                 <span className="text-danger">*</span>
@@ -9954,7 +9954,7 @@ const serviceApplicationStyles = `
                           </Col>
 
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n4">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 {t("Monthly Limit In Kgs ")} 
                                 <span className="text-danger">*</span>
@@ -11675,7 +11675,7 @@ const serviceApplicationStyles = `
                       </ul>
                     </div>
                       <Col lg="4">
-                        <Form.Group className="form-group mt-n5">
+                        <Form.Group className="form-group">
                           <Form.Label htmlFor="landDeveloped">
                             {t("Unit Cost")}
                             <span className="text-danger">*</span>
@@ -11700,7 +11700,7 @@ const serviceApplicationStyles = `
                       {/* ARM: Subsidy Amount = unitCost × (central% + state%) — auto calculated */}
                       {getIncentiveAndBonusData?.[0]?.unitForScheme === "Automatic Reeling Machine Unit" && (
                         <Col lg="4">
-                          <Form.Group className="form-group mt-n5">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="armSubsidyAmount">
                               {t("Subsidy Amount")}
                             </Form.Label>
@@ -11721,7 +11721,7 @@ const serviceApplicationStyles = `
 
 
                       {/* <Col lg="4">
-                        <Form.Group className="form-group mt-n5">
+                        <Form.Group className="form-group">
                           <Form.Label htmlFor="expectedAmount">
                             {t("Subsidy/Bonus/Incentive Amount")}
                             <span className="text-danger">*</span>
@@ -11749,7 +11749,7 @@ const serviceApplicationStyles = `
                         "Registered Private Bivoltine Chawki Rearing Center Subsidy" &&
                       getIncentiveAndBonusData?.[0]?.unitForScheme !== "Automatic Reeling Machine Unit" && (
                         <Col lg="4">
-                          <Form.Group className="form-group mt-n5">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="expectedAmount">
                               {t("Total Subsidy/Bonus/Incentive Amount")}
                               <span className="text-danger">*</span>
@@ -11779,7 +11779,7 @@ const serviceApplicationStyles = `
                           getIncentiveAndBonusData?.[0]?.calculationBasedOn !== "Registered Private Bivoltine Chawki Rearing Center Subsidy" &&
                           getIncentiveAndBonusData?.[0]?.unitForScheme !== "Automatic Reeling Machine Unit" && (
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n5">
+                            <Form.Group className="form-group">
                               <Form.Label htmlFor="silkSamagraSubsidyAmount">
                                 {t("Subsidy Amount")}
                               </Form.Label>
@@ -11875,7 +11875,7 @@ const serviceApplicationStyles = `
                     {/* IF sanctionForReeling → Show Total Expected Amount (disabled) */}
                     {/* {getIncentiveAndBonusData[0]?.sanctionForReeling && (
                       <Col lg="4">
-                        <Form.Group className="form-group mt-n5">
+                        <Form.Group className="form-group">
                           <Form.Label htmlFor="totalExpectedAmount">
                             {t("Total Subsidy/Bonus/Incentive Amount")}
                             <span className="text-danger">*</span>
@@ -11898,7 +11898,7 @@ const serviceApplicationStyles = `
                     {/* IF sanctionForReeling → Show Subsidy Amount */}
                     {/* {getIncentiveAndBonusData[0]?.sanctionForReeling && (
                       <Col lg="4">
-                        <Form.Group className="form-group mt-n5">
+                        <Form.Group className="form-group">
                           <Form.Label>
                             <strong>Subsidy Amount</strong>
                           </Form.Label>
@@ -11918,7 +11918,7 @@ const serviceApplicationStyles = `
                       "Registered Private Bivoltine Chawki Rearing Center Subsidy") &&
                     getIncentiveAndBonusData?.[0]?.unitForScheme !== "Automatic Reeling Machine Unit" && (
                     <Col lg="4">
-                      <Form.Group className="form-group mt-n5">
+                      <Form.Group className="form-group">
                         <Form.Label htmlFor="totalExpectedAmount">
                           {t("Total Subsidy/Bonus/Incentive Amount")}
                           <span className="text-danger">*</span>
@@ -11946,7 +11946,7 @@ const serviceApplicationStyles = `
                           "Silk Incentive-PSF" &&
                         getIncentiveAndBonusData?.[0]?.unitForScheme !== "Automatic Reeling Machine Unit" && (
                         <Col lg="4">
-                          <Form.Group className="form-group mt-n5">
+                          <Form.Group className="form-group">
                             <Form.Label>
                               <strong>Subsidy Amount</strong>
                             </Form.Label>
@@ -11979,7 +11979,7 @@ const serviceApplicationStyles = `
                     <Card.Body>
                       <Row className="g-gs">
                         {/* <Col lg="4">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="landDeveloped">
                               {t("Unit")}
                             </Form.Label>
@@ -11999,7 +11999,7 @@ const serviceApplicationStyles = `
                         </Col> */}
 
                         <Col lg="4">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="landDeveloped">
                               {t("Extent Of Mulberry(In Acres)")}
                               {/* <span className="text-danger">*</span> */}
@@ -12024,7 +12024,7 @@ const serviceApplicationStyles = `
                         {!(getIncentiveAndBonusData?.[0]?.calculationBasedOn === "SDP RH 225" ||
                           getIncentiveAndBonusData?.[0]?.calculationBasedOn === "SDP Low Cost Shed") && (
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group">
                               <Form.Label htmlFor="landDeveloped">
                                 {t("Constructed Area in Sqft")}
                                 {/* <span className="text-danger">*</span> */}
@@ -12048,7 +12048,7 @@ const serviceApplicationStyles = `
                         )}
 
                         <Col lg="4">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="landDeveloped">
                               {t("Estimated Cost (in lakhs)")}
                               <span className="text-danger">*</span>
@@ -12071,7 +12071,7 @@ const serviceApplicationStyles = `
                         </Col>
 
                         <Col lg="4">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label>
                               {t("Roof Type")}
                               {/* <span className="text-danger">*</span> */}
@@ -12105,7 +12105,7 @@ const serviceApplicationStyles = `
                         </Col>
 
                         <Col lg="4">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="landDeveloped">
                               {t("Length (in feet)")}
                               <span className="text-danger">*</span>
@@ -12128,7 +12128,7 @@ const serviceApplicationStyles = `
                         </Col>
 
                         <Col lg="4">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="landDeveloped">
                               {t("Breadth (in feet)")}
                               <span className="text-danger">*</span>
@@ -12152,7 +12152,7 @@ const serviceApplicationStyles = `
 
 
                         <Col lg="4">
-                          <Form.Group className="form-group mt-n3">
+                          <Form.Group className="form-group">
                             <Form.Label htmlFor="landDeveloped">
                               {t("Height")}
                               <span className="text-danger">*</span>
@@ -12192,7 +12192,7 @@ const serviceApplicationStyles = `
                         <>
                           <Row className="g-gs mb-3">
                             <Col lg="4">
-                              <Form.Group className="form-group mt-n3">
+                              <Form.Group className="form-group">
                                 <Form.Label>{t("Vendor Name")}</Form.Label>
                                 <Form.Select name="vendorId" value={data.vendorId} onChange={handleInputs}>
                                   <option value="">{t("Select Vendor Name")}</option>
@@ -12207,13 +12207,13 @@ const serviceApplicationStyles = `
                             <div key={index} className="border rounded p-3 mb-3">
                               <Row className="g-gs">
                                 <Col lg="4">
-                                  <Form.Group className="form-group mt-n3">
+                                  <Form.Group className="form-group">
                                     <Form.Label>{t("Equipment Details")}</Form.Label>
                                     <Form.Control type="text" name="description" value={row.description} onChange={(e) => handleRearingEquipmentChange(index, e)} placeholder={t("Enter Equipment Details")} />
                                   </Form.Group>
                                 </Col>
                                 <Col lg="4">
-                                  <Form.Group className="form-group mt-n3">
+                                  <Form.Group className="form-group">
                                     <Form.Label>{t("Machine Type")}</Form.Label>
                                     <Form.Select name="machineTypeId" value={row.machineTypeId} onChange={(e) => handleRearingEquipmentChange(index, e)}>
                                       <option value="">{t("Select Machine Type")}</option>
@@ -12224,25 +12224,25 @@ const serviceApplicationStyles = `
                                   </Form.Group>
                                 </Col>
                                 <Col lg="4">
-                                  <Form.Group className="form-group mt-n3">
+                                  <Form.Group className="form-group">
                                     <Form.Label>{t("L1 Rate")}</Form.Label>
                                     <Form.Control type="text" name="l1Rate" value={row.l1Rate} onChange={(e) => handleRearingEquipmentChange(index, e)} placeholder={t("Enter L1 Rate")} />
                                   </Form.Group>
                                 </Col>
                                 <Col lg="4">
-                                  <Form.Group className="form-group mt-n3">
+                                  <Form.Group className="form-group">
                                     <Form.Label>Quantity (In No's)</Form.Label>
                                     <Form.Control type="text" name="machineQuantity" value={row.machineQuantity} onChange={(e) => handleRearingEquipmentChange(index, e)} placeholder="Enter Quantity (In No's)" />
                                   </Form.Group>
                                 </Col>
                                 <Col lg="4">
-                                  <Form.Group className="form-group mt-n3">
+                                  <Form.Group className="form-group">
                                     <Form.Label>Tax Invoice No</Form.Label>
                                     <Form.Control type="text" name="taxInvoiceNo" value={row.taxInvoiceNo} onChange={(e) => handleRearingEquipmentChange(index, e)} placeholder="Enter Tax Invoice No" />
                                   </Form.Group>
                                 </Col>
                                 <Col lg="4">
-                                  <Form.Group className="form-group mt-n3">
+                                  <Form.Group className="form-group">
                                     <Form.Label>{t("Tax Invoice Date")}</Form.Label>
                                     <DatePicker selected={row.taxInvoiceDate} onChange={(date) => handleRearingEquipmentDateChange(index, date)} peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select" dateFormat="dd/MM/yyyy" className="form-control" maxDate={new Date()} portalId="seri-datepicker-portal" />
                                   </Form.Group>
@@ -12267,7 +12267,7 @@ const serviceApplicationStyles = `
                         /* ── All other schemes: single form ── */
                         <Row className="g-gs">
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group">
                               <Form.Label>
                                 {t("Vendor Name")}
                               </Form.Label>
@@ -12286,7 +12286,7 @@ const serviceApplicationStyles = `
                             </Form.Group>
                           </Col>
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group">
                               <Form.Label htmlFor="description">{t("Equipment Details")}</Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control id="description" type="text" name="description" value={equipment.description} onChange={handleEquipmentInputs} placeholder={t("Enter Equipment Details")} />
@@ -12294,7 +12294,7 @@ const serviceApplicationStyles = `
                             </Form.Group>
                           </Col>
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group">
                               <Form.Label htmlFor="schemeAmount">{t("Machine Type")}</Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Select name="machineTypeId" value={data.machineTypeId} onChange={handleInputs}>
@@ -12307,7 +12307,7 @@ const serviceApplicationStyles = `
                             </Form.Group>
                           </Col>
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group">
                               <Form.Label htmlFor="description">{t("L1 Rate")}</Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control id="l1Rate" type="text" name="l1Rate" value={equipment.l1Rate} onChange={handleEquipmentInputs} placeholder={t("Enter L1 Rate")} />
@@ -12315,7 +12315,7 @@ const serviceApplicationStyles = `
                             </Form.Group>
                           </Col>
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group">
                               <Form.Label htmlFor="schemeAmount">Quantity (In No's)</Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control id="machineQuantity" type="text" name="machineQuantity" value={data.machineQuantity} onChange={handleInputs} placeholder="Enter Quantity (In No's)" />
@@ -12323,7 +12323,7 @@ const serviceApplicationStyles = `
                             </Form.Group>
                           </Col>
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group">
                               <Form.Label htmlFor="schemeAmount">Tax Invoice No</Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control id="taxInvoiceNo" type="text" name="taxInvoiceNo" value={data.taxInvoiceNo} onChange={handleInputs} placeholder="Enter Tax Invoice No" />
@@ -12331,7 +12331,7 @@ const serviceApplicationStyles = `
                             </Form.Group>
                           </Col>
                           <Col lg="4">
-                            <Form.Group className="form-group mt-n3">
+                            <Form.Group className="form-group">
                               <Form.Label htmlFor="sordfl">{t("Tax Invoice Date")}</Form.Label>
                               <div className="form-control-wrap">
                                 <DatePicker selected={data.taxInvoiceDate} onChange={(date) => handleDateChange(date, "taxInvoiceDate")} peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select" dateFormat="dd/MM/yyyy" className="form-control" maxDate={new Date()} portalId="seri-datepicker-portal" />
@@ -12480,7 +12480,7 @@ const serviceApplicationStyles = `
                   <Card.Body>
                     <Row>
                       <Col lg="12">
-                        <Form.Group className="form-group mt-n3">
+                        <Form.Group className="form-group">
                           <Form.Label>
                             {t("Do you want to add Kanesh Land Details?")}{" "}
                             <span className="text-danger">*</span>
@@ -12730,7 +12730,7 @@ const serviceApplicationStyles = `
                           <Card.Body>
                             <Row>
                               <Col lg="3">
-                                <Form.Group className="form-group mt-n4">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="mahajarEast">
                                     {t("East")}
                                   </Form.Label>
@@ -12752,7 +12752,7 @@ const serviceApplicationStyles = `
                               </Col>
           
                               <Col lg="3">
-                                <Form.Group className="form-group mt-n4">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="mahajarWest">
                                     {t("West")}
                                   </Form.Label>
@@ -12774,7 +12774,7 @@ const serviceApplicationStyles = `
                               </Col>
           
                               <Col lg="3">
-                                <Form.Group className="form-group mt-n4">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="mahajarNorth">
                                     {t("North")}
                                   </Form.Label>
@@ -12796,7 +12796,7 @@ const serviceApplicationStyles = `
                               </Col>
           
                               <Col lg="3">
-                                <Form.Group className="form-group mt-n4">
+                                <Form.Group className="form-group">
                                   <Form.Label htmlFor="mahajarSouth">
                                     {t("South")}
                                   </Form.Label>

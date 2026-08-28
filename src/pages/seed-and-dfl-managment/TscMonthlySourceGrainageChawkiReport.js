@@ -139,24 +139,24 @@ function TscMonthlySourceGrainageChawkiReport() {
 
   const reset = () => { setHasReport(false); setDataRows([]); setSearch(""); };
   const validate = () => {
-    if (!filter.districtId) return "Please select a District.";
-    if (!filter.talukId)    return "Please select a Taluk.";
-    if (!filter.year)       return "Please select a Year.";
-    if (!filter.month)      return "Please select a Month.";
+    if (!filter.districtId) return t("Please select a District.", { ns: "reports" });
+    if (!filter.talukId)    return t("Please select a Taluk.", { ns: "reports" });
+    if (!filter.year)       return t("Please select a Year.", { ns: "reports" });
+    if (!filter.month)      return t("Please select a Month.", { ns: "reports" });
     return null;
   };
 
   const showWarn = (msg) =>
     Swal.fire({
-      icon: "warning", title: "Required Fields",
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Missing Selection</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Got it", confirmButtonColor: "#d97706", background: "#fff", customClass: { popup: "tscsgrc-swal" },
+      icon: "warning", title: t("Required Fields", { ns: "reports" }),
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Missing Selection", { ns: "reports" })}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Got it", { ns: "reports" }), confirmButtonColor: "#d97706", background: "#fff", customClass: { popup: "tscsgrc-swal" },
     });
   const showErr = (title, msg) =>
     Swal.fire({
       icon: "error", title,
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Failed</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Close", confirmButtonColor: "#e53e3e", background: "#fff", customClass: { popup: "tscsgrc-swal" },
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Failed", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Close"), confirmButtonColor: "#e53e3e", background: "#fff", customClass: { popup: "tscsgrc-swal" },
     });
 
   const params = () => ({ talukId: filter.talukId, year: Number(filter.year), month: Number(filter.month) });
@@ -170,13 +170,13 @@ function TscMonthlySourceGrainageChawkiReport() {
     } catch (err) {
         const status = err?.response?.status;
         if (status === 404 || status === 204) {
-          showErr("No Data Found", "No data found for the selected filters.");
+          showErr(t("No Data Found", { ns: "reports" }), t("No data found for the selected filters.", { ns: "reports" }));
         } else {
           const data = err?.response?.data;
           const backendMsg = typeof data === "string"
             ? data
             : (data?.message || data?.error || data?.errorMessage || data?.error_description);
-          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the TSC Monthly Source-Grainage Chawki (Sheet 16) report.");
+          showErr(t("Fetch Failed", { ns: "reports" }), backendMsg || err?.message || t("Failed to load the TSC Monthly Source-Grainage Chawki (Sheet 16) report.", { ns: "reports" }));
         }
       }
     finally { setIsLoading(false); }
@@ -187,7 +187,7 @@ function TscMonthlySourceGrainageChawkiReport() {
     try {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/tsc-monthly/source-grainage-chawki/pdf", { params: params(), responseType: "blob" });
       window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
-    } catch { showErr("PDF Failed", "Could not generate the PDF report."); } finally { setIsDownloadingPdf(false); }
+    } catch { showErr(t("PDF Failed", { ns: "reports" }), t("Could not generate the PDF report.", { ns: "reports" })); } finally { setIsDownloadingPdf(false); }
   };
   const handleExcel = async () => {
     const err = validate(); if (err) { showWarn(err); return; }
@@ -198,7 +198,7 @@ function TscMonthlySourceGrainageChawkiReport() {
       const a = document.createElement("a"); a.href = url;
       a.download = `tsc_monthly_source_grainage_chawki_${filter.talukId}_${filter.year}_${filter.month}.xlsx`;
       a.click(); URL.revokeObjectURL(url);
-    } catch { showErr("Excel Failed", "Could not generate the Excel report."); } finally { setIsDownloadingExcel(false); }
+    } catch { showErr(t("Excel Failed", { ns: "reports" }), t("Could not generate the Excel report.", { ns: "reports" })); } finally { setIsDownloadingExcel(false); }
   };
 
   const districtName = districtList.find((d) => String(d.districtId) === String(filter.districtId))?.districtName || "—";
@@ -255,7 +255,7 @@ function TscMonthlySourceGrainageChawkiReport() {
   }, [kpis.byGrMe]);
 
   return (
-    <Layout title={t("TSC Monthly Source-Grainage Chawki — Sheet 16")}>
+    <Layout title={t("TSC Monthly Source-Grainage Chawki — Sheet 16", { ns: "reports" })}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -294,58 +294,58 @@ function TscMonthlySourceGrainageChawkiReport() {
             <Form onSubmit={handleView}>
               <Row className="g-2 align-items-end">
                 <Col md={3}>
-                  <label style={lbl}>District <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("District")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
                     options={districtList.map((d) => ({ value: String(d.districtId), label: d.districtName }))}
-                    placeholder="— Search District —"
+                    placeholder={t("— Search District —", { ns: "reports" })}
                     isSearchable isClearable menuPlacement="auto" menuPortalTarget={typeof document !== "undefined" ? document.body : null} menuPosition="fixed" styles={reactSelectStyles}
                     value={districtList.map((d) => ({ value: String(d.districtId), label: d.districtName })).find((o) => o.value === String(filter.districtId)) || null}
                     onChange={(opt) => { setFilter((p) => ({ ...p, districtId: opt?.value || "", talukId: "" })); reset(); }}
-                    noOptionsMessage={() => "No districts"}
+                    noOptionsMessage={() => t("No districts", { ns: "reports" })}
                   />
                 </Col>
                 <Col md={3}>
-                  <label style={lbl}>Taluk <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Taluk")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
                     options={talukList.map((tk) => ({ value: String(tk.talukId), label: tk.talukName }))}
-                    placeholder={filter.districtId ? "— Search Taluk —" : "Select District first"}
+                    placeholder={filter.districtId ? t("— Search Taluk —", { ns: "reports" }) : t("Select District first", { ns: "reports" })}
                     isSearchable isClearable isDisabled={!filter.districtId} menuPlacement="auto" menuPortalTarget={typeof document !== "undefined" ? document.body : null} menuPosition="fixed" styles={reactSelectStyles}
                     value={talukList.map((tk) => ({ value: String(tk.talukId), label: tk.talukName })).find((o) => o.value === String(filter.talukId)) || null}
                     onChange={(opt) => { setFilter((p) => ({ ...p, talukId: opt?.value || "" })); reset(); }}
-                    noOptionsMessage={() => "No taluks"}
+                    noOptionsMessage={() => t("No taluks", { ns: "reports" })}
                   />
                 </Col>
                 <Col md={2}>
-                  <label style={lbl}>Year <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Year", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select value={filter.year} onChange={(e) => { setFilter((p) => ({ ...p, year: e.target.value })); reset(); }} style={sel}>
                     {yearOptions.map((y) => <option key={y.value} value={y.value}>{y.label}</option>)}
                   </Form.Select>
                 </Col>
                 <Col md={2}>
-                  <label style={lbl}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Month")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select value={filter.month} onChange={(e) => { setFilter((p) => ({ ...p, month: e.target.value })); reset(); }} style={sel}>
-                    {MONTHS.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
+                    {MONTHS.map((m) => <option key={m.value} value={m.value}>{t(m.label, { ns: "reports" })}</option>)}
                   </Form.Select>
                 </Col>
                 <Col md={2}>
                   <button type="submit" disabled={isLoading} style={btn("linear-gradient(135deg,#0f766e,#14b8a6)", "0 4px 12px rgba(15,118,110,.32)", isLoading)}>
-                    {isLoading ? <><span className="spinner-border spinner-border-sm" /> Loading…</> : <>📋 View</>}
+                    {isLoading ? <><span className="spinner-border spinner-border-sm" /> {t("Loading…", { ns: "reports" })}</> : <>📋 {t("View", { ns: "reports" })}</>}
                   </button>
                 </Col>
               </Row>
               {hasReport && (
                 <Row className="g-2 mt-2 align-items-end">
                   <Col md={6}>
-                    <label style={lbl}>Quick Search (Race, Source Grainage)</label>
-                    <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Type to filter…" style={{ ...sel, padding: "8px 12px" }} />
+                    <label style={lbl}>{t("Quick Search (Race, Source Grainage)", { ns: "reports" })}</label>
+                    <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("Type to filter…", { ns: "reports" })} style={{ ...sel, padding: "8px 12px" }} />
                   </Col>
                   <Col md={6}>
                     <div className="d-flex gap-2 flex-wrap justify-content-md-end">
                       <button type="button" disabled={isDownloadingPdf} onClick={handlePdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 4px 12px rgba(185,28,28,.30)", isDownloadingPdf)}>
-                        {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> Generating PDF…</> : <>📄 PDF</>}
+                        {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> {t("Generating…", { ns: "reports" })}</> : <>📄 {t("PDF", { ns: "reports" })}</>}
                       </button>
                       <button type="button" disabled={isDownloadingExcel} onClick={handleExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 4px 12px rgba(21,128,61,.30)", isDownloadingExcel)}>
-                        {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> Exporting…</> : <>📊 Excel</>}
+                        {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> {t("Exporting…", { ns: "reports" })}</> : <>📊 {t("Excel", { ns: "reports" })}</>}
                       </button>
                     </div>
                   </Col>
@@ -360,25 +360,25 @@ function TscMonthlySourceGrainageChawkiReport() {
             {/* KPI strip + Top-5 chart */}
             <div className="d-flex flex-wrap gap-3 mb-3 align-items-stretch">
               <div style={{ background: "linear-gradient(135deg,#ccfbf1,#ecfdf5)", border: "1.5px solid #5eead4", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "180px" }}>
-                <span style={{ fontSize: "11px", color: "#0f766e", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>District / Taluk</span>
+                <span style={{ fontSize: "11px", color: "#0f766e", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("District / Taluk", { ns: "reports" })}</span>
                 <span style={{ fontSize: "13px", color: "#1a202c", fontWeight: 700, marginTop: "2px" }}>{districtName} · {talukName}</span>
               </div>
               <div style={{ background: "linear-gradient(135deg,#dbeafe,#eff6ff)", border: "1.5px solid #93c5fd", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "180px" }}>
-                <span style={{ fontSize: "11px", color: "#1d4ed8", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>ME · Total DFLs</span>
+                <span style={{ fontSize: "11px", color: "#1d4ed8", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("ME · Total DFLs", { ns: "reports" })}</span>
                 <span className="tscsgrc-num" style={{ fontSize: "18px", color: "#1e3a8a", fontWeight: 800, marginTop: "2px" }}>{fmtInt(kpis.totalMe)}</span>
                 <span className="tscsgrc-num" style={{ fontSize: "11px", color: "#1e40af", fontWeight: 700, marginTop: "2px" }}>Mo: {fmtInt(kpis.totalMo)}</span>
               </div>
               <div style={{ background: "linear-gradient(135deg,#cffafe,#ecfeff)", border: "1.5px solid #67e8f9", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "170px" }}>
-                <span style={{ fontSize: "11px", color: "#0e7490", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>Races / Grainages</span>
+                <span style={{ fontSize: "11px", color: "#0e7490", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("Races / Grainages", { ns: "reports" })}</span>
                 <span className="tscsgrc-num" style={{ fontSize: "16px", color: "#155e75", fontWeight: 800, marginTop: "2px" }}>{kpis.races} / {kpis.grainages}</span>
               </div>
               <div style={{ background: "linear-gradient(135deg,#ede9fe,#f5f3ff)", border: "1.5px solid #c4b5fd", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "200px" }}>
-                <span style={{ fontSize: "11px", color: "#7c3aed", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>Top Race · ME</span>
+                <span style={{ fontSize: "11px", color: "#7c3aed", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("Top Race · ME", { ns: "reports" })}</span>
                 <span style={{ fontSize: "13px", color: "#4c1d95", fontWeight: 800, marginTop: "2px" }}>{kpis.topRace[0]}</span>
                 <span className="tscsgrc-num" style={{ fontSize: "11px", color: "#6d28d9", fontWeight: 700, marginTop: "2px" }}>{fmtInt(kpis.topRace[1])} DFLs</span>
               </div>
               <div style={{ background: "linear-gradient(135deg,#fef3c7,#fef9ec)", border: "1.5px solid #fcd34d", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "230px" }}>
-                <span style={{ fontSize: "11px", color: "#92400e", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>🏭 Top Source Grainage · ME</span>
+                <span style={{ fontSize: "11px", color: "#92400e", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>🏭 {t("Top Source Grainage · ME", { ns: "reports" })}</span>
                 <span style={{ fontSize: "13px", color: "#78350f", fontWeight: 800, marginTop: "2px" }}>{kpis.topGr[0]}</span>
                 <span className="tscsgrc-num" style={{ fontSize: "11px", color: "#a16207", fontWeight: 700, marginTop: "2px" }}>{fmtInt(kpis.topGr[1])} DFLs</span>
               </div>
@@ -386,7 +386,7 @@ function TscMonthlySourceGrainageChawkiReport() {
               {/* Top-5 grainages horizontal bars */}
               {top5Grainages.length > 0 && (
                 <div style={{ background: "#fff", border: "1.5px solid #e2e8f0", borderRadius: "14px", padding: "10px 16px", flex: 1, minWidth: "320px" }}>
-                  <div style={{ fontSize: "10.5px", fontWeight: 800, color: "#475569", textTransform: "uppercase", letterSpacing: ".07em", marginBottom: "6px" }}>Top 5 Source Grainages · ME (DFLs)</div>
+                  <div style={{ fontSize: "10.5px", fontWeight: 800, color: "#475569", textTransform: "uppercase", letterSpacing: ".07em", marginBottom: "6px" }}>{t("Top 5 Source Grainages · ME (DFLs)", { ns: "reports" })}</div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
                     {top5Grainages.map((g, i) => {
                       const tone = grainageTone(g.name);
@@ -440,7 +440,7 @@ function TscMonthlySourceGrainageChawkiReport() {
                   </thead>
                   <tbody>
                     {filteredRows.length === 0 && (
-                      <tr><td colSpan={5} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>{dataRows.length === 0 ? "ಯಾವುದೇ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ / No records found." : `No matches for "${search}".`}</td></tr>
+                      <tr><td colSpan={5} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>{dataRows.length === 0 ? "ಯಾವುದೇ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ / No records found." : t('No matches for "{{search}}".', { ns: "reports", search })}</td></tr>
                     )}
                     {filteredRows.map((row, ri) => {
                       const isFirstInGroup = firstRowOfGroup.has(ri);
@@ -500,10 +500,10 @@ function TscMonthlySourceGrainageChawkiReport() {
                 </span>
                 <div className="d-flex gap-2 flex-wrap">
                   <button type="button" onClick={handlePdf} disabled={isDownloadingPdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 2px 8px rgba(185,28,28,.25)", isDownloadingPdf)}>
-                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Generating…</> : <>📄 Download PDF</>}
+                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> {t("Generating…", { ns: "reports" })}</> : <>📄 {t("Download PDF", { ns: "reports" })}</>}
                   </button>
                   <button type="button" onClick={handleExcel} disabled={isDownloadingExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 2px 8px rgba(21,128,61,.25)", isDownloadingExcel)}>
-                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Exporting…</> : <>📊 Download Excel</>}
+                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> {t("Exporting…", { ns: "reports" })}</> : <>📊 {t("Download Excel", { ns: "reports" })}</>}
                   </button>
                 </div>
               </div>

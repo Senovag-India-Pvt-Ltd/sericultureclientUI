@@ -107,13 +107,13 @@ function P3FarmSheet3AnnualCropsReport() {
     }
   };
   const validate = () => {
-    if (!filter.farmId)                return "Please select a Farm.";
-    if (!filter.financialYearMasterId) return "Please select a Financial Year.";
-    if (!fyStartYear)                  return "Could not determine the financial year start year.";
+    if (!filter.farmId)                return t("Please select a Farm.", { ns: "reports" });
+    if (!filter.financialYearMasterId) return t("Please select a Financial Year.", { ns: "reports" });
+    if (!fyStartYear)                  return t("Could not determine the financial year start year.", { ns: "reports" });
     return null;
   };
-  const showWarn = (msg) => Swal.fire({ icon: "warning", title: "Required Fields", html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;color:#78350f">${msg}</div></div>`, confirmButtonText: "Got it", confirmButtonColor: "#d97706", customClass: { popup: "p3s3-swal" } });
-  const showErr = (title, msg) => Swal.fire({ icon: "error", title, html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;color:#9b2c2c">${msg}</div></div>`, confirmButtonText: "Close", confirmButtonColor: "#e53e3e", customClass: { popup: "p3s3-swal" } });
+  const showWarn = (msg) => Swal.fire({ icon: "warning", title: t("Required Fields", { ns: "reports" }), html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;color:#78350f">${msg}</div></div>`, confirmButtonText: t("Got it", { ns: "reports" }), confirmButtonColor: "#d97706", customClass: { popup: "p3s3-swal" } });
+  const showErr = (title, msg) => Swal.fire({ icon: "error", title, html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;color:#9b2c2c">${msg}</div></div>`, confirmButtonText: t("Close", { ns: "reports" }), confirmButtonColor: "#e53e3e", customClass: { popup: "p3s3-swal" } });
 
   // Sheet 3 is annual — use fyStartYear as the :year param (the calendar year that opens the FY).
   const params = () => ({ farmId: filter.farmId, year: fyStartYear });
@@ -128,13 +128,13 @@ function P3FarmSheet3AnnualCropsReport() {
     } catch (err) {
         const status = err?.response?.status;
         if (status === 404 || status === 204) {
-          showErr("No Data Found", "No data found for the selected filters.");
+          showErr(t("No Data Found", { ns: "reports" }), t("No data found for the selected filters.", { ns: "reports" }));
         } else {
           const data = err?.response?.data;
           const backendMsg = typeof data === "string"
             ? data
             : (data?.message || data?.error || data?.errorMessage || data?.error_description);
-          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the Sheet-3 Annual Crops report.");
+          showErr(t("Fetch Failed", { ns: "reports" }), backendMsg || err?.message || t("Failed to load the Sheet-3 Annual Crops report.", { ns: "reports" }));
         }
       }
     finally { setIsLoading(false); }
@@ -145,7 +145,7 @@ function P3FarmSheet3AnnualCropsReport() {
     try {
       const res = await api.get(baseURLSeedDFL + "p3-farm/sheet3/pdf", { params: params(), responseType: "blob" });
       window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
-    } catch { showErr("PDF Failed", "Could not generate the PDF report."); }
+    } catch { showErr(t("PDF Failed", { ns: "reports" }), t("Could not generate the PDF report.", { ns: "reports" })); }
     finally { setIsDownloadingPdf(false); }
   };
   const handleExcel = async () => {
@@ -155,7 +155,7 @@ function P3FarmSheet3AnnualCropsReport() {
       const res = await api.get(baseURLSeedDFL + "p3-farm/sheet3/excel", { params: params(), responseType: "blob" });
       const url = URL.createObjectURL(new Blob([res.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
       const a = document.createElement("a"); a.href = url; a.download = `p3_farm_sheet3_${filter.farmId}_${fyStartYear}.xlsx`; a.click(); URL.revokeObjectURL(url);
-    } catch { showErr("Excel Failed", "Could not generate the Excel report."); }
+    } catch { showErr(t("Excel Failed", { ns: "reports" }), t("Could not generate the Excel report.", { ns: "reports" })); }
     finally { setIsDownloadingExcel(false); }
   };
 
@@ -174,7 +174,7 @@ function P3FarmSheet3AnnualCropsReport() {
   }, [dataRows]);
 
   return (
-    <Layout title={t("Sheet-3 · P3 Farm Annual Crops Grown")}>
+    <Layout title={t("Sheet-3 · P3 Farm Annual Crops Grown", { ns: "reports" })}>
       <Block.Head><Block.HeadBetween><Block.HeadContent>
         <Block.Title tag="h2">
           {t("ಪ್ರಪತ್ರ 3 · ವಾರ್ಷಿಕ ಬೆಳೆ ವರದಿ")}
@@ -205,34 +205,34 @@ function P3FarmSheet3AnnualCropsReport() {
             <Form onSubmit={handleView}>
               <Row className="g-2 align-items-end">
                 <Col md={5}>
-                  <label style={lbl}>Farm <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Farm")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <ReactSelect
                     options={farmList.map((f) => ({ value: String(f.farmId), label: f.farmName }))}
-                    placeholder="— Search Farm —" isSearchable isClearable
+                    placeholder={t("— Search Farm —", { ns: "reports" })} isSearchable isClearable
                     menuPlacement="auto" menuPortalTarget={typeof document !== "undefined" ? document.body : null} menuPosition="fixed"
                     styles={farmSelectStyles}
                     value={farmList.map((f) => ({ value: String(f.farmId), label: f.farmName })).find((o) => o.value === String(filter.farmId)) || null}
                     onChange={(opt) => { setFilter((p) => ({ ...p, farmId: opt?.value || "" })); setHasReport(false); setDataRows([]); }}
-                    noOptionsMessage={() => "No farm found"}
+                    noOptionsMessage={() => t("No farm found", { ns: "reports" })}
                   />
                 </Col>
                 <Col md={3}>
-                  <label style={lbl}>Financial Year <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Financial Year", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="financialYearMasterId" value={filter.financialYearMasterId} onChange={handleChange} style={sel}>
-                    <option value="">— Select Year —</option>
+                    <option value="">{t("— Select Year —", { ns: "reports" })}</option>
                     {financialYearList.map((f) => (<option key={f.financialYearMasterId} value={f.financialYearMasterId}>{f.financialYear}</option>))}
                   </Form.Select>
                 </Col>
                 <Col md={4}>
                   <div className="d-flex gap-2 flex-wrap">
                     <button type="submit" disabled={isLoading} style={btn("linear-gradient(135deg,#047857,#10b981)", "0 4px 12px rgba(4,120,87,.32)", isLoading)}>
-                      {isLoading ? <><span className="spinner-border spinner-border-sm" /> Loading…</> : <>📋 View</>}
+                      {isLoading ? <><span className="spinner-border spinner-border-sm" /> {t("Loading…", { ns: "reports" })}</> : <>📋 {t("View", { ns: "reports" })}</>}
                     </button>
                     <button type="button" disabled={isDownloadingPdf} onClick={handlePdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 4px 12px rgba(185,28,28,.30)", isDownloadingPdf)}>
-                      {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📄 PDF</>}
+                      {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📄 {t("PDF", { ns: "reports" })}</>}
                     </button>
                     <button type="button" disabled={isDownloadingExcel} onClick={handleExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 4px 12px rgba(21,128,61,.30)", isDownloadingExcel)}>
-                      {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📊 Excel</>}
+                      {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📊 {t("Excel", { ns: "reports" })}</>}
                     </button>
                   </div>
                 </Col>
@@ -244,12 +244,12 @@ function P3FarmSheet3AnnualCropsReport() {
         {hasReport && (
           <div className="p3s3-wrap mt-4">
             <div className="d-flex flex-wrap gap-3 mb-3 align-items-center">
-              <div style={kpiBox("#d1fae5", "#6ee7b7")}><span style={kpiLbl("#065f46")}>Farm</span><span style={kpiVal("#064e3b", 14, 800)}>{farmName}</span></div>
-              <div style={kpiBox("#a7f3d0", "#6ee7b7")}><span style={kpiLbl("#065f46")}>Year</span><span style={kpiVal("#064e3b", 14, 800)}>{fyStartYear || "—"}</span></div>
-              <div style={kpiBox("#bfdbfe", "#93c5fd")}><span style={kpiLbl("#1e40af")}>🌾 Total Lots</span><span className="p3s3-num" style={kpiVal("#1e3a8a", 18, 800)}>{kpis.count.toLocaleString()}</span></div>
-              <div style={kpiBox("#ddd6fe", "#c4b5fd")}><span style={kpiLbl("#5b21b6")}>🥚 Chawki Eggs</span><span className="p3s3-num" style={kpiVal("#4c1d95", 16, 800)}>{kpis.totalChawki.toLocaleString()}</span></div>
-              <div style={kpiBox("#fed7aa", "#fdba74")}><span style={kpiLbl("#7c2d12")}>🪺 Dispatched Cocoons</span><span className="p3s3-num" style={kpiVal("#7c2d12", 16, 800)}>{kpis.totalCocNo.toLocaleString()}</span><span style={{ fontSize: "10.5px", color: "#9a3412", fontWeight: 700 }}>{kpis.totalCocWt.toLocaleString(undefined, { maximumFractionDigits: 2 })} kg</span></div>
-              <div style={kpiBox("#a7f3d0", "#6ee7b7")}><span style={kpiLbl("#065f46")}>📊 Avg Chawki %</span><span className="p3s3-num" style={kpiVal("#064e3b", 18, 800)}>{kpis.avgChawkiPct.toFixed(2)}%</span></div>
+              <div style={kpiBox("#d1fae5", "#6ee7b7")}><span style={kpiLbl("#065f46")}>{t("Farm")}</span><span style={kpiVal("#064e3b", 14, 800)}>{farmName}</span></div>
+              <div style={kpiBox("#a7f3d0", "#6ee7b7")}><span style={kpiLbl("#065f46")}>{t("Year")}</span><span style={kpiVal("#064e3b", 14, 800)}>{fyStartYear || "—"}</span></div>
+              <div style={kpiBox("#bfdbfe", "#93c5fd")}><span style={kpiLbl("#1e40af")}>🌾 {t("Total Lots", { ns: "reports" })}</span><span className="p3s3-num" style={kpiVal("#1e3a8a", 18, 800)}>{kpis.count.toLocaleString()}</span></div>
+              <div style={kpiBox("#ddd6fe", "#c4b5fd")}><span style={kpiLbl("#5b21b6")}>🥚 {t("Chawki Eggs", { ns: "reports" })}</span><span className="p3s3-num" style={kpiVal("#4c1d95", 16, 800)}>{kpis.totalChawki.toLocaleString()}</span></div>
+              <div style={kpiBox("#fed7aa", "#fdba74")}><span style={kpiLbl("#7c2d12")}>🪺 {t("Dispatched Cocoons", { ns: "reports" })}</span><span className="p3s3-num" style={kpiVal("#7c2d12", 16, 800)}>{kpis.totalCocNo.toLocaleString()}</span><span style={{ fontSize: "10.5px", color: "#9a3412", fontWeight: 700 }}>{kpis.totalCocWt.toLocaleString(undefined, { maximumFractionDigits: 2 })} kg</span></div>
+              <div style={kpiBox("#a7f3d0", "#6ee7b7")}><span style={kpiLbl("#065f46")}>📊 {t("Avg Chawki %", { ns: "reports" })}</span><span className="p3s3-num" style={kpiVal("#064e3b", 18, 800)}>{kpis.avgChawkiPct.toFixed(2)}%</span></div>
             </div>
 
             <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 6px 28px rgba(4,120,87,.14)", overflow: "hidden" }}>

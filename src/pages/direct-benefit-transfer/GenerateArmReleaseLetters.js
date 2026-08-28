@@ -13,7 +13,7 @@ const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
 function GenerateArmReleaseLetters() {
   const [page] = useState(0);
   const countPerPage = 50;
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [addressDetails, setAddressDetails] = useState({
     fruitsId: "",
@@ -163,8 +163,8 @@ function GenerateArmReleaseLetters() {
   const showLetterError = (title) =>
     Swal.fire({
       icon: "error",
-      title: "Could Not Generate",
-      text: `Failed to generate the ${title}. Please check the selected Work Order and try again.`,
+      title: t("Could Not Generate", { ns: "reports" }),
+      text: `${title} ${t("could not be generated. Please check the selected Work Order and try again.", { ns: "reports" })}`,
       confirmButtonColor: "#e53e3e",
     });
 
@@ -172,8 +172,8 @@ function GenerateArmReleaseLetters() {
     if (!applicationFormId) {
       Swal.fire({
         icon: "warning",
-        title: "Selection Required",
-        text: "Please select a Work Order Number before generating a letter.",
+        title: t("Selection Required", { ns: "reports" }),
+        text: t("Please select a Work Order Number before generating a letter.", { ns: "reports" }),
         confirmButtonColor: "#d97706",
       });
       return;
@@ -199,9 +199,9 @@ function GenerateArmReleaseLetters() {
     }
   };
 
-  const generateAdvancePaymentLetter = () => generateLetter("arm-advance-payment", "ARM Advance Payment letter");
-  const generateFirstReleaseLetter = () => generateLetter("arm-first-release", "ARM First Release letter");
-  const generateFinalReleaseLetter = () => generateLetter("arm-final-release", "ARM Final Release letter");
+  const generateAdvancePaymentLetter = () => generateLetter("arm-advance-payment", t("ARM Advance Payment letter", { ns: "reports" }));
+  const generateFirstReleaseLetter = () => generateLetter("arm-first-release", t("ARM First Release letter", { ns: "reports" }));
+  const generateFinalReleaseLetter = () => generateLetter("arm-final-release", t("ARM Final Release letter", { ns: "reports" }));
 
   // ── styles ────────────────────────────────────────────────────────
   const selectStyle = {
@@ -252,11 +252,11 @@ function GenerateArmReleaseLetters() {
 
   // ── render ────────────────────────────────────────────────────────
   return (
-    <Layout title="ARM Release Letters">
+    <Layout title={t("ARM Release Letters", { ns: "reports" })}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">ARM Release Letters</Block.Title>
+            <Block.Title tag="h2">{t("ARM Release Letters", { ns: "reports" })}</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -297,10 +297,10 @@ function GenerateArmReleaseLetters() {
             </div>
             <div>
               <div style={{ color: "#fff", fontWeight: 700, fontSize: "17px", lineHeight: 1.2 }}>
-                ARM Release Letters
+                {t("ARM Release Letters", { ns: "reports" })}
               </div>
               <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "2px" }}>
-                Select filters, pick a Work Order, then generate the Advance Payment / First Release / Final Release letter
+                {t("Select filters, pick a Work Order, then generate the Advance Payment / First Release / Final Release letter", { ns: "reports" })}
               </div>
             </div>
           </div>
@@ -311,35 +311,35 @@ function GenerateArmReleaseLetters() {
             <Row className="mb-3">
               <Col md={6} style={fieldGroupStyle}>
                 <label style={labelStyle}>
-                  Fruits ID{" "}
-                  <span style={{ color: "#a0aec0", fontWeight: 400 }}>(optional)</span>
+                  {t("Fruits ID", { ns: "reports" })}{" "}
+                  <span style={{ color: "#a0aec0", fontWeight: 400 }}>({t("optional", { ns: "reports" })})</span>
                 </label>
                 <Form.Control
                   type="text"
                   name="fruitsId"
                   value={addressDetails.fruitsId || ""}
                   onChange={handleInputsaddress}
-                  placeholder="Enter Fruits ID to filter"
+                  placeholder={t("Enter Fruits ID to filter", { ns: "reports" })}
                   style={selectStyle}
                 />
               </Col>
             </Row>
 
             <div style={{ fontSize: "12px", fontWeight: 700, color: "#1a7a4a", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "18px" }}>
-              Step 1 — Select Scheme Details
+              {t("Step 1 — Select Scheme Details", { ns: "reports" })}
             </div>
 
             {/* Row 1 */}
             <Row className="mb-3">
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Financial Year</label>
+                <label style={labelStyle}>{t("Financial Year")}</label>
                 <Form.Select
                   name="financialYearId"
                   value={addressDetails.financialYearId || ""}
                   onChange={handleInputsaddress}
                   style={selectStyle}
                 >
-                  <option value="">— Select Financial Year —</option>
+                  <option value="">{`— ${t("Select Financial Year")} —`}</option>
                   {financialyearListData.map((list) => (
                     <option key={list.financialYearMasterId} value={list.financialYearMasterId}>
                       {list.financialYear}
@@ -348,17 +348,17 @@ function GenerateArmReleaseLetters() {
                 </Form.Select>
               </Col>
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Scheme</label>
+                <label style={labelStyle}>{t("Scheme")}</label>
                 <Form.Select
                   name="scSchemeDetailsId"
                   value={addressDetails.scSchemeDetailsId || ""}
                   onChange={handleInputsaddress}
                   style={selectStyle}
                 >
-                  <option value="">— Select Scheme —</option>
+                  <option value="">{`— ${t("Select Scheme")} —`}</option>
                   {scSchemeDetailsListData?.map((list) => (
                     <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
-                      {list.schemeName}
+                      {i18n.language === "kn" ? (list.schemeNameInKannada || list.schemeName) : list.schemeName}
                     </option>
                   ))}
                 </Form.Select>
@@ -368,33 +368,33 @@ function GenerateArmReleaseLetters() {
             {/* Row 2 */}
             <Row className="mb-3">
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Component Type</label>
+                <label style={labelStyle}>{t("Component Type")}</label>
                 <Form.Select
                   name="subSchemeId"
                   value={addressDetails.subSchemeId || ""}
                   onChange={handleInputsaddress}
                   style={selectStyle}
                 >
-                  <option value="">— Select Component Type —</option>
+                  <option value="">{`— ${t("Select Component Type")} —`}</option>
                   {scSubSchemeDetailsListData?.map((list) => (
                     <option key={list.scSubSchemeDetailsId} value={list.subSchemeId}>
-                      {list.subSchemeName}
+                      {i18n.language === "kn" ? (list.subSchemeNameInKannada || list.subSchemeName) : list.subSchemeName}
                     </option>
                   ))}
                 </Form.Select>
               </Col>
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Component</label>
+                <label style={labelStyle}>{t("Component")}</label>
                 <Form.Select
                   name="componentId"
                   value={addressDetails.componentId || ""}
                   onChange={handleInputsaddress}
                   style={selectStyle}
                 >
-                  <option value="">— Select Component —</option>
+                  <option value="">{`— ${t("Select Component")} —`}</option>
                   {scComponentListData?.map((list) => (
                     <option key={list.scComponentId} value={list.scComponentId}>
-                      {list.scComponentName}
+                      {i18n.language === "kn" ? (list.scComponentNameInKannada || list.scComponentName) : list.scComponentName}
                     </option>
                   ))}
                 </Form.Select>
@@ -404,17 +404,17 @@ function GenerateArmReleaseLetters() {
             {/* Row 3 */}
             <Row className="mb-4">
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Sub Component</label>
+                <label style={labelStyle}>{t("Sub Component")}</label>
                 <Form.Select
                   name="scCategoryId"
                   value={addressDetails.scCategoryId || ""}
                   onChange={handleInputsaddress}
                   style={selectStyle}
                 >
-                  <option value="">— Select Sub Component —</option>
+                  <option value="">{`— ${t("Select Sub Component")} —`}</option>
                   {scCategoryListData?.map((list) => (
                     <option key={list.scCategoryId} value={list.scCategoryId}>
-                      {list.categoryName}
+                      {i18n.language === "kn" ? (list.categoryNameInKannada || list.categoryName) : list.categoryName}
                     </option>
                   ))}
                 </Form.Select>
@@ -423,17 +423,17 @@ function GenerateArmReleaseLetters() {
 
             <div style={{ borderTop: "1.5px dashed #d0d9e8", margin: "8px 0 20px" }} />
             <div style={{ fontSize: "12px", fontWeight: 700, color: "#1a7a4a", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "18px" }}>
-              Step 2 — Select Work Order &amp; Generate
+              {t("Step 2 — Select Work Order & Generate", { ns: "reports" })}
             </div>
 
             {/* Row 4 — Work Order Number */}
             <Row className="mb-3 align-items-end">
               <Col md={5} style={fieldGroupStyle}>
                 <label style={labelStyle}>
-                  Work Order Number
+                  {t("Work Order Number", { ns: "reports" })}
                   {workOrderNumbers.length > 0 && (
                     <span style={{ marginLeft: "8px", fontSize: "11px", color: "#1a7a4a", fontWeight: 500 }}>
-                      ({workOrderNumbers.length} found)
+                      ({workOrderNumbers.length} {t("found", { ns: "reports" })})
                     </span>
                   )}
                 </label>
@@ -445,7 +445,7 @@ function GenerateArmReleaseLetters() {
                   disabled={!filtersReady}
                 >
                   <option value="">
-                    {filtersReady ? "— Select Work Order —" : "— Fill filters above first —"}
+                    {filtersReady ? `— ${t("Select Work Order", { ns: "reports" })} —` : `— ${t("Fill filters above first", { ns: "reports" })} —`}
                   </option>
                   {workOrderNumbers.map((item, index) => (
                     <option key={index} value={item.workOrderNumber}>
@@ -471,10 +471,10 @@ function GenerateArmReleaseLetters() {
                   {generatingEndpoint === "arm-advance-payment" ? (
                     <>
                       <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-                      Generating…
+                      {t("Generating…", { ns: "reports" })}
                     </>
                   ) : (
-                    <>📄 Advance Payment Letter</>
+                    <>📄 {t("Advance Payment Letter", { ns: "reports" })}</>
                   )}
                 </button>
 
@@ -490,10 +490,10 @@ function GenerateArmReleaseLetters() {
                   {generatingEndpoint === "arm-first-release" ? (
                     <>
                       <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-                      Generating…
+                      {t("Generating…", { ns: "reports" })}
                     </>
                   ) : (
-                    <>📄 First Release Letter</>
+                    <>📄 {t("First Release Letter", { ns: "reports" })}</>
                   )}
                 </button>
 
@@ -509,10 +509,10 @@ function GenerateArmReleaseLetters() {
                   {generatingEndpoint === "arm-final-release" ? (
                     <>
                       <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-                      Generating…
+                      {t("Generating…", { ns: "reports" })}
                     </>
                   ) : (
-                    <>📄 Final Release Letter</>
+                    <>📄 {t("Final Release Letter", { ns: "reports" })}</>
                   )}
                 </button>
               </Col>

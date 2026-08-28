@@ -46,7 +46,7 @@ function RegenerateWorkOrder() {
   const [listData, setListData] = useState({});
   const [page] = useState(0);
   const countPerPage = 50;
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [addressDetails, setAddressDetails] = useState({
     fruitsId: "",
@@ -222,9 +222,9 @@ function RegenerateWorkOrder() {
     if (!addressDetails.sanctionOrderNumber || !applicationFormId) {
       Swal.fire({
         icon: "warning",
-        title: "Selection Required",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(245,158,11,0.3)">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Action Needed</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">Please select a <b>Work Order Number</b> from the dropdown before regenerating.</p></div></div></div>`,
-        confirmButtonText: "Got it",
+        title: t("Selection Required", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(245,158,11,0.3)">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Action Needed", { ns: "reports" })}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${t("Please select a <b>Work Order Number</b> from the dropdown before regenerating.", { ns: "reports" })}</p></div></div></div>`,
+        confirmButtonText: t("Got it", { ns: "reports" }),
         confirmButtonColor: "#d97706",
         background: "#fff",
         customClass: { popup: "swal-pop" },
@@ -235,10 +235,10 @@ function RegenerateWorkOrder() {
     if (!endpoint) {
       Swal.fire({
         icon: "warning",
-        title: "Scheme Not Supported",
+        title: t("Scheme Not Supported", { ns: "reports" }),
         text: workOrderForScheme
-          ? `No work order report is configured for "${workOrderForScheme}".`
-          : "Could not determine the scheme's work order type. Please reselect the Scheme and Component Type.",
+          ? t("No work order report is configured for \"{{scheme}}\".", { ns: "reports", scheme: workOrderForScheme })
+          : t("Could not determine the scheme's work order type. Please reselect the Scheme and Component Type.", { ns: "reports" }),
         confirmButtonColor: "#d97706",
       });
       return;
@@ -264,9 +264,9 @@ function RegenerateWorkOrder() {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Regeneration Failed",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🖨️</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Could Not Regenerate</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">Could not build the Work Order PDF. Please verify the selection and try again.</p></div></div></div>`,
-        confirmButtonText: "Close",
+        title: t("Regeneration Failed", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🖨️</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Could Not Regenerate", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${t("Could not build the Work Order PDF. Please verify the selection and try again.", { ns: "reports" })}</p></div></div></div>`,
+        confirmButtonText: t("Close"),
         confirmButtonColor: "#e53e3e",
         background: "#fff",
         customClass: { popup: "swal-pop" },
@@ -313,11 +313,11 @@ function RegenerateWorkOrder() {
 
   // ── render ──
   return (
-    <Layout title="Regenerate Work Order">
+    <Layout title={t("Regenerate Work Order", { ns: "reports" })}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Regenerate Work Order</Block.Title>
+            <Block.Title tag="h2">{t("Regenerate Work Order", { ns: "reports" })}</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -327,8 +327,8 @@ function RegenerateWorkOrder() {
           <div style={{ background: "linear-gradient(135deg, #1a7a4a 0%, #28a745 100%)", padding: "18px 28px", display: "flex", alignItems: "center", gap: "12px" }}>
             <div style={{ width: "38px", height: "38px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px" }}>🖨️</div>
             <div>
-              <div style={{ color: "#fff", fontWeight: 700, fontSize: "17px", lineHeight: 1.2 }}>Regenerate Work Order</div>
-              <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "2px" }}>Builds a fresh PDF</div>
+              <div style={{ color: "#fff", fontWeight: 700, fontSize: "17px", lineHeight: 1.2 }}>{t("Regenerate Work Order", { ns: "reports" })}</div>
+              <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "2px" }}>{t("Builds a fresh PDF", { ns: "reports" })}</div>
             </div>
           </div>
 
@@ -336,29 +336,29 @@ function RegenerateWorkOrder() {
             {/* Fruits ID — optional */}
             <Row className="mb-3">
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Fruits ID <span style={{ color: "#a0aec0", fontWeight: 400 }}>(optional)</span></label>
-                <Form.Control type="text" name="fruitsId" value={addressDetails.fruitsId || ""} onChange={handleInputsaddress} placeholder="Enter Fruits ID to filter" style={selectStyle} />
+                <label style={labelStyle}>{t("Fruits ID", { ns: "reports" })} <span style={{ color: "#a0aec0", fontWeight: 400 }}>({t("optional", { ns: "reports" })})</span></label>
+                <Form.Control type="text" name="fruitsId" value={addressDetails.fruitsId || ""} onChange={handleInputsaddress} placeholder={t("Enter Fruits ID to filter", { ns: "reports" })} style={selectStyle} />
               </Col>
             </Row>
 
-            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1a7a4a", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "18px" }}>Step 1 — Select Scheme Details</div>
+            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1a7a4a", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "18px" }}>{t("Step 1 — Select Scheme Details", { ns: "reports" })}</div>
 
             <Row className="mb-3">
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Financial Year</label>
+                <label style={labelStyle}>{t("Financial Year")}</label>
                 <Form.Select name="financialYearId" value={addressDetails.financialYearId || ""} onChange={handleInputsaddress} style={selectStyle}>
-                  <option value="">— Select Financial Year —</option>
+                  <option value="">{`— ${t("Select Financial Year")} —`}</option>
                   {financialyearListData.map((list) => (
                     <option key={list.financialYearMasterId} value={list.financialYearMasterId}>{list.financialYear}</option>
                   ))}
                 </Form.Select>
               </Col>
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Scheme</label>
+                <label style={labelStyle}>{t("Scheme")}</label>
                 <Form.Select name="scSchemeDetailsId" value={addressDetails.scSchemeDetailsId || ""} onChange={handleInputsaddress} style={selectStyle}>
-                  <option value="">— Select Scheme —</option>
+                  <option value="">{`— ${t("Select Scheme")} —`}</option>
                   {scSchemeDetailsListData?.map((list) => (
-                    <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>{list.schemeName}</option>
+                    <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>{i18n.language === "kn" ? (list.schemeNameInKannada || list.schemeName) : list.schemeName}</option>
                   ))}
                 </Form.Select>
               </Col>
@@ -366,20 +366,20 @@ function RegenerateWorkOrder() {
 
             <Row className="mb-3">
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Component Type</label>
+                <label style={labelStyle}>{t("Component Type")}</label>
                 <Form.Select name="subSchemeId" value={addressDetails.subSchemeId || ""} onChange={handleInputsaddress} style={selectStyle}>
-                  <option value="">— Select Component Type —</option>
+                  <option value="">{`— ${t("Select Component Type")} —`}</option>
                   {scSubSchemeDetailsListData?.map((list) => (
-                    <option key={list.scSubSchemeDetailsId} value={list.subSchemeId}>{list.subSchemeName}</option>
+                    <option key={list.scSubSchemeDetailsId} value={list.subSchemeId}>{i18n.language === "kn" ? (list.subSchemeNameInKannada || list.subSchemeName) : list.subSchemeName}</option>
                   ))}
                 </Form.Select>
               </Col>
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Component</label>
+                <label style={labelStyle}>{t("Component")}</label>
                 <Form.Select name="componentId" value={addressDetails.componentId || ""} onChange={handleInputsaddress} style={selectStyle}>
-                  <option value="">— Select Component —</option>
+                  <option value="">{`— ${t("Select Component")} —`}</option>
                   {scComponentListData?.map((list) => (
-                    <option key={list.scComponentId} value={list.scComponentId}>{list.scComponentName}</option>
+                    <option key={list.scComponentId} value={list.scComponentId}>{i18n.language === "kn" ? (list.scComponentNameInKannada || list.scComponentName) : list.scComponentName}</option>
                   ))}
                 </Form.Select>
               </Col>
@@ -387,25 +387,25 @@ function RegenerateWorkOrder() {
 
             <Row className="mb-4">
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Sub Component</label>
+                <label style={labelStyle}>{t("Sub Component")}</label>
                 <Form.Select name="scCategoryId" value={addressDetails.scCategoryId || ""} onChange={handleInputsaddress} style={selectStyle}>
-                  <option value="">— Select Sub Component —</option>
+                  <option value="">{`— ${t("Select Sub Component")} —`}</option>
                   {scCategoryListData?.map((list) => (
-                    <option key={list.scCategoryId} value={list.scCategoryId}>{list.categoryName}</option>
+                    <option key={list.scCategoryId} value={list.scCategoryId}>{i18n.language === "kn" ? (list.categoryNameInKannada || list.categoryName) : list.categoryName}</option>
                   ))}
                 </Form.Select>
               </Col>
             </Row>
 
             <div style={{ borderTop: "1.5px dashed #d0d9e8", margin: "8px 0 20px" }} />
-            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1a7a4a", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "18px" }}>Step 2 — Select Work Order &amp; Regenerate</div>
+            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1a7a4a", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "18px" }}>{t("Step 2 — Select Work Order & Regenerate", { ns: "reports" })}</div>
 
             <Row className="mb-3 align-items-end">
               <Col md={5} style={fieldGroupStyle}>
                 <label style={labelStyle}>
-                  Work Order Number
+                  {t("Work Order Number", { ns: "reports" })}
                   {workOrderNumbers.length > 0 && (
-                    <span style={{ marginLeft: "8px", fontSize: "11px", color: "#1a7a4a", fontWeight: 500 }}>({workOrderNumbers.length} found)</span>
+                    <span style={{ marginLeft: "8px", fontSize: "11px", color: "#1a7a4a", fontWeight: 500 }}>({workOrderNumbers.length} {t("found", { ns: "reports" })})</span>
                   )}
                 </label>
                 <SearchableSelect
@@ -417,7 +417,7 @@ function RegenerateWorkOrder() {
                     })
                   }
                   isDisabled={!filtersReady}
-                  placeholder={filtersReady ? "— Select Work Order —" : "— Fill filters above first —"}
+                  placeholder={filtersReady ? `— ${t("Select Work Order", { ns: "reports" })} —` : `— ${t("Fill filters above first", { ns: "reports" })} —`}
                   options={(workOrderNumbers || []).map((item) =>
                     typeof item === "object" ? item.workOrderNumber : item
                   )}
@@ -429,9 +429,9 @@ function RegenerateWorkOrder() {
               <Col md={12} className="d-flex gap-3 flex-wrap pt-1">
                 <button type="button" onClick={regenerateFromJasper} disabled={!canGenerate} style={btnStyle(canGenerate, "#1a7a4a", "#28a745", "rgba(26,122,74,0.35)")}>
                   {isGenerating ? (
-                    <><span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" /> Regenerating…</>
+                    <><span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" /> {t("Regenerating…", { ns: "reports" })}</>
                   ) : (
-                    <>🖨️ Regenerate Sanction Order</>
+                    <>🖨️ {t("Regenerate Sanction Order", { ns: "reports" })}</>
                   )}
                 </button>
               </Col>

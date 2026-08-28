@@ -5,6 +5,7 @@ import Block from "../../../components/Block/Block";
 import { useState, useEffect } from "react";
 import api from "../../../services/auth/api";
 import { t } from "i18next";
+import i18next from "i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLReport = process.env.REACT_APP_API_BASE_URL_REPORT;
@@ -55,7 +56,7 @@ function ReelerBalanceReport() {
       })
       .catch(() => {
         setMarketList([]);
-        Swal.fire("Failed to load markets");
+        Swal.fire(t("Failed to load markets", { ns: "reports" }));
       });
   }, [marketTypeMasterId]); // ✅ IMPORTANT
 
@@ -76,7 +77,7 @@ function ReelerBalanceReport() {
       })
       .catch(() => {
         setReportData([]);
-        Swal.fire("Failed to load data");
+        Swal.fire(t("Failed to load data", { ns: "reports" }));
       });
   };
 
@@ -96,11 +97,11 @@ function ReelerBalanceReport() {
 
   const downloadReport = () => {
     if (!data.marketId) {
-      Swal.fire("Please select Market");
+      Swal.fire(t("Please select Market", { ns: "reports" }));
       return;
     }
     if (!reportData || reportData.length === 0) {
-      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      Swal.fire({ icon: "info", title: t("No Data Found", { ns: "reports" }), text: t("No records found for the selected criteria.", { ns: "reports" }) });
       return;
     }
 
@@ -123,15 +124,15 @@ function ReelerBalanceReport() {
         document.body.appendChild(link);
         link.click();
       })
-      .catch(() => Swal.fire("Download failed"));
+      .catch(() => Swal.fire(t("Download failed", { ns: "reports" })));
   };
 
   return (
-    <Layout title={t("Reeler Balance Report")}>
+    <Layout title={t("Reeler Balance Report", { ns: "reports" })}>
       <style>{reelerBalanceReportStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
-          <Block.Title tag="h2" className="sh-page-title">Reeler Balance</Block.Title>
+          <Block.Title tag="h2" className="sh-page-title">{t("Reeler Balance", { ns: "reports" })}</Block.Title>
         </div>
       </Block.Head>
 
@@ -142,7 +143,7 @@ function ReelerBalanceReport() {
               <Row className="align-items-end g-3">
                 <Col md={3}>
                   <Form.Label className="fw-semibold text-muted">
-                    Market <span className="text-danger">*</span>
+                    {t("Market")} <span className="text-danger">*</span>
                   </Form.Label>
 
                   <Form.Select
@@ -152,10 +153,10 @@ function ReelerBalanceReport() {
                     className="form-control-lg"
                     style={{ borderRadius: "10px" }}
                   >
-                    <option value="">Select Market</option>
+                    <option value="">{t("Select Market")}</option>
                     {marketList.map((m) => (
                       <option key={m.marketMasterId} value={m.marketMasterId}>
-                        {m.marketMasterName}
+                        {i18next.language === "kn" ? (m.marketNameInKannada || m.marketMasterName) : m.marketMasterName}
                       </option>
                     ))}
                   </Form.Select>
@@ -170,7 +171,7 @@ function ReelerBalanceReport() {
                       borderRadius: "10px",
                     }}
                   >
-                    {loading ? "Downloading..." : "Download Report"}
+                    {loading ? t("Downloading...", { ns: "reports" }) : t("Download Report", { ns: "reports" })}
                   </Button>
                 </Col>
               </Row>

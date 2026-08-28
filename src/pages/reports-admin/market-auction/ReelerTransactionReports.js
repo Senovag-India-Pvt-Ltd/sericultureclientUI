@@ -118,7 +118,7 @@ function ReelerTransactionReports() {
           } else {
             Swal.fire({
               icon: "warning",
-              title: "No Record Found",
+              title: t("No Record Found"),
             });
           }
           //console.log("hello world", response.data);
@@ -133,7 +133,7 @@ function ReelerTransactionReports() {
   const saveSuccess = () => {
     Swal.fire({
       icon: "success",
-      title: "Saved successfully",
+      title: t("Saved successfully"),
       // text: "You clicked the button!",
     }).then(() => {
       navigate("/seriui/caste-list");
@@ -142,8 +142,8 @@ function ReelerTransactionReports() {
   const saveError = () => {
     Swal.fire({
       icon: "error",
-      title: "Save attempt was not successful",
-      text: "Something went wrong!",
+      title: t("Save attempt was not successful"),
+      text: t("Something went wrong", { ns: "reports" }),
     });
   };
   return (
@@ -205,7 +205,7 @@ function ReelerTransactionReports() {
                           required
                         />
                         <Form.Control.Feedback type="invalid">
-                          {t("Reeler Number is required")}.
+                          {t("Reeler Number is required.", { ns: "reports" })}
                         </Form.Control.Feedback>
                       </Col>
                       <Form.Label column sm={1}>

@@ -100,6 +100,7 @@ function InstitutionFilterCard({
   isDownloadingPdf, isDownloadingExcel,
   onSubmit, onPdf, onExcel, extraRow,
 }) {
+  const { t } = useTranslation();
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthKn    = MONTH_KN[Number(filter.month)] || "";
   return (
@@ -124,33 +125,33 @@ function InstitutionFilterCard({
         <Form onSubmit={onSubmit}>
           <Row className="g-2 align-items-end">
             <Col md={5}>
-              <label style={lbl}>Training Institution <span style={{ color: "#e53e3e" }}>*</span></label>
+              <label style={lbl}>{t("Training Institution", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
               <ReactSelect
                 options={institutionList.map((i) => ({ value: String(i.trInstitutionMasterId), label: i.trInstitutionMasterName }))}
-                placeholder="— Search Institution —"
+                placeholder={`— ${t("Search Institution", { ns: "reports" })} —`}
                 isSearchable isClearable menuPlacement="auto"
                 menuPortalTarget={typeof document !== "undefined" ? document.body : null}
                 menuPosition="fixed" styles={reactSelectStyles}
                 value={institutionList.map((i) => ({ value: String(i.trInstitutionMasterId), label: i.trInstitutionMasterName })).find((o) => o.value === String(filter.institutionId)) || null}
                 onChange={(opt) => { setFilter((p) => ({ ...p, institutionId: opt?.value || "" })); reset(); }}
-                noOptionsMessage={() => "No institutions"}
+                noOptionsMessage={() => t("No institutions", { ns: "reports" })}
               />
             </Col>
             <Col md={2}>
-              <label style={lbl}>Year <span style={{ color: "#e53e3e" }}>*</span></label>
+              <label style={lbl}>{t("Year", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
               <Form.Select value={filter.year} onChange={(e) => { setFilter((p) => ({ ...p, year: e.target.value })); reset(); }} style={sel}>
                 {yearOptions.map((y) => <option key={y.value} value={y.value}>{y.label}</option>)}
               </Form.Select>
             </Col>
             <Col md={3}>
-              <label style={lbl}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
+              <label style={lbl}>{t("Month")} <span style={{ color: "#e53e3e" }}>*</span></label>
               <Form.Select value={filter.month} onChange={(e) => { setFilter((p) => ({ ...p, month: e.target.value })); reset(); }} style={sel}>
-                {MONTHS.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
+                {MONTHS.map((m) => <option key={m.value} value={m.value}>{t(m.label, { ns: "reports" })}</option>)}
               </Form.Select>
             </Col>
             <Col md={2}>
               <button type="submit" disabled={isLoading} style={btn("linear-gradient(135deg,#0f766e,#14b8a6)", "0 4px 12px rgba(15,118,110,.32)", isLoading)}>
-                {isLoading ? <><span className="spinner-border spinner-border-sm" /> Loading…</> : <>📋 View</>}
+                {isLoading ? <><span className="spinner-border spinner-border-sm" /> {t("Loading…", { ns: "reports" })}</> : <>📋 {t("View", { ns: "reports" })}</>}
               </button>
             </Col>
           </Row>
@@ -160,10 +161,10 @@ function InstitutionFilterCard({
               <Col md={extraRow ? 4 : 12}>
                 <div className="d-flex gap-2 flex-wrap justify-content-md-end">
                   <button type="button" disabled={isDownloadingPdf} onClick={onPdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 4px 12px rgba(185,28,28,.30)", isDownloadingPdf)}>
-                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> PDF…</> : <>📄 PDF</>}
+                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> {t("PDF…", { ns: "reports" })}</> : <>📄 {t("PDF", { ns: "reports" })}</>}
                   </button>
                   <button type="button" disabled={isDownloadingExcel} onClick={onExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 4px 12px rgba(21,128,61,.30)", isDownloadingExcel)}>
-                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> Excel…</> : <>📊 Excel</>}
+                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> {t("Excel…", { ns: "reports" })}</> : <>📊 {t("Excel", { ns: "reports" })}</>}
                   </button>
                 </div>
               </Col>
@@ -176,6 +177,7 @@ function InstitutionFilterCard({
 }
 
 function useTrainingReport(endpointKey, filenamePrefix, friendlyTitle) {
+  const { t } = useTranslation();
   const today = new Date();
   const [filter, setFilter] = useState({ institutionId: "", year: today.getFullYear(), month: today.getMonth() + 1 });
   const [institutionList, setInstitutionList] = useState([]);
@@ -193,23 +195,23 @@ function useTrainingReport(endpointKey, filenamePrefix, friendlyTitle) {
 
   const reset = () => { setHasReport(false); setDataRows([]); };
   const validate = () => {
-    if (!filter.institutionId) return "Please select a Training Institution.";
-    if (!filter.year)          return "Please select a Year.";
-    if (!filter.month)         return "Please select a Month.";
+    if (!filter.institutionId) return t("Please select a Training Institution.", { ns: "reports" });
+    if (!filter.year)          return t("Please select a Year.", { ns: "reports" });
+    if (!filter.month)         return t("Please select a Month.", { ns: "reports" });
     return null;
   };
   const showWarn = (msg) =>
     Swal.fire({
-      icon: "warning", title: "Required Fields",
+      icon: "warning", title: t("Required Fields", { ns: "reports" }),
       html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px"><p style="color:#92400e;font-size:14px;font-weight:700;margin:0">${msg}</p></div></div>`,
-      confirmButtonText: "Got it", confirmButtonColor: "#d97706",
+      confirmButtonText: t("Got it", { ns: "reports" }), confirmButtonColor: "#d97706",
       background: "#fff", customClass: { popup: "tr-swal" },
     });
   const showErr = (title, msg) =>
     Swal.fire({
       icon: "error", title,
       html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px"><p style="color:#9b2c2c;font-size:13px;font-weight:600;margin:0">${msg}</p></div></div>`,
-      confirmButtonText: "Close", confirmButtonColor: "#e53e3e",
+      confirmButtonText: t("Close"), confirmButtonColor: "#e53e3e",
       background: "#fff", customClass: { popup: "tr-swal" },
     });
 
@@ -223,13 +225,13 @@ function useTrainingReport(endpointKey, filenamePrefix, friendlyTitle) {
     } catch (err) {
         const status = err?.response?.status;
         if (status === 404 || status === 204) {
-          showErr("No Data Found", "No data found for the selected filters.");
+          showErr(t("No Data Found", { ns: "reports" }), t("No data found for the selected filters.", { ns: "reports" }));
         } else {
           const data = err?.response?.data;
           const backendMsg = typeof data === "string"
             ? data
             : (data?.message || data?.error || data?.errorMessage || data?.error_description);
-          showErr("Fetch Failed", backendMsg || err?.message || `Failed to load the ${friendlyTitle} report.`);
+          showErr(t("Fetch Failed", { ns: "reports" }), backendMsg || err?.message || t("Failed to load the {{title}} report.", { ns: "reports", title: friendlyTitle }));
         }
       }
     finally { setIsLoading(false); }
@@ -240,7 +242,7 @@ function useTrainingReport(endpointKey, filenamePrefix, friendlyTitle) {
     try {
       const res = await api.get(baseURLSeedDFL + `grainage-progress-report/${endpointKey}/pdf`, { params: params(), responseType: "blob" });
       window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
-    } catch { showErr("PDF Failed", "Could not generate the PDF report."); } finally { setIsDownloadingPdf(false); }
+    } catch { showErr(t("PDF Failed", { ns: "reports" }), t("Could not generate the PDF report.", { ns: "reports" })); } finally { setIsDownloadingPdf(false); }
   };
   const handleExcel = async () => {
     const err = validate(); if (err) { showWarn(err); return; }
@@ -251,7 +253,7 @@ function useTrainingReport(endpointKey, filenamePrefix, friendlyTitle) {
       const a = document.createElement("a"); a.href = url;
       a.download = `${filenamePrefix}_${filter.institutionId}_${filter.year}_${filter.month}.xlsx`;
       a.click(); URL.revokeObjectURL(url);
-    } catch { showErr("Excel Failed", "Could not generate the Excel report."); } finally { setIsDownloadingExcel(false); }
+    } catch { showErr(t("Excel Failed", { ns: "reports" }), t("Could not generate the Excel report.", { ns: "reports" })); } finally { setIsDownloadingExcel(false); }
   };
 
   const institutionName = institutionList.find((i) => String(i.trInstitutionMasterId) === String(filter.institutionId))?.trInstitutionMasterName || "—";
@@ -301,7 +303,7 @@ export function TrainingPhysicalProgressReport() {
   }, [rpt.dataRows, aligned]);
 
   return (
-    <Layout title={t("Training · Form 1 · Physical Progress")}>
+    <Layout title={t("Training · Form 1 · Physical Progress", { ns: "reports" })}>
       <Block.Head><Block.HeadBetween><Block.HeadContent>
         <Block.Title tag="h2">
           {t("ನಮೂನೆ-1 · ತರಬೇತಿ ಭೌತಿಕ ಪ್ರಗತಿ")}
@@ -323,9 +325,9 @@ export function TrainingPhysicalProgressReport() {
           isDownloadingPdf={rpt.isDownloadingPdf} isDownloadingExcel={rpt.isDownloadingExcel}
           onSubmit={rpt.handleView} onPdf={rpt.handlePdf} onExcel={rpt.handleExcel}
           extraRow={
-            <Col md={4}><label style={lbl}>Total row</label>
+            <Col md={4}><label style={lbl}>{t("Total row", { ns: "reports" })}</label>
               <button type="button" onClick={() => setHideTotals((v) => !v)} style={{ width: "100%", padding: "7px 12px", borderRadius: "9px", border: "none", background: hideTotals ? "#f1f5f9" : "linear-gradient(135deg,#fef3c7,#fde68a)", color: hideTotals ? "#475569" : "#854d0e", fontWeight: 800, fontSize: "12.5px", cursor: "pointer" }}>
-                {hideTotals ? "🚫 Total hidden" : "✓ Total shown"}
+                {hideTotals ? `🚫 ${t("Total hidden", { ns: "reports" })}` : `✓ ${t("Total shown", { ns: "reports" })}`}
               </button>
             </Col>
           }
@@ -385,7 +387,7 @@ export function TrainingPhysicalProgressReport() {
                     ))}
                   </tr></thead>
                   <tbody>
-                    {filteredRows.length === 0 && <tr><td colSpan={9} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0" }}>{rpt.dataRows.length === 0 ? "No records found." : "Total row is hidden."}</td></tr>}
+                    {filteredRows.length === 0 && <tr><td colSpan={9} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0" }}>{rpt.dataRows.length === 0 ? t("No records found.", { ns: "reports" }) : t("Total row is hidden.", { ns: "reports" })}</td></tr>}
                     {filteredRows.map((row, ri) => {
                       const isTotal = isTotalRow(row, "course_name");
                       const rowBg = isTotal ? "linear-gradient(135deg,#fffbeb,#fef3c7)" : (ri % 2 === 1 ? "#f8fafc" : "#ffffff");
@@ -454,7 +456,7 @@ export function TrainingFinancialProgressReport() {
   }, [rpt.dataRows]);
 
   return (
-    <Layout title={t("Training · Form 2 · Financial Progress")}>
+    <Layout title={t("Training · Form 2 · Financial Progress", { ns: "reports" })}>
       <Block.Head><Block.HeadBetween><Block.HeadContent>
         <Block.Title tag="h2">
           {t("ನಮೂನೆ-2 · ತರಬೇತಿ ಆರ್ಥಿಕ ಪ್ರಗತಿ")}
@@ -476,9 +478,9 @@ export function TrainingFinancialProgressReport() {
           isDownloadingPdf={rpt.isDownloadingPdf} isDownloadingExcel={rpt.isDownloadingExcel}
           onSubmit={rpt.handleView} onPdf={rpt.handlePdf} onExcel={rpt.handleExcel}
           extraRow={
-            <Col md={4}><label style={lbl}>Total row</label>
+            <Col md={4}><label style={lbl}>{t("Total row", { ns: "reports" })}</label>
               <button type="button" onClick={() => setHideTotals((v) => !v)} style={{ width: "100%", padding: "7px 12px", borderRadius: "9px", border: "none", background: hideTotals ? "#f1f5f9" : "linear-gradient(135deg,#fef3c7,#fde68a)", color: hideTotals ? "#475569" : "#854d0e", fontWeight: 800, fontSize: "12.5px", cursor: "pointer" }}>
-                {hideTotals ? "🚫 Total hidden" : "✓ Total shown"}
+                {hideTotals ? `🚫 ${t("Total hidden", { ns: "reports" })}` : `✓ ${t("Total shown", { ns: "reports" })}`}
               </button>
             </Col>
           }
@@ -545,7 +547,7 @@ export function TrainingFinancialProgressReport() {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredRows.length === 0 && <tr><td colSpan={11} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0" }}>{rpt.dataRows.length === 0 ? "No records found." : "Total row is hidden."}</td></tr>}
+                    {filteredRows.length === 0 && <tr><td colSpan={11} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0" }}>{rpt.dataRows.length === 0 ? t("No records found.", { ns: "reports" }) : t("Total row is hidden.", { ns: "reports" })}</td></tr>}
                     {filteredRows.map((row, ri) => {
                       const isTotal = isTotalRow(row, "course_name");
                       const rowBg = isTotal ? "linear-gradient(135deg,#fffbeb,#fef3c7)" : (ri % 2 === 1 ? "#f8fafc" : "#ffffff");
@@ -609,7 +611,7 @@ export function TrainingMaintenanceExpenseReport() {
   }, [rpt.dataRows]);
 
   return (
-    <Layout title={t("Training · Form 3 · Maintenance Expense")}>
+    <Layout title={t("Training · Form 3 · Maintenance Expense", { ns: "reports" })}>
       <Block.Head><Block.HeadBetween><Block.HeadContent>
         <Block.Title tag="h2">
           {t("ನಮೂನೆ-3 · ನಿರ್ವಹಣಾ ವೆಚ್ಚದ ಐಟಂವಾರು ವಿವರ")}
@@ -672,7 +674,7 @@ export function TrainingMaintenanceExpenseReport() {
                     </th>
                   </tr></thead>
                   <tbody>
-                    {rpt.dataRows.length === 0 && <tr><td colSpan={3} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0" }}>No records found.</td></tr>}
+                    {rpt.dataRows.length === 0 && <tr><td colSpan={3} style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0" }}>{t("No records found.", { ns: "reports" })}</td></tr>}
                     {rpt.dataRows.map((row, ri) => {
                       const isTotal = isTotalRow(row, "item_description");
                       const rowBg = isTotal ? "linear-gradient(135deg,#fffbeb,#fef3c7)" : (ri % 2 === 1 ? "#f8fafc" : "#ffffff");

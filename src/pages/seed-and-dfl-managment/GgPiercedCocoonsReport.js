@@ -96,27 +96,27 @@ function GgPiercedCocoonsReport() {
   };
 
   const validate = () => {
-    if (!filter.grainageMasterId) return "Please select a Grainage.";
-    if (!filter.year) return "Please select a Year.";
-    if (!filter.month) return "Please select a Month.";
+    if (!filter.grainageMasterId) return t("Please select a Grainage.", { ns: "reports" });
+    if (!filter.year) return t("Please select a Year.", { ns: "reports" });
+    if (!filter.month) return t("Please select a Month.", { ns: "reports" });
     return null;
   };
 
   const showValidationError = (msg) =>
     Swal.fire({
       icon: "warning",
-      title: "Required Fields",
+      title: t("Required Fields", { ns: "reports" }),
       html: `
         <div style="padding:8px 2px 12px">
           <div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left">
             <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div>
             <div>
-              <p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Missing Selection</p>
+              <p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Missing Selection", { ns: "reports" })}</p>
               <p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p>
             </div>
           </div>
         </div>`,
-      confirmButtonText: "Got it",
+      confirmButtonText: t("Got it", { ns: "reports" }),
       confirmButtonColor: "#d97706",
       background: "#fff",
       customClass: { popup: "ggpc-swal" },
@@ -136,7 +136,7 @@ function GgPiercedCocoonsReport() {
             </div>
           </div>
         </div>`,
-      confirmButtonText: "Close",
+      confirmButtonText: t("Close"),
       confirmButtonColor: "#e53e3e",
       background: "#fff",
       customClass: { popup: "ggpc-swal" },
@@ -158,8 +158,8 @@ function GgPiercedCocoonsReport() {
       setRows(Array.isArray(res.data) ? res.data : []);
       setShown(true);
     } catch {
-      showServerError("🔌", "Could Not Load Report",
-        "Failed to fetch the pierced cocoon report. Please try again.");
+      showServerError("🔌", t("Could Not Load Report", { ns: "reports" }),
+        t("Failed to fetch the pierced cocoon report. Please try again.", { ns: "reports" }));
     } finally {
       setLoadView(false);
     }
@@ -190,8 +190,8 @@ function GgPiercedCocoonsReport() {
       }
     } catch {
       showServerError(kind === "pdf" ? "📄" : "📊",
-        kind === "pdf" ? "PDF Generation Failed" : "Excel Generation Failed",
-        `Could not generate the ${kind.toUpperCase()} report. Please verify your selection and try again.`);
+        kind === "pdf" ? t("PDF Generation Failed", { ns: "reports" }) : t("Excel Generation Failed", { ns: "reports" }),
+        t("Could not generate the {{kind}} report. Please verify your selection and try again.", { ns: "reports", kind: kind.toUpperCase() }));
     } finally {
       setter(false);
     }
@@ -245,11 +245,11 @@ function GgPiercedCocoonsReport() {
   };
 
   return (
-    <Layout title={t("GG Pierced Cocoon Details (Form 8)")}>
+    <Layout title={t("GG Pierced Cocoon Details (Form 8)", { ns: "reports" })}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("GG Pierced Cocoon Details (Form 8)")}</Block.Title>
+            <Block.Title tag="h2">{t("GG Pierced Cocoon Details (Form 8)", { ns: "reports" })}</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -289,39 +289,39 @@ function GgPiercedCocoonsReport() {
             <Form onSubmit={(e) => { e.preventDefault(); handleView(); }}>
               <Row className="g-2 align-items-end">
                 <Col md={4}>
-                  <label style={lbl}>Grainage <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Grainage")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="grainageMasterId" value={filter.grainageMasterId} onChange={handleFilterChange} style={sel}>
-                    <option value="">— Select Grainage —</option>
+                    <option value="">{`— ${t("Select Grainage", { ns: "reports" })} —`}</option>
                     {grainageList.map((g) => (
                       <option key={g.grainageMasterId} value={g.grainageMasterId}>{g.grainageMasterName}</option>
                     ))}
                   </Form.Select>
                 </Col>
                 <Col md={2}>
-                  <label style={lbl}>Year <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Year", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="year" value={filter.year} onChange={handleFilterChange} style={sel}>
                     {yearOptions.map((y) => <option key={y} value={y}>{y}</option>)}
                   </Form.Select>
                 </Col>
                 <Col md={3}>
-                  <label style={lbl}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Month")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="month" value={filter.month} onChange={handleFilterChange} style={sel}>
-                    {MONTHS.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
+                    {MONTHS.map((m) => <option key={m.value} value={m.value}>{t(m.label, { ns: "reports" })}</option>)}
                   </Form.Select>
                 </Col>
                 <Col md={3}>
                   <div className="d-flex gap-2 flex-wrap">
                     <button type="submit" disabled={loadView}
                       style={btn("linear-gradient(135deg,#6d28d9,#9333ea)", "0 3px 10px rgba(124,58,237,0.30)", loadView)}>
-                      {loadView ? <><span className="spinner-border spinner-border-sm" /> Loading…</> : <>📋 View</>}
+                      {loadView ? <><span className="spinner-border spinner-border-sm" /> {t("Loading…", { ns: "reports" })}</> : <>📋 {t("View")}</>}
                     </button>
                     <button type="button" disabled={loadPdf} onClick={() => downloadFile("pdf")}
                       style={btn("linear-gradient(135deg,#c53030,#e53e3e)", "0 3px 10px rgba(197,48,48,0.28)", loadPdf)}>
-                      {loadPdf ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📥 PDF</>}
+                      {loadPdf ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📥 {t("PDF")}</>}
                     </button>
                     <button type="button" disabled={loadExcel} onClick={() => downloadFile("excel")}
                       style={btn("linear-gradient(135deg,#1d6a3a,#22883f)", "0 3px 10px rgba(29,106,58,0.28)", loadExcel)}>
-                      {loadExcel ? <><span className="spinner-border spinner-border-sm" /> …</> : <>🟢 Excel</>}
+                      {loadExcel ? <><span className="spinner-border spinner-border-sm" /> …</> : <>🟢 {t("Excel", { ns: "reports" })}</>}
                     </button>
                   </div>
                 </Col>
@@ -340,7 +340,7 @@ function GgPiercedCocoonsReport() {
                 border: "1.5px solid #d6bcfa", borderRadius: "12px",
                 padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "180px",
               }}>
-                <span style={{ fontSize: "11px", color: "#6b46c1", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em" }}>Grainage</span>
+                <span style={{ fontSize: "11px", color: "#6b46c1", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em" }}>{t("Grainage")}</span>
                 <span style={{ fontSize: "14px", color: "#1a202c", fontWeight: 700, marginTop: "2px" }}>{selectedGrainage?.grainageMasterName || "—"}</span>
               </div>
               <div style={{
@@ -348,7 +348,7 @@ function GgPiercedCocoonsReport() {
                 border: "1.5px solid #fcd34d", borderRadius: "12px",
                 padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "160px",
               }}>
-                <span style={{ fontSize: "11px", color: "#92400e", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em" }}>Period</span>
+                <span style={{ fontSize: "11px", color: "#92400e", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em" }}>{t("Period", { ns: "reports" })}</span>
                 <span style={{ fontSize: "14px", color: "#1a202c", fontWeight: 700, marginTop: "2px" }}>{monthLabel} {monthKn} · {filter.year}</span>
               </div>
               <div style={{
@@ -356,7 +356,7 @@ function GgPiercedCocoonsReport() {
                 border: "1.5px solid #bee3f8", borderRadius: "12px",
                 padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "180px",
               }}>
-                <span style={{ fontSize: "11px", color: "#2b6cb0", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em" }}>Comparing</span>
+                <span style={{ fontSize: "11px", color: "#2b6cb0", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em" }}>{t("Comparing", { ns: "reports" })}</span>
                 <span style={{ fontSize: "14px", color: "#1a202c", fontWeight: 700, marginTop: "2px" }}>{cyLabel} vs {pyLabel}</span>
               </div>
               <div style={{ marginLeft: "auto" }}>
@@ -364,7 +364,7 @@ function GgPiercedCocoonsReport() {
                   background: "linear-gradient(135deg,#edf2f7,#e2e8f0)",
                   border: "1.5px solid #cbd5e0", borderRadius: "20px",
                   padding: "6px 16px", fontSize: "12px", color: "#4a5568", fontWeight: 600,
-                }}>{rows.length} rows</span>
+                }}>{rows.length} {t("rows", { ns: "reports" })}</span>
               </div>
             </div>
 
@@ -483,7 +483,7 @@ function GgPiercedCocoonsReport() {
                       <tr>
                         <td colSpan={6}
                           style={{ padding: "40px 20px", textAlign: "center", color: "#a0aec0", fontSize: "14px" }}>
-                          No data available for the selected filters.
+                          {t("No data available for the selected filters.", { ns: "reports" })}
                         </td>
                       </tr>
                     )}
@@ -505,11 +505,11 @@ function GgPiercedCocoonsReport() {
                 <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
                   <button type="button" onClick={() => downloadFile("pdf")} disabled={loadPdf}
                     style={btn("linear-gradient(135deg,#c53030,#e53e3e)", "0 2px 8px rgba(197,48,48,0.25)", loadPdf)}>
-                    {loadPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: 14, height: 14 }} /> Generating…</> : <>📥 Download PDF</>}
+                    {loadPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: 14, height: 14 }} /> {t("Generating…", { ns: "reports" })}</> : <>📥 {t("Download PDF")}</>}
                   </button>
                   <button type="button" onClick={() => downloadFile("excel")} disabled={loadExcel}
                     style={btn("linear-gradient(135deg,#1d6a3a,#22883f)", "0 2px 8px rgba(29,106,58,0.25)", loadExcel)}>
-                    {loadExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: 14, height: 14 }} /> Exporting…</> : <>🟢 Download Excel</>}
+                    {loadExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: 14, height: 14 }} /> {t("Exporting…", { ns: "reports" })}</> : <>🟢 {t("Download Excel")}</>}
                   </button>
                 </div>
               </div>
@@ -522,10 +522,10 @@ function GgPiercedCocoonsReport() {
             <Card.Body style={{ padding: "32px 20px", textAlign: "center" }}>
               <div style={{ fontSize: "40px", marginBottom: "8px" }}>🦋</div>
               <div style={{ fontSize: "15px", fontWeight: 700, color: "#1a202c", marginBottom: "4px" }}>
-                Pierced Cocoon Details (Form 8)
+                {t("Pierced Cocoon Details (Form 8)", { ns: "reports" })}
               </div>
               <div style={{ fontSize: "13px", color: "#6b46c1" }}>
-                Pick Grainage / Year / Month above, then click <b>View</b> to load this report — or <b style={{ color: "#c53030" }}>PDF</b> / <b style={{ color: "#1d6a3a" }}>Excel</b> for a direct download.
+                {t("Pick Grainage / Year / Month above, then click", { ns: "reports" })} <b>{t("View")}</b> {t("to load this report — or", { ns: "reports" })} <b style={{ color: "#c53030" }}>{t("PDF")}</b> / <b style={{ color: "#1d6a3a" }}>{t("Excel", { ns: "reports" })}</b> {t("for a direct download.", { ns: "reports" })}
               </div>
             </Card.Body>
           </Card>

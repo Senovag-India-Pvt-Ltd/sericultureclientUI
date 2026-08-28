@@ -251,25 +251,25 @@ function AdsGg2Report() {
   };
 
   const validate = () => {
-    if (!filter.financialYearMasterId) return "Please select a Financial Year.";
-    if (!filter.month)                 return "Please select a Month.";
-    if (!fyStartYear)                  return "Could not determine the financial year start year.";
+    if (!filter.financialYearMasterId) return t("Please select a Financial Year.", { ns: "reports" });
+    if (!filter.month)                 return t("Please select a Month.", { ns: "reports" });
+    if (!fyStartYear)                  return t("Could not determine the financial year start year.", { ns: "reports" });
     return null;
   };
 
   const showWarn = (msg) =>
     Swal.fire({
-      icon: "warning", title: "Required Fields",
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Missing Selection</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Got it", confirmButtonColor: "#d97706",
+      icon: "warning", title: t("Required Fields", { ns: "reports" }),
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Missing Selection", { ns: "reports" })}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Got it", { ns: "reports" }), confirmButtonColor: "#d97706",
       background: "#fff", customClass: { popup: "adsgg2-swal" },
     });
 
   const showErr = (title, msg) =>
     Swal.fire({
       icon: "error", title,
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Failed</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Close", confirmButtonColor: "#e53e3e",
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Failed", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Close"), confirmButtonColor: "#e53e3e",
       background: "#fff", customClass: { popup: "adsgg2-swal" },
     });
 
@@ -296,13 +296,13 @@ function AdsGg2Report() {
     } catch (err) {
         const status = err?.response?.status;
         if (status === 404 || status === 204) {
-          showErr("No Data Found", "No data found for the selected filters.");
+          showErr(t("No Data Found", { ns: "reports" }), t("No data found for the selected filters.", { ns: "reports" }));
         } else {
           const data = err?.response?.data;
           const backendMsg = typeof data === "string"
             ? data
             : (data?.message || data?.error || data?.errorMessage || data?.error_description);
-          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the ADS GG2 report.");
+          showErr(t("Fetch Failed", { ns: "reports" }), backendMsg || err?.message || t("Failed to load the ADS GG2 report.", { ns: "reports" }));
         }
       } finally {
       setIsLoading(false);
@@ -317,7 +317,7 @@ function AdsGg2Report() {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/ads-gg2/pdf", { params: params(), responseType: "blob" });
       window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
     } catch {
-      showErr("PDF Failed", "Could not generate the PDF report.");
+      showErr(t("PDF Failed", { ns: "reports" }), t("Could not generate the PDF report.", { ns: "reports" }));
     } finally {
       setIsDownloadingPdf(false);
     }
@@ -338,7 +338,7 @@ function AdsGg2Report() {
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      showErr("Excel Failed", "Could not generate the Excel report.");
+      showErr(t("Excel Failed", { ns: "reports" }), t("Could not generate the Excel report.", { ns: "reports" }));
     } finally {
       setIsDownloadingExcel(false);
     }
@@ -382,7 +382,7 @@ function AdsGg2Report() {
   }, [grouped]);
 
   return (
-    <Layout title={t("ADS · GG-2 — Weekly DFL Production Progress")}>
+    <Layout title={t("ADS · GG-2 — Weekly DFL Production Progress", { ns: "reports" })}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -435,7 +435,7 @@ function AdsGg2Report() {
               <Row className="g-2 align-items-end">
                 <Col md={4}>
                   <label style={lbl}>
-                    Grainages <span style={{ color: "#94a3b8", fontWeight: 600, textTransform: "none", letterSpacing: 0 }}>(optional · max {GRAINAGE_CAP} P1)</span>
+                    {t("Grainages", { ns: "reports" })} <span style={{ color: "#94a3b8", fontWeight: 600, textTransform: "none", letterSpacing: 0 }}>{t("(optional · max {{cap}} P1)", { cap: GRAINAGE_CAP, ns: "reports" })}</span>
                   </label>
                   <ReactSelect
                     isMulti
@@ -443,7 +443,7 @@ function AdsGg2Report() {
                       value: String(g.grainageMasterId),
                       label: g.grainageMasterName,
                     }))}
-                    placeholder="— Select up to 6 P1 grainages —"
+                    placeholder={t("— Select up to {{cap}} P1 grainages —", { cap: GRAINAGE_CAP, ns: "reports" })}
                     isSearchable
                     isClearable
                     closeMenuOnSelect={false}
@@ -457,7 +457,7 @@ function AdsGg2Report() {
                       setHasReport(false);
                       setDataRows([]);
                     }}
-                    noOptionsMessage={() => "No grainage found"}
+                    noOptionsMessage={() => t("No grainage found", { ns: "reports" })}
                   />
                   {overCap && (
                     <div style={{
@@ -466,38 +466,38 @@ function AdsGg2Report() {
                       border: "1px solid #fdba74", borderRadius: "8px",
                       padding: "6px 10px", display: "inline-flex", alignItems: "center", gap: "6px",
                     }}>
-                      ⓘ Backend caps at {GRAINAGE_CAP} grainages — only the first {GRAINAGE_CAP} will be used.
+                      ⓘ {t("Backend caps at {{cap}} grainages — only the first {{cap}} will be used.", { cap: GRAINAGE_CAP, ns: "reports" })}
                     </div>
                   )}
                 </Col>
                 <Col md={2}>
-                  <label style={lbl}>Financial Year <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Financial Year")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="financialYearMasterId" value={filter.financialYearMasterId} onChange={handleChange} style={sel}>
-                    <option value="">— Select Year —</option>
+                    <option value="">{t("— Select Year —", { ns: "reports" })}</option>
                     {financialYearList.map((f) => (
                       <option key={f.financialYearMasterId} value={f.financialYearMasterId}>{f.financialYear}</option>
                     ))}
                   </Form.Select>
                 </Col>
                 <Col md={2}>
-                  <label style={lbl}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Month")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="month" value={filter.month} onChange={handleChange} style={sel}>
-                    <option value="">— Month —</option>
+                    <option value="">{t("— Month —", { ns: "reports" })}</option>
                     {MONTHS.map((m) => (
-                      <option key={m.value} value={m.value}>{m.label}</option>
+                      <option key={m.value} value={m.value}>{t(m.label, { ns: "reports" })}</option>
                     ))}
                   </Form.Select>
                 </Col>
                 <Col md={4}>
                   <div className="d-flex gap-2 flex-wrap">
                     <button type="submit" disabled={isLoading} style={btn("linear-gradient(135deg,#9a3412,#ea580c)", "0 4px 12px rgba(154,52,18,.32)", isLoading)}>
-                      {isLoading ? <><span className="spinner-border spinner-border-sm" /> Loading…</> : <>📋 View</>}
+                      {isLoading ? <><span className="spinner-border spinner-border-sm" /> {t("Loading…", { ns: "reports" })}</> : <>📋 {t("View", { ns: "reports" })}</>}
                     </button>
                     <button type="button" disabled={isDownloadingPdf} onClick={handlePdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 4px 12px rgba(185,28,28,.30)", isDownloadingPdf)}>
-                      {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📄 PDF</>}
+                      {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📄 {t("PDF", { ns: "reports" })}</>}
                     </button>
                     <button type="button" disabled={isDownloadingExcel} onClick={handleExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 4px 12px rgba(21,128,61,.30)", isDownloadingExcel)}>
-                      {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📊 Excel</>}
+                      {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📊 {t("Excel", { ns: "reports" })}</>}
                     </button>
                   </div>
                 </Col>
@@ -512,11 +512,11 @@ function AdsGg2Report() {
             {/* KPI pills */}
             <div className="d-flex flex-wrap gap-3 mb-3 align-items-center">
               <div style={{ background: "linear-gradient(135deg,#fed7aa,#ffedd5)", border: "1.5px solid #fb923c", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "140px" }}>
-                <span style={{ fontSize: "11px", color: "#7c2d12", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>Grainages</span>
+                <span style={{ fontSize: "11px", color: "#7c2d12", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("Grainages", { ns: "reports" })}</span>
                 <span style={{ fontSize: "16px", color: "#7c2d12", fontWeight: 800, marginTop: "2px" }}>{kpis.grainageCount}</span>
               </div>
               <div style={{ background: "linear-gradient(135deg,#fef3c7,#fef9ec)", border: "1.5px solid #fcd34d", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "150px" }}>
-                <span style={{ fontSize: "11px", color: "#92400e", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>Period</span>
+                <span style={{ fontSize: "11px", color: "#92400e", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("Period", { ns: "reports" })}</span>
                 <span style={{ fontSize: "13.5px", color: "#78350f", fontWeight: 700, marginTop: "2px" }}>{monthLabel} {monthYear}</span>
               </div>
               <div style={{ background: "linear-gradient(135deg,#fed7aa,#fff7ed)", border: "1.5px solid #fdba74", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "160px" }}>
@@ -528,7 +528,7 @@ function AdsGg2Report() {
                 <span className="adsgg2-num" style={{ fontSize: "15px", color: "#134e4a", fontWeight: 800, marginTop: "2px" }}>{kpis.produced.toLocaleString()}</span>
               </div>
               <div style={{ background: "linear-gradient(135deg,#a7f3d0,#ecfdf5)", border: "1.5px solid #6ee7b7", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "150px" }}>
-                <span style={{ fontSize: "11px", color: "#065f46", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>% Achieved</span>
+                <span style={{ fontSize: "11px", color: "#065f46", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>{t("% Achieved", { ns: "reports" })}</span>
                 <span className="adsgg2-num" style={{ fontSize: "16px", color: "#064e3b", fontWeight: 800, marginTop: "2px" }}>{fmt(kpis.pct.toFixed(2))}%</span>
               </div>
               <div style={{ background: "linear-gradient(135deg,#fecdd3,#fff1f2)", border: "1.5px solid #fda4af", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "160px" }}>
@@ -734,10 +734,10 @@ function AdsGg2Report() {
                 </span>
                 <div className="d-flex gap-2 flex-wrap">
                   <button type="button" onClick={handlePdf} disabled={isDownloadingPdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 2px 8px rgba(185,28,28,.25)", isDownloadingPdf)}>
-                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Generating…</> : <>📄 Download PDF</>}
+                    {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> {t("Generating…", { ns: "reports" })}</> : <>📄 {t("Download PDF", { ns: "reports" })}</>}
                   </button>
                   <button type="button" onClick={handleExcel} disabled={isDownloadingExcel} style={btn("linear-gradient(135deg,#15803d,#16a34a)", "0 2px 8px rgba(21,128,61,.25)", isDownloadingExcel)}>
-                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> Exporting…</> : <>📊 Download Excel</>}
+                    {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" style={{ width: "14px", height: "14px" }} /> {t("Exporting…", { ns: "reports" })}</> : <>📊 {t("Download Excel", { ns: "reports" })}</>}
                   </button>
                 </div>
               </div>

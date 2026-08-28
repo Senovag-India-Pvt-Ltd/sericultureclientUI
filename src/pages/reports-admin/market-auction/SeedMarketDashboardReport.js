@@ -138,7 +138,7 @@ function SeedMarketDashboardReport() {
     { label: t("Total Lots"),       value: totalLots,                       icon: "📦", color: "#117a65" },
     { label: t("Total Farmers"),    value: totalFarmers,                    icon: "👨‍🌾", color: "#7d6608" },
     { label: t("Inward Qty"),       value: totalInwardQty.toFixed(2),       icon: "⚖️",  color: "#6e2f6e" },
-    { label: t("Total Qty"),         value: sumTotalQty(dashboardList).toFixed(2), icon: "🌱", color: "#117a65" },
+    { label: t("Total Qty", { ns: "reports" }),         value: sumTotalQty(dashboardList).toFixed(2), icon: "🌱", color: "#117a65" },
     { label: t("Total Amount"),     value: inr(totalAmount),                icon: "💰", color: "#922b21" },
   ];
 
@@ -156,8 +156,8 @@ function SeedMarketDashboardReport() {
         <th colSpan={3} style={{ ...thStyle, backgroundColor: "#d5f5e3", borderBottom: "2px solid #1e8449" }}>{t("Govt Grainage")}</th>
         <th colSpan={3} style={{ ...thStyle, backgroundColor: "#fdebd0", borderBottom: "2px solid #ca6f1e" }}>{t("NSSO")}</th>
         <th colSpan={3} style={{ ...thStyle, backgroundColor: "#f9ebea", borderBottom: "2px solid #c0392b" }}>{t("Reeler")}</th>
-        <th rowSpan={2} style={{ ...thStyle, backgroundColor: "#e8f8f5", color: "#117a65" }}>{t("Total Seed Qty")}</th>
-        <th rowSpan={2} style={{ ...thStyle, backgroundColor: "#d4efdf", color: "#1e8449" }}>{t("Total Qty")}</th>
+        <th rowSpan={2} style={{ ...thStyle, backgroundColor: "#e8f8f5", color: "#117a65" }}>{t("Total Seed Qty", { ns: "reports" })}</th>
+        <th rowSpan={2} style={{ ...thStyle, backgroundColor: "#d4efdf", color: "#1e8449" }}>{t("Total Qty", { ns: "reports" })}</th>
         <th rowSpan={2} style={{ ...thStyle, backgroundColor: "#fef9e7", color: "#7d6608" }}>{t("Total Seed Amount")}</th>
         <th rowSpan={2} style={thStyle}>{t("Total Amount")}</th>
         <th rowSpan={2} style={thStyle}>{t("Payment Status")}</th>
@@ -224,7 +224,7 @@ function SeedMarketDashboardReport() {
     const sL = (key) => sumList(list, key);
     return (
       <tr style={{ backgroundColor: "#ddeeff", fontWeight: 700 }}>
-        <td colSpan={3} style={{ ...footTd, textAlign: "left" }}>{t("Sub Total")}</td>
+        <td colSpan={3} style={{ ...footTd, textAlign: "left" }}>{t("Sub Total", { ns: "reports" })}</td>
         <td style={footTd}>{sL("noOfLots")}</td>
         <td style={footTd}>{sL("totalNoOfFarmers")}</td>
         <td style={footTd}>{sL("totalInwardQuantity").toFixed(2)}</td>
@@ -356,7 +356,7 @@ function SeedMarketDashboardReport() {
                         <>
                           <tr>
                             <td colSpan={23} style={{ background: "linear-gradient(90deg, #1a5276, #2e86c1)", color: "#fff", fontWeight: 700, padding: "10px 16px", fontSize: "0.88rem" }}>
-                              📋 {t("Mysore Seed Area")} &mdash; {mysoreSeedList.length} {t("Markets")}
+                              📋 {t("Mysore Seed Area")} &mdash; {mysoreSeedList.length} {t("Markets", { ns: "reports" })}
                             </td>
                           </tr>
                           {mysoreSeedList.map((row, i) => renderDataRow(row, i))}
@@ -369,7 +369,7 @@ function SeedMarketDashboardReport() {
                         <>
                           <tr>
                             <td colSpan={23} style={{ background: "linear-gradient(90deg, #117a65, #1abc9c)", color: "#fff", fontWeight: 700, padding: "10px 16px", fontSize: "0.88rem" }}>
-                              📋 {t("Bivoltine Seed Area")} &mdash; {bivoltineList.length} {t("Markets")}
+                              📋 {t("Bivoltine Seed Area")} &mdash; {bivoltineList.length} {t("Markets", { ns: "reports" })}
                             </td>
                           </tr>
                           {bivoltineList.map((row, i) => renderDataRow(row, i))}

@@ -5,6 +5,7 @@ import Block from "../../../components/Block/Block";
 import { useState, useEffect } from "react";
 import api from "../../../services/auth/api";
 import { t } from "i18next";
+import i18next from "i18next";
 import DatePicker from "react-datepicker";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -62,12 +63,12 @@ function SeedDtrReport() {
 
   // ✅ VALIDATION
   if (!data.marketId) {
-    Swal.fire("Please select Market");
+    Swal.fire(t("Please select Market", { ns: "reports" }));
     return;
   }
 
   if (!data.auctionDate) {
-    Swal.fire("Please select Auction Date");
+    Swal.fire(t("Please select Auction Date", { ns: "reports" }));
     return;
   }
 
@@ -79,10 +80,10 @@ function SeedDtrReport() {
         setListData(res.data.content);
       } else {
         setListData([]);
-        Swal.fire("No Data Found");
+        Swal.fire(t("No Data Found", { ns: "reports" }));
       }
     })
-    .catch(() => Swal.fire("Error fetching data"))
+    .catch(() => Swal.fire(t("Error fetching data", { ns: "reports" })))
     .finally(() => setLoading(false));
 };
 
@@ -90,12 +91,12 @@ function SeedDtrReport() {
 
   // ✅ VALIDATION
   if (!data.marketId) {
-    Swal.fire("Please select Market");
+    Swal.fire(t("Please select Market", { ns: "reports" }));
     return;
   }
 
   if (!data.auctionDate) {
-    Swal.fire("Please select Auction Date");
+    Swal.fire(t("Please select Auction Date", { ns: "reports" }));
     return;
   }
 
@@ -104,12 +105,12 @@ function SeedDtrReport() {
   }).then(async (res) => {
     const blobData = res.data;
     if (!blobData || blobData.size === 0) {
-      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      Swal.fire({ icon: "info", title: t("No Data Found", { ns: "reports" }), text: t("No records found for the selected criteria.", { ns: "reports" }) });
       return;
     }
     const firstBytes = await blobData.slice(0, 10).text();
     if (!firstBytes.startsWith('%PDF')) {
-      Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
+      Swal.fire({ icon: "info", title: t("No Data Found", { ns: "reports" }), text: t("No records found for the selected criteria.", { ns: "reports" }) });
       return;
     }
     const pdfUrl = URL.createObjectURL(blobData);
@@ -123,20 +124,20 @@ function SeedDtrReport() {
   }).catch(async (err) => {
     let isNoData = false;
     try { const b = err?.response?.data; if (b instanceof Blob) { const t = await b.text(); isNoData = /out of bounds|No Data|length 0|No data found/i.test(t); } } catch (_) {}
-    if (isNoData) Swal.fire({ icon: "info", title: "No Data Found", text: "No records found for the selected criteria." });
-    else Swal.fire({ icon: "error", title: "Generation Failed", text: "Could not generate the report. Please try again." });
+    if (isNoData) Swal.fire({ icon: "info", title: t("No Data Found", { ns: "reports" }), text: t("No records found for the selected criteria.", { ns: "reports" }) });
+    else Swal.fire({ icon: "error", title: t("Generation Failed", { ns: "reports" }), text: t("Could not generate the report. Please try again.", { ns: "reports" }) });
   });
 };
 
   return (
-    <Layout title={t("Seed DTR Report")}>
+    <Layout title={t("Seed DTR Report", { ns: "reports" })}>
       <style>{seedDTRReportStyles}</style>
 
       <Block.Head>
         <div className="sh-page-header">
           <Block.HeadBetween>
             <Block.HeadContent>
-              <Block.Title tag="h2" className="sh-page-title">{t("Seed DTR Report")}</Block.Title>
+              <Block.Title tag="h2" className="sh-page-title">{t("Seed DTR Report", { ns: "reports" })}</Block.Title>
             </Block.HeadContent>
           </Block.HeadBetween>
         </div>
@@ -158,16 +159,16 @@ function SeedDtrReport() {
 
                   {/* Market */}
                   <Col md={2}>
-                    <Form.Label><b>Market *</b></Form.Label>
+                    <Form.Label><b>{t("Market")} *</b></Form.Label>
                     <Form.Select
                       name="marketId"
                       value={data.marketId}
                       onChange={handleInputs}
                     >
-                      <option value="">Select Market</option>
+                      <option value="">{t("Select Market")}</option>
                       {marketList.map(m => (
                         <option key={m.marketMasterId} value={m.marketMasterId}>
-                          {m.marketMasterName}
+                          {i18next.language === "kn" ? (m.marketNameInKannada || m.marketMasterName) : m.marketMasterName}
                         </option>
                       ))}
                     </Form.Select>
@@ -175,7 +176,7 @@ function SeedDtrReport() {
 
                   {/* Lot Number */}
                   <Col md={2}>
-                    <Form.Label>Lot Number</Form.Label>
+                    <Form.Label>{t("Lot Number")}</Form.Label>
                     <Form.Control
                       name="allottedLotId"
                       value={data.allottedLotId}
@@ -185,7 +186,7 @@ function SeedDtrReport() {
 
                   {/* Auction Date */}
                   <Col md={2}>
-                    <Form.Label>Auction Date</Form.Label>
+                    <Form.Label>{t("Auction Date")}</Form.Label>
                     <DatePicker
                       selected={data.auctionDate}
                       onChange={handleAuctionDateChange}
@@ -197,7 +198,7 @@ function SeedDtrReport() {
                   {/* Buttons */}
                   <Col md={6} className="text-end">
                     <Button type="submit" variant="primary">
-                      {loading ? "Loading..." : "Generate Report"}
+                      {loading ? t("Loading...", { ns: "reports" }) : t("Generate Report", { ns: "reports" })}
                     </Button>
 
                     <Button
@@ -206,7 +207,7 @@ function SeedDtrReport() {
                       className="ms-2"
                       onClick={printReport}
                     >
-                      Generate PDF
+                      {t("Generate PDF", { ns: "reports" })}
                     </Button>
                   </Col>
 

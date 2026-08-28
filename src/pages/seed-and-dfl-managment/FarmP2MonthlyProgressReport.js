@@ -81,7 +81,7 @@ const SECTION_META = {
 };
 
 function FarmP2MonthlyProgressReport() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [filter, setFilter] = useState({ farmId: "", financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
@@ -133,26 +133,26 @@ function FarmP2MonthlyProgressReport() {
   };
 
   const validate = () => {
-    if (!filter.farmId)                return "Please select a Farm.";
-    if (!filter.financialYearMasterId) return "Please select a Financial Year.";
-    if (!filter.month)                 return "Please select a Month.";
-    if (!fyStartYear)                  return "Could not determine the financial year start year.";
+    if (!filter.farmId)                return t("Please select a Farm.", { ns: "reports" });
+    if (!filter.financialYearMasterId) return t("Please select a Financial Year.", { ns: "reports" });
+    if (!filter.month)                 return t("Please select a Month.", { ns: "reports" });
+    if (!fyStartYear)                  return t("Could not determine the financial year start year.", { ns: "reports" });
     return null;
   };
 
   const showWarn = (msg) =>
     Swal.fire({
-      icon: "warning", title: "Required Fields",
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Missing Selection</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Got it", confirmButtonColor: "#d97706",
+      icon: "warning", title: t("Required Fields", { ns: "reports" }),
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Missing Selection", { ns: "reports" })}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Got it", { ns: "reports" }), confirmButtonColor: "#d97706",
       background: "#fff", customClass: { popup: "fp2mp-swal" },
     });
 
   const showErr = (title, msg) =>
     Swal.fire({
       icon: "error", title,
-      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Failed</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
-      confirmButtonText: "Close", confirmButtonColor: "#e53e3e",
+      html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Failed", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${msg}</p></div></div></div>`,
+      confirmButtonText: t("Close", { ns: "reports" }), confirmButtonColor: "#e53e3e",
       background: "#fff", customClass: { popup: "fp2mp-swal" },
     });
 
@@ -176,13 +176,13 @@ function FarmP2MonthlyProgressReport() {
     } catch (err) {
         const status = err?.response?.status;
         if (status === 404 || status === 204) {
-          showErr("No Data Found", "No data found for the selected filters.");
+          showErr(t("No Data Found", { ns: "reports" }), t("No data found for the selected filters.", { ns: "reports" }));
         } else {
           const data = err?.response?.data;
           const backendMsg = typeof data === "string"
             ? data
             : (data?.message || data?.error || data?.errorMessage || data?.error_description);
-          showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the P2 Farm Monthly Progress report.");
+          showErr(t("Fetch Failed", { ns: "reports" }), backendMsg || err?.message || t("Failed to load the P2 Farm Monthly Progress report.", { ns: "reports" }));
         }
       } finally {
       setIsLoading(false);
@@ -197,7 +197,7 @@ function FarmP2MonthlyProgressReport() {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/farm-p2-monthly-progress/pdf", { params: params(), responseType: "blob" });
       window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
     } catch {
-      showErr("PDF Failed", "Could not generate the PDF report.");
+      showErr(t("PDF Failed", { ns: "reports" }), t("Could not generate the PDF report.", { ns: "reports" }));
     } finally {
       setIsDownloadingPdf(false);
     }
@@ -218,7 +218,7 @@ function FarmP2MonthlyProgressReport() {
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      showErr("Excel Failed", "Could not generate the Excel report.");
+      showErr(t("Excel Failed", { ns: "reports" }), t("Could not generate the Excel report.", { ns: "reports" }));
     } finally {
       setIsDownloadingExcel(false);
     }
@@ -229,7 +229,7 @@ function FarmP2MonthlyProgressReport() {
   const monthKn    = MONTH_KN[monthNum] || "";
   const monthLabel = MONTHS.find((m) => String(m.value) === String(filter.month))?.label || "";
   const monthYear  = monthNum >= 4 ? fyStartYear : (fyStartYear ? fyStartYear + 1 : null);
-  const farmDisplay = selectedFarm?.farmName || "—";
+  const farmDisplay = (i18n.language === "kn" ? (selectedFarm?.farmNameInKannada || selectedFarm?.farmName) : selectedFarm?.farmName) || "—";
 
   // KPIs derived from rows
   const findRow = (sl, kw) =>
@@ -267,7 +267,7 @@ function FarmP2MonthlyProgressReport() {
   }, [dataRows]);
 
   return (
-    <Layout title={t("P2 Farm Monthly Progress Report")}>
+    <Layout title={t("P2 Farm Monthly Progress Report", { ns: "reports" })}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
@@ -315,42 +315,42 @@ function FarmP2MonthlyProgressReport() {
             <Form onSubmit={handleView}>
               <Row className="g-2 align-items-end">
                 <Col md={3}>
-                  <label style={lbl}>Farm <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Farm")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="farmId" value={filter.farmId} onChange={handleChange} style={sel}>
-                    <option value="">— Select Farm —</option>
+                    <option value="">{t("— Select Farm —", { ns: "reports" })}</option>
                     {farmList.map((f) => (
-                      <option key={f.farmId} value={f.farmId}>{f.farmName}</option>
+                      <option key={f.farmId} value={f.farmId}>{i18n.language === "kn" ? (f.farmNameInKannada || f.farmName) : f.farmName}</option>
                     ))}
                   </Form.Select>
                 </Col>
                 <Col md={3}>
-                  <label style={lbl}>Financial Year <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Financial Year", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="financialYearMasterId" value={filter.financialYearMasterId} onChange={handleChange} style={sel}>
-                    <option value="">— Select Year —</option>
+                    <option value="">{t("— Select Year —", { ns: "reports" })}</option>
                     {financialYearList.map((f) => (
                       <option key={f.financialYearMasterId} value={f.financialYearMasterId}>{f.financialYear}</option>
                     ))}
                   </Form.Select>
                 </Col>
                 <Col md={2}>
-                  <label style={lbl}>Month <span style={{ color: "#e53e3e" }}>*</span></label>
+                  <label style={lbl}>{t("Month", { ns: "reports" })} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="month" value={filter.month} onChange={handleChange} style={sel}>
-                    <option value="">— Month —</option>
+                    <option value="">{t("— Month —", { ns: "reports" })}</option>
                     {MONTHS.map((m) => (
-                      <option key={m.value} value={m.value}>{m.label}</option>
+                      <option key={m.value} value={m.value}>{t(m.label, { ns: "reports" })}</option>
                     ))}
                   </Form.Select>
                 </Col>
                 <Col md={4}>
                   <div className="d-flex gap-2 flex-wrap">
                     <button type="submit" disabled={isLoading} style={btn("linear-gradient(135deg,#0f766e,#14b8a6)", "0 4px 12px rgba(15,118,110,.32)", isLoading)}>
-                      {isLoading ? <><span className="spinner-border spinner-border-sm" /> Loading…</> : <>📋 View</>}
+                      {isLoading ? <><span className="spinner-border spinner-border-sm" /> {t("Loading…", { ns: "reports" })}</> : <>📋 {t("View", { ns: "reports" })}</>}
                     </button>
                     <button type="button" disabled={isDownloadingPdf || !hasReport} onClick={handlePdf} style={btn("linear-gradient(135deg,#b91c1c,#dc2626)", "0 4px 12px rgba(185,28,28,.30)", isDownloadingPdf || !hasReport)}>
-                      {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📄 PDF</>}
+                      {isDownloadingPdf ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📄 {t("PDF", { ns: "reports" })}</>}
                     </button>
                     <button type="button" disabled={isDownloadingExcel || !hasReport} onClick={handleExcel} style={btn("linear-gradient(135deg,#15803d,#22c55e)", "0 4px 12px rgba(21,128,61,.30)", isDownloadingExcel || !hasReport)}>
-                      {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📊 Excel</>}
+                      {isDownloadingExcel ? <><span className="spinner-border spinner-border-sm" /> …</> : <>📊 {t("Excel", { ns: "reports" })}</>}
                     </button>
                   </div>
                 </Col>
@@ -384,11 +384,11 @@ function FarmP2MonthlyProgressReport() {
             {/* KPI tiles */}
             <Row className="g-2 mb-3">
               {[
-                { label: "Mulberry Area",       v: fmt(mulberryArea),           sub: "ಎಕರೆ / acre",       bg: "linear-gradient(135deg,#bbf7d0,#86efac)", color: "#14532d", icon: "🌿" },
-                { label: "Brushing Tgt (Year)", v: fmt(brushAnnualTarget),      sub: "ಚಾಕಿ ವಾರ್ಷಿಕ",  bg: "linear-gradient(135deg,#fde68a,#fcd34d)", color: "#78350f", icon: "🎯" },
-                { label: "Brushing M / Cum",    v: `${fmt(brushAchM)} / ${fmt(brushAchCum)}`, sub: `${brushAchPct}% of M-tgt · ${annualAchPct}% of Yr`, bg: "linear-gradient(135deg,#bfdbfe,#93c5fd)", color: "#1e3a8a", icon: "🥚" },
-                { label: "Cocoon (kg) M / Cum", v: `${fmt(cocoonKgM)} / ${fmt(cocoonKgCum)}`, sub: "ಗೂಡು ಉತ್ಪಾದನೆ", bg: "linear-gradient(135deg,#ddd6fe,#c4b5fd)", color: "#4c1d95", icon: "🐛" },
-                { label: "Next-Month Plan",     v: fmt(nextMonthPlan),          sub: "ಮುಂದಿನ ತಿಂಗಳ ಚಾಕಿ", bg: "linear-gradient(135deg,#fed7aa,#fdba74)", color: "#7c2d12", icon: "📅" },
+                { label: t("Mulberry Area", { ns: "reports" }),       v: fmt(mulberryArea),           sub: "ಎಕರೆ / acre",       bg: "linear-gradient(135deg,#bbf7d0,#86efac)", color: "#14532d", icon: "🌿" },
+                { label: t("Brushing Tgt (Year)", { ns: "reports" }), v: fmt(brushAnnualTarget),      sub: "ಚಾಕಿ ವಾರ್ಷಿಕ",  bg: "linear-gradient(135deg,#fde68a,#fcd34d)", color: "#78350f", icon: "🎯" },
+                { label: t("Brushing M / Cum", { ns: "reports" }),    v: `${fmt(brushAchM)} / ${fmt(brushAchCum)}`, sub: `${brushAchPct}% of M-tgt · ${annualAchPct}% of Yr`, bg: "linear-gradient(135deg,#bfdbfe,#93c5fd)", color: "#1e3a8a", icon: "🥚" },
+                { label: t("Cocoon (kg) M / Cum", { ns: "reports" }), v: `${fmt(cocoonKgM)} / ${fmt(cocoonKgCum)}`, sub: "ಗೂಡು ಉತ್ಪಾದನೆ", bg: "linear-gradient(135deg,#ddd6fe,#c4b5fd)", color: "#4c1d95", icon: "🐛" },
+                { label: t("Next-Month Plan", { ns: "reports" }),     v: fmt(nextMonthPlan),          sub: "ಮುಂದಿನ ತಿಂಗಳ ಚಾಕಿ", bg: "linear-gradient(135deg,#fed7aa,#fdba74)", color: "#7c2d12", icon: "📅" },
               ].map((k, i) => (
                 <Col key={i} sm={6} md={4} lg>
                   <div style={{
@@ -412,9 +412,9 @@ function FarmP2MonthlyProgressReport() {
             <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 6px 24px rgba(15,118,110,.10)", overflow: "hidden" }}>
               <div style={{ background: "linear-gradient(135deg,#0f766e,#14b8a6)", padding: "10px 16px", color: "#fff", display: "flex", alignItems: "center", gap: "10px", fontWeight: 700, fontSize: "13px" }}>
                 <span style={{ fontSize: "16px" }}>📊</span>
-                Monthly Progress Sheet
+                {t("Monthly Progress Sheet", { ns: "reports" })}
                 <span style={{ marginLeft: "auto", background: "rgba(255,255,255,.22)", borderRadius: "20px", padding: "2px 10px", fontSize: "11px", fontWeight: 700 }}>
-                  {dataRows.length} rows
+                  {dataRows.length} {t("rows", { ns: "reports" })}
                 </span>
               </div>
 

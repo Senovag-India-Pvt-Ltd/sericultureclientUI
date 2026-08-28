@@ -21,7 +21,7 @@ function GenerateSanctionOrder() {
     const [totalRows, setTotalRows] = useState(0);
     const [loading, setLoading] = useState(false);
     const _params = { params: { pageNumber: page, size: countPerPage } };
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
   const customStyles = {
     rows: {
@@ -467,9 +467,9 @@ useEffect(() => {
     if (!selectedSanctionOrder) {
       Swal.fire({
         icon: "warning",
-        title: "Selection Required",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(245,158,11,0.3)">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">Action Needed</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">Please select a <b>Sanction Order Number</b> from the dropdown before generating the PDF.</p></div></div></div>`,
-        confirmButtonText: "Got it",
+        title: t("Selection Required", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1.5px solid #fcd34d;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(245,158,11,0.3)">⚠️</div><div><p style="color:#92400e;font-size:14px;font-weight:700;margin:0 0 5px">${t("Action Needed", { ns: "reports" })}</p><p style="color:#78350f;font-size:13px;margin:0;line-height:1.65">${t("Please select a <b>Sanction Order Number</b> from the dropdown before generating the PDF.", { ns: "reports" })}</p></div></div></div>`,
+        confirmButtonText: t("Got it", { ns: "reports" }),
         confirmButtonColor: "#d97706",
         background: "#fff",
         showClass: { popup: "animate__animated animate__headShake animate__faster" },
@@ -500,9 +500,9 @@ useEffect(() => {
     } else {
       Swal.fire({
         icon: "error",
-        title: "Report Not Available",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(229,62,62,0.3)">📭</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Not Configured</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">No downloadable report is configured for the selected Sanction Order scheme.</p></div></div></div>`,
-        confirmButtonText: "Close",
+        title: t("Report Not Available", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(229,62,62,0.3)">📭</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Not Configured", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${t("No downloadable report is configured for the selected Sanction Order scheme.", { ns: "reports" })}</p></div></div></div>`,
+        confirmButtonText: t("Close"),
         confirmButtonColor: "#e53e3e",
         background: "#fff",
         showClass: { popup: "animate__animated animate__shakeX animate__faster" },
@@ -522,9 +522,9 @@ useEffect(() => {
     } else {
       Swal.fire({
         icon: "error",
-        title: "Unsupported Scheme Type",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(229,62,62,0.3)">⛔</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Not Supported</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">The selected sub-scheme type is not supported for PDF generation.</p></div></div></div>`,
-        confirmButtonText: "Close",
+        title: t("Unsupported Scheme Type", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(229,62,62,0.3)">⛔</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Not Supported", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${t("The selected sub-scheme type is not supported for PDF generation.", { ns: "reports" })}</p></div></div></div>`,
+        confirmButtonText: t("Close"),
         confirmButtonColor: "#e53e3e",
         background: "#fff",
         showClass: { popup: "animate__animated animate__shakeX animate__faster" },
@@ -623,9 +623,9 @@ useEffect(() => {
     if (!securityKey) {
       Swal.fire({
         icon: "info",
-        title: "No File Found",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#ebf8ff,#fff);border:1.5px solid #90cdf4;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1e67a8,#2d9cdb);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(30,103,168,0.3)">📂</div><div><p style="color:#2c5282;font-size:14px;font-weight:700;margin:0 0 5px">No Pre-Generated PDF</p><p style="color:#2a4365;font-size:13px;margin:0;line-height:1.65">No pre-generated PDF was found for this sanction order. Try <b>Generate PDF</b> instead.</p></div></div></div>`,
-        confirmButtonText: "OK",
+        title: t("No File Found", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#ebf8ff,#fff);border:1.5px solid #90cdf4;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1e67a8,#2d9cdb);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(30,103,168,0.3)">📂</div><div><p style="color:#2c5282;font-size:14px;font-weight:700;margin:0 0 5px">${t("No Pre-Generated PDF", { ns: "reports" })}</p><p style="color:#2a4365;font-size:13px;margin:0;line-height:1.65">${t("No pre-generated PDF was found for this sanction order. Try <b>Generate PDF</b> instead.", { ns: "reports" })}</p></div></div></div>`,
+        confirmButtonText: t("OK", { ns: "reports" }),
         confirmButtonColor: "#1e67a8",
         background: "#fff",
         showClass: { popup: "animate__animated animate__fadeInDown animate__faster" },
@@ -654,9 +654,9 @@ useEffect(() => {
       window.URL.revokeObjectURL(url);
       Swal.fire({
         icon: "success",
-        title: "Download Complete!",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#f0fff4,#fff);border:1.5px solid #9ae6b4;border-radius:14px;padding:18px 20px;text-align:center"><div style="font-size:34px;margin-bottom:10px">🎉</div><p style="color:#276749;font-size:14.5px;font-weight:700;margin:0 0 5px">Sanction Order PDF Saved!</p><p style="color:#2f855a;font-size:13px;margin:0;line-height:1.6">Your file has been saved to your <b>Downloads</b> folder.</p></div></div>`,
-        confirmButtonText: "✓ Done",
+        title: t("Download Complete!", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#f0fff4,#fff);border:1.5px solid #9ae6b4;border-radius:14px;padding:18px 20px;text-align:center"><div style="font-size:34px;margin-bottom:10px">🎉</div><p style="color:#276749;font-size:14.5px;font-weight:700;margin:0 0 5px">${t("Sanction Order PDF Saved!", { ns: "reports" })}</p><p style="color:#2f855a;font-size:13px;margin:0;line-height:1.6">${t("Your file has been saved to your <b>Downloads</b> folder.", { ns: "reports" })}</p></div></div>`,
+        confirmButtonText: "✓ " + t("Done", { ns: "reports" }),
         confirmButtonColor: "#38a169",
         background: "#fff",
         timer: 3000,
@@ -667,12 +667,12 @@ useEffect(() => {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Download Failed",
-        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left;margin-bottom:10px"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(229,62,62,0.3)">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">Could Not Download</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">We couldn't retrieve the PDF. Please check your connection and try again.</p></div></div><div style="background:#f7fafc;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px"><span style="font-size:16px">💡</span><span style="color:#4a5568;font-size:12.5px">If the problem persists, contact your system administrator.</span></div></div>`,
-        confirmButtonText: "🔄 Retry",
+        title: t("Download Failed", { ns: "reports" }),
+        html: `<div style="padding:8px 2px 12px"><div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #feb2b2;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;text-align:left;margin-bottom:10px"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e53e3e,#fc5c7d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 4px 10px rgba(229,62,62,0.3)">🔌</div><div><p style="color:#742a2a;font-size:14px;font-weight:700;margin:0 0 5px">${t("Could Not Download", { ns: "reports" })}</p><p style="color:#9b2c2c;font-size:13px;margin:0;line-height:1.65">${t("We couldn't retrieve the PDF. Please check your connection and try again.", { ns: "reports" })}</p></div></div><div style="background:#f7fafc;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px"><span style="font-size:16px">💡</span><span style="color:#4a5568;font-size:12.5px">${t("If the problem persists, contact your system administrator.", { ns: "reports" })}</span></div></div>`,
+        confirmButtonText: "🔄 " + t("Retry", { ns: "reports" }),
         confirmButtonColor: "#e53e3e",
         showCancelButton: true,
-        cancelButtonText: "Cancel",
+        cancelButtonText: t("Cancel"),
         cancelButtonColor: "#718096",
         background: "#fff",
         showClass: { popup: "animate__animated animate__shakeX animate__faster" },
@@ -726,11 +726,11 @@ useEffect(() => {
   };
 
   return (
-    <Layout title="Generate Sanction Order">
+    <Layout title={t("Generate Sanction Order", { ns: "reports" })}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Generate Sanction Order</Block.Title>
+            <Block.Title tag="h2">{t("Generate Sanction Order", { ns: "reports" })}</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -771,10 +771,10 @@ useEffect(() => {
             </div>
             <div>
               <div style={{ color: "#fff", fontWeight: 700, fontSize: "17px", lineHeight: 1.2 }}>
-                Sanction Order Filter
+                {t("Sanction Order Filter", { ns: "reports" })}
               </div>
               <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "2px" }}>
-                Select filters to load and download sanction order
+                {t("Select filters to load and download sanction order", { ns: "reports" })}
               </div>
             </div>
           </div>
@@ -784,13 +784,13 @@ useEffect(() => {
             {/* Fruits ID — first field */}
             <Row className="mb-3">
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Fruits ID</label>
+                <label style={labelStyle}>{t("Fruits ID", { ns: "reports" })}</label>
                 <Form.Control
                   type="text"
                   name="fruitsId"
                   value={addressDetails.fruitsId || ""}
                   onChange={handleInputsaddress}
-                  placeholder="Enter Fruits ID"
+                  placeholder={t("Enter Fruits ID", { ns: "reports" })}
                   style={selectStyle}
                 />
               </Col>
@@ -807,20 +807,20 @@ useEffect(() => {
                 marginBottom: "18px",
               }}
             >
-              Step 1 — Select Scheme Details
+              {t("Step 1 — Select Scheme Details", { ns: "reports" })}
             </div>
 
             {/* Row 1 — Financial Year & Scheme */}
             <Row className="mb-3">
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Financial Year</label>
+                <label style={labelStyle}>{t("Financial Year")}</label>
                 <Form.Select
                   name="financialYearId"
                   value={addressDetails.financialYearId || ""}
                   onChange={handleInputsaddress}
                   style={selectStyle}
                 >
-                  <option value="">— Select Financial Year —</option>
+                  <option value="">{`— ${t("Select Financial Year")} —`}</option>
                   {financialyearListData.map((list) => (
                     <option key={list.financialYearMasterId} value={list.financialYearMasterId}>
                       {list.financialYear}
@@ -830,18 +830,18 @@ useEffect(() => {
               </Col>
 
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Scheme</label>
+                <label style={labelStyle}>{t("Scheme")}</label>
                 <Form.Select
                   name="scSchemeDetailsId"
                   value={addressDetails.scSchemeDetailsId || ""}
                   onChange={handleInputsaddress}
                   style={selectStyle}
                 >
-                  <option value="">— Select Scheme —</option>
+                  <option value="">{`— ${t("Select Scheme")} —`}</option>
                   {scSchemeDetailsListData && scSchemeDetailsListData.length
                     ? scSchemeDetailsListData.map((list) => (
                         <option key={list.scSchemeDetailsId} value={list.scSchemeDetailsId}>
-                          {list.schemeName}
+                          {i18n.language === "kn" ? (list.schemeNameInKannada || list.schemeName) : list.schemeName}
                         </option>
                       ))
                     : ""}
@@ -852,18 +852,18 @@ useEffect(() => {
             {/* Row 2 — Component Type & Component */}
             <Row className="mb-3">
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Component Type</label>
+                <label style={labelStyle}>{t("Component Type")}</label>
                 <Form.Select
                   name="subSchemeId"
                   value={addressDetails.subSchemeId || ""}
                   onChange={handleInputsaddress}
                   style={selectStyle}
                 >
-                  <option value="">— Select Component Type —</option>
+                  <option value="">{`— ${t("Select Component Type")} —`}</option>
                   {scSubSchemeDetailsListData && scSubSchemeDetailsListData.length
                     ? scSubSchemeDetailsListData.map((list) => (
                         <option key={list.scSubSchemeDetailsId} value={list.subSchemeId}>
-                          {list.subSchemeName}
+                          {i18n.language === "kn" ? (list.subSchemeNameInKannada || list.subSchemeName) : list.subSchemeName}
                         </option>
                       ))
                     : ""}
@@ -871,18 +871,18 @@ useEffect(() => {
               </Col>
 
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Component</label>
+                <label style={labelStyle}>{t("Component")}</label>
                 <Form.Select
                   name="componentId"
                   value={addressDetails.componentId || ""}
                   onChange={handleInputsaddress}
                   style={selectStyle}
                 >
-                  <option value="">— Select Component —</option>
+                  <option value="">{`— ${t("Select Component")} —`}</option>
                   {scComponentListData && scComponentListData.length
                     ? scComponentListData.map((list) => (
                         <option key={list.scComponentId} value={list.scComponentId}>
-                          {list.scComponentName}
+                          {i18n.language === "kn" ? (list.scComponentNameInKannada || list.scComponentName) : list.scComponentName}
                         </option>
                       ))
                     : ""}
@@ -893,18 +893,18 @@ useEffect(() => {
             {/* Row 3 — Sub Component */}
             <Row className="mb-4">
               <Col md={6} style={fieldGroupStyle}>
-                <label style={labelStyle}>Sub Component</label>
+                <label style={labelStyle}>{t("Sub Component")}</label>
                 <Form.Select
                   name="scCategoryId"
                   value={addressDetails.scCategoryId || ""}
                   onChange={handleInputsaddress}
                   style={selectStyle}
                 >
-                  <option value="">— Select Sub Component —</option>
+                  <option value="">{`— ${t("Select Sub Component")} —`}</option>
                   {scCategoryListData && scCategoryListData.length
                     ? scCategoryListData.map((list) => (
                         <option key={list.scCategoryId} value={list.scCategoryId}>
-                          {list.categoryName}
+                          {i18n.language === "kn" ? (list.categoryNameInKannada || list.categoryName) : list.categoryName}
                         </option>
                       ))
                     : ""}
@@ -929,13 +929,13 @@ useEffect(() => {
                 marginBottom: "18px",
               }}
             >
-              Step 2 — Select Sanction Order &amp; Download
+              {t("Step 2 — Select Sanction Order & Download", { ns: "reports" })}
             </div>
 
             {/* Row 4 — Sanction Order + Buttons */}
             <Row className="align-items-end">
               <Col md={5} style={fieldGroupStyle}>
-                <label style={labelStyle}>Sanction Order Number</label>
+                <label style={labelStyle}>{t("Sanction Order Number", { ns: "reports" })}</label>
                 <SearchableSelect
                   name="sanctionOrderNumber"
                   value={addressDetails.sanctionOrderNumber}
@@ -944,14 +944,14 @@ useEffect(() => {
                       target: { name: "sanctionOrderNumber", value: val },
                     })
                   }
-                  placeholder="— Select Sanction Order —"
+                  placeholder={`— ${t("Select Sanction Order", { ns: "reports" })} —`}
                   options={(sanctionOrderNumbers || []).map((num) =>
                     typeof num === "object" ? num.sanctionOrderNumber : num
                   )}
                 />
                 {!securityKey && addressDetails.sanctionOrderNumber && (
                   <small style={{ color: "#e53e3e", fontSize: "12px", marginTop: "4px" }}>
-                    No pre-generated file found for this order.
+                    {t("No pre-generated file found for this order.", { ns: "reports" })}
                   </small>
                 )}
               </Col>
@@ -989,10 +989,10 @@ useEffect(() => {
                   {isDownloading ? (
                     <>
                       <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-                      Downloading…
+                      {t("Downloading…", { ns: "reports" })}
                     </>
                   ) : (
-                    <>⬇ Download PDF</>
+                    <>⬇ {t("Download PDF")}</>
                   )}
                 </button>
 

@@ -83,13 +83,13 @@ function AdsRearerYearComparisonReport() {
   };
 
   const validate = () => {
-    if (!filter.financialYearMasterId) return "Please select a Financial Year.";
-    if (!filter.month) return "Please select a Month.";
-    if (!fyStartYear) return "Could not determine the financial year start year.";
+    if (!filter.financialYearMasterId) return t("Please select a Financial Year.", { ns: "reports" });
+    if (!filter.month) return t("Please select a Month.", { ns: "reports" });
+    if (!fyStartYear) return t("Could not determine the financial year start year.", { ns: "reports" });
     return null;
   };
 
-  const showWarn = (msg) => Swal.fire({ icon: "warning", title: "Required Fields", text: msg, confirmButtonColor: "#d97706" });
+  const showWarn = (msg) => Swal.fire({ icon: "warning", title: t("Required Fields", { ns: "reports" }), text: msg, confirmButtonColor: "#d97706" });
   const showErr = (title, msg) => Swal.fire({ icon: "error", title, text: msg, confirmButtonColor: "#e53e3e" });
 
   const params = () => {
@@ -112,7 +112,7 @@ function AdsRearerYearComparisonReport() {
     } catch (err) {
       const data = err?.response?.data;
       const backendMsg = typeof data === "string" ? data : (data?.message || data?.error);
-      showErr("Fetch Failed", backendMsg || err?.message || "Failed to load the Year Comparison report.");
+      showErr(t("Fetch Failed", { ns: "reports" }), backendMsg || err?.message || t("Failed to load the Year Comparison report.", { ns: "reports" }));
     } finally { setIsLoading(false); }
   };
 
@@ -122,7 +122,7 @@ function AdsRearerYearComparisonReport() {
     try {
       const res = await api.get(baseURLSeedDFL + "grainage-progress-report/ads-rearer-year-comparison/pdf", { params: params(), responseType: "blob" });
       window.open(URL.createObjectURL(new Blob([res.data], { type: "application/pdf" })));
-    } catch { showErr("PDF Failed", "Could not generate the PDF report."); }
+    } catch { showErr(t("PDF Failed", { ns: "reports" }), t("Could not generate the PDF report.", { ns: "reports" })); }
     finally { setBusyPdf(false); }
   };
 
@@ -136,14 +136,14 @@ function AdsRearerYearComparisonReport() {
       const m = Number(filter.month); const year = m >= 4 ? fyStartYear : fyStartYear + 1;
       a.download = `ads_rearer_year_comparison_${year}_${m}.xlsx`;
       a.click(); URL.revokeObjectURL(url);
-    } catch { showErr("Excel Failed", "Could not generate the Excel report."); }
+    } catch { showErr(t("Excel Failed", { ns: "reports" }), t("Could not generate the Excel report.", { ns: "reports" })); }
     finally { setBusyExcel(false); }
   };
 
   const tscOptions = (tscList || []).map((x) => ({ value: x.tscMasterId, label: x.nameInKannada || x.name }));
 
   return (
-    <Layout title={t("ADS · Farmer Demographic Year Comparison")}>
+    <Layout title={t("ADS · Farmer Demographic Year Comparison", { ns: "reports" })}>
       <Block.Head><Block.HeadBetween><Block.HeadContent>
         <Block.Title tag="h2">{t("ADS · ರೇಷ್ಮೆ ಬೆಳೆಗಾರರ ವರ್ಷ ಹೋಲಿಕೆ (CY vs PY)")}</Block.Title>
       </Block.HeadContent></Block.HeadBetween></Block.Head>
@@ -166,7 +166,7 @@ function AdsRearerYearComparisonReport() {
                   <Form.Label>{t("Month")} <span className="text-danger">*</span></Form.Label>
                   <Form.Select name="month" value={filter.month} onChange={handleChange}>
                     <option value="">{t("Select")}</option>
-                    {MONTHS.map((m) => (<option key={m.value} value={m.value}>{m.label}</option>))}
+                    {MONTHS.map((m) => (<option key={m.value} value={m.value}>{t(m.label, { ns: "reports" })}</option>))}
                   </Form.Select>
                 </Col>
                 <Col md="4">
@@ -186,8 +186,8 @@ function AdsRearerYearComparisonReport() {
             {hasReport && (
               <div className="mt-4">
                 <div className="d-flex justify-content-end gap-2 mb-2">
-                  <button className="btn btn-outline-danger btn-sm" onClick={handlePdf} disabled={busyPdf}>{busyPdf ? "..." : "PDF"}</button>
-                  <button className="btn btn-outline-success btn-sm" onClick={handleExcel} disabled={busyExcel}>{busyExcel ? "..." : "Excel"}</button>
+                  <button className="btn btn-outline-danger btn-sm" onClick={handlePdf} disabled={busyPdf}>{busyPdf ? "..." : t("PDF", { ns: "reports" })}</button>
+                  <button className="btn btn-outline-success btn-sm" onClick={handleExcel} disabled={busyExcel}>{busyExcel ? "..." : t("Excel", { ns: "reports" })}</button>
                 </div>
                 <div style={{ overflowX: "auto" }}>
                   <table className="table table-bordered" style={{ minWidth: "900px", fontSize: "13px" }}>
