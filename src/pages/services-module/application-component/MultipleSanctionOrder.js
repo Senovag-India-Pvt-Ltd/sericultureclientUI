@@ -509,8 +509,8 @@ const enableSanctionIfRequired = async () => {
   if (!areAllFieldsSelected) {
     Swal.fire({
       icon: "warning",
-      title: "Select All Fields",
-      text: "Please select Scheme, Component Type, Component and Sub Component",
+      title: t("Select All Fields"),
+      text: t("Please select Scheme, Component Type, Component and Sub Component"),
     });
     return;
   }
@@ -519,8 +519,8 @@ const enableSanctionIfRequired = async () => {
   if (isMachineTypeRequired && data.machineTypeId <= 0) {
     Swal.fire({
       icon: "warning",
-      title: "Machine Type Required",
-      text: "Please select Machine Type",
+      title: t("Machine Type Required"),
+      text: t("Please select Machine Type"),
     });
     return;
   }
@@ -528,8 +528,8 @@ const enableSanctionIfRequired = async () => {
   if (isMachineTypeRequired && data.raceId <= 0) {
   Swal.fire({
     icon: "warning",
-    title: "Race Required",
-    text: "Please select Race",
+    title: t("Race Required"),
+    text: t("Please select Race"),
   });
   return;
 }
@@ -537,8 +537,8 @@ const enableSanctionIfRequired = async () => {
   if (isMachineTypeRequired && !data.month) {
   Swal.fire({
     icon: "warning",
-    title: "Month Required",
-    text: "Please select Month",
+    title: t("Month Required"),
+    text: t("Please select Month"),
   });
   return;
 }
@@ -598,8 +598,8 @@ const enableSanctionIfRequired = async () => {
 
         Swal.fire({
           icon: "info",
-          title: "No Records Found",
-          text: "No data available for the selected filters",
+          title: t("No Records Found"),
+          text: t("No data available for the selected filters"),
         });
       }
     })
@@ -611,8 +611,8 @@ const enableSanctionIfRequired = async () => {
 
       Swal.fire({
         icon: "error",
-        title: "Error",
-        text: "Something went wrong while fetching data",
+        title: t("Error"),
+        text: t("Something went wrong while fetching data"),
       });
     });
 };
@@ -1664,17 +1664,17 @@ if (!isAllowed) return;   // ❌ block only when DB has 1
   event.preventDefault();
 
   if (!actionData.proposalDate) {
-    warningAlert("Please select Proposal Date", "Missing Field");
+    warningAlert(t("Please select Proposal Date"), t("Missing Field"));
     return;
   }
 
   if (!actionData.userId) {
-    warningAlert("Please select Drawing Officer", "Missing Field");
+    warningAlert(t("Please select Drawing Officer"), t("Missing Field"));
     return;
   }
 
   if (selectedRows.length === 0) {
-    warningAlert("Please select at least one row", "Alert!!!");
+    warningAlert(t("Please select at least one row"), t("Alert!!!"));
     return;
   }
 
@@ -1703,17 +1703,16 @@ if (!isAllowed) return;   // ❌ block only when DB has 1
     // ----------------------------------------------------
    if (!hasApprovalPower) {
   const result = await Swal.fire({
-    title: "<span style='font-size:22px;'>Not Authorized</span>",
+    title: `<span style='font-size:22px;'>${t("Not Authorized")}</span>`,
     html: `
       <div style="font-size:18px; line-height:1.5;">
-        You are <b>not authorized</b> to generate Sanction Order.<br><br>
-        Please assign to higher authority.<br><br>
+        ${t("You are not authorized to generate Sanction Order. Please assign to higher authority.")}<br><br>
 
-        <b>Select a User:</b><br><br>
-        <select id="userDropdown" 
-                class="swal2-select" 
+        <b>${t("Select a User:")}</b><br><br>
+        <select id="userDropdown"
+                class="swal2-select"
                 style="width:100%; padding:12px; font-size:16px; border-radius:8px;">
-          <option value="">-- Select User --</option>
+          <option value="">${t("-- Select User --")}</option>
           ${userOfStepsToApproveData
             .map(
               (u) => `
@@ -1730,15 +1729,15 @@ if (!isAllowed) return;   // ❌ block only when DB has 1
     padding: "20px 30px",         // ⬅ More padding
     icon: "warning",
     showCancelButton: true,
-    confirmButtonText: "Assign",
-    cancelButtonText: "Cancel",
+    confirmButtonText: t("Assign"),
+    cancelButtonText: t("Cancel"),
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     preConfirm: () => {
       const selectedUser = document.getElementById("userDropdown").value;
 
       if (!selectedUser) {
-        Swal.showValidationMessage("Please select a user");
+        Swal.showValidationMessage(t("Please select a user"));
         return false;
       }
 
@@ -1772,10 +1771,10 @@ if (!isAllowed) return;   // ❌ block only when DB has 1
 
     // Show success alert and wait for user to click OK
   const successAlert = await Swal.fire({
-    title: "Assigned Successfully!",
-    text: "Application assigned to higher authority.",
+    title: t("Assigned Successfully!"),
+    text: t("Application assigned to higher authority."),
     icon: "success",
-    confirmButtonText: "OK",
+    confirmButtonText: t("OK"),
     width: "450px"
   });
 
@@ -1786,7 +1785,7 @@ if (!isAllowed) return;   // ❌ block only when DB has 1
 } catch (err) {
   saveError(
     err.response?.data?.error_description ||
-      "inspectionUpdate API failed"
+      t("inspectionUpdate API failed")
   );
   setDisplaySubmit(false);
   return;
@@ -1804,7 +1803,7 @@ if (!isAllowed) return;   // ❌ block only when DB has 1
 
 
   } catch (err) {
-    saveError("Approval Power Validation Failed");
+    saveError(t("Approval Power Validation Failed"));
     setDisplaySubmit(false);
     return;
   }
@@ -1851,20 +1850,20 @@ if (!isAllowed) return;   // ❌ block only when DB has 1
     );
 
     if (response.data?.applicationFormId) {
-      saveSuccess("Sanction Order Updated Successfully");
+      saveSuccess(t("Sanction Order Updated Successfully"));
       // generateReportForBonusIncentiveSeedCocoon(selectedRows);
 await generateFinalReport(selectedRows);
-  clearAllAfterSubmit();   
+  clearAllAfterSubmit();
       await getMultipleSanctionOrderList();
       setIsSubmitEnabled(false);
       setIsRowSelectable(false);
     } else {
-      saveError("Failed to generate application ID for sanction order.");
+      saveError(t("Failed to generate application ID for sanction order."));
     }
   } catch (err) {
     saveError(
       err.response?.data?.error_description ||
-        "Sanction Order Update Failed"
+        t("Sanction Order Update Failed")
     );
   } finally {
     setDisplaySubmit(false);
@@ -1929,7 +1928,7 @@ const [showPradesha, setShowPradesha] = useState(false);
   const saveSuccess = (message) => {
   Swal.fire({
     icon: "success",
-    title: "Saved successfully",
+    title: t("Saved successfully"),
     text: message,
   }).then(() => {
     // Refresh entire page AFTER clicking OK
@@ -1941,7 +1940,7 @@ const [showPradesha, setShowPradesha] = useState(false);
 const saveRejectSuccess = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Rejected successfully",
+      title: t("Rejected successfully"),
       text: message,
     }).then(() => {
     // Refresh entire page AFTER clicking OK
@@ -2014,7 +2013,7 @@ const saveRejectSuccess = (message) => {
         const content = response.data.content[0];
 
         if (content.applicationDetailsResponses.length <= 0) {
-          saveError("No Details Found!!!");
+          saveError(t("No Details Found!!!"));
         } else {
           handleShowModal2();
           const appDetails = content.applicationDetailsResponses[0];
@@ -2081,11 +2080,11 @@ const saveRejectSuccess = (message) => {
   };
 
   Swal.fire({
-    title: "Do you want to Reject the Application?",
+    title: t("Do you want to Reject the Application?"),
     icon: "warning",
     showCancelButton: true,
-    confirmButtonText: "Yes",
-    cancelButtonText: "No",
+    confirmButtonText: t("Yes"),
+    cancelButtonText: t("No"),
   }).then((result) => {
     if (result.isConfirmed) {
       api
@@ -2116,35 +2115,35 @@ const saveRejectSuccess = (message) => {
 
   const ApplicationDataColumns = [
     {
-      name: "Financial Year",
+      name: t("Financial Year"),
       selector: (row) => row.financialYear,
       cell: (row) => <span>{row.financialYear}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Fruits Id",
+      name: t("Fruits Id"),
       selector: (row) => row.fruitsId,
       cell: (row) => <span>{row.fruitsId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Name",
+      name: t("Name"),
       selector: (row) => row.farmerFirstName,
       cell: (row) => <span>{row.farmerFirstName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Scheme Amount",
+      name: t("Scheme Amount"),
       selector: (row) => row.schemeAmount,
       cell: (row) => <span>{row.schemeAmount}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Sanction No",
+      name: t("Sanction No"),
       selector: (row) => row.sanctionNo,
       cell: (row) => <span>{row.sanctionNo}</span>,
       sortable: true,
@@ -2158,7 +2157,7 @@ const saveRejectSuccess = (message) => {
     //   hide: "md",
     // },
     {
-      name: "Mobile Number",
+      name: t("Mobile Number"),
       selector: (row) => row.mobileNumber,
       cell: (row) => <span>{row.mobileNumber}</span>,
       sortable: true,
@@ -2174,28 +2173,28 @@ const saveRejectSuccess = (message) => {
     // },
 
     {
-      name: "Scheme Name",
+      name: t("Scheme Name"),
       selector: (row) => row.schemeName,
       cell: (row) => <span>{row.schemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Sub Scheme Name",
+      name: t("Sub Scheme Name"),
       selector: (row) => row.subSchemeName,
       cell: (row) => <span>{row.subSchemeName}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "Khazane Recipient Id",
+      name: t("Khazane Recipient Id"),
       selector: (row) => row.khazaneRecipientId,
       cell: (row) => <span>{row.khazaneRecipientId}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: "TSC",
+      name: t("TSC"),
       selector: (row) => row.tscName,
       cell: (row) => <span>{row.tscName}</span>,
       sortable: true,
@@ -2210,7 +2209,7 @@ const saveRejectSuccess = (message) => {
     //   hide: "md",
     // },
     {
-      name: "Machine Type",
+      name: t("Machine Type"),
       selector: (row) => row.machineTypeName,
       cell: (row) => <span>{row.machineTypeName}</span>,
       sortable: true,
@@ -2218,7 +2217,7 @@ const saveRejectSuccess = (message) => {
     },
 
     {
-      name: "Race",
+      name: t("Race"),
       selector: (row) => row.raceName,
       cell: (row) => <span>{row.raceName}</span>,
       sortable: true,
@@ -2226,7 +2225,7 @@ const saveRejectSuccess = (message) => {
     },
 
     {
-          name: "Action",
+          name: t("Action"),
           cell: (row) => (
             <div className="text-start w-100">
               <div
@@ -2237,14 +2236,14 @@ const saveRejectSuccess = (message) => {
                   gap: "0.5rem", // Adds space between buttons
                 }}
               >
-                
-    
+
+
                 <Button
                   variant="primary"
                   size="sm"
                   onClick={() => handleView(row.applicationDocumentId)}
                 >
-                  View
+                  {t("View")}
                 </Button>
 
                 <Button
@@ -2252,10 +2251,10 @@ const saveRejectSuccess = (message) => {
                   size="sm"
                   onClick={() => handleShowModal(row.applicationDocumentId)}
                 >
-                  Reject
+                  {t("Reject")}
                 </Button>
-    
-               
+
+
               </div>
             </div>
           ),
@@ -2450,13 +2449,13 @@ const saveRejectSuccess = (message) => {
 }, [actionData, selectedRows]);
 
   return (
-    <Layout title="List Of Application">
+    <Layout title={t("List Of Application")}>
       <style>{multipleSanctionOrderStyles}</style>
       <Block.Head>
         <div className="sh-page-header">
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2" className="sh-page-title">List Of Application</Block.Title>
+            <Block.Title tag="h2" className="sh-page-title">{t("List Of Application")}</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
         </div>
@@ -2469,7 +2468,7 @@ const saveRejectSuccess = (message) => {
           </div>
           <div>
             <div className="sh-total-label">
-              {selectedRows.length > 0 ? "Selected Amount" : "Total Amount"}
+              {selectedRows.length > 0 ? t("Selected Amount") : t("Total Amount")}
             </div>
             <div className="sh-total-value">
               ₹
@@ -2766,7 +2765,7 @@ const saveRejectSuccess = (message) => {
               {/* Proposal Date */}
                <Col lg="3">
                 <Form.Group className="form-group mt-n3">
-                  <Form.Label htmlFor="schemeAmount">Sanction No<span className="text-danger">*</span></Form.Label>
+                  <Form.Label htmlFor="schemeAmount">{t("Sanction No")}<span className="text-danger">*</span></Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="sanctionNo"
@@ -2774,20 +2773,20 @@ const saveRejectSuccess = (message) => {
                       name="sanctionNo"
                       value={actionData.sanctionNo}
                       onChange={handleActionInputs}
-                      placeholder="Enter Sanction No"
+                      placeholder={t("Enter Sanction No")}
                       required
                       // readOnly
                     />
                   </div>
                 </Form.Group>
                 <Form.Control.Feedback type="invalid">
-                Sanction Number is required
+                {t("Sanction Number is required")}
               </Form.Control.Feedback>
               </Col>
 
               <Col lg="3">
                 <Form.Group className="form-group mt-n3">
-                  <Form.Label htmlFor="schemeAmount">Allotment Release Order Details<span className="text-danger">*</span></Form.Label>
+                  <Form.Label htmlFor="schemeAmount">{t("Allotment Release Order Details")}<span className="text-danger">*</span></Form.Label>
                   <div className="form-control-wrap">
                     <Form.Control
                       id="releaseNo"
@@ -2795,7 +2794,7 @@ const saveRejectSuccess = (message) => {
                       name="releaseNo"
                       value={actionData.releaseNo}
                       onChange={handleActionInputs}
-                      placeholder="Allotment Release Order Details"
+                      placeholder={t("Allotment Release Order Details")}
                       required
                       // readOnly
                     />
@@ -2806,7 +2805,7 @@ const saveRejectSuccess = (message) => {
               <Col lg="3">
                 <Form.Group className="form-group">
                   <Form.Label>
-                    Approval Stage{" "}
+                    {t("Approval Stage")}{" "}
                     <span className="text-danger">*</span>
                   </Form.Label>
                   <Form.Select
@@ -2815,10 +2814,10 @@ const saveRejectSuccess = (message) => {
                     onChange={handleActionInputs}
                     required
                     // isInvalid={!actionData.stepId || actionData.stepId === "0"}
-                  
+
                   >
                     <option value="">
-                      Select Approval Stage
+                      {t("Select Approval Stage")}
                     </option>
                     {
                    approvalStageAfterNextStepListData
@@ -2832,7 +2831,7 @@ const saveRejectSuccess = (message) => {
                     ))}
                   </Form.Select>
                   <Form.Control.Feedback type="invalid">
-                    Approval Stage Name is required
+                    {t("Approval Stage Name is required")}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -2841,7 +2840,7 @@ const saveRejectSuccess = (message) => {
               <Col lg="3">
                 <Form.Group className="form-group">
                   <Form.Label style={{ fontWeight: "bold" }}>
-                    Drawing Officer <span className="text-danger">*</span>
+                    {t("Drawing Officer")} <span className="text-danger">*</span>
                   </Form.Label>
 
                   <Form.Select
@@ -2863,7 +2862,7 @@ const saveRejectSuccess = (message) => {
                     onFocus={() => setIsDrawingOfficerFocused(true)}
                     onBlur={() => setIsDrawingOfficerFocused(false)}
                   >
-                    <option value="">Select Drawing Officer</option>
+                    <option value="">{t("Select Drawing Officer")}</option>
                     {drawingOfficerUsers.map((list) => (
                       <option key={list.userId} value={list.userId}>
                         {list.userName}
@@ -2876,7 +2875,7 @@ const saveRejectSuccess = (message) => {
           <Col lg="3">
             <Form.Group className="form-group">
               <Form.Label style={{ fontWeight: "bold" }}>
-                Proposal Date <span className="text-danger">*</span>
+                {t("Proposal Date")} <span className="text-danger">*</span>
               </Form.Label>
 
               <DatePicker
@@ -2898,7 +2897,7 @@ const saveRejectSuccess = (message) => {
               <Col lg="3">
                   <Form.Group className="form-group">
                     <Form.Label style={{ fontWeight: "bold" }}>
-                      Release Date <span className="text-danger">*</span>
+                      {t("Release Date")} <span className="text-danger">*</span>
                     </Form.Label>
 
                     <DatePicker
@@ -2920,7 +2919,7 @@ const saveRejectSuccess = (message) => {
                   <Form.Group className="form-group mt-2">
                     <Form.Check
                       type="checkbox"
-                      label="Choose Pradesha"
+                      label={t("Choose Pradesha")}
                       checked={showPradesha}
                       onChange={(e) => setShowPradesha(e.target.checked)}
                     />
@@ -2930,7 +2929,7 @@ const saveRejectSuccess = (message) => {
                 {showPradesha && (
                     <Col lg="3">
                       <Form.Group className="form-group">
-                        <Form.Label htmlFor="schemeAmount">Pradesha</Form.Label>
+                        <Form.Label htmlFor="schemeAmount">{t("Pradesha")}</Form.Label>
 
                         <div className="form-control-wrap">
                           <Form.Control
@@ -2939,7 +2938,7 @@ const saveRejectSuccess = (message) => {
                             name="pradesha"
                             value={actionData.pradesha}
                             onChange={handleActionInputs}
-                            placeholder="Enter Pradesha"
+                            placeholder={t("Enter Pradesha")}
                           />
                         </div>
                       </Form.Group>
@@ -2970,12 +2969,12 @@ const saveRejectSuccess = (message) => {
 
       <Modal show={showModal2} onHide={handleCloseModal2} size="xl" contentClassName="sh-modal-content">
               <Modal.Header closeButton>
-                <Modal.Title>View Details</Modal.Title>
+                <Modal.Title>{t("View Details")}</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    Loading...
+                    {t("Loading...")}
                   </h1>
                 ) : (
                   <Accordion defaultActiveKey="0">
@@ -2989,177 +2988,177 @@ const saveRejectSuccess = (message) => {
                         }}
                         className="mb-2"
                       >
-                        Application Details
+                        {t("Application Details")}
                       </Accordion.Header>
                       <Accordion.Body>
                         <table className="table small table-bordered">
                           <tbody>
                             <tr>
-                              <td style={styles.ctstyle}>Fruits Id:</td>
+                              <td style={styles.ctstyle}>{t("Fruits Id")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]?.fruitsId ||
                                   "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Name:</td>
+                              <td style={styles.ctstyle}>{t("Name")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.farmerFirstName || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Sanction No:</td>
+                              <td style={styles.ctstyle}>{t("Sanction No")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.sanctionNo || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Sub Scheme Name:</td>
+                              <td style={styles.ctstyle}>{t("Sub Scheme Name")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.subSchemeName || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Component:</td>
+                              <td style={styles.ctstyle}>{t("Component")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.scComponentName || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Scheme Name:</td>
+                              <td style={styles.ctstyle}>{t("Scheme Name")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.schemeName || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Sub Component:</td>
+                              <td style={styles.ctstyle}>{t("Sub Component")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.categoryName || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Spacing:</td>
+                              <td style={styles.ctstyle}>{t("Spacing")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.spacingName || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Hectare:</td>
+                              <td style={styles.ctstyle}>{t("Hectare")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.hectareName || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Scheme Amount:</td>
+                              <td style={styles.ctstyle}>{t("Scheme Amount")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.schemeAmount || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Eligible Amount:</td>
+                              <td style={styles.ctstyle}>{t("Eligible Amount")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.eligibleAmount || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Period From:</td>
+                              <td style={styles.ctstyle}>{t("Period From")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.periodFrom || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Period To:</td>
+                              <td style={styles.ctstyle}>{t("Period To")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]?.periodTo ||
                                   "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>District Name:</td>
+                              <td style={styles.ctstyle}>{t("District Name")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.districtName || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Taluk Name:</td>
+                              <td style={styles.ctstyle}>{t("Taluk Name")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.talukName || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Village Name:</td>
+                              <td style={styles.ctstyle}>{t("Village Name")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.villageName || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Application Status:</td>
+                              <td style={styles.ctstyle}>{t("Application Status")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.applicationStatus || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Month(Silk Incentive):</td>
+                              <td style={styles.ctstyle}>{t("Month(Silk Incentive)")}:</td>
                               <td>{viewDetailsData?.applicationDetails?.[0]?.month || 'N/A'}</td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Machine Quantity(Silk Incentive):</td>
+                              <td style={styles.ctstyle}>{t("Machine Quantity(Silk Incentive)")}:</td>
                               <td>{viewDetailsData?.applicationDetails?.[0]?.machineQuantity || 'N/A'}</td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Machine Type(Silk Incentive):</td>
+                              <td style={styles.ctstyle}>{t("Machine Type(Silk Incentive)")}:</td>
                               <td>{viewDetailsData?.applicationDetails?.[0]?.machineTypeName || 'N/A'}</td>
                             </tr>
                             
                             <tr>
-                              <td style={styles.ctstyle}>Remarks:</td>
+                              <td style={styles.ctstyle}>{t("Remarks")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]?.remarks ||
                                   "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Work Order No:</td>
+                              <td style={styles.ctstyle}>{t("Work Order No")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.workOrderNumber || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Sanction Order No:</td>
+                              <td style={styles.ctstyle}>{t("Sanction Order No")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.sanctionOrderNumber || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Proposal Date</td>
+                              <td style={styles.ctstyle}>{t("Proposal Date")}</td>
                               <td>{viewDetailsData?.applicationDetails?.[0]?.proposalDate || "N/A"}</td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Created Date:</td>
+                              <td style={styles.ctstyle}>{t("Created Date")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.createdDate || "N/A"}
                               </td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Modified Date:</td>
+                              <td style={styles.ctstyle}>{t("Modified Date")}:</td>
                               <td>
                                 {viewDetailsData?.applicationDetails?.[0]
                                   ?.modifiedDate || "N/A"}
@@ -3171,49 +3170,49 @@ const saveRejectSuccess = (message) => {
                         <Card className="shadow-sm border-0 rounded-3 mt-4">
                       <Card.Header className="sh-section-header">
                         <Icon name="map-pin" />
-                        <span>Kanesh Land Details</span>
+                        <span>{t("Kanesh Land Details")}</span>
                       </Card.Header>
                       <Card.Body>
                         <table className="table table-bordered table-striped small">
                           <tbody>
                             <tr>
-                              <td style={styles.ctstyle}>District Name</td>
+                              <td style={styles.ctstyle}>{t("District Name")}</td>
                               <td>{viewDetailsData?.applicationDetails?.[0]?.kaneshDistrictName || "N/A"}</td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Taluk Name</td>
+                              <td style={styles.ctstyle}>{t("Taluk Name")}</td>
                               <td>{viewDetailsData?.applicationDetails?.[0]?.kaneshTalukName || "N/A"}</td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Village Name</td>
+                              <td style={styles.ctstyle}>{t("Village Name")}</td>
                               <td>{viewDetailsData?.applicationDetails?.[0]?.kaneshVillageName || "N/A"}</td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Kanesh No</td>
+                              <td style={styles.ctstyle}>{t("Kanesh No")}</td>
                               <td>{viewDetailsData?.applicationDetails?.[0]?.kaneshNo || "N/A"}</td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Panchayat Name</td>
+                              <td style={styles.ctstyle}>{t("Panchayat Name")}</td>
                               <td>{viewDetailsData?.applicationDetails?.[0]?.panchaytName || "N/A"}</td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>Square Feet</td>
+                              <td style={styles.ctstyle}>{t("Square Feet")}</td>
                               <td>{viewDetailsData?.applicationDetails?.[0]?.sqft || "N/A"}</td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>East</td>
+                              <td style={styles.ctstyle}>{t("East")}</td>
                               <td>{viewDetailsData?.applicationDetails?.[0]?.east || "N/A"}</td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>West</td>
+                              <td style={styles.ctstyle}>{t("West")}</td>
                               <td>{viewDetailsData?.applicationDetails?.[0]?.west || "N/A"}</td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>North</td>
+                              <td style={styles.ctstyle}>{t("North")}</td>
                               <td>{viewDetailsData?.applicationDetails?.[0]?.north || "N/A"}</td>
                             </tr>
                             <tr>
-                              <td style={styles.ctstyle}>South</td>
+                              <td style={styles.ctstyle}>{t("South")}</td>
                               <td>{viewDetailsData?.applicationDetails?.[0]?.south || "N/A"}</td>
                             </tr>
                           </tbody>
@@ -3224,25 +3223,25 @@ const saveRejectSuccess = (message) => {
                     <Card className="shadow-sm border-0 rounded-3 mt-4">
                                     <Card.Header className="sh-section-header">
                                       <Icon name="building" />
-                                      <span>Constructed Area</span>
+                                      <span>{t("Constructed Area")}</span>
                                     </Card.Header>
                                     <Card.Body>
                                       <table className="table table-bordered table-striped small">
                                         <tbody>
                                           <tr>
-                                            <td style={styles.ctstyle}>Extent Of Mulberry</td>
+                                            <td style={styles.ctstyle}>{t("Extent Of Mulberry")}</td>
                                             <td>{viewDetailsData?.applicationDetails?.[0]?.extentOfMulberry || "N/A"}</td>
                                           </tr>
                                           <tr>
-                                            <td style={styles.ctstyle}>RH Sqft</td>
+                                            <td style={styles.ctstyle}>{t("RH Sqft")}</td>
                                             <td>{viewDetailsData?.applicationDetails?.[0]?.rhSqft || "N/A"}</td>
                                           </tr>
                                           <tr>
-                                            <td style={styles.ctstyle}>Estimated Cost</td>
+                                            <td style={styles.ctstyle}>{t("Estimated Cost")}</td>
                                             <td>{viewDetailsData?.applicationDetails?.[0]?.estimatedCost || "N/A"}</td>
                                           </tr>
                                           <tr>
-                                            <td style={styles.ctstyle}>Roof Type</td>
+                                            <td style={styles.ctstyle}>{t("Roof Type")}</td>
                                             <td>{viewDetailsData?.applicationDetails?.[0]?.roofTypeName || "N/A"}</td>
                                           </tr>
                                           
@@ -3272,35 +3271,35 @@ const saveRejectSuccess = (message) => {
                             <table className="table small table-bordered">
                               <tbody>
                                 <tr>
-                                  <td style={styles.ctstyle}>Survey Number:</td>
+                                  <td style={styles.ctstyle}>{t("Survey Number")}:</td>
                                   <td>{landDetail.surveyNumber || "N/A"}</td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>District Name:</td>
+                                  <td style={styles.ctstyle}>{t("District Name")}:</td>
                                   <td>{landDetail.districtName || "N/A"}</td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>Taluk Name:</td>
+                                  <td style={styles.ctstyle}>{t("Taluk Name")}:</td>
                                   <td>{landDetail.talukName || "N/A"}</td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>Village Name:</td>
+                                  <td style={styles.ctstyle}>{t("Village Name")}:</td>
                                   <td>{landDetail.villageName || "N/A"}</td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>Acre:</td>
+                                  <td style={styles.ctstyle}>{t("Acre")}:</td>
                                   <td>{landDetail.acre || "N/A"}</td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>F Gunta:</td>
+                                  <td style={styles.ctstyle}>{t("F Gunta")}:</td>
                                   <td>{landDetail.fGunta || "N/A"}</td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>Gunta:</td>
+                                  <td style={styles.ctstyle}>{t("Gunta")}:</td>
                                   <td>{landDetail.gunta || "N/A"}</td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>Developed Area Acre:</td>
+                                  <td style={styles.ctstyle}>{t("Developed Area Acre")}:</td>
                                   <td>{landDetail.devAcre || "N/A"}</td>
                                 </tr>
                                 <tr>
@@ -3316,19 +3315,19 @@ const saveRejectSuccess = (message) => {
                                   <td>{landDetail.devGunta || "N/A"}</td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>Hissa:</td>
+                                  <td style={styles.ctstyle}>{t("Hissa")}:</td>
                                   <td>{landDetail.hissa || "N/A"}</td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>Land Code:</td>
+                                  <td style={styles.ctstyle}>{t("Land Code")}:</td>
                                   <td>{landDetail.landCode || "N/A"}</td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>Main Owner No:</td>
+                                  <td style={styles.ctstyle}>{t("Main Owner No")}:</td>
                                   <td>{landDetail.mainOwnerNo || "N/A"}</td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>Owner Name:</td>
+                                  <td style={styles.ctstyle}>{t("Owner Name")}:</td>
                                   <td>{landDetail.ownerName || "N/A"}</td>
                                 </tr>
                               </tbody>
@@ -3358,66 +3357,66 @@ const saveRejectSuccess = (message) => {
                     style={{ backgroundColor: "#0F6CBE", color: "white", fontWeight: "bold" }}
                     className="mb-2"
                   >
-                    Land Details
+                    {t("Land Details")}
                   </Accordion.Header>
                   <Accordion.Body>
                     {viewDetailsData.landDetails.map((landDetail, index) => (
                       <table className="table small table-bordered mb-3" key={index}>
                         <tbody>
                           <tr>
-                            <td style={styles.ctstyle}>Survey Number:</td>
+                            <td style={styles.ctstyle}>{t("Survey Number")}:</td>
                             <td>{landDetail.surveyNumber || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>District Name:</td>
+                            <td style={styles.ctstyle}>{t("District Name")}:</td>
                             <td>{landDetail.districtName || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Taluk Name:</td>
+                            <td style={styles.ctstyle}>{t("Taluk Name")}:</td>
                             <td>{landDetail.talukName || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Village Name:</td>
+                            <td style={styles.ctstyle}>{t("Village Name")}:</td>
                             <td>{landDetail.villageName || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Acre:</td>
+                            <td style={styles.ctstyle}>{t("Acre")}:</td>
                             <td>{landDetail.acre || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>F Gunta:</td>
+                            <td style={styles.ctstyle}>{t("F Gunta")}:</td>
                             <td>{landDetail.fGunta || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Gunta:</td>
+                            <td style={styles.ctstyle}>{t("Gunta")}:</td>
                             <td>{landDetail.gunta || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Developed Area Acre:</td>
+                            <td style={styles.ctstyle}>{t("Developed Area Acre")}:</td>
                             <td>{landDetail.devAcre || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Developed Area F Gunta:</td>
+                            <td style={styles.ctstyle}>{t("Developed Area F Gunta")}:</td>
                             <td>{landDetail.devFGunta || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Developed Area Gunta:</td>
+                            <td style={styles.ctstyle}>{t("Developed Area Gunta")}:</td>
                             <td>{landDetail.devGunta || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Hissa:</td>
+                            <td style={styles.ctstyle}>{t("Hissa")}:</td>
                             <td>{landDetail.hissa || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Land Code:</td>
+                            <td style={styles.ctstyle}>{t("Land Code")}:</td>
                             <td>{landDetail.landCode || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Main Owner No:</td>
+                            <td style={styles.ctstyle}>{t("Main Owner No")}:</td>
                             <td>{landDetail.mainOwnerNo || "N/A"}</td>
                           </tr>
                           <tr>
-                            <td style={styles.ctstyle}>Owner Name:</td>
+                            <td style={styles.ctstyle}>{t("Owner Name")}:</td>
                             <td>{landDetail.ownerName || "N/A"}</td>
                           </tr>
                         </tbody>
@@ -3431,9 +3430,9 @@ const saveRejectSuccess = (message) => {
                     style={{ backgroundColor: "#0F6CBE", color: "white", fontWeight: "bold" }}
                     className="mb-2"
                   >
-                    Land Details
+                    {t("Land Details")}
                   </Accordion.Header>
-                  <Accordion.Body>No Land Details Available</Accordion.Body>
+                  <Accordion.Body>{t("No Land Details Available")}</Accordion.Body>
                 </Accordion.Item>
               )}
       
@@ -3446,16 +3445,16 @@ const saveRejectSuccess = (message) => {
                         }}
                         className="mb-2"
                       >
-                        Documents
+                        {t("Documents")}
                       </Accordion.Header>
                       <Accordion.Body>
                         {viewDetailsData?.documents?.length > 0 ? (
                           <table className="table small table-bordered">
                             <thead>
                               <tr>
-                                <th>Document Name</th>
+                                <th>{t("Document Name")}</th>
                                 {/* <th>Document Path</th> */}
-                                <th>Action</th>
+                                <th>{t("Action")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -3474,7 +3473,7 @@ const saveRejectSuccess = (message) => {
                                           )
                                         }
                                       >
-                                        View Document
+                                        {t("View Document")}
                                       </Button>
                                       {currentDocumentPath ===
                                         fileDocuments.documentPath &&
@@ -3486,7 +3485,7 @@ const saveRejectSuccess = (message) => {
                                                 width: "100px",
                                               }}
                                               src={selectedDocumentFile}
-                                              alt="Selected File"
+                                              alt={t("Selected File")}
                                             />
                                             <Button
                                               variant="primary"
@@ -3498,7 +3497,7 @@ const saveRejectSuccess = (message) => {
                                                 )
                                               }
                                             >
-                                              Download Selected File
+                                              {t("Download Selected File")}
                                             </Button>
                                           </>
                                         )}
@@ -3511,7 +3510,7 @@ const saveRejectSuccess = (message) => {
                             </tbody>
                           </table>
                         ) : (
-                          <p>No Documents Available</p>
+                          <p>{t("No Documents Available")}</p>
                         )}
       
                       </Accordion.Body>
@@ -3527,30 +3526,30 @@ const saveRejectSuccess = (message) => {
                           }}
                           className="mb-2"
                         >
-                          Work Flow Details
+                          {t("Work Flow Details")}
                         </Accordion.Header>
                         <Accordion.Body>
                           {viewDetailsData.workflowDetails.map((workFlow, index) => (
                             <table className="table small table-bordered" key={index}>
                               <tbody>
                                 <tr>
-                                  <td style={styles.ctstyle}>Step Name:</td>
+                                  <td style={styles.ctstyle}>{t("Step Name")}:</td>
                                   <td>{workFlow.stepName || "N/A"}</td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>Status:</td>
+                                  <td style={styles.ctstyle}>{t("Status")}:</td>
                                   <td>{workFlow.status || "N/A"}</td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>Assigned By:</td>
+                                  <td style={styles.ctstyle}>{t("Assigned By")}:</td>
                                   <td>{workFlow.assignedBy || "N/A"}</td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>Reject Reason:</td>
+                                  <td style={styles.ctstyle}>{t("Reject Reason")}:</td>
                                   <td>{workFlow.rejectReason || "N/A"}</td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>Rejected By:</td>
+                                  <td style={styles.ctstyle}>{t("Rejected By")}:</td>
                                   <td>{workFlow.rejectReason || "N/A"}</td>
                                 </tr>
                                 <tr>
@@ -3561,18 +3560,18 @@ const saveRejectSuccess = (message) => {
                                       color: "green",
                                     }}
                                   >
-                                    Comment:
+                                    {t("Comment")}:
                                   </td>
                                   <td style={{ fontWeight: "bold", color: "green" }}>
                                     {workFlow.comment || "N/A"}
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>Reason:</td>
+                                  <td style={styles.ctstyle}>{t("Reason")}:</td>
                                   <td>{workFlow.reason || "N/A"}</td>
                                 </tr>
                                 <tr>
-                                  <td style={styles.ctstyle}>Assigned To:</td>
+                                  <td style={styles.ctstyle}>{t("Assigned To")}:</td>
                                   <td>{workFlow.assignedTo || "N/A"}</td>
                                 </tr>
                               </tbody>
@@ -3590,10 +3589,10 @@ const saveRejectSuccess = (message) => {
                           }}
                           className="mb-2"
                         >
-                          Work Flow Details
+                          {t("Work Flow Details")}
                         </Accordion.Header>
                         <Accordion.Body>
-                          No Work Flow Details Available
+                          {t("No Work Flow Details Available")}
                         </Accordion.Body>
                       </Accordion.Item>
                     )}
@@ -3602,7 +3601,7 @@ const saveRejectSuccess = (message) => {
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseModal2}>
-                  Close
+                  {t("Close")}
                 </Button>
               </Modal.Footer>
             </Modal>
@@ -3611,7 +3610,7 @@ const saveRejectSuccess = (message) => {
                     <Modal.Body>
                       {loading ? (
                         <h1 className="d-flex justify-content-center align-items-center">
-                          Loading...
+                          {t("Loading...")}
                         </h1>
                       ) : (
                         <>
@@ -3631,7 +3630,7 @@ const saveRejectSuccess = (message) => {
                                   }}
                                   className="mb-3"
                                 >
-                                 Reject Reason
+                                 {t("Reject Reason")}
                                 </Accordion.Header>
                                 <Accordion.Body>
                                   <Block className="mt-3">
@@ -3649,7 +3648,7 @@ const saveRejectSuccess = (message) => {
                                           <Col lg="6">
                                             <Form.Group className="form-group">
                                               <Form.Label>
-                                                <strong>Reject Reason<span className="text-danger">*</span></strong>
+                                                <strong>{t("Reject Reason")}<span className="text-danger">*</span></strong>
                                               </Form.Label>
                                               <Form.Select
                                                 name="rejectReasonWorkflowMasterId"
@@ -3660,7 +3659,7 @@ const saveRejectSuccess = (message) => {
                                                 required
                                               >
                                                 <option value="">
-                                                  Select Reject Reason
+                                                  {t("Select Reject Reason")}
                                                 </option>
                                                 {rejectReasonListData.map((list) => (
                                                   <option
@@ -3678,7 +3677,7 @@ const saveRejectSuccess = (message) => {
                                           <Col lg="6">
                                             <Form.Group className="form-group">
                                               <Form.Label>
-                                                <strong>Remarks/Description</strong>
+                                                <strong>{t("Remarks/Description")}</strong>
                                               </Form.Label>
                                               <Form.Control
                                                 id="comment"
@@ -3686,7 +3685,7 @@ const saveRejectSuccess = (message) => {
                                                 name="comment"
                                                 value={actionData.comment}
                                                 onChange={handleActionInputs}
-                                                placeholder="Enter Description"
+                                                placeholder={t("Enter Description")}
                                                 // required
                                               />
                                             </Form.Group>
@@ -3709,7 +3708,7 @@ const saveRejectSuccess = (message) => {
                                     variant="success"
                                     // disabled={displaySubmit}
                                   >
-                                    Reject
+                                    {t("Reject")}
                                   </Button>
                                
                                 
@@ -3722,7 +3721,7 @@ const saveRejectSuccess = (message) => {
             
                     <Modal.Footer>
                       <Button variant="secondary" onClick={handleCloseModal}>
-                        Close
+                        {t("Close")}
                       </Button>
                     </Modal.Footer>
                   </Modal>

@@ -1171,7 +1171,7 @@ function CropDetailsForSeedMarket() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      {t("Bidding Slip Lot No is required")}
+                      {t("Bidding Slip Lot No is required.")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -1362,7 +1362,7 @@ function CropDetailsForSeedMarket() {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      {t("Bidding Slip Lot No is required")}
+                      {t("Bidding Slip Lot No is required.")}
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>

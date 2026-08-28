@@ -73,8 +73,8 @@ const generateFinalReport = async (selectedRows) => {
   if (!subSchemeDetailsId) {
     Swal.fire({
       icon: "warning",
-      title: "Invalid Selection",
-      html: `<div style="font-size:13.5px;color:#555;">Sub Scheme not found for the selected row.</div>`,
+      title: t("Invalid Selection"),
+      html: `<div style="font-size:13.5px;color:#555;">${t("Sub Scheme not found for the selected row.")}</div>`,
       confirmButtonText: "OK",
       confirmButtonColor: "#f0a500",
       width: "360px",
@@ -89,8 +89,8 @@ const generateFinalReport = async (selectedRows) => {
   if (!isAllowed) {
     Swal.fire({
       icon: "warning",
-      title: "Sanction Disabled",
-      html: `<div style="font-size:13.5px;color:#555;">Sanction Order is disabled for this Component Type.</div>`,
+      title: t("Sanction Disabled"),
+      html: `<div style="font-size:13.5px;color:#555;">${t("Sanction Order is disabled for this Component Type.")}</div>`,
       confirmButtonText: "OK",
       confirmButtonColor: "#f0a500",
       width: "360px",
@@ -1071,7 +1071,7 @@ const getLotDistributeResponseForInvoiceAndBonusScheme = (lotId, schemeType) => 
     console.error("Error fetching lot distribution:", err);
     Swal.fire({
       icon: "warning",
-      title: "Details Not Found for This Lot and Auction Date",
+      title: t("Details Not Found for This Lot and Auction Date"),
     });
     setFarmerDetailsForIB([]);
     setData((prev) => ({
@@ -1119,7 +1119,7 @@ const getCropDetailsCommercialMarketByLotNo = (biddingSlipNo, schemeType) => {
 
       Swal.fire({
         icon: "warning",
-        title: "Details Not Found for This Lot and Auction Date",
+        title: t("Details Not Found for This Lot and Auction Date"),
       });
 
       // setFarmerDetailsForIB([]);
@@ -1174,7 +1174,7 @@ const getCropDetailsSeedMarketByLotNo = (biddingSlipNo, schemeType) => {
 
       Swal.fire({
         icon: "warning",
-        title: "Details Not Found for This Lot and Auction Date",
+        title: t("Details Not Found for This Lot and Auction Date"),
       });
 
       // setFarmerDetailsForIB([]);
@@ -2189,8 +2189,8 @@ const getEligibleAmount = () => {
           if (eligibleAmount === null || eligibleAmount === undefined || eligibleAmount === 0) {
               Swal.fire({
                   icon: "warning",
-                  title: "First apply application for PDMC",
-                  text: "Please apply for PDMC before proceeding.",
+                  title: t("First apply application for PDMC"),
+                  text: t("Please apply for PDMC before proceeding."),
               });
               setSaveDisabled(true);
               setData((prev) => ({ ...prev, expectedAmount: "" }));
@@ -2800,31 +2800,31 @@ const handleCalculateUnitPrice = () => {
       setUnitPriceCalculated(true);
       Swal.fire({
         icon: "success",
-        title: "Unit Price Calculated!",
+        title: t("Unit Price Calculated!"),
         html: `
           <table style="width:100%;font-size:13px;border-collapse:collapse;">
             <tr style="background:#f0f4ff;">
-              <td style="padding:6px 10px;color:#555;">Unit Cost</td>
+              <td style="padding:6px 10px;color:#555;">${t("Unit Cost")}</td>
               <td style="padding:6px 10px;font-weight:600;color:#222;">₹ ${totalUnitCost.toLocaleString("en-IN")}</td>
             </tr>
             <tr>
-              <td style="padding:6px 10px;color:#555;">Subsidy % (Central + State)</td>
+              <td style="padding:6px 10px;color:#555;">${t("Subsidy % (Central + State)")}</td>
               <td style="padding:6px 10px;font-weight:600;color:#222;">${centralPct + statePct}%</td>
             </tr>
             <tr style="background:#e8f5e9;">
-              <td style="padding:6px 10px;color:#2d8a4e;font-weight:600;">Subsidy Amount</td>
+              <td style="padding:6px 10px;color:#2d8a4e;font-weight:600;">${t("Subsidy Amount")}</td>
               <td style="padding:6px 10px;font-weight:700;font-size:14px;color:#2d8a4e;">₹ ${subsidyAmt.toLocaleString("en-IN")}</td>
             </tr>
           </table>`,
-        confirmButtonText: "OK",
+        confirmButtonText: t("OK"),
         confirmButtonColor: "#1a5fa8",
         width: "400px",
       });
     } else {
       Swal.fire({
         icon: "warning",
-        title: "ARM Ends & Category Required",
-        text: "Please select ARM Ends and Category to load the unit cost from ARM Calculation Master.",
+        title: t("ARM Ends & Category Required"),
+        text: t("Please select ARM Ends and Category to load the unit cost from ARM Calculation Master."),
         confirmButtonColor: "#f0a500",
       });
     }
@@ -2846,9 +2846,9 @@ const handleCalculateUnitPrice = () => {
     if (!sqft) {
       Swal.fire({
         icon: "warning",
-        title: "Sqft Required",
-        html: `<p style="color:#555;font-size:15px;">Please enter the <strong>Constructed Area in Sqft</strong> before calculating.</p>`,
-        confirmButtonText: "OK",
+        title: t("Sqft Required"),
+        html: `<p style="color:#555;font-size:15px;">${t("Please enter the Constructed Area in Sqft before calculating.")}</p>`,
+        confirmButtonText: t("OK"),
         confirmButtonColor: "#f0a500",
         showCloseButton: true,
       });
@@ -2858,9 +2858,9 @@ const handleCalculateUnitPrice = () => {
     if (!unitPrice) {
       Swal.fire({
         icon: "warning",
-        title: "Unit Price Not Available",
-        html: `<p style="color:#555;font-size:15px;">Unit Price could not be fetched. Please select <strong>Component</strong> and <strong>Sub Component</strong> first.</p>`,
-        confirmButtonText: "OK",
+        title: t("Unit Price Not Available"),
+        html: `<p style="color:#555;font-size:15px;">${t("Unit Price could not be fetched. Please select Component and Sub Component first.")}</p>`,
+        confirmButtonText: t("OK"),
         confirmButtonColor: "#f0a500",
         showCloseButton: true,
       });
@@ -2870,21 +2870,20 @@ const handleCalculateUnitPrice = () => {
     if (minAmount > 0 && sqft < minAmount) {
       Swal.fire({
         icon: "error",
-        title: "No Subsidy Available",
+        title: t("No Subsidy Available"),
         html: `
           <div style="text-align:center;">
             <div style="font-size:48px;margin-bottom:8px;">🏚️</div>
             <p style="color:#444;font-size:15px;line-height:1.6;">
-              The entered area of <strong style="color:#d33;">${sqft} Sqft</strong> is below the
-              minimum eligible area of <strong style="color:#2d8a4e;">${minAmount} Sqft</strong>.
+              ${t("The entered area of {{sqft}} Sqft is below the minimum eligible area of {{minAmount}} Sqft.", { sqft, minAmount })}
             </p>
-            <p style="color:#777;font-size:13px;margin-top:8px;">No subsidy can be granted for this value.</p>
+            <p style="color:#777;font-size:13px;margin-top:8px;">${t("No subsidy can be granted for this value.")}</p>
           </div>`,
-        confirmButtonText: "Understood",
+        confirmButtonText: t("Understood"),
         confirmButtonColor: "#d33",
         background: "#fff9f9",
         showCloseButton: true,
-        footer: `<span style="color:#aaa;font-size:12px;">💡 Enter a Sqft value ≥ ${minAmount} to be eligible.</span>`,
+        footer: `<span style="color:#aaa;font-size:12px;">${t("💡 Enter a Sqft value ≥ {{minAmount}} to be eligible.", { minAmount })}</span>`,
       });
       setData((prev) => ({ ...prev, expectedAmount: "", schemeAmount: "" }));
       return;
@@ -2903,20 +2902,20 @@ const handleCalculateUnitPrice = () => {
     const capped = maxAmount > 0 && sqft > maxAmount;
     Swal.fire({
       icon: "success",
-      title: "Subsidy Calculated!",
+      title: t("Subsidy Calculated!"),
       html: `
         <table style="width:100%;font-size:13px;border-collapse:collapse;">
           <tr style="background:#f0f4ff;">
-            <td style="padding:6px 10px;color:#555;">Entered Sqft</td>
+            <td style="padding:6px 10px;color:#555;">${t("Entered Sqft")}</td>
             <td style="padding:6px 10px;font-weight:600;color:#222;">${sqft} Sqft</td>
           </tr>
-          ${capped ? `<tr><td style="padding:6px 10px;color:#555;">Capped at Max</td><td style="padding:6px 10px;font-weight:600;color:#e65100;">${maxAmount} Sqft</td></tr>` : ""}
+          ${capped ? `<tr><td style="padding:6px 10px;color:#555;">${t("Capped at Max")}</td><td style="padding:6px 10px;font-weight:600;color:#e65100;">${maxAmount} Sqft</td></tr>` : ""}
           <tr style="background:#f0f4ff;">
-            <td style="padding:6px 10px;color:#555;">Unit Price</td>
+            <td style="padding:6px 10px;color:#555;">${t("Unit Price")}</td>
             <td style="padding:6px 10px;font-weight:600;color:#222;">₹ ${unitPrice}</td>
           </tr>
           <tr style="background:#e8f5e9;">
-            <td style="padding:6px 10px;color:#2d8a4e;font-weight:600;">Total Subsidy</td>
+            <td style="padding:6px 10px;color:#2d8a4e;font-weight:600;">${t("Total Subsidy")}</td>
             <td style="padding:6px 10px;font-weight:700;font-size:14px;color:#2d8a4e;">₹ ${totalSubsidy.toLocaleString("en-IN")}</td>
           </tr>
         </table>`,
@@ -2937,8 +2936,8 @@ const handleCalculateUnitPrice = () => {
     if (!data.taxAmount || Number(data.taxAmount) <= 0) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please enter a valid Tax Invoice Amount.",
+        title: t("Validation Error"),
+        text: t("Please enter a valid Tax Invoice Amount."),
       });
       return;
     }
@@ -2971,8 +2970,8 @@ const handleCalculateUnitPrice = () => {
 
     Swal.fire({
       icon: "success",
-      title: "Calculated Successfully",
-      text: `Total Subsidy/Bonus/Incentive Amount = ${finalAmount}`,
+      title: t("Calculated Successfully"),
+      text: t("Total Subsidy/Bonus/Incentive Amount = {{finalAmount}}", { finalAmount }),
     });
 
     return;
@@ -2982,11 +2981,11 @@ const handleCalculateUnitPrice = () => {
   // ✅ Check scheme-based calculations
   if (schemeDetails.calculationBasedOn === "PDMC" || schemeDetails.calculationBasedOn === "PMKSY") {
     if (!data.spacingId) {
-      Swal.fire({ icon: "warning", title: "Validation Error", text: "Please select a Spacing." });
+      Swal.fire({ icon: "warning", title: t("Validation Error"), text: t("Please select a Spacing.") });
       return;
     }
     if (!data.hectareId) {
-      Swal.fire({ icon: "warning", title: "Validation Error", text: "Please select a Hectare." });
+      Swal.fire({ icon: "warning", title: t("Validation Error"), text: t("Please select a Hectare.") });
       return;
     }
 
@@ -3001,19 +3000,19 @@ const handleCalculateUnitPrice = () => {
   if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Bivoltine Bonus"  &&
   selectedBonusMode === "Automatic") {
     if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
-      Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
+      Swal.fire({ icon: "warning", title: t("Validation Error"), text: t("Please fill all required fields.") });
       return;
     }
     // 2. Check for required bonus-specific fields
     if ((data.averageYield === "" || data.averageYield === null || data.averageYield === undefined) ||
         (data.noOfCocoonPerKg === "" || data.noOfCocoonPerKg === null || data.noOfCocoonPerKg === undefined)) {
-      Swal.fire({ icon: "warning", title: "Validation Error", text: "Please provide Average Yield and No. of Cocoons/Kg." });
+      Swal.fire({ icon: "warning", title: t("Validation Error"), text: t("Please provide Average Yield and No. of Cocoons/Kg.") });
       return;
     }
 
     // 3. Validate that API data for bonus is available
     if (!bonusAmountData || bonusAmountData.length === 0) {
-      Swal.fire({ icon: "warning", title: "No Data Found", text: "No Bivoltine Bonus data available for selected parameters." });
+      Swal.fire({ icon: "warning", title: t("No Data Found"), text: t("No Bivoltine Bonus data available for selected parameters.") });
       return;
     }
 
@@ -3025,8 +3024,8 @@ const handleCalculateUnitPrice = () => {
     if (parseFloat(data.averageYield) < parseFloat(minAverageYield)) {
       Swal.fire({ 
         icon: "warning", 
-        title: "Validation Error", 
-        text: `Average Yield cannot be less than the minimum required value (${minAverageYield}).` 
+        title: t("Validation Error"), 
+        text: t("Average Yield cannot be less than the minimum required value ({{minAverageYield}}).", { minAverageYield })
       });
       return;
     }
@@ -3035,8 +3034,8 @@ const handleCalculateUnitPrice = () => {
     if (parseFloat(data.noOfCocoonPerKg) > parseFloat(maxNoOfCocoonsPerKg)) {
       Swal.fire({ 
         icon: "warning", 
-        title: "Validation Error", 
-        text: `No. of Cocoons Per Kg cannot be greater than the maximum allowed value (${maxNoOfCocoonsPerKg}).` 
+        title: t("Validation Error"), 
+        text: t("No. of Cocoons Per Kg cannot be greater than the maximum allowed value ({{maxNoOfCocoonsPerKg}}).", { maxNoOfCocoonsPerKg })
       });
       return;
  }
@@ -3050,19 +3049,19 @@ const handleCalculateUnitPrice = () => {
  if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Bivoltine Bonus"  &&
   selectedBonusMode === "Manual") {
     if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
-      Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
+      Swal.fire({ icon: "warning", title: t("Validation Error"), text: t("Please fill all required fields.") });
       return;
     }
     // 2. Check for required bonus-specific fields
     if ((data.averageYield === "" || data.averageYield === null || data.averageYield === undefined) ||
         (data.noOfCocoonPerKg === "" || data.noOfCocoonPerKg === null || data.noOfCocoonPerKg === undefined)) {
-      Swal.fire({ icon: "warning", title: "Validation Error", text: "Please provide Average Yield and No. of Cocoons/Kg." });
+      Swal.fire({ icon: "warning", title: t("Validation Error"), text: t("Please provide Average Yield and No. of Cocoons/Kg.") });
       return;
     }
 
     // 3. Validate that API data for bonus is available
     if (!bonusAmountData || bonusAmountData.length === 0) {
-      Swal.fire({ icon: "warning", title: "No Data Found", text: "No Bivoltine Bonus data available for selected parameters." });
+      Swal.fire({ icon: "warning", title: t("No Data Found"), text: t("No Bivoltine Bonus data available for selected parameters.") });
       return;
     }
 
@@ -3074,8 +3073,8 @@ const handleCalculateUnitPrice = () => {
     if (parseFloat(data.averageYield) < parseFloat(minAverageYield)) {
       Swal.fire({ 
         icon: "warning", 
-        title: "Validation Error", 
-        text: `Average Yield cannot be less than the minimum required value (${minAverageYield}).` 
+        title: t("Validation Error"), 
+        text: t("Average Yield cannot be less than the minimum required value ({{minAverageYield}}).", { minAverageYield })
       });
       return;
     }
@@ -3084,8 +3083,8 @@ const handleCalculateUnitPrice = () => {
     if (parseFloat(data.noOfCocoonPerKg) > parseFloat(maxNoOfCocoonsPerKg)) {
       Swal.fire({ 
         icon: "warning", 
-        title: "Validation Error", 
-        text: `No. of Cocoons Per Kg cannot be greater than the maximum allowed value (${maxNoOfCocoonsPerKg}).` 
+        title: t("Validation Error"), 
+        text: t("No. of Cocoons Per Kg cannot be greater than the maximum allowed value ({{maxNoOfCocoonsPerKg}}).", { maxNoOfCocoonsPerKg })
       });
       return;
  }
@@ -3223,8 +3222,8 @@ if (
   if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
     Swal.fire({
       icon: "warning",
-      title: "Validation Error",
-      text: "Please fill all required fields.",
+      title: t("Validation Error"),
+      text: t("Please fill all required fields."),
     });
     return;
   }
@@ -3233,8 +3232,8 @@ if (
   if (!data.averageYield || !data.cocoonsWeight) {
     Swal.fire({
       icon: "warning",
-      title: "Validation Error",
-      text: "Please provide Average Yield and No Of DFLs",
+      title: t("Validation Error"),
+      text: t("Please provide Average Yield and No Of DFLs"),
     });
     return;
   }
@@ -3243,8 +3242,8 @@ if (
   if (!bonusAmountData || bonusAmountData.length === 0) {
     Swal.fire({
       icon: "warning",
-      title: "No Data Found",
-      text: "No data available for selected parameters.",
+      title: t("No Data Found"),
+      text: t("No data available for selected parameters."),
     });
     return;
   }
@@ -3261,8 +3260,8 @@ if (
     if (minAvgYield == null || maxCocoonsPKg == null) {
       Swal.fire({
         icon: "error",
-        title: "Configuration Not Found",
-        text: "Min Average Yield and Max No. of Cocoons Per Kg are not configured. Please configure them in the Configure Bivoltine Amount page.",
+        title: t("Configuration Not Found"),
+        text: t("Min Average Yield and Max No. of Cocoons Per Kg are not configured. Please configure them in the Configure Bivoltine Amount page."),
       });
       return;
     }
@@ -3274,8 +3273,8 @@ if (
     if (avgYield < minAvgYieldVal) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: `Average Yield Should be Above ${minAvgYieldVal}%`,
+        title: t("Validation Error"),
+        text: t("Average Yield Should be Above {{minAvgYieldVal}}%", { minAvgYieldVal }),
       });
       return;
     }
@@ -3304,8 +3303,8 @@ if (
 
       Swal.fire({
         icon: "info",
-        title: "Subsidy Calculated on Eligible Quantity",
-        text: `Average Yield exceeds ${maxCocoonsPKgVal}%. Subsidy is calculated on eligible quantity: ${eligibleCocoons} kg (${noOfDfls} × ${maxCocoonsPKgVal}/100). Average Yield and Cocoons Transacted (kg) shown here reflect the eligible values; the actual transacted quantity is still saved to the record.`,
+        title: t("Subsidy Calculated on Eligible Quantity"),
+        text: t("Average Yield exceeds {{maxCocoonsPKgVal}}%. Subsidy is calculated on eligible quantity: {{eligibleCocoons}} kg ({{noOfDfls}} × {{maxCocoonsPKgVal}}/100). Average Yield and Cocoons Transacted (kg) shown here reflect the eligible values; the actual transacted quantity is still saved to the record.", { maxCocoonsPKgVal, eligibleCocoons, noOfDfls }),
       });
       return;
     }
@@ -3328,8 +3327,8 @@ if (
   if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
     Swal.fire({
       icon: "warning",
-      title: "Validation Error",
-      text: "Please fill all required fields.",
+      title: t("Validation Error"),
+      text: t("Please fill all required fields."),
     });
     return;
   }
@@ -3338,8 +3337,8 @@ if (
   if (!data.averageYield || !data.lotWeight) {
     Swal.fire({
       icon: "warning",
-      title: "Validation Error",
-      text: "Please provide Average Yield and No Of DFLs",
+      title: t("Validation Error"),
+      text: t("Please provide Average Yield and No Of DFLs"),
     });
     return;
   }
@@ -3348,8 +3347,8 @@ if (
   if (!bonusAmountData || bonusAmountData.length === 0) {
     Swal.fire({
       icon: "warning",
-      title: "No Data Found",
-      text: "No data available for selected parameters.",
+      title: t("No Data Found"),
+      text: t("No data available for selected parameters."),
     });
     return;
   }
@@ -3369,8 +3368,8 @@ if (
   if (!data.scCategoryId || !data.scComponentId || !data.cocoonsWeight) {
     Swal.fire({
       icon: "warning",
-      title: "Validation Error",
-      text: "Please fill all required fields.",
+      title: t("Validation Error"),
+      text: t("Please fill all required fields."),
     });
     return;
   }
@@ -3379,8 +3378,8 @@ if (
   if (!data.averageYield || !data.lotWeight) {
     Swal.fire({
       icon: "warning",
-      title: "Validation Error",
-      text: "Please provide Average Yield and No Of DFLs",
+      title: t("Validation Error"),
+      text: t("Please provide Average Yield and No Of DFLs"),
     });
     return;
   }
@@ -3389,8 +3388,8 @@ if (
   if (!bonusAmountData || bonusAmountData.length === 0) {
     Swal.fire({
       icon: "warning",
-      title: "No Data Found",
-      text: "No data available for selected parameters.",
+      title: t("No Data Found"),
+      text: t("No data available for selected parameters."),
     });
     return;
   }
@@ -3408,8 +3407,8 @@ if (
     if (!data.scSubSchemeDetailsId || !data.scComponentId || !data.scCategoryId || !data.machineTypeId || !data.silkTable || !data.renditta) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please fill all required fields.",
+        title: t("Validation Error"),
+        text: t("Please fill all required fields."),
       });
       return;
     }
@@ -3417,8 +3416,8 @@ if (
     if (!data.machineQuantity) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please enter Machine Quantity.",
+        title: t("Validation Error"),
+        text: t("Please enter Machine Quantity."),
       });
       return;
     }
@@ -3427,8 +3426,8 @@ if (
     if (maxMachineQuantity && parseFloat(data.machineQuantity) > parseFloat(maxMachineQuantity)) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: `Entered quantity exceeds maximum allowed value (${maxMachineQuantity}). Please enter a lower quantity.`,
+        title: t("Validation Error"),
+        text: t("Entered quantity exceeds maximum allowed value ({{maxMachineQuantity}}). Please enter a lower quantity.", { maxMachineQuantity }),
       });
       return;
     }
@@ -3466,8 +3465,8 @@ if (
     ) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please fill all required fields.",
+        title: t("Validation Error"),
+        text: t("Please fill all required fields."),
       });
       return;
     }
@@ -3475,8 +3474,8 @@ if (
     if (!data.taxAmount || Number(data.taxAmount) <= 0) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please enter a valid Tax Invoice Amount.",
+        title: t("Validation Error"),
+        text: t("Please enter a valid Tax Invoice Amount."),
       });
       return;
     }
@@ -3485,8 +3484,8 @@ if (
     if (!imcbAndMermAmountData || imcbAndMermAmountData.length === 0) {
       Swal.fire({
         icon: "warning",
-        title: "No Data Found",
-        text: "No IMCB/MERM data available for selected parameters.",
+        title: t("No Data Found"),
+        text: t("No IMCB/MERM data available for selected parameters."),
       });
       return;
     }
@@ -3528,8 +3527,8 @@ if (
     ) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please fill all required fields.",
+        title: t("Validation Error"),
+        text: t("Please fill all required fields."),
       });
       return;
     }
@@ -3537,8 +3536,8 @@ if (
     if (!data.taxAmount || Number(data.taxAmount) <= 0) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please enter a valid Tax Invoice Amount.",
+        title: t("Validation Error"),
+        text: t("Please enter a valid Tax Invoice Amount."),
       });
       return;
     }
@@ -3547,8 +3546,8 @@ if (
     if (!adoptingBoilerAmountData || adoptingBoilerAmountData.length === 0) {
       Swal.fire({
         icon: "warning",
-        title: "No Data Found",
-        text: "No data available for selected parameters.",
+        title: t("No Data Found"),
+        text: t("No data available for selected parameters."),
       });
       return;
     }
@@ -3589,8 +3588,8 @@ if (
     ) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please fill all required fields.",
+        title: t("Validation Error"),
+        text: t("Please fill all required fields."),
       });
       return;
     }
@@ -3598,8 +3597,8 @@ if (
     if (!data.taxAmount || Number(data.taxAmount) <= 0) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please enter a valid Tax Invoice Amount.",
+        title: t("Validation Error"),
+        text: t("Please enter a valid Tax Invoice Amount."),
       });
       return;
     }
@@ -3608,8 +3607,8 @@ if (
     if (!icbAndArmAmountData || icbAndArmAmountData.length === 0) {
       Swal.fire({
         icon: "warning",
-        title: "No Data Found",
-        text: "No ICB data available for selected parameters.",
+        title: t("No Data Found"),
+        text: t("No ICB data available for selected parameters."),
       });
       return;
     }
@@ -3643,8 +3642,8 @@ if (
     if (!data.scSchemeDetailsId || !data.scComponentId || !data.scCategoryId) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please fill all required fields.",
+        title: t("Validation Error"),
+        text: t("Please fill all required fields."),
       });
       return;
     }
@@ -3652,8 +3651,8 @@ if (
     if (!data.taxAmount || Number(data.taxAmount) <= 0) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please enter a valid Tax Invoice Amount.",
+        title: t("Validation Error"),
+        text: t("Please enter a valid Tax Invoice Amount."),
       });
       return;
     }
@@ -3661,8 +3660,8 @@ if (
     if (!rearingEquipmentSSAmountData || rearingEquipmentSSAmountData.length === 0) {
       Swal.fire({
         icon: "warning",
-        title: "No Data Found",
-        text: "No Rearing Equipment SS data available for selected parameters.",
+        title: t("No Data Found"),
+        text: t("No Rearing Equipment SS data available for selected parameters."),
       });
       return;
     }
@@ -3699,8 +3698,8 @@ if (
     ) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please fill all required fields.",
+        title: t("Validation Error"),
+        text: t("Please fill all required fields."),
       });
       return;
     }
@@ -3710,8 +3709,8 @@ if (
     if (!reelinShedAmountData || reelinShedAmountData.length === 0) {
       Swal.fire({
         icon: "warning",
-        title: "No Data Found",
-        text: "No Reeling Shed data available for selected parameters.",
+        title: t("No Data Found"),
+        text: t("No Reeling Shed data available for selected parameters."),
       });
       return;
     }
@@ -3746,8 +3745,8 @@ if (
     ) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please fill all required fields.",
+        title: t("Validation Error"),
+        text: t("Please fill all required fields."),
       });
       return;
     }
@@ -3755,8 +3754,8 @@ if (
     if (!data.taxAmount || Number(data.taxAmount) <= 0) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please enter a valid Tax Invoice Amount.",
+        title: t("Validation Error"),
+        text: t("Please enter a valid Tax Invoice Amount."),
       });
       return;
     }
@@ -3765,8 +3764,8 @@ if (
     if (!reelinShedAmountData || reelinShedAmountData.length === 0) {
       Swal.fire({
         icon: "warning",
-        title: "No Data Found",
-        text: "No Adopting Silent Generator data available for selected parameters.",
+        title: t("No Data Found"),
+        text: t("No Adopting Silent Generator data available for selected parameters."),
       });
       return;
     }
@@ -3809,8 +3808,8 @@ if (
     ) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please fill all required fields.",
+        title: t("Validation Error"),
+        text: t("Please fill all required fields."),
       });
       return;
     }
@@ -3818,8 +3817,8 @@ if (
     if (!data.taxAmount || Number(data.taxAmount) <= 0) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please enter a valid Tax Invoice Amount.",
+        title: t("Validation Error"),
+        text: t("Please enter a valid Tax Invoice Amount."),
       });
       return;
     }
@@ -3827,8 +3826,8 @@ if (
     if (!reelinShedAmountData || reelinShedAmountData.length === 0) {
       Swal.fire({
         icon: "warning",
-        title: "No Data Found",
-        text: "No Adopting Solar power Generator data available for selected parameters.",
+        title: t("No Data Found"),
+        text: t("No Adopting Solar power Generator data available for selected parameters."),
       });
       return;
     }
@@ -3871,8 +3870,8 @@ if (
   ) {
     Swal.fire({
       icon: "warning",
-      title: "Validation Error",
-      text: "Please fill all required fields.",
+      title: t("Validation Error"),
+      text: t("Please fill all required fields."),
     });
     return;
   }
@@ -3880,8 +3879,8 @@ if (
   if (!data.taxAmount || Number(data.taxAmount) <= 0) {
     Swal.fire({
       icon: "warning",
-      title: "Validation Error",
-      text: "Please enter a valid Tax Invoice Amount.",
+      title: t("Validation Error"),
+      text: t("Please enter a valid Tax Invoice Amount."),
     });
     return;
   }
@@ -3893,8 +3892,8 @@ if (
   ) {
     Swal.fire({
       icon: "warning",
-      title: "No Data Found",
-      text: "No Adopting Solar Water Heater data available for selected parameters.",
+      title: t("No Data Found"),
+      text: t("No Adopting Solar Water Heater data available for selected parameters."),
     });
     return;
   }
@@ -3931,8 +3930,8 @@ if (
     if (!data.scSchemeDetailsId || !data.scSubSchemeDetailsId || !data.scComponentId) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please fill all required fields.",
+        title: t("Validation Error"),
+        text: t("Please fill all required fields."),
       });
       return;
     }
@@ -3940,8 +3939,8 @@ if (
     if (!data.taxAmount || Number(data.taxAmount) <= 0) {
       Swal.fire({
         icon: "warning",
-        title: "Validation Error",
-        text: "Please enter a valid Tax Invoice Amount.",
+        title: t("Validation Error"),
+        text: t("Please enter a valid Tax Invoice Amount."),
       });
       return;
     }
@@ -3972,7 +3971,7 @@ if (
     schemeDetails.calculationBasedOn === "Silk Samagra Central"
   ) {
     if (!data.scSchemeDetailsId || !data.scCategoryId || !data.scComponentId) {
-      Swal.fire({ icon: "warning", title: "Validation Error", text: "Please fill all required fields." });
+      Swal.fire({ icon: "warning", title: t("Validation Error"), text: t("Please fill all required fields.") });
       return;
     }
     getCalculateAmountForRH();
@@ -4057,7 +4056,7 @@ if (
 
 
   // ❌ Default fallback for anything unmatched
-  Swal.fire({ icon: "error", title: "Error", text: "Invalid calculation method." });
+  Swal.fire({ icon: "error", title: t("Error"), text: t("Invalid calculation method.") });
 };
 
 
@@ -4251,7 +4250,7 @@ const [chawkiData, setChawkiData] = useState({
     console.error("Error fetching details:", err);
     Swal.fire({
       icon: "warning",
-      title: "Details Not Found",
+      title: t("Details Not Found"),
     });
     // setFarmerDetailsForIB([]);
  
@@ -4728,8 +4727,8 @@ const isUserValid = React.useMemo(() => {
     if (!localStorageUserId || localStorageUserId === "null") {
       Swal.fire({
         icon: "warning",
-        title: "Please Select User Master",
-        text: "Please Select User Master and Save",
+        title: t("Please Select User Master"),
+        text: t("Please Select User Master and Save"),
         confirmButtonColor: "#1e67a8",
       });
       return;
@@ -4738,8 +4737,8 @@ const isUserValid = React.useMemo(() => {
     if (!isUserValid) {
       Swal.fire({
         icon: "warning",
-        title: "Please Select User Master",
-        text: "Please Select User Master and Save",
+        title: t("Please Select User Master"),
+        text: t("Please Select User Master and Save"),
         confirmButtonColor: "#1e67a8",
       });
       return;
@@ -4757,7 +4756,7 @@ const isUserValid = React.useMemo(() => {
     if (!unitPriceCalculated || !amountValue.unitPrice || _unitPrice === 0) {
       Swal.fire({
         icon: "warning",
-        title: `<span style="font-size:16px;font-weight:700;color:#b45309;">⚠ Cannot Save Application</span>`,
+        title: `<span style="font-size:16px;font-weight:700;color:#b45309;">${t("⚠ Cannot Save Application")}</span>`,
         html: `
           <div style="text-align:center;padding:4px 0 8px;">
             <div style="display:inline-flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:50%;background:#fef3c7;margin-bottom:12px;">
@@ -4770,11 +4769,11 @@ const isUserValid = React.useMemo(() => {
               }
             </div>
             <div style="background:#fef9ee;border:1px solid #fde68a;border-radius:7px;padding:8px 14px;font-size:12px;color:#92400e;display:inline-block;">
-              Application cannot be saved without a valid subsidy amount.
+              ${t("Application cannot be saved without a valid subsidy amount.")}
             </div>
           </div>
         `,
-        confirmButtonText: "OK, Got it",
+        confirmButtonText: t("OK, Got it"),
         confirmButtonColor: "#1a5fa8",
         background: "#fffbf0",
         width: "400px",
@@ -4791,21 +4790,21 @@ const isUserValid = React.useMemo(() => {
     ) {
       const missingFields = [];
       if (!data.equordev.includes("land")) {
-        missingFields.push("Land Wise Details (please check the Land Wise checkbox)");
+        missingFields.push(t("Land Wise Details (please check the Land Wise checkbox)"));
       // }
       } else if (landDetailsIds.length === 0) {
-        missingFields.push("Land Wise Details (Please check at least one land from the Land Wise table.)");
+        missingFields.push(t("Land Wise Details (Please check at least one land from the Land Wise table.)"));
       }
       if (!data.equordev.includes("constructedArea")) {
-        missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
+        missingFields.push(t("Constructed Area Details (please check the Constructed Area checkbox)"));
       }
       if (missingFields.length > 0) {
         Swal.fire({
           icon: "warning",
-          title: "⚠️ Missing Details",
+          title: t("⚠️ Missing Details"),
           html: `
             <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
-              Please provide the following required details before proceeding:
+              ${t("Please provide the following required details before proceeding:")}
             </div>
             <ul style="
               text-align:left;
@@ -4819,7 +4818,7 @@ const isUserValid = React.useMemo(() => {
               ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
             </ul>
           `,
-          confirmButtonText: "OK, Got it!",
+          confirmButtonText: t("OK, Got it!"),
           confirmButtonColor: "#f0a500",
           background: "#fff8f0",
           customClass: {
@@ -4841,22 +4840,22 @@ const isUserValid = React.useMemo(() => {
     // ARM: validate all Reeler Land Details fields are filled
     if (getIncentiveAndBonusData?.[0]?.unitForScheme === "Automatic Reeling Machine Unit") {
       const armMissingFields = [];
-      if (!data.armLandType)    armMissingFields.push("Land Type");
-      if (!data.armDistrictId)  armMissingFields.push("District");
-      if (!data.armTalukId)     armMissingFields.push("Taluk");
-      if (!data.armHobliId)     armMissingFields.push("Hobli");
-      if (!data.armVillageId)   armMissingFields.push("Village");
-      if (!data.armAddress)     armMissingFields.push("Address");
-      if (!data.armOwnerName)   armMissingFields.push("Owner Name");
-      if (!data.armSurveyNo)    armMissingFields.push("Survey No. / Property No.");
-      if (!data.armAssessmentNo) armMissingFields.push("Assessment No.");
+      if (!data.armLandType)    armMissingFields.push(t("Land Type"));
+      if (!data.armDistrictId)  armMissingFields.push(t("District"));
+      if (!data.armTalukId)     armMissingFields.push(t("Taluk"));
+      if (!data.armHobliId)     armMissingFields.push(t("Hobli"));
+      if (!data.armVillageId)   armMissingFields.push(t("Village"));
+      if (!data.armAddress)     armMissingFields.push(t("Address"));
+      if (!data.armOwnerName)   armMissingFields.push(t("Owner Name"));
+      if (!data.armSurveyNo)    armMissingFields.push(t("Survey No. / Property No."));
+      if (!data.armAssessmentNo) armMissingFields.push(t("Assessment No."));
       if (armMissingFields.length > 0) {
         Swal.fire({
           icon: "warning",
-          title: "⚠️ Missing Reeler Land Details",
+          title: t("⚠️ Missing Reeler Land Details"),
           html: `
             <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
-              Please fill in all required Reeler Land Details before saving:
+              ${t("Please fill in all required Reeler Land Details before saving:")}
             </div>
             <ul style="
               text-align:left;
@@ -4870,7 +4869,7 @@ const isUserValid = React.useMemo(() => {
               ${armMissingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
             </ul>
           `,
-          confirmButtonText: "OK, Got it!",
+          confirmButtonText: t("OK, Got it!"),
           confirmButtonColor: "#f0a500",
           background: "#fff8f0",
           customClass: {
@@ -4886,18 +4885,18 @@ const isUserValid = React.useMemo(() => {
     if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Reeling Shed-PSF") {
       const missingFields = [];
       if (data.addKaneshLand !== "yes") {
-        missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
+        missingFields.push(t("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)"));
       }
       if (!data.equordev.includes("constructedArea")) {
-        missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
+        missingFields.push(t("Constructed Area Details (please check the Constructed Area checkbox)"));
       }
       if (missingFields.length > 0) {
         Swal.fire({
           icon: "warning",
-          title: "⚠️ Missing Details",
+          title: t("⚠️ Missing Details"),
           html: `
             <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
-              Please provide the following required details before proceeding:
+              ${t("Please provide the following required details before proceeding:")}
             </div>
             <ul style="
               text-align:left;
@@ -4911,7 +4910,7 @@ const isUserValid = React.useMemo(() => {
               ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
             </ul>
           `,
-          confirmButtonText: "OK, Got it!",
+          confirmButtonText: t("OK, Got it!"),
           confirmButtonColor: "#f0a500",
           background: "#fff8f0",
           customClass: {
@@ -4930,18 +4929,18 @@ const isUserValid = React.useMemo(() => {
       //   missingFields.push("Kanesh Land Details (please select 'Yes' to add Kanesh Land Details)");
       // }
       if (!data.equordev.includes("equipment")) {
-        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+        missingFields.push(t("Equipment Purchase (please check the Equipment Purchase checkbox)"));
       } else {
-        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
-        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
+        if (!equipment.vendorId) missingFields.push(t("Vendor Name in Equipment Purchase"));
+        if (!equipment.l1Rate) missingFields.push(t("L1 Rate in Equipment Purchase"));
       }
       if (missingFields.length > 0) {
         Swal.fire({
           icon: "warning",
-          title: "⚠️ Missing Details",
+          title: t("⚠️ Missing Details"),
           html: `
             <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
-              Please provide the following required details before proceeding:
+              ${t("Please provide the following required details before proceeding:")}
             </div>
             <ul style="
               text-align:left;
@@ -4955,7 +4954,7 @@ const isUserValid = React.useMemo(() => {
               ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
             </ul>
           `,
-          confirmButtonText: "OK, Got it!",
+          confirmButtonText: t("OK, Got it!"),
           confirmButtonColor: "#f0a500",
           background: "#fff8f0",
           customClass: {
@@ -4971,21 +4970,21 @@ const isUserValid = React.useMemo(() => {
     if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "MERM-PSF") {
       const missingFields = [];
       if (!data.equordev.includes("constructedArea")) {
-        missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
+        missingFields.push(t("Constructed Area Details (please check the Constructed Area checkbox)"));
       }
       if (!data.equordev.includes("equipment")) {
-        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+        missingFields.push(t("Equipment Purchase (please check the Equipment Purchase checkbox)"));
       } else {
-        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
-        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
+        if (!equipment.vendorId) missingFields.push(t("Vendor Name in Equipment Purchase"));
+        if (!equipment.l1Rate) missingFields.push(t("L1 Rate in Equipment Purchase"));
       }
       if (missingFields.length > 0) {
         Swal.fire({
           icon: "warning",
-          title: "⚠️ Missing Details",
+          title: t("⚠️ Missing Details"),
           html: `
             <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
-              Please provide the following required details before proceeding:
+              ${t("Please provide the following required details before proceeding:")}
             </div>
             <ul style="
               text-align:left;
@@ -4999,7 +4998,7 @@ const isUserValid = React.useMemo(() => {
               ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
             </ul>
           `,
-          confirmButtonText: "OK, Got it!",
+          confirmButtonText: t("OK, Got it!"),
           confirmButtonColor: "#f0a500",
           background: "#fff8f0",
           customClass: {
@@ -5015,18 +5014,18 @@ const isUserValid = React.useMemo(() => {
     if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "IMCB-PSF") {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
-        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+        missingFields.push(t("Equipment Purchase (please check the Equipment Purchase checkbox)"));
       } else {
-        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
-        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
+        if (!equipment.vendorId) missingFields.push(t("Vendor Name in Equipment Purchase"));
+        if (!equipment.l1Rate) missingFields.push(t("L1 Rate in Equipment Purchase"));
       }
       if (missingFields.length > 0) {
         Swal.fire({
           icon: "warning",
-          title: "⚠️ Missing Details",
+          title: t("⚠️ Missing Details"),
           html: `
             <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
-              Please provide the following required details before proceeding:
+              ${t("Please provide the following required details before proceeding:")}
             </div>
             <ul style="
               text-align:left;
@@ -5040,7 +5039,7 @@ const isUserValid = React.useMemo(() => {
               ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
             </ul>
           `,
-          confirmButtonText: "OK, Got it!",
+          confirmButtonText: t("OK, Got it!"),
           confirmButtonColor: "#f0a500",
           background: "#fff8f0",
           customClass: {
@@ -5056,18 +5055,18 @@ const isUserValid = React.useMemo(() => {
     if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Boiler-PSF") {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
-        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+        missingFields.push(t("Equipment Purchase (please check the Equipment Purchase checkbox)"));
       } else {
-        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
-        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
+        if (!equipment.vendorId) missingFields.push(t("Vendor Name in Equipment Purchase"));
+        if (!equipment.l1Rate) missingFields.push(t("L1 Rate in Equipment Purchase"));
       }
       if (missingFields.length > 0) {
         Swal.fire({
           icon: "warning",
-          title: "⚠️ Missing Details",
+          title: t("⚠️ Missing Details"),
           html: `
             <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
-              Please provide the following required details before proceeding:
+              ${t("Please provide the following required details before proceeding:")}
             </div>
             <ul style="
               text-align:left;
@@ -5081,7 +5080,7 @@ const isUserValid = React.useMemo(() => {
               ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
             </ul>
           `,
-          confirmButtonText: "OK, Got it!",
+          confirmButtonText: t("OK, Got it!"),
           confirmButtonColor: "#f0a500",
           background: "#fff8f0",
           customClass: {
@@ -5097,18 +5096,18 @@ const isUserValid = React.useMemo(() => {
     if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Silent Generator") {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
-        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+        missingFields.push(t("Equipment Purchase (please check the Equipment Purchase checkbox)"));
       } else {
-        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
-        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
+        if (!equipment.vendorId) missingFields.push(t("Vendor Name in Equipment Purchase"));
+        if (!equipment.l1Rate) missingFields.push(t("L1 Rate in Equipment Purchase"));
       }
       if (missingFields.length > 0) {
         Swal.fire({
           icon: "warning",
-          title: "⚠️ Missing Details",
+          title: t("⚠️ Missing Details"),
           html: `
             <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
-              Please provide the following required details before proceeding:
+              ${t("Please provide the following required details before proceeding:")}
             </div>
             <ul style="
               text-align:left;
@@ -5122,7 +5121,7 @@ const isUserValid = React.useMemo(() => {
               ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
             </ul>
           `,
-          confirmButtonText: "OK, Got it!",
+          confirmButtonText: t("OK, Got it!"),
           confirmButtonColor: "#f0a500",
           background: "#fff8f0",
           customClass: {
@@ -5138,18 +5137,18 @@ const isUserValid = React.useMemo(() => {
     if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar power Generator") {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
-        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+        missingFields.push(t("Equipment Purchase (please check the Equipment Purchase checkbox)"));
       } else {
-        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
-        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
+        if (!equipment.vendorId) missingFields.push(t("Vendor Name in Equipment Purchase"));
+        if (!equipment.l1Rate) missingFields.push(t("L1 Rate in Equipment Purchase"));
       }
       if (missingFields.length > 0) {
         Swal.fire({
           icon: "warning",
-          title: "⚠️ Missing Details",
+          title: t("⚠️ Missing Details"),
           html: `
             <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
-              Please provide the following required details before proceeding:
+              ${t("Please provide the following required details before proceeding:")}
             </div>
             <ul style="
               text-align:left;
@@ -5163,7 +5162,7 @@ const isUserValid = React.useMemo(() => {
               ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
             </ul>
           `,
-          confirmButtonText: "OK, Got it!",
+          confirmButtonText: t("OK, Got it!"),
           confirmButtonColor: "#f0a500",
           background: "#fff8f0",
           customClass: {
@@ -5179,18 +5178,18 @@ const isUserValid = React.useMemo(() => {
     if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Solar Water Heater") {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
-        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+        missingFields.push(t("Equipment Purchase (please check the Equipment Purchase checkbox)"));
       } else {
-        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
-        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
+        if (!equipment.vendorId) missingFields.push(t("Vendor Name in Equipment Purchase"));
+        if (!equipment.l1Rate) missingFields.push(t("L1 Rate in Equipment Purchase"));
       }
       if (missingFields.length > 0) {
         Swal.fire({
           icon: "warning",
-          title: "⚠️ Missing Details",
+          title: t("⚠️ Missing Details"),
           html: `
             <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
-              Please provide the following required details before proceeding:
+              ${t("Please provide the following required details before proceeding:")}
             </div>
             <ul style="
               text-align:left;
@@ -5204,7 +5203,7 @@ const isUserValid = React.useMemo(() => {
               ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
             </ul>
           `,
-          confirmButtonText: "OK, Got it!",
+          confirmButtonText: t("OK, Got it!"),
           confirmButtonColor: "#f0a500",
           background: "#fff8f0",
           customClass: {
@@ -5220,18 +5219,18 @@ const isUserValid = React.useMemo(() => {
     if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Adopting Heat Recovery Unit-PSF") {
       const missingFields = [];
       if (!data.equordev.includes("equipment")) {
-        missingFields.push("Equipment Purchase (please check the Equipment Purchase checkbox)");
+        missingFields.push(t("Equipment Purchase (please check the Equipment Purchase checkbox)"));
       } else {
-        if (!equipment.vendorId) missingFields.push("Vendor Name in Equipment Purchase");
-        if (!equipment.l1Rate) missingFields.push("L1 Rate in Equipment Purchase");
+        if (!equipment.vendorId) missingFields.push(t("Vendor Name in Equipment Purchase"));
+        if (!equipment.l1Rate) missingFields.push(t("L1 Rate in Equipment Purchase"));
       }
       if (missingFields.length > 0) {
         Swal.fire({
           icon: "warning",
-          title: "⚠️ Missing Details",
+          title: t("⚠️ Missing Details"),
           html: `
             <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
-              Please provide the following required details before proceeding:
+              ${t("Please provide the following required details before proceeding:")}
             </div>
             <ul style="
               text-align:left;
@@ -5245,7 +5244,7 @@ const isUserValid = React.useMemo(() => {
               ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
             </ul>
           `,
-          confirmButtonText: "OK, Got it!",
+          confirmButtonText: t("OK, Got it!"),
           confirmButtonColor: "#f0a500",
           background: "#fff8f0",
           customClass: {
@@ -5261,21 +5260,21 @@ const isUserValid = React.useMemo(() => {
     if (getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Rearing Equipment SS") {
       const missingFields = [];
       if (!data.equordev.includes("land")) {
-        missingFields.push("Land Wise Details (please check the Land Wise checkbox)");
+        missingFields.push(t("Land Wise Details (please check the Land Wise checkbox)"));
       }
       if (!data.equordev.includes("constructedArea")) {
-        missingFields.push("Constructed Area Details (please check the Constructed Area checkbox)");
+        missingFields.push(t("Constructed Area Details (please check the Constructed Area checkbox)"));
       }
       if (rearingEquipmentPurchaseList.some((item) => !item.l1Rate)) {
-        missingFields.push("L1 Rate in Equipment Purchase (required for all rows)");
+        missingFields.push(t("L1 Rate in Equipment Purchase (required for all rows)"));
       }
       if (missingFields.length > 0) {
         Swal.fire({
           icon: "warning",
-          title: "⚠️ Missing Details",
+          title: t("⚠️ Missing Details"),
           html: `
             <div style="text-align:center; margin-bottom:10px; font-size:15px; color:#555;">
-              Please provide the following required details before proceeding:
+              ${t("Please provide the following required details before proceeding:")}
             </div>
             <ul style="
               text-align:left;
@@ -5289,7 +5288,7 @@ const isUserValid = React.useMemo(() => {
               ${missingFields.map(f => `<li style="margin-bottom:4px;">✖ ${f}</li>`).join("")}
             </ul>
           `,
-          confirmButtonText: "OK, Got it!",
+          confirmButtonText: t("OK, Got it!"),
           confirmButtonColor: "#f0a500",
           background: "#fff8f0",
           customClass: {
@@ -5306,8 +5305,8 @@ const isUserValid = React.useMemo(() => {
     if (getIncentiveAndBonusData?.[0]?.monthlyFrequency === true && !data.monthYear) {
       Swal.fire({
         icon: "warning",
-        title: "Month Required",
-        text: "Please select a Month.",
+        title: t("Month Required"),
+        text: t("Please select a Month."),
       });
       return;
     }
@@ -6273,7 +6272,7 @@ const isUserValid = React.useMemo(() => {
       const fileURL = URL.createObjectURL(file);
       window.open(fileURL);
     } catch (error) {
-      Swal.fire({ icon: "error", title: "Acknowledgement Error", text: "Could not generate ARM acknowledgement. Please try again." });
+      Swal.fire({ icon: "error", title: t("Acknowledgement Error"), text: t("Could not generate ARM acknowledgement. Please try again.") });
     }
   };
 
@@ -6423,21 +6422,21 @@ const isUserValid = React.useMemo(() => {
 
   const saveSuccess = () => {
     Swal.fire({
-      title: `<span style="font-size:17px;font-weight:700;color:#065f46;">Application Saved!</span>`,
+      title: `<span style="font-size:17px;font-weight:700;color:#065f46;">${t("Application Saved!")}</span>`,
       html: `
         <div style="text-align:center;padding:6px 0 4px;">
           <div style="display:inline-flex;align-items:center;justify-content:center;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#d1fae5,#a7f3d0);margin-bottom:12px;box-shadow:0 4px 14px rgba(13,122,79,0.18);">
             <span style="font-size:28px;">✅</span>
           </div>
           <div style="font-size:14px;color:#374151;font-weight:500;margin-bottom:6px;">
-            Application submitted successfully.
+            ${t("Application submitted successfully.")}
           </div>
           <div style="background:#ecfdf5;border:1px solid #6ee7b7;border-radius:7px;padding:7px 14px;font-size:12px;color:#065f46;display:inline-block;">
-            Your application has been recorded in the system.
+            ${t("Your application has been recorded in the system.")}
           </div>
         </div>
       `,
-      confirmButtonText: "✔ OK",
+      confirmButtonText: t("✔ OK"),
       confirmButtonColor: "#0d7a4f",
       background: "#f6fdf9",
       width: "390px",
@@ -6453,12 +6452,12 @@ const isUserValid = React.useMemo(() => {
 
   const uploadFileConfirm = (post) => {
   Swal.fire({
-    title: "Upload Documents?",
-    html: `<div style="font-size:13.5px;color:#555;">Would you like to upload supporting documents now?</div>`,
+    title: t("Upload Documents?"),
+    html: `<div style="font-size:13.5px;color:#555;">${t("Would you like to upload supporting documents now?")}</div>`,
     icon: "question",
     showCancelButton: true,
-    confirmButtonText: "Yes, Upload",
-    cancelButtonText: "Later",
+    confirmButtonText: t("Yes, Upload"),
+    cancelButtonText: t("Later"),
     confirmButtonColor: "#1a5fa8",
     cancelButtonColor: "#64748b",
     background: "#f0f6ff",
@@ -6469,8 +6468,8 @@ const isUserValid = React.useMemo(() => {
     if (!localStorageUserId2 || localStorageUserId2 === "null" || !post.userMasterId) {
       Swal.fire({
         icon: "warning",
-        title: "Please Select User Master",
-        text: "Please Select User Master and Save it once again",
+        title: t("Please Select User Master"),
+        text: t("Please Select User Master and Save it once again"),
         confirmButtonColor: "#1e67a8",
       });
       setSaveDisabled(false);
@@ -6565,8 +6564,8 @@ const handleSubmitApplication = async () => {
   if (!canGenerateSanction) {
     Swal.fire({
       icon: "warning",
-      title: "Sanction Disabled",
-      html: `<div style="font-size:13.5px;color:#555;">Sanction Order is disabled for this component type.</div>`,
+      title: t("Sanction Disabled"),
+      html: `<div style="font-size:13.5px;color:#555;">${t("Sanction Order is disabled for this component type.")}</div>`,
       confirmButtonText: "OK",
       confirmButtonColor: "#f0a500",
       width: "360px",
@@ -6952,7 +6951,7 @@ const callAcknowledgmentFunction = (
     }
     Swal.fire({
       icon: "error",
-      title: "Save Failed",
+      title: t("Save Failed"),
       html: `<div style="font-size:13.5px;color:#555;line-height:1.6;">${errorMessage}</div>`,
       confirmButtonText: "OK",
       confirmButtonColor: "#c0392b",
@@ -7169,7 +7168,7 @@ const fetchReelerDetails = () => {
 
   const LandDetailsColumns = [
     {
-      name: "Select",
+      name: t("Select"),
       selector: "select",
       cell: (row) => (
         <input
@@ -7302,7 +7301,7 @@ const fetchReelerDetails = () => {
 
   const LandDetailsForDevColumns = [
     {
-      name: "Select",
+      name: t("Select"),
       selector: "select",
       cell: (row, i) => (
         <input
@@ -7421,7 +7420,7 @@ const fetchReelerDetails = () => {
     },
 
     {
-      name: "Developed Area (Acre/Gunta/FGunta)",
+      name: t("Developed Area (Acre/Gunta/FGunta)"),
       // selector: (row,id) => console.log("rowDetails",id),
       cell: (row, i) => (
         <>
@@ -7571,7 +7570,7 @@ const fetchReelerDetails = () => {
       // SweetAlert success function
       Swal.fire({
         icon: "success",
-        title: "File uploaded successfully",
+        title: t("File uploaded successfully"),
       });
 
       // setIsUploaded(true);
@@ -7604,8 +7603,8 @@ const fetchReelerDetails = () => {
       console.error("Error uploading file:", error);
       Swal.fire({
         icon: "error",
-        title: "Error",
-        text: "Error uploading file. Please try again.",
+        title: t("Error"),
+        text: t("Error uploading file. Please try again."),
       });
     }
   };
@@ -7689,7 +7688,7 @@ const fetchReelerDetails = () => {
     }
     Swal.fire({
       icon: "error",
-      title: "Details Not Found",
+      title: t("Details Not Found"),
       html: `<div style="font-size:13.5px;color:#555;line-height:1.6;">${errorMessage}</div>`,
       confirmButtonText: "OK",
       confirmButtonColor: "#c0392b",
@@ -7859,7 +7858,7 @@ const serviceApplicationStyles = `
                         maxLength="16"
                       />
                       <Form.Control.Feedback type="invalid">
-                        Fruits ID Should Contain 16 digits
+                        {t("Fruits ID Should Contain 16 digits")}
                       </Form.Control.Feedback>
                     </Col>
                     <Col sm={2}>
@@ -8245,7 +8244,7 @@ const serviceApplicationStyles = `
                                   name="rhSqft"
                                   value={developedLand.rhSqft}
                                   onChange={handleDevelopedLandInputs}
-                                  placeholder="Enter Constructed Area in Sqft"
+                                  placeholder={t("Enter Constructed Area in Sqft")}
                                 />
                               </div>
                             </Form.Group>
@@ -8299,7 +8298,7 @@ const serviceApplicationStyles = `
                                 name="taxAmount"
                                 value={data.taxAmount}
                                 onChange={handleInputs}
-                                placeholder="Enter Tax Invoice Amount (in Rs)"
+                                placeholder={t("Enter Tax Invoice Amount (in Rs)")}
                                 required
                               />
                             </Form.Group>
@@ -8333,7 +8332,7 @@ const serviceApplicationStyles = `
                                     name="taxInvoiceNo"
                                     value={data.taxInvoiceNo}
                                     onChange={handleInputs}
-                                    placeholder="Enter Tax Invoice No"
+                                    placeholder={t("Enter Tax Invoice No")}
                                     // required
                                   />
                                 </div>
@@ -8382,7 +8381,7 @@ const serviceApplicationStyles = `
                                   name="taxAmount"
                                   value={data.taxAmount}
                                   onChange={handleInputs}
-                                  placeholder="Enter Tax Invoice Amount (in Rs)"
+                                  placeholder={t("Enter Tax Invoice Amount (in Rs)")}
                                   required
                                 />
                               </Form.Group>
@@ -8460,7 +8459,7 @@ const serviceApplicationStyles = `
                                       name="machineQuantity"
                                       value={data.machineQuantity}
                                       onChange={handleInputs}
-                                      placeholder="Enter Quantity in kg"
+                                      placeholder={t("Enter Quantity in kg")}
                                       required
                                       // readOnly
                                     />
@@ -8481,7 +8480,7 @@ const serviceApplicationStyles = `
                                       name="year"
                                       value={data.year}
                                       onChange={handleInputs}
-                                      placeholder="Enter Year"
+                                      placeholder={t("Enter Year")}
                                       // required
                                       // readOnly
                                     />
@@ -8697,7 +8696,7 @@ const serviceApplicationStyles = `
                                 name="taxAmount"
                                 value={data.taxAmount}
                                 onChange={handleInputs}
-                                placeholder="Enter Tax Invoice Amount (in Rs)"
+                                placeholder={t("Enter Tax Invoice Amount (in Rs)")}
                                 required
                               />
                             </Form.Group>
@@ -8722,7 +8721,7 @@ const serviceApplicationStyles = `
                                       name="boilerInKg"
                                       value={data.boilerInKg}
                                       onChange={handleInputs}
-                                      placeholder="Enter Boiler In Kg"
+                                      placeholder={t("Enter Boiler In Kg")}
                                       required
                                       // readOnly
                                     />
@@ -8744,7 +8743,7 @@ const serviceApplicationStyles = `
                                 name="taxAmount"
                                 value={data.taxAmount}
                                 onChange={handleInputs}
-                                placeholder="Enter Tax Invoice Amount (in Rs)"
+                                placeholder={t("Enter Tax Invoice Amount (in Rs)")}
                                 required
                               />
                             </Form.Group>
@@ -8986,7 +8985,7 @@ const serviceApplicationStyles = `
                                 name="taxAmount"
                                 value={data.taxAmount}
                                 onChange={handleInputs}
-                                placeholder="Enter Tax Invoice Amount (in Rs)"
+                                placeholder={t("Enter Tax Invoice Amount (in Rs)")}
                                 required
                               />
                             </Form.Group>
@@ -9127,7 +9126,7 @@ const serviceApplicationStyles = `
                                 name="taxAmount"
                                 value={data.taxAmount}
                                 onChange={handleInputs}
-                                placeholder="Enter Tax Invoice Amount (in Rs)"
+                                placeholder={t("Enter Tax Invoice Amount (in Rs)")}
                                 required
                               />
                             </Form.Group>
@@ -9256,7 +9255,7 @@ const serviceApplicationStyles = `
                                 name="reelingUnit"
                                 value={data.reelingUnit}
                                 onChange={handleInputs}
-                                placeholder="Enter Model"
+                                placeholder={t("Enter Model")}
                                 required
                                 // disabled={actionData.rejectType === "Permanent"}
                               />
@@ -9377,7 +9376,7 @@ const serviceApplicationStyles = `
                                 name="taxAmount"
                                 value={data.taxAmount}
                                 onChange={handleInputs}
-                                placeholder="Enter Tax Invoice Amount (in Rs)"
+                                placeholder={t("Enter Tax Invoice Amount (in Rs)")}
                                 required
                                 // disabled={actionData.rejectType === "Permanent"}
                               />
@@ -9429,7 +9428,7 @@ const serviceApplicationStyles = `
                                 name="taxAmount"
                                 value={data.taxAmount}
                                 onChange={handleInputs}
-                                placeholder="Enter Tax Invoice Amount (in Rs)"
+                                placeholder={t("Enter Tax Invoice Amount (in Rs)")}
                                 required
                               />
                             </Form.Group>
@@ -9481,7 +9480,7 @@ const serviceApplicationStyles = `
                                 name="taxAmount"
                                 value={data.taxAmount}
                                 onChange={handleInputs}
-                                placeholder="Enter Tax Invoice Amount (in Rs)"
+                                placeholder={t("Enter Tax Invoice Amount (in Rs)")}
                                 required
                               />
                             </Form.Group>
@@ -9690,7 +9689,7 @@ const serviceApplicationStyles = `
 
                               {validated && !isUserValid && (
                                 <div className="invalid-feedback d-block">
-                                  User is required
+                                  {t("User is required")}
                                 </div>
                               )}
                             </Form.Group>
@@ -9712,7 +9711,7 @@ const serviceApplicationStyles = `
                                 name="sanctionNo"
                                 value={data.sanctionNo}
                                 onChange={handleInputs}
-                                placeholder="Enter Sanction Number"
+                                placeholder={t("Enter Sanction Number")}
                                 required
                                 // disabled={actionData.rejectType === "Permanent"}
                               />
@@ -9956,7 +9955,7 @@ const serviceApplicationStyles = `
                           <Col lg="4">
                             <Form.Group className="form-group mt-n4">
                               <Form.Label>
-                                {t("Monthly Limit In Kgs ")} 
+                                {t("Monthly Limit In Kgs")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -9980,7 +9979,7 @@ const serviceApplicationStyles = `
                           <Col lg="4">
                             <Form.Group className="form-group">
                               <Form.Label>
-                                {t("Quantity Of Cocoons  used to Produce Raw Silk(In Kgs)")} 
+                                {t("Quantity Of Cocoons used to Produce Raw Silk(In Kgs)")}
                                 <span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
@@ -10127,14 +10126,14 @@ const serviceApplicationStyles = `
         <Col lg="4">
           <Form.Group>
             <Form.Label>
-              Subsidy Amount Already Paid <span className="text-danger">*</span>
+              {t("Subsidy Amount Already Paid")} <span className="text-danger">*</span>
             </Form.Label>
             <Form.Control
               type="number"
               name="alreadyPaidAmount"
               value={data.alreadyPaidAmount}
               onChange={handleInputs}
-              placeholder="Enter Amount"
+              placeholder={t("Enter Amount")}
               required
             />
           </Form.Group>
@@ -10221,7 +10220,7 @@ const serviceApplicationStyles = `
                                 }}
                                 className="form-control"
                               >
-                                <option value="">-- Select Lot --</option>
+                                <option value="">{t("-- Select Lot --")}</option>
                                 {lotOptions.map((lot) => (
                                   <option key={lot.allottedLotId} value={lot.allottedLotId}>
                                     {lot.allottedLotId}
@@ -10244,12 +10243,12 @@ const serviceApplicationStyles = `
                                 name="averageYield"
                                 value={data.averageYield}
                                 onChange={handleInputs}
-                                placeholder="Enter Average Yield"
+                                placeholder={t("Enter Average Yield")}
                                 // readOnly
                                 // required
                               />
                               {/* <Form.Control.Feedback type="invalid">
-                              Total Cocoons Weight is required
+                              {t("Total Cocoons Weight is required")}
                               </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
@@ -10259,7 +10258,7 @@ const serviceApplicationStyles = `
                         <Col lg="3">
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="schemeAmount">
-                             No Of Cocoons/Kg
+                             {t("No Of Cocoons/Kg")}
                               {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -10269,12 +10268,12 @@ const serviceApplicationStyles = `
                                 name="noOfCocoonPerKg"
                                 value={data.noOfCocoonPerKg}
                                 onChange={handleInputs}
-                                placeholder="Enter  No Of Cocoons/Kg"
+                                placeholder={t("Enter No Of Cocoons/Kg")}
                                 // readOnly
                                 // required
                               />
                               {/* <Form.Control.Feedback type="invalid">
-                              Total Cocoons Weight is required
+                              {t("Total Cocoons Weight is required")}
                               </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
@@ -10283,7 +10282,7 @@ const serviceApplicationStyles = `
                           <Col lg="3">
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="schemeAmount">
-                              Total Cocoons Weight
+                              {t("Total Cocoons Weight")}
                               {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -10293,12 +10292,12 @@ const serviceApplicationStyles = `
                                 name="cocoonsWeight"
                                 value={data.cocoonsWeight}
                                 onChange={handleInputs}
-                                placeholder="Enter Total Cocoons Weight"
+                                placeholder={t("Enter Total Cocoons Weight")}
                                 readOnly
                                 // required
                               />
                               {/* <Form.Control.Feedback type="invalid">
-                              Total Cocoons Weight is required
+                              {t("Total Cocoons Weight is required")}
                               </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
@@ -10367,16 +10366,16 @@ const serviceApplicationStyles = `
                                   <thead>
                                     <tr>
                                       <th>Sl. No</th>
-                                      <th>Farmer Name</th>
-                                      <th>Buyer Type</th>
+                                      <th>{t("Farmer Name")}</th>
+                                      <th>{t("Buyer Type")}</th>
                                       <th>Cocoons Weight</th>
                                       <th>Lot Parent Level</th>
                                       <th>DFL Lot No</th>
-                                      <th>Buyer Name</th>
-                                      <th>Amount</th>
-                                      <th>Market Name</th>
+                                      <th>{t("Buyer Name")}</th>
+                                      <th>{t("Amount")}</th>
+                                      <th>{t("Market Name")}</th>
                                       <th>Farmer Village</th>
-                                      <th>Total Lot Weight</th>
+                                      <th>{t("Total Lot Weight")}</th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -10399,10 +10398,10 @@ const serviceApplicationStyles = `
                                       <td colSpan="10">
                                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                                           <span style={{ color: "green", fontWeight: "bold" }}>
-                                            Total Cocoons Weight Of Seed Area – Eligible for Incentive: {farmerDetailsForIB[0]?.totalLotWeight || 0}
+                                            {t("Total Cocoons Weight Of Seed Area – Eligible for Incentive:")} {farmerDetailsForIB[0]?.totalLotWeight || 0}
                                           </span>
                                           <span style={{ color: "green", fontWeight: "bold" }}>
-                                            Total Cocoons Weight For Reeling – Eligible for Bonus and Incentive: {farmerDetailsForIB[0]?.sumLotWeightReeling || 0}
+                                            {t("Total Cocoons Weight For Reeling – Eligible for Bonus and Incentive:")} {farmerDetailsForIB[0]?.sumLotWeightReeling || 0}
                                           </span>
                                         </div>
                                       </td>
@@ -10431,12 +10430,12 @@ const serviceApplicationStyles = `
                            
 
                            <Card>
-                            <Card.Header style={{ fontWeight: "600", fontSize: "13.5px", background: "#f0f6ff", color: "#1a3c6e", borderBottom: "1px solid #dce8f5", padding: "9px 16px", letterSpacing: "0.2px" }}>Rearing Equipment Details</Card.Header>
+                            <Card.Header style={{ fontWeight: "600", fontSize: "13.5px", background: "#f0f6ff", color: "#1a3c6e", borderBottom: "1px solid #dce8f5", padding: "9px 16px", letterSpacing: "0.2px" }}>{t("Rearing Equipment Details")}</Card.Header>
                             <Card.Body>
                               <table className="table table-bordered">
                                 <thead>
                                   <tr>
-                                    <th>Select</th>
+                                    <th>{t("Select")}</th>
                                     <th>Subsidy Name</th>
                                     <th>Eligible Nos</th>
                                     <th>Eligible Value</th>
@@ -10666,12 +10665,12 @@ const serviceApplicationStyles = `
 
                           
                           <Card className="p-0">
-                            <Card.Header style={{ fontWeight: "600", fontSize: "13.5px", background: "#f0f6ff", color: "#1a3c6e", borderBottom: "1px solid #dce8f5", padding: "9px 16px", letterSpacing: "0.2px" }}>Rearing Equipment Details</Card.Header>
+                            <Card.Header style={{ fontWeight: "600", fontSize: "13.5px", background: "#f0f6ff", color: "#1a3c6e", borderBottom: "1px solid #dce8f5", padding: "9px 16px", letterSpacing: "0.2px" }}>{t("Rearing Equipment Details")}</Card.Header>
                             <Card.Body>
                               <table className="table table-bordered">
                                 <thead>
                                   <tr>
-                                    <th>Select</th>
+                                    <th>{t("Select")}</th>
                                     <th>Subsidy Name</th>
                                     <th>Eligible Nos</th>
                                     <th>Eligible Value</th>
@@ -11175,18 +11174,18 @@ const serviceApplicationStyles = `
 
                           <Card className="mt-4">
                         <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", fontWeight: 700, color: "white", padding: "10px 16px", letterSpacing: "0.3px" }}>
-                          Final Total Summary
+                          {t("Final Total Summary")}
                         </Card.Header>
 
                         <Card.Body>
                           {(() => {
-                            const t = calculateTotals(chawkiData);
+                            const totals = calculateTotals(chawkiData);
                             return (
                               <>
                              
-                                <p><strong>Total Claimed Amount:</strong> {t.totalClaimed}</p>
-                                <p><strong>Total Eligible Amount:</strong> {t.totalEligible}</p>
-                                <p><strong>Total Subsidy Amount:</strong> {t.totalSubsidy}</p>
+                                <p><strong>{t("Total Claimed Amount:")}</strong> {totals.totalClaimed}</p>
+                                <p><strong>{t("Total Eligible Amount:")}</strong> {totals.totalEligible}</p>
+                                <p><strong>{t("Total Subsidy Amount:")}</strong> {totals.totalSubsidy}</p>
                               </>
                             );
                           })()}
@@ -11295,7 +11294,7 @@ const serviceApplicationStyles = `
                                 }}
                                 className="form-control"
                               >
-                                <option value="">-- Select Lot --</option>
+                                <option value="">{t("-- Select Lot --")}</option>
                                 {lotOptionsForCommercialMarket.map((lot) => (
                                   <option key={lot.biddingSlipNo} value={lot.biddingSlipNo}>
                                     {lot.biddingSlipNo}
@@ -11313,7 +11312,7 @@ const serviceApplicationStyles = `
                           <Col lg="2">
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="schemeAmount">
-                              Cocoons Transacted
+                              {t("Cocoons Transacted")}
                               {/* <span className="text-danger">*</span> */}
                             </Form.Label>
                             <div className="form-control-wrap">
@@ -11323,12 +11322,12 @@ const serviceApplicationStyles = `
                                 name="cocoonsWeight"
                                 value={data.cocoonsWeight}
                                 onChange={handleInputs}
-                                placeholder="Enter Cocoons Transacted"
+                                placeholder={t("Enter Cocoons Transacted")}
                                 // readOnly
                                 // required
                               />
                               {/* <Form.Control.Feedback type="invalid">
-                              Total Cocoons Weight is required
+                              {t("Total Cocoons Weight is required")}
                               </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
@@ -11348,12 +11347,12 @@ const serviceApplicationStyles = `
                                 name="lotWeight"
                                 value={data.lotWeight}
                                 onChange={handleInputs}
-                                placeholder="Enter  No Of DFLs"
+                                placeholder={t("Enter No Of DFLs")}
                                 // readOnly
                                 // required
                               />
                               {/* <Form.Control.Feedback type="invalid">
-                              Total Cocoons Weight is required
+                              {t("Total Cocoons Weight is required")}
                               </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
@@ -11372,12 +11371,12 @@ const serviceApplicationStyles = `
                                 name="averageYield"
                                 value={data.averageYield}
                                 onChange={handleInputs}
-                                placeholder="Enter Average Yield"
+                                placeholder={t("Enter Average Yield")}
                                 // readOnly
                                 // required
                               />
                               {/* <Form.Control.Feedback type="invalid">
-                              Total Cocoons Weight is required
+                              {t("Total Cocoons Weight is required")}
                               </Form.Control.Feedback> */}
                             </div>
                           </Form.Group>
@@ -11494,7 +11493,7 @@ const serviceApplicationStyles = `
                           <Col lg="2">
                           <Form.Group className="form-group">
                             <Form.Label htmlFor="schemeAmount">
-                              Total Cocoons Transacted
+                              {t("Total Cocoons Transacted")}
                             </Form.Label>
                             <div className="form-control-wrap">
                               <Form.Control
@@ -11503,7 +11502,7 @@ const serviceApplicationStyles = `
                                 name="cocoonsWeight"
                                 value={data.cocoonsWeight}
                                 onChange={handleInputs}
-                                placeholder="Enter Cocoons Transacted"
+                                placeholder={t("Enter Cocoons Transacted")}
                               />
                             </div>
                           </Form.Group>
@@ -11521,7 +11520,7 @@ const serviceApplicationStyles = `
                                 name="lotWeight"
                                 value={data.lotWeight}
                                 onChange={handleInputs}
-                                placeholder="Enter No Of DFLs"
+                                placeholder={t("Enter No Of DFLs")}
                               />
                             </div>
                           </Form.Group>
@@ -11539,7 +11538,7 @@ const serviceApplicationStyles = `
                                 name="noOfCocoonPerKg"
                                 value={data.noOfCocoonPerKg}
                                 onChange={handleInputs}
-                                placeholder="Enter No Of Cocoons Per Kg"
+                                placeholder={t("Enter No Of Cocoons Per Kg")}
                               />
                             </div>
                           </Form.Group>
@@ -11557,7 +11556,7 @@ const serviceApplicationStyles = `
                                 name="averageYield"
                                 value={data.averageYield}
                                 onChange={handleInputs}
-                                placeholder="Enter Average Yield"
+                                placeholder={t("Enter Average Yield")}
                               />
                             </div>
                           </Form.Group>
@@ -11807,7 +11806,7 @@ const serviceApplicationStyles = `
     "SDP Construction Of  Low Cost Shed to  Permanent  Rearing House"
 ) && (
       <Button onClick={() => setShowAmountBreakup(true)}>
-        View Breakup
+        {t("View Breakup")}
       </Button>
     )}
   </Col>
@@ -11815,7 +11814,7 @@ const serviceApplicationStyles = `
 
 {/* {showAmountBreakup && (
   <Card className="mt-2">
-    <Card.Header>Amount Breakup</Card.Header>
+    <Card.Header>{t("Amount Breakup")}</Card.Header>
     <Card.Body>
 
       <Row>
@@ -11840,7 +11839,7 @@ const serviceApplicationStyles = `
 
 {showAmountBreakup && (
   <Card className="mt-2">
-    <Card.Header>Amount Breakup</Card.Header>
+    <Card.Header>{t("Amount Breakup")}</Card.Header>
     <Card.Body>
 
       {(() => {
@@ -11852,15 +11851,15 @@ const serviceApplicationStyles = `
         return (
           <Row>
             <Col md="4">
-              <strong>Central Amount:</strong> {data.centralAmount || 0}
+              <strong>{t("Central Amount:")}</strong> {data.centralAmount || 0}
             </Col>
 
             <Col md="4">
-              <strong>State Amount:</strong> {remainingState}
+              <strong>{t("State Amount:")}</strong> {remainingState}
             </Col>
 
             <Col md="4">
-              <strong>Total Subsidy:</strong> 
+              <strong>{t("Total Subsidy:")}</strong>
               {(data.centralAmount || 0) + remainingState}
             </Col>
           </Row>
@@ -12036,7 +12035,7 @@ const serviceApplicationStyles = `
                                   name="rhSqft"
                                   value={developedLand.rhSqft}
                                   onChange={handleDevelopedLandInputs}
-                                  placeholder="Enter Constructed Area in Sqft"
+                                  placeholder={t("Enter Constructed Area in Sqft")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
@@ -12238,7 +12237,7 @@ const serviceApplicationStyles = `
                                 <Col lg="4">
                                   <Form.Group className="form-group mt-n3">
                                     <Form.Label>Tax Invoice No</Form.Label>
-                                    <Form.Control type="text" name="taxInvoiceNo" value={row.taxInvoiceNo} onChange={(e) => handleRearingEquipmentChange(index, e)} placeholder="Enter Tax Invoice No" />
+                                    <Form.Control type="text" name="taxInvoiceNo" value={row.taxInvoiceNo} onChange={(e) => handleRearingEquipmentChange(index, e)} placeholder={t("Enter Tax Invoice No")} />
                                   </Form.Group>
                                 </Col>
                                 <Col lg="4">
@@ -12326,7 +12325,7 @@ const serviceApplicationStyles = `
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="schemeAmount">Tax Invoice No</Form.Label>
                               <div className="form-control-wrap">
-                                <Form.Control id="taxInvoiceNo" type="text" name="taxInvoiceNo" value={data.taxInvoiceNo} onChange={handleInputs} placeholder="Enter Tax Invoice No" />
+                                <Form.Control id="taxInvoiceNo" type="text" name="taxInvoiceNo" value={data.taxInvoiceNo} onChange={handleInputs} placeholder={t("Enter Tax Invoice No")} />
                               </div>
                             </Form.Group>
                           </Col>
@@ -13086,7 +13085,7 @@ const serviceApplicationStyles = `
   centered
 >
   <Modal.Header closeButton>
-    <Modal.Title>Subsidy Breakdown</Modal.Title>
+    <Modal.Title>{t("Subsidy Breakdown")}</Modal.Title>
   </Modal.Header>
 
   <Modal.Body>
@@ -13101,22 +13100,22 @@ const serviceApplicationStyles = `
         <Card.Body>
 
           <Row>
-            <Col>Central Amount</Col>
+            <Col>{t("Central Amount")}</Col>
             <Col>₹ {data.centralAmount}</Col>
           </Row>
 
           <Row>
-            <Col>Total State</Col>
+            <Col>{t("Total State")}</Col>
             <Col>₹ {originalStateAmount}</Col>
           </Row>
 
           <Row>
-            <Col>Already Paid</Col>
+            <Col>{t("Already Paid")}</Col>
             <Col>₹ {data.alreadyPaidAmount}</Col>
           </Row>
 
           <Row>
-            <Col><b>Remaining</b></Col>
+            <Col><b>{t("Remaining")}</b></Col>
             <Col><b>₹ {data.stateAmount}</b></Col>
           </Row>
 
@@ -13127,7 +13126,7 @@ const serviceApplicationStyles = `
 
   <Modal.Footer>
     <Button onClick={() => setShowAmountBreakup(false)}>
-      Close
+      {t("Close")}
     </Button>
   </Modal.Footer>
 </Modal>

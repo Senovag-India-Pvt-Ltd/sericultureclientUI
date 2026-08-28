@@ -403,8 +403,8 @@ useEffect(() => {
 const showBeneficiaryLoadError = () => {
   Swal.fire({
     icon: "warning",
-    title: "Could not load beneficiary details",
-    text: "The FRUITS/registration lookup for this application's beneficiary failed. Please try again or contact support.",
+    title: t("Could not load beneficiary details"),
+    text: t("The FRUITS/registration lookup for this application's beneficiary failed. Please try again or contact support."),
   });
 };
 
@@ -1665,12 +1665,12 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         const isHtml = typeof response.data === "string"
           && /<html/i.test(response.data);
         if (isHtml || !response.data || typeof response.data !== "object") {
-          saveError("Update was blocked by the server (received non-JSON response). Please contact support.");
+          saveError(t("Update was blocked by the server (received non-JSON response). Please contact support."));
           return;
         }
         const body = response.data.content;
         if (body && body.error) {
-          saveError(body.errorDescription || "Update failed");
+          saveError(body.errorDescription || t("Update failed"));
           return;
         }
         saveSuccess();
@@ -1680,14 +1680,14 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         if (err.response?.status === 409) {
           saveError(
             err.response.data?.content?.errorDescription ||
-              "Application has already been pushed and cannot be edited"
+              t("Application has already been pushed and cannot be edited")
           );
         } else if (err.response?.data?.content?.errorDescription) {
           saveError(err.response.data.content.errorDescription);
         } else if (err.response?.data?.validationErrors) {
           saveError(err.response.data.validationErrors);
         } else {
-          saveError("Update failed");
+          saveError(t("Update failed"));
         }
       });
     setValidated(true);
@@ -1841,7 +1841,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     } else {
       lines = String(message || "").split(/;\s*|<br\s*\/?>/i).filter(Boolean);
     }
-    if (lines.length === 0) lines = ["Something went wrong. Please try again."];
+    if (lines.length === 0) lines = [t("Something went wrong. Please try again.")];
     const html =
       `<div class="svc-swal-errlist">` +
       lines.map((l) => `<div class="svc-swal-errline">${l}</div>`).join("") +
@@ -1979,7 +1979,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       //     checked={landDetailsIds.includes(row.farmerLandDetailsId)}
       //     onChange={() => handleCheckboxChange(row.farmerLandDetailsId)}
       //   />
-      name: "Select",
+      name: t("Select"),
       selector: "select",
       cell: (row, i) => (
         <input
@@ -2127,7 +2127,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
   //   },
   // ];
   {
-    name: "Developed Area (Acre/Gunta/FGunta)",
+    name: t("Developed Area (Acre/Gunta/FGunta)"),
     // selector: (row) => row.acre,
     cell: (row, i) => (
       <>
@@ -2136,7 +2136,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
           type="text"
           value={developedArea[i]?.devAcre || ""}
           onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
-          placeholder="Acre"
+          placeholder={t("Acre")}
           className="m-1"
         />
         <Form.Control
@@ -2144,7 +2144,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
           type="text"
           value={developedArea[i]?.devGunta || ""}
           onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
-          placeholder="Gunta"
+          placeholder={t("Gunta")}
           className="m-1"
         />
         <Form.Control
@@ -2152,7 +2152,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
           type="text"
           value={developedArea[i]?.devFGunta || ""}
           onChange={(e) => handleInlineDevelopedLandChange(e, row, i)}
-          placeholder="FGunta"
+          placeholder={t("FGunta")}
           className="m-1"
         />
       </>

@@ -180,7 +180,7 @@ const { t } = useTranslation();
   };
 
   return (
-    <Layout title="User Dashboard">
+    <Layout title={t("User Dashboard")}>
       <style>{`
         .sh-page-header {
           padding: 20px 24px;
@@ -207,7 +207,7 @@ const { t } = useTranslation();
       
   <Card style={{ maxWidth: "1800px", margin: "auto", border: "none", borderRadius: "14px", boxShadow: "0 4px 20px rgba(30,103,168,0.13)", overflow: "hidden" }}>
     <Card.Header style={{ background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)", border: "none", padding: "14px 22px" }}>
-      <h6 style={{ color: "white", margin: 0, fontWeight: 700, letterSpacing: "0.4px" }}>&#128269; Filter Applications by Scheme</h6>
+      <h6 style={{ color: "white", margin: 0, fontWeight: 700, letterSpacing: "0.4px" }}>&#128269; {t("Filter Applications by Scheme")}</h6>
     </Card.Header>
     <Card.Body className="p-4" style={{ background: "linear-gradient(135deg, #f8f9ff 0%, #eef3fc 100%)" }}>
       <div className="mx-auto" style={{ maxWidth: "1500px" }}>
@@ -298,7 +298,7 @@ const { t } = useTranslation();
                       {dashboard.stepName}
                     </h5>
                     <small style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.76rem", marginTop: "4px" }}>
-                      Tap to view list &#8594;
+                      {t("Tap to view list →")}
                     </small>
                   </div>
                 </Card.Body>

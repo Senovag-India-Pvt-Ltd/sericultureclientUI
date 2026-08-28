@@ -1329,7 +1329,7 @@ const [showModal, setShowModal] = useState(false);
                                               <th>{t("Bidding Slip Number")}</th>
                                               <th>{t("Bidding Slip Lot No")}</th>
                                               <th>{t("Cocoon Rate Per Kg")}</th>
-                                              <th>{t("Quantity Of Cocoon Produced")}</th>
+                                              <th>{t("Quantity Of Cocoons Produced")}</th>
                                               <th>{t("Transaction Date")}</th>
                                               
                                               {/* <th>Share in %</th> */}
@@ -1529,7 +1529,7 @@ const [showModal, setShowModal] = useState(false);
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            {t("Bidding Slip Lot No is required")}
+                            {t("Bidding Slip Lot No is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
@@ -1714,7 +1714,7 @@ const [showModal, setShowModal] = useState(false);
                             required
                           />
                           <Form.Control.Feedback type="invalid">
-                            {t("Bidding Slip Lot No is required")}
+                            {t("Bidding Slip Lot No is required.")}
                           </Form.Control.Feedback>
                         </div>
                       </Form.Group>
