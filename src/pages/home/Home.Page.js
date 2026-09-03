@@ -416,7 +416,7 @@ const HomePage = () => {
           {/* Right: Minister for Sericulture — photo + name below */}
           <div className="officials-row officials-row--right">
             <div className="header-official header-official--stacked">
-              <img className="official-img" src={withBasePath("/images/left-profile1.jpeg")} alt={t.extra.name} />
+              <img className="official-img official-img--minister" src={withBasePath("/images/left-profile1.jpeg")} alt={t.extra.name} />
               <div className="official-info">
                 {t.extra.name && <h3>{t.extra.name}</h3>}
                 <p className="official-role">{splitTitle(t.extra.title)[0]}</p>
