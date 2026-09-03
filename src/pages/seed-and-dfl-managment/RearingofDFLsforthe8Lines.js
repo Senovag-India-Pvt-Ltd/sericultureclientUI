@@ -18,7 +18,7 @@ const baseURLMaster = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLSeedDfl = process.env.REACT_APP_API_BASE_URL_SEED_DFL;
 
 function RearingofDFLsforthe8Lines() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [data, setData] = useState({
     disinfectantMasterId: "",
     cropDetail: "",
@@ -342,7 +342,7 @@ function RearingofDFLsforthe8Lines() {
                           <option value="">{t("Select Disinfectant Usage Details")}</option>
                           {disinfectantListData && disinfectantListData.length?(disinfectantListData.map((list) => (
                             <option key={list.disinfectantMasterId} value={list.disinfectantMasterId}>
-                              {list.disinfectantMasterName}
+                              {i18n.language === "kn" ? list.disinfectantMasterNameInKannada : list.disinfectantMasterName}
                             </option>
                           ))): ""}
                         </Form.Select>

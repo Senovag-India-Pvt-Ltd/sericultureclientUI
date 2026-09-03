@@ -17,7 +17,7 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 
 
 function SupplyOfDisinfectantsToFarmers() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [data, setData] = useState({
     farmerId: "",
     disinfectantMasterId: "",
@@ -389,7 +389,7 @@ const searchError = (message = "Something went wrong!") => {
                                   key={list.disinfectantMasterId}
                                   value={list.disinfectantMasterId}
                                 >
-                                  {list.disinfectantMasterName}
+                                  {i18n.language === "kn" ? list.disinfectantMasterNameInKannada : list.disinfectantMasterName}
                                 </option>
                               ))}
                             </Form.Select>

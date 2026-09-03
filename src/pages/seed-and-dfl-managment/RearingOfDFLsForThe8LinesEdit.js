@@ -18,7 +18,7 @@ function RearingOfDFLsForThe8LinesEdit() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [validated, setValidated] = useState(false);
 
@@ -321,7 +321,7 @@ function RearingOfDFLsForThe8LinesEdit() {
                           <option value="">{t("Select Disinfectant Usage Details")}</option>
                           {disinfectantListData && disinfectantListData.length?(disinfectantListData.map((list) => (
                             <option key={list.disinfectantMasterId} value={list.disinfectantMasterId}>
-                              {list.disinfectantMasterName}
+                              {i18n.language === "kn" ? list.disinfectantMasterNameInKannada : list.disinfectantMasterName}
                             </option>
                           ))): ""}
                         </Form.Select>

@@ -18,7 +18,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function RearingofDFLs() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [data, setData] = useState({
     disinfectantMasterId: "",
     cropNumber: "",
@@ -358,7 +358,7 @@ function RearingofDFLs() {
                                 key={list.disinfectantMasterId}
                                 value={list.disinfectantMasterId}
                               >
-                                {list.disinfectantMasterName}
+                                {i18n.language === "kn" ? list.disinfectantMasterNameInKannada : list.disinfectantMasterName}
                               </option>
                             ))}
                           </Form.Select>

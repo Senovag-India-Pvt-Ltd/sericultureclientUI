@@ -15,7 +15,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_GARDEN_MANAGEMENT;
 
 function RearingOfDFLsEdit() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -303,7 +303,7 @@ function RearingOfDFLsEdit() {
                                 key={list.disinfectantMasterId}
                                 value={list.disinfectantMasterId}
                               >
-                                {list.disinfectantMasterName}
+                                {i18n.language === "kn" ? list.disinfectantMasterNameInKannada : list.disinfectantMasterName}
                               </option>
                             ))}
                           </Form.Select>
