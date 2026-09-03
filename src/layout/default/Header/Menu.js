@@ -3023,7 +3023,7 @@ function Menu() {
                 </MenuItem>
               ) : null}
             </MenuItem> */}
-            {showMenu.Market_CommercialMarket ? (
+            {false && showMenu.Market_CommercialMarket ? (
                 <MenuItem sub>
                   <MenuItemLink
                     text={t("Commercial Market")}
@@ -6590,7 +6590,7 @@ function Menu() {
                       </MenuItem>
                     ) : null}
 
-                    {showMenu.Reports_Export_Report_Commercial_Market ||
+                    {/* {showMenu.Reports_Export_Report_Commercial_Market ||
                     showMenu.Reports_Format_Reports_Commercial_Market ? (
                       <MenuItem sub>
                         <MenuItemLink
@@ -6837,7 +6837,7 @@ function Menu() {
                           ) : null}
                         </MenuSub>
                       </MenuItem>
-                    ) : null}
+                    ) : null} */}
 
                         {/* ─── Schemes (sub-menu inside Format Reports) ─── */}
                         {showMenu.Reports_Format_Reports_Schemes ? (
