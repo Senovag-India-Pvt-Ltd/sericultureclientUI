@@ -155,7 +155,7 @@ function UserAndManagerHierarchyMapping() {
     });
   };
   return (
-    <Layout title="User Hierarchy Mapping">
+    <Layout title={t("User Hierarchy Mapping")}>
       <style>{userAndManagerHierarchyMappingStyles}</style>
       <Block.Head>
         <div className="sh-page-header">

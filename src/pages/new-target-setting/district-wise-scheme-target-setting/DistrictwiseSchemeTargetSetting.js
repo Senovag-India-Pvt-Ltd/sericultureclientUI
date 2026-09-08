@@ -17,7 +17,7 @@ const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function DistrictwiseSchemeTargetSetting() {
-  const { t } = useTranslation(); // Initialize useTranslation
+  const { t, i18n } = useTranslation(); // Initialize useTranslation
   const [data, setData] = useState({
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
@@ -1833,7 +1833,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                 {scSubSchemeDetailsListData &&
                                   scSubSchemeDetailsListData.length ? scSubSchemeDetailsListData.map((list, i) => (
                                     <option key={i} value={list.subSchemeId}>
-                                      {list.subSchemeName}
+                                      {i18n.language === "kn" ? (list.subSchemeNameInKannada || list.subSchemeName) : list.subSchemeName}
                                     </option>
                                   ))
                                   : ""}
@@ -1871,7 +1871,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                       key={list.scComponentId}
                                       value={list.scComponentId}
                                     >
-                                      {list.scComponentName}
+                                      {i18n.language === "kn" ? (list.scComponentNameInKannada || list.scComponentName) : list.scComponentName}
                                     </option>
                                   ))
                                   : ""}
@@ -2032,7 +2032,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     key={list.districtId}
                                     value={list.districtId}
                                   >
-                                    {list.districtName}
+                                    {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                                   </option>
                                 ))
                                 : ""}
@@ -3029,7 +3029,7 @@ const handleShowModal2 = () => setShowModal2(true);
                       {scSubSchemeDetailsListData &&
                         scSubSchemeDetailsListData.length ? scSubSchemeDetailsListData.map((list, i) => (
                           <option key={i} value={list.subSchemeId}>
-                            {list.subSchemeName}
+                            {i18n.language === "kn" ? (list.subSchemeNameInKannada || list.subSchemeName) : list.subSchemeName}
                           </option>
                         ))
                         : ""}
@@ -3068,7 +3068,7 @@ const handleShowModal2 = () => setShowModal2(true);
                             key={list.scComponentId}
                             value={list.scComponentId}
                           >
-                            {list.scComponentName}
+                            {i18n.language === "kn" ? (list.scComponentNameInKannada || list.scComponentName) : list.scComponentName}
                           </option>
                         ))}
                     </Form.Select>
@@ -3223,7 +3223,7 @@ const handleShowModal2 = () => setShowModal2(true);
                       {districtListData && districtListData.length
                       ? districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
-                          {list.districtName}
+                          {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                         </option>
                       ))
                       : ""}
@@ -3258,7 +3258,7 @@ const handleShowModal2 = () => setShowModal2(true);
                       <option value="FINANCIAL TARGET">FINANCIAL TARGET</option>
                       {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
+                            {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                           </option>
                         ))} */}
                     </Form.Select>
@@ -3303,7 +3303,7 @@ const handleShowModal2 = () => setShowModal2(true);
 
                       {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
+                            {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                           </option>
                         ))} */}
                     </Form.Select>
@@ -3584,7 +3584,7 @@ const handleShowModal2 = () => setShowModal2(true);
                         districtListData.length &&
                         districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
+                            {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                           </option>
                         ))}
                     </Form.Select>
@@ -3606,7 +3606,7 @@ const handleShowModal2 = () => setShowModal2(true);
                         talukListData.length &&
                         talukListData.map((list) => (
                           <option key={list.talukId} value={list.talukId}>
-                            {list.talukName}
+                            {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
                           </option>
                         ))}
                     </Form.Select>
@@ -3631,7 +3631,7 @@ const handleShowModal2 = () => setShowModal2(true);
                             key={list.designationId}
                             value={list.designationId}
                           >
-                            {list.name}
+                            {i18n.language === "kn" ? list.designationNameInKannada : list.name}
                           </option>
                         ))}
                     </Form.Select>
@@ -3748,7 +3748,7 @@ const handleShowModal2 = () => setShowModal2(true);
                               districtListData.length &&
                               districtListData.map((list) => (
                                 <option key={list.districtId} value={list.districtId}>
-                                  {list.districtName}
+                                  {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                                 </option>
                               ))}
                           </Form.Select>
@@ -3770,7 +3770,7 @@ const handleShowModal2 = () => setShowModal2(true);
                               talukListDataEdit.length &&
                               talukListDataEdit.map((list) => (
                                 <option key={list.talukId} value={list.talukId}>
-                                  {list.talukName}
+                                  {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
                                 </option>
                               ))}
                           </Form.Select>
@@ -3795,7 +3795,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                   key={list.designationId}
                                   value={list.designationId}
                                 >
-                                  {list.name}
+                                  {i18n.language === "kn" ? list.designationNameInKannada : list.name}
                                 </option>
                               ))}
                           </Form.Select>
