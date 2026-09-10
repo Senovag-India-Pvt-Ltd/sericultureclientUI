@@ -17,7 +17,7 @@ const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function TrainingTarget() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [data, setData] = useState({
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
@@ -2795,7 +2795,7 @@ const totalTarget = () => {
 
                                 {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
+                            {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                           </option>
                         ))} */}
                               </Form.Select>
@@ -3071,7 +3071,7 @@ const totalTarget = () => {
                         districtListData.length &&
                         districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
+                            {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                           </option>
                         ))}
                     </Form.Select>
@@ -3093,7 +3093,7 @@ const totalTarget = () => {
                         talukListData.length &&
                         talukListData.map((list) => (
                           <option key={list.talukId} value={list.talukId}>
-                            {list.talukName}
+                            {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
                           </option>
                         ))}
                     </Form.Select>
@@ -3118,7 +3118,7 @@ const totalTarget = () => {
                             key={list.designationId}
                             value={list.designationId}
                           >
-                            {list.name}
+                            {i18n.language === "kn" ? list.designationNameInKannada : list.name}
                           </option>
                         ))}
                     </Form.Select>
@@ -3235,7 +3235,7 @@ const totalTarget = () => {
                         districtListData.length &&
                         districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
+                            {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                           </option>
                         ))}
                     </Form.Select>
@@ -3257,7 +3257,7 @@ const totalTarget = () => {
                         talukListDataEdit.length &&
                         talukListDataEdit.map((list) => (
                           <option key={list.talukId} value={list.talukId}>
-                            {list.talukName}
+                            {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
                           </option>
                         ))}
                     </Form.Select>
@@ -3282,7 +3282,7 @@ const totalTarget = () => {
                             key={list.designationId}
                             value={list.designationId}
                           >
-                            {list.name}
+                            {i18n.language === "kn" ? list.designationNameInKannada : list.name}
                           </option>
                         ))}
                     </Form.Select>

@@ -17,7 +17,7 @@ const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function FarmwiseTarget() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [data, setData] = useState({
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
@@ -1598,7 +1598,7 @@ const handleShowModal = () => {
                                       key={list.raceMasterId}
                                       value={list.raceMasterId}
                                     >
-                                      {list.raceMasterName}
+                                      {i18n.language === "kn" ? list.raceNameInKannada : list.raceMasterName}
                                     </option>
                                   ))
                                   :""}
@@ -1634,7 +1634,7 @@ const handleShowModal = () => {
                                 {farmListData && farmListData 
                                   ?farmListData.map((list) => (
                                   <option key={list.farmId} value={list.farmId}>
-                                    {list.farmName}
+                                    {i18n.language === "kn" ? list.farmNameInKannada : list.farmName}
                                   </option>
                                 ))
                                 :""}
@@ -2005,7 +2005,7 @@ const handleShowModal = () => {
                             key={list.raceMasterId}
                             value={list.raceMasterId}
                           >
-                            {list.raceMasterName}
+                            {i18n.language === "kn" ? list.raceNameInKannada : list.raceMasterName}
                           </option>
                         ))
                         : ""}
@@ -2041,7 +2041,7 @@ const handleShowModal = () => {
                                     key={list.districtId}
                                     value={list.districtId}
                                   >
-                                    {list.districtName}
+                                    {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                                   </option>
                                 ))}
                               </Form.Select>
@@ -2073,7 +2073,7 @@ const handleShowModal = () => {
                       {farmListData && farmListData.length ?
                         farmListData.map((list) => (
                         <option key={list.farmId} value={list.farmId}>
-                          {list.farmName}
+                          {i18n.language === "kn" ? list.farmNameInKannada : list.farmName}
                         </option>
                       ))
                       : ""}
@@ -2148,7 +2148,7 @@ const handleShowModal = () => {
 
                       {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
+                            {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                           </option>
                         ))} */}
                     </Form.Select>
@@ -2428,7 +2428,7 @@ const handleShowModal = () => {
                         districtListData.length &&
                         districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
+                            {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                           </option>
                         ))}
                     </Form.Select>
@@ -2450,7 +2450,7 @@ const handleShowModal = () => {
                         talukListData.length &&
                         talukListData.map((list) => (
                           <option key={list.talukId} value={list.talukId}>
-                            {list.talukName}
+                            {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
                           </option>
                         ))}
                     </Form.Select>
@@ -2475,7 +2475,7 @@ const handleShowModal = () => {
                             key={list.designationId}
                             value={list.designationId}
                           >
-                            {list.name}
+                            {i18n.language === "kn" ? list.designationNameInKannada : list.name}
                           </option>
                         ))}
                     </Form.Select>
@@ -2593,7 +2593,7 @@ const handleShowModal = () => {
                               districtListData.length &&
                               districtListData.map((list) => (
                                 <option key={list.districtId} value={list.districtId}>
-                                  {list.districtName}
+                                  {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                                 </option>
                               ))}
                           </Form.Select>
@@ -2615,7 +2615,7 @@ const handleShowModal = () => {
                               talukListDataEdit.length &&
                               talukListDataEdit.map((list) => (
                                 <option key={list.talukId} value={list.talukId}>
-                                  {list.talukName}
+                                  {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
                                 </option>
                               ))}
                           </Form.Select>
@@ -2640,7 +2640,7 @@ const handleShowModal = () => {
                                   key={list.designationId}
                                   value={list.designationId}
                                 >
-                                  {list.name}
+                                  {i18n.language === "kn" ? list.designationNameInKannada : list.name}
                                 </option>
                               ))}
                           </Form.Select>

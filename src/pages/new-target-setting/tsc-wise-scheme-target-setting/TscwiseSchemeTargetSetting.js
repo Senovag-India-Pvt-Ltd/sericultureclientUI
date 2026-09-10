@@ -18,7 +18,7 @@ const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
 
 function TscwiseSchemeTargetSetting() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [data, setData] = useState({
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
@@ -2048,7 +2048,7 @@ function TscwiseSchemeTargetSetting() {
                                 {scSubSchemeDetailsListData &&
                                   scSubSchemeDetailsListData.map((list, i) => (
                                     <option key={i} value={list.subSchemeId}>
-                                      {list.subSchemeName}
+                                      {i18n.language === "kn" ? (list.subSchemeNameInKannada || list.subSchemeName) : list.subSchemeName}
                                     </option>
                                   ))}
                               </Form.Select>
@@ -2085,7 +2085,7 @@ function TscwiseSchemeTargetSetting() {
                                       key={list.scComponentId}
                                       value={list.scComponentId}
                                     >
-                                      {list.scComponentName}
+                                      {i18n.language === "kn" ? (list.scComponentNameInKannada || list.scComponentName) : list.scComponentName}
                                     </option>
                                   ))}
                               </Form.Select>
@@ -2242,7 +2242,7 @@ function TscwiseSchemeTargetSetting() {
                                     key={list.districtId}
                                     value={list.districtId}
                                   >
-                                    {list.districtName}
+                                    {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                                   </option>
                                 ))
                                 : ""}
@@ -2279,7 +2279,7 @@ function TscwiseSchemeTargetSetting() {
                                     key={list.talukId}
                                     value={list.talukId}
                                   >
-                                    {list.talukName}
+                                    {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
                                   </option>
                                 ))
                                 : ""}
@@ -3336,7 +3336,7 @@ function TscwiseSchemeTargetSetting() {
                       {scSubSchemeDetailsListData &&
                         scSubSchemeDetailsListData.map((list, i) => (
                           <option key={i} value={list.subSchemeId}>
-                            {list.subSchemeName}
+                            {i18n.language === "kn" ? (list.subSchemeNameInKannada || list.subSchemeName) : list.subSchemeName}
                           </option>
                         ))}
                     </Form.Select>
@@ -3374,7 +3374,7 @@ function TscwiseSchemeTargetSetting() {
                             key={list.scComponentId}
                             value={list.scComponentId}
                           >
-                            {list.scComponentName}
+                            {i18n.language === "kn" ? (list.scComponentNameInKannada || list.scComponentName) : list.scComponentName}
                           </option>
                         ))}
                     </Form.Select>
@@ -3529,7 +3529,7 @@ function TscwiseSchemeTargetSetting() {
                       {districtListData && districtListData.length ?
                       districtListData.map((list) => (
                         <option key={list.districtId} value={list.districtId}>
-                          {list.districtName}
+                          {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                         </option>
                       ))
                       : ""}
@@ -3566,7 +3566,7 @@ function TscwiseSchemeTargetSetting() {
                             key={list.talukId}
                             value={list.talukId}
                           >
-                            {list.talukName}
+                            {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
                           </option>
                         ))
                          : ""}
@@ -3711,7 +3711,7 @@ function TscwiseSchemeTargetSetting() {
                       <option value="Financial Target">FINANCIAL TARGET</option>
                       {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
+                            {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                           </option>
                         ))} */}
                     </Form.Select>
@@ -3756,7 +3756,7 @@ function TscwiseSchemeTargetSetting() {
 
                       {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
+                            {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                           </option>
                         ))} */}
                     </Form.Select>
@@ -3954,7 +3954,7 @@ function TscwiseSchemeTargetSetting() {
                         districtListData.length &&
                         districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
+                            {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                           </option>
                         ))}
                     </Form.Select>
@@ -3976,7 +3976,7 @@ function TscwiseSchemeTargetSetting() {
                         talukListData.length &&
                         talukListData.map((list) => (
                           <option key={list.talukId} value={list.talukId}>
-                            {list.talukName}
+                            {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
                           </option>
                         ))}
                     </Form.Select>
@@ -4001,7 +4001,7 @@ function TscwiseSchemeTargetSetting() {
                             key={list.designationId}
                             value={list.designationId}
                           >
-                            {list.name}
+                            {i18n.language === "kn" ? list.designationNameInKannada : list.name}
                           </option>
                         ))}
                     </Form.Select>
@@ -4118,7 +4118,7 @@ function TscwiseSchemeTargetSetting() {
                           districtListData.length &&
                           districtListData.map((list) => (
                             <option key={list.districtId} value={list.districtId}>
-                              {list.districtName}
+                              {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                             </option>
                           ))}
                       </Form.Select>
@@ -4140,7 +4140,7 @@ function TscwiseSchemeTargetSetting() {
                           talukListDataEdit.length &&
                           talukListDataEdit.map((list) => (
                             <option key={list.talukId} value={list.talukId}>
-                              {list.talukName}
+                              {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
                             </option>
                           ))}
                       </Form.Select>
@@ -4165,7 +4165,7 @@ function TscwiseSchemeTargetSetting() {
                               key={list.designationId}
                               value={list.designationId}
                             >
-                              {list.name}
+                              {i18n.language === "kn" ? list.designationNameInKannada : list.name}
                             </option>
                           ))}
                       </Form.Select>

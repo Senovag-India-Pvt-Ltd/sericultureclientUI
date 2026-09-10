@@ -17,7 +17,7 @@ const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
 
 function GrainagewiseTarget() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [data, setData] = useState({
     mulberryTargetTypeId: "",
     financialYearMasterId: "",
@@ -1416,7 +1416,7 @@ api.post(
                                       key={list.raceMasterId}
                                       value={list.raceMasterId}
                                     >
-                                      {list.raceMasterName}
+                                      {i18n.language === "kn" ? list.raceNameInKannada : list.raceMasterName}
                                     </option>
                                   ))
                                   : ""}
@@ -1450,7 +1450,7 @@ api.post(
                                   key={list.grainageMasterId}
                                   value={list.grainageMasterId}
                                 >
-                                  {list.grainageMasterName}
+                                  {i18n.language === "kn" ? list.grainageMasterNameInKannada : list.grainageMasterName}
                                 </option>
                               ))
                               : ""}
@@ -1775,7 +1775,7 @@ api.post(
                                       key={list.raceMasterId}
                                       value={list.raceMasterId}
                                     >
-                                      {list.raceMasterName}
+                                      {i18n.language === "kn" ? list.raceNameInKannada : list.raceMasterName}
                                     </option>
                                   ))
                                   : ""}
@@ -1811,7 +1811,7 @@ api.post(
                                   key={list.grainageMasterId}
                                   value={list.grainageMasterId}
                                 >
-                                  {list.grainageMasterName}
+                                  {i18n.language === "kn" ? list.grainageMasterNameInKannada : list.grainageMasterName}
                                 </option>
                               ))):""}
                             </Form.Select>
@@ -1858,7 +1858,7 @@ api.post(
 
                                 {/* {districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
+                            {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                           </option>
                         ))} */}
                               </Form.Select>
@@ -2100,7 +2100,7 @@ api.post(
                         districtListData.length &&
                         districtListData.map((list) => (
                           <option key={list.districtId} value={list.districtId}>
-                            {list.districtName}
+                            {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                           </option>
                         ))}
                     </Form.Select>
@@ -2122,7 +2122,7 @@ api.post(
                         talukListData.length &&
                         talukListData.map((list) => (
                           <option key={list.talukId} value={list.talukId}>
-                            {list.talukName}
+                            {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
                           </option>
                         ))}
                     </Form.Select>
@@ -2147,7 +2147,7 @@ api.post(
                             key={list.designationId}
                             value={list.designationId}
                           >
-                            {list.name}
+                            {i18n.language === "kn" ? list.designationNameInKannada : list.name}
                           </option>
                         ))}
                     </Form.Select>
@@ -2265,7 +2265,7 @@ api.post(
                           districtListData.length &&
                           districtListData.map((list) => (
                             <option key={list.districtId} value={list.districtId}>
-                              {list.districtName}
+                              {i18n.language === "kn" ? list.districtNameInKannada : list.districtName}
                             </option>
                           ))}
                       </Form.Select>
@@ -2287,7 +2287,7 @@ api.post(
                           talukListDataEdit.length &&
                           talukListDataEdit.map((list) => (
                             <option key={list.talukId} value={list.talukId}>
-                              {list.talukName}
+                              {i18n.language === "kn" ? list.talukNameInKannada : list.talukName}
                             </option>
                           ))}
                       </Form.Select>
@@ -2312,7 +2312,7 @@ api.post(
                               key={list.designationId}
                               value={list.designationId}
                             >
-                              {list.name}
+                              {i18n.language === "kn" ? list.designationNameInKannada : list.name}
                             </option>
                           ))}
                       </Form.Select>
