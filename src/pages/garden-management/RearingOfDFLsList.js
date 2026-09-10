@@ -2012,8 +2012,8 @@ const [showModal8, setShowModal8] = useState(false);
       ),
       sortable: false,
       hide: "md",
-      width: "380px",
-      minWidth: "380px",
+      width: "780px",
+      minWidth: "780px",
       grow: 0,
 
     },
