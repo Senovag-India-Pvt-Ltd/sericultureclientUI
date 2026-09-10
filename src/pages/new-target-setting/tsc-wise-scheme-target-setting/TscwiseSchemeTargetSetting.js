@@ -11,6 +11,7 @@ import DataTable from "../../../components/AppDataTable";
 import { useTranslation } from "react-i18next";
 // import axios from "axios";
 import api from "../../../services/auth/api";
+import { formatQty } from "../../../utils/formatQty";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
@@ -1842,13 +1843,13 @@ function TscwiseSchemeTargetSetting() {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Total Scheme Yearly Targets (PHYSICAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataPhysical[0]?.yearlySchemeValue || t("N/A")}
+                              {formatQty(viewTotalTargetsDataPhysical[0]?.yearlySchemeValue) ?? t("N/A")}
                             </th>
                           </tr>
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Total Scheme Yearly Targets (FINANCIAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataFinancial[0]?.yearlySchemeValue || t("N/A")}
+                              {formatQty(viewTotalTargetsDataFinancial[0]?.yearlySchemeValue) ?? t("N/A")}
                             </th>
                           </tr>
                           <tr>
@@ -1856,10 +1857,10 @@ function TscwiseSchemeTargetSetting() {
                               {t("Total Scheme Yearly Targets")}:{" "}
                               {!isNaN(parseFloat(viewTotalTargetsDataFinancial[0]?.yearlySchemeValue)) &&
                               !isNaN(parseFloat(viewTotalTargetsDataPhysical[0]?.yearlySchemeValue))
-                                ? (
+                                ? formatQty(
                                     parseFloat(viewTotalTargetsDataFinancial[0]?.yearlySchemeValue) +
                                     parseFloat(viewTotalTargetsDataPhysical[0]?.yearlySchemeValue)
-                                  ).toFixed(2)
+                                  )
                                 : t("N/A")}
                             </th>
                           </tr>
@@ -1870,13 +1871,13 @@ function TscwiseSchemeTargetSetting() {
                         <tr>
                             <th style={styles.ctstyle}>
                               {t("Remaining Scheme Yearly Targets (PHYSICAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataPhysical[0]?.remainingYearlyValue || t("N/A")}
+                              {formatQty(viewTotalTargetsDataPhysical[0]?.remainingYearlyValue) ?? t("N/A")}
                             </th>
                           </tr>
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Remaining Scheme Yearly Targets (FINANCIAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataFinancial[0]?.remainingYearlyValue || t("N/A")}
+                              {formatQty(viewTotalTargetsDataFinancial[0]?.remainingYearlyValue) ?? t("N/A")}
                             </th>
                           </tr>
                           <tr>
@@ -1884,10 +1885,10 @@ function TscwiseSchemeTargetSetting() {
                               {t("Remaining Scheme Yearly Targets")}:{" "}
                               {!isNaN(parseFloat(viewTotalTargetsDataFinancial[0]?.remainingYearlyValue)) &&
                               !isNaN(parseFloat(viewTotalTargetsDataPhysical[0]?.remainingYearlyValue))
-                                ? (
+                                ? formatQty(
                                     parseFloat(viewTotalTargetsDataFinancial[0]?.remainingYearlyValue) +
                                     parseFloat(viewTotalTargetsDataPhysical[0]?.remainingYearlyValue)
-                                  ).toFixed(2)
+                                  )
                                 : t("N/A")}
                             </th>
                           </tr>
@@ -1913,7 +1914,7 @@ function TscwiseSchemeTargetSetting() {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("TSC Yearly Targets (PHYSICAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataPhysical[0]?.yearlyTscValue || t("N/A")}
+                              {formatQty(viewTotalTargetsDataPhysical[0]?.yearlyTscValue) ?? t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1923,7 +1924,7 @@ function TscwiseSchemeTargetSetting() {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("TSC Yearly Targets (FINANCIAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataFinancial[0]?.yearlyTscValue || t("N/A")}
+                              {formatQty(viewTotalTargetsDataFinancial[0]?.yearlyTscValue) ?? t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1935,10 +1936,10 @@ function TscwiseSchemeTargetSetting() {
                               {t("Total TSC Yearly Targets")}:{" "}
                               {!isNaN(parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTscValue)) &&
                               !isNaN(parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyTscValue))
-                                ? (
+                                ? formatQty(
                                     parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTscValue) +
                                     parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyTscValue)
-                                  ).toFixed(2)
+                                  )
                                 : t("N/A")}
                             </th>
                           </tr>
@@ -2586,6 +2587,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={physicalTargetMonths.april}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2606,6 +2608,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={financialTargetMonths.april}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2634,6 +2637,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={physicalTargetMonths.may}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2654,6 +2658,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={financialTargetMonths.may}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2683,6 +2688,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={physicalTargetMonths.june}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2703,6 +2709,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={financialTargetMonths.june}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2732,6 +2739,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={physicalTargetMonths.july}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2752,6 +2760,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={financialTargetMonths.july}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2780,6 +2789,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={physicalTargetMonths.august}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2800,6 +2810,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={financialTargetMonths.august}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2828,6 +2839,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={physicalTargetMonths.september}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2848,6 +2860,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={financialTargetMonths.september}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2878,6 +2891,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={physicalTargetMonths.october}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2898,6 +2912,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={financialTargetMonths.october}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2926,6 +2941,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={physicalTargetMonths.november}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2946,6 +2962,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={financialTargetMonths.november}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2974,6 +2991,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={physicalTargetMonths.december}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2994,6 +3012,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={financialTargetMonths.december}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -3022,6 +3041,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={physicalTargetMonths.january}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -3042,6 +3062,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={financialTargetMonths.january}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -3070,6 +3091,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={physicalTargetMonths.february}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -3090,6 +3112,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={financialTargetMonths.february}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -3118,6 +3141,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={physicalTargetMonths.march}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -3138,6 +3162,7 @@ function TscwiseSchemeTargetSetting() {
                                     value={financialTargetMonths.march}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />

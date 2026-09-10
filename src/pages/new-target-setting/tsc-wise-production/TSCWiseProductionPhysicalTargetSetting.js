@@ -11,6 +11,7 @@ import DataTable from "../../../components/AppDataTable";
 // import axios from "axios";
 import api from "../../../services/auth/api";
 import { useTranslation } from "react-i18next";
+import { formatQty } from "../../../utils/formatQty";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
@@ -1856,7 +1857,7 @@ useEffect(() => {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Total Mulberry Yearly Targets")}:{" "}
-                              {viewTotalTargetsData[0]?.mulberryValue || t("N/A")}
+                              {formatQty(viewTotalTargetsData[0]?.mulberryValue) ?? t("N/A")}
                             </th>
                           </tr>
                          
@@ -1867,7 +1868,7 @@ useEffect(() => {
                         <tr>
                             <th style={styles.ctstyle}>
                               {t("Remaining Mulberry Yearly Targets")}:{" "}
-                              {viewTotalTargetsData[0]?.remainingValue || t("N/A")}
+                              {formatQty(viewTotalTargetsData[0]?.remainingValue) ?? t("N/A")}
                             </th>
                           </tr> 
                         </thead>
@@ -1892,7 +1893,7 @@ useEffect(() => {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("TSC Yearly Targets")}:{" "}
-                              {viewTotalTargetsForTSCData[0]?.tscValue || t("N/A")}
+                              {formatQty(viewTotalTargetsForTSCData[0]?.tscValue) ?? t("N/A")}
                             </th>
                           </tr>
                         </thead>

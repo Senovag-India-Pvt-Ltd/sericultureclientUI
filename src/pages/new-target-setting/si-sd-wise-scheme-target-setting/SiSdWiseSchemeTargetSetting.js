@@ -12,6 +12,7 @@ import DataTable from "../../../components/AppDataTable";
 import api from "../../../services/auth/api";
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
+import { formatQty } from "../../../utils/formatQty";
 
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -1844,13 +1845,13 @@ const fetchHierarchyData = (targetType, page) => {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Total TSC Yearly Targets (PHYSICAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataPhysical[0]?.yearlyTscValue || t("N/A")}
+                              {formatQty(viewTotalTargetsDataPhysical[0]?.yearlyTscValue) ?? t("N/A")}
                             </th>
                           </tr>
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Total TSC Yearly Targets (FINANCIAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataFinancial[0]?.yearlyTscValue || t("N/A")}
+                              {formatQty(viewTotalTargetsDataFinancial[0]?.yearlyTscValue) ?? t("N/A")}
                             </th>
                           </tr>
                           <tr>
@@ -1858,10 +1859,10 @@ const fetchHierarchyData = (targetType, page) => {
                               {t("Total TSC Yearly Targets")}:{" "}
                               {!isNaN(parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTscValue)) &&
                               !isNaN(parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyTscValue))
-                                ? (
+                                ? formatQty(
                                     parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTscValue) +
                                     parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyTscValue)
-                                  ).toFixed(2)
+                                  )
                                 : t("N/A")}
                             </th>
                           </tr>
@@ -1872,13 +1873,13 @@ const fetchHierarchyData = (targetType, page) => {
                         <tr>
                             <th style={styles.ctstyle}>
                               {t("Remaining TSC Yearly Targets (PHYSICAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataPhysical[0]?.remainingYearlyValue || t("N/A")}
+                              {formatQty(viewTotalTargetsDataPhysical[0]?.remainingYearlyValue) ?? t("N/A")}
                             </th>
                           </tr>
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Remaining TSC Yearly Targets (FINANCIAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataFinancial[0]?.remainingYearlyValue || t("N/A")}
+                              {formatQty(viewTotalTargetsDataFinancial[0]?.remainingYearlyValue) ?? t("N/A")}
                             </th>
                           </tr>
                           <tr>
@@ -1886,10 +1887,10 @@ const fetchHierarchyData = (targetType, page) => {
                               {t("Remaining TSC Yearly Targets")}:{" "}
                               {!isNaN(parseFloat(viewTotalTargetsDataFinancial[0]?.remainingYearlyValue)) &&
                               !isNaN(parseFloat(viewTotalTargetsDataPhysical[0]?.remainingYearlyValue))
-                                ? (
+                                ? formatQty(
                                     parseFloat(viewTotalTargetsDataFinancial[0]?.remainingYearlyValue) +
                                     parseFloat(viewTotalTargetsDataPhysical[0]?.remainingYearlyValue)
-                                  ).toFixed(2)
+                                  )
                                 : t("N/A")}
                             </th>
                           </tr>
@@ -1915,7 +1916,7 @@ const fetchHierarchyData = (targetType, page) => {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Reeling Yearly Targets (PHYSICAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataPhysical[0]?.yearlyInstValue || t("N/A")}
+                              {formatQty(viewTotalTargetsDataPhysical[0]?.yearlyInstValue) ?? t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1925,7 +1926,7 @@ const fetchHierarchyData = (targetType, page) => {
                           <tr>
                             <th style={styles.ctstyle}>
                               {t("Reeling Yearly Targets (FINANCIAL TARGET)")}:{" "}
-                              {viewTotalTargetsDataFinancial[0]?.yearlyInstValue || t("N/A")}
+                              {formatQty(viewTotalTargetsDataFinancial[0]?.yearlyInstValue) ?? t("N/A")}
                             </th>
                           </tr>
                         </thead>
@@ -1937,10 +1938,10 @@ const fetchHierarchyData = (targetType, page) => {
                               {t("Total Reeling Yearly Targets")}:{" "}
                               {!isNaN(parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyInstValue)) &&
                               !isNaN(parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyInstValue))
-                                ? (
+                                ? formatQty(
                                     parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyInstValue) +
                                     parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyInstValue)
-                                  ).toFixed(2)
+                                  )
                                 : t("N/A")}
                             </th>
                           </tr>
@@ -2630,6 +2631,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={physicalTargetMonths.april}
                                       onChange={handlePhysical}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -2650,6 +2652,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={financialTargetMonths.april}
                                       onChange={handleFinancial}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -2678,6 +2681,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={physicalTargetMonths.may}
                                       onChange={handlePhysical}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -2698,6 +2702,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={financialTargetMonths.may}
                                       onChange={handleFinancial}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -2727,6 +2732,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={physicalTargetMonths.june}
                                       onChange={handlePhysical}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -2747,6 +2753,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={financialTargetMonths.june}
                                       onChange={handleFinancial}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -2776,6 +2783,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={physicalTargetMonths.july}
                                       onChange={handlePhysical}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -2796,6 +2804,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={financialTargetMonths.july}
                                       onChange={handleFinancial}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -2824,6 +2833,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={physicalTargetMonths.august}
                                       onChange={handlePhysical}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -2844,6 +2854,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={financialTargetMonths.august}
                                       onChange={handleFinancial}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -2872,6 +2883,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={physicalTargetMonths.september}
                                       onChange={handlePhysical}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -2892,6 +2904,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={financialTargetMonths.september}
                                       onChange={handleFinancial}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -2922,6 +2935,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={physicalTargetMonths.october}
                                       onChange={handlePhysical}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -2942,6 +2956,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={financialTargetMonths.october}
                                       onChange={handleFinancial}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -2970,6 +2985,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={physicalTargetMonths.november}
                                       onChange={handlePhysical}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -2990,6 +3006,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={financialTargetMonths.november}
                                       onChange={handleFinancial}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -3018,6 +3035,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={physicalTargetMonths.december}
                                       onChange={handlePhysical}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -3038,6 +3056,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={financialTargetMonths.december}
                                       onChange={handleFinancial}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -3066,6 +3085,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={physicalTargetMonths.january}
                                       onChange={handlePhysical}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -3086,6 +3106,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={financialTargetMonths.january}
                                       onChange={handleFinancial}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -3114,6 +3135,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={physicalTargetMonths.february}
                                       onChange={handlePhysical}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -3134,6 +3156,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={financialTargetMonths.february}
                                       onChange={handleFinancial}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -3162,6 +3185,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={physicalTargetMonths.march}
                                       onChange={handlePhysical}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />
@@ -3182,6 +3206,7 @@ const fetchHierarchyData = (targetType, page) => {
                                       value={financialTargetMonths.march}
                                       onChange={handleFinancial}
                                       type="number"
+                                      step="0.00001"
                                       placeholder={t("Enter Target No.")}
                                       required
                                     />

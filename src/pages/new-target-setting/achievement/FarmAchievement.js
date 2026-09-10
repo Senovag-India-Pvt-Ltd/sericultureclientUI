@@ -22,27 +22,29 @@ function FarmwiseAchievement() {
     financialYearMasterId: "",
     districtId: "",
     month: "",
-    target: "",
-    value: "",
     raceMasterId: "",
     farmId: "",
     userMasterId: "",
-    week1: "",
-    week2: "",
-    week3: "",
-    week4: "",
   });
 
-  // Weekly achievement inputs — auto-sum into the monthly Achievement Value.
-  const handleWeek = (e) => {
+  // ── Two always-visible achievement metrics, each with its own weekly split ──
+  //    Quantity in Nos  -> saved as target "Brushing"
+  //    Quantity in Kg    -> saved as target "Cocoon Production"
+  const blankQty = () => ({ value: "", week1: "", week2: "", week3: "", week4: "" });
+  const [nosData, setNosData] = useState(blankQty());
+  const [kgData, setKgData] = useState(blankQty());
+
+  const handleQtyWeek = (setter) => (e) => {
     const { name, value } = e.target;
-    setData((prev) => {
+    setter((prev) => {
       const next = { ...prev, [name]: value };
       const sum = ["week1", "week2", "week3", "week4"]
         .reduce((s, k) => s + (parseFloat(next[k]) || 0), 0);
       return { ...next, value: sum > 0 ? String(sum) : next.value };
     });
   };
+  const handleNosWeek = handleQtyWeek(setNosData);
+  const handleKgWeek = handleQtyWeek(setKgData);
 
 
   
@@ -895,24 +897,37 @@ const handleShowModal = () => {
         event.preventDefault();
         // event.stopPropagation();
         api
-          .post(baseURLTargetSetting + `targetsAchievement/add-Farm`, data)
+          .post(baseURLTargetSetting + `targetsAchievement/add-Farm-combined`, {
+            financialYearMasterId: data.financialYearMasterId,
+            raceMasterId: data.raceMasterId,
+            farmId: data.farmId,
+            month: data.month,
+            userMasterId: data.userMasterId,
+            nosValue: nosData.value,
+            nosWeek1: nosData.week1,
+            nosWeek2: nosData.week2,
+            nosWeek3: nosData.week3,
+            nosWeek4: nosData.week4,
+            kgValue: kgData.value,
+            kgWeek1: kgData.week1,
+            kgWeek2: kgData.week2,
+            kgWeek3: kgData.week3,
+            kgWeek4: kgData.week4,
+          })
           .then((response) => {
             if (response.data.content.error) {
               saveError(response.data.content.error_description);
             } else {
               saveSuccess();
               setData({
-                 
-  targetsAchievementId: "",
-  financialYearMasterId: "",
-  target: "", 
-  raceMasterId: "",
-  farmId: "",
-  value: "",
-  month: "",           
-  userMasterId: "",
-  pageType: "FARM",
+                financialYearMasterId: "",
+                month: "",
+                raceMasterId: "",
+                farmId: "",
+                userMasterId: "",
               });
+              setNosData(blankQty());
+              setKgData(blankQty());
               setValidated(false);
             }
           })
@@ -1412,12 +1427,12 @@ const handleShowModal = () => {
       financialYearMasterId: "",
       districtId: "",
       month: "",
-      target: "",
-      value: "",
       raceMasterId: "",
       farmId: "",
       userMasterId: "",
     });
+    setNosData(blankQty());
+    setKgData(blankQty());
     setSearchData({
       districtId: "",
       talukId: "",
@@ -1536,7 +1551,7 @@ const handleShowModal = () => {
                             <tr>
                               <th style={styles.ctstyle}>
                                 {t("Total Farm Yearly Targets")}:{" "}
-                                {!isNaN(parseFloat(viewTotalTargetsDataCocoonProduction[0]?.yearlyFarmValue)) && !isNaN(parseFloat(viewTotalTargetsDataBrushing[0]?.yearlyFarmValue)) ? ((parseFloat(viewTotalTargetsDataCocoonProduction[0]?.yearlyFarmValue))+(parseFloat(viewTotalTargetsDataBrushing[0]?.yearlyFarmValue))).toFixed(2):"N/A" ||
+                                {!isNaN(parseFloat(viewTotalTargetsDataCocoonProduction[0]?.yearlyFarmValue)) && !isNaN(parseFloat(viewTotalTargetsDataBrushing[0]?.yearlyFarmValue)) ? ((parseFloat(viewTotalTargetsDataCocoonProduction[0]?.yearlyFarmValue))+(parseFloat(viewTotalTargetsDataBrushing[0]?.yearlyFarmValue))).toFixed(5):"N/A" ||
                                   "N/A"}
                               </th>
                             </tr>
@@ -1687,71 +1702,64 @@ const handleShowModal = () => {
 
 
                        <Col lg="6">
-                        <Form.Group className="form-group mt-n4">
-                          <Form.Label>
-                            {t("Target Type")}
-                          </Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Select
-                              name="target"
-                              value={data.target}
-                              onChange={handleInputs}
-                              
-                            >
-                              <option value="">{t("Select Target Type")}</option>
-                              <option value="Brushing">{t("BRUSHING")}</option>
-                              <option value="Cocoon Production">{t("COCOON PRODUCTION")}</option>
-                            </Form.Select>
-                          </div>
-                        </Form.Group>
-                      </Col>
-
-                    <Col lg="6">
-                      <Form.Group className="form-group mt-n4">
-                        <Form.Label htmlFor="Target Value">
-                          {t("Achievement Value")}<span className="text-danger">*</span>
-                        </Form.Label>
-                        <div className="form-control-wrap">
-                          <Form.Control
-                            id="value"
-                            name="value"
-                            value={data.value}
-                            onChange={handleInputs}
-                            type="text"
-                            placeholder={t("Enter Value")}
-                            required
-                            // isInvalid={!data.value} 
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {t("Achievement Value is required")}.
-                          </Form.Control.Feedback>
+                        <div className="mt-n2 mb-1" style={{ fontWeight: 700, fontSize: "12px", color: "#4338ca", textTransform: "uppercase", letterSpacing: ".05em" }}>
+                          {t("Quantity in Nos")}{" "}
+                          <span style={{ fontWeight: 400, textTransform: "none", color: "#64748b" }}>
+                            ({t("Total")}: {nosData.value || 0})
+                          </span>
                         </div>
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg="12">
-                      <div className="mt-n2 mb-1" style={{ fontWeight: 700, fontSize: "12px", color: "#4338ca", textTransform: "uppercase", letterSpacing: ".05em" }}>
-                        {t("Weekly Split")} <span style={{ fontWeight: 400, textTransform: "none", color: "#64748b" }}>({t("auto-sums into Achievement Value")})</span>
-                      </div>
-                    </Col>
-                    {[1, 2, 3, 4].map((w) => (
-                      <Col lg="3" key={`week${w}`}>
-                        <Form.Group className="form-group mt-n4">
-                          <Form.Label htmlFor={`week${w}`}>{t(`Week ${w}`)}</Form.Label>
-                          <div className="form-control-wrap">
-                            <Form.Control
-                              id={`week${w}`}
-                              name={`week${w}`}
-                              value={data[`week${w}`]}
-                              onChange={handleWeek}
-                              type="number"
-                              min="0"
-                              placeholder={t(`Week ${w}`)}
-                            />
-                          </div>
-                        </Form.Group>
+                        <Row className="g-1">
+                          {[1, 2, 3, 4].map((w) => (
+                            <Col xs="3" key={`nosWeek${w}`}>
+                              <Form.Group className="form-group">
+                                <Form.Label htmlFor={`nosWeek${w}`}>{t(`Week ${w}`)}</Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id={`nosWeek${w}`}
+                                    name={`week${w}`}
+                                    value={nosData[`week${w}`]}
+                                    onChange={handleNosWeek}
+                                    type="number"
+                                    min="0"
+                                    step="0.00001"
+                                    placeholder={t(`Week ${w}`)}
+                                  />
+                                </div>
+                              </Form.Group>
+                            </Col>
+                          ))}
+                        </Row>
                       </Col>
-                    ))}
+
+                      <Col lg="6">
+                        <div className="mt-n2 mb-1" style={{ fontWeight: 700, fontSize: "12px", color: "#4338ca", textTransform: "uppercase", letterSpacing: ".05em" }}>
+                          {t("Quantity in Kg")}{" "}
+                          <span style={{ fontWeight: 400, textTransform: "none", color: "#64748b" }}>
+                            ({t("Total")}: {kgData.value || 0})
+                          </span>
+                        </div>
+                        <Row className="g-1">
+                          {[1, 2, 3, 4].map((w) => (
+                            <Col xs="3" key={`kgWeek${w}`}>
+                              <Form.Group className="form-group">
+                                <Form.Label htmlFor={`kgWeek${w}`}>{t(`Week ${w}`)}</Form.Label>
+                                <div className="form-control-wrap">
+                                  <Form.Control
+                                    id={`kgWeek${w}`}
+                                    name={`week${w}`}
+                                    value={kgData[`week${w}`]}
+                                    onChange={handleKgWeek}
+                                    type="number"
+                                    min="0"
+                                    step="0.00001"
+                                    placeholder={t(`Week ${w}`)}
+                                  />
+                                </div>
+                              </Form.Group>
+                            </Col>
+                          ))}
+                        </Row>
+                      </Col>
 
                         <Col lg="1">
                           <Form.Group className="form-group mt-n4">

@@ -11,6 +11,7 @@ import DataTable from "../../../components/AppDataTable";
 // import axios from "axios";
 import api from "../../../services/auth/api";
 import { useTranslation } from "react-i18next";
+import { formatQty } from "../../../utils/formatQty";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
@@ -1776,9 +1777,9 @@ useEffect(() => {
                             <tbody>
                               {viewTotalTargetsData.length > 0 ? (
                                 <tr>
-                                <td>{viewTotalTargetsData[0].sisdValue || "N/A"}</td>
-                                <td>{viewTotalTargetsData[0].tscValue || "N/A"}</td>
-                                <td>{viewTotalTargetsData[0].remainingValue || "N/A"}</td>
+                                <td>{formatQty(viewTotalTargetsData[0].sisdValue) ?? "N/A"}</td>
+                                <td>{formatQty(viewTotalTargetsData[0].tscValue) ?? "N/A"}</td>
+                                <td>{formatQty(viewTotalTargetsData[0].remainingValue) ?? "N/A"}</td>
                                 </tr>
                               ) : (
                                 <tr>

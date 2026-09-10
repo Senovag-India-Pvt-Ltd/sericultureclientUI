@@ -11,6 +11,7 @@ import DataTable from "../../../components/AppDataTable";
 // import axios from "axios";
 import api from "../../../services/auth/api";
 import { useTranslation } from "react-i18next";
+import { formatQty } from "../../../utils/formatQty";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
@@ -1856,8 +1857,7 @@ useEffect(() => {
                             <tr>
                               <th style={styles.ctstyle}>
                                 {t("Mulberry Yearly Targets (NAREGA)")}:{" "}
-                                {viewTotalTargetsDataNarega[0]?.mulberryValue ||
-                                  t("N/A")}
+                                {formatQty(viewTotalTargetsDataNarega[0]?.mulberryValue) ?? t("N/A")}
                               </th>
                             </tr>
                           </thead>
@@ -1870,8 +1870,7 @@ useEffect(() => {
                             <tr>
                               <th style={styles.ctstyle}>
                                 {t("Mulberry Yearly Targets (NON NAREGA)")}:{" "}
-                                {viewTotalTargetsDataNonNarega[0]?.mulberryValue ||
-                                  t("N/A")}
+                                {formatQty(viewTotalTargetsDataNonNarega[0]?.mulberryValue) ?? t("N/A")}
                               </th>
                             </tr>
                           </thead>
@@ -1884,7 +1883,7 @@ useEffect(() => {
                             <tr>
                               <th style={styles.ctstyle}>
                                 {t("Total Mulberry Yearly Targets")}:{" "}
-                                {!isNaN(parseFloat(viewTotalTargetsDataNonNarega[0]?.mulberryValue)) && !isNaN(parseFloat(viewTotalTargetsDataNarega[0]?.mulberryValue)) ? ((parseFloat(viewTotalTargetsDataNonNarega[0]?.mulberryValue))+(parseFloat(viewTotalTargetsDataNarega[0]?.mulberryValue))).toFixed(2):t("N/A") ||
+                                {!isNaN(parseFloat(viewTotalTargetsDataNonNarega[0]?.mulberryValue)) && !isNaN(parseFloat(viewTotalTargetsDataNarega[0]?.mulberryValue)) ? formatQty((parseFloat(viewTotalTargetsDataNonNarega[0]?.mulberryValue))+(parseFloat(viewTotalTargetsDataNarega[0]?.mulberryValue))):t("N/A") ||
                                   t("N/A")}
                               </th>
                             </tr>
@@ -2130,6 +2129,7 @@ useEffect(() => {
                                 value={data.value}
                                 onChange={handleInputs}
                                 type="number"
+                                step="0.00001"
                                 placeholder={t("Enter Target No.")}
                                 required
                               />
@@ -2254,6 +2254,7 @@ useEffect(() => {
                                     value={naregaMonth.april}
                                     onChange={handleNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2274,6 +2275,7 @@ useEffect(() => {
                                     value={nonNaregaMonth.april}
                                     onChange={handleNonNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2302,6 +2304,7 @@ useEffect(() => {
                                     value={naregaMonth.may}
                                     onChange={handleNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2322,6 +2325,7 @@ useEffect(() => {
                                     value={nonNaregaMonth.may}
                                     onChange={handleNonNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2351,6 +2355,7 @@ useEffect(() => {
                                     value={naregaMonth.june}
                                     onChange={handleNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2371,6 +2376,7 @@ useEffect(() => {
                                     value={nonNaregaMonth.june}
                                     onChange={handleNonNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2400,6 +2406,7 @@ useEffect(() => {
                                     value={naregaMonth.july}
                                     onChange={handleNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2420,6 +2427,7 @@ useEffect(() => {
                                     value={nonNaregaMonth.july}
                                     onChange={handleNonNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2448,6 +2456,7 @@ useEffect(() => {
                                     value={naregaMonth.august}
                                     onChange={handleNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2468,6 +2477,7 @@ useEffect(() => {
                                     value={nonNaregaMonth.august}
                                     onChange={handleNonNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2496,6 +2506,7 @@ useEffect(() => {
                                     value={naregaMonth.september}
                                     onChange={handleNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2516,6 +2527,7 @@ useEffect(() => {
                                     value={nonNaregaMonth.september}
                                     onChange={handleNonNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2546,6 +2558,7 @@ useEffect(() => {
                                     value={naregaMonth.october}
                                     onChange={handleNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2566,6 +2579,7 @@ useEffect(() => {
                                     value={nonNaregaMonth.october}
                                     onChange={handleNonNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2594,6 +2608,7 @@ useEffect(() => {
                                     value={naregaMonth.november}
                                     onChange={handleNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2614,6 +2629,7 @@ useEffect(() => {
                                     value={nonNaregaMonth.november}
                                     onChange={handleNonNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2642,6 +2658,7 @@ useEffect(() => {
                                     value={naregaMonth.december}
                                     onChange={handleNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2662,6 +2679,7 @@ useEffect(() => {
                                     value={nonNaregaMonth.december}
                                     onChange={handleNonNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2690,6 +2708,7 @@ useEffect(() => {
                                     value={naregaMonth.january}
                                     onChange={handleNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2710,6 +2729,7 @@ useEffect(() => {
                                     value={nonNaregaMonth.january}
                                     onChange={handleNonNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2738,6 +2758,7 @@ useEffect(() => {
                                     value={naregaMonth.february}
                                     onChange={handleNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2758,6 +2779,7 @@ useEffect(() => {
                                     value={nonNaregaMonth.february}
                                     onChange={handleNonNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2786,6 +2808,7 @@ useEffect(() => {
                                     value={naregaMonth.march}
                                     onChange={handleNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2806,6 +2829,7 @@ useEffect(() => {
                                     value={nonNaregaMonth.march}
                                     onChange={handleNonNarega}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />

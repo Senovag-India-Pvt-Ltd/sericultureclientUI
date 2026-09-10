@@ -11,6 +11,7 @@ import DataTable from "../../../components/AppDataTable";
 import { useTranslation } from "react-i18next";
 // import axios from "axios";
 import api from "../../../services/auth/api";
+import { formatQty } from "../../../utils/formatQty";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
@@ -355,9 +356,9 @@ const handleShowModal = () => {
           financialYearId: data.financialYearMasterId,
           raceId: data.raceMasterId,
           courseId: data.courseId,
-          institutionId: data.institutionId,
+          institutionId: data.trainingInstitutionId,
           targetType: target,
-          pageNumber: target === "PHYSICAL TARGET" ? page2 : page1,  
+          pageNumber: target === "PHYSICAL TARGET" ? page2 : page1,
           size: countPerPage,
         },
       };
@@ -367,9 +368,9 @@ const handleShowModal = () => {
           financialYearId: data.financialYearMasterId,
           raceId: data.raceMasterId,
           courseId: data.courseId,
-          institutionId: data.institutionId,
+          institutionId: data.trainingInstitutionId,
           targetType: target,
-          pageNumber: target === "PHYSICAL TARGET" ? page4 : page3,  
+          pageNumber: target === "PHYSICAL TARGET" ? page4 : page3,
           size: countPerPage,
         },
       };
@@ -1576,8 +1577,8 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
 //           .map(val => parseFloat(val) || 0)
 //           .reduce((a, b) => a + b, 0);
 
-//       const physicalTotal = sumValues(physicalMonths).toFixed(2);
-//       const financialTotal = sumValues(financialMonths).toFixed(2);
+//       const physicalTotal = formatQty(sumValues(physicalMonths));
+//       const financialTotal = formatQty(sumValues(financialMonths));
 
 //       setViewTotalTargetsDataPhysical([{ yearlyTrainingValue: physicalTotal }]);
 //       setViewTotalTargetsDataFinancial([{ yearlyTrainingValue: financialTotal }]);
@@ -1626,8 +1627,8 @@ const totalTarget = () => {
           .map(val => parseFloat(val) || 0)
           .reduce((a, b) => a + b, 0);
 
-      const physicalTotal = sumValues(physicalMonths).toFixed(2);
-      const financialTotal = sumValues(financialMonths).toFixed(2);
+      const physicalTotal = formatQty(sumValues(physicalMonths));
+      const financialTotal = formatQty(sumValues(financialMonths));
 
       // Update state
       setViewTotalTargetsDataPhysical([{ yearlyTrainingValue: physicalTotal }]);
@@ -1636,7 +1637,7 @@ const totalTarget = () => {
       // ✅ Calculate total yearly target here
       const totalYearlyTrainingValue =
         (!isNaN(parseFloat(physicalTotal)) && !isNaN(parseFloat(financialTotal)))
-          ? (parseFloat(physicalTotal) + parseFloat(financialTotal)).toFixed(2)
+          ? formatQty(parseFloat(physicalTotal) + parseFloat(financialTotal))
           : "N/A";
 
       console.log("Total Yearly Training Value:", totalYearlyTrainingValue);
@@ -1739,7 +1740,7 @@ const totalTarget = () => {
                               {viewTotalTargetsDataFinancial.length > 0 ? (
 
                                 <tr>
-                                <td>{viewTotalTargetsDataFinancial[0].yearlyTrainingValue || "N/A"}</td>
+                                <td>{formatQty(viewTotalTargetsDataFinancial[0].yearlyTrainingValue) ?? "N/A"}</td>
 
                                 </tr>
                               ) : (
@@ -1771,7 +1772,7 @@ const totalTarget = () => {
     <table className="table table-bordered table-striped" style={{ width: '300px', textAlign: 'center' }}>
       <thead>
         <tr>
-          <th>{t("Yearly Physical Target")}: {viewTotalTargetsDataPhysical[0]?.yearlyTrainingValue || t("N/A")}</th>
+          <th>{t("Yearly Physical Target")}: {formatQty(viewTotalTargetsDataPhysical[0]?.yearlyTrainingValue) ?? t("N/A")}</th>
         </tr>
       </thead>
     </table>
@@ -1780,7 +1781,7 @@ const totalTarget = () => {
     <table className="table table-bordered table-striped" style={{ width: '300px', textAlign: 'center' }}>
       <thead>
         <tr>
-          <th>{t("Yearly Financial Target")}: {viewTotalTargetsDataFinancial[0]?.yearlyTrainingValue || t("N/A")}</th>
+          <th>{t("Yearly Financial Target")}: {formatQty(viewTotalTargetsDataFinancial[0]?.yearlyTrainingValue) ?? t("N/A")}</th>
         </tr>
       </thead>
     </table>
@@ -1793,8 +1794,8 @@ const totalTarget = () => {
             {t("Total Yearly Training Targets")}: {
               (!isNaN(parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyTrainingValue)) &&
                !isNaN(parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTrainingValue)))
-                ? (parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyTrainingValue) + 
-                   parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTrainingValue)).toFixed(2)
+                ? formatQty(parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyTrainingValue) + 
+                   parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTrainingValue))
                 : t("N/A")
             }
           </th>
@@ -1998,6 +1999,7 @@ const totalTarget = () => {
                                     value={physicalTargetMonths.april}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2018,6 +2020,7 @@ const totalTarget = () => {
                                     value={financialTargetMonths.april}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2046,6 +2049,7 @@ const totalTarget = () => {
                                     value={physicalTargetMonths.may}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2066,6 +2070,7 @@ const totalTarget = () => {
                                     value={financialTargetMonths.may}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2094,6 +2099,7 @@ const totalTarget = () => {
                                     value={physicalTargetMonths.june}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2114,6 +2120,7 @@ const totalTarget = () => {
                                     value={financialTargetMonths.june}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2143,6 +2150,7 @@ const totalTarget = () => {
                                     value={physicalTargetMonths.july}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2163,6 +2171,7 @@ const totalTarget = () => {
                                     value={financialTargetMonths.july}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2191,6 +2200,7 @@ const totalTarget = () => {
                                     value={physicalTargetMonths.august}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2211,6 +2221,7 @@ const totalTarget = () => {
                                     value={financialTargetMonths.august}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2239,6 +2250,7 @@ const totalTarget = () => {
                                     value={physicalTargetMonths.september}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2259,6 +2271,7 @@ const totalTarget = () => {
                                     value={financialTargetMonths.september}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2289,6 +2302,7 @@ const totalTarget = () => {
                                     value={physicalTargetMonths.october}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2309,6 +2323,7 @@ const totalTarget = () => {
                                     value={financialTargetMonths.october}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2337,6 +2352,7 @@ const totalTarget = () => {
                                     value={physicalTargetMonths.november}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2357,6 +2373,7 @@ const totalTarget = () => {
                                     value={financialTargetMonths.november}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2385,6 +2402,7 @@ const totalTarget = () => {
                                     value={physicalTargetMonths.december}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2405,6 +2423,7 @@ const totalTarget = () => {
                                     value={financialTargetMonths.december}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2433,6 +2452,7 @@ const totalTarget = () => {
                                     value={physicalTargetMonths.january}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2453,6 +2473,7 @@ const totalTarget = () => {
                                     value={financialTargetMonths.january}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2481,6 +2502,7 @@ const totalTarget = () => {
                                     value={physicalTargetMonths.february}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2501,6 +2523,7 @@ const totalTarget = () => {
                                     value={financialTargetMonths.february}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2529,6 +2552,7 @@ const totalTarget = () => {
                                     value={physicalTargetMonths.march}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2549,6 +2573,7 @@ const totalTarget = () => {
                                     value={financialTargetMonths.march}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />

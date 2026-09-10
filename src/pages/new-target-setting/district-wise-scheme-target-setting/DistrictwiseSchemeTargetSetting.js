@@ -11,6 +11,7 @@ import DataTable from "../../../components/AppDataTable";
 import { useTranslation } from "react-i18next"; // Import useTranslation
 // import axios from "axios";
 import api from "../../../services/auth/api";
+import { formatQty } from "../../../utils/formatQty";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
@@ -1695,8 +1696,7 @@ const handleShowModal2 = () => setShowModal2(true);
                             <tr>
                               <th style={styles.ctstyle}>
                                 {t("Scheme Yearly Targets (PHYSICAL TARGET)")}:{" "}
-                                {viewTotalTargetsDataPhysical[0]?.yearlySchemeValue ||
-                                  t("N/A")}
+                                {formatQty(viewTotalTargetsDataPhysical[0]?.yearlySchemeValue) ?? t("N/A")}
                               </th>
                             </tr>
                           </thead>
@@ -1709,8 +1709,7 @@ const handleShowModal2 = () => setShowModal2(true);
                             <tr>
                               <th style={styles.ctstyle}>
                                 {t("Scheme Yearly Targets (FINANCIAL TARGET)")}:{" "}
-                                {viewTotalTargetsDataFinancial[0]?.yearlySchemeValue ||
-                                  t("N/A")}
+                                {formatQty(viewTotalTargetsDataFinancial[0]?.yearlySchemeValue) ?? t("N/A")}
                               </th>
                             </tr>
                           </thead>
@@ -1723,7 +1722,7 @@ const handleShowModal2 = () => setShowModal2(true);
                             <tr>
                               <th style={styles.ctstyle}>
                                 {t("Total Scheme Yearly Targets")}:{" "}
-                                {!isNaN(parseFloat(viewTotalTargetsDataFinancial[0]?.yearlySchemeValue)) && !isNaN(parseFloat(viewTotalTargetsDataPhysical[0]?.yearlySchemeValue)) ? ((parseFloat(viewTotalTargetsDataFinancial[0]?.yearlySchemeValue))+(parseFloat(viewTotalTargetsDataPhysical[0]?.yearlySchemeValue))).toFixed(2):t("N/A") ||
+                                {!isNaN(parseFloat(viewTotalTargetsDataFinancial[0]?.yearlySchemeValue)) && !isNaN(parseFloat(viewTotalTargetsDataPhysical[0]?.yearlySchemeValue)) ? formatQty((parseFloat(viewTotalTargetsDataFinancial[0]?.yearlySchemeValue))+(parseFloat(viewTotalTargetsDataPhysical[0]?.yearlySchemeValue))):t("N/A") ||
                                   t("N/A")}
                               </th>
                             </tr>
@@ -2303,6 +2302,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={physicalTargetMonths.april}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2323,6 +2323,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={financialTargetMonths.april}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2351,6 +2352,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={physicalTargetMonths.may}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2371,6 +2373,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={financialTargetMonths.may}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2400,6 +2403,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={physicalTargetMonths.june}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2420,6 +2424,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={financialTargetMonths.june}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2449,6 +2454,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={physicalTargetMonths.july}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2469,6 +2475,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={financialTargetMonths.july}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2497,6 +2504,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={physicalTargetMonths.august}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2517,6 +2525,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={financialTargetMonths.august}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2545,6 +2554,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={physicalTargetMonths.september}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2565,6 +2575,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={financialTargetMonths.september}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2595,6 +2606,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={physicalTargetMonths.october}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2615,6 +2627,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={financialTargetMonths.october}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2643,6 +2656,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={physicalTargetMonths.november}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2663,6 +2677,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={financialTargetMonths.november}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2691,6 +2706,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={physicalTargetMonths.december}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2711,6 +2727,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={financialTargetMonths.december}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2739,6 +2756,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={physicalTargetMonths.january}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2759,6 +2777,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={financialTargetMonths.january}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2787,6 +2806,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={physicalTargetMonths.february}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2807,6 +2827,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={financialTargetMonths.february}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2835,6 +2856,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={physicalTargetMonths.march}
                                     onChange={handlePhysical}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />
@@ -2855,6 +2877,7 @@ const handleShowModal2 = () => setShowModal2(true);
                                     value={financialTargetMonths.march}
                                     onChange={handleFinancial}
                                     type="number"
+                                    step="0.00001"
                                     placeholder={t("Enter Target No.")}
                                     required
                                   />

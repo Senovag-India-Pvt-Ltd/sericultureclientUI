@@ -11,6 +11,7 @@ import DataTable from "../../../components/AppDataTable";
 import { useTranslation } from "react-i18next";
 // import axios from "axios";
 import api from "../../../services/auth/api";
+import { formatQty } from "../../../utils/formatQty";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
@@ -82,6 +83,10 @@ function FarmwiseTarget() {
     april:"", may:"", june:"", july:"", august:"", september:"",
     october:"", november:"", december:"", january:"", february:"", march:"",
   });
+  const FARM_MONTHS = [
+    "april","may","june","july","august","september",
+    "october","november","december","january","february","march"
+  ];
   // brushingWeeks[0..3] = Week1..Week4, each {april..march}
   const [brushingWeeks, setBrushingWeeks] = useState([blankMonths(), blankMonths(), blankMonths(), blankMonths()]);
   const [cocoonWeeks,   setCocoonWeeks]   = useState([blankMonths(), blankMonths(), blankMonths(), blankMonths()]);
@@ -1501,8 +1506,7 @@ const handleShowModal = () => {
                             <tr>
                               <th style={styles.ctstyle}>
                                 {t("Farm Yearly Targets (Brushing)")}:{" "}
-                                {viewTotalTargetsDataBrushing[0]?.yearlyFarmValue ||
-                                  t("N/A")}
+                                {formatQty(viewTotalTargetsDataBrushing[0]?.yearlyFarmValue) ?? t("N/A")}
                               </th>
                             </tr>
                           </thead>
@@ -1515,8 +1519,7 @@ const handleShowModal = () => {
                             <tr>
                               <th style={styles.ctstyle}>
                                 {t("Farm Yearly Targets (Cocoon Production)")}:{" "}
-                                {viewTotalTargetsDataCocoonProduction[0]?.yearlyFarmValue ||
-                                  t("N/A")}
+                                {formatQty(viewTotalTargetsDataCocoonProduction[0]?.yearlyFarmValue) ?? t("N/A")}
                               </th>
                             </tr>
                           </thead>
@@ -1529,7 +1532,7 @@ const handleShowModal = () => {
                             <tr>
                               <th style={styles.ctstyle}>
                                 {t("Total Farm Yearly Targets")}:{" "}
-                                {!isNaN(parseFloat(viewTotalTargetsDataCocoonProduction[0]?.yearlyFarmValue)) && !isNaN(parseFloat(viewTotalTargetsDataBrushing[0]?.yearlyFarmValue)) ? ((parseFloat(viewTotalTargetsDataCocoonProduction[0]?.yearlyFarmValue))+(parseFloat(viewTotalTargetsDataBrushing[0]?.yearlyFarmValue))).toFixed(2):t("N/A") ||
+                                {!isNaN(parseFloat(viewTotalTargetsDataCocoonProduction[0]?.yearlyFarmValue)) && !isNaN(parseFloat(viewTotalTargetsDataBrushing[0]?.yearlyFarmValue)) ? formatQty((parseFloat(viewTotalTargetsDataCocoonProduction[0]?.yearlyFarmValue))+(parseFloat(viewTotalTargetsDataBrushing[0]?.yearlyFarmValue))):t("N/A") ||
                                   t("N/A")}
                               </th>
                             </tr>
@@ -1814,654 +1817,73 @@ const handleShowModal = () => {
                       <span>{t("Months")}</span>
                     </Card.Header>
                     <Card.Body>
-                      {/* <h3>Farmers Details</h3> */}
+                      {/* Weekly target entry — 4 weeks per month for both Brushing and
+                          Cocoon Production; the monthly total auto-sums from the four
+                          weekly values (see setWeekValue). */}
                       <Row className="g-gs">
-                        <Col lg="6">
-                          <Form.Group className="form-group mt-n2">
-                            <Form.Label htmlFor="value" className="bold fs-5">
-                              {t("April")}
-                            </Form.Label>
-                            <Row className="g-gs">
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Brushing")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="april"
-                                    name="april"
-                                    value={brushingMonth.april}
-                                    onChange={handleBrushing}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Cocoon Production")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="april"
-                                    name="april"
-                                    value={cocoonProductionMonth.april}
-                                    onChange={handleCocoonProduction}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                            </Row>
-                          </Form.Group>
-
-                          <Form.Group className="form-group mt-2">
-                            <Form.Label htmlFor="value" className="bold fs-5">
-                              {t("May")}
-                            </Form.Label>
-                            <Row className="g-gs">
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Brushing")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="may"
-                                    name="may"
-                                    value={brushingMonth.may}
-                                    onChange={handleBrushing}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Cocoon Production")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="may"
-                                    name="may"
-                                    value={cocoonProductionMonth.may}
-                                    onChange={handleCocoonProduction}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                            </Row>
-                          </Form.Group>
-                          {/* </Col> */}
-
-                          <Form.Group className="form-group mt-2">
-                            <Form.Label htmlFor="value" className="bold fs-5">
-                              {t("June")}
-                            </Form.Label>
-                            <Row className="g-gs">
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Brushing")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="june"
-                                    name="june"
-                                    value={brushingMonth.june}
-                                    onChange={handleBrushing}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Cocoon Production")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="june"
-                                    name="june"
-                                    value={cocoonProductionMonth.june}
-                                    onChange={handleCocoonProduction}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                            </Row>
-                          </Form.Group>
-
-
-                          <Form.Group className="form-group mt-2">
-                            <Form.Label htmlFor="value" className="bold fs-5">
-                              {t("July")}
-                            </Form.Label>
-                            <Row className="g-gs">
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Brushing")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="july"
-                                    name="july"
-                                    value={brushingMonth.july}
-                                    onChange={handleBrushing}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Cocoon Production")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="july"
-                                    name="july"
-                                    value={cocoonProductionMonth.july}
-                                    onChange={handleCocoonProduction}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                            </Row>
-                          </Form.Group>
-
-                          <Form.Group className="form-group mt-2">
-                            <Form.Label htmlFor="value" className="bold fs-5">
-                              {t("August")}
-                            </Form.Label>
-                            <Row className="g-gs">
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Brushing")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="august"
-                                    name="august"
-                                    value={brushingMonth.august}
-                                    onChange={handleBrushing}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Cocoon Production")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="august"
-                                    name="august"
-                                    value={cocoonProductionMonth.august}
-                                    onChange={handleCocoonProduction}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                            </Row>
-                          </Form.Group>
-
-                          <Form.Group className="form-group mt-2">
-                            <Form.Label htmlFor="value" className="bold fs-5">
-                              {t("September")}
-                            </Form.Label>
-                            <Row className="g-gs">
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Brushing")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="september"
-                                    name="september"
-                                    value={brushingMonth.september}
-                                    onChange={handleBrushing}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Cocoon Production")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="september"
-                                    name="september"
-                                    value={cocoonProductionMonth.september}
-                                    onChange={handleCocoonProduction}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                            </Row>
-                          </Form.Group>
-                        </Col>
-
-                        <Col lg="6">
-                        <Form.Group className="form-group mt-n3">
-                            <Form.Label htmlFor="value" className="bold fs-5">
-                              {t("October")}
-                            </Form.Label>
-                            <Row className="g-gs">
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Brushing")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="october"
-                                    name="october"
-                                    value={brushingMonth.october}
-                                    onChange={handleBrushing}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Cocoon Production")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="october"
-                                    name="october"
-                                    value={cocoonProductionMonth.october}
-                                    onChange={handleCocoonProduction}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                            </Row>
-                          </Form.Group>
-                          
-                          <Form.Group className="form-group mt-2">
-                            <Form.Label htmlFor="value" className="bold fs-5">
-                              {t("November")}
-                            </Form.Label>
-                            <Row className="g-gs">
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Brushing")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="november"
-                                    name="november"
-                                    value={brushingMonth.november}
-                                    onChange={handleBrushing}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Cocoon Production")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="november"
-                                    name="november"
-                                    value={cocoonProductionMonth.november}
-                                    onChange={handleCocoonProduction}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                            </Row>
-                          </Form.Group>
-
-                          <Form.Group className="form-group mt-2">
-                            <Form.Label htmlFor="value" className="bold fs-5">
-                              {t("December")}
-                            </Form.Label>
-                            <Row className="g-gs">
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Brushing")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="december"
-                                    name="december"
-                                    value={brushingMonth.december}
-                                    onChange={handleBrushing}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Cocoon Production")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="december"
-                                    name="december"
-                                    value={cocoonProductionMonth.december}
-                                    onChange={handleCocoonProduction}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                            </Row>
-                          </Form.Group>
-
-                          <Form.Group className="form-group mt-2">
-                            <Form.Label htmlFor="value" className="bold fs-5">
-                              {t("January")}
-                            </Form.Label>
-                            <Row className="g-gs">
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Brushing")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="january"
-                                    name="january"
-                                    value={brushingMonth.january}
-                                    onChange={handleBrushing}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Cocoon Production")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="january"
-                                    name="january"
-                                    value={cocoonProductionMonth.january}
-                                    onChange={handleCocoonProduction}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                            </Row>
-                          </Form.Group>
-
-                          <Form.Group className="form-group mt-2">
-                            <Form.Label htmlFor="value" className="bold fs-5">
-                              {t("February")}
-                            </Form.Label>
-                            <Row className="g-gs">
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Brushing")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="february"
-                                    name="february"
-                                    value={brushingMonth.february}
-                                    onChange={handleBrushing}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Cocoon Production")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="february"
-                                    name="february"
-                                    value={cocoonProductionMonth.february}
-                                    onChange={handleCocoonProduction}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                            </Row>
-                          </Form.Group>
-
-                          <Form.Group className="form-group mt-2">
-                            <Form.Label htmlFor="value" className="bold fs-5">
-                              {t("March")}
-                            </Form.Label>
-                            <Row className="g-gs">
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Brushing")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="march"
-                                    name="march"
-                                    value={brushingMonth.march}
-                                    onChange={handleBrushing}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                              <Col lg="6">
-                                <Form.Label htmlFor="value">
-                                  {t("Cocoon Production")}
-                                  <span className="text-danger">*</span>
-                                </Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Control
-                                    id="march"
-                                    name="march"
-                                    value={cocoonProductionMonth.march}
-                                    onChange={handleCocoonProduction}
-                                    type="number"
-                                    placeholder={t("Enter Target No.")}
-                                    required
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {t("Target No. is required")}
-                                  </Form.Control.Feedback>
-                                </div>
-                              </Col>
-                            </Row>
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                    </Card.Body>
-                  </Card>
-                </Block>
-
-                {/* ── Weekly Target Breakdown (Form-27 monthly-hatching) ──────── */}
-                <Block className="mt-3">
-                  <Card style={{ borderRadius: "14px", border: "none", boxShadow: "0 4px 20px rgba(67,56,202,.10)", overflow: "hidden" }}>
-                    <div style={{ background: "linear-gradient(135deg,#4338ca,#6366f1)", color: "#fff", padding: "12px 20px", fontWeight: 800, fontSize: "14px" }}>
-                      {t("Weekly Target Breakdown")}{" "}
-                      <span style={{ fontWeight: 400, opacity: .85, fontSize: "12px" }}>
-                        — {t("click a month to enter Week 1-4 (auto-sums into the monthly target)")}
-                      </span>
-                    </div>
-                    <Card.Body>
-                      {[
-                        { type: "brushing", title: t("Brushing"),           weeks: brushingWeeks, month: brushingMonth },
-                        { type: "cocoon",   title: t("Cocoon Production"),   weeks: cocoonWeeks,   month: cocoonProductionMonth },
-                      ].map((grp) => (
-                        <div key={grp.type} className="mb-3">
-                          <div style={{ fontWeight: 700, color: "#312e81", marginBottom: "6px" }}>{grp.title}</div>
-                          <Row className="g-2">
-                            {[
-                              { k: "april", l: "April" }, { k: "may", l: "May" }, { k: "june", l: "June" },
-                              { k: "july", l: "July" }, { k: "august", l: "August" }, { k: "september", l: "September" },
-                              { k: "october", l: "October" }, { k: "november", l: "November" }, { k: "december", l: "December" },
-                              { k: "january", l: "January" }, { k: "february", l: "February" }, { k: "march", l: "March" },
-                            ].map((m) => {
-                              const cellId = `${grp.type}:${m.k}`;
-                              const isOpen = openWeek === cellId;
-                              const total = grp.weeks.reduce((s, w) => s + (parseFloat(w[m.k]) || 0), 0);
-                              return (
-                                <Col lg="3" md="4" sm="6" key={m.k}>
-                                  <div style={{ border: "1.5px solid #e0e7ff", borderRadius: "10px", overflow: "hidden" }}>
-                                    <button type="button" onClick={() => setOpenWeek(isOpen ? null : cellId)}
-                                      style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center",
-                                        background: isOpen ? "#eef2ff" : "#f8fafc", border: "none", padding: "8px 12px", cursor: "pointer", fontWeight: 600, color: "#312e81" }}>
-                                      <span>{t(m.l)}</span>
-                                      <span style={{ fontSize: "12px", color: "#475569" }}>
-                                        {total > 0 ? total : (grp.month[m.k] || 0)} {isOpen ? "▴" : "▾"}
+                        {FARM_MONTHS.map((m) => {
+                          const label = m.charAt(0).toUpperCase() + m.slice(1);
+                          return (
+                            <Col lg="6" key={m}>
+                              <Form.Group className="form-group mt-n2">
+                                <Form.Label className="bold fs-5">{t(label)}</Form.Label>
+                                <Row className="g-gs">
+                                  <Col lg="6">
+                                    <Form.Label>
+                                      {t("Brushing")}{" "}
+                                      <span className="text-muted">
+                                        ({t("Total")}: {brushingMonth[m] || 0})
                                       </span>
-                                    </button>
-                                    {isOpen && (
-                                      <div style={{ padding: "10px 12px", background: "#fff" }}>
-                                        {[0, 1, 2, 3].map((wi) => (
-                                          <div key={wi} style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
-                                            <span style={{ fontSize: "12px", width: "56px", color: "#64748b" }}>{t(`Week ${wi + 1}`)}</span>
-                                            <Form.Control size="sm" type="number" min="0"
-                                              value={grp.weeks[wi][m.k] || ""}
-                                              onChange={(e) => setWeekValue(grp.type, wi, m.k, e.target.value)}
-                                              placeholder={t(`Week ${wi + 1}`)} />
-                                          </div>
-                                        ))}
-                                        <div style={{ textAlign: "right", fontSize: "12px", fontWeight: 700, color: "#0f766e" }}>
-                                          {t("Total")}: {total}
-                                        </div>
-                                      </div>
-                                    )}
-                                  </div>
-                                </Col>
-                              );
-                            })}
-                          </Row>
-                        </div>
-                      ))}
+                                    </Form.Label>
+                                    <Row className="g-1">
+                                      {[1, 2, 3, 4].map((wk) => (
+                                        <Col xs="3" key={wk}>
+                                          <Form.Control
+                                            name={`${m}_brushing_week${wk}`}
+                                            value={brushingWeeks[wk - 1][m] || ""}
+                                            onChange={(e) =>
+                                              setWeekValue("brushing", wk - 1, m, e.target.value)
+                                            }
+                                            type="number"
+                                            step="0.00001"
+                                            min="0"
+                                            placeholder={`${t("Week")} ${wk}`}
+                                          />
+                                        </Col>
+                                      ))}
+                                    </Row>
+                                  </Col>
+                                  <Col lg="6">
+                                    <Form.Label>
+                                      {t("Cocoon Production")}{" "}
+                                      <span className="text-muted">
+                                        ({t("Total")}: {cocoonProductionMonth[m] || 0})
+                                      </span>
+                                    </Form.Label>
+                                    <Row className="g-1">
+                                      {[1, 2, 3, 4].map((wk) => (
+                                        <Col xs="3" key={wk}>
+                                          <Form.Control
+                                            name={`${m}_cocoon_week${wk}`}
+                                            value={cocoonWeeks[wk - 1][m] || ""}
+                                            onChange={(e) =>
+                                              setWeekValue("cocoon", wk - 1, m, e.target.value)
+                                            }
+                                            type="number"
+                                            step="0.00001"
+                                            min="0"
+                                            placeholder={`${t("Week")} ${wk}`}
+                                          />
+                                        </Col>
+                                      ))}
+                                    </Row>
+                                  </Col>
+                                </Row>
+                              </Form.Group>
+                            </Col>
+                          );
+                        })}
+                      </Row>
                     </Card.Body>
                   </Card>
                 </Block>

@@ -11,6 +11,7 @@ import DataTable from "../../../components/AppDataTable";
 // import axios from "axios";
 import api from "../../../services/auth/api";
 import { useTranslation } from "react-i18next";
+import { formatQty } from "../../../utils/formatQty";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
@@ -1784,8 +1785,8 @@ useEffect(() => {
                             <tbody>
                               {viewTotalTargetsData.length > 0 ? (
                                 <tr>
-                                {/* <td>{viewMonthlyTargetsData[0].monthlyGrainageValue || "N/A"}</td> */}
-                                <td>{viewTotalTargetsData[0].mulberryValue || "N/A"}</td>
+                                {/* <td>{formatQty(viewMonthlyTargetsData[0].monthlyGrainageValue) ?? "N/A"}</td> */}
+                                <td>{formatQty(viewTotalTargetsData[0].mulberryValue) ?? "N/A"}</td>
                                 </tr>
                               ) : (
                                 <tr>
@@ -2128,6 +2129,7 @@ useEffect(() => {
                                 value={data.value}
                                 onChange={handleInputs}
                                 type="number"
+                                step="0.00001"
                                 placeholder={t("Enter Target")}
                                 required
                               />
@@ -2792,6 +2794,7 @@ useEffect(() => {
                                 value={editData.value}
                                 onChange={handleEditInputs}
                                 type="number"
+                                step="0.00001"
                                 placeholder={t("Enter Target")}
                                 required
                               />

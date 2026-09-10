@@ -11,6 +11,7 @@ import DataTable from "../../../components/AppDataTable";
 // import axios from "axios";
 import api from "../../../services/auth/api";
 import { useTranslation } from "react-i18next";
+import { formatQty } from "../../../utils/formatQty";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLTargetSetting = process.env.REACT_APP_API_BASE_URL_TARGET_SETTING;
@@ -257,7 +258,7 @@ useEffect(() => {
   //         financialYearId: data.financialYearMasterId,
   //         raceId: data.raceMasterId,
   //         // targetType: target,
-  //         grainageId: data.grainageId,
+  //         grainageId: data.grainageMasterId,
   //         // farmId: data.scSubSchemeDetailsId,
   //         // courseId: data.targetType,
   //         // institutionId: data.targetType,
@@ -301,7 +302,7 @@ useEffect(() => {
       params: {
         financialYearId: data.financialYearMasterId,
         raceId: data.raceMasterId,
-        grainageId: data.grainageId,
+        grainageId: data.grainageMasterId,
         pageNumber: pageView, 
         size: countPerPage,
       },
@@ -311,7 +312,7 @@ useEffect(() => {
       params: {
         financialYearId: data.financialYearMasterId,
         raceId: data.raceMasterId,
-        grainageId: data.grainageId,
+        grainageId: data.grainageMasterId,
         pageNumber: pageHierarchy, 
         size: countPerPage,
       },
@@ -1325,8 +1326,8 @@ api.post(
                             {/* <tbody>
                               {viewMonthlyTargetsData.length > 0 ? (
                                 <tr>
-                                {/* <td>{viewMonthlyTargetsData[0].monthlyGrainageValue || "N/A"}</td> */}
-                                {/* <td>{viewMonthlyTargetsData[0].yearlyGrainageValue || "N/A"}</td>
+                                {/* <td>{formatQty(viewMonthlyTargetsData[0].monthlyGrainageValue) ?? "N/A"}</td> */}
+                                {/* <td>{formatQty(viewMonthlyTargetsData[0].yearlyGrainageValue) ?? "N/A"}</td>
                                 </tr>
                               ) : (
                                 <tr>
@@ -1340,7 +1341,7 @@ api.post(
 <tbody>
   {viewMonthlyTargetsData.length > 0 ? (
     <tr>
-      <td>{viewMonthlyTargetsData[0]?.yearlyGrainageValue || t("N/A")}</td>
+      <td>{formatQty(viewMonthlyTargetsData[0]?.yearlyGrainageValue) ?? t("N/A")}</td>
     </tr>
   ) : (
     <tr>
@@ -1639,6 +1640,7 @@ api.post(
                                           handleGrainageWeek(wk, m, e.target.value)
                                         }
                                         type="number"
+                                        step="0.00001"
                                         min="0"
                                         placeholder={`${t("Week")} ${wk}`}
                                       />
