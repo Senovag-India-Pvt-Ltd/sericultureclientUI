@@ -1628,6 +1628,7 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
           });
         }}
         type="number"
+        step="0.00001"
         placeholder={t("Enter Financial Achievement Value")}
         required
       />
@@ -1663,6 +1664,7 @@ const [viewTotalTargetsDataPhysical, setViewTotalTargetsDataPhysical] = useState
           });
         }}
         type="number"
+        step="0.00001"
         placeholder={t("Enter Physical Achievement Value")}
         required
       />
