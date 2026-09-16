@@ -8,6 +8,7 @@ import { Icon } from "../../../components";
 import { useState, useEffect } from "react";
 import api from "../../../services/auth/api";
 import { useTranslation } from "react-i18next";
+import DbtCodeFinancialYearPanel from "../common/DbtCodeFinancialYearPanel";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function ScComponentEdit() {
@@ -194,7 +195,7 @@ function ScComponentEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    {t("Loading...")}
+                    Loading...
                   </h1>
                 ) : (
                   <Row className="g-gs">
@@ -308,6 +309,7 @@ function ScComponentEdit() {
             </div>
           </Row>
         </Form>
+        <DbtCodeFinancialYearPanel masterType="SC_COMPONENT" parentId={id} />
       </Block>
     </Layout>
   );
