@@ -4,10 +4,11 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
+import DbtCodeFinancialYearPanel from "../common/DbtCodeFinancialYearPanel";
 
 const baseURL    = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -31,6 +32,7 @@ function ScCategoryEdit() {
   });
 
   const [mappingRows, setMappingRows] = useState([]);
+  const [expandedMappingId, setExpandedMappingId] = useState(null);
 
   useEffect(() => {
     api
@@ -255,7 +257,7 @@ function ScCategoryEdit() {
               <Card.Body>
                 {loading ? (
                   <h5 className="d-flex justify-content-center align-items-center py-4">
-                    {t("Loading...")}
+                    Loading...
                   </h5>
                 ) : (
                   <Row className="g-gs">
@@ -330,7 +332,7 @@ function ScCategoryEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group">
                         <Form.Label>
-                          {t("Code Number")}
+                          {t("Code  Number")}
                           <span className="text-danger">*</span>
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -414,12 +416,13 @@ function ScCategoryEdit() {
                               <th>{t("Scheme")}<span className="text-danger">*</span></th>
                               <th>{t("Sub Scheme")}<span className="text-danger">*</span></th>
                               <th>{t("Dbt Code")}<span className="text-danger">*</span></th>
-                              <th style={{ width: "100px" }}>{t("Action")}</th>
+                              <th style={{ width: "180px" }}>{t("Action")}</th>
                             </tr>
                           </thead>
                           <tbody>
                             {mappingRows.map((row, index) => (
-                              <tr key={index}>
+                              <React.Fragment key={index}>
+                              <tr>
                                 <td>
                                   <Form.Select
                                     value={row.schemeId}
@@ -465,6 +468,23 @@ function ScCategoryEdit() {
                                   />
                                 </td>
                                 <td className="text-center">
+                                  {row.scCategoryMappingId ? (
+                                    <Button
+                                      type="button"
+                                      variant="outline-primary"
+                                      size="sm"
+                                      className="me-1"
+                                      onClick={() =>
+                                        setExpandedMappingId(
+                                          expandedMappingId === row.scCategoryMappingId
+                                            ? null
+                                            : row.scCategoryMappingId
+                                        )
+                                      }
+                                    >
+                                      {t("FY Codes")}
+                                    </Button>
+                                  ) : null}
                                   <Button
                                     type="button"
                                     variant="danger"
@@ -476,6 +496,17 @@ function ScCategoryEdit() {
                                   </Button>
                                 </td>
                               </tr>
+                              {expandedMappingId === row.scCategoryMappingId && row.scCategoryMappingId ? (
+                                <tr>
+                                  <td colSpan={4} className="p-0 border-0">
+                                    <DbtCodeFinancialYearPanel
+                                      masterType="SC_CATEGORY_SCHEME_MAPPING"
+                                      parentId={row.scCategoryMappingId}
+                                    />
+                                  </td>
+                                </tr>
+                              ) : null}
+                              </React.Fragment>
                             ))}
                           </tbody>
                         </table>

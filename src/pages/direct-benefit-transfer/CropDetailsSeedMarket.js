@@ -568,7 +568,7 @@ function CropDetailsForSeedMarket() {
               <Card.Body>
                 <Row className="g-gs">
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label htmlFor="farmerName">
                         {t("Farmer’s name")}<span className="text-danger">*</span>
                       </Form.Label>
@@ -590,7 +590,7 @@ function CropDetailsForSeedMarket() {
                   </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>{t("RSP/CRC License Number")}</Form.Label>
                       <div className="form-control-wrap">
                         <ReactSelect
@@ -613,7 +613,7 @@ function CropDetailsForSeedMarket() {
                   </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>
                         {t("Race")}<span className="text-danger">*</span>
                       </Form.Label>
@@ -639,7 +639,7 @@ function CropDetailsForSeedMarket() {
                   </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>
                         {t("Name Of The Grainage")}<span className="text-danger">*</span>
                       </Form.Label>
@@ -667,7 +667,7 @@ function CropDetailsForSeedMarket() {
                   </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>{t("Bonus Receipt No")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -683,7 +683,7 @@ function CropDetailsForSeedMarket() {
                   </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>{t("Chawki Receipt No")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -699,7 +699,7 @@ function CropDetailsForSeedMarket() {
                   </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>{t("CRC Bill Date")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -715,7 +715,7 @@ function CropDetailsForSeedMarket() {
                   </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>
                         {t("Lot No")} <span className="text-danger">*</span>
                       </Form.Label>
@@ -737,7 +737,7 @@ function CropDetailsForSeedMarket() {
                   </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>
                         {t("Chawki Percentage")} <span className="text-danger">*</span>
                       </Form.Label>
@@ -759,7 +759,7 @@ function CropDetailsForSeedMarket() {
                   </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>{t("Cocoons Transacted For Seed In Kg")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -775,7 +775,7 @@ function CropDetailsForSeedMarket() {
                   </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>{t("Cocoons Transacted For Seed In Nos")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -791,7 +791,7 @@ function CropDetailsForSeedMarket() {
                   </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>{t("Cocoons Transacted For Reeling In Kg")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -807,7 +807,7 @@ function CropDetailsForSeedMarket() {
                   </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>{t("Cocoons Transacted For Reeling In Nos")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -823,7 +823,7 @@ function CropDetailsForSeedMarket() {
                   </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>{t("Total No Of Cocoons Per Kg")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -839,7 +839,7 @@ function CropDetailsForSeedMarket() {
                   </Col>
 
                   <Col lg="4">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>{t("No Of DFL's")}</Form.Label>
                       <div className="form-control-wrap">
                         <Form.Control
@@ -855,68 +855,76 @@ function CropDetailsForSeedMarket() {
                   </Col>
 
                   <Col lg="3">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>{t("Brushing Date")}</Form.Label>
-                      <DatePicker
-                        selected={data.dateOfBrushing}
-                        onChange={(date) => handleDateChange(date, "dateOfBrushing")}
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control"
-                      />
+                      <div className="form-control-wrap">
+                        <DatePicker
+                          selected={data.dateOfBrushing}
+                          onChange={(date) => handleDateChange(date, "dateOfBrushing")}
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                        />
+                      </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="3">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>{t("Date Of Chawki Distribution")}</Form.Label>
-                      <DatePicker
-                        selected={data.dateOfDistributionOfChawkiWorms}
-                        onChange={(date) =>
-                          handleDateChange(date, "dateOfDistributionOfChawkiWorms")
-                        }
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control"
-                      />
+                      <div className="form-control-wrap">
+                        <DatePicker
+                          selected={data.dateOfDistributionOfChawkiWorms}
+                          onChange={(date) =>
+                            handleDateChange(date, "dateOfDistributionOfChawkiWorms")
+                          }
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                        />
+                      </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="3">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>{t("Spun on Date(From)")}</Form.Label>
-                      <DatePicker
-                        selected={data.spunOnDate}
-                        onChange={(date) => handleDateChange(date, "spunOnDate")}
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control"
-                      />
+                      <div className="form-control-wrap">
+                        <DatePicker
+                          selected={data.spunOnDate}
+                          onChange={(date) => handleDateChange(date, "spunOnDate")}
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                        />
+                      </div>
                     </Form.Group>
                   </Col>
 
                   <Col lg="3">
-                    <Form.Group className="form-group mt-n4">
+                    <Form.Group className="form-group">
                       <Form.Label>{t("Spun on Date(To)")}</Form.Label>
-                      <DatePicker
-                        selected={data.spunOnToDate}
-                        onChange={(date) => handleDateChange(date, "spunOnToDate")}
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control"
-                      />
+                      <div className="form-control-wrap">
+                        <DatePicker
+                          selected={data.spunOnToDate}
+                          onChange={(date) => handleDateChange(date, "spunOnToDate")}
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control"
+                        />
+                      </div>
                     </Form.Group>
                   </Col>
                 </Row>
@@ -1156,7 +1164,7 @@ function CropDetailsForSeedMarket() {
               </Col>
 
               <Col lg="6">
-                <Form.Group className="form-group mt-n4">
+                <Form.Group className="form-group">
                   <Form.Label>
                     {t("Bidding Slip Lot No")}<span className="text-danger">*</span>
                   </Form.Label>
@@ -1178,7 +1186,7 @@ function CropDetailsForSeedMarket() {
               </Col>
 
               <Col lg="6">
-                <Form.Group className="form-group mt-n4">
+                <Form.Group className="form-group">
                   <Form.Label>
                     {t("Cocoon Rate Per Kg")}<span className="text-danger">*</span>
                   </Form.Label>
@@ -1200,7 +1208,7 @@ function CropDetailsForSeedMarket() {
               </Col>
 
               <Col lg="6">
-                <Form.Group className="form-group mt-n4">
+                <Form.Group className="form-group">
                   <Form.Label>
                     {t("Reeling Rate")}<span className="text-danger">*</span>
                   </Form.Label>
@@ -1222,7 +1230,7 @@ function CropDetailsForSeedMarket() {
               </Col>
 
               <Col lg="6">
-                <Form.Group className="form-group mt-n4">
+                <Form.Group className="form-group">
                   <Form.Label>
                     {t("Total Quantity Of Seed Cocoons")}<span className="text-danger">*</span>
                   </Form.Label>
@@ -1244,23 +1252,25 @@ function CropDetailsForSeedMarket() {
               </Col>
 
               <Col lg="4">
-                <Form.Group className="form-group mt-n4">
+                <Form.Group className="form-group">
                   <Form.Label>
                     {t("Transaction Date")}<span className="text-danger">*</span>
                   </Form.Label>
-                  <DatePicker
-                    selected={transactionDetails.transactionDate}
-                    onChange={(date) =>
-                      handleTransactionDateChange(date, "transactionDate")
-                    }
-                    peekNextMonth
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                    dateFormat="dd/MM/yyyy"
-                    className="form-control"
-                    required
-                  />
+                  <div className="form-control-wrap">
+                    <DatePicker
+                      selected={transactionDetails.transactionDate}
+                      onChange={(date) =>
+                        handleTransactionDateChange(date, "transactionDate")
+                      }
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd/MM/yyyy"
+                      className="form-control"
+                      required
+                    />
+                  </div>
                 </Form.Group>
               </Col>
 
@@ -1347,7 +1357,7 @@ function CropDetailsForSeedMarket() {
               </Col>
 
               <Col lg="6">
-                <Form.Group className="form-group mt-n4">
+                <Form.Group className="form-group">
                   <Form.Label>
                     {t("Bidding Slip Lot No")}<span className="text-danger">*</span>
                   </Form.Label>
@@ -1369,7 +1379,7 @@ function CropDetailsForSeedMarket() {
               </Col>
 
               <Col lg="6">
-                <Form.Group className="form-group mt-n4">
+                <Form.Group className="form-group">
                   <Form.Label>
                     {t("Cocoon Rate Per Kg")}<span className="text-danger">*</span>
                   </Form.Label>
@@ -1391,7 +1401,7 @@ function CropDetailsForSeedMarket() {
               </Col>
 
               <Col lg="6">
-                <Form.Group className="form-group mt-n4">
+                <Form.Group className="form-group">
                   <Form.Label>
                     {t("Reeling Rate")}<span className="text-danger">*</span>
                   </Form.Label>
@@ -1413,7 +1423,7 @@ function CropDetailsForSeedMarket() {
               </Col>
 
               <Col lg="6">
-                <Form.Group className="form-group mt-n4">
+                <Form.Group className="form-group">
                   <Form.Label>
                     {t("Total Quantity Of Seed Cocoons")}<span className="text-danger">*</span>
                   </Form.Label>
@@ -1435,23 +1445,25 @@ function CropDetailsForSeedMarket() {
               </Col>
 
               <Col lg="4">
-                <Form.Group className="form-group mt-n4">
+                <Form.Group className="form-group">
                   <Form.Label>
                     {t("Transaction Date")}<span className="text-danger">*</span>
                   </Form.Label>
-                  <DatePicker
-                    selected={transactionDetails.transactionDate}
-                    onChange={(date) =>
-                      handleTransactionDateChange(date, "transactionDate")
-                    }
-                    peekNextMonth
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                    dateFormat="dd/MM/yyyy"
-                    className="form-control"
-                    required
-                  />
+                  <div className="form-control-wrap">
+                    <DatePicker
+                      selected={transactionDetails.transactionDate}
+                      onChange={(date) =>
+                        handleTransactionDateChange(date, "transactionDate")
+                      }
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd/MM/yyyy"
+                      className="form-control"
+                      required
+                    />
+                  </div>
                 </Form.Group>
               </Col>
 

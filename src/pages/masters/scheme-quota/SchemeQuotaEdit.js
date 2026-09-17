@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import api from "../../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
+import DbtCodeFinancialYearPanel from "../common/DbtCodeFinancialYearPanel";
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
 function SchemeQuotaEdit() {
@@ -399,6 +400,7 @@ useEffect(() => {
           </div>
         </Row>
       </Form>
+      <DbtCodeFinancialYearPanel masterType="SCHEME_QUOTA" parentId={id} />
     </Block>
   </Layout>
 );

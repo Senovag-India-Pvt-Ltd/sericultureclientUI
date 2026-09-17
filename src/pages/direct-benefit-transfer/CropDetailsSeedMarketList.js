@@ -14,6 +14,17 @@ import CropDetailsForCommercialMarket from "./CropDetailsForCommercialMarket";
 import { useTranslation } from "react-i18next";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_DBT;
+const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
+
+// Sericulture financial year runs April -> March.
+const financialYearToDateRange = (financialYear) => {
+  // financialYear looks like "2025-2026"
+  const startYear = parseInt(String(financialYear).split("-")[0], 10);
+  return {
+    startDate: `${startYear}-04-01`,
+    endDate: `${startYear + 1}-03-31`,
+  };
+};
 
 function CropDetailsForSeedMarketList() {
   const { t } = useTranslation();
@@ -24,12 +35,49 @@ function CropDetailsForSeedMarketList() {
   const [loading, setLoading] = useState(false);
   const [searchData, setSearchData] = useState({ type: 1, searchText: "" });
 
+  const [financialYearList, setFinancialYearList] = useState([]);
+  const [financialYearMasterId, setFinancialYearMasterId] = useState("");
+  const [dateRange, setDateRange] = useState(null);
+
   const handleInputsSearch = (e) => {
     const { name, value } = e.target;
     setSearchData((prev) => ({ ...prev, [name]: value }));
   };
 
+  useEffect(() => {
+    api
+      .get(baseURLMasterData + "financialYearMaster/get-all")
+      .then((response) => {
+        setFinancialYearList(response.data.content.financialYearMaster || []);
+      })
+      .catch(() => setFinancialYearList([]));
+
+    api
+      .get(baseURLMasterData + "financialYearMaster/get-is-default")
+      .then((response) => {
+        const fy = response.data.content;
+        if (fy) {
+          setFinancialYearMasterId(fy.financialYearMasterId);
+          setDateRange(financialYearToDateRange(fy.financialYear));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleFinancialYearChange = (e) => {
+    const selectedId = e.target.value;
+    setFinancialYearMasterId(selectedId);
+    const selected = financialYearList.find(
+      (f) => String(f.financialYearMasterId) === String(selectedId)
+    );
+    if (selected) {
+      setDateRange(financialYearToDateRange(selected.financialYear));
+    }
+    setPage(0);
+  };
+
   const getList = () => {
+    if (!dateRange) return;
     setLoading(true);
     const effectiveType =
       searchData.searchText.trim() === "" ? 0 : Number(searchData.type);
@@ -40,6 +88,8 @@ function CropDetailsForSeedMarketList() {
           pageSize: countPerPage,
           type: effectiveType,
           searchText: searchData.searchText.trim(),
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate,
         },
       })
       .then((response) => {
@@ -62,8 +112,10 @@ function CropDetailsForSeedMarketList() {
   };
 
   useEffect(() => {
-    getList();
-  }, [page]);
+    if (dateRange) {
+      getList();
+    }
+  }, [page, dateRange]);
 
   const navigate = useNavigate();
 //   const handleView = (_id) => {
@@ -419,10 +471,32 @@ function CropDetailsForSeedMarketList() {
                   />
                 </Col>
 
-                <Col sm={3}>
+                <Col sm={2}>
                   <Button type="button" variant="primary" onClick={search}>
                     {t("search")}
                   </Button>
+                </Col>
+
+                <Form.Label column sm={1}>
+                  {t("Financial Year")}
+                </Form.Label>
+                <Col sm={2}>
+                  <div className="form-control-wrap">
+                    <Form.Select
+                      name="financialYearMasterId"
+                      value={financialYearMasterId}
+                      onChange={handleFinancialYearChange}
+                    >
+                      {financialYearList.map((fy) => (
+                        <option
+                          key={fy.financialYearMasterId}
+                          value={fy.financialYearMasterId}
+                        >
+                          {fy.financialYear}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
                 </Col>
               </Form.Group>
             </Col>

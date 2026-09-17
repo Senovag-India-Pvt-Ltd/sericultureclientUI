@@ -10,6 +10,7 @@ import DatePicker from "react-datepicker";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
+import DbtCodeFinancialYearPanel from "../common/DbtCodeFinancialYearPanel";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 
@@ -213,7 +214,7 @@ function ScSchemeDetailsEdit() {
               <Card.Body>
                 {loading ? (
                   <h1 className="d-flex justify-content-center align-items-center">
-                    {t("Loading...")}
+                    Loading...
                   </h1>
                 ) : (
                   <>
@@ -290,7 +291,7 @@ function ScSchemeDetailsEdit() {
                   <Col lg="6">
                     <Form.Group className="form-group mt-n4">
                       <Form.Label>
-                        {t("Calculation Based On")}
+                        Calculation Based On
                         {/* <span className="text-danger">*</span> */}
                       </Form.Label>
                       <div className="form-control-wrap">
@@ -305,7 +306,7 @@ function ScSchemeDetailsEdit() {
                           // }
                         >
                           <option value="">
-                            {t("Select Calculation Based On")}
+                            Select Calculation Based On
                           </option>
                           <option value="PDMC">PDMC</option>
                           <option value="PMKSY">PMKSY</option>
@@ -324,7 +325,7 @@ function ScSchemeDetailsEdit() {
                   <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          {t("Scheme For Work Order")}
+                          Scheme For Work Order
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -339,7 +340,7 @@ function ScSchemeDetailsEdit() {
                             // }
                           >
                             <option value="">
-                              {t("Select Scheme For Work Order")}
+                              Select Scheme For Work Order
                             </option>
                             <option value="PDMC">PDMC</option>
                           <option value="PMKSY">PMKSY</option>
@@ -358,7 +359,7 @@ function ScSchemeDetailsEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          {t("Scheme For Sanction Order")}
+                          Scheme For Sanction Order 
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -373,7 +374,7 @@ function ScSchemeDetailsEdit() {
                             // }
                           >
                             <option value="">
-                              {t("Select Scheme For Sanction Order")}
+                              Select Scheme For Sanction Order
                             </option>
                             <option value="PDMC">PDMC</option>
                           <option value="PMKSY">PMKSY</option>
@@ -392,7 +393,7 @@ function ScSchemeDetailsEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          {t("Scheme For Acknowledgement")}
+                          Scheme For Acknowledgement
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -407,7 +408,7 @@ function ScSchemeDetailsEdit() {
                             // }
                           >
                             <option value="">
-                              {t("Select Scheme For Acknowledgement")}
+                              Select Scheme For Acknowledgement
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
@@ -426,7 +427,7 @@ function ScSchemeDetailsEdit() {
                     <Col lg="6">
                       <Form.Group className="form-group mt-n4">
                         <Form.Label>
-                          {t("Scheme For Unit")}
+                          Scheme For Unit
                           {/* <span className="text-danger">*</span> */}
                         </Form.Label>
                         <div className="form-control-wrap">
@@ -441,7 +442,7 @@ function ScSchemeDetailsEdit() {
                             // }
                           >
                             <option value="">
-                              {t("Select Scheme For Unit")}
+                              Select Scheme For Unit
                             </option>
                             <option value="PDMC">PDMC</option>
                             <option value="PMKSY">PMKSY</option>
@@ -594,6 +595,7 @@ function ScSchemeDetailsEdit() {
             </div>
           </Row>
         </Form>
+        <DbtCodeFinancialYearPanel masterType="SC_SCHEME_DETAILS" parentId={id} />
       </Block>
     </Layout>
   );
