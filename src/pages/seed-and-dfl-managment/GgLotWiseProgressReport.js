@@ -41,7 +41,7 @@ const COLUMNS = [
   { key: "lot_number", label: "Lot No", kn: "ತಂಡದ ಸಂಖ್ಯೆ", align: "left" },
   { key: "parent_lot_number", label: "Parent Lot", kn: "ಮೂಲ ಬಿತ್ತನೆ ತಂಡ", align: "left" },
   { key: "farmer_name", label: "Farmer / Address", kn: "ರೈತನ ಹೆಸರು / ವಿಳಾಸ", align: "left", min: "200px" },
-  { key: "ripe_date", label: "Ripe Date", kn: "ಹಣ್ಣಾದ ದಿನಾಂಕ", align: "center" },
+  { key: "ripe_date", label: "Spun on Date", kn: "ಹಣ್ಣಾದ ದಿನಾಂಕ", align: "center", min: "140px" },
   { key: "cocoons_supplied", label: "Cocoons Sup.", kn: "ಸರಬರಾಜು ಗೂಡುಗಳು", align: "right" },
   { key: "cocoons_fit", label: "Fit Seed", kn: "ಬಿತ್ತನೆಗೆ ಯೋಗ್ಯ", align: "right" },
   { key: "cocoons_rejected", label: "Rej Cocoons", kn: "ತಿರಸ್ಕೃತ ಗೂಡು", align: "right" },
@@ -51,7 +51,7 @@ const COLUMNS = [
   { key: "rejected_dfls_pct", label: "Rej %", kn: "ತಿರಸ್ಕೃತ %", align: "right", pct: true },
   { key: "received_dfls", label: "Rec DFLs", kn: "ಪಡೆದ ಮೊಟ್ಟೆ", align: "right" },
   { key: "received_dfls_pct", label: "Rec %", kn: "ಪಡೆದ %", align: "right", pct: true },
-  { key: "dfl_date", label: "DFL Date", kn: "ಮೊಟ್ಟೆ ಇಟ್ಟ ದಿನಾಂಕ", align: "center" },
+  { key: "dfl_date", label: "Laid on Date", kn: "ಮೊಟ್ಟೆ ಇಟ್ಟ ದಿನಾಂಕ", align: "center", min: "140px" },
   { key: "yield_per_cocoon", label: "Yield / Cocoon", kn: "ಒಟ್ಟು ಗೂಡಿಗೆ ಇಳುವರಿ", align: "right" },
 ];
 

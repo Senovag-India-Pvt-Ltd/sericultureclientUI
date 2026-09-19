@@ -124,7 +124,7 @@ const METRICS = [
   { key: "prog",        kn: "ಕಾರ್ಯಕ್ರಮ",          en: "Programme",       hue: "amber"  },
   { key: "rcv",         kn: "ಪಡೆದ ಗೂಡುಗಳು",       en: "Cocoons Recvd",   hue: "teal"   },
   { key: "stored",      kn: "ಸಂಗ್ರಹಿಸಿದ",         en: "Stored",          hue: "sky"    },
-  { key: "joints",      kn: "ಜೊತೆಗಳು",          en: "Joints",          hue: "violet" },
+  { key: "joints",      kn: "ಜೊತೆಗಳು",          en: "Pairs",           hue: "violet" },
   { key: "dfls",        kn: "ಉತ್ಪಾದಿಸಿದ ಮೊಟ್ಟೆ",  en: "DFLs Produced",   hue: "rose"   },
   { key: "yield_total", kn: "ಒಟ್ಟು ಗೂಡಿಗೆ ಇಳುವರಿ", en: "Yield / Total",   hue: "emerald", pct: true },
   { key: "yield_sel",   kn: "ಆಯ್ಕೆ ಗೂಡಿಗೆ ಇಳುವರಿ", en: "Yield / Selected",hue: "indigo",  pct: true },
@@ -475,7 +475,7 @@ function AdsGg1Report() {
                 <span className="adsgg1-num" style={{ fontSize: "15px", color: "#881337", fontWeight: 800, marginTop: "2px" }}>{kpis.dflsM.toLocaleString()}</span>
               </div>
               <div style={{ background: "linear-gradient(135deg,#e0e7ff,#eef2ff)", border: "1.5px solid #a5b4fc", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "200px" }}>
-                <span style={{ fontSize: "11px", color: "#4338ca", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>ವಾರಾಂತ್ಯ ಮೊಟ್ಟೆಗಳು (Cum.)</span>
+                <span style={{ fontSize: "11px", color: "#4338ca", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>ಮಾಸಾಂತ್ಯ ಮೊಟ್ಟೆಗಳು (Cum.)</span>
                 <span className="adsgg1-num" style={{ fontSize: "15px", color: "#312e81", fontWeight: 800, marginTop: "2px" }}>{kpis.dflsMe.toLocaleString()}</span>
               </div>
             </div>
@@ -560,7 +560,7 @@ function AdsGg1Report() {
                             border: "1px solid rgba(255,255,255,.18)", fontWeight: 800,
                             minWidth: "95px",
                           }}>
-                            <div style={{ fontSize: "10.5px" }}>ವಾರಾಂತ್ಯ</div>
+                            <div style={{ fontSize: "10.5px" }}>ಮಾಸಾಂತ್ಯ</div>
                             <div style={{ fontSize: "8.5px", opacity: .8, marginTop: "1px" }}>Cumulative</div>
                           </th>,
                         ]);
