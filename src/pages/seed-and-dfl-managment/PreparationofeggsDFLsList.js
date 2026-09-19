@@ -530,8 +530,8 @@ function PreparationofeggsDFLsList() {
       ),
       sortable: false,
       hide: "md",
-      width: "380px",
-      minWidth: "380px",
+      width: "540px",
+      minWidth: "540px",
       grow: 0,
     },
 

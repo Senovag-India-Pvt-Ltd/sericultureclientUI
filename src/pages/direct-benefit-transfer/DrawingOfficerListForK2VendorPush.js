@@ -1785,8 +1785,8 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
   ),
   sortable: false,
   hide: "md",
-  width: "200px",
-  minWidth: "200px",
+  width: "280px",
+  minWidth: "280px",
   center: true,
 },
 // {

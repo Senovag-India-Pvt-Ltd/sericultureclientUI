@@ -548,8 +548,8 @@ const handleUpdateAllDates = (row) => {
       ),
       sortable: false,
       hide: "md",
-      width: "380px",
-      minWidth: "380px",
+      width: "500px",
+      minWidth: "500px",
       grow: 0,
     },
 
