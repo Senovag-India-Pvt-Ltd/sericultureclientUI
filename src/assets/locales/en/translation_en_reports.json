@@ -808,6 +808,11 @@
     "Quick Search (Race, Source Grainage)": "Quick Search (Race, Source Grainage)",
     "Quick Search (Race, Week)": "Quick Search (Race, Week)",
     "Failed to load the TSC Mulberry Area report.": "Failed to load the TSC Mulberry Area report.",
-    "Failed to load the TSC Seed Cocoon Production report.": "Failed to load the TSC Seed Cocoon Production report."
+    "Failed to load the TSC Seed Cocoon Production report.": "Failed to load the TSC Seed Cocoon Production report.",
+    "Race": "Race",
+    "(optional · empty = all races)": "(optional · empty = all races)",
+    "— All races —": "— All races —",
+    "No race found": "No race found",
+    "When a race is selected, cocoon-supply records that have no race saved are not counted in Cocoons Recvd / Stored.": "When a race is selected, cocoon-supply records that have no race saved are not counted in Cocoons Recvd / Stored."
   }
 }

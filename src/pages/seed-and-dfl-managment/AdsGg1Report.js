@@ -124,7 +124,7 @@ const METRICS = [
   { key: "prog",        kn: "ಕಾರ್ಯಕ್ರಮ",          en: "Programme",       hue: "amber"  },
   { key: "rcv",         kn: "ಪಡೆದ ಗೂಡುಗಳು",       en: "Cocoons Recvd",   hue: "teal"   },
   { key: "stored",      kn: "ಸಂಗ್ರಹಿಸಿದ",         en: "Stored",          hue: "sky"    },
-  { key: "joints",      kn: "ಜೊತೆಗಳು",          en: "Joints",          hue: "violet" },
+  { key: "joints",      kn: "ಜೊತೆಗಳು",          en: "Pairs",           hue: "violet" },
   { key: "dfls",        kn: "ಉತ್ಪಾದಿಸಿದ ಮೊಟ್ಟೆ",  en: "DFLs Produced",   hue: "rose"   },
   { key: "yield_total", kn: "ಒಟ್ಟು ಗೂಡಿಗೆ ಇಳುವರಿ", en: "Yield / Total",   hue: "emerald", pct: true },
   { key: "yield_sel",   kn: "ಆಯ್ಕೆ ಗೂಡಿಗೆ ಇಳುವರಿ", en: "Yield / Selected",hue: "indigo",  pct: true },
@@ -143,11 +143,12 @@ const HUE_PALETTE = {
 function AdsGg1Report() {
   const { t, i18n } = useTranslation();
 
-  const [filter, setFilter] = useState({ grainageIds: [], financialYearMasterId: "", month: "" });
+  const [filter, setFilter] = useState({ grainageIds: [], raceIds: [], financialYearMasterId: "", month: "" });
   const [fyStartYear, setFyStartYear] = useState(null);
 
   const [grainageList,      setGrainageList]      = useState([]);
   const [financialYearList, setFinancialYearList] = useState([]);
+  const [raceList,          setRaceList]          = useState([]);
 
   const [dataRows,           setDataRows]           = useState([]);
   const [hasReport,          setHasReport]          = useState(false);
@@ -170,6 +171,10 @@ function AdsGg1Report() {
     api.get(baseURL + "financialYearMaster/get-all")
       .then((r) => setFinancialYearList(r.data.content.financialYearMaster || []))
       .catch(() => setFinancialYearList([]));
+
+    api.get(baseURL + "raceMaster/get-all")
+      .then((r) => setRaceList(r.data.content.raceMaster || []))
+      .catch(() => setRaceList([]));
 
     api.get(baseURL + "financialYearMaster/get-is-default")
       .then((r) => {
@@ -226,8 +231,10 @@ function AdsGg1Report() {
     const m = Number(filter.month);
     const year = m >= 4 ? fyStartYear : fyStartYear + 1;
     const ids = (filter.grainageIds || []).map((o) => o.value).filter(Boolean).join(",");
+    const raceIds = (filter.raceIds || []).map((o) => o.value).filter(Boolean).join(",");
     const p = { year, month: m };
     if (ids) p.grainageIds = ids;
+    if (raceIds) p.raceIds = raceIds;
     return p;
   };
 
@@ -386,7 +393,7 @@ function AdsGg1Report() {
           <Card.Body style={{ padding: "16px 20px 18px", background: "linear-gradient(180deg,#ffffff,#fff7ed)" }}>
             <Form onSubmit={handleView}>
               <Row className="g-2 align-items-end">
-                <Col md={4}>
+                <Col md={3}>
                   <label style={lbl}>
                     {t("Grainages", { ns: "reports" })} <span style={{ color: "#94a3b8", fontWeight: 600, textTransform: "none", letterSpacing: 0 }}>{t("(optional · empty = all P1)", { ns: "reports" })}</span>
                   </label>
@@ -414,6 +421,33 @@ function AdsGg1Report() {
                   />
                 </Col>
                 <Col md={2}>
+                  <label style={lbl}>
+                    {t("Race", { ns: "reports" })} <span style={{ color: "#94a3b8", fontWeight: 600, textTransform: "none", letterSpacing: 0 }}>{t("(optional · empty = all races)", { ns: "reports" })}</span>
+                  </label>
+                  <ReactSelect
+                    isMulti
+                    options={raceList.map((r) => ({
+                      value: String(r.raceMasterId),
+                      label: i18n.language === "kn" ? (r.raceNameInKannada || r.raceMasterName) : r.raceMasterName,
+                    }))}
+                    placeholder={t("— All races —", { ns: "reports" })}
+                    isSearchable
+                    isClearable
+                    closeMenuOnSelect={false}
+                    menuPlacement="auto"
+                    menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                    menuPosition="fixed"
+                    styles={grainageSelectStyles}
+                    value={filter.raceIds}
+                    onChange={(opts) => {
+                      setFilter((p) => ({ ...p, raceIds: opts || [] }));
+                      setHasReport(false);
+                      setDataRows([]);
+                    }}
+                    noOptionsMessage={() => t("No race found", { ns: "reports" })}
+                  />
+                </Col>
+                <Col md={2}>
                   <label style={lbl}>{t("Financial Year")} <span style={{ color: "#e53e3e" }}>*</span></label>
                   <Form.Select name="financialYearMasterId" value={filter.financialYearMasterId} onChange={handleChange} style={sel}>
                     <option value="">{t("— Select Year —", { ns: "reports" })}</option>
@@ -431,7 +465,7 @@ function AdsGg1Report() {
                     ))}
                   </Form.Select>
                 </Col>
-                <Col md={4}>
+                <Col md={3}>
                   <div className="d-flex gap-2 flex-wrap">
                     <button type="submit" disabled={isLoading} style={btn("linear-gradient(135deg,#9a3412,#ea580c)", "0 4px 12px rgba(154,52,18,.32)", isLoading)}>
                       {isLoading ? <><span className="spinner-border spinner-border-sm" /> {t("Loading…", { ns: "reports" })}</> : <>📋 {t("View", { ns: "reports" })}</>}
@@ -446,6 +480,11 @@ function AdsGg1Report() {
                 </Col>
               </Row>
             </Form>
+            {(filter.raceIds || []).length > 0 && (
+              <div style={{ marginTop: "10px", fontSize: "11.5px", color: "#9a3412", fontWeight: 600 }}>
+                ℹ️ {t("When a race is selected, cocoon-supply records that have no race saved are not counted in Cocoons Recvd / Stored.", { ns: "reports" })}
+              </div>
+            )}
           </Card.Body>
         </Card>
 
@@ -475,7 +514,7 @@ function AdsGg1Report() {
                 <span className="adsgg1-num" style={{ fontSize: "15px", color: "#881337", fontWeight: 800, marginTop: "2px" }}>{kpis.dflsM.toLocaleString()}</span>
               </div>
               <div style={{ background: "linear-gradient(135deg,#e0e7ff,#eef2ff)", border: "1.5px solid #a5b4fc", borderRadius: "12px", padding: "10px 18px", display: "flex", flexDirection: "column", minWidth: "200px" }}>
-                <span style={{ fontSize: "11px", color: "#4338ca", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>ವಾರಾಂತ್ಯ ಮೊಟ್ಟೆಗಳು (Cum.)</span>
+                <span style={{ fontSize: "11px", color: "#4338ca", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em" }}>ಮಾಸಾಂತ್ಯ ಮೊಟ್ಟೆಗಳು (Cum.)</span>
                 <span className="adsgg1-num" style={{ fontSize: "15px", color: "#312e81", fontWeight: 800, marginTop: "2px" }}>{kpis.dflsMe.toLocaleString()}</span>
               </div>
             </div>
@@ -560,7 +599,7 @@ function AdsGg1Report() {
                             border: "1px solid rgba(255,255,255,.18)", fontWeight: 800,
                             minWidth: "95px",
                           }}>
-                            <div style={{ fontSize: "10.5px" }}>ವಾರಾಂತ್ಯ</div>
+                            <div style={{ fontSize: "10.5px" }}>ಮಾಸಾಂತ್ಯ</div>
                             <div style={{ fontSize: "8.5px", opacity: .8, marginTop: "1px" }}>Cumulative</div>
                           </th>,
                         ]);

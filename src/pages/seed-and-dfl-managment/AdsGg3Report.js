@@ -590,7 +590,7 @@ function AdsGg3Report() {
                             border: "1px solid rgba(255,255,255,.18)", fontWeight: 800,
                             minWidth: "120px",
                           }}>
-                            <div style={{ fontSize: "10.5px" }}>ವಾರಾಂತ್ಯ</div>
+                            <div style={{ fontSize: "10.5px" }}>ಮಾಸಾಂತ್ಯ</div>
                             <div style={{ fontSize: "8.5px", opacity: .8, marginTop: "1px" }}>Cumulative</div>
                           </th>,
                         ]);

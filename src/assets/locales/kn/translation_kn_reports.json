@@ -808,6 +808,11 @@
     "Quick Search (Race, Source Grainage)": "ತ್ವರಿತ ಹುಡುಕಾಟ (ತಳಿ, ಮೂಲ ಬಿತ್ತನೆ ಕೋಠಿ)",
     "Quick Search (Race, Week)": "ತ್ವರಿತ ಹುಡುಕಾಟ (ತಳಿ, ವಾರ)",
     "Failed to load the TSC Mulberry Area report.": "TSC ಹಿಪ್ಪುನೇರಳೆ ವಿಸ್ತೀರ್ಣ ವರದಿಯನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ.",
-    "Failed to load the TSC Seed Cocoon Production report.": "TSC ಬಿತ್ತನೆ ಗೂಡು ಉತ್ಪಾದನಾ ವರದಿಯನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ."
+    "Failed to load the TSC Seed Cocoon Production report.": "TSC ಬಿತ್ತನೆ ಗೂಡು ಉತ್ಪಾದನಾ ವರದಿಯನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ.",
+    "Race": "ತಳಿ",
+    "(optional · empty = all races)": "(ಐಚ್ಛಿಕ · ಖಾಲಿ = ಎಲ್ಲಾ ತಳಿಗಳು)",
+    "— All races —": "— ಎಲ್ಲಾ ತಳಿಗಳು —",
+    "No race found": "ಯಾವುದೇ ತಳಿ ಕಂಡುಬಂದಿಲ್ಲ",
+    "When a race is selected, cocoon-supply records that have no race saved are not counted in Cocoons Recvd / Stored.": "ತಳಿಯನ್ನು ಆಯ್ಕೆ ಮಾಡಿದಾಗ, ತಳಿ ದಾಖಲಾಗದ ಗೂಡು ಸರಬರಾಜು ದಾಖಲೆಗಳನ್ನು ಪಡೆದ ಗೂಡುಗಳು / ಸಂಗ್ರಹಿಸಿದ ಲೆಕ್ಕದಲ್ಲಿ ಸೇರಿಸಲಾಗುವುದಿಲ್ಲ."
   }
 }

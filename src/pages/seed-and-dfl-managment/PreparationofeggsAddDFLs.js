@@ -813,7 +813,7 @@ useEffect(() => {
                           {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfPairs">
-                              No of Pairs (%) (Selected Cocoon's)
+                              No of Pairs(Selected)
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -822,7 +822,7 @@ useEffect(() => {
                                   value={data.pairNoSelectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="No of Pairs (%) (Selected Cocoon's)"
+                                  placeholder="No of Pairs(Selected)"
                          
                                 />
                              
@@ -833,7 +833,7 @@ useEffect(() => {
                           {/* <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfPairs">
-                              No of Pairs (%) (Rejected Cocoon's)
+                              No of Pairs(Rejected)
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -842,7 +842,7 @@ useEffect(() => {
                                   value={data.pairNoRejectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder="No of Pairs (%) (Rejected Cocoon's)"
+                                  placeholder="No of Pairs(Rejected)"
                                   
                                 />
                                

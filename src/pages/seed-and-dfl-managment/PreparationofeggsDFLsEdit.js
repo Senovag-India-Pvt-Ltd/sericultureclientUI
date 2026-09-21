@@ -794,7 +794,7 @@ function PreparationofeggsDFLsEdit() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfPairs">
-                              {t("No of Pairs (%) (Selected Cocoon's)")}
+                              {t("No of Pairs(Selected)")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -803,11 +803,11 @@ function PreparationofeggsDFLsEdit() {
                                   value={data.pairNoSelectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder={t("No of Pairs (%) (Selected Cocoon's)")}
+                                  placeholder={t("No of Pairs(Selected)")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
-                                No of Pairs (%) (Selected Cocoon's) is required
+                                No of Pairs(Selected) is required
                                 </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
@@ -816,7 +816,7 @@ function PreparationofeggsDFLsEdit() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfPairs">
-                              {t("No of Pairs (%) (Rejected Cocoon's)")}
+                              {t("No of Pairs(Rejected)")}
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -825,11 +825,11 @@ function PreparationofeggsDFLsEdit() {
                                   value={data.pairNoRejectedCocoonsNo}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder={t("No of Pairs (%) (Rejected Cocoon's)")}
+                                  placeholder={t("No of Pairs(Rejected)")}
                                   // required
                                 />
                                 {/* <Form.Control.Feedback type="invalid">
-                                No of Pairs (%) (Rejected Cocoon's) is required
+                                No of Pairs(Rejected) is required
                                 </Form.Control.Feedback> */}
                               </div>
                             </Form.Group>
@@ -860,7 +860,7 @@ function PreparationofeggsDFLsEdit() {
                           <Col lg="4">
                             <Form.Group className="form-group mt-n3">
                               <Form.Label htmlFor="numberOfRejection">
-                                {t("Number of Rejection")}<span className="text-danger">*</span>
+                                {t("Number of DFL's Rejection")}<span className="text-danger">*</span>
                               </Form.Label>
                               <div className="form-control-wrap">
                                 <Form.Control
@@ -869,11 +869,11 @@ function PreparationofeggsDFLsEdit() {
                                   value={data.numberOfRejection}
                                   onChange={handleInputs}
                                   type="number"
-                                  placeholder={t("Number of Rejection")}
+                                  placeholder={t("Number of DFL's Rejection")}
                                   required
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                  {t("Number of Rejection is required")}
+                                  {t("Number of DFL's Rejection is required")}
                                 </Form.Control.Feedback>
                               </div>
                             </Form.Group>

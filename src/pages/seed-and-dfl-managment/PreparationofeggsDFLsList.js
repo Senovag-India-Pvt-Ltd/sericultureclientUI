@@ -648,14 +648,14 @@ function PreparationofeggsDFLsList() {
       hide: "md",
     },
     {
-      name: t("No of Pairs (%) (Selected Cocoon's)"),
+      name: t("No of Pairs(Selected)"),
       selector: (row) => row.pairNoSelectedCocoonsNo,
       cell: (row) => <span>{row.pairNoSelectedCocoonsNo}</span>,
       sortable: true,
       hide: "md",
     },
     {
-      name: t("No of Pairs (%) (Rejected Cocoon's)"),
+      name: t("No of Pairs(Rejected)"),
       selector: (row) => row.pairNoRejectedCocoonsNo,
       cell: (row) => <span>{row.pairNoRejectedCocoonsNo}</span>,
       sortable: true,

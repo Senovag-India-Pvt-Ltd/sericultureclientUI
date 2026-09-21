@@ -721,15 +721,16 @@ const handleAttachFileUpload = async (hdTicketId) => {
           margin-right: 8px !important;
         }
         .sh-page-header {
-          padding: 20px 24px;
+          padding: 10px 20px;
           background: linear-gradient(90deg, #1e67a8 0%, #2b7ac0 60%, #3b8dd6 100%);
           border-radius: 12px;
           border: none;
           box-shadow: 0 6px 18px rgba(30, 103, 168, 0.22);
-          margin-bottom: 22px;
+          margin-bottom: 14px;
         }
         .sh-page-title {
-          margin-bottom: 4px;
+          font-size: 1.5rem;
+          margin-bottom: 0;
           color: #ffffff !important;
           font-weight: 700;
           letter-spacing: 0.2px;
@@ -769,36 +770,36 @@ const handleAttachFileUpload = async (hdTicketId) => {
             </Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
-            <div style={{ display: "flex", alignItems: "stretch", gap: "16px" }}>
+            <div style={{ display: "flex", alignItems: "stretch", gap: "10px" }}>
 
               {/* ── Helpdesk Number Card ── */}
               <div style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "16px",
+                gap: "10px",
                 flex: 1,
-                minWidth: "280px",
+                minWidth: "210px",
                 background: "linear-gradient(135deg, #ffffff 0%, #eef5ff 100%)",
-                border: "2px solid #c8ddf7",
-                borderRadius: "16px",
-                padding: "14px 22px",
-                boxShadow: "0 6px 24px rgba(15,76,138,0.15)",
+                border: "1px solid #c8ddf7",
+                borderRadius: "10px",
+                padding: "6px 14px",
+                boxShadow: "0 3px 10px rgba(15,76,138,0.12)",
               }}>
                 <div style={{
-                  width: "54px", height: "54px", borderRadius: "50%",
+                  width: "34px", height: "34px", borderRadius: "50%",
                   background: "linear-gradient(135deg, #1e67a8 0%, #0f3060 100%)",
                   color: "#fff", display: "flex", alignItems: "center",
                   justifyContent: "center", flexShrink: 0,
-                  boxShadow: "0 4px 14px rgba(15,76,138,0.30)",
-                  fontSize: "22px",
+                  boxShadow: "0 2px 8px rgba(15,76,138,0.28)",
+                  fontSize: "15px",
                 }}>
                   📞
                 </div>
-                <div style={{ lineHeight: 1.4 }}>
-                  <div style={{ fontSize: "13px", fontWeight: 700, color: "#1e67a8", textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: "3px" }}>
+                <div style={{ lineHeight: 1.25 }}>
+                  <div style={{ fontSize: "10.5px", fontWeight: 700, color: "#1e67a8", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "1px" }}>
                     {t("Helpdesk Number")}
                   </div>
-                  <div style={{ fontSize: "20px", fontWeight: 900, color: "#0f3060" }}>
+                  <div style={{ fontSize: "15px", fontWeight: 800, color: "#0f3060" }}>
                     080-24413900
                   </div>
                 </div>
@@ -813,29 +814,29 @@ const handleAttachFileUpload = async (hdTicketId) => {
                   <div style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: "16px",
+                    gap: "10px",
                     flex: 1,
-                    minWidth: "280px",
+                    minWidth: "210px",
                     background: "linear-gradient(135deg, #ffffff 0%, #eef5ff 100%)",
-                    border: "2px solid #c8ddf7",
-                    borderRadius: "16px",
-                    padding: "14px 22px",
-                    boxShadow: "0 6px 24px rgba(15,76,138,0.15)",
+                    border: "1px solid #c8ddf7",
+                    borderRadius: "10px",
+                    padding: "6px 14px",
+                    boxShadow: "0 3px 10px rgba(15,76,138,0.12)",
                   }}>
                     <div style={{
-                      width: "54px", height: "54px", borderRadius: "50%",
+                      width: "34px", height: "34px", borderRadius: "50%",
                       background: "linear-gradient(135deg, #1e67a8 0%, #0f3060 100%)",
                       color: "#fff", display: "flex", alignItems: "center",
-                      justifyContent: "center", fontWeight: 900, fontSize: "22px",
-                      flexShrink: 0, boxShadow: "0 4px 14px rgba(15,76,138,0.30)",
+                      justifyContent: "center", fontWeight: 800, fontSize: "15px",
+                      flexShrink: 0, boxShadow: "0 2px 8px rgba(15,76,138,0.28)",
                     }}>
                       {person.charAt(0)}
                     </div>
-                    <div style={{ lineHeight: 1.4 }}>
-                      <div style={{ fontSize: "13px", fontWeight: 700, color: "#1e67a8", textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: "3px" }}>
+                    <div style={{ lineHeight: 1.25 }}>
+                      <div style={{ fontSize: "10.5px", fontWeight: 700, color: "#1e67a8", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "1px" }}>
                         {t("Seed Market Support For Sunday")}
                       </div>
-                      <div style={{ fontSize: "20px", fontWeight: 900, color: "#0f3060" }}>
+                      <div style={{ fontSize: "15px", fontWeight: 800, color: "#0f3060" }}>
                         {person}
                       </div>
                     </div>
