@@ -16,6 +16,14 @@ const ARM_ENDS = ["120 Ends", "200 Ends", "400 Ends"];
 // drifted out of sync with these labels (e.g. id 3 was actually "SCSP-422", not "General"),
 // silently mis-tagging every component added under the wrong tab.
 const CATEGORY_LABELS = ["General", "TSP", "SCSP"];
+// Central/State % funding split is a fixed policy per category (mirrors ArmCalculation.js's
+// CATEGORY_POLICY) — used to pre-fill the inline insert form so leaving these blank doesn't
+// silently save 0% instead of the category's real split.
+const CATEGORY_POLICY = {
+  General: { central: 50, state: 25 },
+  TSP:     { central: 65, state: 25 },
+  SCSP:    { central: 65, state: 25 },
+};
 
 const fmt = (v) =>
   v == null ? "—" : `₹ ${parseFloat(v).toLocaleString("en-IN", { minimumFractionDigits: 2 })}`;
@@ -31,9 +39,13 @@ function ArmCalculationList() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [saving, setSaving]           = useState(false);
   const [newRowType, setNewRowType]   = useState("Component Details");
-  const emptyRow = { equipmentName: "", quantity: "", unitRate: "", unitCost: "", centralPercentage: "", statePercentage: "", advancePercentage: "", firstPayment: "", finalPayment: "" };
+  const emptyRow = { equipmentName: "", quantity: "", unitRate: "", unitCost: "", centralPercentage: "", statePercentage: "", advancePercentage: "", firstPayment: "", finalPayment: "", projectCostMin: "", projectCostMax: "" };
   const [newRow, setNewRow] = useState(emptyRow);
   const [scCategoryList, setScCategoryList] = useState([]);
+  const [componentTypeList, setComponentTypeList] = useState([]);
+  const [componentList, setComponentList] = useState([]);
+  const [newComponentTypeId, setNewComponentTypeId] = useState("");
+  const [newComponentId, setNewComponentId] = useState("");
 
   const loadAll = () => {
     setLoading(true);
@@ -53,6 +65,12 @@ function ArmCalculationList() {
     api.get(baseURL + "scCategory/get-all")
       .then((r) => setScCategoryList((r.data.content?.scCategory || []).filter((c) => c.active !== false)))
       .catch(() => setScCategoryList([]));
+    api.get(baseURL + "scSubSchemeDetails/get-all")
+      .then((r) => setComponentTypeList(r.data.content?.scSubSchemeDetails || []))
+      .catch(() => setComponentTypeList([]));
+    api.get(baseURL + "scComponent/get-all")
+      .then((r) => setComponentList(r.data.content?.scComponent || []))
+      .catch(() => setComponentList([]));
   }, []);
 
   // Resolve each tab's scCategoryId by matching the real, active sc_category name — never
@@ -96,16 +114,22 @@ function ArmCalculationList() {
       unitCost:           cost,
       armEnds:            activeArm,
       scCategoryId:       activeCatId,
+      componentTypeId:    newComponentTypeId || null,
+      componentId:        newComponentId || null,
       centralPercentage:  parseFloat(newRow.centralPercentage) || 0,
       statePercentage:    parseFloat(newRow.statePercentage)   || 0,
       advancePercentage:  parseFloat(newRow.advancePercentage) || 0,
       firstPayment:       parseFloat(newRow.firstPayment)      || 0,
       finalPayment:       parseFloat(newRow.finalPayment)      || 0,
+      projectCostMin:     newRow.projectCostMin ? parseFloat(newRow.projectCostMin) : null,
+      projectCostMax:     newRow.projectCostMax ? parseFloat(newRow.projectCostMax) : null,
       active:             true,
     })
       .then(() => {
         loadAll();
         setNewRow(emptyRow);
+        setNewComponentTypeId("");
+        setNewComponentId("");
         setNewRowType("Component Details");
         setShowAddForm(false);
         setSaving(false);
@@ -177,7 +201,7 @@ function ArmCalculationList() {
             <Nav.Item key={e}>
               <Nav.Link
                 active={activeArm === e}
-                onClick={() => { setActiveArm(e); setActiveCat("General"); setShowAddForm(false); setNewRow(emptyRow); setNewRowType("Component Details"); }}
+                onClick={() => { setActiveArm(e); setActiveCat("General"); setShowAddForm(false); setNewRow(emptyRow); setNewComponentTypeId(""); setNewComponentId(""); setNewRowType("Component Details"); }}
                 style={
                   activeArm === e
                     ? { background: "#1e67a8", color: "#fff", fontWeight: 700, borderRadius: "8px", cursor: "pointer" }
@@ -227,7 +251,7 @@ function ArmCalculationList() {
                   <Nav.Item key={cat.label}>
                     <Nav.Link
                       active={activeCat === cat.label}
-                      onClick={() => { setActiveCat(cat.label); setShowAddForm(false); setNewRow(emptyRow); setNewRowType("Component Details"); }}
+                      onClick={() => { setActiveCat(cat.label); setShowAddForm(false); setNewRow(emptyRow); setNewComponentTypeId(""); setNewComponentId(""); setNewRowType("Component Details"); }}
                       style={
                         activeCat === cat.label
                           ? { color: "#1e67a8", fontWeight: 700, borderBottom: "3px solid #1e67a8", background: "none", cursor: "pointer" }
@@ -419,7 +443,17 @@ function ArmCalculationList() {
                   {!showAddForm ? (
                     <Button
                       size="sm"
-                      onClick={() => setShowAddForm(true)}
+                      onClick={() => {
+                        const policy = CATEGORY_POLICY[activeCat];
+                        if (policy) {
+                          setNewRow((prev) => ({
+                            ...prev,
+                            centralPercentage: String(policy.central),
+                            statePercentage: String(policy.state),
+                          }));
+                        }
+                        setShowAddForm(true);
+                      }}
                       style={{ background: "linear-gradient(135deg,#059669,#047857)", border: "none", borderRadius: "7px", padding: "8px 20px", fontWeight: 600, fontSize: "13px", color: "#fff", boxShadow: "0 2px 8px rgba(5,150,105,0.25)" }}
                     >
                       + {t("Insert Component")}
@@ -469,6 +503,38 @@ function ArmCalculationList() {
                             {t("(name will be prefixed with 'IBR Boiler' if not already)")}
                           </span>
                         )}
+                      </div>
+
+                      {/* Component / Component Type (optional — matches the main Add page) */}
+                      <div style={{ display: "flex", gap: 12, marginBottom: "12px", flexWrap: "wrap" }}>
+                        <div style={{ minWidth: 200, flex: "1 1 200px" }}>
+                          <label style={{ fontSize: "11px", fontWeight: 600, color: "#374151", marginBottom: "4px", display: "block" }}>{t("Component Type")}</label>
+                          <Form.Select
+                            size="sm"
+                            value={newComponentTypeId}
+                            onChange={(e) => setNewComponentTypeId(e.target.value)}
+                            style={{ borderColor: "#93c5fd", borderRadius: "6px" }}
+                          >
+                            <option value="">{t("-- Select Component Type --")}</option>
+                            {componentTypeList.map((c) => (
+                              <option key={c.scSubSchemeDetailsId} value={c.scSubSchemeDetailsId}>{c.subSchemeName}</option>
+                            ))}
+                          </Form.Select>
+                        </div>
+                        <div style={{ minWidth: 200, flex: "1 1 200px" }}>
+                          <label style={{ fontSize: "11px", fontWeight: 600, color: "#374151", marginBottom: "4px", display: "block" }}>{t("Component")}</label>
+                          <Form.Select
+                            size="sm"
+                            value={newComponentId}
+                            onChange={(e) => setNewComponentId(e.target.value)}
+                            style={{ borderColor: "#93c5fd", borderRadius: "6px" }}
+                          >
+                            <option value="">{t("-- Select Component --")}</option>
+                            {componentList.map((c) => (
+                              <option key={c.scComponentId} value={c.scComponentId}>{c.scComponentName}</option>
+                            ))}
+                          </Form.Select>
+                        </div>
                       </div>
                       <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr", gap: "10px", alignItems: "end" }}>
                         <div>
@@ -561,6 +627,26 @@ function ArmCalculationList() {
                             style={{ borderColor: "#5eead4", borderRadius: "6px" }}
                           />
                         </div>
+                        <div>
+                          <label style={{ fontSize: "11px", fontWeight: 600, color: "#374151", marginBottom: "4px", display: "block" }}>{t("Project Cost Min (₹ Lakhs)")}</label>
+                          <Form.Control
+                            size="sm" type="number" min="0" step="0.01"
+                            placeholder="e.g. 100.00"
+                            value={newRow.projectCostMin}
+                            onChange={(e) => handleNewRowChange("projectCostMin", e.target.value)}
+                            style={{ borderColor: "#fca5a5", borderRadius: "6px" }}
+                          />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: "11px", fontWeight: 600, color: "#374151", marginBottom: "4px", display: "block" }}>{t("Project Cost Max (₹ Lakhs)")}</label>
+                          <Form.Control
+                            size="sm" type="number" min="0" step="0.01"
+                            placeholder="e.g. 125.00"
+                            value={newRow.projectCostMax}
+                            onChange={(e) => handleNewRowChange("projectCostMax", e.target.value)}
+                            style={{ borderColor: "#fca5a5", borderRadius: "6px" }}
+                          />
+                        </div>
                       </div>
                       <div style={{ display: "flex", gap: "10px", marginTop: "14px" }}>
                         <Button
@@ -572,7 +658,7 @@ function ArmCalculationList() {
                         </Button>
                         <Button
                           size="sm" variant="light"
-                          onClick={() => { setShowAddForm(false); setNewRow(emptyRow); setNewRowType("Component Details"); }}
+                          onClick={() => { setShowAddForm(false); setNewRow(emptyRow); setNewComponentTypeId(""); setNewComponentId(""); setNewRowType("Component Details"); }}
                           style={{ borderRadius: "7px", padding: "7px 18px", fontWeight: 500, fontSize: "13px", border: "1px solid #dbeafe" }}
                         >
                           {t("Cancel")}

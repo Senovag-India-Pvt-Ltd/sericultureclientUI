@@ -1714,7 +1714,7 @@ const handleShowModal2 = () => setShowModal2(true);
                             </tr>
                           </thead>
                         </table>
-                        <table
+                        {/* <table
                           className="table table-bordered table-striped"
                           style={{ ...styles.table, width: "500px" }}
                         >
@@ -1727,7 +1727,7 @@ const handleShowModal2 = () => setShowModal2(true);
                               </th>
                             </tr>
                           </thead>
-                        </table>
+                        </table> */}
                       </div>
                     </div>
 

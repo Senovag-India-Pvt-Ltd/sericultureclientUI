@@ -1852,7 +1852,7 @@ function TscwiseSchemeTargetSetting() {
                               {formatQty(viewTotalTargetsDataFinancial[0]?.yearlySchemeValue) ?? t("N/A")}
                             </th>
                           </tr>
-                          <tr>
+                          {/* <tr>
                             <th style={styles.ctstyle}>
                               {t("Total Scheme Yearly Targets")}:{" "}
                               {!isNaN(parseFloat(viewTotalTargetsDataFinancial[0]?.yearlySchemeValue)) &&
@@ -1863,7 +1863,7 @@ function TscwiseSchemeTargetSetting() {
                                   )
                                 : t("N/A")}
                             </th>
-                          </tr>
+                          </tr> */}
                         </thead>
                       </table>
                       <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
@@ -1929,7 +1929,7 @@ function TscwiseSchemeTargetSetting() {
                           </tr>
                         </thead>
                       </table>
-                      <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
+                      {/* <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
                         <thead>
                           <tr>
                             <th style={styles.ctstyle}>
@@ -1944,7 +1944,7 @@ function TscwiseSchemeTargetSetting() {
                             </th>
                           </tr>
                         </thead>
-                      </table>
+                      </table> */}
                       
                     </div>
                   </div> 

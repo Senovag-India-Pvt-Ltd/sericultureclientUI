@@ -1854,7 +1854,7 @@ const fetchHierarchyData = (targetType, page) => {
                               {formatQty(viewTotalTargetsDataFinancial[0]?.yearlyTscValue) ?? t("N/A")}
                             </th>
                           </tr>
-                          <tr>
+                          {/* <tr>
                             <th style={styles.ctstyle}>
                               {t("Total TSC Yearly Targets")}:{" "}
                               {!isNaN(parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTscValue)) &&
@@ -1865,7 +1865,7 @@ const fetchHierarchyData = (targetType, page) => {
                                   )
                                 : t("N/A")}
                             </th>
-                          </tr>
+                          </tr> */}
                         </thead>
                       </table>
                       <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
@@ -1931,7 +1931,7 @@ const fetchHierarchyData = (targetType, page) => {
                           </tr>
                         </thead>
                       </table>
-                      <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
+                      {/* <table className="table table-bordered table-striped" style={{ ...styles.table, width: "500px" }}>
                         <thead>
                           <tr>
                             <th style={styles.ctstyle}>
@@ -1946,7 +1946,7 @@ const fetchHierarchyData = (targetType, page) => {
                             </th>
                           </tr>
                         </thead>
-                      </table>
+                      </table> */}
                       
                     </div>
                   </div>

@@ -1787,21 +1787,21 @@ const totalTarget = () => {
     </table>
 
     {/* Total Target */}
-    <table className="table table-bordered table-striped" style={{ width: '300px', textAlign: 'center' }}>
+    {/* <table className="table table-bordered table-striped" style={{ width: '300px', textAlign: 'center' }}>
       <thead>
         <tr>
           <th>
             {t("Total Yearly Training Targets")}: {
               (!isNaN(parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyTrainingValue)) &&
                !isNaN(parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTrainingValue)))
-                ? formatQty(parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyTrainingValue) + 
+                ? formatQty(parseFloat(viewTotalTargetsDataPhysical[0]?.yearlyTrainingValue) +
                    parseFloat(viewTotalTargetsDataFinancial[0]?.yearlyTrainingValue))
                 : t("N/A")
             }
           </th>
         </tr>
       </thead>
-    </table>
+    </table> */}
   </div>
 {/* </Card.Body> */}
 

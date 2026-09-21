@@ -54,6 +54,8 @@ function ArmCalculation() {
   const [componentList, setComponentList] = useState([]);
   const [componentTypeId, setComponentTypeId] = useState("");
   const [componentId, setComponentId] = useState("");
+  const [projectCostMin, setProjectCostMin] = useState("");
+  const [projectCostMax, setProjectCostMax] = useState("");
 
   useEffect(() => {
     api.get(baseURL + "scCategory/get-all")
@@ -90,9 +92,28 @@ function ArmCalculation() {
   const removeRow = (key) => rows.length > 1 && setRows(rows.filter((r) => r.key !== key));
 
   const handleSave = async () => {
-    const filled = rows.filter((r) => r.equipmentName.trim() && r.quantity && r.unitRate);
+    const isBlank = (r) => !r.equipmentName.trim() && !r.quantity && !r.unitRate;
+    const isFilled = (r) => r.equipmentName.trim() && r.quantity && r.unitRate;
+    const partial = rows.filter((r) => !isBlank(r) && !isFilled(r));
+    if (partial.length) {
+      Swal.fire({
+        icon: "warning",
+        title: t("Incomplete row(s)"),
+        text: t("Every row needs Equipment Name, Qty, and Unit Rate filled in before saving. Please complete or remove the incomplete row(s)."),
+      });
+      return;
+    }
+    const filled = rows.filter(isFilled);
     if (!filled.length) {
       Swal.fire({ icon: "warning", title: t("No data"), text: t("Please fill at least one row completely") });
+      return;
+    }
+    if (!catObj || !catObj.id) {
+      Swal.fire({
+        icon: "error",
+        title: t("Error"),
+        text: t("Could not resolve the SC Category for this tab — please contact an administrator before saving."),
+      });
       return;
     }
     setSaving(true);
@@ -114,6 +135,8 @@ function ArmCalculation() {
           advancePercentage: r.advancePercentage ? parseFloat(r.advancePercentage) : null,
           firstPayment:      r.firstPayment ? parseFloat(r.firstPayment) : null,
           finalPayment:      r.finalPayment ? parseFloat(r.finalPayment) : null,
+          projectCostMin:    projectCostMin ? parseFloat(projectCostMin) : null,
+          projectCostMax:    projectCostMax ? parseFloat(projectCostMax) : null,
         });
       }
       setSaving(false);
@@ -250,6 +273,30 @@ function ArmCalculation() {
                     <option key={c.scComponentId} value={c.scComponentId}>{c.scComponentName}</option>
                   ))}
                 </Form.Select>
+              </div>
+              <div style={{ minWidth: 200, flex: "1 1 200px" }}>
+                <Form.Label style={{ fontWeight: 600, fontSize: "12.5px", color: "#4a5568" }}>{t("Estimated Total Project Cost - Min (₹ Lakhs)")}</Form.Label>
+                <Form.Control
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  placeholder="e.g. 100.00"
+                  value={projectCostMin}
+                  onChange={(e) => setProjectCostMin(e.target.value)}
+                  style={{ borderRadius: "7px", border: "1.5px solid #d0d9e8", fontSize: "13px" }}
+                />
+              </div>
+              <div style={{ minWidth: 200, flex: "1 1 200px" }}>
+                <Form.Label style={{ fontWeight: 600, fontSize: "12.5px", color: "#4a5568" }}>{t("Estimated Total Project Cost - Max (₹ Lakhs)")}</Form.Label>
+                <Form.Control
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  placeholder="e.g. 125.00"
+                  value={projectCostMax}
+                  onChange={(e) => setProjectCostMax(e.target.value)}
+                  style={{ borderRadius: "7px", border: "1.5px solid #d0d9e8", fontSize: "13px" }}
+                />
               </div>
             </div>
           </div>

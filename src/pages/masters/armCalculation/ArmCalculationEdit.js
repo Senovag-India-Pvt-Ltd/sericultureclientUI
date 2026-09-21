@@ -163,6 +163,15 @@ if (typeof document !== "undefined" && !document.getElementById("armedit-styles"
   document.head.appendChild(s);
 }
 
+// Central/State % funding split is a fixed policy per category (mirrors ArmCalculation.js's
+// CATEGORY_POLICY) — used to resync those fields whenever the SC Category is changed, so a
+// row moved from one category to another doesn't silently keep the old category's percentages.
+const CATEGORY_POLICY = [
+  { label: "General", central: 50, state: 25 },
+  { label: "TSP",     central: 65, state: 25 },
+  { label: "SCSP",    central: 65, state: 25 },
+];
+
 const swalSuccess = (title, text) =>
   Swal.fire({
     icon: "success",
@@ -203,6 +212,8 @@ function ArmCalculationEdit() {
     advancePercentage: "",
     firstPayment: "",
     finalPayment: "",
+    projectCostMin: "",
+    projectCostMax: "",
   });
   const [validated, setValidated] = useState(false);
 
@@ -246,6 +257,8 @@ function ArmCalculationEdit() {
           advancePercentage: c.advancePercentage || "",
           firstPayment: c.firstPayment || "",
           finalPayment: c.finalPayment || "",
+          projectCostMin: c.projectCostMin || "",
+          projectCostMax: c.projectCostMax || "",
         });
       })
       .catch(() => swalError(t("Error"), t("Record not found")));
@@ -253,19 +266,47 @@ function ArmCalculationEdit() {
 
   const handleInputs = (e) => {
     const { name, value } = e.target;
-    setData({
-      ...data,
-      [name]: ["scCategoryId", "componentId", "componentTypeId"].includes(name)
-        ? parseInt(value)
-        : value,
-    });
+    const parsed = ["scCategoryId", "componentId", "componentTypeId"].includes(name)
+      ? parseInt(value)
+      : value;
+
+    if (name === "scCategoryId") {
+      const selected = scCategoryList.find((c) => c.scCategoryId === parsed);
+      const policy = selected
+        ? CATEGORY_POLICY.find((p) => (selected.categoryName || "").toLowerCase().startsWith(p.label.toLowerCase()))
+        : null;
+      setData({
+        ...data,
+        scCategoryId: parsed,
+        ...(policy ? { centralPercentage: String(policy.central), statePercentage: String(policy.state) } : {}),
+      });
+      return;
+    }
+
+    setData({ ...data, [name]: parsed });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.currentTarget;
     if (form.checkValidity() === false) { e.stopPropagation(); setValidated(true); return; }
+
+    const pctProvided = data.advancePercentage !== "" || data.firstPayment !== "" || data.finalPayment !== "";
+    if (pctProvided && !pctSumOk) {
+      setValidated(true);
+      swalError(
+        t("Error"),
+        t("Advance + First Payment + Final Payment must add up to 100% (currently {{pct}}%).", { pct: pctSum.toFixed(2) })
+      );
+      return;
+    }
+
     setValidated(false);
+
+    // Unit Cost must reflect the current Qty × Unit Rate (shown as "Total Amount" on screen) —
+    // not the stale value originally loaded from the backend — otherwise editing Qty/Rate here
+    // silently saves the old, now-wrong Unit Cost.
+    const recalculatedUnitCost = totalAmount ? parseFloat(totalAmount) : (data.unitCost ? parseFloat(data.unitCost) : null);
 
     const payload = {
       armCalculationId: parseInt(id),
@@ -276,12 +317,14 @@ function ArmCalculationEdit() {
       equipmentName: data.equipmentName,
       quantity: data.quantity ? parseFloat(data.quantity) : null,
       unitRate: data.unitRate ? parseFloat(data.unitRate) : null,
-      unitCost: data.unitCost ? parseFloat(data.unitCost) : null,
+      unitCost: recalculatedUnitCost,
       centralPercentage: data.centralPercentage ? parseFloat(data.centralPercentage) : null,
       statePercentage: data.statePercentage ? parseFloat(data.statePercentage) : null,
       advancePercentage: data.advancePercentage ? parseFloat(data.advancePercentage) : null,
       firstPayment: data.firstPayment ? parseFloat(data.firstPayment) : null,
       finalPayment: data.finalPayment ? parseFloat(data.finalPayment) : null,
+      projectCostMin: data.projectCostMin ? parseFloat(data.projectCostMin) : null,
+      projectCostMax: data.projectCostMax ? parseFloat(data.projectCostMax) : null,
     };
 
     api.post(baseURL + "armCalculation/edit", payload)
@@ -481,6 +524,28 @@ function ArmCalculationEdit() {
                     <span className="armedit-pct-value">{pctSum.toFixed(2)}%{!pctSumOk && ` (${t("expected 100%")})`}</span>
                   </div>
                 )}
+              </div>
+
+              {/* ── Section 4: Estimated Total Project Cost ───────────── */}
+              <div className="armedit-section s2">
+                <div className="armedit-section-head">
+                  <span className="armedit-section-num">4</span>
+                  <span className="armedit-section-title">{t("Estimated Total Project Cost")}</span>
+                </div>
+                <Row className="g-3">
+                  <Col md={3} className="armedit-field">
+                    <Form.Group>
+                      <Form.Label>{t("Min (₹ Lakhs)")}</Form.Label>
+                      <Form.Control type="number" name="projectCostMin" value={data.projectCostMin} onChange={handleInputs} min="0" step="0.01" placeholder="e.g. 100.00" />
+                    </Form.Group>
+                  </Col>
+                  <Col md={3} className="armedit-field">
+                    <Form.Group>
+                      <Form.Label>{t("Max (₹ Lakhs)")}</Form.Label>
+                      <Form.Control type="number" name="projectCostMax" value={data.projectCostMax} onChange={handleInputs} min="0" step="0.01" placeholder="e.g. 125.00" />
+                    </Form.Group>
+                  </Col>
+                </Row>
               </div>
 
               <div className="armedit-actions">
