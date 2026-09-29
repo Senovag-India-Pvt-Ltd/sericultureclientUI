@@ -1,7 +1,7 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
@@ -367,6 +367,21 @@ function SaleDisposalofDFLseggs() {
         });
     }
   };
+
+  // Opened from Farmer Indent → Assign DFLs: pre-fill the farmer and load the name
+  const { state: fiPrefill } = useLocation();
+  const fiPrefillDone = useRef(false);
+  useEffect(() => {
+    if (fiPrefill?.fruitsId) {
+      setData((prev) => ({ ...prev, userType: "farmer", fruitsId: fiPrefill.fruitsId, numberOfDflsDisposed: fiPrefill.numberOfDfls || prev.numberOfDflsDisposed }));
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (fiPrefill?.fruitsId && !fiPrefillDone.current && data.fruitsId === fiPrefill.fruitsId) {
+      fiPrefillDone.current = true;
+      search({ currentTarget: { checkValidity: () => true }, preventDefault: () => {}, stopPropagation: () => {} });
+    }
+  }, [data.fruitsId]); // eslint-disable-line react-hooks/exhaustive-deps
 
    // to get Race
     const [externalListData, setExternalListData] = useState([]);

@@ -346,6 +346,7 @@ function Menu() {
     GardenManagement_Distribution_Farmers: false,
 
     ChawkiManagement: false,
+    FarmerIndent: false,
     ChawkiManagement_ChawkiManagement: false,
 
     TargetSetting: false,
@@ -3291,6 +3292,24 @@ function Menu() {
                     {showMenu.Market_Fitness_Edit ? (
                       <MenuItem>
                         <MenuItemLink
+                          text={t("Fitness Certificate Add")}
+                          to="/seriui/fitness-certificate-add"
+                        />
+                      </MenuItem>
+                    ) : null}
+
+                    {showMenu.Market_Crop_Inspection_Edit ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t("Crop Inspection Add")}
+                          to="/seriui/crop-inspection-add"
+                        />
+                      </MenuItem>
+                    ) : null}
+
+                    {showMenu.Market_Fitness_Edit ? (
+                      <MenuItem>
+                        <MenuItemLink
                           text={t(
                             "Fitness Certificate Edit"
                           )}
@@ -3790,6 +3809,44 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
+          </MenuSub>
+        </MenuItem>
+      ) : null}
+
+      {/* Farmer Indent – visible in local development; in production enable with map code "FarmerIndent" */}
+      {showMenu.FarmerIndent || process.env.NODE_ENV === "development" ? (
+        <MenuItem sub>
+          <MenuItemLink
+            text={t("Farmer Indent")}
+            onClick={menuToggle}
+            onMouseEnter={menuHover}
+            sub
+          />
+          <MenuSub>
+            <MenuItem>
+              <MenuItemLink text={t("Farmer List")} to="/seriui/farmer-indent/farmer-list" />
+            </MenuItem>
+            <MenuItem>
+              <MenuItemLink text={t("Indent Management")} to="/seriui/farmer-indent/indents" />
+            </MenuItem>
+            <MenuItem>
+              <MenuItemLink text={t("Assigned DFLs")} to="/seriui/farmer-indent/assigned-dfls" />
+            </MenuItem>
+            <MenuItem>
+              <MenuItemLink text={t("Stage-wise Crop")} to="/seriui/farmer-indent/stage-wise-crop" />
+            </MenuItem>
+            <MenuItem>
+              <MenuItemLink text={t("Crop Inspection")} to="/seriui/farmer-indent/crop-inspection" />
+            </MenuItem>
+            <MenuItem>
+              <MenuItemLink text={t("Fitness Certificate")} to="/seriui/farmer-indent/fitness-certificate" />
+            </MenuItem>
+            <MenuItem>
+              <MenuItemLink text={t("Harvest Details")} to="/seriui/farmer-indent/harvest" />
+            </MenuItem>
+            <MenuItem>
+              <MenuItemLink text={t("Grainage Dashboard")} to="/seriui/farmer-indent/dashboard" />
+            </MenuItem>
           </MenuSub>
         </MenuItem>
       ) : null}

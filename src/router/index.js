@@ -567,6 +567,15 @@ import ConfigFarmerAllow from "../pages/masters/config-farmer-allow/ConfigFarmer
 import OtherStateFarmerList from "../pages/stake-holder/OtherStateFarmerList";
 import FarmerWithoutFruitsList from "../pages/stake-holder/FarmerWithoutFruitsList";
 import HomePage from "../pages/stake-holder/HomePage";
+// Farmer Indent (grainage) – UI
+import FiFarmerList from "../pages/farmer-indent/FiFarmerList";
+import FiIndentManagement from "../pages/farmer-indent/FiIndentManagement";
+import FiAssignedDfls from "../pages/farmer-indent/FiAssignedDfls";
+import FiStageWiseCrop from "../pages/farmer-indent/FiStageWiseCrop";
+import FiCropInspection from "../pages/farmer-indent/FiCropInspection";
+import FiFitnessCertificate from "../pages/farmer-indent/FiFitnessCertificate";
+import FiHarvestDetails from "../pages/farmer-indent/FiHarvestDetails";
+import FiGrainageDashboard from "../pages/farmer-indent/FiGrainageDashboard";
 import Tsc from "../pages/masters/tsc/TscMaster";
 import TscList from "../pages/masters/tsc/TscMasterList";
 import TscEdit from "../pages/masters/tsc/TscMasterEdit";
@@ -1263,6 +1272,8 @@ import UserHierarchyMappingList from "../pages/masters/user-hierarchy-mapping/Us
 import UserHierarchyMappingEdit from "../pages/masters/user-hierarchy-mapping/UserHierarchyMappingEdit";
 
 import CropInspectionList from "../pages/chawki-management/CropInspectionList";
+import CropInspectionAdd from "../pages/chawki-management/CropInspectionAdd";
+import FitnessCertificateAdd from "../pages/chawki-management/FitnessCertificateAdd";
 import CropInspectionEdit from "../pages/chawki-management/CropInspectionEdit";
 import FitnessCertificateEdit from "../pages/chawki-management/FitnessCertificateEdit";
 import SeedDtrReport from "../pages/reports-admin/market-auction/SeedDTRReport";
@@ -1492,6 +1503,15 @@ function Router() {
 
             {/* Sericulture */}
             <Route path="homepage" element={<HomePage />} />
+            {/* Farmer Indent (grainage) */}
+            <Route path="farmer-indent/farmer-list" element={<FiFarmerList />} />
+            <Route path="farmer-indent/indents" element={<FiIndentManagement />} />
+            <Route path="farmer-indent/assigned-dfls" element={<FiAssignedDfls />} />
+            <Route path="farmer-indent/stage-wise-crop" element={<FiStageWiseCrop />} />
+            <Route path="farmer-indent/crop-inspection" element={<FiCropInspection />} />
+            <Route path="farmer-indent/fitness-certificate" element={<FiFitnessCertificate />} />
+            <Route path="farmer-indent/harvest" element={<FiHarvestDetails />} />
+            <Route path="farmer-indent/dashboard" element={<FiGrainageDashboard />} />
             <Route
               path="stake-holder-registration"
               element={<StakeHolderRegister />}
@@ -2626,6 +2646,8 @@ function Router() {
               path="chawki-management-view/:id"
               element={<ChawkiManagementView />}
             />
+            <Route path="crop-inspection-add" element={<CropInspectionAdd />} />
+            <Route path="fitness-certificate-add" element={<FitnessCertificateAdd />} />
             <Route
               path="crop-inspection-list"
               element={<CropInspectionList />}
