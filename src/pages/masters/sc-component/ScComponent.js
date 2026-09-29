@@ -19,6 +19,7 @@ function ScComponent() {
     scSubSchemeDetailsId: "",
     dbtCode: "",
     scComponentNameInKannada: "",
+    paymentFrequency: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -53,6 +54,7 @@ function ScComponent() {
           scSubSchemeDetailsId: "",
           dbtCode: "",
            scComponentNameInKannada: "",
+           paymentFrequency: "",
         });
         setValidated(false);
         }
@@ -79,6 +81,7 @@ function ScComponent() {
       scSubSchemeDetailsId: "",
       dbtCode: "",
       scComponentNameInKannada: "",
+      paymentFrequency: "",
     });
   };
 
@@ -252,6 +255,25 @@ function ScComponent() {
                         <Form.Control.Feedback type="invalid">
                         {t("Dbt Code is required")}
                         </Form.Control.Feedback>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg="6">
+                    <Form.Group className="form-group">
+                      <Form.Label htmlFor="paymentFrequency">{t("Payment Frequency")}</Form.Label>
+                      <div className="form-control-wrap">
+                        <Form.Select
+                          id="paymentFrequency"
+                          name="paymentFrequency"
+                          value={data.paymentFrequency}
+                          onChange={handleInputs}
+                        >
+                          <option value="">{t("None")}</option>
+                          <option value="MONTHLY">{t("Monthly")}</option>
+                          <option value="YEARLY">{t("Yearly")}</option>
+                          <option value="ONE_TIME">{t("One Time")}</option>
+                        </Form.Select>
                       </div>
                     </Form.Group>
                   </Col>

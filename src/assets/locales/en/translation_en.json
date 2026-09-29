@@ -4985,6 +4985,11 @@
     "Ticket Closed": "Ticket Closed",
     "Your raised ticket details and the response": "Your raised ticket details and the response",
     "Resolution from Support": "Resolution from Support",
-    "Solution sent for your raised ticket": "Solution sent for your raised ticket"
+    "Solution sent for your raised ticket": "Solution sent for your raised ticket",
+    "Payment Frequency": "Payment Frequency",
+    "None": "None",
+    "Monthly": "Monthly",
+    "Yearly": "Yearly",
+    "One Time": "One Time"
 }
 }

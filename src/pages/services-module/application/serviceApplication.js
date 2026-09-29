@@ -17,6 +17,7 @@ import React, { useMemo } from "react";
 import {
   getFinancialYearMonths,
   getMonthPeriodByValue,
+  isMonthlyPaymentFrequency,
 } from "../../../utilities/monthlyFrequency";
 
 
@@ -2101,7 +2102,7 @@ const isSDP =
 
   // Monthly Frequency: selecting a month auto-populates Period From / Period To with
   // the first and last day of that month (leap-year safe). Used only when the selected
-  // sub scheme has monthlyFrequency === true.
+  // sub scheme's Payment Frequency is MONTHLY.
   const handleMonthlyFrequencyMonthChange = (e) => {
     const value = e.target.value;
     const { periodFrom, periodTo } = getMonthPeriodByValue(value);
@@ -5301,8 +5302,8 @@ const isUserValid = React.useMemo(() => {
     }
 
     // Monthly Frequency: Month is mandatory when the selected sub scheme is configured
-    // with monthlyFrequency === true.
-    if (getIncentiveAndBonusData?.[0]?.monthlyFrequency === true && !data.monthYear) {
+    // with Payment Frequency MONTHLY.
+    if (isMonthlyPaymentFrequency(getIncentiveAndBonusData?.[0]) && !data.monthYear) {
       Swal.fire({
         icon: "warning",
         title: t("Month Required"),
@@ -5432,7 +5433,7 @@ const isUserValid = React.useMemo(() => {
       l1Rate: equipment.l1Rate,
       loggedInUserId: localStorage.getItem("userMasterId"),
       month:
-        getIncentiveAndBonusData?.[0]?.monthlyFrequency === true && data.monthYear
+        isMonthlyPaymentFrequency(getIncentiveAndBonusData?.[0]) && data.monthYear
           ? data.monthYear
           : getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF" && data.fromMonth && data.toMonth
           ? `${data.fromMonth}-${data.toMonth}`
@@ -6483,6 +6484,12 @@ const isUserValid = React.useMemo(() => {
     const handleResponse = async (response, showModal = false) => {
       if (response.data.errorCode === -1) {
         saveError(response.data.errorMessages[0]);
+        setSaveDisabled(false);
+        return;
+      }
+
+      if (response.data?.content?.error) {
+        saveError(response.data.content.error_description);
         setSaveDisabled(false);
         return;
       }
@@ -9722,7 +9729,7 @@ const serviceApplicationStyles = `
                           </Col>
                         )} */}
 
-                        {getIncentiveAndBonusData?.[0]?.monthlyFrequency === true && (
+                        {isMonthlyPaymentFrequency(getIncentiveAndBonusData?.[0]) && (
                           <Col lg="2">
                             <Form.Group className="form-group">
                               <Form.Label htmlFor="monthYear">

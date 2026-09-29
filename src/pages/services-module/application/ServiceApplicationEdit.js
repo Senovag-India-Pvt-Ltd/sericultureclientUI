@@ -18,6 +18,7 @@ import {
   getFinancialYearMonths,
   getMonthPeriodByValue,
   parseMonthYear,
+  isMonthlyPaymentFrequency,
 } from "../../../utilities/monthlyFrequency";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -127,7 +128,7 @@ function ServiceApplicationEdit() {
     approvalStageId: "",
   });
 
-  // True when the selected sub scheme is configured with monthlyFrequency.
+  // True when the selected sub scheme's Payment Frequency is MONTHLY.
   const [isMonthlyFrequency, setIsMonthlyFrequency] = useState(false);
 
   const [developedLand, setDevelopedLand] = useState({
@@ -1133,7 +1134,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
     }
   }, [data.scSchemeDetailsId]);
 
-  // Fetch the sub scheme's monthlyFrequency flag (same master-data source the
+  // Fetch the sub scheme's Payment Frequency (same master-data source the
   // create form uses) once both scheme and sub scheme are known.
   useEffect(() => {
     if (data.scSchemeDetailsId && data.scSubSchemeDetailsId) {
@@ -1144,7 +1145,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         )
         .then((response) => {
           const list = response.data?.content?.scSubSchemeDetails;
-          setIsMonthlyFrequency(list?.[0]?.monthlyFrequency === true);
+          setIsMonthlyFrequency(isMonthlyPaymentFrequency(list?.[0]));
         })
         .catch(() => setIsMonthlyFrequency(false));
     } else {

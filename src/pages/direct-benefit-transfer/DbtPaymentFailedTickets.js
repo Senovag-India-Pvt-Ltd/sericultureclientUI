@@ -56,8 +56,8 @@ const dpftStyles = `
 .dpft-swal.swal2-popup{border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.22);}
 `;
 
-// Open tickets need attention first, so the page opens on "Open" by default rather than
-// showing already-resolved Closed tickets mixed in. "All" / "Closed" are one click away.
+// Only genuinely failed tickets are listed (Acknowledgement Failed / Payment Failed in DBT –
+// filtered on the server); resolved ones never appear, so no Open/Closed split is needed.
 // financialYearId starts blank and is filled in once the real default financial year loads
 // (see the effect that fetches financialYearMaster/get-is-default).
 const defaultFilters = () => ({
@@ -67,7 +67,7 @@ const defaultFilters = () => ({
   schemeId: "",
   subSchemeId: "",
   failureType: "",
-  ticketStatus: "Open",
+  ticketStatus: "",
   financialYearId: "",
   fromDate: "",
   toDate: "",
@@ -621,20 +621,16 @@ function DbtPaymentFailedTickets() {
 
   // ---- dashboard cards ----------------------------------------------
 
-  // Total / Open / Closed double as one-click quick filters for ticketStatus — the fastest way
-  // to jump between "needs attention" (Open) and "already resolved" (Closed) without opening
-  // the full filter panel.
+  // Failed / Payment Failed / Ack Failed double as one-click quick filters on failure type.
   const cards = [
-    { label: "Total Tickets", value: dashboard.totalTickets, icon: "reports", grad: "linear-gradient(135deg,#0d3b66,#1d6fb8)", accent: "#0d3b66", filterValue: "" },
-    { label: "Open Tickets", value: dashboard.openTickets, icon: "clock", grad: "linear-gradient(135deg,#2f80ed,#56ccf2)", accent: "#2f80ed", filterValue: "Open" },
-    { label: "Closed Tickets", value: dashboard.closedTickets, icon: "check-circle", grad: "linear-gradient(135deg,#5b6b7f,#93a3b8)", accent: "#6b7a90", filterValue: "Closed" },
-    { label: "Payment Failed", value: dashboard.paymentFailed, icon: "cross-circle", grad: "linear-gradient(135deg,#e2445c,#ff7a90)", accent: "#e2445c" },
-    { label: "Ack Failed", value: dashboard.acknowledgementFailed, icon: "alert-circle", grad: "linear-gradient(135deg,#f2994a,#f9c66b)", accent: "#f2994a" },
+    { label: "Failed Tickets", value: dashboard.totalTickets, icon: "reports", grad: "linear-gradient(135deg,#0d3b66,#1d6fb8)", accent: "#0d3b66", filterValue: "" },
+    { label: "Payment Failed", value: dashboard.paymentFailed, icon: "cross-circle", grad: "linear-gradient(135deg,#e2445c,#ff7a90)", accent: "#e2445c", filterValue: "PAYMENT_FAILED" },
+    { label: "Ack Failed", value: dashboard.acknowledgementFailed, icon: "alert-circle", grad: "linear-gradient(135deg,#f2994a,#f9c66b)", accent: "#f2994a", filterValue: "ACKNOWLEDGEMENT_FAILED" },
     { label: "Today's Tickets", value: dashboard.todaysTickets, icon: "bell", grad: "linear-gradient(135deg,#1e9e6a,#4bd6a0)", accent: "#1e9e6a" },
   ];
 
-  const applyQuickFilter = (ticketStatus) => {
-    const next = { ...filters, ticketStatus };
+  const applyQuickFilter = (failureType) => {
+    const next = { ...filters, failureType };
     setFilters(next);
     setPage(0);
     getList(0, perPage, sortBy, sortDir, next);
@@ -701,14 +697,14 @@ function DbtPaymentFailedTickets() {
         </div>
       </Block>
 
-      {/* Dashboard cards — Total / Open / Closed are clickable quick filters */}
+      {/* Dashboard cards — Failed / Payment Failed / Ack Failed are clickable quick filters */}
       <Block className="mt-3">
         <Row className="g-3">
           {cards.map((c) => {
             const isQuickFilter = c.filterValue !== undefined;
-            const isActive = isQuickFilter && filters.ticketStatus === c.filterValue;
+            const isActive = isQuickFilter && filters.failureType === c.filterValue;
             return (
-              <Col sm="6" md="4" xl="2" key={c.label}>
+              <Col sm="6" xl="3" key={c.label}>
                 <Card
                   className={`dpft-kpi h-100${isQuickFilter ? " dpft-kpi-clickable" : ""}${isActive ? " dpft-kpi-active" : ""}`}
                   onClick={isQuickFilter ? () => applyQuickFilter(c.filterValue) : undefined}
@@ -739,7 +735,7 @@ function DbtPaymentFailedTickets() {
             </span>
             <span>Filters</span>
             <span className="text-muted small fw-normal ms-2">
-              — showing Open tickets by default; use Ticket Status below (or the cards above) to view Closed or All
+              — only Acknowledgement Failed and Payment Failed in DBT tickets are shown
             </span>
           </Card.Header>
           <Card.Body>
@@ -787,14 +783,6 @@ function DbtPaymentFailedTickets() {
                   <option value="">All</option>
                   <option value="PAYMENT_FAILED">Payment Failed</option>
                   <option value="ACKNOWLEDGEMENT_FAILED">Acknowledgement Failed</option>
-                </Form.Select>
-              </Col>
-              <Col sm="6" lg="3">
-                <Form.Label className="small fw-semibold">Ticket Status</Form.Label>
-                <Form.Select name="ticketStatus" value={filters.ticketStatus} onChange={handleFilterChange}>
-                  <option value="">All</option>
-                  <option value="Open">Open</option>
-                  <option value="Closed">Closed</option>
                 </Form.Select>
               </Col>
               <Col sm="6" lg="3">
