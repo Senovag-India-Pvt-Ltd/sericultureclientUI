@@ -6,8 +6,8 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, ArcElement, T
 import { Bar, Doughnut } from "react-chartjs-2";
 import { format, parseISO } from "date-fns";
 import { Icon } from "../../components";
-import { useFiStore, fiActions, cropRecords, grainageFarmers, harvestTotals, todayIso, STAGES, SUPPLY_UNITS, INDENT_STATUSES } from "./fiData";
-import { FiPage, FiCard, StatCard, FI_BASE, fiSwal, fiToast } from "./fiUi";
+import { useFiStore, fiActions, cropRecords, grainageFarmers, harvestTotals, todayIso, fmtDate, unitName, STAGES, INDENT_STATUSES } from "./fiData";
+import { FiPage, FiCard, StatCard, FI_BASE } from "./fiUi";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Legend);
 
@@ -30,12 +30,13 @@ function FiGrainageDashboard() {
   const notAssigned = active.filter((i) => i.status !== "assigned");
   const failed = recs.filter((r) => r.failed && !r.harvest);
   const harvested = recs.filter((r) => r.harvest);
-  const harvestKg = harvested.reduce((n, r) => n + harvestTotals(r.harvest).totalKg, 0);
-  const running = recs.filter((r) => !r.harvest && !r.failed);
+  const harvestKg = Math.round(harvested.reduce((n, r) => n + harvestTotals(r.harvest).totalKg, 0));
+  const running = recs.filter((r) => !r.harvest && !r.failed && !r.closed);
 
+  const units = [...new Set(active.map((i) => i.unitId))];
   const byUnit = {
-    labels: ["Magadi GG", "Solur GG", "Kudur GG", "Kempegowda CRC", "Sri Bhavani CRC"],
-    datasets: [{ label: "DFLs", data: SUPPLY_UNITS.map((u) => sumDfls(active.filter((i) => i.unitId === u.id))), backgroundColor: ["#1e67a8", "#3b8dd6", "#7fb3e6", "#0f766e", "#14b8a6"], borderRadius: 8, maxBarThickness: 46 }],
+    labels: units.map((u) => unitName(active.find((i) => i.unitId === u))),
+    datasets: [{ label: "DFLs", data: units.map((u) => sumDfls(active.filter((i) => i.unitId === u))), backgroundColor: units.map((u, i) => ["#1e67a8", "#3b8dd6", "#7fb3e6", "#0f766e", "#14b8a6", "#6d28d9", "#b45309"][i % 7]), borderRadius: 8, maxBarThickness: 46 }],
   };
   const stageCounts = STAGES.map((st) => running.filter((r) => r.stage.key === st.key).length);
   const byStage = { labels: STAGES.map((x) => x.label), datasets: [{ data: stageCounts, backgroundColor: STAGES.map((x) => x.color), borderWidth: 2, borderColor: "#fff" }] };
@@ -46,16 +47,11 @@ function FiGrainageDashboard() {
 
   const attention = [
     { n: active.filter((i) => i.status === "ready").length, text: t("indents ready – assign DFLs"), to: "indents", icon: "package", color: "#0f766e" },
-    { n: recs.filter((r) => !r.harvest && !r.failed && r.day >= 0 && !r.lastInspection).length, text: t("crops waiting for inspection"), to: "crop-inspection", icon: "clipboard", color: "#b45309" },
-    { n: recs.filter((r) => !r.fc && !r.harvest && !r.failed && ["moult4", "spinning", "market"].includes(r.stage.key)).length, text: t("fitness certificates due"), to: "fitness-certificate", icon: "shield-check", color: "#6d28d9" },
-    { n: recs.filter((r) => r.fc?.fit && !r.harvest).length, text: t("harvest entries pending"), to: "harvest", icon: "coins", color: "#1e67a8" },
+    { n: running.filter((r) => r.day >= 0 && !r.lastInspection).length, text: t("crops waiting for inspection"), to: "crop-inspection", icon: "clipboard", color: "#b45309" },
+    { n: running.filter((r) => !r.fc && ["moult4", "spinning", "market"].includes(r.stage.key)).length, text: t("fitness certificates due"), to: "fitness-certificate", icon: "shield-check", color: "#6d28d9" },
+    { n: running.filter((r) => r.fc?.fit).length, text: t("harvest entries pending"), to: "harvest", icon: "coins", color: "#1e67a8" },
     { n: failed.length, text: t("crop failures to follow up"), to: "crop-inspection", icon: "alert-circle", color: "#c43257" },
   ];
-
-  const reset = async () => {
-    const r = await fiSwal.fire({ icon: "question", title: t("Reset demo data?"), text: t("All changes made on these screens will be cleared."), showCancelButton: true, confirmButtonText: t("Reset") });
-    if (r.isConfirmed) { fiActions.resetDemo(); fiToast(t("Demo data reset")); }
-  };
 
   return (
     <FiPage
@@ -76,7 +72,9 @@ function FiGrainageDashboard() {
       <Row className="g-3">
         <Col xl={8}>
           <FiCard title={<span><Icon name="bar-chart" className="me-1" /> {t("DFLs ordered by CRC / Direct")}</span>}>
-            <div style={{ height: 280 }}><Bar data={byUnit} options={{ ...baseOpts, scales: { y: { beginAtZero: true, grid: { color: "#eef2f7" } }, x: { grid: { display: false } } } }} /></div>
+            {units.length
+              ? <div style={{ height: 280 }}><Bar data={byUnit} options={{ ...baseOpts, scales: { y: { beginAtZero: true, grid: { color: "#eef2f7" } }, x: { grid: { display: false } } } }} /></div>
+              : <div className="text-muted text-center py-5">{t("No indents yet")}</div>}
           </FiCard>
         </Col>
         <Col xl={4}>
@@ -114,8 +112,8 @@ function FiGrainageDashboard() {
         </Col>
       </Row>
       <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-1">
-        <span className="fi-demo-note"><Icon name="info" /> {t("UI preview with demo data – will show live data once the APIs are connected.")} ({t("as on")} {format(parseISO(todayIso()), "dd/MM/yyyy")})</span>
-        <Button size="sm" className="fi-btn fi-btn-soft" onClick={reset}><Icon name="reload" /> {t("Reset demo data")}</Button>
+        <span className="text-muted small"><Icon name="info" /> {t("DFLs issued since")} {fmtDate(s.fromDate)} · {t("as on")} {format(parseISO(todayIso()), "dd/MM/yyyy")}</span>
+        <Button size="sm" className="fi-btn fi-btn-soft" onClick={() => fiActions.reload()}><Icon name="reload" /> {t("Refresh")}</Button>
       </div>
     </FiPage>
   );

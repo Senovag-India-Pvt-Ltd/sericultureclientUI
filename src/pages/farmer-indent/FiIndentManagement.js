@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 import DataTable from "../../components/AppDataTable";
 import { Icon } from "../../components";
 import {
-  useFiStore, fiActions, farmerById, unitById, grainageById, statusLabel, fmtDate,
-  INDENT_STATUSES, FARMER_STATUSES, SUPPLY_UNITS, REASONS,
+  useFiStore, fiActions, farmerById, unitName, grainageById, statusLabel, fmtDate,
+  INDENT_STATUSES, FARMER_STATUSES, REASONS,
 } from "./fiData";
-import { FiPage, FiCard, StatCard, Pill, FarmerCell, SearchBox, EmptyState, tableStyles, exportCsv, fiSwal, fiToast, askReason, useOpenExisting } from "./fiUi";
+import { FiPage, FiCard, StatCard, Pill, FarmerCell, SearchBox, EmptyState, tableStyles, exportCsv, fiSwal, askReason, useOpenExisting } from "./fiUi";
 import { IndentModal, FarmerJourneyModal } from "./fiModals";
 
 const STATUS_ICON = { captured: "file-docs", assessment: "clipboard", production: "package", ready: "check-circle", assigned: "truck" };
@@ -24,7 +24,7 @@ function FiIndentManagement() {
   const openExisting = useOpenExisting();
   const [journey, setJourney] = useState(null);
 
-  const all = useMemo(() => s.indents.map((i) => ({ ...i, farmer: farmerById(s, i.farmerId) })), [s]);
+  const all = useMemo(() => s.indents.map((i) => ({ ...i, farmer: farmerById(s, i.farmerId) || { id: i.fruitsId, fruitsId: i.fruitsId, name: i.fruitsId, village: "", tsc: "", mobile: "" } })), [s]);
   const active = all.filter((i) => !i.cancelled);
   const tabs = [
     { key: "open", label: t("Open"), list: active.filter((i) => i.status !== "assigned") },
@@ -36,7 +36,7 @@ function FiIndentManagement() {
     const k = q.trim().toLowerCase();
     if (k && ![i.indentNo, i.farmer?.name, i.farmer?.fruitsId, i.farmer?.mobile].some((v) => (v || "").toLowerCase().includes(k))) return false;
     if (status && i.status !== status) return false;
-    if (unit && i.unitId !== Number(unit)) return false;
+    if (unit && i.unitId !== unit) return false;
     return true;
   }).sort((a, b) => (a.indentDate < b.indentDate ? 1 : -1));
 
@@ -50,27 +50,27 @@ function FiIndentManagement() {
         confirmButtonText: t("Yes, continue"),
       });
       if (!r.isConfirmed) return;
-      fiActions.updateIndent(i.id, { status: "ready" });
+      if (!(await fiActions.updateStatus(i.id, { status: "ready" }))) return;
     }
-    // existing screen: Seed & DFL -> Sale/Disposal of DFLs (eggs)
-    openExisting("assignDfls", i.farmer, { numberOfDfls: i.dflsOrdered, indentNo: i.indentNo });
+    // existing screen: Seed & DFL -> Sale/Disposal of DFLs (eggs); the sale is saved against this indent
+    openExisting("assignDfls", i.farmer, { numberOfDfls: i.dflsOrdered, indentNo: i.indentNo, indentId: i.id });
   };
   const cancel = async (i) => {
     const r = await askReason(`${t("Cancel indent")} ${i.indentNo}?`, REASONS, t("Cancel Indent"));
-    if (r) { fiActions.cancelIndent(i.id, r.reason, r.remarks); fiToast(t("Indent cancelled")); }
+    if (r) fiActions.cancelIndent(i.id, r.reason, r.remarks);
   };
 
   const columns = [
     { name: t("Indent No"), minWidth: "140px", selector: (i) => i.indentNo, sortable: true, cell: (i) => <div><div className="fw-bold">{i.indentNo}</div><div className="fi-farmer-sub">{fmtDate(i.indentDate)}</div></div> },
     { name: t("Farmer"), grow: 1.5, minWidth: "210px", selector: (i) => i.farmer?.name, sortable: true, cell: (i) => <button type="button" className="btn p-0 text-start border-0" onClick={() => setJourney(i.farmerId)}><FarmerCell farmer={i.farmer} sub={`${i.farmer?.village} · ${i.farmer?.tsc}`} /></button> },
     { name: t("Sheets / DFLs"), width: "135px", selector: (i) => i.dflsOrdered, sortable: true, cell: (i) => <div><b>{i.dflsOrdered}</b> <span className="fi-farmer-sub">DFLs</span><div className="fi-farmer-sub">{i.sheetsOrdered} {t("sheets")}</div></div> },
-    { name: t("Grainage · CRC / Direct"), minWidth: "210px", cell: (i) => <div><div className="fw-semibold">{grainageById(i.grainageId)?.name}</div><div className="fi-farmer-sub">{unitById(i.unitId)?.name}</div></div> },
+    { name: t("Grainage · CRC / Direct"), minWidth: "210px", cell: (i) => <div><div className="fw-semibold">{grainageById(i.grainageId)?.name}</div><div className="fi-farmer-sub">{unitName(i)}</div></div> },
     {
       name: t("Indent Status"), minWidth: "235px",
       cell: (i) => i.cancelled || i.status === "assigned"
         ? (i.cancelled ? <Pill color="red">{t("Cancelled")}</Pill> : <Pill color="green">{statusLabel(i.status)}</Pill>)
         : (
-          <Form.Select size="sm" value={i.status} onChange={(e) => { fiActions.updateIndent(i.id, { status: e.target.value }); fiToast(t("Status updated")); }}
+          <Form.Select size="sm" value={i.status} onChange={(e) => fiActions.updateStatus(i.id, { status: e.target.value })}
             style={{ borderRadius: 999, fontWeight: 700, fontSize: ".76rem", color: STATUS_HEX[i.status], background: `${STATUS_HEX[i.status]}12`, borderColor: `${STATUS_HEX[i.status]}55` }}>
             {INDENT_STATUSES.filter((x) => x.key !== "assigned").map((x) => <option key={x.key} value={x.key}>{x.label}</option>)}
           </Form.Select>
@@ -80,7 +80,8 @@ function FiIndentManagement() {
       name: t("Farmer Status"), minWidth: "150px",
       cell: (i) => i.cancelled ? "–" : (
         <Form.Select size="sm" value={i.farmerStatus} style={{ borderRadius: 999, fontSize: ".76rem" }}
-          onChange={(e) => { fiActions.updateIndent(i.id, { farmerStatus: e.target.value }); fiToast(t("Farmer status updated")); }}>
+          onChange={(e) => fiActions.updateStatus(i.id, { farmerStatus: e.target.value })}>
+          {!i.farmerStatus && <option value="">{t("Select")}</option>}
           {FARMER_STATUSES.map((x) => <option key={x}>{x}</option>)}
         </Form.Select>
       ),
@@ -89,7 +90,7 @@ function FiIndentManagement() {
     {
       name: t("Action"), minWidth: "240px", right: true,
       cell: (i) => i.cancelled ? (
-        <Button size="sm" className="fi-btn fi-btn-soft fi-btn-sm" onClick={() => { fiActions.restoreIndent(i.id); fiToast(t("Indent restored")); }}><Icon name="reload" /> {t("Restore")}</Button>
+        <Button size="sm" className="fi-btn fi-btn-soft fi-btn-sm" onClick={() => fiActions.restoreIndent(i.id)}><Icon name="reload" /> {t("Restore")}</Button>
       ) : (
         <div className="d-flex gap-2">
           {i.status !== "assigned" && <Button size="sm" className="fi-btn fi-btn-primary fi-btn-sm" onClick={() => openAssign(i)}><Icon name="package" /> {t("Assign DFLs")}</Button>}
@@ -104,7 +105,7 @@ function FiIndentManagement() {
     { label: "Indent No", value: (i) => i.indentNo }, { label: "Indent Date", value: (i) => fmtDate(i.indentDate) },
     { label: "Farmer", value: (i) => i.farmer?.name }, { label: "FRUITS ID", value: (i) => i.farmer?.fruitsId }, { label: "Mobile", value: (i) => i.farmer?.mobile },
     { label: "Sheets", value: (i) => i.sheetsOrdered }, { label: "DFLs", value: (i) => i.dflsOrdered },
-    { label: "Grainage", value: (i) => grainageById(i.grainageId)?.name }, { label: "CRC / Direct", value: (i) => unitById(i.unitId)?.name },
+    { label: "Grainage", value: (i) => grainageById(i.grainageId)?.name }, { label: "CRC / Direct", value: (i) => unitName(i) },
     { label: "Indent Status", value: (i) => (i.cancelled ? "Cancelled" : statusLabel(i.status)) }, { label: "Farmer Status", value: (i) => i.farmerStatus },
     { label: "Cancel Reason", value: (i) => i.cancelled?.reason },
   ], rows);
@@ -142,7 +143,7 @@ function FiIndentManagement() {
         <div className="fi-filters mb-3">
           <div style={{ gridColumn: "span 2" }}><div className="fi-label">{t("Search")}</div><SearchBox value={q} onChange={setQ} placeholder={t("Indent no, farmer, FRUITS ID, mobile…")} /></div>
           <div><div className="fi-label">{t("CRC / Direct")}</div>
-            <Form.Select value={unit} onChange={(e) => setUnit(e.target.value)}><option value="">{t("All")}</option>{SUPPLY_UNITS.map((u) => <option key={u.id} value={u.id}>{u.name}</option>)}</Form.Select></div>
+            <Form.Select value={unit} onChange={(e) => setUnit(e.target.value)}><option value="">{t("All")}</option>{s.supplyUnits.filter((u) => s.indents.some((i) => i.unitId === u.id)).map((u) => <option key={u.id} value={u.id}>{u.name}</option>)}</Form.Select></div>
           <div><div className="fi-label">{t("Indent Status")}</div>
             <Form.Select value={status} onChange={(e) => setStatus(e.target.value)}><option value="">{t("All")}</option>{INDENT_STATUSES.map((x) => <option key={x.key} value={x.key}>{x.label}</option>)}</Form.Select></div>
         </div>

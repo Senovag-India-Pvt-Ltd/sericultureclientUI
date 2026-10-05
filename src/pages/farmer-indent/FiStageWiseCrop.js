@@ -21,7 +21,7 @@ const boardCss = `
 function FiStageWiseCrop() {
   const { t } = useTranslation();
   const s = useFiStore();
-  const recs = useMemo(() => cropRecords(s).filter((r) => !r.discarded && !r.harvest && !r.failed), [s]);
+  const recs = useMemo(() => cropRecords(s).filter((r) => !r.discarded && !r.harvest && !r.failed && !r.closed), [s]);
   const [stage, setStage] = useState("all");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
@@ -52,7 +52,7 @@ function FiStageWiseCrop() {
     { name: t("Lot · DFLs"), minWidth: "120px", cell: (r) => <div><b>{r.a.lotNumber}</b><div className="fi-farmer-sub">{r.a.dflsAssigned} DFLs</div></div> },
     { name: t("Hatching"), minWidth: "150px", selector: (r) => r.a.hatchingDate, sortable: true, cell: (r) => <div><div>{fmtDate(r.a.hatchingDate)}</div><div className="small">{dayText(r.day, t)}</div></div> },
     { name: t("Stage"), minWidth: "160px", cell: (r) => <StageProgress r={r} /> },
-    { name: t("Last Inspection"), minWidth: "150px", cell: (r) => (r.lastInspection ? <div><Pill color={CROP_STATUS_COLOR[r.lastInspection.cropStatus]}>{r.lastInspection.cropStatus}</Pill><div className="fi-farmer-sub">{fmtDate(r.lastInspection.date)}</div></div> : <span className="text-muted">{t("Not inspected")}</span>) },
+    { name: t("Last Inspection"), minWidth: "150px", cell: (r) => (r.lastInspection ? <div><Pill color={CROP_STATUS_COLOR[r.lastInspection.cropStatus] || "grey"}>{r.lastInspection.cropStatus || "–"}</Pill><div className="fi-farmer-sub">{fmtDate(r.lastInspection.date)}</div></div> : <span className="text-muted">{t("Not inspected")}</span>) },
     { name: t("Action"), minWidth: "190px", right: true, cell: actions },
   ];
 
@@ -96,7 +96,7 @@ function FiStageWiseCrop() {
                 {byStage(st.key).map((r) => (
                   <div key={r.a.id} className="fi-crop-card" style={{ borderLeftColor: st.color }}>
                     <button type="button" className="btn p-0 text-start border-0 w-100" onClick={() => setJourney(r.farmer.id)}><FarmerCell farmer={r.farmer} sub={`${r.a.lotNumber} · ${r.a.dflsAssigned} DFLs`} /></button>
-                    <div className="d-flex justify-content-between align-items-center mt-2 small">{dayText(r.day, t)}{r.lastInspection && <Pill color={CROP_STATUS_COLOR[r.lastInspection.cropStatus]}>{r.lastInspection.cropStatus}</Pill>}</div>
+                    <div className="d-flex justify-content-between align-items-center mt-2 small">{dayText(r.day, t)}{r.lastInspection && <Pill color={CROP_STATUS_COLOR[r.lastInspection.cropStatus] || "grey"}>{r.lastInspection.cropStatus || "–"}</Pill>}</div>
                     <div className="mt-2">{actions(r)}</div>
                   </div>
                 ))}

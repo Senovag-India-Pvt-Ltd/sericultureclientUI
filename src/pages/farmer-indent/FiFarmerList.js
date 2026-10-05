@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import DataTable from "../../components/AppDataTable";
 import { Icon } from "../../components";
-import { useFiStore, grainageFarmers, statusLabel, fmtDate, TSCS } from "./fiData";
+import { useFiStore, grainageFarmers, statusLabel, fmtDate } from "./fiData";
 import { FiPage, FiCard, StatCard, Pill, StagePill, FarmerCell, SearchBox, EmptyState, tableStyles, exportCsv, INDENT_STATUS_COLOR } from "./fiUi";
 import { IndentModal, FarmerJourneyModal } from "./fiModals";
 
@@ -20,11 +20,12 @@ function FiFarmerList() {
   const [journey, setJourney] = useState(null);
 
   const group = (f) => {
-    if (!f.lastIndent) return "noindent";
-    if (f.lastIndent.status !== "assigned") return "pending";
-    if (f.crop?.harvest) return "harvested";
-    if (f.crop?.failed) return "failed";
-    return "rearing";
+    if (f.lastIndent && f.lastIndent.status !== "assigned") return "pending";
+    const c = f.crop && !f.crop.discarded ? f.crop : null;
+    if (c?.harvest) return "harvested";
+    if (c?.failed) return "failed";
+    if (c && !c.closed) return "rearing";
+    return "noindent";
   };
   const counts = farmers.reduce((m, f) => ({ ...m, [group(f)]: (m[group(f)] || 0) + 1 }), {});
 
@@ -40,7 +41,7 @@ function FiFarmerList() {
     { name: t("Farmer"), grow: 2.2, minWidth: "240px", selector: (f) => f.name, sortable: true, cell: (f) => <FarmerCell farmer={f} /> },
     { name: t("FRUITS ID"), minWidth: "170px", selector: (f) => f.fruitsId, cell: (f) => <span className="fi-mono">{f.fruitsId}</span> },
     { name: t("Village / TSC"), minWidth: "160px", selector: (f) => f.village, sortable: true, cell: (f) => <div><div className="fw-semibold">{f.village}</div><div className="fi-farmer-sub">{f.tsc}</div></div> },
-    { name: t("Mulberry"), width: "115px", selector: (f) => f.mulberryAcres, sortable: true, cell: (f) => `${f.mulberryAcres} ac` },
+    { name: t("Mulberry"), width: "115px", selector: (f) => f.mulberryAcres || 0, sortable: true, cell: (f) => (f.mulberryAcres != null ? `${f.mulberryAcres} ac` : "–") },
     {
       name: t("Latest Indent"), minWidth: "200px", selector: (f) => f.lastIndent?.indentDate || "",
       sortable: true,
@@ -51,8 +52,10 @@ function FiFarmerList() {
     {
       name: t("Crop"), minWidth: "150px",
       cell: (f) => !f.crop ? "–"
+        : f.crop.discarded ? <Pill color="grey">{t("Discarded")}</Pill>
         : f.crop.harvest ? <Pill color="green">{t("Harvested")}</Pill>
         : f.crop.failed ? <Pill color="red">{t("Crop Failed")}</Pill>
+        : f.crop.closed ? <Pill color="grey">{t("Closed")}</Pill>
         : <StagePill stage={f.crop.stage} />,
     },
     {
@@ -88,7 +91,7 @@ function FiFarmerList() {
         <StatCard icon="layers" label={t("Crop Running")} value={counts.rearing || 0} sub={t("DFLs given")} color="#0f766e" onClick={() => setCard("rearing")} selected={card === "rearing"} />
         <StatCard icon="coins" label={t("Harvested")} value={counts.harvested || 0} color="#15803d" onClick={() => setCard("harvested")} selected={card === "harvested"} />
         <StatCard icon="alert-circle" label={t("Crop Failed")} value={counts.failed || 0} color="#c43257" onClick={() => setCard("failed")} selected={card === "failed"} />
-        <StatCard icon="user" label={t("No Indent Yet")} value={counts.noindent || 0} color="#6b7a8c" onClick={() => setCard("noindent")} selected={card === "noindent"} />
+        <StatCard icon="user" label={t("No Active Crop")} value={counts.noindent || 0} sub={t("ready for a new indent")} color="#6b7a8c" onClick={() => setCard("noindent")} selected={card === "noindent"} />
       </div>
 
       <FiCard
@@ -104,7 +107,7 @@ function FiFarmerList() {
             <div className="fi-label">TSC</div>
             <Form.Select value={tsc} onChange={(e) => setTsc(e.target.value)}>
               <option value="">{t("All TSCs")}</option>
-              {TSCS.map((x) => <option key={x}>{x}</option>)}
+              {s.tscs.map((x) => <option key={x}>{x}</option>)}
             </Form.Select>
           </div>
           <div>

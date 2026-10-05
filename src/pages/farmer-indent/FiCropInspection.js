@@ -3,7 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import DataTable from "../../components/AppDataTable";
 import { Icon } from "../../components";
-import { useFiStore, cropRecords, fmtDate, TSCS } from "./fiData";
+import { useFiStore, cropRecords, fmtDate } from "./fiData";
 import { FiPage, FiCard, StatCard, Pill, FarmerCell, SearchBox, EmptyState, tableStyles, exportCsv, CROP_STATUS_COLOR, useOpenExisting } from "./fiUi";
 import { FarmerJourneyModal } from "./fiModals";
 import { StageProgress, dayText } from "./FiAssignedDfls";
@@ -20,10 +20,11 @@ function FiCropInspection() {
   const openExisting = useOpenExisting();
   const [journey, setJourney] = useState(null);
 
-  const running = recs.filter((r) => !r.harvest && !r.failed && r.day >= 0);
+  const running = recs.filter((r) => !r.harvest && !r.failed && !r.closed && r.day >= 0);
   const pending = running.filter((r) => !r.lastInspection);
   const inspections = recs.flatMap((r) => r.inspections.map((i) => ({ ...i, r })));
-  const failures = inspections.filter((i) => i.cropStatus === "Failed");
+  const failures = inspections.filter((i) => i.failed);
+  const tscs = [...new Set(recs.map((r) => r.farmer.tsc).filter(Boolean))].sort();
 
   const match = (r, date) => {
     const k = q.trim().toLowerCase();
@@ -46,9 +47,9 @@ function FiCropInspection() {
   ];
   const doneCols = (isFailure) => [
     farmerCol((i) => i.r), lotCol((i) => i.r),
-    { name: t("Inspected on"), minWidth: "120px", selector: (i) => i.date, sortable: true, cell: (i) => <div><div>{fmtDate(i.date)}</div>{i.week ? <div className="fi-farmer-sub">{t("Week")} {i.week}</div> : null}</div> },
+    { name: t("Inspected on"), minWidth: "120px", selector: (i) => i.date, sortable: true, cell: (i) => <div><div>{fmtDate(i.date)}</div>{i.week ? <div className="fi-farmer-sub">{i.week}</div> : null}</div> },
     { name: t("Stage (Moult)"), minWidth: "120px", selector: (i) => i.moult, cell: (i) => i.moult },
-    { name: t("Crop Status"), minWidth: "110px", selector: (i) => i.cropStatus, sortable: true, cell: (i) => <Pill color={CROP_STATUS_COLOR[i.cropStatus]}>{i.cropStatus}</Pill> },
+    { name: t("Crop Status"), minWidth: "110px", selector: (i) => i.cropStatus, sortable: true, cell: (i) => <Pill color={CROP_STATUS_COLOR[i.cropStatus] || (i.failed ? "red" : "grey")}>{i.cropStatus || "–"}</Pill> },
     { name: t("Reason / Note"), grow: 2, minWidth: "220px", cell: (i) => <div>{i.reason && <div className={`fw-semibold ${isFailure ? "text-danger" : ""}`}>{i.reason}</div>}<div className="fi-farmer-sub">{i.note || (!i.reason ? "–" : "")}</div></div> },
     { name: t("Action"), width: "90px", right: true, cell: (i) => <Button size="sm" className="fi-btn fi-btn-soft fi-btn-sm" title={t("Edit")} onClick={() => openExisting("cropInspectionEdit", i.r.farmer)}><Icon name="edit" /></Button> },
   ];
@@ -74,7 +75,7 @@ function FiCropInspection() {
       <div className="fi-stats">
         <StatCard icon="clock" label={t("Pending Inspection")} value={pending.length} color="#b45309" selected={tab === "pending"} onClick={() => setTab("pending")} />
         <StatCard icon="check-circle" label={t("Inspections Done")} value={inspections.length} color="#15803d" selected={tab === "completed"} onClick={() => setTab("completed")} />
-        <StatCard icon="activity" label={t("Poor Crops")} value={inspections.filter((i) => i.cropStatus === "Poor").length} color="#b45309" />
+        <StatCard icon="activity" label={t("Crops Inspected")} value={new Set(inspections.map((i) => i.r.a.id)).size} sub={`${t("of")} ${recs.length}`} color="#6d28d9" />
         <StatCard icon="alert-circle" label={t("Crop Failures")} value={failures.length} sub={`${failures.reduce((n, i) => n + i.r.a.dflsAssigned, 0)} DFLs lost`} color="#c43257" selected={tab === "failure"} onClick={() => setTab("failure")} />
       </div>
       <FiCard
@@ -83,7 +84,7 @@ function FiCropInspection() {
       >
         <div className="fi-filters mb-3">
           <div style={{ gridColumn: "span 2" }}><div className="fi-label">{t("Search")}</div><SearchBox value={q} onChange={setQ} placeholder={t("Farmer, FRUITS ID, lot…")} /></div>
-          <div><div className="fi-label">TSC</div><Form.Select value={tsc} onChange={(e) => setTsc(e.target.value)}><option value="">{t("All TSCs")}</option>{TSCS.map((x) => <option key={x}>{x}</option>)}</Form.Select></div>
+          <div><div className="fi-label">TSC</div><Form.Select value={tsc} onChange={(e) => setTsc(e.target.value)}><option value="">{t("All TSCs")}</option>{tscs.map((x) => <option key={x}>{x}</option>)}</Form.Select></div>
           {tab !== "pending" && <>
             <div><div className="fi-label">{t("From Date")}</div><Form.Control type="date" value={from} onChange={(e) => setFrom(e.target.value)} /></div>
             <div><div className="fi-label">{t("To Date")}</div><Form.Control type="date" value={to} min={from} onChange={(e) => setTo(e.target.value)} /></div>

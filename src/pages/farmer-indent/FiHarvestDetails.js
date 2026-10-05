@@ -8,6 +8,7 @@ import { FiPage, FiCard, StatCard, Pill, FarmerCell, SearchBox, EmptyState, tabl
 import { FarmerJourneyModal } from "./fiModals";
 
 const inr = (n) => `₹${Math.round(n).toLocaleString("en-IN")}`;
+const kg = (n) => Math.round(Number(n) * 100) / 100;
 
 function FiHarvestDetails() {
   const { t } = useTranslation();
@@ -18,11 +19,16 @@ function FiHarvestDetails() {
   const openExisting = useOpenExisting();
   const [journey, setJourney] = useState(null);
 
-  const ready = recs.filter((r) => r.fc?.fit && !r.harvest);
-  const done = recs.filter((r) => r.harvest).map((r) => ({ ...r, tot: harvestTotals(r.harvest), yld: (harvestTotals(r.harvest).totalKg / r.a.dflsAssigned) * 100 }));
-  const totalKg = done.reduce((n, r) => n + r.tot.totalKg, 0);
-  const totalAmt = done.reduce((n, r) => n + r.tot.amount, 0);
-  const totalDfls = done.reduce((n, r) => n + r.a.dflsAssigned, 0);
+  const ready = recs.filter((r) => r.fc?.fit && !r.harvest && !r.closed);
+  // marketedOnly = lot disposed at Seed Cocoon Inward, no Crop Details-Seed Market entry
+  const done = recs.filter((r) => r.harvest).map((r) => {
+    const tot = harvestTotals(r.harvest);
+    return { ...r, tot, yld: r.harvest.marketedOnly || !r.a.dflsAssigned ? null : (tot.totalKg / r.a.dflsAssigned) * 100 };
+  });
+  const entered = done.filter((r) => !r.harvest.marketedOnly);
+  const totalKg = entered.reduce((n, r) => n + r.tot.totalKg, 0);
+  const totalAmt = entered.reduce((n, r) => n + r.tot.amount, 0);
+  const totalDfls = entered.reduce((n, r) => n + r.a.dflsAssigned, 0);
   const rows = (tab === "ready" ? ready : done).filter((r) => {
     const k = q.trim().toLowerCase();
     return !k || [r.farmer.name, r.farmer.fruitsId, r.a.lotNumber].some((v) => v.toLowerCase().includes(k));
@@ -33,16 +39,16 @@ function FiHarvestDetails() {
   const readyCols = [
     farmer, lot,
     { name: t("Fitness"), minWidth: "130px", cell: () => <Pill color="green">{t("Fit For Seed")}</Pill> },
-    { name: t("Expected"), minWidth: "170px", cell: (r) => <div><div>{r.fc.market}</div><div className="fi-farmer-sub">{fmtDate(r.fc.transactionDate)} · {r.fc.expectedKg} kg</div></div> },
+    { name: t("Expected"), minWidth: "170px", cell: (r) => <div><div>{fmtDate(r.fc.expectedMarketDate || r.fc.transactionDate)}</div><div className="fi-farmer-sub">{r.fc.expectedKg ?? "–"} kg</div></div> },
     { name: t("Action"), minWidth: "170px", right: true, cell: (r) => <Button size="sm" className="fi-btn fi-btn-primary fi-btn-sm" onClick={() => openExisting("harvest", r.farmer)}><Icon name="coins" /> {t("Enter Harvest")}</Button> },
   ];
   const doneCols = [
     farmer, lot,
     { name: t("Market"), minWidth: "170px", selector: (r) => r.harvest.marketDate, sortable: true, cell: (r) => <div><div>{r.harvest.market}</div><div className="fi-farmer-sub">{fmtDate(r.harvest.marketDate)}</div></div> },
-    { name: t("Seed"), minWidth: "120px", cell: (r) => <div><b>{r.harvest.seedKg} kg</b><div className="fi-farmer-sub">@ ₹{r.harvest.seedRate}/kg</div></div> },
-    { name: t("Reeling"), minWidth: "120px", cell: (r) => (r.harvest.reelingKg ? <div><b>{r.harvest.reelingKg} kg</b><div className="fi-farmer-sub">@ ₹{r.harvest.reelingRate}/kg</div></div> : "–") },
-    { name: t("Yield / 100 DFLs"), minWidth: "120px", selector: (r) => r.yld, sortable: true, cell: (r) => <Pill color={r.yld >= 60 ? "green" : r.yld >= 45 ? "amber" : "red"}>{r.yld.toFixed(1)} kg</Pill> },
-    { name: t("Total Amount"), minWidth: "130px", selector: (r) => r.tot.amount, sortable: true, cell: (r) => <b>{inr(r.tot.amount)}</b> },
+    { name: t("Seed"), minWidth: "120px", cell: (r) => (r.harvest.seedKg != null ? <div><b>{kg(r.harvest.seedKg)} kg</b>{r.harvest.seedRate != null && <div className="fi-farmer-sub">@ ₹{r.harvest.seedRate}/kg</div>}</div> : "–") },
+    { name: t("Reeling"), minWidth: "120px", cell: (r) => (r.harvest.reelingKg ? <div><b>{kg(r.harvest.reelingKg)} kg</b>{r.harvest.reelingRate != null && <div className="fi-farmer-sub">@ ₹{r.harvest.reelingRate}/kg</div>}</div> : "–") },
+    { name: t("Yield / 100 DFLs"), minWidth: "120px", selector: (r) => r.yld ?? -1, sortable: true, cell: (r) => (r.yld == null ? "–" : <Pill color={r.yld >= 60 ? "green" : r.yld >= 45 ? "amber" : "red"}>{r.yld.toFixed(1)} kg</Pill>) },
+    { name: t("Total Amount"), minWidth: "130px", selector: (r) => r.tot.amount, sortable: true, cell: (r) => (r.harvest.marketedOnly ? "–" : <b>{inr(r.tot.amount)}</b>) },
     { name: t("Action"), width: "90px", right: true, cell: (r) => <Button size="sm" className="fi-btn fi-btn-soft fi-btn-sm" title={t("Edit")} onClick={() => openExisting("harvest", r.farmer)}><Icon name="edit" /></Button> },
   ];
 
@@ -58,7 +64,7 @@ function FiHarvestDetails() {
       <div className="fi-stats">
         <StatCard icon="clock" label={t("Ready to Harvest")} value={ready.length} sub={`${ready.reduce((n, r) => n + (r.fc.expectedKg || 0), 0)} kg ${t("expected")}`} color="#b45309" selected={tab === "ready"} onClick={() => setTab("ready")} />
         <StatCard icon="check-circle" label={t("Harvested")} value={done.length} color="#15803d" selected={tab === "done"} onClick={() => setTab("done")} />
-        <StatCard icon="box" label={t("Total Cocoons")} value={`${totalKg.toLocaleString("en-IN")} kg`} color="#0f766e" />
+        <StatCard icon="box" label={t("Total Cocoons")} value={`${kg(totalKg).toLocaleString("en-IN")} kg`} color="#0f766e" />
         <StatCard icon="coins" label={t("Total Amount")} value={inr(totalAmt)} color="#1e67a8" />
         <StatCard icon="growth" label={t("Avg Yield / 100 DFLs")} value={`${totalDfls ? ((totalKg / totalDfls) * 100).toFixed(1) : 0} kg`} color="#6d28d9" />
       </div>

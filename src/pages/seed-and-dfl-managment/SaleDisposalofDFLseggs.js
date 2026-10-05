@@ -204,6 +204,8 @@ function SaleDisposalofDFLseggs() {
       releaseDate: formattedReleaseDate,
       dateOfDisposal: formattedDateOfDisposal,
       expectedDateOfHatching: formattedExpectedDateOfHatching,
+      // opened from Farmer Indent → Assign DFLs: this sale fulfils that indent
+      farmerIndentId: fiPrefill?.indentId && data.fruitsId === fiPrefill.fruitsId ? fiPrefill.indentId : null,
     };
 
     // Check if userType is 'discard'
@@ -256,6 +258,10 @@ function SaleDisposalofDFLseggs() {
         .then((response) => {
           if (response.data.error) {
             saveError(response.data.message);
+          } else if (payload.farmerIndentId) {
+            // DFLs issued against the indent: back to Farmer Indent → Assigned DFLs
+            Swal.fire({ icon: "success", title: t("Saved successfully"), text: `${t("Invoice Number")} ${response.data.invoice_no}` })
+              .then(() => navigate("/seriui/farmer-indent/assigned-dfls"));
           } else {
             saveSuccess(response.data.invoice_no);
             setData({
@@ -370,6 +376,7 @@ function SaleDisposalofDFLseggs() {
 
   // Opened from Farmer Indent → Assign DFLs: pre-fill the farmer and load the name
   const { state: fiPrefill } = useLocation();
+  const navigate = useNavigate();
   const fiPrefillDone = useRef(false);
   useEffect(() => {
     if (fiPrefill?.fruitsId) {

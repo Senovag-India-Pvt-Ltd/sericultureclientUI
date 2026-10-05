@@ -1,12 +1,12 @@
 // Shared look & feel for the Farmer Indent screens.
-import { Card, Form } from "react-bootstrap";
+import { Card, Form, Spinner, Button } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
-import { useFiStore, cropRecords, grainageById } from "./fiData";
+import { useFiStore, cropRecords, fiActions } from "./fiData";
 
 export const FI_BASE = "/seriui/farmer-indent";
 
@@ -153,14 +153,15 @@ function FlowStepper() {
   const { pathname } = useLocation();
   const s = useFiStore();
   const recs = cropRecords(s).filter((r) => !r.discarded);
+  const open = recs.filter((r) => !r.harvest && !r.failed && !r.closed);
   const counts = {
     "farmer-list": s.farmers.length,
     indents: s.indents.filter((i) => !i.cancelled && i.status !== "assigned").length,
-    "assigned-dfls": recs.length,
-    "stage-wise-crop": recs.filter((r) => !r.harvest && !r.failed).length,
-    "crop-inspection": recs.filter((r) => !r.lastInspection && !r.harvest).length,
-    "fitness-certificate": recs.filter((r) => !r.fc && !r.harvest && ["moult4", "spinning", "market"].includes(r.stage.key) && !r.failed).length,
-    harvest: recs.filter((r) => r.fc?.fit && !r.harvest).length,
+    "assigned-dfls": open.length,
+    "stage-wise-crop": open.length,
+    "crop-inspection": open.filter((r) => !r.lastInspection && r.day >= 0).length,
+    "fitness-certificate": open.filter((r) => !r.fc && ["moult4", "spinning", "market"].includes(r.stage.key)).length,
+    harvest: open.filter((r) => r.fc?.fit).length,
   };
   return (
     <nav className="fi-stepper" aria-label={t("Farmer Indent steps")}>
@@ -190,17 +191,26 @@ export function FiPage({ title, subtitle, actions, children }) {
           <div className="fi-header">
             <div>
               <div className="d-flex align-items-center gap-2 flex-wrap mb-1">
-                <span className="fi-chip-light"><Icon name="building" /> {t("Grainage")}: {grainageById(s.grainageId)?.name}</span>
+                <span className="fi-chip-light"><Icon name="building" /> {t("Grainage")}: {s.grainage?.name || "–"}</span>
                 <span className="fi-chip-light"><Icon name="calendar" /> {new Date().toLocaleDateString("en-GB")}</span>
               </div>
               <h2>{title}</h2>
               {subtitle && <p>{subtitle}</p>}
             </div>
-            <div className="d-flex gap-2 flex-wrap">{actions}</div>
+            <div className="d-flex gap-2 flex-wrap">{s.status === "ready" && actions}</div>
           </div>
         </Block.Head>
-        <FlowStepper />
-        {children}
+        {s.status === "ready" && <FlowStepper />}
+        {s.status === "ready" ? children : s.status === "error" ? (
+          <Card className="fi-card"><Card.Body className="text-center py-5">
+            <Icon name="alert-circle" className="text-danger" style={{ fontSize: "2rem" }} />
+            <div className="fw-bold mt-2">{s.error}</div>
+            <div className="text-muted small mb-3">{t("Farmer Indent screens are for grainage users.")}</div>
+            <Button className="fi-btn fi-btn-soft" onClick={() => fiActions.reload()}><Icon name="reload" /> {t("Try again")}</Button>
+          </Card.Body></Card>
+        ) : (
+          <div className="text-center py-5 text-muted"><Spinner animation="border" size="sm" className="me-2" />{t("Loading farmer indent data…")}</div>
+        )}
       </div>
     </Layout>
   );
@@ -238,7 +248,8 @@ export function Pill({ color = "grey", children, style }) {
   return <span className="fi-pill" style={{ background: bg, color: fg, ...style }}>{children}</span>;
 }
 export const INDENT_STATUS_COLOR = { captured: "grey", assessment: "violet", production: "amber", ready: "teal", assigned: "green" };
-export const CROP_STATUS_COLOR = { Good: "green", Average: "amber", Poor: "red", Failed: "red" };
+// crop_status master values (Crop Inspection) + older labels
+export const CROP_STATUS_COLOR = { "Diseased Free": "green", Diseased: "red", Good: "green", Average: "amber", Poor: "red", Failed: "red" };
 
 export function StagePill({ stage }) {
   return <span className="fi-pill" style={{ background: `${stage.color}1f`, color: stage.color }}>{stage.label}</span>;
@@ -247,13 +258,14 @@ export function StagePill({ stage }) {
 const AVATAR_COLORS = ["#1e67a8", "#0f766e", "#6d28d9", "#b45309", "#c43257", "#15803d", "#0369a1"];
 export function FarmerCell({ farmer, sub }) {
   if (!farmer) return "–";
-  const initials = farmer.name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
+  const initials = farmer.name.split(" ").filter(Boolean).map((w) => w[0]).slice(0, 2).join("").toUpperCase();
+  const hash = [...String(farmer.id)].reduce((n, c) => n + c.charCodeAt(0), 0);
   return (
     <div className="fi-farmer-cell">
-      <span className="fi-avatar" style={{ background: AVATAR_COLORS[farmer.id % AVATAR_COLORS.length] }}>{initials}</span>
+      <span className="fi-avatar" style={{ background: AVATAR_COLORS[hash % AVATAR_COLORS.length] }}>{initials}</span>
       <div>
         <div className="fi-farmer-name">{farmer.name}</div>
-        <div className="fi-farmer-sub">{sub || `${farmer.farmerNumber} · ${farmer.mobile}`}</div>
+        <div className="fi-farmer-sub">{sub || [farmer.farmerNumber, farmer.mobile].filter(Boolean).join(" · ") || farmer.fruitsId}</div>
       </div>
     </div>
   );

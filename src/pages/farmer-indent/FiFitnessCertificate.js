@@ -17,7 +17,7 @@ function FiFitnessCertificate() {
   const openExisting = useOpenExisting();
   const [journey, setJourney] = useState(null);
 
-  const due = recs.filter((r) => !r.fc && !r.harvest && ["moult4", "spinning", "market"].includes(r.stage.key));
+  const due = recs.filter((r) => !r.fc && !r.harvest && !r.closed && ["moult4", "spinning", "market"].includes(r.stage.key));
   const fit = recs.filter((r) => r.fc?.fit);
   const notFit = recs.filter((r) => r.fc && !r.fc.fit);
   const lists = { due, fit, notfit: notFit };
@@ -37,11 +37,10 @@ function FiFitnessCertificate() {
   ];
   const fcCols = [
     farmer, lot,
-    { name: t("Inspected At · Larval Exam"), minWidth: "170px", cell: (r) => <div><div>{r.fc.inspectedAt}</div><div className="fi-farmer-sub">{t("Larval")}: {r.fc.larvalExamAt}</div></div> },
-    { name: t("Spun on"), minWidth: "150px", cell: (r) => `${fmtDate(r.fc.spunFrom)} – ${fmtDate(r.fc.spunTo)}` },
-    { name: t("Disease Status"), minWidth: "170px", cell: (r) => <Pill color={r.fc.diseaseStatus === "Free From All Diseases" ? "green" : "red"}>{r.fc.diseaseStatus}</Pill> },
+    { name: t("Spun on"), minWidth: "120px", cell: (r) => fmtDate(r.fc.spunFrom) },
+    { name: t("Disease Status"), minWidth: "150px", cell: (r) => <div><Pill color={r.fc.fit ? "green" : "red"}>{r.fc.diseaseStatus || "–"}</Pill>{r.fc.lotTestDetails ? <div className="fi-farmer-sub">{r.fc.lotTestDetails}</div> : null}</div> },
     { name: t("Fitness"), minWidth: "130px", cell: (r) => (r.fc.fit ? <Pill color="green">{t("Fit For Seed")}</Pill> : <Pill color="red">{t("Not Fit")}</Pill>) },
-    { name: t("Market · Expected"), minWidth: "180px", cell: (r) => <div><div>{r.fc.market}</div><div className="fi-farmer-sub">{fmtDate(r.fc.transactionDate)} · {r.fc.expectedKg} kg</div></div> },
+    { name: t("Expected Market"), minWidth: "170px", cell: (r) => <div><div>{fmtDate(r.fc.expectedMarketDate || r.fc.transactionDate)}</div><div className="fi-farmer-sub">{r.fc.expectedKg ?? "–"} kg{r.fc.chandies != null ? ` · ${r.fc.chandies} ${t("chandrikes")}` : ""}</div></div> },
     {
       name: t("Action"), minWidth: "170px", right: true,
       cell: (r) => (
@@ -56,9 +55,9 @@ function FiFitnessCertificate() {
 
   const doExport = () => exportCsv("fitness-certificates.csv", [
     { label: "Farmer", value: (r) => r.farmer.name }, { label: "FRUITS ID", value: (r) => r.farmer.fruitsId }, { label: "Lot", value: (r) => r.a.lotNumber },
-    { label: "Inspected At", value: (r) => r.fc?.inspectedAt }, { label: "Larval Exam", value: (r) => r.fc?.larvalExamAt }, { label: "Spun From", value: (r) => fmtDate(r.fc?.spunFrom) },
-    { label: "Spun To", value: (r) => fmtDate(r.fc?.spunTo) }, { label: "Disease Status", value: (r) => r.fc?.diseaseStatus }, { label: "Fitness", value: (r) => (r.fc ? (r.fc.fit ? "Fit For Seed" : "Not Fit") : "Due") },
-    { label: "Market", value: (r) => r.fc?.market }, { label: "Expected Date", value: (r) => fmtDate(r.fc?.transactionDate) }, { label: "Expected Kg", value: (r) => r.fc?.expectedKg },
+    { label: "Spun On", value: (r) => fmtDate(r.fc?.spunFrom) }, { label: "Disease Status", value: (r) => r.fc?.diseaseStatus }, { label: "Lot Test", value: (r) => r.fc?.lotTestDetails },
+    { label: "Fitness", value: (r) => (r.fc ? (r.fc.fit ? "Fit For Seed" : "Not Fit") : "Due") },
+    { label: "Expected Market Date", value: (r) => fmtDate(r.fc?.expectedMarketDate || r.fc?.transactionDate) }, { label: "Expected Kg", value: (r) => r.fc?.expectedKg }, { label: "Chandrikes", value: (r) => r.fc?.chandies },
   ], rows);
 
   const TABS = [["due", t("Due"), due.length], ["fit", t("Fit For Seed"), fit.length], ["notfit", t("Not Fit For Seed"), notFit.length]];
