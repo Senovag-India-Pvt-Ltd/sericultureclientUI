@@ -3990,6 +3990,8 @@
     "Mulberry Target Type": "ಮುಲ್ಬೆರಿ ಗುರಿ ಪ್ರಕಾರ",
     "Target Type": "ಗುರಿ ಪ್ರಕಾರ",
     "Month": "ತಿಂಗಳು",
+    "All Months": "ಎಲ್ಲಾ ತಿಂಗಳುಗಳು",
+    "Select Financial Year first": "ಮೊದಲು ಆರ್ಥಿಕ ವರ್ಷವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
     "Target No.": "ಗುರಿ ಸಂಖ್ಯೆ.",
     "Sericulture Training Institute  Wise Target Setting": "ತರಬೇತಿ ವಾರಿ ಗುರಿ ಸೆಟ್ಟಿಂಗ್",
     "Target": "ಗುರಿ",
@@ -5117,6 +5119,11 @@
     "Ticket Closed": "ಟಿಕೆಟ್ ಮುಚ್ಚಲಾಗಿದೆ",
     "Your raised ticket details and the response": "ನೀವು ನಮೂದಿಸಿದ ಟಿಕೆಟ್ ವಿವರಗಳು ಮತ್ತು ಪ್ರತಿಕ್ರಿಯೆ",
     "Resolution from Support": "ಬೆಂಬಲ ತಂಡದಿಂದ ಪರಿಹಾರ",
-    "Solution sent for your raised ticket": "ನೀವು ನಮೂದಿಸಿದ ಟಿಕೆಟ್‌ಗೆ ಕಳುಹಿಸಿದ ಉತ್ತರ"
+    "Solution sent for your raised ticket": "ನೀವು ನಮೂದಿಸಿದ ಟಿಕೆಟ್‌ಗೆ ಕಳುಹಿಸಿದ ಉತ್ತರ",
+    "Payment Frequency": "ಪಾವತಿ ಆವರ್ತನ",
+    "None": "ಯಾವುದೂ ಇಲ್ಲ",
+    "Monthly": "ಮಾಸಿಕ",
+    "Yearly": "ವಾರ್ಷಿಕ",
+    "One Time": "ಒಂದು ಬಾರಿ"
 }
 }

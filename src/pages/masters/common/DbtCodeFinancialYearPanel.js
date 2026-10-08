@@ -37,15 +37,15 @@ function DbtCodeFinancialYearPanel({ masterType, parentId }) {
       });
   };
 
+  // Active and inactive years: a row saved under a year that was later made
+  // inactive must still show (and keep) its year when it is edited.
   const fetchFinancialYears = () => {
-    api
-      .get(baseURL + `financialYearMaster/get-all?isActive=true`)
-      .then((response) => {
-        setFinancialYears(response.data.content.financialYearMaster || []);
-      })
-      .catch(() => {
-        setFinancialYears([]);
-      });
+    const load = (isActive) =>
+      api
+        .get(baseURL + `financialYearMaster/get-all?isActive=${isActive}`)
+        .then((response) => (response.data.content.financialYearMaster || []).map((fy) => ({ ...fy, isActive })))
+        .catch(() => []);
+    Promise.all([load(true), load(false)]).then(([active, inactive]) => setFinancialYears([...active, ...inactive]));
   };
 
   // Pre-select the default financial year on the "add" form so admins usually just enter a code
@@ -168,11 +168,13 @@ function DbtCodeFinancialYearPanel({ masterType, parentId }) {
                 onChange={(e) => setForm({ ...form, financialYearMasterId: e.target.value })}
               >
                 <option value="">{t("Select Financial Year")}</option>
-                {financialYears.map((fy) => (
-                  <option key={fy.financialYearMasterId} value={fy.financialYearMasterId}>
-                    {fy.financialYear}
-                  </option>
-                ))}
+                {financialYears
+                  .filter((fy) => fy.isActive || String(fy.financialYearMasterId) === String(form.financialYearMasterId))
+                  .map((fy) => (
+                    <option key={fy.financialYearMasterId} value={fy.financialYearMasterId}>
+                      {fy.financialYear}{fy.isActive ? "" : ` (${t("inactive")})`}
+                    </option>
+                  ))}
               </Form.Select>
             </Form.Group>
           </Col>

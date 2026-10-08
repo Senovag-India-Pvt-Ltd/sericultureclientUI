@@ -3766,6 +3766,8 @@
     "Mulberry Target Type": "Mulberry Target Type",
     "Target Type": "Target Type",
     "Month": "Month",
+    "All Months": "All Months",
+    "Select Financial Year first": "Select Financial Year first",
     "Target No.": "Target No.",
     "Enter Target No.": "Enter Target No.",
     "Months": "Months",
@@ -4985,6 +4987,11 @@
     "Ticket Closed": "Ticket Closed",
     "Your raised ticket details and the response": "Your raised ticket details and the response",
     "Resolution from Support": "Resolution from Support",
-    "Solution sent for your raised ticket": "Solution sent for your raised ticket"
+    "Solution sent for your raised ticket": "Solution sent for your raised ticket",
+    "Payment Frequency": "Payment Frequency",
+    "None": "None",
+    "Monthly": "Monthly",
+    "Yearly": "Yearly",
+    "One Time": "One Time"
 }
 }

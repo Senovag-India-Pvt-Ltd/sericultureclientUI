@@ -932,6 +932,20 @@
 
 .about-card-hd-icon { font-size: 1.05em; }
 
+/* about-card-hd is rendered as an <h3>; cancel the global heading margin/line-height */
+h3.about-card-hd {
+  margin: 0;
+  line-height: 1.35;
+  font-family: inherit;
+}
+
+a.about-contact-val {
+  display: inline-block;
+  text-decoration: none;
+}
+
+a.about-contact-val:hover { text-decoration: underline; }
+
 .about-card-bd { padding: 18px 22px; }
 
 .about-card-text {

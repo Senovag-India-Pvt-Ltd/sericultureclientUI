@@ -1,10 +1,15 @@
-// Reusable helpers for the "Monthly Frequency" sub-scheme configuration.
+// Reusable helpers for monthly sub schemes.
 //
-// When a sub scheme has monthlyFrequency === true, the Service Application shows a
+// A sub scheme is monthly when its Payment Frequency is MONTHLY (the only source of
+// truth – the old "Monthly Frequency" checkbox is removed). Then the Service Application shows a
 // single, financial-year-aware Month dropdown. Selecting a month auto-populates the
 // Period From / Period To dates (first and last day of that month, leap-year safe).
 //
 // These helpers are generic and must NOT be hardcoded to any specific scheme.
+
+// True when the sub scheme's Payment Frequency is MONTHLY.
+export const isMonthlyPaymentFrequency = (subScheme) =>
+  String(subScheme?.paymentFrequency || "").trim().toUpperCase() === "MONTHLY";
 
 // Uppercase month names, indexed 0 (Jan) .. 11 (Dec) — matches the value stored in
 // sc_application_form_service.month (e.g. "APRIL 2026").

@@ -47,7 +47,7 @@ function ScSubSchemeDetails() {
     allotReleaseDate: "",
     sanctionEnable: true,
     schemeCodeForSanctionOrder: "",
-    monthlyFrequency: false,
+    paymentFrequency: "",
   });
 
   const startOfYear = new Date(new Date().getFullYear(), 0, 1);
@@ -132,16 +132,10 @@ function ScSubSchemeDetails() {
         allotReleaseDate: "",
         sanctionEnable: true,
         schemeCodeForSanctionOrder: "",
-        monthlyFrequency: false,
+        paymentFrequency: "",
     });
   };
 
-  const handleMonthlyFrequencyCheckBox = (e) => {
-    setData((prev) => ({
-      ...prev,
-      monthlyFrequency: e.target.checked,
-    }));
-  };
 
   const handleCheckBox = (e) => {
     // setFarmerAddress({ ...farmerAddress, defaultAddress: e.target.checked });
@@ -1139,18 +1133,25 @@ function ScSubSchemeDetails() {
   </Form.Label>
 </Col>
 
-                        {/* Monthly Frequency */}
-                        <Col sm={2} className="d-flex align-items-center">
-                          <Form.Check
-                            type="checkbox"
-                            id="monthlyFrequency"
-                            checked={!!data.monthlyFrequency}
-                            onChange={handleMonthlyFrequencyCheckBox}
-                            className="me-2"
-                          />
-                          <Form.Label htmlFor="monthlyFrequency" className="mb-0">
-                            {t("Monthly Frequency")}
-                          </Form.Label>
+
+                        {/* Payment Frequency */}
+                        <Col sm={3}>
+                          <Form.Group className="form-group">
+                            <Form.Label>{t("Payment Frequency")}</Form.Label>
+                            <Form.Select
+                              name="paymentFrequency"
+                              value={data.paymentFrequency}
+                              onChange={handleInputs}
+                            >
+                              <option value="">{t("None")}</option>
+                              <option value="MONTHLY">{t("Monthly")}</option>
+                              <option value="YEARLY">{t("Yearly")}</option>
+                              <option value="ONE_TIME">{t("One Time")}</option>
+                            </Form.Select>
+                            <Form.Text className="text-muted">
+                              {t("Monthly: application shows Month and fills Period From / Period To for that month")}
+                            </Form.Text>
+                          </Form.Group>
                         </Col>
                       </Row>
 

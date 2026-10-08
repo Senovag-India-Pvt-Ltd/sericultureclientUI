@@ -1,3 +1,14 @@
+# robots.txt for the Karnataka e-Reshme Portal
 # https://www.robotstxt.org/robotstxt.html
+#
+# NOTE: search engines only read robots.txt from the HOST ROOT
+# (https://e-reshme.karnataka.gov.in/robots.txt). This file is published by the
+# React build at /seriui/robots.txt; the web server / gateway must also serve it
+# (or an equivalent) at the domain root. See SEO deployment notes.
+
 User-agent: *
-Disallow:
+Allow: /seriui/
+Allow: /seriui/static/
+Allow: /seriui/images/
+
+Sitemap: https://e-reshme.karnataka.gov.in/seriui/sitemap.xml
