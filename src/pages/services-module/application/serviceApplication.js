@@ -8400,17 +8400,17 @@ const serviceApplicationStyles = `
                           <>
                             <Col lg="4">
                               <Form.Group className="form-group">
-                                <Form.Label>{t("ARM Ends")} <span className="text-danger">*</span></Form.Label>
-                                <div className="form-control-wrap">
-                                  <Form.Select name="armEnds" value={data.armEnds} onChange={handleInputs} required>
-                                    <option value="">{t("-- Select ARM Ends --")}</option>
-                                    <option value="120 Ends">120 Ends</option>
-                                    <option value="200 Ends">200 Ends</option>
-                                    <option value="400 Ends">400 Ends</option>
-                                  </Form.Select>
-                                  <Form.Control.Feedback type="invalid">{t("ARM Ends is required")}</Form.Control.Feedback>
-                                </div>
-                              </Form.Group>
+    <Form.Label>{t("ARM Ends")} <span className="text-danger">*</span></Form.Label>
+    <div className="form-control-wrap">
+      <Form.Select name="armEnds" value={data.armEnds} onChange={handleInputs} required>
+        <option value="">{t("-- Select ARM Ends --")}</option>
+        <option value="120">120</option>
+        <option value="200">200</option>
+        <option value="400">400</option>
+      </Form.Select>
+      <Form.Control.Feedback type="invalid">{t("ARM Ends is required")}</Form.Control.Feedback>
+    </div>
+  </Form.Group>
                             </Col>
 
                             <Col lg="4">
