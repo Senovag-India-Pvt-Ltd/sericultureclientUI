@@ -178,6 +178,16 @@ const HomePage = () => {
     [useFallbackPhotos],
   );
 
+  // Keep <html lang> in sync with the language toggle so search engines and
+  // screen readers know which language the page text is in.
+  useEffect(() => {
+    const previousLang = document.documentElement.lang;
+    document.documentElement.lang = language === "en" ? "en" : "kn";
+    return () => {
+      document.documentElement.lang = previousLang || "en";
+    };
+  }, [language]);
+
   useEffect(() => {
     const timer = window.setInterval(() => {
       setActivePhoto((prev) => (prev + 1) % visiblePhotos.length);
@@ -505,6 +515,63 @@ const HomePage = () => {
           </div>
 
         </div>
+
+        {/* ===== ABOUT THE PORTAL ===== */}
+        <section className="about-portal" aria-labelledby="about-portal-title">
+          <div className="about-section-hd">
+            <span className="about-section-bar" aria-hidden="true" />
+            <h2 id="about-portal-title" className="about-section-title">{t.about.title}</h2>
+            <span className="about-section-line" aria-hidden="true" />
+          </div>
+
+          <div className="about-grid">
+            <div className="about-card">
+              <h3 className="about-card-hd">{t.about.cardTitle}</h3>
+              <div className="about-card-bd">
+                <p className="about-card-text">{t.about.text}</p>
+                <ul className="about-features">
+                  {t.about.features.map((feature) => (
+                    <li key={feature.title}>
+                      <span className="about-feature-icon" aria-hidden="true">{feature.icon}</span>
+                      <span>
+                        <strong>{feature.title}</strong> — {feature.text}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="about-card">
+              <h3 className="about-card-hd">{t.about.contactTitle}</h3>
+              <div className="about-card-bd">
+                <div className="about-contact-row">
+                  <span className="about-contact-icon" aria-hidden="true">{getActionIcon("helpline")}</span>
+                  <div>
+                    <div className="about-contact-lbl">{t.about.helplineLabel}</div>
+                    <a className="about-contact-val" href="tel:08024413900">080 2441 3900</a>
+                  </div>
+                </div>
+                <div className="about-contact-row">
+                  <span className="about-contact-icon" aria-hidden="true">{getActionIcon("website")}</span>
+                  <div>
+                    <div className="about-contact-lbl">{t.about.websiteLabel}</div>
+                    <a className="about-contact-val" href="https://sericulture.karnataka.gov.in/en" target="_blank" rel="noreferrer">
+                      sericulture.karnataka.gov.in
+                    </a>
+                  </div>
+                </div>
+                <div className="about-contact-row">
+                  <span className="about-contact-icon" aria-hidden="true">{getActionIcon("default")}</span>
+                  <div>
+                    <div className="about-contact-lbl">{t.about.portalLabel}</div>
+                    <div className="about-contact-val">e-reshme.karnataka.gov.in/seriui</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* ===== FOOTER ===== */}
         <footer className="site-footer">

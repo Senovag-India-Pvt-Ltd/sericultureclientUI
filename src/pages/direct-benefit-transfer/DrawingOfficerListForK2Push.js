@@ -15,6 +15,10 @@ import { useEffect } from "react";
 import axios from "axios";
 import api from "../../services/auth/api";
 import { useTranslation } from "react-i18next";
+import {
+  isMonthlyPaymentFrequency,
+  getFinancialYearMonths,
+} from "../../utilities/monthlyFrequency";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURLDBT = process.env.REACT_APP_API_BASE_URL_DBT;
@@ -64,7 +68,12 @@ function DrawingOfficerListForK2Push() {
 
     scCategoryId: "",
     scSchemeDetailsId: "",
+    month: "",
   });
+
+  // Month filter is shown only when the selected sub scheme's Payment Frequency is MONTHLY
+  const [isMonthlySubScheme, setIsMonthlySubScheme] = useState(false);
+  const monthFilter = () => (isMonthlySubScheme ? addressDetails.month || "" : "");
 
 const [pushVisible, setPushVisible] = useState(false);
 const [checkingXml, setCheckingXml] = useState(false);
@@ -228,6 +237,7 @@ const [allowDbtPush, setAllowDbtPush] = useState(false);
           tscMasterId: addressDetails.tscMasterId || 0,
           scSchemeDetailsId: addressDetails.scSchemeDetailsId || 0,
           scCategoryId: addressDetails.scCategoryId || 0,
+          month: monthFilter(),
           pageNumber: page,
           pageSize: countPerPage,
         },
@@ -282,6 +292,7 @@ const [allowDbtPush, setAllowDbtPush] = useState(false);
           tscMasterId: addressDetails.tscMasterId || 0,
           scSchemeDetailsId: addressDetails.scSchemeDetailsId || 0,
           scCategoryId: addressDetails.scCategoryId || 0,
+          month: monthFilter(),
           },
           responseType: 'blob',
           headers: {
@@ -896,6 +907,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
               tscMasterId: addressDetails.tscMasterId || 0,
               scSchemeDetailsId: addressDetails.scSchemeDetailsId || 0,
               scCategoryId: addressDetails.scCategoryId || 0,
+              month: monthFilter(),
               pageNumber: page,
               pageSize: countPerPage,
           },
@@ -1205,6 +1217,39 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
       getSubSchemeList(addressDetails.scSchemeDetailsId);
     }
   }, [addressDetails.scSchemeDetailsId]);
+
+  // Is the selected sub scheme monthly? (same master-data source the application form uses)
+  useEffect(() => {
+    const schemeId = addressDetails.scSchemeDetailsId;
+    const subId = addressDetails.subSchemeId;
+    if (!schemeId || !subId || subId === "0") {
+      setIsMonthlySubScheme(false);
+      return;
+    }
+    api
+      .get(
+        baseURLMasterData +
+          `scSubSchemeDetails/get-by-scheme-and-sub-scheme-details-id/${schemeId}/${subId}`
+      )
+      .then((response) => {
+        const list = response.data?.content?.scSubSchemeDetails;
+        setIsMonthlySubScheme(isMonthlyPaymentFrequency(list?.[0]));
+      })
+      .catch(() => setIsMonthlySubScheme(false));
+  }, [addressDetails.scSchemeDetailsId, addressDetails.subSchemeId]);
+
+  // Clear a stale month when the sub scheme is not monthly
+  useEffect(() => {
+    if (!isMonthlySubScheme && addressDetails.month) {
+      setAddressDetails((prev) => ({ ...prev, month: "" }));
+    }
+  }, [isMonthlySubScheme]);
+
+  // Month options follow the selected financial year (April .. March)
+  const selectedFinancialYear = financialyearListData.find(
+    (fy) => String(fy.financialYearMasterId) === String(addressDetails.financialYearId)
+  );
+  const monthOptions = getFinancialYearMonths(selectedFinancialYear?.financialYear);
 
   // to get component
     const [scComponentListData, setScComponentListData] = useState([]);
@@ -2120,6 +2165,31 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
                   : ""}
               </Form.Select>
             </Col>
+
+            {isMonthlySubScheme && (
+              <>
+                <Form.Label column sm={1}>
+                  {t("Month")}
+                </Form.Label>
+                <Col sm={3}>
+                  <Form.Select
+                    name="month"
+                    value={addressDetails.month || ""}
+                    onChange={handleInputsaddress}
+                    disabled={!monthOptions.length}
+                  >
+                    <option value="">
+                      {monthOptions.length ? t("All Months") : t("Select Financial Year first")}
+                    </option>
+                    {monthOptions.map((m) => (
+                      <option key={m.value} value={m.value}>
+                        {m.label}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Col>
+              </>
+            )}
 
             <Col sm={2} className="d-flex">
               <Button type="button" variant="primary" onClick={search} className="me-2">

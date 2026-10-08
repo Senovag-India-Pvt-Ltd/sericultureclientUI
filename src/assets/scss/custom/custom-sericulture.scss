@@ -20,112 +20,216 @@
   color: #fff;
 }
 
-// Sweet Alert style overriding
+// Sweet Alert style overriding — modern theme (visual only).
+// Each popup carries .swal2-icon-{success|error|warning|info|question}, which
+// drives the accent colour (top bar, icon halo, confirm button).
 .swal2-popup {
-  border-radius: 16px !important;
-  padding: 1.75em 1.5em 1.5em !important;
+  --seri-accent: #0f6cbe;
+  --seri-accent-2: #1e85d8;
+  --seri-accent-soft: rgba(15, 108, 190, 0.1);
+  --seri-accent-shadow: rgba(15, 108, 190, 0.3);
+
+  position: relative;
+  border-radius: 20px !important;
+  padding: 2em 1.6em 1.6em !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(10, 40, 90, 0.06) !important;
   box-shadow:
-    0 20px 50px rgba(10, 40, 90, 0.22),
-    0 4px 14px rgba(10, 40, 90, 0.1) !important;
+    0 24px 60px rgba(10, 40, 90, 0.25),
+    0 6px 18px rgba(10, 40, 90, 0.1) !important;
   font-family: inherit;
 }
 
+.swal2-popup.swal2-icon-success {
+  --seri-accent: #16a34a;
+  --seri-accent-2: #22c55e;
+  --seri-accent-soft: rgba(22, 163, 74, 0.1);
+  --seri-accent-shadow: rgba(22, 163, 74, 0.3);
+}
+.swal2-popup.swal2-icon-error {
+  --seri-accent: #dc2626;
+  --seri-accent-2: #f05252;
+  --seri-accent-soft: rgba(220, 38, 38, 0.09);
+  --seri-accent-shadow: rgba(220, 38, 38, 0.28);
+}
+.swal2-popup.swal2-icon-warning {
+  --seri-accent: #d97706;
+  --seri-accent-2: #f59e0b;
+  --seri-accent-soft: rgba(217, 119, 6, 0.1);
+  --seri-accent-shadow: rgba(217, 119, 6, 0.28);
+}
+
+// Coloured accent edge along the top of modal popups (not toasts)
+.swal2-popup:not(.swal2-toast) {
+  border-top: 6px solid var(--seri-accent) !important;
+}
+
+// Smooth "pop" entrance
+.swal2-popup.swal2-show:not(.swal2-toast) {
+  animation: seri-swal-pop-in 0.32s cubic-bezier(0.2, 0.9, 0.3, 1.15) !important;
+}
+@keyframes seri-swal-pop-in {
+  0% { opacity: 0; transform: translateY(14px) scale(0.94); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 .swal2-title {
-  color: #062d5e !important;
+  color: #0b2545 !important;
   font-weight: 700 !important;
-  font-size: 1.35em !important;
-  padding: 0.4em 0.2em 0 !important;
+  font-size: 1.3em !important;
+  letter-spacing: 0.01em;
+  padding: 0.5em 0.2em 0 !important;
 }
 
 .swal2-html-container {
-  color: #3a5878 !important;
-  font-size: 0.98em !important;
-  line-height: 1.55 !important;
-  margin: 0.8em 0.5em 0 !important;
+  color: #475569 !important;
+  font-size: 0.97em !important;
+  line-height: 1.6 !important;
+  margin: 0.7em 0.4em 0 !important;
 }
 
+// Error / warning messages sit in a soft tinted message box
+.swal2-popup.swal2-icon-error .swal2-html-container,
+.swal2-popup.swal2-icon-warning .swal2-html-container {
+  background: var(--seri-accent-soft);
+  border: 1px solid var(--seri-accent-soft);
+  border-left: 4px solid var(--seri-accent);
+  border-radius: 12px;
+  padding: 0.85em 1em !important;
+  margin: 1em 0.2em 0 !important;
+  text-align: left;
+}
+.swal2-popup.swal2-icon-error .swal2-html-container > div,
+.swal2-popup.swal2-icon-warning .swal2-html-container > div {
+  color: #334155 !important;
+}
+
+// Icons: lighter ring + soft halo
 .swal2-icon {
-  border-width: 2.5px !important;
-  margin: 1.2em auto 0.6em !important;
+  border-width: 3px !important;
+  margin: 1.1em auto 0.5em !important;
+  box-shadow: 0 0 0 9px var(--seri-accent-soft);
 }
 
 .swal2-icon.swal2-success {
-  border-color: #1fab5b !important;
-  color: #1fab5b !important;
+  border-color: #16a34a !important;
+  color: #16a34a !important;
+  // The success animation masks its ring with popup-coloured shapes; a halo
+  // would expose them, so success keeps a plain ring.
+  box-shadow: none;
 }
 .swal2-icon.swal2-success [class^="swal2-success-line"] {
-  background-color: #1fab5b !important;
+  background-color: #16a34a !important;
 }
 .swal2-icon.swal2-success .swal2-success-ring {
-  border-color: rgba(31, 171, 91, 0.3) !important;
+  border-color: rgba(22, 163, 74, 0.3) !important;
 }
 
 .swal2-icon.swal2-error {
-  border-color: #e5484d !important;
-  color: #e5484d !important;
+  border-color: rgba(220, 38, 38, 0.85) !important;
+  color: #dc2626 !important;
+  background: rgba(220, 38, 38, 0.06);
 }
 .swal2-icon.swal2-error [class^="swal2-x-mark-line"] {
-  background-color: #e5484d !important;
+  background-color: #dc2626 !important;
 }
 
 .swal2-icon.swal2-warning {
-  border-color: #f0a020 !important;
-  color: #f0a020 !important;
+  border-color: #f59e0b !important;
+  color: #d97706 !important;
+  background: rgba(245, 158, 11, 0.07);
 }
 
 .swal2-icon.swal2-info,
 .swal2-icon.swal2-question {
   border-color: #0f6cbe !important;
   color: #0f6cbe !important;
+  background: rgba(15, 108, 190, 0.06);
 }
 
 .swal2-actions {
-  margin-top: 1.5em !important;
-  gap: 0.6em;
+  margin-top: 1.6em !important;
+  gap: 0.7em;
 }
 
 .swal2-styled.swal2-confirm {
-  background: linear-gradient(135deg, #0f6cbe, #1e85d8) !important;
-  border-radius: 9px !important;
-  padding: 0.55em 1.7em !important;
+  background: linear-gradient(135deg, var(--seri-accent), var(--seri-accent-2)) !important;
+  border-radius: 10px !important;
+  padding: 0.6em 2em !important;
+  min-width: 110px;
   font-weight: 600 !important;
-  box-shadow: 0 6px 16px rgba(15, 108, 190, 0.28) !important;
+  letter-spacing: 0.02em;
+  box-shadow: 0 8px 18px var(--seri-accent-shadow) !important;
   transition:
     transform 0.15s ease,
-    box-shadow 0.15s ease !important;
+    box-shadow 0.15s ease,
+    filter 0.15s ease !important;
 }
 .swal2-styled.swal2-confirm:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(15, 108, 190, 0.34) !important;
+  filter: brightness(1.05);
+  box-shadow: 0 10px 22px var(--seri-accent-shadow) !important;
 }
 .swal2-styled.swal2-confirm:focus {
-  box-shadow: 0 0 0 3px rgba(15, 108, 190, 0.35) !important;
+  box-shadow: 0 0 0 3px var(--seri-accent-soft), 0 8px 18px var(--seri-accent-shadow) !important;
+}
+
+// Destructive confirm dialogs (warning/question) keep the brand-blue confirm
+// so "Yes" is not mistaken for an error state.
+.swal2-popup.swal2-icon-question .swal2-styled.swal2-confirm {
+  --seri-accent: #0f6cbe;
+  --seri-accent-2: #1e85d8;
+  --seri-accent-shadow: rgba(15, 108, 190, 0.3);
 }
 
 .swal2-styled.swal2-cancel {
-  background: #eef1f6 !important;
-  color: #3a5878 !important;
-  border-radius: 9px !important;
-  padding: 0.55em 1.7em !important;
+  background: #f1f5f9 !important;
+  color: #334155 !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 10px !important;
+  padding: 0.6em 1.8em !important;
+  min-width: 110px;
   font-weight: 600 !important;
+  box-shadow: none !important;
   transition: background 0.15s ease !important;
 }
 .swal2-styled.swal2-cancel:hover {
-  background: #dde3ec !important;
+  background: #e2e8f0 !important;
 }
 
 .swal2-styled.swal2-deny {
-  border-radius: 9px !important;
-  padding: 0.55em 1.7em !important;
+  border-radius: 10px !important;
+  padding: 0.6em 1.8em !important;
   font-weight: 600 !important;
 }
 
 .swal2-timer-progress-bar {
-  background: linear-gradient(90deg, #0f6cbe, #1e85d8) !important;
+  background: linear-gradient(90deg, var(--seri-accent), var(--seri-accent-2)) !important;
 }
 
-.swal2-backdrop-show {
-  background: rgba(6, 25, 51, 0.45) !important;
+// Dim + blur the page behind the alert
+.swal2-container.swal2-backdrop-show {
+  background: rgba(6, 25, 51, 0.42) !important;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+// Toasts: compact, with a coloured left edge instead of the top strip
+.swal2-popup.swal2-toast {
+  border-radius: 12px !important;
+  padding: 0.75em 1em !important;
+  border-left: 4px solid var(--seri-accent) !important;
+  box-shadow: 0 10px 28px rgba(10, 40, 90, 0.18) !important;
+}
+.swal2-popup.swal2-toast .swal2-icon {
+  box-shadow: none;
+  margin: 0 0.6em 0 0 !important;
+}
+.swal2-popup.swal2-toast .swal2-html-container {
+  background: none;
+  border: 0;
+  padding: 0 !important;
+  margin: 0.3em 0 0 !important;
 }
 
 // Confirmation tables (e.g. field-diff dialogs) — tidy borders + spacing

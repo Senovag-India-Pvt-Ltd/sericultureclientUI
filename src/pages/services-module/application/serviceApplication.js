@@ -6482,20 +6482,9 @@ const isUserValid = React.useMemo(() => {
       : `${baseURLDBT}service/saveApplicationForm`;
 
     const handleResponse = async (response, showModal = false) => {
-      if (response.data.errorCode === -1) {
-        saveError(response.data.errorMessages[0]);
-        setSaveDisabled(false);
-        return;
-      }
-
-      if (response.data?.content?.error) {
-        saveError(response.data.content.error_description);
-        setSaveDisabled(false);
-        return;
-      }
-
-      if (response.data && response.data.error) {
-        saveError(response.data.error_description);
+      const data = response.data;
+      if (data?.errorCode === -1 || data?.content?.error || data?.error) {
+        saveError(getServerErrorMessage(data) || t("Application could not be saved. Please try again."));
         setSaveDisabled(false);
         return;
       }
@@ -6527,38 +6516,16 @@ const isUserValid = React.useMemo(() => {
       setValidated(false);
     };
 
-    // ✅ YES → Save + Upload
-    if (result.value) {
-      api
-        .post(apiEndpoint, post)
-        .then((response) => handleResponse(response, true))
-        .catch((err) => {
-          if (
-            err.response?.data?.validationErrors &&
-            Object.keys(err.response.data.validationErrors).length > 0
-          ) {
-            saveError(err.response.data.validationErrors);
-          }
-          setSaveDisabled(false);
-        });
-      setValidated(true);
-
-    // ✅ LATER → Save only
-    } else {
-      api
-        .post(apiEndpoint, post)
-        .then((response) => handleResponse(response, false))
-        .catch((err) => {
-          if (
-            err.response?.data?.validationErrors &&
-            Object.keys(err.response.data.validationErrors).length > 0
-          ) {
-            saveError(err.response.data.validationErrors);
-          }
-          setSaveDisabled(false);
-        });
-      setValidated(true);
-    }
+    // ✅ YES → Save + Upload    ✅ LATER → Save only
+    // Any failure (blocked by a rule, server error, no connection) is shown on screen.
+    api
+      .post(apiEndpoint, post)
+      .then((response) => handleResponse(response, !!result.value))
+      .catch((err) => {
+        saveError(getRequestErrorMessage(err));
+        setSaveDisabled(false);
+      });
+    setValidated(true);
   });
 };
 
@@ -6948,6 +6915,33 @@ const callAcknowledgmentFunction = (
 
 
   
+
+  // The exact reason the server gave for a failed save, whichever shape it used:
+  // validationErrors, errorMessages (text), content.error_description or error_description.
+  const getServerErrorMessage = (data) => {
+    if (!data) return null;
+    if (data.validationErrors && Object.keys(data.validationErrors).length > 0) {
+      return data.validationErrors;
+    }
+    const first = Array.isArray(data.errorMessages) ? data.errorMessages[0] : null;
+    if (typeof first === "string" && first.trim()) return first;
+    if (data.content?.error_description) return data.content.error_description;
+    if (data.error_description) return data.error_description;
+    return null;
+  };
+
+  // Message for a failed save request: server reply, server error, or no connection
+  const getRequestErrorMessage = (err) => {
+    const fromServer = getServerErrorMessage(err?.response?.data);
+    if (fromServer) return fromServer;
+    if (err?.response) {
+      return `${t("Server error while saving")} (${err.response.status}). ${t("Please try again or contact support.")}`;
+    }
+    if (err?.request) {
+      return t("Could not reach the server. Please check the connection and try again.");
+    }
+    return `${t("Something went wrong while saving.")} ${err?.message || ""}`.trim();
+  };
 
   const saveError = (message) => {
     let errorMessage;

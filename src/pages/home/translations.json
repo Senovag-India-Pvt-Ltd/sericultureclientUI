@@ -13,7 +13,7 @@
       "title": "Hon'ble Minister for Sericulture, Government of Karnataka"
     },
     "center": [
-      "e-Reshme Portal",
+      "Karnataka e-Reshme Portal",
       "Department of Sericulture",
       "Government of Karnataka"
     ],
@@ -43,6 +43,42 @@
       "schemesOnlineServices": "Schemes",
       "totalBeneficiaryApplications": "Beneficiaries",
       "totalAmountDisbursed": "Amount Disbursed (In Rs.)"
+    },
+    "about": {
+      "title": "About the Karnataka e-Reshme Portal",
+      "cardTitle": "e-Reshme – Karnataka Sericulture Online Services",
+      "text": "The Karnataka e-Reshme Portal is the official online platform of the Department of Sericulture, Government of Karnataka. It brings sericulture services, sericulture schemes, farmer services and reeler services together in one place, so that stakeholders across Karnataka can apply online and track the status of their applications.",
+      "features": [
+        {
+          "icon": "🌾",
+          "title": "Farmer Services",
+          "text": "Registration of sericulture farmers and applications under Karnataka sericulture schemes."
+        },
+        {
+          "icon": "🧵",
+          "title": "Reeler Services",
+          "text": "Registration of reelers and silk traders."
+        },
+        {
+          "icon": "📄",
+          "title": "Schemes & Subsidy (DBT)",
+          "text": "Online scheme applications, application status tracking and subsidy release through Direct Benefit Transfer."
+        },
+        {
+          "icon": "🏪",
+          "title": "Cocoon Markets",
+          "text": "E-auction of cocoon lots in Government cocoon markets."
+        },
+        {
+          "icon": "🎓",
+          "title": "Training",
+          "text": "Sericulture training programmes and schedules."
+        }
+      ],
+      "contactTitle": "Contact & Help",
+      "helplineLabel": "Helpline",
+      "websiteLabel": "Department Website",
+      "portalLabel": "Portal Address"
     }
   },
   "kn": {
@@ -59,7 +95,7 @@
       "title": "ಮಾನ್ಯ ರೇಷ್ಮೆ ಸಚಿವರು, ಕರ್ನಾಟಕ ಸರ್ಕಾರ"
     },
     "center": [
-      "ಇ-ರೇಷ್ಮೆ ಪೋರ್ಟಲ್",
+      "ಕರ್ನಾಟಕ ಇ-ರೇಷ್ಮೆ ಪೋರ್ಟಲ್",
       "ರೇಷ್ಮೆ ಇಲಾಖೆ",
       "ಕರ್ನಾಟಕ ಸರ್ಕಾರ"
     ],
@@ -89,6 +125,42 @@
       "schemesOnlineServices": "ಯೋಜನೆಗಳು",
       "totalBeneficiaryApplications": "ಫಲಾನುಭವಿಗಳು",
       "totalAmountDisbursed": "ಪಾವತಿ ಮಾಡಿದ ಮೊತ್ತ (ರೂ. ಗಳಲ್ಲಿ)"
+    },
+    "about": {
+      "title": "ಕರ್ನಾಟಕ ಇ-ರೇಷ್ಮೆ ಪೋರ್ಟಲ್ (Karnataka e-Reshme Portal) ಕುರಿತು",
+      "cardTitle": "ಇ-ರೇಷ್ಮೆ – ಕರ್ನಾಟಕ ರೇಷ್ಮೆ ಆನ್‌ಲೈನ್ ಸೇವೆಗಳು",
+      "text": "ಕರ್ನಾಟಕ ಇ-ರೇಷ್ಮೆ ಪೋರ್ಟಲ್ ಕರ್ನಾಟಕ ಸರ್ಕಾರದ ರೇಷ್ಮೆ ಇಲಾಖೆಯ ಅಧಿಕೃತ ಆನ್‌ಲೈನ್ ವೇದಿಕೆಯಾಗಿದೆ. ರೇಷ್ಮೆ ಸೇವೆಗಳು, ರೇಷ್ಮೆ ಯೋಜನೆಗಳು, ರೈತರ ಸೇವೆಗಳು ಮತ್ತು ರೀಲರ್‌ಗಳ ಸೇವೆಗಳನ್ನು ಒಂದೇ ಕಡೆ ಒದಗಿಸುತ್ತದೆ. ಇದರಿಂದ ರಾಜ್ಯದಾದ್ಯಂತ ಫಲಾನುಭವಿಗಳು ಆನ್‌ಲೈನ್‌ನಲ್ಲಿ ಅರ್ಜಿ ಸಲ್ಲಿಸಬಹುದು ಮತ್ತು ಅರ್ಜಿಯ ಸ್ಥಿತಿಯನ್ನು ತಿಳಿಯಬಹುದು.",
+      "features": [
+        {
+          "icon": "🌾",
+          "title": "ರೈತರ ಸೇವೆಗಳು",
+          "text": "ರೇಷ್ಮೆ ಬೆಳೆಗಾರರ ನೋಂದಣಿ ಮತ್ತು ಕರ್ನಾಟಕ ರೇಷ್ಮೆ ಯೋಜನೆಗಳ ಅಡಿಯಲ್ಲಿ ಅರ್ಜಿಗಳು."
+        },
+        {
+          "icon": "🧵",
+          "title": "ರೀಲರ್ ಸೇವೆಗಳು",
+          "text": "ರೀಲರ್‌ಗಳು ಮತ್ತು ರೇಷ್ಮೆ ವ್ಯಾಪಾರಿಗಳ ನೋಂದಣಿ."
+        },
+        {
+          "icon": "📄",
+          "title": "ಯೋಜನೆಗಳು ಮತ್ತು ಸಹಾಯಧನ (DBT)",
+          "text": "ಆನ್‌ಲೈನ್ ಯೋಜನಾ ಅರ್ಜಿಗಳು, ಅರ್ಜಿಯ ಸ್ಥಿತಿ ಪರಿಶೀಲನೆ ಮತ್ತು ನೇರ ನಗದು ವರ್ಗಾವಣೆ (DBT) ಮೂಲಕ ಸಹಾಯಧನ ಬಿಡುಗಡೆ."
+        },
+        {
+          "icon": "🏪",
+          "title": "ರೇಷ್ಮೆ ಗೂಡಿನ ಮಾರುಕಟ್ಟೆಗಳು",
+          "text": "ಸರ್ಕಾರಿ ರೇಷ್ಮೆ ಗೂಡಿನ ಮಾರುಕಟ್ಟೆಗಳಲ್ಲಿ ಗೂಡಿನ ಲಾಟ್‌ಗಳ ಇ-ಹರಾಜು."
+        },
+        {
+          "icon": "🎓",
+          "title": "ತರಬೇತಿ",
+          "text": "ರೇಷ್ಮೆ ಕೃಷಿ ತರಬೇತಿ ಕಾರ್ಯಕ್ರಮಗಳು ಮತ್ತು ವೇಳಾಪಟ್ಟಿಗಳು."
+        }
+      ],
+      "contactTitle": "ಸಂಪರ್ಕ ಮತ್ತು ಸಹಾಯ",
+      "helplineLabel": "ಸಹಾಯವಾಣಿ",
+      "websiteLabel": "ಇಲಾಖೆಯ ವೆಬ್‌ಸೈಟ್",
+      "portalLabel": "ಪೋರ್ಟಲ್ ವಿಳಾಸ"
     }
   }
 }

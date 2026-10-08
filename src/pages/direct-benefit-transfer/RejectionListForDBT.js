@@ -78,6 +78,39 @@ const [sanctionOrderNumber, setSanctionOrderNumber] = useState(null);
 const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
 
 
+  // How each listed application will be re-pushed - decided by the server:
+  // R = failed in Khajane (K2 sanction order no. from FRUITS), P = failed before Khajane
+  const [repushTypes, setRepushTypes] = useState({});
+  const loadRepushTypes = (rows) => {
+    const ids = (Array.isArray(rows) ? rows : []).map((r) => r.scApplicationFormId).filter(Boolean);
+    if (ids.length === 0) {
+      setRepushTypes({});
+      return;
+    }
+    api
+      .post(baseURLDBT + `applicationTransaction/getRepushTypes`, ids)
+      .then((response) => {
+        const map = {};
+        (response.data || []).forEach((r) => {
+          map[r.applicationFormId] = r;
+        });
+        setRepushTypes(map);
+      })
+      .catch(() => setRepushTypes({}));
+  };
+
+  // exact reason a re-push failed, whatever shape the server used
+  const repushErrorText = (err) => {
+    const data = err?.response?.data;
+    if (data?.validationErrors && Object.keys(data.validationErrors).length > 0) {
+      return Object.values(data.validationErrors).join("<br>");
+    }
+    const first = Array.isArray(data?.errorMessages) ? data.errorMessages[0] : null;
+    if (typeof first === "string" && first) return first;
+    if (err?.response) return `${t("Server error while pushing")} (${err.response.status})`;
+    return t("Could not reach the server. Please check the connection and try again.");
+  };
+
   const getList = () => {
     setLoading(true);
     api
@@ -103,6 +136,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
       )
       .then((response) => {
         setListData(response.data.content);
+        loadRepushTypes(response.data.content);
         const scApplicationFormIds = response.data.content.map(
           (item) => item.scApplicationFormId
         );
@@ -161,6 +195,7 @@ const [sanctionOrderForScheme, setSanctionOrderForScheme] = useState(null);
     )
     .then((response) => {
       setListData(response.data.content);
+      loadRepushTypes(response.data.content);
 
       // Show checkboxes only if mandatory fields are selected
       if (
@@ -797,17 +832,13 @@ const [isSaving, setIsSaving] = useState(false);
   const handleSaveFromModal = (id) => {
   setIsSaving(true);
 
-  // find the record from listData by id
+  // Khajane (K) mode: the server decides P or R. Bank (B) mode: existing rule below.
   const selectedRecord = listData.find(
     (list) => list.scApplicationFormId === id
   );
-
-  // determine pushType based on applicationStatus
   let pushType = "R"; // default
   if (selectedRecord?.applicationStatus === "ACKNOWLEDGEMENT FAILED") {
     pushType = "P";
-  } else if (selectedRecord?.applicationStatus === null) {
-    pushType = "R";
   }
 
   const pushdata = {
@@ -823,23 +854,18 @@ const [isSaving, setIsSaving] = useState(false);
       baseURLDBT + `applicationTransaction/saveApplicationTransactionForRepush`,
       pushdata
     )
-    .then((response) => {
-      if (response.data.content.errorCode) {
-        saveError(response.data.content.error_description);
-        setIsSaving(false);
-      } else {
-        Swal.fire({
-          icon: "success",
-          title: t("Pushed successfully"),
-          text: t("Your data has been Pushed."),
-        }).then(() => {
-          handleCloseModal6();
-          window.location.reload();
-        });
-      }
+    .then(() => {
+      Swal.fire({
+        icon: "success",
+        title: t("Pushed successfully"),
+        text: t("Your data has been Pushed."),
+      }).then(() => {
+        handleCloseModal6();
+        window.location.reload();
+      });
     })
     .catch((err) => {
-      saveError(err.response?.data?.validationErrors || "Something went wrong");
+      saveError(repushErrorText(err));
       setIsSaving(false);
     });
 };
@@ -869,44 +895,56 @@ const [isSaving, setIsSaving] = useState(false);
 
   //   console.log("Unselected",unselectedApplicationIds);
   const [validated, setValidated] = useState(false);
-  const postData = (event) => {
-  // find the first selected row to extract sanctionNo + ddoCode
-  const firstRow = selectedRows[0];
-
-  const post = {
-    applicationList: applicationIds,
-    paymentMode: "P",
-    pushType: "R",
-    userMasterId: localStorage.getItem("userMasterId"),
-    ddoCode: reportingOfficerDdoCode,
-    // sanctionNo: firstRow?.sanctionNumber, // ✅ include sanctionNo
-  };
-
+  const postData = async (event) => {
+  event.preventDefault();
   const form = event.currentTarget;
   if (form.checkValidity() === false) {
-    event.preventDefault();
     event.stopPropagation();
     setValidated(true);
-  } else {
-    event.preventDefault();
-    api
-      .post(
-        baseURLDBT + `applicationTransaction/saveApplicationTransactionForRepush`,
-        post
-      )
-      .then((response) => {
-        if (response.data.content.errorCode) {
-          saveError(response.data.content.error_description);
-        } else {
-          saveSuccess();
-          getList();
-        }
-      })
-      .catch((err) => {
-        saveError(err.response?.data?.validationErrors || "Push failed");
-      });
-    setValidated(true);
+    return;
   }
+  setValidated(true);
+
+  // One file per group. Khajane (K) mode: P (failed before Khajane) and R per
+  // Khajane sanction order. Bank (B) mode: pushed as before (R).
+  const groups = {};
+  applicationIds.forEach((id) => {
+    const type = repushTypes[id];
+    const key =
+      type?.paymentMode === "K"
+        ? type.pushType === "R" ? `R:${type.k2SanctionOrderNo}` : "P"
+        : "B";
+    (groups[key] = groups[key] || []).push(id);
+  });
+
+  let pushed = 0;
+  const failures = [];
+  for (const [key, ids] of Object.entries(groups)) {
+    try {
+      await api.post(
+        baseURLDBT + `applicationTransaction/saveApplicationTransactionForRepush`,
+        {
+          applicationList: ids,
+          paymentMode: "P",
+          pushType: key === "P" ? "P" : "R", // B group: "R" as before
+          userMasterId: localStorage.getItem("userMasterId"),
+          ddoCode: reportingOfficerDdoCode,
+        }
+      );
+      pushed += ids.length;
+    } catch (err) {
+      failures.push(repushErrorText(err));
+    }
+  }
+
+  if (failures.length === 0) {
+    saveSuccess();
+  } else {
+    saveError(
+      (pushed > 0 ? `${pushed} ${t("application(s) pushed.")}<br>` : "") + failures.join("<br>")
+    );
+  }
+  getList();
 };
 
 
@@ -1598,6 +1636,26 @@ const getFinancialDefaultDetails = () => {
           {row.applicationStatus}
         </span>
       ),
+      sortable: true,
+      hide: "md",
+    },
+    {
+      name: t("Re-push As"),
+      selector: (row) => repushTypes[row.scApplicationFormId]?.pushType || "",
+      cell: (row) => {
+        const type = repushTypes[row.scApplicationFormId];
+        if (!type) return <span>-</span>;
+        if (type.paymentMode !== "K") return <span>{t("Bank")}</span>;
+        return type.pushType === "R" ? (
+          <span title={t("Failed in Khajane - re-push with the K2 sanction order number")}>
+            <b style={{ color: "#b45309" }}>R</b> {t("K2 Order")} {type.k2SanctionOrderNo}
+          </span>
+        ) : (
+          <span title={t("Failed before Khajane - pushed again as a fresh push")}>
+            <b style={{ color: "#1e67a8" }}>P</b> {t("Fresh push")}
+          </span>
+        );
+      },
       sortable: true,
       hide: "md",
     },
@@ -2713,6 +2771,12 @@ const getFinancialDefaultDetails = () => {
                 <td style={styles.ctstyle}>PaymentType:</td>
                 <td>{detail.paymentType}</td>
               </tr>
+              {detail.khajaneSanctionOrderNo && (
+                <tr>
+                  <td style={styles.ctstyle}>KhajaneSanctionOrderNo:</td>
+                  <td>{detail.khajaneSanctionOrderNo}</td>
+                </tr>
+              )}
               <tr>
                 <td style={styles.ctstyle}>BenRecordCount:</td>
                 <td>{detail.benRecordCount}</td>

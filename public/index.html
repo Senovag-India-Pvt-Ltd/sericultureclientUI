@@ -3,36 +3,95 @@
   <head>
     <meta charset="utf-8" />
     <meta name="google-site-verification" content="FHvsWUt6M5QHkYvVKY8-JaCiazdOckgu0hZHNrhZdh4" />
-    <!-- <link rel="icon" href="%PUBLIC_URL%/favicon.ico" /> -->
-    <link rel="icon" href="%PUBLIC_URL%/images/logo/KG.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
+
+    <!-- ===== Primary SEO ===== -->
+    <title>Karnataka e-Reshme Portal | Karnataka Sericulture Department</title>
     <meta
       name="description"
-      content="Web site created using create-react-app"
+      content="Karnataka e-Reshme Portal – Official online portal of the Karnataka Sericulture Department for farmers, reelers, sericulture schemes, services, applications, training and related services."
     />
-    <!-- <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" /> -->
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="author" content="Department of Sericulture, Government of Karnataka" />
+    <meta name="application-name" content="Karnataka e-Reshme Portal" />
+    <meta http-equiv="content-language" content="en, kn" />
+    <link rel="canonical" href="https://e-reshme.karnataka.gov.in/seriui/" />
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <!-- <title>NioBoard Dashboard Template</title> -->
+    <!-- ===== Open Graph ===== -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Karnataka e-Reshme Portal" />
+    <meta property="og:title" content="Karnataka e-Reshme Portal | Karnataka Sericulture Department" />
+    <meta
+      property="og:description"
+      content="Official Karnataka e-Reshme Portal for sericulture-related services, schemes and online applications."
+    />
+    <meta property="og:url" content="https://e-reshme.karnataka.gov.in/seriui/" />
+    <meta property="og:image" content="https://e-reshme.karnataka.gov.in/seriui/images/center-emblem.png" />
+    <meta property="og:image:width" content="400" />
+    <meta property="og:image:height" content="345" />
+    <meta property="og:image:alt" content="Karnataka e-Reshme Portal emblem" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:locale:alternate" content="kn_IN" />
+
+    <!-- ===== Twitter / X ===== -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Karnataka e-Reshme Portal | Karnataka Sericulture Department" />
+    <meta
+      name="twitter:description"
+      content="Official Karnataka e-Reshme Portal for sericulture-related services, schemes and online applications."
+    />
+    <meta name="twitter:image" content="https://e-reshme.karnataka.gov.in/seriui/images/center-emblem.png" />
+    <meta name="twitter:image:alt" content="Karnataka e-Reshme Portal emblem" />
+
+    <!-- ===== Icons / manifest ===== -->
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="48x48" href="%PUBLIC_URL%/images/logo/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="%PUBLIC_URL%/images/logo/favicon-192.png" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/images/logo/favicon-192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="sitemap" type="application/xml" href="%PUBLIC_URL%/sitemap.xml" />
+
+    <!-- ===== Structured data (Schema.org) ===== -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "GovernmentOrganization",
+            "@id": "https://e-reshme.karnataka.gov.in/seriui/#organization",
+            "name": "Department of Sericulture, Government of Karnataka",
+            "alternateName": ["Karnataka Sericulture Department", "Sericulture Department Karnataka"],
+            "url": "https://sericulture.karnataka.gov.in/en",
+            "logo": "https://e-reshme.karnataka.gov.in/seriui/images/center-emblem.png",
+            "areaServed": { "@type": "State", "name": "Karnataka" },
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "customer support",
+              "telephone": "+91-80-24413900",
+              "areaServed": "IN",
+              "availableLanguage": ["English", "Kannada"]
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://e-reshme.karnataka.gov.in/seriui/#website",
+            "name": "Karnataka e-Reshme Portal",
+            "alternateName": ["e-Reshme", "e-Reshme Portal", "ಇ-ರೇಷ್ಮೆ ಪೋರ್ಟಲ್"],
+            "url": "https://e-reshme.karnataka.gov.in/seriui/",
+            "description": "Official online portal of the Karnataka Sericulture Department for farmers, reelers, sericulture schemes, services, applications and training.",
+            "inLanguage": ["en-IN", "kn-IN"],
+            "publisher": { "@id": "https://e-reshme.karnataka.gov.in/seriui/#organization" }
+          }
+        ]
+      }
+    </script>
+
     <style>
       .hide-scrollbar::-webkit-scrollbar {
         display: none;
       }
     </style>
-    <title>Department of Sericulture</title>
   </head>
   <body
     class="hide-scrollbar"
@@ -45,17 +104,21 @@
       width: 100vw;
     "
   >
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <noscript>
+      <h1>Karnataka e-Reshme Portal</h1>
+      <p>
+        e-Reshme is the official online portal of the Department of Sericulture,
+        Government of Karnataka, providing sericulture services, sericulture schemes,
+        farmer services, reeler services and online applications.
+        Please enable JavaScript to use the Karnataka e-Reshme Portal.
+      </p>
+      <ul>
+        <li><a href="%PUBLIC_URL%/login">Login</a></li>
+        <li><a href="%PUBLIC_URL%/application-status">Application Status</a></li>
+        <li><a href="https://sericulture.karnataka.gov.in/en">Department of Sericulture website</a></li>
+        <li>Helpline: <a href="tel:08024413900">080 2441 3900</a></li>
+      </ul>
+    </noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>
