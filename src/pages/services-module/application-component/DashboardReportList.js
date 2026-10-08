@@ -716,8 +716,8 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
 
   const loadArmProformaComponents = async (componentName, categoryId) => {
     if (!componentName || !categoryId) return;
-    // Derive arm_ends from component name: "120 Ends Automatic Reeling Machine" → "120 Ends"
-    const armEnds = componentName.split(" ").slice(0, 2).join(" ");
+    // Derive arm_ends from component name: "120 Ends Automatic Reeling Machine" → "120"
+    const armEnds = componentName.split(" ")[0];
     setProformaLoading(true);
     try {
       const res = await api.get(
@@ -740,9 +740,10 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
           invoiceQty:        "",
           invoiceUnitRate:   parseFloat(c.unitRate || 0),
           invoiceTotal:      "",
-          eligibleAmount:    subsidyPct > 0
-            ? (guidelineTotal * subsidyPct / 100).toFixed(2)
-            : "",
+          // eligibleAmount is only meaningful once a real tax-invoice Qty is
+          // entered (see handleInvoiceRowChange) -- leave blank until then,
+          // instead of showing a guideline-based estimate for an unfilled row.
+          eligibleAmount:    "",
         };
       });
       setProformaComponents(rows);
@@ -1256,7 +1257,7 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
                 );
                 getUserFromDistrictList(
                   recordData.subSchemeId,
-                  approvalStageId,
+                  recordData.approvalStageId,
                   districtId,
                   talukId
                 );
@@ -1333,7 +1334,7 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
                   );
                   getUserFromDistrictList(
                     recordData.subSchemeId,
-                    approvalStageId,
+                    recordData.approvalStageId,
                     districtId,
                     talukId
                   );
@@ -1353,7 +1354,7 @@ const handleDrawingOfficerChangeForSanction = (index, selectedUserId) => {
             );
             getUserFromDistrictList(
               recordData.subSchemeId,
-              approvalStageId,
+              recordData.approvalStageId,
               districtId,
               talukId
             );
@@ -4805,6 +4806,18 @@ const allowedSchemes = [
                   .catch((err) => console.error("Escrow bank save failed:", err));
               } else if (actionFarmerData[0].armStageConfig === "PROFORMA_INVOICE") {
                 // Save proforma invoice vendor details + per-component rows
+                const _missingQtyComponent = proformaComponents.find(
+                  (c) => c.invoiceQty === "" || c.invoiceQty === null || c.invoiceQty === undefined || isNaN(parseFloat(c.invoiceQty)) || parseFloat(c.invoiceQty) <= 0
+                );
+                if (_missingQtyComponent) {
+                  Swal.fire({
+                    icon: "warning",
+                    title: "Quantity Required",
+                    text: `Please enter the tax invoice Qty for "${_missingQtyComponent.componentName}" (and any other blank rows) before saving.`,
+                    confirmButtonColor: "#1e67a8",
+                  });
+                  return;
+                }
                 const _isIbr = (name) => (name || "").toLowerCase().includes("ibr boiler");
                 const _totalEligible = proformaComponents.reduce(
                   (s, r) => s + (parseFloat(r.eligibleAmount) || 0), 0
@@ -7282,7 +7295,7 @@ const allowedSchemes = [
                                         <td style={{ ...tdStyle, textAlign: "right", background: localIdx % 2 === 0 ? "#eff6ff" : "#f0f9ff", fontVariantNumeric: "tabular-nums" }}>{Number(row.guidelineUnitRate).toLocaleString("en-IN")}</td>
                                         <td style={{ ...tdStyle, textAlign: "right", fontWeight: 600, background: localIdx % 2 === 0 ? "#eff6ff" : "#f0f9ff", color: "#1e40af", fontVariantNumeric: "tabular-nums" }}>{Number(row.guidelineTotal).toLocaleString("en-IN")}</td>
                                         <td style={{ ...tdStyle, background: localIdx % 2 === 0 ? "#f0fdf4" : "#f7fdf9" }}>
-                                          <Form.Control size="sm" type="number" min="0" value={row.invoiceQty} onChange={(e) => handleInvoiceRowChange(idx, "invoiceQty", e.target.value)} style={{ width: "70px", borderColor: "#6ee7b7", borderRadius: "6px", textAlign: "center" }} />
+                                          <Form.Control size="sm" type="number" min="0" required value={row.invoiceQty} onChange={(e) => handleInvoiceRowChange(idx, "invoiceQty", e.target.value)} style={{ width: "70px", borderColor: row.invoiceQty ? "#6ee7b7" : "#f87171", borderRadius: "6px", textAlign: "center" }} />
                                         </td>
                                         <td style={{ ...tdStyle, background: localIdx % 2 === 0 ? "#f0fdf4" : "#f7fdf9" }}>
                                           <Form.Control size="sm" type="number" min="0" value={row.invoiceUnitRate} disabled style={{ width: "110px", background: "#ecfdf5", borderColor: "#a7f3d0", color: "#065f46", fontWeight: 600, cursor: "not-allowed", borderRadius: "6px" }} />
