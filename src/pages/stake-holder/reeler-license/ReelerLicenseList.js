@@ -48,6 +48,9 @@ const { t } = useTranslation();
     if (data.searchBy === "reelingLicenseNumber") {
       joinColumn = "reeler.reelingLicenseNumber";
     }
+    if (data.searchBy === "fruitsId") {
+      joinColumn = "reeler.fruitsId";
+    }
     // console.log(joinColumn);
     api
       .post(
@@ -421,6 +424,7 @@ const { t } = useTranslation();
                   <option value="reelingLicenseNumber">
                     {t("Reeling License Number")}
                   </option>
+                  <option value="fruitsId">{t("Fruits ID")}</option>
                 </Form.Select>
               </Col>
               <Col xs={12} md={5}>

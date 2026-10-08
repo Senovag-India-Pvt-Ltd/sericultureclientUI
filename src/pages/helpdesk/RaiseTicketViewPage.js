@@ -36,6 +36,12 @@ function RaiseTicketView() {
 
   const [hideByStatus, setHideByStatus] = useState(false);
 
+  // Follow-up messages (conversation history) -- separate from the
+  // Solution/Escalate flow below, and never touches ticket status.
+  const [ticketMessages, setTicketMessages] = useState([]);
+  const [newTicketMessage, setNewTicketMessage] = useState("");
+  const [sendingTicketMessage, setSendingTicketMessage] = useState(false);
+
   const getIdList = () => {
     setLoading(true);
     api
@@ -61,6 +67,45 @@ function RaiseTicketView() {
   useEffect(() => {
     getIdList();
   }, [id]);
+
+  const getTicketMessages = () => {
+    api
+      .get(baseURL + `hdTicketMessage/get-by-ticket/${id}`)
+      .then((response) => {
+        setTicketMessages(response.data.content || []);
+      })
+      .catch((err) => {
+        setTicketMessages([]);
+      });
+  };
+
+  useEffect(() => {
+    getTicketMessages();
+  }, [id]);
+
+  const sendTicketMessage = () => {
+    if (!newTicketMessage.trim()) return;
+    setSendingTicketMessage(true);
+    api
+      .post(baseURL + `hdTicketMessage/add`, {
+        hdTicketId: id,
+        message: newTicketMessage.trim(),
+      })
+      .then(() => {
+        setNewTicketMessage("");
+        getTicketMessages();
+        setSendingTicketMessage(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setSendingTicketMessage(false);
+        showAlert({
+          icon: "error",
+          title: "Message Not Sent",
+          html: `<div style="font-size:14px;color:#4a5b75;">Something went wrong while sending the message. Please try again.</div>`,
+        });
+      });
+  };
 
   //   const handleListInput = (e, row) => {
   //     // debugger;
@@ -800,6 +845,118 @@ const [HelpDesks, setHelpDesks] = useState({});
                   </div>
                 )}
               </>
+            )}
+          </Card.Body>
+        </Card>
+      </div>
+      <div className="mt-3">
+        <Card
+          style={{
+            border: "none",
+            borderRadius: "16px",
+            boxShadow: "0 6px 24px rgba(15, 76, 138, 0.10)",
+            overflow: "hidden",
+          }}
+        >
+          <Card.Header
+            style={{
+              background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)",
+              color: "#ffffff",
+              fontWeight: 700,
+              fontSize: "15px",
+              padding: "14px 22px",
+              letterSpacing: "0.3px",
+              border: "none",
+            }}
+          >
+            <div className="d-flex align-items-center" style={{ gap: "10px" }}>
+              <Icon name="chat" style={{ fontSize: "18px" }}></Icon>
+              {t("Messages")}
+            </div>
+          </Card.Header>
+          <Card.Body
+            style={{
+              background: "linear-gradient(135deg, #f8f9ff 0%, #eef3fc 100%)",
+              padding: "22px",
+            }}
+          >
+            <div
+              style={{
+                maxHeight: "260px",
+                overflowY: "auto",
+                marginBottom: "16px",
+                paddingRight: "4px",
+              }}
+            >
+              {ticketMessages.length === 0 ? (
+                <div style={{ color: "#94a3b8", fontStyle: "italic", fontSize: "14px" }}>
+                  {t("No messages yet")}
+                </div>
+              ) : (
+                ticketMessages.map((msg, idx) => (
+                  <div
+                    key={msg.hdTicketMessageId || idx}
+                    style={{
+                      background: "#ffffff",
+                      borderRadius: "10px",
+                      padding: "10px 14px",
+                      marginBottom: "10px",
+                      boxShadow: "0 2px 8px rgba(15, 76, 138, 0.06)",
+                    }}
+                  >
+                    <div style={{ fontSize: "14px", color: "#1e293b", whiteSpace: "pre-wrap" }}>
+                      {msg.message}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "12px",
+                        color: "#64748b",
+                        marginTop: "6px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <span>{msg.createdBy}</span>
+                      <span>
+                        {msg.createdDate
+                          ? new Date(msg.createdDate).toLocaleString("en-IN", {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          : ""}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+            {!hideByStatus && (
+              <Form.Group className="d-flex" style={{ gap: "10px" }}>
+                <Form.Control
+                  as="textarea"
+                  rows={2}
+                  placeholder={t("Add a follow-up message (e.g. customer not responding)")}
+                  value={newTicketMessage}
+                  onChange={(e) => setNewTicketMessage(e.target.value)}
+                  style={{ borderRadius: "8px" }}
+                />
+                <Button
+                  onClick={sendTicketMessage}
+                  disabled={sendingTicketMessage || !newTicketMessage.trim()}
+                  style={{
+                    background: "#1e67a8",
+                    border: "none",
+                    borderRadius: "8px",
+                    alignSelf: "flex-end",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {t("Send")}
+                </Button>
+              </Form.Group>
             )}
           </Card.Body>
         </Card>

@@ -29,6 +29,49 @@ function UserTicketView() {
   const [raiseTicket, setRaiseTicket] = useState({});
   const [loading, setLoading] = useState(false);
 
+  // Follow-up messages -- agent messages are read-only here, but the user can
+  // reply. The acknowledgement shown after replying is purely local UI (not
+  // saved as a ticket message), so it never shows up in the agent's thread.
+  const [ticketMessages, setTicketMessages] = useState([]);
+  const [newTicketMessage, setNewTicketMessage] = useState("");
+  const [sendingTicketMessage, setSendingTicketMessage] = useState(false);
+  const [showAckNotice, setShowAckNotice] = useState(false);
+
+  const getTicketMessages = () => {
+    api
+      .get(baseURL + `hdTicketMessage/get-by-ticket/${id}`)
+      .then((response) => {
+        setTicketMessages(response.data.content || []);
+      })
+      .catch((err) => {
+        setTicketMessages([]);
+      });
+  };
+
+  useEffect(() => {
+    getTicketMessages();
+  }, [id]);
+
+  const sendTicketMessage = () => {
+    if (!newTicketMessage.trim()) return;
+    setSendingTicketMessage(true);
+    api
+      .post(baseURL + `hdTicketMessage/add`, {
+        hdTicketId: id,
+        message: newTicketMessage.trim(),
+      })
+      .then(() => {
+        setNewTicketMessage("");
+        getTicketMessages();
+        setSendingTicketMessage(false);
+        setShowAckNotice(true);
+      })
+      .catch((err) => {
+        console.log(err);
+        setSendingTicketMessage(false);
+      });
+  };
+
   // grabsthe id form the url and loads the corresponding data
   // useEffect(() => {
   // let findUser = data.find((item) => item.id === id);
@@ -612,6 +655,154 @@ function UserTicketView() {
           </Card.Body>
         </Card>
       </div>
+
+      {
+        <div className="mt-3">
+          <Card
+            style={{
+              border: "none",
+              borderRadius: "16px",
+              boxShadow: "0 6px 24px rgba(15, 76, 138, 0.10)",
+              overflow: "hidden",
+            }}
+          >
+            <Card.Header
+              style={{
+                background: "linear-gradient(135deg, #1e67a8 0%, #0d4f8a 100%)",
+                color: "#ffffff",
+                fontWeight: 700,
+                fontSize: "15px",
+                padding: "14px 22px",
+                letterSpacing: "0.3px",
+                border: "none",
+              }}
+            >
+              <div className="d-flex align-items-center" style={{ gap: "10px" }}>
+                <Icon name="chat" style={{ fontSize: "18px" }}></Icon>
+                {t("Messages")}
+              </div>
+            </Card.Header>
+            <Card.Body
+              style={{
+                background: "linear-gradient(135deg, #f8f9ff 0%, #eef3fc 100%)",
+                padding: "22px",
+              }}
+            >
+              <div style={{ maxHeight: "320px", overflowY: "auto", paddingRight: "4px", marginBottom: "16px" }}>
+                {ticketMessages.length === 0 ? (
+                  <div style={{ color: "#94a3b8", fontStyle: "italic", fontSize: "14px" }}>
+                    {t("No messages yet")}
+                  </div>
+                ) : (
+                  ticketMessages.map((msg, idx) => (
+                    <div
+                      key={msg.hdTicketMessageId || idx}
+                      style={{
+                        background: "#ffffff",
+                        borderRadius: "10px",
+                        padding: "10px 14px",
+                        marginBottom: "10px",
+                        boxShadow: "0 2px 8px rgba(15, 76, 138, 0.06)",
+                      }}
+                    >
+                      <div style={{ fontSize: "14px", color: "#1e293b", whiteSpace: "pre-wrap" }}>
+                        {msg.message}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "12px",
+                          color: "#64748b",
+                          marginTop: "6px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <span>{msg.createdBy}</span>
+                        <span>
+                          {msg.createdDate
+                            ? new Date(msg.createdDate).toLocaleString("en-IN", {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })
+                            : ""}
+                        </span>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+              {raiseTicket.hdStatusId !== 3 && (
+              <Form.Group className="d-flex" style={{ gap: "10px" }}>
+                <Form.Control
+                  as="textarea"
+                  rows={2}
+                  placeholder={t("Type your response")}
+                  value={newTicketMessage}
+                  onChange={(e) => setNewTicketMessage(e.target.value)}
+                  style={{ borderRadius: "8px" }}
+                />
+                <Button
+                  onClick={sendTicketMessage}
+                  disabled={sendingTicketMessage || !newTicketMessage.trim()}
+                  style={{
+                    background: "#1e67a8",
+                    border: "none",
+                    borderRadius: "8px",
+                    alignSelf: "flex-end",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {t("Send")}
+                </Button>
+              </Form.Group>
+              )}
+            </Card.Body>
+          </Card>
+
+          {showAckNotice && (
+            <div
+              className="d-flex align-items-start"
+              style={{
+                gap: "12px",
+                marginTop: "14px",
+                padding: "14px 18px",
+                background: "#eafaf0",
+                border: "1px solid #b7e4c7",
+                borderRadius: "12px",
+              }}
+            >
+              <Icon
+                name="check-circle-fill"
+                style={{ fontSize: "20px", color: "#1f7a36", marginTop: "2px" }}
+              ></Icon>
+              <div style={{ flex: 1, fontSize: "13.5px", color: "#1f4d28", lineHeight: 1.5 }}>
+                {t(
+                  "Thank you for your response. Our support team will review this and keep you updated on the progress until your ticket is resolved."
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowAckNotice(false)}
+                aria-label={t("Dismiss")}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "#1f7a36",
+                  fontSize: "18px",
+                  lineHeight: 1,
+                  cursor: "pointer",
+                  padding: 0,
+                }}
+              >
+                &times;
+              </button>
+            </div>
+          )}
+        </div>
+      }
     </Layout>
   );
 }

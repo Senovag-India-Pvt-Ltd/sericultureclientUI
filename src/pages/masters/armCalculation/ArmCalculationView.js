@@ -47,10 +47,10 @@ function ArmCalculationView() {
             </Block.HeadContent>
             <Block.HeadContent>
               <div className="d-flex gap-2">
-                <Button onClick={() => navigate(`/seriui/arm-calculation-edit/${id}`)} style={{ background: "linear-gradient(135deg,#1e67a8,#2d9cdb)", border: "none", borderRadius: "8px", fontWeight: 700 }}>
-                  <Icon name="edit" /> {t("Edit")}
+                <Button onClick={() => navigate("/seriui/arm-calculation")} style={{ background: "linear-gradient(135deg,#1e67a8,#2d9cdb)", border: "none", borderRadius: "8px", fontWeight: 700 }}>
+                  <Icon name="edit" /> {t("Edit in List")}
                 </Button>
-                <Link to="/seriui/arm-calculation-list" className="btn btn-outline-secondary" style={{ borderRadius: "8px", fontWeight: 700 }}>
+                <Link to="/seriui/arm-calculation" className="btn btn-outline-secondary" style={{ borderRadius: "8px", fontWeight: 700 }}>
                   <Icon name="arrow-left" /> {t("Back")}
                 </Link>
               </div>

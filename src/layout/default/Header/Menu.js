@@ -4865,7 +4865,7 @@ function Menu() {
                           <MenuItem>
                             <MenuItemLink
                               text={t("ARM Calculation")}
-                              to="/seriui/arm-calculation-list"
+                              to="/seriui/arm-calculation"
                             />
                           </MenuItem>
                         ) : null}
