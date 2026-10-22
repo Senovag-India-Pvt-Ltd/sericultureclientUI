@@ -754,6 +754,7 @@ useEffect(() => {
     { name: colHeader(t("Sanction Number")),   selector: (row) => row.sanctionNumber,      cell: (row) => <span>{row.sanctionNumber}</span>,      sortable: true, hide: "md" },
     { name: colHeader(t("Subsidy Amount")),    selector: (row) => row.actualAmount,        cell: (row) => <span>{row.actualAmount}</span>,        sortable: true, hide: "md" },
     { name: colHeader(t("Application Status")),selector: (row) => row.applicationStatus,   cell: (row) => isPaymentSuccessInDbt(row.applicationStatus) ? <CreditedBankDetailsButton applicationFormId={row.scApplicationFormId} /> : <span style={{ color: "green", fontWeight: "bold" }}>{row.applicationStatus}</span>, sortable: true, hide: "md" },
+    { name: colHeader(t("Source")),            selector: (row) => row.applicationSource,   cell: (row) => <span>{row.applicationSource || "—"}</span>, sortable: true, hide: "md" },
   ];
 
    return (

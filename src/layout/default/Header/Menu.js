@@ -391,6 +391,7 @@ function Menu() {
     Helpdesk: false,
     Helpdesk_Raise_a_Ticket: false,
     Helpdesk_Dashboard: false,
+    Helpdesk_Unassigned_Applications: false,
     Helpdesk_User_Dashboard: false,
     Helpdesk_Escalated_Dashboard: false,
     Helpdesk_My_Tickets: false,
@@ -420,6 +421,7 @@ function Menu() {
     Helpdesk_DBT_Failed_Tickets: false,
 
     Admin: false,
+    Admin_SevaSindhu_Test_Harness: false,
 
     Admin_Master: false,
 
@@ -543,6 +545,7 @@ function Menu() {
     Admin_Master_Garden_Generation_Number: false,
     Admin_Master_Garden_Farm: false,
     Admin_Master_Garden_Tsc: false,
+    Admin_Master_Garden_Tsc_Geo_Mapping: false,
     Admin_Master_Garden_Worm_Stage: false,
 
     Admin_Master_Auction: false,
@@ -4443,6 +4446,14 @@ function Menu() {
                 />
               </MenuItem>
             ) : null}
+            {showMenu.Helpdesk_Unassigned_Applications ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Unassigned Applications")}
+                  to="/seriui/unassigned-applications"
+                />
+              </MenuItem>
+            ) : null}
           </MenuSub>
         </MenuItem>
       ) : null}
@@ -4458,6 +4469,14 @@ function Menu() {
             />
           ) : null}
           <MenuSub>
+            {showMenu.Admin_SevaSindhu_Test_Harness ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Seva Sindhu Test Harness")}
+                  to="/seriui/sevasindhu-test-harness"
+                />
+              </MenuItem>
+            ) : null}
             {showMenu.Admin_Master ? (
               <MenuItem sub>
                 <MenuItemLink
@@ -5347,6 +5366,11 @@ function Menu() {
                         {showMenu.Admin_Master_Garden_Tsc ? (
                           <MenuItem>
                             <MenuItemLink text={t("Tsc")} to="/seriui/tsc" />
+                          </MenuItem>
+                        ) : null}
+                        {showMenu.Admin_Master_Garden_Tsc_Geo_Mapping ? (
+                          <MenuItem>
+                            <MenuItemLink text={t("TSC Geo Mapping")} to="/seriui/tsc-geo-mapping-list" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Garden_Worm_Stage ? (

@@ -1296,8 +1296,8 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         .then((response) => {
           if (response.data.errorCode === -1) {
             saveError(response.data.errorMessages[0]);
-          } else if (response.data && response.data.error) {
-            saveError(response.data.error_description);
+          } else if (response.data?.content?.error) {
+            saveError(response.data.content.error_description);
           } else {
             saveSuccess();
             setApplicationId(response.data.content.applicationDocumentId);

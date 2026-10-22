@@ -166,6 +166,8 @@ import AttributeFoundationCourses from "../pages/training/AttributeFoundationCou
 // Helpdesk
 import RaiseTicket from "../pages/helpdesk/RaiseTicket";
 import HelpdeskDashboard from "../pages/helpdesk/HelpdeskDashboard";
+import UnassignedApplications from "../pages/helpdesk/UnassignedApplications";
+import SevaSindhuTestHarness from "../pages/admin/SevaSindhuTestHarness";
 import MyTickets from "../pages/helpdesk/MyTickets";
 import ViewMyTicket from "../pages/helpdesk/ViewMyTicket";
 
@@ -571,6 +573,9 @@ import Tsc from "../pages/masters/tsc/TscMaster";
 import TscList from "../pages/masters/tsc/TscMasterList";
 import TscEdit from "../pages/masters/tsc/TscMasterEdit";
 import TscView from "../pages/masters/tsc/TscView";
+import TscGeoMapping from "../pages/masters/tsc-geo-mapping/TscGeoMapping";
+import TscGeoMappingList from "../pages/masters/tsc-geo-mapping/TscGeoMappingList";
+import TscGeoMappingEdit from "../pages/masters/tsc-geo-mapping/TscGeoMappingEdit";
 import ScCategory from "../pages/masters/sc-category/ScCategory";
 import ScCategoryList from "../pages/masters/sc-category/ScCategoryList";
 import ScCategoryView from "../pages/masters/sc-category/ScCategoryView";
@@ -2722,6 +2727,8 @@ function Router() {
             {/* Helpdesk */}
             <Route path="raise-ticket" element={<RaiseTicket />} />
             <Route path="helpdesk-dashboard" element={<HelpdeskDashboard />} />
+            <Route path="unassigned-applications" element={<UnassignedApplications />} />
+            <Route path="sevasindhu-test-harness" element={<SevaSindhuTestHarness />} />
             <Route path="user-dashboard" element={<UserDashboard />} />
             <Route path="my-tickets" element={<MyTickets />} />
             <Route path="my-tickets/:id" element={<ViewMyTicket />} />
@@ -3898,6 +3905,9 @@ function Router() {
             <Route path="tsc" element={<Tsc />} />
             <Route path="tsc-list" element={<TscList />} />
             <Route path="tsc-view/:id" element={<TscView />} />
+            <Route path="tsc-geo-mapping" element={<TscGeoMapping />} />
+            <Route path="tsc-geo-mapping-list" element={<TscGeoMappingList />} />
+            <Route path="tsc-geo-mapping-edit/:id" element={<TscGeoMappingEdit />} />
             <Route path="tsc-edit/:id" element={<TscEdit />} />
             <Route
               path="sc-program-approval-mapping"
