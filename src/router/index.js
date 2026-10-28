@@ -991,6 +991,10 @@ import FarmerDetailsListFromSeedAndDFL from "../pages/stake-holder/FarmerDetails
 import ConfigureRHUnitPriceAmount from "../pages/masters/ConfigureUnitPriceRH";
 import ConfiguredRHAmountList from "../pages/masters/ConfiguredRHAmountList";
 import ConfiguredRHAmountEdit from "../pages/masters/ConfiguredRHAmountEdit";
+import TrackApplicationStatus from "../pages/application-status/TrackApplicationStatus";
+import SevaSindhuApply from "../pages/sevasindhu/SevaSindhuApply";
+import SevaSindhuSimulator from "../pages/sevasindhu/SevaSindhuSimulator";
+import SevaSindhuRequests from "../pages/sevasindhu/SevaSindhuRequests";
 import DbtApplicationStatusCheck from "../pages/direct-benefit-transfer/DbtApplicationStatusCheck";
 import DbtStatusCheckList from "../pages/masters/dbt-status-check/DbtStatusCheckList";
 import DbtStatusCheckView from "../pages/masters/dbt-status-check/DbtStatusCheckView";
@@ -1306,7 +1310,7 @@ function Router() {
     const pathname = window.location.pathname;
     const escapedBasePath = APP_BASE_PATH.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const displayAllLotPathPattern = new RegExp(`^${escapedBasePath}/display-all-lot/\\d+$`);
-    const applicationCheck = pathname === APP_ROUTES.applicationStatus;
+    const applicationCheck = pathname === APP_ROUTES.applicationStatus || pathname === APP_ROUTES.trackApplicationStatus || pathname === APP_ROUTES.sevaSindhuApply;
     const downloadSanctionOrder = pathname === APP_ROUTES.downloadSanctionOrder;
     const loginPathPattern = pathname === APP_ROUTES.login;
     console.log(pathname);
@@ -1361,6 +1365,10 @@ function Router() {
               path={APP_ROUTES.applicationStatus}
               element={<DbtApplicationStatusCheck />}
             />
+        {/* New application status tracking (Seva Sindhu) */}
+        <Route path={APP_ROUTES.trackApplicationStatus} element={<TrackApplicationStatus />} />
+        {/* Seva Sindhu citizen application (public; own session) */}
+        <Route path={APP_ROUTES.sevaSindhuApply} element={<SevaSindhuApply />} />
 
         {/* Conditional rendering for protected route */}
         {isAuthenticated && (
@@ -2729,6 +2737,8 @@ function Router() {
             <Route path="helpdesk-dashboard" element={<HelpdeskDashboard />} />
             <Route path="unassigned-applications" element={<UnassignedApplications />} />
             <Route path="sevasindhu-test-harness" element={<SevaSindhuTestHarness />} />
+            <Route path="sevasindhu-simulator" element={<SevaSindhuSimulator />} />
+            <Route path="sevasindhu-requests" element={<SevaSindhuRequests />} />
             <Route path="user-dashboard" element={<UserDashboard />} />
             <Route path="my-tickets" element={<MyTickets />} />
             <Route path="my-tickets/:id" element={<ViewMyTicket />} />

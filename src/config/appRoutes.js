@@ -21,6 +21,8 @@ export const APP_ROUTES = {
   home: appPath("/home"),
   homepage: appPath("/homepage"),
   applicationStatus: appPath("/application-status"),
+  trackApplicationStatus: appPath("/track-application-status"),
+  sevaSindhuApply: appPath("/sevasindhu/apply"),
   downloadSanctionOrder: appPath("/download-sanction-order"),
   displayAllLotPrefix: appPath("/display-all-lot"),
   mobileAppDownload: appPath("/sericulture.apk"),

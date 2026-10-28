@@ -32,7 +32,9 @@ function SevaSindhuTestHarness() {
   const [fieldErrors, setFieldErrors] = useState({});
 
   const handleInputs = (e) => {
-    const { name, value } = e.target;
+    const { name } = e.target;
+    // FRUITS IDs are stored upper-case ("FID" + 13 digits); accept "fid..." / stray spaces as typed.
+    const value = name === "fruitsId" ? e.target.value.trim().toUpperCase() : e.target.value;
     setData((prev) => ({ ...prev, [name]: value }));
     setFieldErrors((prev) => ({ ...prev, [name]: "" }));
   };
@@ -42,8 +44,8 @@ function SevaSindhuTestHarness() {
     if (data.mobileNumber && !/^\d{10}$/.test(data.mobileNumber)) {
       errors.mobileNumber = t("Mobile number must be exactly 10 digits.");
     }
-    if (data.fruitsId && !/^\d{16}$/.test(data.fruitsId)) {
-      errors.fruitsId = t("FRUITS ID must be exactly 16 digits.");
+    if (data.fruitsId && !/^FID\d{13}$/.test(data.fruitsId)) {
+      errors.fruitsId = t("FRUITS ID must be FID followed by 13 digits, e.g. FID2806000049272.");
     }
     if (!data.sevaSindhuReference?.trim()) {
       errors.sevaSindhuReference = t("Seva Sindhu Reference is required.");
