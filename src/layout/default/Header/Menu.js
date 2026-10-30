@@ -226,6 +226,7 @@ function Menu() {
 
     Services: false,
     Services_Service_Application: false,
+    Services_Seva_Sindhu_Applications: false,
     Services_Service_Dashboard: false,
     Services_Service_Applications_For_Incentive_Bonus_Seed_Cocoon: false,
     Services_Dbt_Application: false,
@@ -2605,6 +2606,14 @@ function Menu() {
                 <MenuItemLink
                   text={t("Scheme Application")}
                   to="/seriui/service-application"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Services_Seva_Sindhu_Applications || showMenu.Services_Service_Application ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Seva Sindhu Applications")}
+                  to="/seriui/sevasindhu-applications"
                 />
               </MenuItem>
             ) : null}

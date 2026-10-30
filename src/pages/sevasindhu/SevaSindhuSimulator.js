@@ -23,6 +23,7 @@ const initial = () => ({
   Token: newToken(),
   assistedmode: "false",
   ServiceId: "",
+  key1: "", // FRUITS ID
   mobile: "",
   digilockerid: "",
 });
@@ -91,6 +92,19 @@ function SevaSindhuSimulator() {
                   <Form.Label>ServiceId *</Form.Label>
                   <Form.Control name="ServiceId" value={data.ServiceId} onChange={onChange} required maxLength={50} placeholder="e.g. SERI001" />
                   <Form.Text>Must be mapped to a scheme in sc_sevasindhu_service_mapping.</Form.Text>
+                </Form.Group>
+              </Col>
+              <Col lg="4">
+                <Form.Group>
+                  <Form.Label>key1 (FRUITS ID) *</Form.Label>
+                  <Form.Control
+                    name="key1"
+                    value={data.key1}
+                    onChange={(e) => setData((d) => ({ ...d, key1: e.target.value.toUpperCase().replace(/\s/g, "") }))}
+                    required
+                    maxLength={16}
+                    placeholder="FID followed by 13 digits"
+                  />
                 </Form.Group>
               </Col>
               <Col lg="4">

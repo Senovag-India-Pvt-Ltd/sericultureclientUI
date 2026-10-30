@@ -281,6 +281,8 @@ function FarmerStep({ request, onLinked, onContinue }) {
   const [result, setResult] = useState(null);
   const [registering, setRegistering] = useState(false);
   const linked = request.requestStatus === "FARMER_REGISTERED" || request.requestStatus === "SUBMITTED";
+  // The FRUITS ID sent by Seva Sindhu (key1) is fixed; the citizen confirms it rather than typing another one.
+  const fromSevaSindhu = !!request.fruitsId;
 
   const value = fruitsId.trim().toUpperCase();
   const fieldError = !FID_RE.test(value) ? "Enter your FRUITS ID: FID followed by 13 digits, for example FID2806000049272." : "";
@@ -304,16 +306,27 @@ function FarmerStep({ request, onLinked, onContinue }) {
   };
 
   if (linked) {
+    const justRegistered = result && result.message && result.message.startsWith("Farmer registration completed");
     return (
       <section className="ss-card" aria-labelledby="ss-farmer-title">
-        <h2 id="ss-farmer-title">Your details</h2>
-        <Note tone="ok" icon="check-circle" title={result && result.message && result.message.startsWith("Farmer registration completed") ? "Registration complete" : "Registered farmer"}>
-          {result && result.message && result.message.startsWith("Farmer registration completed") && <p>{result.message}</p>}
-          <p>FRUITS ID {request.fruitsId}{result && result.farmerName ? ` (${result.farmerName})` : ""} is registered with e-Reshme and linked to this Seva Sindhu request.</p>
-        </Note>
+        <div className="ss-title">
+          <span className="ss-title-ic" aria-hidden="true" style={{ background: "var(--ss-ok-bg)", color: "var(--ss-ok)" }}><Icon name="user-check" /></span>
+          <div>
+            <h2 id="ss-farmer-title">{justRegistered ? "Registration complete" : result && result.beneficiaryType === "Reeler" ? "Registered reeler" : "You are registered with e-Reshme"}</h2>
+            <small>{justRegistered ? result.message : "Your FRUITS ID is linked to this Seva Sindhu request."}</small>
+          </div>
+        </div>
+        <div className="ss-idpill" style={{ marginTop: 16 }}>
+          <span className="ss-idpill-ic" aria-hidden="true"><Icon name="check" /></span>
+          <div className="ss-idpill-main">
+            <small>FRUITS ID{result && result.farmerName ? ` · ${result.farmerName}` : ""}</small>
+            <strong>{request.fruitsId}</strong>
+          </div>
+          <span className="ss-idpill-tag"><Icon name="check-circle" /> Verified</span>
+        </div>
         {request.requestStatus === "FARMER_REGISTERED" && (
           <div className="ss-actions">
-            <button type="button" className="ss-btn ss-btn-primary" onClick={onContinue}><Icon name="arrow-right" /> Continue Application</button>
+            <button type="button" className="ss-btn ss-btn-primary ss-btn-lg" onClick={onContinue}>Continue to documents <Icon name="arrow-right" /></button>
           </div>
         )}
       </section>
@@ -332,21 +345,52 @@ function FarmerStep({ request, onLinked, onContinue }) {
 
   return (
     <section className="ss-card" aria-labelledby="ss-farmer-title">
-      <h2 id="ss-farmer-title">Your details</h2>
-      <p className="ss-sub">A farmer must be registered with e-Reshme before applying. Enter your FRUITS ID to check.</p>
+      <div className="ss-title">
+        <span className="ss-title-ic" aria-hidden="true"><Icon name="user" /></span>
+        <div>
+          <h2 id="ss-farmer-title">Your details</h2>
+          <small>
+            {fromSevaSindhu
+              ? "Seva Sindhu has sent your FRUITS ID. We will fetch your details from e-Reshme and FRUITS."
+              : "A farmer must be registered with e-Reshme before applying. Enter your FRUITS ID to check."}
+          </small>
+        </div>
+      </div>
 
-      <form onSubmit={check} noValidate>
-        <Field id="ss-fid" label="FRUITS ID" required error={touched ? fieldError : ""} hint="Printed on your FRUITS registration, e.g. FID2806000049272.">
-          <input id="ss-fid" className="ss-input" value={fruitsId} maxLength={16} autoCapitalize="characters" spellCheck={false}
-            placeholder="FID followed by 13 digits" onChange={(e) => setFruitsId(e.target.value.toUpperCase().replace(/\s/g, ""))}
-            aria-invalid={touched && fieldError ? "true" : "false"} aria-describedby={touched && fieldError ? "ss-fid-err" : "ss-fid-hint"} />
-        </Field>
+      <form onSubmit={check} noValidate style={{ marginTop: 16 }}>
+        {fromSevaSindhu ? (
+          <div className="ss-idpill">
+            <span className="ss-idpill-ic" aria-hidden="true"><Icon name="lock" /></span>
+            <div className="ss-idpill-main">
+              <small>FRUITS ID</small>
+              <strong>{request.fruitsId}</strong>
+            </div>
+            <span className="ss-idpill-tag"><Icon name="shield-check" /> From Seva Sindhu</span>
+          </div>
+        ) : (
+          <Field id="ss-fid" label="FRUITS ID" required error={touched ? fieldError : ""} hint="Printed on your FRUITS registration, e.g. FID2806000049272.">
+            <input id="ss-fid" className="ss-input" value={fruitsId} maxLength={16} autoCapitalize="characters" spellCheck={false}
+              placeholder="FID followed by 13 digits" onChange={(e) => setFruitsId(e.target.value.toUpperCase().replace(/\s/g, ""))}
+              aria-invalid={touched && fieldError ? "true" : "false"} aria-describedby={touched && fieldError ? "ss-fid-err" : "ss-fid-hint"} />
+          </Field>
+        )}
+        {fromSevaSindhu && (
+          <p className="ss-hint">To apply with a different FRUITS ID, start a new application in Seva Sindhu.</p>
+        )}
         <div className="ss-actions">
-          <button type="submit" className="ss-btn ss-btn-primary" disabled={busy} aria-busy={busy}>
-            {busy ? <span className="ss-spin" aria-hidden="true" /> : <Icon name="search" />} {busy ? "Checking..." : "Check registration"}
+          <button type="submit" className="ss-btn ss-btn-primary ss-btn-lg" disabled={busy} aria-busy={busy}>
+            {busy ? <span className="ss-spin" aria-hidden="true" /> : <Icon name="search" />} {busy ? "Fetching your details..." : "Fetch my details"}
           </button>
         </div>
       </form>
+
+      {!result && !busy && (
+        <ol className="ss-howto" aria-label="How it works">
+          <li><b>1</b><span>We check your FRUITS ID in e-Reshme and FRUITS.</span></li>
+          <li><b>2</b><span>You upload your supporting documents.</span></li>
+          <li><b>3</b><span>You submit and get an acknowledgement with your reference number.</span></li>
+        </ol>
+      )}
 
       <div aria-live="polite">
         {busy && <p className="ss-hint">Checking e-Reshme and FRUITS records...</p>}

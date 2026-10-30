@@ -1,6 +1,7 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import SevaSindhuFarmerHistory from "./SevaSindhuFarmerHistory";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DatePicker from "react-datepicker";
@@ -2490,6 +2491,7 @@ function StakeHolderEdit() {
       </Block.Head>
 
       <Block className="mt-n4 sh-form-wrap">
+        <SevaSindhuFarmerHistory farmerId={id} registrationSource={data.registrationSource} />
         <Form noValidate validated={searchValidated} onSubmit={search}>
           <Card className="sh-search-card">
             <Card.Body>

@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Icon } from "../../components";
 import sevasindhuApi, { toError } from "./sevasindhuApi";
+import CopyButton from "./CopyButton";
 
-// Step 2 and 3 of the Seva Sindhu citizen flow: the application form, a review page, submission and the
-// acknowledgement. The server computes all amounts exactly as the officer screen does; the page only shows them.
+// Step 2 and 3 of the Seva Sindhu citizen flow. The citizen reviews the details e-Reshme holds for them,
+// uploads supporting documents (PDF, JPG, PNG or MP4, 2 MB each) and submits. The application is then assigned
+// to the Sericulture officer of their area, who completes it in the department's normal application screen.
 
-const rupees = (n) => (n == null ? "-" : `₹ ${Number(n).toLocaleString("en-IN")}`);
+const ACCEPT = ".pdf,.jpg,.jpeg,.png,.mp4,application/pdf,image/jpeg,image/png,video/mp4";
 
 function Note({ tone, icon, title, children, role = "status" }) {
   return (
@@ -19,15 +21,277 @@ function Note({ tone, icon, title, children, role = "status" }) {
   );
 }
 
-function Field({ id, label, required, error, hint, children }) {
+function Detail({ label, value }) {
+  if (!value) return null;
   return (
-    <div className="ss-field">
-      <label htmlFor={id}>{label} {required && <span className="ss-req" aria-hidden="true">*</span>}</label>
-      {children}
-      {error ? <p className="ss-err" role="alert">{error}</p> : hint ? <p className="ss-hint">{hint}</p> : null}
+    <div className="ss-detail">
+      <dt>{label}</dt>
+      <dd>{value}</dd>
     </div>
   );
 }
+
+const sizeText = (bytes) => {
+  if (bytes == null) return "";
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+};
+
+const fileIcon = (type = "") => (type.startsWith("image/") ? "img" : type.startsWith("video/") ? "video" : "file-pdf");
+
+const when = (d) => (d ? new Date(d).toLocaleString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "-");
+
+// Same rule as the server: the file content must match its extension (the server checks again).
+const SIGNATURES = {
+  pdf: (b) => b[0] === 0x25 && b[1] === 0x50 && b[2] === 0x44 && b[3] === 0x46,
+  jpg: (b) => b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff,
+  png: (b) => b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4e && b[3] === 0x47,
+  mp4: (b) => b[4] === 0x66 && b[5] === 0x74 && b[6] === 0x79 && b[7] === 0x70,
+};
+const extOf = (name) => {
+  const e = (name.split(".").pop() || "").toLowerCase();
+  return e === "jpeg" ? "jpg" : e;
+};
+const readHead = (file) =>
+  new Promise((resolve) => {
+    const r = new FileReader();
+    r.onload = () => resolve(new Uint8Array(r.result));
+    r.onerror = () => resolve(new Uint8Array());
+    r.readAsArrayBuffer(file.slice(0, 16));
+  });
+
+async function checkFile(file, rules) {
+  const ext = extOf(file.name);
+  if (!SIGNATURES[ext]) return `"${file.name}" is not a PDF, JPG, PNG or MP4 file.`;
+  if (file.size > rules.maxFileBytes) return `"${file.name}" is ${sizeText(file.size)}. Each file must be ${sizeText(rules.maxFileBytes)} or smaller.`;
+  if (file.size === 0) return `"${file.name}" is empty.`;
+  const head = await readHead(file);
+  if (!SIGNATURES[ext](head)) return `"${file.name}" does not look like a real ${ext.toUpperCase()} file.`;
+  return null;
+}
+
+// ------------------------------------------------------------------ cards
+
+function BeneficiaryCard({ ctx }) {
+  const b = ctx.beneficiary;
+  if (!b) return null;
+  const reeler = b.type === "Reeler";
+  return (
+    <section className="ss-card" aria-labelledby="ss-ben-title">
+      <div className="ss-card-hd">
+        <div className="ss-title">
+          <span className="ss-title-ic" aria-hidden="true"><Icon name="user" /></span>
+          <div>
+            <h2 id="ss-ben-title">{reeler ? "Reeler details" : "Farmer details"}</h2>
+          </div>
+        </div>
+        <span className="ss-badge"><Icon name="shield-check" /> {b.registeredThroughSevaSindhu ? "From FRUITS" : "e-Reshme record"}</span>
+      </div>
+      <p className="ss-sub" style={{ marginTop: 10 }}>Taken from your FRUITS / e-Reshme registration. If something is wrong, please contact your nearest Sericulture office.</p>
+      <dl className="ss-details">
+        <Detail label="Name" value={b.name} />
+        <Detail label="Name (Kannada)" value={b.nameInKannada} />
+        <Detail label="FRUITS ID" value={b.fruitsId} />
+        <Detail label="Registered mobile" value={b.mobile} />
+        <Detail label="District" value={b.district} />
+        <Detail label="Taluk" value={b.taluk} />
+        <Detail label="Hobli" value={b.hobli} />
+        <Detail label="Village" value={b.village} />
+        <Detail label="Reeling licence" value={b.reelingLicenceNumber} />
+      </dl>
+      {b.lands && b.lands.length > 0 && (
+        <div className="ss-table-wrap" style={{ marginTop: 12 }}>
+          <table className="ss-table">
+            <caption className="ss-hint" style={{ captionSide: "top", textAlign: "left" }}>Land records</caption>
+            <thead><tr><th scope="col">Survey / Hissa</th><th scope="col">Village</th><th scope="col">Extent</th></tr></thead>
+            <tbody>
+              {b.lands.map((l, i) => (
+                <tr key={i}><td>{l.surveyNumber}{l.hissa ? ` / ${l.hissa}` : ""}</td><td>{l.villageName || "-"}</td><td>{l.acre || 0} acre {l.gunta || 0} gunta</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function SchemeCard({ ctx }) {
+  return (
+    <section className="ss-card" aria-labelledby="ss-scheme-title">
+      <div className="ss-card-hd">
+        <div className="ss-title">
+          <span className="ss-title-ic" aria-hidden="true"><Icon name="layers" /></span>
+          <div>
+            <h2 id="ss-scheme-title">Scheme you are applying for</h2>
+          </div>
+        </div>
+        {ctx.financialYear && <span className="ss-badge"><Icon name="calendar" /> FY {ctx.financialYear}</span>}
+      </div>
+      <dl className="ss-details">
+        <Detail label="Scheme" value={ctx.schemeName} />
+        <Detail label="Sub-scheme" value={ctx.subSchemeName} />
+        <Detail label="Component" value={ctx.componentName} />
+        <Detail label="Seva Sindhu reference" value={ctx.edcsApplicationRefNo} />
+      </dl>
+    </section>
+  );
+}
+
+// ------------------------------------------------------------------ documents
+
+function DocumentsCard({ ctx, documents, setDocuments, disabled }) {
+  const rules = ctx.uploadRules || { maxFileBytes: 2097152, maxFiles: 10, minFiles: 1 };
+  const types = ctx.documentTypes || [];
+  const [typeId, setTypeId] = useState("");
+  const [queue, setQueue] = useState([]); // files being uploaded or rejected: { key, name, size, type, progress, error }
+  const [drag, setDrag] = useState(false);
+  const inputRef = useRef(null);
+  const total = documents.length + queue.filter((q) => !q.error).length;
+
+  const upload = async (file) => {
+    const key = `${file.name}-${file.size}-${Date.now()}-${Math.random()}`;
+    const item = { key, name: file.name, size: file.size, type: file.type, progress: 0 };
+    const problem = await checkFile(file, rules);
+    if (problem) {
+      setQueue((q) => [...q, { ...item, error: problem }]);
+      return;
+    }
+    setQueue((q) => [...q, item]);
+    const body = new FormData();
+    body.append("file", file);
+    try {
+      const res = await sevasindhuApi.post("application/documents", body, {
+        params: typeId ? { documentTypeId: typeId } : {},
+        timeout: 120000,
+        onUploadProgress: (e) => {
+          const p = e.total ? Math.round((e.loaded * 100) / e.total) : 0;
+          setQueue((q) => q.map((x) => (x.key === key ? { ...x, progress: p } : x)));
+        },
+      });
+      setDocuments((d) => [...d, res.data]);
+      setQueue((q) => q.filter((x) => x.key !== key));
+    } catch (err) {
+      const e = toError(err) || { message: "Upload failed. Please try again." };
+      setQueue((q) => q.map((x) => (x.key === key ? { ...x, error: e.message } : x)));
+    }
+  };
+
+  const addFiles = async (fileList) => {
+    const files = Array.from(fileList || []);
+    if (!files.length) return;
+    if (types.length && !typeId) {
+      setQueue((q) => [...q, { key: `t${Date.now()}`, name: files[0].name, size: files[0].size, error: "Select what the document is before choosing the file." }]);
+      return;
+    }
+    const room = rules.maxFiles - total;
+    files.slice(0, Math.max(room, 0)).forEach(upload);
+    if (files.length > room) {
+      setQueue((q) => [...q, { key: `m${Date.now()}`, name: `${files.length - Math.max(room, 0)} file(s)`, error: `You can upload at most ${rules.maxFiles} documents.` }]);
+    }
+    if (inputRef.current) inputRef.current.value = "";
+  };
+
+  const remove = async (doc) => {
+    try {
+      await sevasindhuApi.delete(`application/documents/${doc.id}`);
+      setDocuments((d) => d.filter((x) => x.id !== doc.id));
+    } catch (err) {
+      const e = toError(err);
+      setQueue((q) => [...q, { key: `r${Date.now()}`, name: doc.fileName, error: (e && e.message) || "Could not remove the document." }]);
+    }
+  };
+
+  const missingRequired = types.filter((t) => t.required && !documents.some((d) => String(d.documentTypeId) === String(t.id)));
+
+  return (
+    <section className="ss-card" aria-labelledby="ss-docs-title">
+      <div className="ss-card-hd">
+        <div className="ss-title">
+          <span className="ss-title-ic" aria-hidden="true"><Icon name="upload" /></span>
+          <div>
+            <h2 id="ss-docs-title">Supporting documents</h2>
+            <small>Bank passbook, certificates, photos or a short video</small>
+          </div>
+        </div>
+        <span className="ss-badge">{documents.length} / {rules.maxFiles} uploaded</span>
+      </div>
+      <p className="ss-sub" style={{ marginTop: 10 }}>
+        {rules.minFiles > 0 ? `At least ${rules.minFiles} document${rules.minFiles > 1 ? "s are" : " is"} required. ` : ""}You can upload up to {rules.maxFiles} files.
+      </p>
+
+      {types.length > 0 && (
+        <div className="ss-field">
+          <label htmlFor="ss-doc-type">Document type <span className="ss-req" aria-hidden="true">*</span></label>
+          <select id="ss-doc-type" className="ss-select" value={typeId} onChange={(e) => setTypeId(e.target.value)} disabled={disabled}>
+            <option value="">Select the document you are uploading</option>
+            {types.map((t) => <option key={t.id} value={t.id}>{t.name}{t.required ? " (required)" : ""}</option>)}
+          </select>
+        </div>
+      )}
+
+      {!disabled && total < rules.maxFiles && (
+        <div
+          className={`ss-drop${drag ? " is-drag" : ""}`}
+          onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
+          onDragLeave={() => setDrag(false)}
+          onDrop={(e) => { e.preventDefault(); setDrag(false); addFiles(e.dataTransfer.files); }}
+        >
+          <span className="ss-drop-ic" aria-hidden="true"><Icon name="upload-cloud" /></span>
+          <p><strong>Drag and drop your files here</strong></p>
+          <p className="ss-hint" style={{ justifyContent: "center", margin: "0 0 10px" }}>or take a photo / pick files from your phone or computer</p>
+          <label className="ss-btn ss-btn-primary" htmlFor="ss-doc-file"><Icon name="plus" /> Choose files</label>
+          <input id="ss-doc-file" ref={inputRef} type="file" accept={ACCEPT} multiple className="ss-visually-hidden" onChange={(e) => addFiles(e.target.files)} />
+          <div className="ss-types" aria-label="Allowed file types">
+            <span>PDF</span><span>JPG</span><span>PNG</span><span>MP4</span><span>max {sizeText(rules.maxFileBytes)} each</span>
+          </div>
+        </div>
+      )}
+
+      {(documents.length > 0 || queue.length > 0) && (
+        <ul className="ss-files" aria-live="polite">
+          {documents.map((d) => (
+            <li key={d.id} className="ss-file is-ok">
+              <span className="ss-file-ic" aria-hidden="true"><Icon name={fileIcon(d.contentType)} /></span>
+              <span className="ss-file-main">
+                <strong title={d.fileName}>{d.fileName}</strong>
+                <span>{d.documentTypeName ? `${d.documentTypeName} · ` : ""}{sizeText(d.size)} · <Icon name="check-circle" /> Uploaded</span>
+              </span>
+              {!disabled && (
+                <button type="button" className="ss-icon-btn" onClick={() => remove(d)} aria-label={`Remove ${d.fileName}`}><Icon name="trash" /></button>
+              )}
+            </li>
+          ))}
+          {queue.map((q) => (
+            <li key={q.key} className={`ss-file${q.error ? " is-bad" : ""}`}>
+              <span className="ss-file-ic" aria-hidden="true"><Icon name={q.error ? "alert-circle" : fileIcon(q.type)} /></span>
+              <span className="ss-file-main">
+                <strong title={q.name}>{q.name}</strong>
+                {q.error ? (
+                  <span className="ss-file-err" role="alert">{q.error}</span>
+                ) : (
+                  <span className="ss-progress" role="progressbar" aria-valuenow={q.progress} aria-valuemin={0} aria-valuemax={100} aria-label={`Uploading ${q.name}`}>
+                    <span style={{ width: `${q.progress}%` }} />
+                  </span>
+                )}
+              </span>
+              {q.error && (
+                <button type="button" className="ss-icon-btn" onClick={() => setQueue((x) => x.filter((i) => i.key !== q.key))} aria-label="Dismiss"><Icon name="cross" /></button>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {missingRequired.length > 0 && (
+        <p className="ss-hint"><Icon name="info" /> Still required: {missingRequired.map((t) => t.name).join(", ")}</p>
+      )}
+    </section>
+  );
+}
+
+// ------------------------------------------------------------------ done
 
 const ACK_TEXT = {
   SENT: { tone: "ok", icon: "check-circle", text: "The acknowledgement has been sent to Seva Sindhu." },
@@ -35,10 +299,10 @@ const ACK_TEXT = {
   FAILED: { tone: "warn", icon: "alert-circle", text: "The acknowledgement could not be sent to Seva Sindhu yet. The department will send it again; your application is safely submitted." },
 };
 
-export function DoneStep({ request }) {
+export function DoneStep({ submitted, ctx, alreadySubmitted }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
-  const ack = ACK_TEXT[request.ackStatus] || ACK_TEXT.PENDING;
+  const ack = ACK_TEXT[submitted.acknowledgementStatus] || ACK_TEXT.PENDING;
 
   const download = async () => {
     setBusy(true);
@@ -48,7 +312,7 @@ export function DoneStep({ request }) {
       const url = URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }));
       const a = document.createElement("a");
       a.href = url;
-      a.download = `Acknowledgement-${request.arn || "application"}.pdf`;
+      a.download = `Acknowledgement-${submitted.referenceNo || "application"}.pdf`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -61,16 +325,36 @@ export function DoneStep({ request }) {
   };
 
   return (
-    <section className="ss-card" aria-labelledby="ss-done-title" id="ss-application">
-      <h2 id="ss-done-title">Application submitted</h2>
-      <Note tone="ok" icon="check-circle" title="Your application has been submitted successfully.">
-        <p>Application number (ARN): <strong>{request.arn || "-"}</strong></p>
-        <p>Seva Sindhu reference: <strong>{request.edcsApplicationRefNo}</strong></p>
-      </Note>
+    <section className="ss-card ss-done" aria-labelledby="ss-done-title" id="ss-application">
+      <div className="ss-done-top">
+        <span className="ss-done-ic" aria-hidden="true"><Icon name="check" /></span>
+        <h2 id="ss-done-title">{alreadySubmitted ? "Application already submitted" : "Application submitted successfully"}</h2>
+        <p>
+          {alreadySubmitted
+            ? "This Seva Sindhu application was submitted earlier. A second application is not created."
+            : "Your application has been received by the Department of Sericulture."}
+        </p>
+        <div className="ss-refbox">
+          <div>
+            <small>Your e-Reshme reference</small>
+            <strong>{submitted.referenceNo}</strong>
+          </div>
+          <CopyButton value={submitted.referenceNo} />
+        </div>
+      </div>
+      <div className="ss-done-body">
+      <dl className="ss-details">
+        <Detail label="Seva Sindhu reference" value={submitted.edcsApplicationRefNo} />
+        <Detail label="Scheme" value={ctx && (ctx.subSchemeName || ctx.schemeName)} />
+        <Detail label="Submitted on" value={when(submitted.submittedAt)} />
+        <Detail label="Status" value={submitted.status || "Submitted"} />
+        <Detail label="Application number (ARN)" value={submitted.arn} />
+      </dl>
+      <div style={{ height: 16 }} />
       <Note tone={ack.tone} icon={ack.icon}><p>{ack.text}</p></Note>
       <p className="ss-sub">
-        Next: the Sericulture officer for your area will scrutinise the application. Eligibility and the final subsidy are
-        decided by the department as per the scheme guidelines.
+        Next: the Sericulture officer for your area will scrutinise the application and your documents. Eligibility and the
+        subsidy are decided by the department as per the scheme guidelines. Keep the e-Reshme reference to track the application.
       </p>
       {error && <Note tone="bad" icon="alert-circle" role="alert"><p>{error.message}</p></Note>}
       <div className="ss-actions">
@@ -81,249 +365,127 @@ export function DoneStep({ request }) {
           <Icon name="search" /> Track application
         </a>
       </div>
+      </div>
     </section>
   );
 }
 
+// ------------------------------------------------------------------ step
+
 function ApplicationStep({ onSubmitted }) {
-  const [options, setOptions] = useState(null);
+  const [ctx, setCtx] = useState(null);
+  const [documents, setDocuments] = useState([]);
   const [loadError, setLoadError] = useState(null);
-  const [f, setF] = useState({
-    componentId: "", categoryId: "", lands: {}, length: "", breadth: "", height: "",
-    estimatedCost: "", roofTypeId: "", extentOfMulberry: "", declaration: false,
-  });
-  const [touched, setTouched] = useState(false);
-  const [review, setReview] = useState(null);
+  const [declaration, setDeclaration] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
+  const [done, setDone] = useState(null);
+  const submitting = useRef(false);
 
-  const loadOptions = async () => {
+  const load = useCallback(async () => {
     setLoadError(null);
     try {
-      const res = await sevasindhuApi.get("application/options");
-      setOptions(res.data);
-      if (res.data.components && res.data.components.length === 1) {
-        setF((s) => ({ ...s, componentId: String(res.data.components[0].id) }));
-      }
+      const res = await sevasindhuApi.get("application/context");
+      setCtx(res.data);
+      setDocuments(res.data.documents || []);
     } catch (err) {
-      setLoadError(toError(err));
+      setLoadError(toError(err) || { message: "Could not load your application. Please try again." });
     }
-  };
-  useEffect(() => { loadOptions(); }, []);
+  }, []);
+  useEffect(() => { load(); }, [load]);
 
   if (loadError) {
     return (
       <section className="ss-card" id="ss-application">
         <Note tone="bad" icon="alert-circle" role="alert"><p>{loadError.message}</p></Note>
-        <button type="button" className="ss-btn ss-btn-primary" onClick={loadOptions}><Icon name="reload" /> Try again</button>
+        <button type="button" className="ss-btn ss-btn-primary" onClick={load}><Icon name="reload" /> Try again</button>
       </section>
     );
   }
-  if (!options) {
+  if (!ctx) {
     return (
       <section className="ss-card" id="ss-application" aria-busy="true">
-        <p className="ss-hint"><span className="ss-spin dark" aria-hidden="true" style={{ display: "inline-block", verticalAlign: "middle" }} /> Loading the application form...</p>
+        <p className="ss-hint"><span className="ss-spin dark" aria-hidden="true" style={{ display: "inline-block", verticalAlign: "middle" }} /> Loading your application...</p>
       </section>
     );
   }
-  if (options.blockedReason) {
-    return (
-      <section className="ss-card" id="ss-application">
-        <h2>Application</h2>
-        <Note tone="warn" icon="alert-circle" role="alert"><p>{options.blockedReason}</p></Note>
-      </section>
-    );
+  if (done || ctx.submitted) {
+    const s = done || ctx.submitted;
+    return <DoneStep submitted={s} ctx={ctx} alreadySubmitted={!!(done ? done.alreadySubmitted : true)} />;
   }
 
-  const set = (k) => (e) => setF((s) => ({ ...s, [k]: e.target.type === "checkbox" ? e.target.checked : e.target.value }));
-  const toggleLand = (id) => setF((s) => {
-    const lands = { ...s.lands };
-    if (lands[id]) delete lands[id];
-    else lands[id] = { devAcre: "", devGunta: "" };
-    return { ...s, lands };
-  });
-  const setLand = (id, k, v) => setF((s) => ({ ...s, lands: { ...s.lands, [id]: { ...s.lands[id], [k]: v.replace(/\D/g, "").slice(0, 3) } } }));
-
-  const num = (v) => (v === "" || v == null ? NaN : Number(v));
-  const selected = Object.entries(f.lands);
-  const errors = {
-    componentId: !f.componentId ? "Select the component." : "",
-    categoryId: !f.categoryId ? "Select your category." : "",
-    lands: selected.length === 0 ? "Select at least one land record."
-      : selected.some(([, l]) => { const a = num(l.devAcre || 0), g = num(l.devGunta || 0); return !(a >= 0 && g >= 0 && g <= 39 && a + g > 0); })
-        ? "Enter the mulberry area (acre and gunta, gunta 0-39) for each selected land." : "",
-    length: !(num(f.length) > 0 && num(f.length) <= 200) ? "Enter the length in feet." : "",
-    breadth: !(num(f.breadth) > 0 && num(f.breadth) <= 200) ? "Enter the breadth in feet." : "",
-    height: !(num(f.height) > 0 && num(f.height) <= 50) ? "Enter the height in feet." : "",
-    estimatedCost: !(num(f.estimatedCost) >= 1000) ? "Enter the estimated construction cost in rupees." : "",
-    roofTypeId: !f.roofTypeId ? "Select the roof type." : "",
-    extentOfMulberry: !/^\d{1,3}(\.\d{1,2})?$/.test(f.extentOfMulberry.trim()) || Number(f.extentOfMulberry) <= 0 ? "Enter the extent of mulberry in acres, e.g. 1.50." : "",
-  };
-  const show = (k) => (touched ? errors[k] : "");
-  const invalid = Object.values(errors).some(Boolean);
-
-  const payload = () => ({
-    componentId: Number(f.componentId),
-    categoryId: Number(f.categoryId),
-    lands: selected.map(([id, l]) => ({ landId: Number(id), devAcre: Number(l.devAcre || 0), devGunta: Number(l.devGunta || 0) })),
-    length: Number(f.length), breadth: Number(f.breadth), height: Number(f.height),
-    estimatedCost: Math.round(Number(f.estimatedCost)), roofTypeId: Number(f.roofTypeId),
-    extentOfMulberry: f.extentOfMulberry.trim(), declaration: f.declaration,
-  });
-
-  const toReview = async (e) => {
-    e.preventDefault();
-    setTouched(true);
-    setError(null);
-    if (invalid) return;
-    setBusy(true);
-    try {
-      const res = await sevasindhuApi.post("application/quote", { componentId: Number(f.componentId), categoryId: Number(f.categoryId) });
-      setReview(res.data);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } catch (err) {
-      setError(toError(err));
-    } finally {
-      setBusy(false);
-    }
-  };
+  const rules = ctx.uploadRules || { minFiles: 1 };
+  const missingRequired = (ctx.documentTypes || []).filter((t) => t.required && !documents.some((d) => String(d.documentTypeId) === String(t.id)));
+  const ready = !ctx.blockedReason && documents.length >= (rules.minFiles || 0) && missingRequired.length === 0 && declaration;
 
   const submit = async () => {
-    if (!f.declaration) { setError({ message: "Please confirm the declaration to submit." }); return; }
-    if (busy) return;
-    setBusy(true);
+    if (submitting.current) return; // no double submission
     setError(null);
+    if (documents.length < (rules.minFiles || 0)) { setError({ message: "Upload at least one supporting document." }); return; }
+    if (missingRequired.length) { setError({ message: `Please upload: ${missingRequired.map((t) => t.name).join(", ")}.` }); return; }
+    if (!declaration) { setError({ message: "Please confirm the declaration to submit." }); return; }
+    submitting.current = true;
+    setBusy(true);
     try {
-      const res = await sevasindhuApi.post("application/submit", payload());
-      onSubmitted(res.data);
+      const res = await sevasindhuApi.post("application/submit", { declaration: true });
+      setDone({
+        referenceNo: res.data.referenceNo,
+        edcsApplicationRefNo: res.data.edcsApplicationRefNo,
+        submittedAt: res.data.submittedAt,
+        acknowledgementStatus: res.data.acknowledgementStatus,
+        status: "Submitted",
+        alreadySubmitted: res.data.alreadySubmitted,
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (onSubmitted) onSubmitted(res.data);
     } catch (err) {
-      setError(toError(err));
+      setError(toError(err) || { message: "Your application could not be submitted. Please try again." });
+      submitting.current = false;
       setBusy(false);
     }
   };
 
-  const name = (list, id) => (list.find((o) => String(o.id) === String(id)) || {}).name;
-
-  if (review) {
-    return (
-      <section className="ss-card" id="ss-application" aria-labelledby="ss-review-title">
-        <h2 id="ss-review-title">Review your application</h2>
-        <p className="ss-sub">Check the details. After submission they cannot be changed online.</p>
-        <dl className="ss-details">
-          <div className="ss-detail"><dt>Component</dt><dd>{name(options.components, f.componentId)}</dd></div>
-          <div className="ss-detail"><dt>Category</dt><dd>{name(options.categories, f.categoryId)}</dd></div>
-          <div className="ss-detail"><dt>Rearing house (L × B × H)</dt><dd>{f.length} × {f.breadth} × {f.height} ft ({Math.round(num(f.length) * num(f.breadth))} sq ft)</dd></div>
-          <div className="ss-detail"><dt>Roof</dt><dd>{name(options.roofTypes, f.roofTypeId)}</dd></div>
-          <div className="ss-detail"><dt>Estimated cost</dt><dd>{rupees(f.estimatedCost)}</dd></div>
-          <div className="ss-detail"><dt>Extent of mulberry</dt><dd>{f.extentOfMulberry} acre</dd></div>
-          <div className="ss-detail"><dt>Unit cost</dt><dd>{rupees(review.unitCost)}</dd></div>
-          <div className="ss-detail"><dt>Subsidy ({review.sharePercentage}%)</dt><dd>{rupees(review.subsidyAmount)}</dd></div>
-        </dl>
-        <div className="ss-table-wrap" style={{ marginTop: 12 }}>
-          <table className="ss-table">
-            <caption className="ss-hint" style={{ captionSide: "top", textAlign: "left" }}>Selected land</caption>
-            <thead><tr><th scope="col">Survey / Hissa</th><th scope="col">Village</th><th scope="col">Mulberry area</th></tr></thead>
-            <tbody>
-              {selected.map(([id, l]) => {
-                const land = options.lands.find((x) => String(x.id) === id) || {};
-                return <tr key={id}><td>{land.surveyNumber}{land.hissa ? ` / ${land.hissa}` : ""}</td><td>{land.villageName || "-"}</td><td>{l.devAcre || 0} acre {l.devGunta || 0} gunta</td></tr>;
-              })}
-            </tbody>
-          </table>
-        </div>
-        <Note tone="info" icon="info"><p>The subsidy shown is as configured for this scheme; the final amount is decided by the department after scrutiny.</p></Note>
-        <div className="ss-field">
-          <label className="ss-check" htmlFor="ss-app-declaration">
-            <input id="ss-app-declaration" type="checkbox" checked={f.declaration} onChange={set("declaration")} />
-            <span>I declare that the information given is true. I understand the application will be rejected if any information is found false.</span>
-          </label>
-        </div>
-        {error && <Note tone="bad" icon="alert-circle" role="alert"><p>{error.message}</p></Note>}
-        <div className="ss-actions">
-          <button type="button" className="ss-btn ss-btn-ghost" onClick={() => setReview(null)} disabled={busy}><Icon name="edit" /> Edit</button>
-          <button type="button" className="ss-btn ss-btn-primary" onClick={submit} disabled={busy || !f.declaration} aria-busy={busy}>
-            {busy ? <span className="ss-spin" aria-hidden="true" /> : <Icon name="send" />} {busy ? "Submitting..." : "Submit application"}
-          </button>
-        </div>
-      </section>
-    );
-  }
-
-  const input = (k, props = {}) => (
-    <input id={`ss-app-${k}`} className="ss-input" value={f[k]} onChange={set(k)} aria-invalid={show(k) ? "true" : "false"} {...props} />
-  );
-
   return (
-    <form className="ss-card" id="ss-application" onSubmit={toReview} noValidate aria-labelledby="ss-app-title">
-      <h2 id="ss-app-title">Application</h2>
-      <p className="ss-sub">{options.subSchemeName}{options.financialYear ? ` · Financial year ${options.financialYear}` : ""}</p>
-
-      <div className="ss-grid">
-        <Field id="ss-app-componentId" label="Component" required error={show("componentId")}>
-          <select id="ss-app-componentId" className="ss-select" value={f.componentId} onChange={set("componentId")} aria-invalid={show("componentId") ? "true" : "false"}>
-            <option value="">Select component</option>
-            {options.components.map((o) => <option key={o.id} value={o.id}>{o.name}</option>)}
-          </select>
-        </Field>
-        <Field id="ss-app-categoryId" label="Category" required error={show("categoryId")} hint="As per your caste certificate; the officer will verify it.">
-          <select id="ss-app-categoryId" className="ss-select" value={f.categoryId} onChange={set("categoryId")} aria-invalid={show("categoryId") ? "true" : "false"}>
-            <option value="">Select category</option>
-            {options.categories.map((o) => <option key={o.id} value={o.id}>{o.name}</option>)}
-          </select>
-        </Field>
-      </div>
-
-      <h3 className="ss-h3">Land (from your e-Reshme records)</h3>
-      {show("lands") && <p className="ss-err" role="alert">{show("lands")}</p>}
-      <div className="ss-table-wrap">
-        <table className="ss-table">
-          <thead><tr><th scope="col">Select</th><th scope="col">Survey / Hissa</th><th scope="col">Village</th><th scope="col">Extent</th><th scope="col">Mulberry area (acre / gunta)</th></tr></thead>
-          <tbody>
-            {options.lands.map((l) => {
-              const on = !!f.lands[l.id];
-              return (
-                <tr key={l.id}>
-                  <td><input type="checkbox" checked={on} onChange={() => toggleLand(l.id)} aria-label={`Select survey ${l.surveyNumber}`} style={{ width: 20, height: 20, accentColor: "var(--ss-primary)" }} /></td>
-                  <td>{l.surveyNumber}{l.hissa ? ` / ${l.hissa}` : ""}</td>
-                  <td>{l.villageName || "-"}</td>
-                  <td>{l.acre || 0} a {l.gunta || 0} g</td>
-                  <td>
-                    {on ? (
-                      <span style={{ display: "flex", gap: 6 }}>
-                        <input className="ss-input" style={{ height: 38, width: 70 }} inputMode="numeric" placeholder="acre" aria-label={`Mulberry acre on survey ${l.surveyNumber}`} value={f.lands[l.id].devAcre} onChange={(e) => setLand(l.id, "devAcre", e.target.value)} />
-                        <input className="ss-input" style={{ height: 38, width: 70 }} inputMode="numeric" placeholder="gunta" aria-label={`Mulberry gunta on survey ${l.surveyNumber}`} value={f.lands[l.id].devGunta} onChange={(e) => setLand(l.id, "devGunta", e.target.value)} />
-                      </span>
-                    ) : <span className="ss-hint">-</span>}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      <h3 className="ss-h3">Rearing house to be constructed</h3>
-      <div className="ss-grid">
-        <Field id="ss-app-length" label="Length (feet)" required error={show("length")}>{input("length", { inputMode: "decimal", placeholder: "e.g. 50" })}</Field>
-        <Field id="ss-app-breadth" label="Breadth (feet)" required error={show("breadth")}>{input("breadth", { inputMode: "decimal", placeholder: "e.g. 20" })}</Field>
-        <Field id="ss-app-height" label="Height (feet)" required error={show("height")}>{input("height", { inputMode: "decimal", placeholder: "e.g. 12" })}</Field>
-        <Field id="ss-app-roofTypeId" label="Roof type" required error={show("roofTypeId")}>
-          <select id="ss-app-roofTypeId" className="ss-select" value={f.roofTypeId} onChange={set("roofTypeId")} aria-invalid={show("roofTypeId") ? "true" : "false"}>
-            <option value="">Select roof type</option>
-            {options.roofTypes.map((o) => <option key={o.id} value={o.id}>{o.name}</option>)}
-          </select>
-        </Field>
-        <Field id="ss-app-estimatedCost" label="Estimated cost (₹)" required error={show("estimatedCost")}>{input("estimatedCost", { inputMode: "numeric", placeholder: "e.g. 1200000" })}</Field>
-        <Field id="ss-app-extentOfMulberry" label="Extent of mulberry (acres)" required error={show("extentOfMulberry")}>{input("extentOfMulberry", { inputMode: "decimal", placeholder: "e.g. 1.50" })}</Field>
-      </div>
-
-      {error && <Note tone="bad" icon="alert-circle" role="alert"><p>{error.message}</p></Note>}
-      <div className="ss-actions">
-        <button type="submit" className="ss-btn ss-btn-primary" disabled={busy} aria-busy={busy}>
-          {busy ? <span className="ss-spin" aria-hidden="true" /> : <Icon name="arrow-right" />} {busy ? "Calculating..." : "Review application"}
-        </button>
-      </div>
-    </form>
+    <div id="ss-application">
+      <SchemeCard ctx={ctx} />
+      <BeneficiaryCard ctx={ctx} />
+      {ctx.blockedReason ? (
+        <section className="ss-card">
+          <Note tone="warn" icon="alert-circle" role="alert" title="This application cannot be submitted online right now."><p>{ctx.blockedReason}</p></Note>
+        </section>
+      ) : (
+        <>
+          <DocumentsCard ctx={ctx} documents={documents} setDocuments={setDocuments} disabled={busy} />
+          <section className="ss-card" aria-labelledby="ss-submit-title">
+            <div className="ss-title">
+              <span className="ss-title-ic" aria-hidden="true"><Icon name="send" /></span>
+              <div>
+                <h2 id="ss-submit-title">Declaration and submission</h2>
+                <small>Check your documents, accept the declaration and submit</small>
+              </div>
+            </div>
+            <div className="ss-field" style={{ marginTop: 12 }}>
+              <label className="ss-check" htmlFor="ss-app-declaration">
+                <input id="ss-app-declaration" type="checkbox" checked={declaration} onChange={(e) => setDeclaration(e.target.checked)} disabled={busy} />
+                <span>I declare that the information and documents given are true. I understand the application will be rejected if any information is found false.</span>
+              </label>
+            </div>
+            {error && <Note tone="bad" icon="alert-circle" role="alert"><p>{error.message}</p></Note>}
+            <div className="ss-actions">
+              <button type="button" className="ss-btn ss-btn-primary ss-btn-lg" onClick={submit} disabled={busy || !ready} aria-busy={busy}>
+                {busy ? <span className="ss-spin" aria-hidden="true" /> : <Icon name="send" />} {busy ? "Submitting..." : "Submit Application"}
+              </button>
+            </div>
+            {!ready && !busy && (
+              <p className="ss-hint">
+                {documents.length < (rules.minFiles || 0) ? "Upload your supporting documents, " : ""}
+                {!declaration ? "tick the declaration, " : ""}then submit.
+              </p>
+            )}
+          </section>
+        </>
+      )}
+    </div>
   );
 }
 

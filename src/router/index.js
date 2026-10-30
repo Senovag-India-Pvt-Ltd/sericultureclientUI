@@ -995,6 +995,7 @@ import TrackApplicationStatus from "../pages/application-status/TrackApplication
 import SevaSindhuApply from "../pages/sevasindhu/SevaSindhuApply";
 import SevaSindhuSimulator from "../pages/sevasindhu/SevaSindhuSimulator";
 import SevaSindhuRequests from "../pages/sevasindhu/SevaSindhuRequests";
+import SevaSindhuApplications from "../pages/sevasindhu/SevaSindhuApplications";
 import DbtApplicationStatusCheck from "../pages/direct-benefit-transfer/DbtApplicationStatusCheck";
 import DbtStatusCheckList from "../pages/masters/dbt-status-check/DbtStatusCheckList";
 import DbtStatusCheckView from "../pages/masters/dbt-status-check/DbtStatusCheckView";
@@ -2739,6 +2740,7 @@ function Router() {
             <Route path="sevasindhu-test-harness" element={<SevaSindhuTestHarness />} />
             <Route path="sevasindhu-simulator" element={<SevaSindhuSimulator />} />
             <Route path="sevasindhu-requests" element={<SevaSindhuRequests />} />
+            <Route path="sevasindhu-applications" element={<SevaSindhuApplications />} />
             <Route path="user-dashboard" element={<UserDashboard />} />
             <Route path="my-tickets" element={<MyTickets />} />
             <Route path="my-tickets/:id" element={<ViewMyTicket />} />

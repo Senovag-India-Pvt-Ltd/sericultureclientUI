@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { createTheme } from "react-data-table-component";
 import ReactSelect from "react-select";
 import api from "../../../../src/services/auth/api";
+import SevaSindhuSourceCard from "../../sevasindhu/SevaSindhuSourceCard";
 import React, { useMemo } from "react";
 import {
   getFinancialYearMonths,
@@ -49,6 +50,19 @@ const getFinancialYearPeriod = (financialYearStr) => {
 const getCurrentFinancialYearPeriod = () => getFinancialYearPeriod();
 
 function ServiceApplication() {
+
+  // Seva Sindhu: the officer opened this page from "Seva Sindhu Applications" (?sevaSindhuApplicationId=<id>).
+  // The page works exactly as before; it is only pre-filled, shows the Seva Sindhu reference and documents,
+  // and the save links the new application to the Seva Sindhu application (once only, checked on the server).
+  const [sevaSindhu, setSevaSindhu] = useState(null);
+  const sevaSindhuApplicationId = (() => {
+    try {
+      const v = new URLSearchParams(window.location.search).get("sevaSindhuApplicationId");
+      return v && /^[0-9]+$/.test(v) ? Number(v) : null;
+    } catch (e) {
+      return null;
+    }
+  })();
 
   const isSanctionEnabledFromDB = async (scSubSchemeDetailsId) => {
   if (!scSubSchemeDetailsId) return false;
@@ -5384,6 +5398,7 @@ const isUserValid = React.useMemo(() => {
 
 
     const sendPost = {
+      sevaSindhuApplicationId: sevaSindhu && sevaSindhu.id && !sevaSindhu.serviceFormId ? sevaSindhu.id : null,
       
       approvalStageId: data.approvalStageId,
       userMasterId: data.userId,
@@ -6497,6 +6512,9 @@ const isUserValid = React.useMemo(() => {
 
       setApplicationId(response.data.content.applicationDocumentId);
       setSchemeId(response.data.content.schemeId);
+      if (sevaSindhu && sevaSindhu.id) {
+        setSevaSindhu((s) => ({ ...s, serviceFormId: response.data.content.applicationDocumentId }));
+      }
       clear();
       setSaveDisabled(false);
 
@@ -6531,6 +6549,8 @@ const isUserValid = React.useMemo(() => {
             Object.keys(err.response.data.validationErrors).length > 0
           ) {
             saveError(err.response.data.validationErrors);
+          } else if (err.response?.data?.errorMessages?.[0]?.message?.[0]?.message) {
+            saveError(err.response.data.errorMessages[0].message[0].message);
           }
           setSaveDisabled(false);
         });
@@ -6547,6 +6567,8 @@ const isUserValid = React.useMemo(() => {
             Object.keys(err.response.data.validationErrors).length > 0
           ) {
             saveError(err.response.data.validationErrors);
+          } else if (err.response?.data?.errorMessages?.[0]?.message?.[0]?.message) {
+            saveError(err.response.data.errorMessages[0].message[0].message);
           }
           setSaveDisabled(false);
         });
@@ -7064,12 +7086,16 @@ const search = (event) => {
     return;
   }
 
+  runFruitsSearch(data.fruitsId);
+};
+
+const runFruitsSearch = (fruitsId) => {
   setDisable(true);
 
   // Step 1: Try fetching Farmer Details first (checks local DB before calling FRUITS API)
   api
     .post(baseURLFarmerServer + `farmer/get-details-by-fruits-id`, {
-      fruitsId: data.fruitsId,
+      fruitsId: fruitsId,
     })
     .then((response) => {
       setLoading(false);
@@ -7105,21 +7131,21 @@ const search = (event) => {
         setShowReelerDetails(false); // hide reeler section if farmer found
       } else {
         // ✅ If farmer not found, try fetching reeler details
-        fetchReelerDetails();
+        fetchReelerDetails(fruitsId);
       }
     })
     .catch((err) => {
       console.error("Farmer API error:", err);
       setLoading(false);
       // If farmer API fails, try reeler as fallback
-      fetchReelerDetails();
+      fetchReelerDetails(fruitsId);
     });
 };
 
-const fetchReelerDetails = () => { 
+const fetchReelerDetails = (fruitsId = data.fruitsId) => {
   api
     .post(baseURLFarmerServer + `reeler/get-reeler-details-by-fruits-id`, {
-      fruitsId: data.fruitsId,
+      fruitsId: fruitsId,
     })
     .then((response) => {
       setLoading(false);
@@ -7161,6 +7187,41 @@ const fetchReelerDetails = () => {
       console.error("Reeler API error:", error);
       saveError("An error occurred while fetching reeler details.");
     });
+};
+
+// Seva Sindhu: load the application this page was opened from and pre-fill FRUITS ID, scheme and sub-scheme.
+useEffect(() => {
+  if (!sevaSindhuApplicationId) return;
+  api
+    .get(baseURLDBT + `sevasindhu-application/${sevaSindhuApplicationId}`)
+    .then((res) => {
+      const d = res.data;
+      setSevaSindhu(d);
+      if (d.serviceFormId || !d.canCreateApplication) return; // already created, or not assigned to this user
+      setData((prev) => ({
+        ...prev,
+        fruitsId: d.fruitsId,
+        scSchemeDetailsId: String(d.schemeId),
+        scSubSchemeDetailsId: String(d.subSchemeId),
+      }));
+      setSchemeId(String(d.schemeId));
+      runFruitsSearch(d.fruitsId);
+    })
+    .catch((err) => {
+      setSevaSindhu({ loadError: err?.response?.data?.message || t("The Seva Sindhu application could not be loaded.") });
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [sevaSindhuApplicationId]);
+
+const viewSevaSindhuDocument = async (doc) => {
+  try {
+    const res = await api.get(baseURLDBT + `sevasindhu-application/${sevaSindhu.id}/documents/${doc.id}`, { responseType: "blob" });
+    const url = URL.createObjectURL(new Blob([res.data], { type: doc.contentType }));
+    window.open(url, "_blank", "noopener");
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  } catch (e) {
+    saveError(t("The document could not be opened."));
+  }
 };
 
 
@@ -7833,6 +7894,23 @@ const serviceApplicationStyles = `
       </Block.Head>
 
       <Block className="mt-n4 sh-form-wrap">
+        {sevaSindhu && (
+          <SevaSindhuSourceCard
+            info={sevaSindhu}
+            state={sevaSindhu.loadError ? "error" : sevaSindhu.serviceFormId ? "created" : !sevaSindhu.canCreateApplication ? "notAssigned" : "prefilled"}
+            message={
+              sevaSindhu.loadError
+                ? sevaSindhu.loadError
+                : sevaSindhu.serviceFormId
+                ? t("The application has been created for this Seva Sindhu reference.")
+                : !sevaSindhu.canCreateApplication
+                ? t("This Seva Sindhu application is not assigned to you, or has no officer assigned yet.")
+                : t("FRUITS ID, scheme and component type are filled from Seva Sindhu. Complete the remaining details and save.")
+            }
+            createdLink={sevaSindhu.serviceFormId ? `/seriui/service-application-edit/${sevaSindhu.serviceFormId}` : null}
+            onViewDocument={viewSevaSindhuDocument}
+          />
+        )}
         {/* <Form action="#"> */}
         {/* <Form noValidate validated={searchValidated} onSubmit={search}> */}
         <Form noValidate validated={searchValidated} onSubmit={search}>
@@ -12859,7 +12937,7 @@ const serviceApplicationStyles = `
                     {/* <Button type="submit" variant="primary">
                     {t("save")}
                     </Button> */}
-                    <Button type="submit" className="sh-save-btn" disabled={saveDisabled}>
+                    <Button type="submit" className="sh-save-btn" disabled={saveDisabled || !!(sevaSindhu && (sevaSindhu.serviceFormId || sevaSindhu.loadError || sevaSindhu.canCreateApplication === false))}>
                     {t("save")}
                 </Button>
                   </li>

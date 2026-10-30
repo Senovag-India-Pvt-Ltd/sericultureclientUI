@@ -2,7 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { Icon } from "../../components";
 import sevasindhuApi, { getSession, setSession, toError } from "./sevasindhuApi";
 import FarmerStep from "./FarmerStep";
-import ApplicationStep, { DoneStep } from "./ApplicationStep";
+import ApplicationStep from "./ApplicationStep";
+import CopyButton from "./CopyButton";
 import "./sevasindhu.css";
 
 // Seva Sindhu citizen application (Token_Based_Integration_V3.pdf).
@@ -12,36 +13,55 @@ import "./sevasindhu.css";
 
 const STEPS = [
   { id: "farmer", label: "Your details" },
-  { id: "application", label: "Application" },
+  { id: "application", label: "Documents & submit" },
   { id: "done", label: "Acknowledgement" },
 ];
 
 const stepIndex = (status) => (status === "SUBMITTED" ? 2 : status === "FARMER_REGISTERED" ? 1 : 0);
 
-function Shell({ children, edcs }) {
+function Shell({ children, edcs, title, subtitle }) {
   return (
     <div className="ss-page">
-      <div className="ss-topbar">
+      <header className="ss-band">
         <div className="ss-topbar-in">
-          <img src={process.env.PUBLIC_URL + "/images/logo/KG.png"} alt="Government of Karnataka emblem" />
+          <span className="ss-emblem"><img src={process.env.PUBLIC_URL + "/images/logo/KG.png"} alt="Government of Karnataka emblem" /></span>
           <div className="ss-org">
             <strong>Department of Sericulture</strong>
-            <span>Government of Karnataka · e-Reshme</span>
+            <span>Government of Karnataka · e-Reshme Portal</span>
           </div>
-          {edcs && <span className="ss-chip" title="Seva Sindhu application reference"><Icon name="link" /> {edcs}</span>}
+          {edcs && (
+            <span className="ss-chip" title="Seva Sindhu application reference">
+              <Icon name="link" /> {edcs} <CopyButton value={edcs} className="ss-chip-copy" withText={false} />
+            </span>
+          )}
         </div>
-      </div>
+        <div className="ss-heroband">
+          <div>
+            <h1>{title}</h1>
+            {subtitle && <p>{subtitle}</p>}
+          </div>
+          <span className="ss-secure"><Icon name="shield-check" /> Secure Seva Sindhu session</span>
+        </div>
+      </header>
       <main className="ss-wrap">{children}</main>
+      <footer className="ss-foot">
+        <span><Icon name="call" /> Helpline: <a href="tel:08024413900">080 2441 3900</a></span>
+        <span><Icon name="lock" /> Your details are used only to process this application.</span>
+      </footer>
     </div>
   );
 }
 
-function Detail({ label, value }) {
+function Tile({ icon, label, value, children }) {
   if (!value) return null;
   return (
-    <div className="ss-detail">
-      <dt>{label}</dt>
-      <dd>{value}</dd>
+    <div className="ss-tile">
+      <span className="ss-tile-ic" aria-hidden="true"><Icon name={icon} /></span>
+      <div style={{ minWidth: 0, flex: 1 }}>
+        <dt>{label}</dt>
+        <dd>{value}</dd>
+      </div>
+      {children}
     </div>
   );
 }
@@ -94,10 +114,10 @@ function SevaSindhuApply() {
 
   if (state.phase === "loading") {
     return (
-      <Shell>
+      <Shell title="Apply through Seva Sindhu" subtitle="Department of Sericulture services">
         <div className="ss-center" role="status" aria-live="polite">
           <span className="ss-spin dark" aria-hidden="true" />
-          <p>Opening your Seva Sindhu application...</p>
+          <p style={{ margin: 0, color: "var(--ss-muted)" }}>Opening your Seva Sindhu application...</p>
         </div>
       </Shell>
     );
@@ -106,20 +126,22 @@ function SevaSindhuApply() {
   if (state.phase === "error") {
     const retryable = ["NETWORK", "TIMEOUT", "SERVICE_UNAVAILABLE", "TOO_MANY_REQUESTS"].includes(state.error.code);
     return (
-      <Shell>
-        <div className="ss-hero">
-          <div className="ss-hero-icon" aria-hidden="true"><Icon name="alert-circle" /></div>
-          <div>
-            <h1>We could not open your application</h1>
-            <p>{state.error.message}</p>
+      <Shell title="Apply through Seva Sindhu" subtitle="Department of Sericulture services">
+        <section className="ss-card">
+          <div className="ss-title" style={{ alignItems: "flex-start" }}>
+            <span className="ss-title-ic" aria-hidden="true" style={{ background: "var(--ss-warn-bg)", color: "var(--ss-warn)" }}><Icon name="alert-circle" /></span>
+            <div>
+              <h2>We could not open your application</h2>
+              <small style={{ fontSize: ".92rem", lineHeight: 1.5 }}>{state.error.message}</small>
+            </div>
           </div>
-        </div>
-        <div className="ss-actions">
-          {retryable && (
-            <button type="button" className="ss-btn ss-btn-primary" onClick={load}><Icon name="reload" /> Try again</button>
-          )}
-          <a className="ss-btn ss-btn-ghost" href="https://sevasindhu.karnataka.gov.in" rel="noreferrer">Go to Seva Sindhu</a>
-        </div>
+          <div className="ss-actions">
+            {retryable && (
+              <button type="button" className="ss-btn ss-btn-primary" onClick={load}><Icon name="reload" /> Try again</button>
+            )}
+            <a className="ss-btn ss-btn-ghost" href="https://sevasindhu.karnataka.gov.in" rel="noreferrer"><Icon name="arrow-left" /> Go to Seva Sindhu</a>
+          </div>
+        </section>
       </Shell>
     );
   }
@@ -129,15 +151,11 @@ function SevaSindhuApply() {
   const serviceTitle = req.componentName || req.subSchemeName || req.schemeName;
 
   return (
-    <Shell edcs={req.edcsApplicationRefNo}>
-      <div className="ss-hero">
-        <div className="ss-hero-icon" aria-hidden="true"><Icon name="file-docs" /></div>
-        <div>
-          <h1>Apply through Seva Sindhu</h1>
-          <p>{serviceTitle || "Department of Sericulture service"}{req.assistedMode ? " · assisted" : ""}</p>
-        </div>
-      </div>
-
+    <Shell
+      edcs={req.edcsApplicationRefNo}
+      title="Apply through Seva Sindhu"
+      subtitle={`${serviceTitle || "Department of Sericulture service"}${req.assistedMode ? " · assisted application" : ""}`}
+    >
       <ol className="ss-steps" aria-label="Application steps">
         {STEPS.map((s, i) => (
           <li key={s.id} className={i < current ? "is-done" : i === current ? "is-current" : ""} aria-current={i === current ? "step" : undefined}>
@@ -146,6 +164,7 @@ function SevaSindhuApply() {
           </li>
         ))}
       </ol>
+      <p className="ss-step-mobile">Step {current + 1} of {STEPS.length} · {STEPS[current].label}</p>
 
       {!req.serviceAvailable && (
         <div className="ss-note ss-tone-warn" role="alert">
@@ -158,15 +177,24 @@ function SevaSindhuApply() {
       )}
 
       <section className="ss-card" aria-labelledby="ss-req-title">
-        <h2 id="ss-req-title">Your Seva Sindhu request</h2>
-        <p className="ss-sub">Received from Seva Sindhu. Keep the reference number for tracking.</p>
-        <dl className="ss-details">
-          <Detail label="Seva Sindhu reference" value={req.edcsApplicationRefNo} />
-          <Detail label="Service" value={serviceTitle} />
-          <Detail label="Scheme" value={req.schemeName} />
-          <Detail label="Mobile" value={req.mobileNumber} />
-          <Detail label="FRUITS ID" value={req.fruitsId} />
-          <Detail label="Application number (ARN)" value={req.arn} />
+        <div className="ss-title">
+          <span className="ss-title-ic" aria-hidden="true"><Icon name="file-docs" /></span>
+          <div>
+            <h2 id="ss-req-title">Your Seva Sindhu request</h2>
+            <small>Received from Seva Sindhu. Keep the reference number for tracking.</small>
+          </div>
+        </div>
+        <dl className="ss-tiles">
+          <Tile icon="link" label="Seva Sindhu reference" value={req.edcsApplicationRefNo}>
+            <CopyButton value={req.edcsApplicationRefNo} className="ss-tile-copy" withText={false} />
+          </Tile>
+          <Tile icon="layers" label="Service" value={serviceTitle} />
+          <Tile icon="building" label="Scheme" value={req.schemeName} />
+          <Tile icon="mobile" label="Registered mobile" value={req.mobileNumber} />
+          <Tile icon="user-check" label="FRUITS ID" value={req.fruitsId} />
+          <Tile icon="check-circle" label="e-Reshme reference" value={req.arn}>
+            <CopyButton value={req.arn} className="ss-tile-copy" withText={false} />
+          </Tile>
         </dl>
       </section>
 
@@ -177,8 +205,13 @@ function SevaSindhuApply() {
           onContinue={() => document.getElementById("ss-application")?.scrollIntoView({ behavior: "smooth" })}
         />
       )}
-      {req.serviceAvailable && req.requestStatus === "FARMER_REGISTERED" && <ApplicationStep onSubmitted={refresh} />}
-      {req.requestStatus === "SUBMITTED" && <DoneStep request={req} />}
+      {(req.requestStatus === "SUBMITTED" || (req.serviceAvailable && req.requestStatus === "FARMER_REGISTERED")) && (
+        // One element for both states, so a fresh submission keeps its confirmation instead of remounting.
+        <ApplicationStep
+          key="application"
+          onSubmitted={(res) => setState((st) => ({ ...st, request: { ...st.request, requestStatus: "SUBMITTED", arn: res.referenceNo } }))}
+        />
+      )}
     </Shell>
   );
 }
