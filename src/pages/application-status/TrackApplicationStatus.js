@@ -277,21 +277,21 @@ function TrackApplicationStatus() {
     <>
       <style>{`
         .as-page {
-          --as-primary: #146c43;
-          --as-primary-dark: #0b4a2e;
-          --as-primary-soft: #e7f4ec;
-          --as-teal: #0e7c66;
+          --as-primary: #1a5a9c;
+          --as-primary-dark: #0f4a85;
+          --as-primary-soft: #e8f1fb;
+          --as-teal: #1e67a8;
           --as-accent: #e8a317;
-          --as-ink: #14231b;
-          --as-muted: #5b6b62;
-          --as-line: #dfe8e2;
-          --as-bg: #f3f7f4;
+          --as-ink: #13233a;
+          --as-muted: #5d6b7e;
+          --as-line: #dce6f2;
+          --as-bg: #f2f6fb;
           --as-surface: #ffffff;
           --as-info: #1f5fa8; --as-info-bg: #eaf2fc;
           --as-ok: #12784a; --as-ok-bg: #e5f5ec;
           --as-warn: #8a5a00; --as-warn-bg: #fff5de;
           --as-bad: #b42318; --as-bad-bg: #fdecea;
-          --as-shadow: 0 1px 2px rgba(16,40,28,.05), 0 8px 24px rgba(16,40,28,.07);
+          --as-shadow: 0 1px 2px rgba(16,32,56,.05), 0 8px 24px rgba(16,32,56,.07);
           min-height: 100vh;
           background: var(--as-bg);
           color: var(--as-ink);
@@ -308,7 +308,7 @@ function TrackApplicationStatus() {
           background:
             radial-gradient(1200px 300px at 85% -40%, rgba(255,255,255,.14), transparent 60%),
             radial-gradient(600px 240px at 0% 120%, rgba(232,163,23,.18), transparent 60%),
-            linear-gradient(120deg, #0b4a2e 0%, #146c43 55%, #0e7c66 100%);
+            linear-gradient(120deg, #0f4a85 0%, #1a5a9c 55%, #1e67a8 100%);
         }
         .as-band::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .08; background-image: radial-gradient(circle at 1px 1px, #fff 1px, transparent 0); background-size: 22px 22px; }
         .as-topbar-in { position: relative; z-index: 1; max-width: 920px; margin: 0 auto; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
@@ -325,18 +325,18 @@ function TrackApplicationStatus() {
 
         .as-wrap { position: relative; z-index: 2; max-width: 920px; margin: -52px auto 0; padding: 0 16px; }
 
-        .as-card { background: var(--as-surface); border: 1px solid rgba(20,108,67,.06); border-radius: 18px; box-shadow: var(--as-shadow); padding: 24px; }
+        .as-card { background: var(--as-surface); border: 1px solid rgba(26,90,156,.06); border-radius: 18px; box-shadow: var(--as-shadow); padding: 24px; }
         .as-legend { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--as-primary-dark); margin: 0 0 10px; padding: 0; }
         .as-types { border: 0; margin: 0 0 20px; padding: 0; min-width: 0; }
         .as-types-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .as-type { position: relative; }
         .as-type input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
         .as-type label { display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 14px; border: 1.5px solid var(--as-line); border-radius: 14px; cursor: pointer; background: #fff; transition: border-color .15s, background .15s, box-shadow .15s; }
-        .as-type-ic { flex-shrink: 0; width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: #f1f5f2; color: var(--as-muted); font-size: 1.1rem; transition: all .15s; }
+        .as-type-ic { flex-shrink: 0; width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: #f1f4f9; color: var(--as-muted); font-size: 1.1rem; transition: all .15s; }
         .as-type-txt strong { display: block; font-size: .92rem; color: var(--as-ink); }
         .as-type-txt small { display: block; font-size: .76rem; color: var(--as-muted); margin-top: 1px; }
         .as-type-tick { margin-left: auto; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--as-line); display: grid; place-items: center; color: transparent; font-size: .75rem; flex-shrink: 0; }
-        .as-type input:checked + label { border-color: var(--as-primary); background: linear-gradient(90deg, #f2faf5, #fff); box-shadow: 0 0 0 4px rgba(20,108,67,.08); }
+        .as-type input:checked + label { border-color: var(--as-primary); background: linear-gradient(90deg, #f1f6fc, #fff); box-shadow: 0 0 0 4px rgba(26,90,156,.08); }
         .as-type input:checked + label .as-type-ic { background: var(--as-primary); color: #fff; }
         .as-type input:checked + label .as-type-tick { background: var(--as-primary); border-color: var(--as-primary); color: #fff; }
         .as-type input:focus-visible + label { outline: 3px solid var(--as-accent); outline-offset: 2px; }
@@ -347,7 +347,7 @@ function TrackApplicationStatus() {
         .as-inputwrap { position: relative; }
         .as-inputwrap .icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--as-muted); font-size: 1.1rem; pointer-events: none; }
         .as-input { width: 100%; height: 52px; padding: 0 14px 0 42px; border: 1.5px solid var(--as-line); border-radius: 12px; font-size: 1rem; font-family: inherit; color: var(--as-ink); background: #fff; transition: border-color .15s, box-shadow .15s; }
-        .as-input:focus { border-color: var(--as-primary); outline: none; box-shadow: 0 0 0 4px rgba(20,108,67,0.12); }
+        .as-input:focus { border-color: var(--as-primary); outline: none; box-shadow: 0 0 0 4px rgba(26,90,156,0.12); }
         .as-input[aria-invalid="true"] { border-color: var(--as-bad); }
         .as-hint { margin: 6px 0 0; font-size: 0.78rem; color: var(--as-muted); line-height: 1.4; }
         .as-err { margin: 6px 0 0; font-size: 0.82rem; color: var(--as-bad); display: flex; align-items: center; gap: 6px; }
@@ -355,8 +355,8 @@ function TrackApplicationStatus() {
         .as-actions { display: flex; gap: 10px; margin-top: 20px; }
         .as-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 52px; padding: 0 22px; border-radius: 12px; font-size: 0.98rem; font-weight: 600; font-family: inherit; cursor: pointer; border: 1.5px solid transparent; transition: box-shadow .15s, background .15s, transform .05s; }
         .as-btn:active:not(:disabled) { transform: translateY(1px); }
-        .as-btn-primary { background: linear-gradient(135deg, var(--as-primary), var(--as-teal)); color: #fff; flex: 1; box-shadow: 0 6px 16px rgba(20,108,67,.25); }
-        .as-btn-primary:hover:not(:disabled) { box-shadow: 0 8px 22px rgba(20,108,67,.32); }
+        .as-btn-primary { background: linear-gradient(135deg, var(--as-primary), var(--as-teal)); color: #fff; flex: 1; box-shadow: 0 6px 16px rgba(26,90,156,.25); }
+        .as-btn-primary:hover:not(:disabled) { box-shadow: 0 8px 22px rgba(26,90,156,.32); }
         .as-btn-primary:disabled { opacity: .7; cursor: progress; }
         .as-btn-ghost { background: #fff; color: var(--as-primary); border-color: var(--as-line); }
         .as-btn-ghost:hover { background: var(--as-primary-soft); }
@@ -371,7 +371,7 @@ function TrackApplicationStatus() {
         .as-loading { display: flex; align-items: center; gap: 10px; color: var(--as-muted); font-size: 0.92rem; margin-bottom: 12px; }
         .as-loading .as-spin { border-color: var(--as-line); border-top-color: var(--as-primary); }
         .as-skel { background: var(--as-surface); border-radius: 18px; box-shadow: var(--as-shadow); padding: 24px; }
-        .as-skel i { display: block; height: 14px; border-radius: 6px; background: linear-gradient(90deg, #edf2ee 25%, #f6f9f7 50%, #edf2ee 75%); background-size: 200% 100%; animation: as-shimmer 1.2s infinite; margin-bottom: 12px; }
+        .as-skel i { display: block; height: 14px; border-radius: 6px; background: linear-gradient(90deg, #edf1f7 25%, #f5f8fc 50%, #edf1f7 75%); background-size: 200% 100%; animation: as-shimmer 1.2s infinite; margin-bottom: 12px; }
         @keyframes as-shimmer { to { background-position: -200% 0; } }
         @media (prefers-reduced-motion: reduce) { .as-skel i, .as-spin { animation: none; } }
 
@@ -402,7 +402,7 @@ function TrackApplicationStatus() {
         .as-timeline li { flex: 1; position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; min-width: 0; font-size: .76rem; font-weight: 600; color: var(--as-muted); }
         .as-timeline li:not(:last-child)::after { content: ""; position: absolute; top: 17px; left: calc(50% + 22px); right: calc(-50% + 22px); height: 3px; border-radius: 3px; background: var(--as-line); }
         .as-timeline li.is-done:not(:last-child)::after { background: linear-gradient(90deg, var(--as-ok), var(--as-teal)); }
-        .as-tl-dot { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: #f1f5f2; border: 2px solid var(--as-line); color: var(--as-muted); font-size: .95rem; position: relative; z-index: 1; }
+        .as-tl-dot { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: #f1f4f9; border: 2px solid var(--as-line); color: var(--as-muted); font-size: .95rem; position: relative; z-index: 1; }
         .as-timeline li.is-done { color: var(--as-ok); }
         .as-timeline li.is-done .as-tl-dot { background: var(--as-ok); border-color: var(--as-ok); color: #fff; }
         .as-timeline li.is-current { color: var(--as-info); }
@@ -417,7 +417,7 @@ function TrackApplicationStatus() {
         .as-note .as-note-sub { margin-top: 4px; }
         .as-note-icon { font-size: 1.25rem; margin-top: 1px; flex-shrink: 0; }
         .as-details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0; }
-        .as-detail { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border-radius: 12px; background: #f7faf8; border: 1px solid var(--as-line); min-width: 0; }
+        .as-detail { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border-radius: 12px; background: #f6f9fc; border: 1px solid var(--as-line); min-width: 0; }
         .as-detail-ic { flex-shrink: 0; width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; background: #fff; color: var(--as-primary); border: 1px solid var(--as-line); font-size: .95rem; }
         .as-detail dt { font-size: 0.74rem; color: var(--as-muted); font-weight: 500; }
         .as-detail dd { margin: 3px 0 0; font-size: 0.92rem; font-weight: 600; overflow-wrap: anywhere; }
