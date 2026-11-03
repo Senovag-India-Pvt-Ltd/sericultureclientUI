@@ -218,7 +218,7 @@ function DocumentsCard({ ctx, documents, setDocuments, disabled }) {
         <span className="ss-badge">{documents.length} / {rules.maxFiles} uploaded</span>
       </div>
       <p className="ss-sub" style={{ marginTop: 10 }}>
-        {rules.minFiles > 0 ? `At least ${rules.minFiles} document${rules.minFiles > 1 ? "s are" : " is"} required. ` : ""}You can upload up to {rules.maxFiles} files.
+        {rules.minFiles > 0 ? `At least ${rules.minFiles} document${rules.minFiles > 1 ? "s are" : " is"} required. ` : "Documents are optional. "}You can upload up to {rules.maxFiles} files.
       </p>
 
       {types.length > 0 && (
@@ -351,6 +351,12 @@ export function DoneStep({ submitted, ctx, alreadySubmitted }) {
         <Detail label="Application number (ARN)" value={submitted.arn} />
       </dl>
       <div style={{ height: 16 }} />
+      {submitted.routingMessage && (
+        <Note tone="warn" icon="alert-circle" title="TSC is not mapped">
+          <p>{submitted.routingMessage}</p>
+          {submitted.ticketNumber && <p>Helpdesk ticket <strong>{submitted.ticketNumber}</strong> has been raised automatically for the concerned officer.</p>}
+        </Note>
+      )}
       <Note tone={ack.tone} icon={ack.icon}><p>{ack.text}</p></Note>
       <p className="ss-sub">
         Next: the Sericulture officer for your area will scrutinise the application and your documents. Eligibility and the
@@ -414,7 +420,7 @@ function ApplicationStep({ onSubmitted }) {
     return <DoneStep submitted={s} ctx={ctx} alreadySubmitted={!!(done ? done.alreadySubmitted : true)} />;
   }
 
-  const rules = ctx.uploadRules || { minFiles: 1 };
+  const rules = ctx.uploadRules || { minFiles: 0 };
   const missingRequired = (ctx.documentTypes || []).filter((t) => t.required && !documents.some((d) => String(d.documentTypeId) === String(t.id)));
   const ready = !ctx.blockedReason && documents.length >= (rules.minFiles || 0) && missingRequired.length === 0 && declaration;
 
@@ -427,7 +433,8 @@ function ApplicationStep({ onSubmitted }) {
     submitting.current = true;
     setBusy(true);
     try {
-      const res = await sevasindhuApi.post("application/submit", { declaration: true });
+      // Longer than the default: submit checks the token with Seva Sindhu and sends the acknowledgement.
+      const res = await sevasindhuApi.post("application/submit", { declaration: true }, { timeout: 90000 });
       setDone({
         referenceNo: res.data.referenceNo,
         edcsApplicationRefNo: res.data.edcsApplicationRefNo,
@@ -435,6 +442,8 @@ function ApplicationStep({ onSubmitted }) {
         acknowledgementStatus: res.data.acknowledgementStatus,
         status: "Submitted",
         alreadySubmitted: res.data.alreadySubmitted,
+        routingMessage: res.data.routingMessage,
+        ticketNumber: res.data.ticketNumber,
       });
       window.scrollTo({ top: 0, behavior: "smooth" });
       if (onSubmitted) onSubmitted(res.data);

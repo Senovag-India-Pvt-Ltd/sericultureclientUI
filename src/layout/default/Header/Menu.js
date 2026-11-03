@@ -227,6 +227,7 @@ function Menu() {
     Services: false,
     Services_Service_Application: false,
     Services_Seva_Sindhu_Applications: false,
+    Services_Tsc_Geo_Mapping: false,
     Services_Service_Dashboard: false,
     Services_Service_Applications_For_Incentive_Bonus_Seed_Cocoon: false,
     Services_Dbt_Application: false,
@@ -2614,6 +2615,15 @@ function Menu() {
                 <MenuItemLink
                   text={t("Seva Sindhu Applications")}
                   to="/seriui/sevasindhu-applications"
+                />
+              </MenuItem>
+            ) : null}
+            {/* Moved here from Master > Garden Management; that permission still shows it. */}
+            {showMenu.Services_Tsc_Geo_Mapping || showMenu.Admin_Master_Garden_Tsc_Geo_Mapping ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("TSC Geo Mapping")}
+                  to="/seriui/tsc-geo-mapping-list"
                 />
               </MenuItem>
             ) : null}
@@ -5375,11 +5385,6 @@ function Menu() {
                         {showMenu.Admin_Master_Garden_Tsc ? (
                           <MenuItem>
                             <MenuItemLink text={t("Tsc")} to="/seriui/tsc" />
-                          </MenuItem>
-                        ) : null}
-                        {showMenu.Admin_Master_Garden_Tsc_Geo_Mapping ? (
-                          <MenuItem>
-                            <MenuItemLink text={t("TSC Geo Mapping")} to="/seriui/tsc-geo-mapping-list" />
                           </MenuItem>
                         ) : null}
                         {showMenu.Admin_Master_Garden_Worm_Stage ? (
