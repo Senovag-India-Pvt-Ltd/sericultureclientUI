@@ -843,6 +843,7 @@ function SaleDisposalofDFLseggs() {
                               showYearDropdown
                               dropdownMode="select"
                               dateFormat="dd/MM/yyyy"
+                              portalId="seri-datepicker-portal"
                               className="form-control"
                               // required
                             />
@@ -1252,6 +1253,7 @@ function SaleDisposalofDFLseggs() {
                             showYearDropdown
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
+                            portalId="seri-datepicker-portal"
                             className="form-control"
                             // required
                           />
@@ -1275,6 +1277,7 @@ function SaleDisposalofDFLseggs() {
                             showYearDropdown
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
+                            portalId="seri-datepicker-portal"
                             className="form-control"
                             required
                           />
@@ -1298,6 +1301,7 @@ function SaleDisposalofDFLseggs() {
                             showYearDropdown
                             dropdownMode="select"
                             dateFormat="dd/MM/yyyy"
+                            portalId="seri-datepicker-portal"
                             className="form-control"
                             required
                           />
