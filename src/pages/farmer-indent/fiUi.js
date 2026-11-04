@@ -1,8 +1,10 @@
 // Shared look & feel for the Farmer Indent screens.
+import { useMemo, useState } from "react";
 import { Card, Form, Spinner, Button } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
+import DataTable from "../../components/AppDataTable";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
@@ -127,6 +129,28 @@ const css = `
   .fi-swal-cancel { background:#fff !important; color:#4a5568 !important; border:1px solid #d0dff0 !important; border-radius:10px !important; font-weight:600 !important; }
   .fi-swal .swal2-select, .fi-swal .swal2-textarea { border-radius:10px; font-size:.9rem; border-color:#d0dff0; }
 
+  .fi-toolbar { display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+  .fi-entries { display:flex; align-items:center; gap:8px; color:var(--fi-muted); font-size:.82rem; font-weight:600; }
+  .fi-entries .form-select { width:auto; padding-top:4px; padding-bottom:4px; }
+  .fi-tools { display:inline-flex; border:1px solid var(--fi-border); border-radius:10px; overflow:hidden; background:#fff; }
+  .fi-tools button { border:none; background:#fff; color:var(--fi-primary); font-weight:700; font-size:.78rem; padding:6px 12px; display:inline-flex; align-items:center; gap:5px; transition:background .15s; }
+  .fi-tools button + button { border-left:1px solid var(--fi-border); }
+  .fi-tools button:hover { background:var(--fi-soft); }
+  .fi-sno { color:var(--fi-muted); font-weight:700; }
+  .fi-assign-btn { background:linear-gradient(90deg,#f59e0b,#f97316) !important; border:none !important; color:#fff !important; font-weight:700 !important; border-radius:10px !important; box-shadow:0 3px 10px rgba(249,115,22,.25); }
+  .fi-assign-btn:hover { filter:brightness(1.05); }
+  .fi-days { font-weight:800; }
+  .fi-tile { position:relative; background:#fff; border-radius:16px; padding:16px 18px; box-shadow:0 2px 14px rgba(16,42,70,.07); border:1px solid #e3ebf5; display:flex; justify-content:space-between; align-items:center; gap:12px; text-align:left; width:100%; transition:transform .15s, box-shadow .15s, border-color .15s; overflow:hidden; }
+  .fi-tile::before { content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--tile, #1e67a8); }
+  button.fi-tile:hover { transform:translateY(-2px); box-shadow:0 10px 22px rgba(16,42,70,.12); border-color:#cfdcec; }
+  .fi-tile-label { color:var(--fi-muted); font-size:.8rem; font-weight:700; line-height:1.3; }
+  .fi-tile-value { color:var(--fi-text); font-size:1.55rem; font-weight:800; line-height:1.2; margin-top:4px; }
+  .fi-tile-sub { color:var(--fi-muted); font-size:.74rem; margin-top:2px; }
+  .fi-tile-icon { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.35rem; flex-shrink:0; color:#fff; background:var(--tile, #1e67a8); box-shadow:0 6px 14px rgba(16,42,70,.15); }
+  .fi-tiles { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px; margin-bottom:16px; }
+  .fi-group-title { font-size:.8rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; color:var(--fi-muted); margin:6px 2px 10px; display:flex; align-items:center; gap:8px; }
+  .fi-group-title::after { content:""; flex:1; height:1px; background:var(--fi-border); }
+
   .fi-demo-note { font-size:.75rem; color:#8a6d1d; background:#fff8e1; border:1px solid #f5dc8f; border-radius:10px; padding:6px 12px; display:inline-flex; gap:6px; align-items:center; }
 
   @media (max-width: 575px) {
@@ -138,21 +162,24 @@ const css = `
 
 // ─── Flow stepper ─────────────────────────────────────────────────────────
 export const FLOW = [
+  { path: "dashboard", label: "Dashboard", icon: "dashboard" },
   { path: "farmer-list", label: "Farmers", icon: "users" },
   { path: "indents", label: "Indents", icon: "file-docs" },
   { path: "assigned-dfls", label: "Assigned DFLs", icon: "package" },
   { path: "stage-wise-crop", label: "Stage-wise Crop", icon: "layers" },
   { path: "crop-inspection", label: "Crop Inspection", icon: "clipboard" },
   { path: "fitness-certificate", label: "Fitness Certificate", icon: "shield-check" },
+  { path: "crop-failure", label: "Crop Failure", icon: "alert-circle" },
   { path: "harvest", label: "Harvest", icon: "coins" },
-  { path: "dashboard", label: "Dashboard", icon: "bar-chart" },
+  { path: "cancelled", label: "Cancelled", icon: "cross-circle" },
 ];
 
 function FlowStepper() {
   const { t } = useTranslation();
   const { pathname } = useLocation();
   const s = useFiStore();
-  const recs = cropRecords(s).filter((r) => !r.discarded);
+  const all = cropRecords(s);
+  const recs = all.filter((r) => !r.discarded);
   const open = recs.filter((r) => !r.harvest && !r.failed && !r.closed);
   const counts = {
     "farmer-list": s.farmers.length,
@@ -161,7 +188,9 @@ function FlowStepper() {
     "stage-wise-crop": open.length,
     "crop-inspection": open.filter((r) => !r.lastInspection && r.day >= 0).length,
     "fitness-certificate": open.filter((r) => !r.fc && ["moult4", "spinning", "market"].includes(r.stage.key)).length,
+    "crop-failure": recs.filter((r) => r.failed && !r.harvest).length,
     harvest: open.filter((r) => r.fc?.fit).length,
+    cancelled: s.indents.filter((i) => i.cancelled).length + all.filter((r) => r.discarded).length,
   };
   return (
     <nav className="fi-stepper" aria-label={t("Farmer Indent steps")}>
@@ -322,14 +351,143 @@ export async function askReason(title, reasons, confirmText) {
   return res.isConfirmed ? res.value : null;
 }
 
-// Simple CSV export of what the table shows
-export function exportCsv(filename, columns, rows) {
-  const esc = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
-  const lines = [columns.map((c) => esc(c.label)).join(","), ...rows.map((r) => columns.map((c) => esc(c.value(r))).join(","))];
-  const blob = new Blob(["﻿" + lines.join("\n")], { type: "text/csv;charset=utf-8" });
+// ─── Export / print what the table shows ─────────────────────────────────
+// columns: [{ label, value: (row) => text }]. Kannada names stay readable:
+// Excel gets a UTF-8 HTML table, PDF / Print use the browser's print view.
+const cellText = (c, r) => String(c.value(r) ?? "");
+const escHtml = (v) => v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+function htmlTable(columns, rows) {
+  const head = `<tr><th>S.No</th>${columns.map((c) => `<th>${escHtml(c.label)}</th>`).join("")}</tr>`;
+  const body = rows.map((r, i) => `<tr><td>${i + 1}</td>${columns.map((c) => `<td>${escHtml(cellText(c, r))}</td>`).join("")}</tr>`).join("");
+  return `<table>${head}${body}</table>`;
+}
+
+function download(filename, type, content) {
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
+  a.href = URL.createObjectURL(new Blob([content], { type }));
   a.download = filename;
   a.click();
-  URL.revokeObjectURL(a.href);
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
+
+export function exportCsv(filename, columns, rows) {
+  const esc = (v) => `"${v.replace(/"/g, '""')}"`;
+  const lines = [columns.map((c) => esc(c.label)).join(","), ...rows.map((r) => columns.map((c) => esc(cellText(c, r))).join(","))];
+  download(filename, "text/csv;charset=utf-8", "\ufeff" + lines.join("\n"));
+}
+
+export function exportExcel(filename, title, columns, rows) {
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8">
+    <style>th{background:#1e67a8;color:#fff;font-weight:bold}td,th{border:1px solid #c9d6e6;padding:4px 6px;mso-number-format:"\\@"}</style></head>
+    <body><h3>${escHtml(title)}</h3>${htmlTable(columns, rows)}</body></html>`;
+  download(filename.replace(/\.\w+$/, "") + ".xls", "application/vnd.ms-excel;charset=utf-8", "\ufeff" + html);
+}
+
+export async function copyRows(columns, rows) {
+  const lines = [["S.No", ...columns.map((c) => c.label)].join("\t"), ...rows.map((r, i) => [i + 1, ...columns.map((c) => cellText(c, r).replace(/\s+/g, " "))].join("\t"))];
+  try {
+    await navigator.clipboard.writeText(lines.join("\n"));
+    fiToast(`${rows.length} rows copied`);
+  } catch (e) {
+    fiToast("Could not copy – please allow clipboard access", "error");
+  }
+}
+
+// asPdf only changes the hint: the browser's print dialog saves the PDF
+export function printRows(title, subtitle, columns, rows, asPdf) {
+  const w = window.open("", "_blank");
+  if (!w) { fiToast("Allow pop-ups to print", "error"); return; }
+  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${escHtml(title)}</title>
+    <style>
+      body{font-family:"Segoe UI",Roboto,"Noto Sans Kannada",Arial,sans-serif;color:#1f2d3d;margin:18px}
+      h2{margin:0;color:#0d4f8a;font-size:18px} p{margin:2px 0 12px;color:#6b7a8c;font-size:12px}
+      .hint{background:#eef5fc;border:1px solid #dbe6f3;border-radius:8px;padding:6px 10px;font-size:12px;color:#1e67a8;margin-bottom:10px}
+      table{border-collapse:collapse;width:100%;font-size:11px} th{background:#1e67a8;color:#fff;text-align:left}
+      th,td{border:1px solid #c9d6e6;padding:5px 6px;vertical-align:top} tr:nth-child(even) td{background:#f5f9fe}
+      @page{size:landscape;margin:10mm} @media print{.hint{display:none}}
+    </style></head><body>
+    ${asPdf ? '<div class="hint">In the print window choose <b>Save as PDF</b> as the destination.</div>' : ""}
+    <h2>${escHtml(title)}</h2><p>${escHtml(subtitle)}</p>${htmlTable(columns, rows)}</body></html>`);
+  w.document.close();
+  w.focus();
+  setTimeout(() => w.print(), 300);
+}
+
+// ─── Table with "Show N entries" + Copy / Excel / PDF / Print ─────────────
+const PER_PAGE_KEY = "fiPerPage";
+const readPerPage = () => {
+  try { return Number(localStorage.getItem(PER_PAGE_KEY)) || 25; } catch (e) { return 25; }
+};
+
+export const snoColumn = (t) => ({ name: t("S.No"), width: "88px", selector: (r) => r.__sno, sortable: true, cell: (r) => <span className="fi-sno">{r.__sno}</span> });
+
+export function FiTable({ columns, data, exportCols, fileName, title, subtitle = "", empty, emptyIcon = "inbox", conditionalRowStyles }) {
+  const { t } = useTranslation();
+  const s = useFiStore();
+  const [perPage, setPerPage] = useState(readPerPage);
+  const rows = useMemo(() => data.map((r, i) => ({ ...r, __sno: i + 1 })), [data]);
+  const sub = subtitle || `${s.grainage?.name || ""} · ${new Date().toLocaleDateString("en-GB")}`;
+  const changePerPage = (n) => {
+    setPerPage(n);
+    try { localStorage.setItem(PER_PAGE_KEY, String(n)); } catch (e) { /* private mode */ }
+  };
+  return (
+    <>
+      <div className="fi-toolbar">
+        <label className="fi-entries">
+          {t("Show")}
+          <Form.Select size="sm" value={perPage} onChange={(e) => changePerPage(Number(e.target.value))}>
+            {[10, 25, 50, 100].map((n) => <option key={n} value={n}>{n}</option>)}
+          </Form.Select>
+          {t("entries")} <span className="fw-normal">· {rows.length} {t("total")}</span>
+        </label>
+        {exportCols && (
+          <div className="fi-tools" role="group" aria-label={t("Export")}>
+            <button type="button" onClick={() => copyRows(exportCols, rows)}><Icon name="copy" /> {t("Copy")}</button>
+            <button type="button" onClick={() => exportExcel(fileName, title, exportCols, rows)}><Icon name="file-xls" /> {t("Excel")}</button>
+            <button type="button" onClick={() => printRows(title, sub, exportCols, rows, true)}><Icon name="file-pdf" /> {t("PDF")}</button>
+            <button type="button" onClick={() => printRows(title, sub, exportCols, rows, false)}><Icon name="printer" /> {t("Print")}</button>
+          </div>
+        )}
+      </div>
+      <DataTable key={perPage} columns={[snoColumn(t), ...columns]} data={rows} customStyles={tableStyles} conditionalRowStyles={conditionalRowStyles}
+        pagination paginationPerPage={perPage} paginationRowsPerPageOptions={[10, 25, 50, 100]} onChangeRowsPerPage={changePerPage}
+        highlightOnHover responsive noDataComponent={<EmptyState icon={emptyIcon} text={empty || t("Nothing here")} />} />
+    </>
+  );
+}
+
+// ─── Dashboard tile (like the reference portal, in our colours) ──────────
+export function Tile({ label, value, sub, icon = "arrow-right", color = "#1e67a8", onClick }) {
+  const Tag = onClick ? "button" : "div";
+  return (
+    <Tag type={onClick ? "button" : undefined} className="fi-tile" style={{ "--tile": color }} onClick={onClick}>
+      <span>
+        <span className="fi-tile-label d-block">{label}</span>
+        <span className="fi-tile-value d-block">{value}</span>
+        {sub && <span className="fi-tile-sub d-block">{sub}</span>}
+      </span>
+      <span className="fi-tile-icon"><Icon name={icon} /></span>
+    </Tag>
+  );
+}
+
+// Columns every list shares (farmer identity and location)
+export const farmerInfoColumns = (t, get, onOpen) => [
+  { name: t("Farmer ID"), minWidth: "150px", selector: (x) => get(x).farmerNumber, sortable: true, cell: (x) => <span className="fi-mono">{get(x).farmerNumber || "–"}</span> },
+  { name: t("FID Number"), minWidth: "170px", selector: (x) => get(x).fruitsId, sortable: true, cell: (x) => <span className="fi-mono">{get(x).fruitsId || "–"}</span> },
+  { name: t("Farmer Name"), grow: 2, minWidth: "210px", selector: (x) => get(x).name, sortable: true, cell: (x) => (onOpen
+    ? <button type="button" className="btn p-0 text-start border-0" onClick={() => onOpen(get(x).id)}><FarmerCell farmer={get(x)} sub={get(x).fatherName ? `${t("S/o")} ${get(x).fatherName}` : get(x).fruitsId} /></button>
+    : <FarmerCell farmer={get(x)} />) },
+  { name: t("Farmer Mobile"), minWidth: "130px", selector: (x) => get(x).mobile, cell: (x) => get(x).mobile || "–" },
+  { name: t("Farmer Address"), minWidth: "170px", selector: (x) => get(x).address || get(x).village, sortable: true, cell: (x) => <div><div>{get(x).address || get(x).village || "–"}</div>{get(x).address && get(x).village && get(x).address !== get(x).village ? <div className="fi-farmer-sub">{get(x).village}</div> : null}</div> },
+  { name: t("TSC"), minWidth: "130px", selector: (x) => get(x).tsc, sortable: true, cell: (x) => get(x).tsc || "–" },
+  { name: t("Hobli"), minWidth: "140px", selector: (x) => get(x).hobli, sortable: true, cell: (x) => get(x).hobli || "–" },
+];
+export const farmerInfoExport = (get) => [
+  { label: "Farmer ID", value: (x) => get(x).farmerNumber }, { label: "FID Number", value: (x) => get(x).fruitsId },
+  { label: "Farmer Name", value: (x) => get(x).name }, { label: "Father Name", value: (x) => get(x).fatherName },
+  { label: "Farmer Mobile", value: (x) => get(x).mobile }, { label: "Farmer Address", value: (x) => get(x).address || get(x).village },
+  { label: "Village", value: (x) => get(x).village }, { label: "TSC", value: (x) => get(x).tsc }, { label: "Hobli", value: (x) => get(x).hobli },
+];

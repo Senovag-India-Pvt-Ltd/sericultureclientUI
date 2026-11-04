@@ -3824,6 +3824,9 @@ function Menu() {
           />
           <MenuSub>
             <MenuItem>
+              <MenuItemLink text={t("Grainage Dashboard")} to="/seriui/farmer-indent/dashboard" />
+            </MenuItem>
+            <MenuItem>
               <MenuItemLink text={t("Farmer List")} to="/seriui/farmer-indent/farmer-list" />
             </MenuItem>
             <MenuItem>
@@ -3836,16 +3839,19 @@ function Menu() {
               <MenuItemLink text={t("Stage-wise Crop")} to="/seriui/farmer-indent/stage-wise-crop" />
             </MenuItem>
             <MenuItem>
-              <MenuItemLink text={t("Crop Inspection")} to="/seriui/farmer-indent/crop-inspection" />
+              <MenuItemLink text={t("Fitness Certificate")} to="/seriui/farmer-indent/fitness-certificate" />
             </MenuItem>
             <MenuItem>
-              <MenuItemLink text={t("Fitness Certificate")} to="/seriui/farmer-indent/fitness-certificate" />
+              <MenuItemLink text={t("Crop Failure")} to="/seriui/farmer-indent/crop-failure" />
             </MenuItem>
             <MenuItem>
               <MenuItemLink text={t("Harvest Details")} to="/seriui/farmer-indent/harvest" />
             </MenuItem>
             <MenuItem>
-              <MenuItemLink text={t("Grainage Dashboard")} to="/seriui/farmer-indent/dashboard" />
+              <MenuItemLink text={t("Cancelled Indents / Assigned DFLs")} to="/seriui/farmer-indent/cancelled" />
+            </MenuItem>
+            <MenuItem>
+              <MenuItemLink text={t("Crop Inspection")} to="/seriui/farmer-indent/crop-inspection" />
             </MenuItem>
           </MenuSub>
         </MenuItem>

@@ -1,10 +1,9 @@
 import { useMemo, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import DataTable from "../../components/AppDataTable";
 import { Icon } from "../../components";
-import { useFiStore, cropRecords, fmtDate, STAGES } from "./fiData";
-import { FiPage, FiCard, FarmerCell, SearchBox, EmptyState, tableStyles, Pill, CROP_STATUS_COLOR, useOpenExisting } from "./fiUi";
+import { useFiStore, cropRecords, fmtDate, unitName, dflsStatus, STAGES } from "./fiData";
+import { FiPage, FiCard, FarmerCell, SearchBox, Pill, CROP_STATUS_COLOR, FiTable, farmerInfoColumns, farmerInfoExport, useOpenExisting } from "./fiUi";
 import { FarmerJourneyModal } from "./fiModals";
 import { StageProgress, dayText } from "./FiAssignedDfls";
 
@@ -26,7 +25,7 @@ function FiStageWiseCrop() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [q, setQ] = useState("");
-  const [view, setView] = useState("board");
+  const [view, setView] = useState("table");
   const openExisting = useOpenExisting();
   const [journey, setJourney] = useState(null);
 
@@ -48,12 +47,27 @@ function FiStageWiseCrop() {
   );
 
   const columns = [
-    { name: t("Farmer"), grow: 2, minWidth: "220px", selector: (r) => r.farmer.name, sortable: true, cell: (r) => <button type="button" className="btn p-0 text-start border-0" onClick={() => setJourney(r.farmer.id)}><FarmerCell farmer={r.farmer} sub={`${r.farmer.village} · ${r.farmer.tsc}`} /></button> },
-    { name: t("Lot · DFLs"), minWidth: "120px", cell: (r) => <div><b>{r.a.lotNumber}</b><div className="fi-farmer-sub">{r.a.dflsAssigned} DFLs</div></div> },
-    { name: t("Hatching"), minWidth: "150px", selector: (r) => r.a.hatchingDate, sortable: true, cell: (r) => <div><div>{fmtDate(r.a.hatchingDate)}</div><div className="small">{dayText(r.day, t)}</div></div> },
-    { name: t("Stage"), minWidth: "160px", cell: (r) => <StageProgress r={r} /> },
+    ...farmerInfoColumns(t, (r) => r.farmer, setJourney),
+    { name: t("No of DFLs Ordered"), minWidth: "120px", cell: (r) => (r.indent.direct ? "–" : r.indent.dflsOrdered) },
+    { name: t("CRC / Direct"), minWidth: "200px", cell: (r) => (r.indent.direct ? "–" : unitName(r.indent)) },
+    { name: t("Indent Date"), minWidth: "115px", cell: (r) => fmtDate(r.indent.indentDate) },
+    { name: t("DFLs Assign Date"), minWidth: "125px", selector: (r) => r.a.assignDate, sortable: true, cell: (r) => fmtDate(r.a.assignDate) },
+    { name: t("Lot No"), minWidth: "100px", cell: (r) => <b>{r.a.lotNumber}</b> },
+    { name: t("No of Sheets"), minWidth: "100px", cell: (r) => r.a.sheetsAssigned ?? (r.a.eggSheetNumbers || "–") },
+    { name: t("Laid on Date / R/ON"), minWidth: "135px", cell: (r) => fmtDate(r.a.laidOnDate) },
+    { name: t("Hatching Date"), minWidth: "140px", selector: (r) => r.a.hatchingDate, sortable: true, cell: (r) => <div><div>{fmtDate(r.a.hatchingDate)}</div><div className="small">{dayText(r.day, t)}</div></div> },
+    { name: t("Dispatch Date"), minWidth: "120px", cell: (r) => fmtDate(r.a.releaseDate) },
+    { name: t("DFLs Status"), minWidth: "180px", cell: (r) => <div><div className="fw-semibold small">{t(dflsStatus(r))}</div><StageProgress r={r} /></div> },
     { name: t("Last Inspection"), minWidth: "150px", cell: (r) => (r.lastInspection ? <div><Pill color={CROP_STATUS_COLOR[r.lastInspection.cropStatus] || "grey"}>{r.lastInspection.cropStatus || "–"}</Pill><div className="fi-farmer-sub">{fmtDate(r.lastInspection.date)}</div></div> : <span className="text-muted">{t("Not inspected")}</span>) },
     { name: t("Action"), minWidth: "190px", right: true, cell: actions },
+  ];
+  const exportCols = [
+    ...farmerInfoExport((r) => r.farmer),
+    { label: "No of DFLs Ordered", value: (r) => (r.indent.direct ? "" : r.indent.dflsOrdered) }, { label: "CRC / Direct", value: (r) => (r.indent.direct ? "" : unitName(r.indent)) },
+    { label: "Indent Date", value: (r) => fmtDate(r.indent.indentDate) }, { label: "DFLs Assign Date", value: (r) => fmtDate(r.a.assignDate) },
+    { label: "Lot No", value: (r) => r.a.lotNumber }, { label: "No of Sheets", value: (r) => r.a.sheetsAssigned ?? r.a.eggSheetNumbers },
+    { label: "Laid on Date / R/ON", value: (r) => fmtDate(r.a.laidOnDate) }, { label: "Hatching Date", value: (r) => fmtDate(r.a.hatchingDate) },
+    { label: "Dispatch Date", value: (r) => fmtDate(r.a.releaseDate) }, { label: "Stage", value: (r) => r.stage.label }, { label: "DFLs Status", value: (r) => dflsStatus(r) },
   ];
 
   return (
@@ -63,8 +77,8 @@ function FiStageWiseCrop() {
         title={<span><Icon name="layers" className="me-1" /> {t("Crop pipeline")} <span className="text-muted fw-normal">({filtered.length} {t("crops")})</span></span>}
         right={
           <div className="fi-tabs">
-            <button type="button" className={`fi-tab ${view === "board" ? "active" : ""}`} onClick={() => setView("board")}><Icon name="grid" /> {t("Board")}</button>
             <button type="button" className={`fi-tab ${view === "table" ? "active" : ""}`} onClick={() => setView("table")}><Icon name="list" /> {t("Table")}</button>
+            <button type="button" className={`fi-tab ${view === "board" ? "active" : ""}`} onClick={() => setView("board")}><Icon name="grid" /> {t("Board")}</button>
           </div>
         }
       >
@@ -105,8 +119,9 @@ function FiStageWiseCrop() {
             ))}
           </div>
         ) : (
-          <DataTable columns={columns} data={rows} customStyles={tableStyles} pagination paginationPerPage={10} highlightOnHover responsive
-            noDataComponent={<EmptyState icon="layers" text={t("No crops in this stage")} />} />
+          <FiTable key={stage} columns={columns} data={rows} exportCols={exportCols} fileName={`stage-wise-crop-${stage}`}
+            title={`${t("Stage Wise Crop")} – ${stage === "all" ? t("All") : STAGES.find((x) => x.key === stage).label}`}
+            empty={t("No crops in this stage")} emptyIcon="layers" />
         )}
       </FiCard>
       <FarmerJourneyModal show={!!journey} onHide={() => setJourney(null)} farmerId={journey} />

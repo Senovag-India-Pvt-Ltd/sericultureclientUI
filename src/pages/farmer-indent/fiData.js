@@ -90,6 +90,9 @@ function toFarmer(f) {
     fatherName: str(f.fatherName),
     mobile: str(f.mobile),
     village: str(f.village) || str(saleVillage),
+    address: str(f.address),
+    hobli: str(f.hobli),
+    taluk: str(f.taluk),
     tsc: str(f.tsc),
     mulberryAcres: f.mulberryAcres == null ? null : Math.round(Number(f.mulberryAcres) * 100) / 100,
   };
@@ -163,6 +166,7 @@ const EMPTY = {
   harvests: [],
   supplyUnits: [],
   tscs: [],
+  totals: { sales: 0, dfls: 0, farmers: 0 }, // all-time DFL issue of the grainage
 };
 let state = EMPTY;
 const listeners = new Set();
@@ -221,6 +225,7 @@ export const fiActions = {
           inspections: (d.inspections || []).map(toInspection),
           fitness: (d.fitness || []).map(toFitness),
           harvests: d.harvests || [],
+          totals: { sales: Number(d.totals?.sales) || 0, dfls: Number(d.totals?.dfls) || 0, farmers: Number(d.totals?.farmers) || 0 },
           tscs: [...new Set(farmers.map((f) => f.tsc).filter(Boolean))].sort(),
           ...(su ? { supplyUnits: (su.data || []).map(toSupplyUnit) } : {}),
         });
@@ -293,7 +298,18 @@ export function harvestTotals(h) {
 
 // DFLs issued without an indent (direct Sale/Disposal entry)
 const directIndent = (a) => ({ id: null, indentNo: "Direct sale", dflsOrdered: a.dflsAssigned, unitId: "", unitName: "", direct: true });
-const unknownFarmer = (fruitsId) => ({ id: fruitsId, fruitsId, farmerNumber: "", name: fruitsId, fatherName: "", mobile: "", village: "", tsc: "", mulberryAcres: null });
+export const unknownFarmer = (fruitsId) => ({ id: fruitsId, fruitsId, farmerNumber: "", name: fruitsId, fatherName: "", mobile: "", village: "", address: "", hobli: "", taluk: "", tsc: "", mulberryAcres: null });
+
+// DFLs status shown in the Assigned DFLs list (reference: "Dfls in Incubation" …)
+export function dflsStatus(r) {
+  if (r.discarded) return "Discarded";
+  if (r.harvest) return "Harvested";
+  if (r.failed) return "Crop Failed";
+  if (r.closed) return "Closed";
+  if (["release", "incubation", "blackboxing"].includes(r.stage.key)) return "DFLs in Incubation";
+  if (r.stage.key === "hatching") return "DFLs Hatched";
+  return `Rearing – ${r.stage.label}`;
+}
 
 // Full crop record for an assignment: farmer, indent, stage, inspection …
 // Cached per store snapshot – every screen and the stepper use it.

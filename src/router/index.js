@@ -576,6 +576,8 @@ import FiCropInspection from "../pages/farmer-indent/FiCropInspection";
 import FiFitnessCertificate from "../pages/farmer-indent/FiFitnessCertificate";
 import FiHarvestDetails from "../pages/farmer-indent/FiHarvestDetails";
 import FiGrainageDashboard from "../pages/farmer-indent/FiGrainageDashboard";
+import FiCropFailure from "../pages/farmer-indent/FiCropFailure";
+import FiCancelled from "../pages/farmer-indent/FiCancelled";
 import Tsc from "../pages/masters/tsc/TscMaster";
 import TscList from "../pages/masters/tsc/TscMasterList";
 import TscEdit from "../pages/masters/tsc/TscMasterEdit";
@@ -1512,6 +1514,8 @@ function Router() {
             <Route path="farmer-indent/fitness-certificate" element={<FiFitnessCertificate />} />
             <Route path="farmer-indent/harvest" element={<FiHarvestDetails />} />
             <Route path="farmer-indent/dashboard" element={<FiGrainageDashboard />} />
+            <Route path="farmer-indent/crop-failure" element={<FiCropFailure />} />
+            <Route path="farmer-indent/cancelled" element={<FiCancelled />} />
             <Route
               path="stake-holder-registration"
               element={<StakeHolderRegister />}
