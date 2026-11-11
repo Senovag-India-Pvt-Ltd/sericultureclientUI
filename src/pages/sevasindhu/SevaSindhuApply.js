@@ -7,9 +7,9 @@ import CopyButton from "./CopyButton";
 import "./sevasindhu.css";
 
 // Seva Sindhu citizen application (Token_Based_Integration_V3.pdf).
-// Seva Sindhu posts the citizen to dbt (URL 1), which forwards the browser here with a one-time
-// ticket in the URL fragment: /seriui/sevasindhu/apply#t=<ticket>. The ticket is exchanged once for
-// a citizen session (kept in sessionStorage, never in the staff login keys).
+// Seva Sindhu posts the citizen to dbt (URL 1). dbt stores the posted values and answers
+// 303 See Other -> /seriui/sevasindhu/apply?ref=<one-time ticket>. This page exchanges the ref once for
+// a citizen session (kept in sessionStorage, never in the staff login keys) and loads the stored values.
 
 const STEPS = [
   { id: "farmer", label: "Your details" },
@@ -72,12 +72,19 @@ function SevaSindhuApply() {
   const load = useCallback(async () => {
     setState({ phase: "loading" });
     try {
-      // 1. A fresh hand-over from Seva Sindhu: exchange the one-time ticket, then drop it from the URL.
-      const hash = window.location.hash || "";
-      const match = hash.match(/[#&]t=([A-Za-z0-9_-]{43})/);
-      if (match) {
-        window.history.replaceState(null, "", window.location.pathname + window.location.search);
-        const res = await sevasindhuApi.post("session", { ticket: match[1] });
+      // 1. A fresh hand-over from Seva Sindhu: dbt answered the POST with 303 -> ?ref=<one-time ticket>.
+      //    Exchange it once for a session, then drop it from the address bar so a refresh/copy never reuses it.
+      //    (#t=<ticket> is the older hand-over format, still accepted.)
+      const params = new URLSearchParams(window.location.search);
+      const fromQuery = params.get("ref");
+      const fromHash = ((window.location.hash || "").match(/[#&]t=([A-Za-z0-9_-]{43})/) || [])[1];
+      const ticket = fromQuery && /^[A-Za-z0-9_-]{43}$/.test(fromQuery) ? fromQuery : fromHash;
+      if (ticket) {
+        params.delete("ref");
+        params.delete("via");
+        const rest = params.toString();
+        window.history.replaceState(null, "", window.location.pathname + (rest ? "?" + rest : ""));
+        const res = await sevasindhuApi.post("session", { ticket });
         setSession(res.data.sessionToken);
         setState({ phase: "ready", request: res.data });
         return;
