@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 // import axios from "axios";
 import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
+import FarmerCountSummary from "./FarmerCountSummary";
 
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -336,6 +337,7 @@ function OtherStateFarmerList() {
       </Block.Head>
 
       <Block className="mt-n4">
+        <FarmerCountSummary active="other" />
         <Card>
           <Row className="m-2">
             <Col>

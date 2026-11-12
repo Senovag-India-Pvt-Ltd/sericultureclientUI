@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
+import FarmerCountSummary from "./FarmerCountSummary";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
@@ -409,6 +410,7 @@ function StakeHolderList() {
       </Block.Head>
 
       <Block className="mt-n4 sh-list-wrap">
+        <FarmerCountSummary active="with" />
         <Card className="sh-list-card">
           <Card.Body className="pb-0">
             <Row className="g-2 align-items-end sh-search-bar">
