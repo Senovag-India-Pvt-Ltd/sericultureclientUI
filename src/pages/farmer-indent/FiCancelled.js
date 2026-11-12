@@ -30,7 +30,7 @@ function FiCancelled() {
   const indentCols = [
     { name: t("Reason"), grow: 2, minWidth: "220px", selector: (i) => i.cancelled.reason, sortable: true, cell: (i) => reasonCell(i.cancelled) },
     { name: t("Cancelled on"), minWidth: "120px", selector: (i) => i.cancelled.date, sortable: true, cell: (i) => fmtDate(i.cancelled.date) },
-    { name: t("Indent ID"), minWidth: "130px", selector: (i) => i.indentNo, sortable: true, cell: (i) => <b>{i.indentNo}</b> },
+    { name: t("Indent ID"), minWidth: "150px", selector: (i) => i.indentNo, sortable: true, cell: (i) => <b style={{ whiteSpace: "nowrap" }}>{i.indentNo}</b> },
     ...farmerInfoColumns(t, (i) => i.farmer, setJourney),
     { name: t("No of DFLs Ordered"), minWidth: "120px", selector: (i) => i.dflsOrdered, sortable: true, cell: (i) => i.dflsOrdered },
     { name: t("CRC / Direct"), minWidth: "200px", cell: (i) => unitName(i) },
@@ -41,7 +41,7 @@ function FiCancelled() {
     { name: t("Reason"), grow: 2, minWidth: "220px", selector: (r) => r.a.discarded.reason, sortable: true, cell: (r) => reasonCell(r.a.discarded) },
     { name: t("Discarded on"), minWidth: "120px", selector: (r) => r.a.discarded.date, sortable: true, cell: (r) => fmtDate(r.a.discarded.date) },
     ...farmerInfoColumns(t, (r) => r.farmer, setJourney),
-    { name: t("Indent ID"), minWidth: "130px", cell: (r) => r.indent.indentNo },
+    { name: t("Indent ID"), minWidth: "150px", cell: (r) => r.indent.indentNo },
     { name: t("Lot No"), minWidth: "100px", cell: (r) => <b>{r.a.lotNumber}</b> },
     { name: t("No of DFLs Assigned"), minWidth: "120px", cell: (r) => r.a.dflsAssigned },
     { name: t("DFLs Assign Date"), minWidth: "125px", cell: (r) => fmtDate(r.a.assignDate) },

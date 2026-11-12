@@ -79,7 +79,7 @@ function FiIndentManagement() {
         ? <Pill color="green">{t("Assigned")}</Pill>
         : <Button size="sm" className="fi-btn fi-assign-btn fi-btn-sm" onClick={() => openAssign(i)}><Icon name="package" /> {t("Assign DFLs")}</Button>),
     },
-    { name: t("Indent ID"), minWidth: "130px", selector: (i) => i.indentNo, sortable: true, cell: (i) => <b>{i.indentNo}</b> },
+    { name: t("Indent ID"), minWidth: "150px", selector: (i) => i.indentNo, sortable: true, cell: (i) => <b style={{ whiteSpace: "nowrap" }}>{i.indentNo}</b> },
     ...farmerInfoColumns(t, (i) => i.farmer, setJourney),
     { name: t("No of DFLs Ordered"), minWidth: "120px", selector: (i) => i.dflsOrdered, sortable: true, cell: (i) => <b>{i.dflsOrdered}</b> },
     { name: t("No of Sheets Ordered"), minWidth: "120px", selector: (i) => i.sheetsOrdered || 0, sortable: true, cell: (i) => i.sheetsOrdered ?? "–" },

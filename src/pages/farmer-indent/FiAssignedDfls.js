@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Icon } from "../../components";
@@ -45,6 +46,7 @@ function FiAssignedDfls() {
   const [q, setQ] = useState("");
   const [tsc, setTsc] = useState("");
   const openExisting = useOpenExisting();
+  const navigate = useNavigate();
   const [journey, setJourney] = useState(null);
 
   // discarded DFLs are listed on the Cancelled page
@@ -71,7 +73,7 @@ function FiAssignedDfls() {
   const columns = [
     { name: t("No of Days"), minWidth: "105px", selector: (r) => r.day, sortable: true, cell: (r) => <DaysBadge day={r.day} t={t} /> },
     { name: t("Harvest"), minWidth: "140px", cell: (r) => <HarvestBadge r={r} t={t} /> },
-    { name: t("Indent ID"), minWidth: "130px", selector: (r) => r.indent.indentNo, sortable: true, cell: (r) => <b>{r.indent.indentNo}</b> },
+    { name: t("Indent ID"), minWidth: "150px", selector: (r) => r.indent.indentNo, sortable: true, cell: (r) => <b style={{ whiteSpace: "nowrap" }}>{r.indent.indentNo}</b> },
     ...farmerInfoColumns(t, (r) => r.farmer, setJourney),
     { name: t("CRC / Direct"), minWidth: "200px", cell: (r) => (r.indent.direct ? "–" : unitName(r.indent)) },
     { name: t("No of DFLs Assigned"), minWidth: "120px", selector: (r) => r.a.dflsAssigned, sortable: true, cell: (r) => <div><b>{r.a.dflsAssigned}</b>{!r.indent.direct && <div className="fi-farmer-sub">{t("of")} {r.indent.dflsOrdered} {t("ordered")}</div>}</div> },
@@ -87,7 +89,7 @@ function FiAssignedDfls() {
       name: t("Action"), minWidth: "120px", right: true,
       cell: (r) => (
         <div className="d-flex gap-2">
-          <Button size="sm" className="fi-btn fi-btn-soft fi-btn-sm" title={t("Edit in Sale/Disposal of DFLs")} aria-label={t("Edit")} onClick={() => openExisting("assignedDflsList", r.farmer)}><Icon name="edit" /></Button>
+          <Button size="sm" className="fi-btn fi-btn-soft fi-btn-sm" title={t("Edit in Sale/Disposal of DFLs")} aria-label={t("Edit")} onClick={() => navigate(`/seriui/Sale-Disposal-of-DFLs-eggs-edit/${r.a.id}`)}><Icon name="edit" /></Button>
           {!r.harvest && <Button size="sm" className="fi-btn fi-btn-danger-soft fi-btn-sm" title={t("Discard")} aria-label={t("Discard")} onClick={() => discard(r)}><Icon name="trash" /></Button>}
         </div>
       ),
