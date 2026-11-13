@@ -51,11 +51,15 @@ function FarmerCropPicker({ cropsPath, emptyText, selected, onSelect, onFarmer, 
     setValidated(false);
     setLoading(true);
     setDetails(null); setCrops([]); onSelect(null); onFarmer(null);
-    api.post(`${baseURLRegistration}farmer/get-farmer-details-by-fruits-id-or-mobile-number-or-csb-register-number`, { text: farmer.text.trim(), type: farmer.select })
+    // indexed single-farmer lookup (the seed-cocoon-market search took ~50s and needed a fitness certificate)
+    api.post(`${baseURLRegistration}farmer/get-farmer-details-by-fruits-id-or-farmer-number-or-mobile-number`, { [farmer.select]: farmer.text.trim() })
       .then((res) => {
-        const found = Array.isArray(res.data) ? res.data[0] : null;
+        const c = res.data?.content;
+        const fr = c && !c.error ? c.farmerResponse : null;
+        const addr = (c?.farmerAddressDTOList || [])[0] || {};
+        const found = fr ? { ...fr, villageName: fr.villageName || addr.villageName } : null;
         if (!found) {
-          const msg = res.data?.errorMessages?.[0]?.message?.[0]?.message || res.data?.errorMessages?.[0]?.message || t("No details found");
+          const msg = c?.error_description || res.data?.errorMessages?.[0]?.message?.[0]?.message || t("No details found");
           Swal.fire({ icon: "warning", title: t("Details not Found"), text: msg, customClass: swalClass });
           return;
         }
