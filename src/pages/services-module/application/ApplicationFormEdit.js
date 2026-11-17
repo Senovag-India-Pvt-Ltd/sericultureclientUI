@@ -1,6 +1,7 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
+import SevaSindhuSourceBanner from "../../sevasindhu/SevaSindhuSourceBanner";
 import ReactSelect from "react-select";
 import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
@@ -1297,8 +1298,8 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
         .then((response) => {
           if (response.data.errorCode === -1) {
             saveError(response.data.errorMessages[0]);
-          } else if (response.data && response.data.error) {
-            saveError(response.data.error_description);
+          } else if (response.data?.content?.error) {
+            saveError(response.data.content.error_description);
           } else {
             saveSuccess();
             setApplicationId(response.data.content.applicationDocumentId);
@@ -2341,6 +2342,7 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
       </Block.Head>
 
       <Block className="mt-n4 sh-form-wrap">
+        <SevaSindhuSourceBanner applicationFormId={id} />
         {/* <Form action="#"> */}
         {/* <Form noValidate validated={searchValidated} onSubmit={search}> */}
         <Form noValidate validated={searchValidated} onSubmit={search}>

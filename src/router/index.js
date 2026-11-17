@@ -166,6 +166,8 @@ import AttributeFoundationCourses from "../pages/training/AttributeFoundationCou
 // Helpdesk
 import RaiseTicket from "../pages/helpdesk/RaiseTicket";
 import HelpdeskDashboard from "../pages/helpdesk/HelpdeskDashboard";
+import UnassignedApplications from "../pages/helpdesk/UnassignedApplications";
+import SevaSindhuTestHarness from "../pages/admin/SevaSindhuTestHarness";
 import MyTickets from "../pages/helpdesk/MyTickets";
 import ViewMyTicket from "../pages/helpdesk/ViewMyTicket";
 
@@ -571,6 +573,9 @@ import Tsc from "../pages/masters/tsc/TscMaster";
 import TscList from "../pages/masters/tsc/TscMasterList";
 import TscEdit from "../pages/masters/tsc/TscMasterEdit";
 import TscView from "../pages/masters/tsc/TscView";
+import TscGeoMapping from "../pages/masters/tsc-geo-mapping/TscGeoMapping";
+import TscGeoMappingList from "../pages/masters/tsc-geo-mapping/TscGeoMappingList";
+import TscGeoMappingEdit from "../pages/masters/tsc-geo-mapping/TscGeoMappingEdit";
 import ScCategory from "../pages/masters/sc-category/ScCategory";
 import ScCategoryList from "../pages/masters/sc-category/ScCategoryList";
 import ScCategoryView from "../pages/masters/sc-category/ScCategoryView";
@@ -984,6 +989,11 @@ import FarmerDetailsListFromSeedAndDFL from "../pages/stake-holder/FarmerDetails
 import ConfigureRHUnitPriceAmount from "../pages/masters/ConfigureUnitPriceRH";
 import ConfiguredRHAmountList from "../pages/masters/ConfiguredRHAmountList";
 import ConfiguredRHAmountEdit from "../pages/masters/ConfiguredRHAmountEdit";
+import TrackApplicationStatus from "../pages/application-status/TrackApplicationStatus";
+import SevaSindhuApply from "../pages/sevasindhu/SevaSindhuApply";
+import SevaSindhuSimulator from "../pages/sevasindhu/SevaSindhuSimulator";
+import SevaSindhuRequests from "../pages/sevasindhu/SevaSindhuRequests";
+import SevaSindhuApplications from "../pages/sevasindhu/SevaSindhuApplications";
 import DbtApplicationStatusCheck from "../pages/direct-benefit-transfer/DbtApplicationStatusCheck";
 import DbtStatusCheckList from "../pages/masters/dbt-status-check/DbtStatusCheckList";
 import DbtStatusCheckView from "../pages/masters/dbt-status-check/DbtStatusCheckView";
@@ -1299,7 +1309,7 @@ function Router() {
     const pathname = window.location.pathname;
     const escapedBasePath = APP_BASE_PATH.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const displayAllLotPathPattern = new RegExp(`^${escapedBasePath}/display-all-lot/\\d+$`);
-    const applicationCheck = pathname === APP_ROUTES.applicationStatus;
+    const applicationCheck = pathname === APP_ROUTES.applicationStatus || pathname === APP_ROUTES.trackApplicationStatus || pathname === APP_ROUTES.sevaSindhuApply;
     const downloadSanctionOrder = pathname === APP_ROUTES.downloadSanctionOrder;
     const loginPathPattern = pathname === APP_ROUTES.login;
     console.log(pathname);
@@ -1354,6 +1364,10 @@ function Router() {
               path={APP_ROUTES.applicationStatus}
               element={<DbtApplicationStatusCheck />}
             />
+        {/* New application status tracking (Seva Sindhu) */}
+        <Route path={APP_ROUTES.trackApplicationStatus} element={<TrackApplicationStatus />} />
+        {/* Seva Sindhu citizen application (public; own session) */}
+        <Route path={APP_ROUTES.sevaSindhuApply} element={<SevaSindhuApply />} />
 
         {/* Conditional rendering for protected route */}
         {isAuthenticated && (
@@ -2720,6 +2734,11 @@ function Router() {
             {/* Helpdesk */}
             <Route path="raise-ticket" element={<RaiseTicket />} />
             <Route path="helpdesk-dashboard" element={<HelpdeskDashboard />} />
+            <Route path="unassigned-applications" element={<UnassignedApplications />} />
+            <Route path="sevasindhu-test-harness" element={<SevaSindhuTestHarness />} />
+            <Route path="sevasindhu-simulator" element={<SevaSindhuSimulator />} />
+            <Route path="sevasindhu-requests" element={<SevaSindhuRequests />} />
+            <Route path="sevasindhu-applications" element={<SevaSindhuApplications />} />
             <Route path="user-dashboard" element={<UserDashboard />} />
             <Route path="my-tickets" element={<MyTickets />} />
             <Route path="my-tickets/:id" element={<ViewMyTicket />} />
@@ -3894,6 +3913,9 @@ function Router() {
             <Route path="tsc" element={<Tsc />} />
             <Route path="tsc-list" element={<TscList />} />
             <Route path="tsc-view/:id" element={<TscView />} />
+            <Route path="tsc-geo-mapping" element={<TscGeoMapping />} />
+            <Route path="tsc-geo-mapping-list" element={<TscGeoMappingList />} />
+            <Route path="tsc-geo-mapping-edit/:id" element={<TscGeoMappingEdit />} />
             <Route path="tsc-edit/:id" element={<TscEdit />} />
             <Route
               path="sc-program-approval-mapping"

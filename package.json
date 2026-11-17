@@ -69,6 +69,7 @@
     "build": "env-cmd -f .env.test craco build",
     "build:uat": "env-cmd -f .env.uat craco build",
     "build:prod": "env-cmd -f .env.production craco build",
+    "build:aws": "env-cmd -f .env.aws craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
