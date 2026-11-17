@@ -4488,14 +4488,6 @@ function Menu() {
             />
           ) : null}
           <MenuSub>
-            {showMenu.Admin_SevaSindhu_Test_Harness ? (
-              <MenuItem>
-                <MenuItemLink
-                  text={t("Seva Sindhu Test Harness")}
-                  to="/seriui/sevasindhu-test-harness"
-                />
-              </MenuItem>
-            ) : null}
             {showMenu.Admin_Master ? (
               <MenuItem sub>
                 <MenuItemLink

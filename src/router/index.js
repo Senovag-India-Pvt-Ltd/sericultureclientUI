@@ -167,7 +167,6 @@ import AttributeFoundationCourses from "../pages/training/AttributeFoundationCou
 import RaiseTicket from "../pages/helpdesk/RaiseTicket";
 import HelpdeskDashboard from "../pages/helpdesk/HelpdeskDashboard";
 import UnassignedApplications from "../pages/helpdesk/UnassignedApplications";
-import SevaSindhuTestHarness from "../pages/admin/SevaSindhuTestHarness";
 import MyTickets from "../pages/helpdesk/MyTickets";
 import ViewMyTicket from "../pages/helpdesk/ViewMyTicket";
 
@@ -991,7 +990,6 @@ import ConfiguredRHAmountList from "../pages/masters/ConfiguredRHAmountList";
 import ConfiguredRHAmountEdit from "../pages/masters/ConfiguredRHAmountEdit";
 import TrackApplicationStatus from "../pages/application-status/TrackApplicationStatus";
 import SevaSindhuApply from "../pages/sevasindhu/SevaSindhuApply";
-import SevaSindhuSimulator from "../pages/sevasindhu/SevaSindhuSimulator";
 import SevaSindhuRequests from "../pages/sevasindhu/SevaSindhuRequests";
 import SevaSindhuApplications from "../pages/sevasindhu/SevaSindhuApplications";
 import DbtApplicationStatusCheck from "../pages/direct-benefit-transfer/DbtApplicationStatusCheck";
@@ -2735,8 +2733,6 @@ function Router() {
             <Route path="raise-ticket" element={<RaiseTicket />} />
             <Route path="helpdesk-dashboard" element={<HelpdeskDashboard />} />
             <Route path="unassigned-applications" element={<UnassignedApplications />} />
-            <Route path="sevasindhu-test-harness" element={<SevaSindhuTestHarness />} />
-            <Route path="sevasindhu-simulator" element={<SevaSindhuSimulator />} />
             <Route path="sevasindhu-requests" element={<SevaSindhuRequests />} />
             <Route path="sevasindhu-applications" element={<SevaSindhuApplications />} />
             <Route path="user-dashboard" element={<UserDashboard />} />
