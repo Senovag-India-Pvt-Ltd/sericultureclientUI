@@ -3,10 +3,25 @@ import { Link } from "react-router-dom";
 import { Icon } from "../../components";
 import "./farmer-count-summary.css";
 
-// One source for farmer counts: farmer-registration /dashboard/home-stats (the same numbers as the
-// home page Statistics panel). "Registered farmers" = all active farmers, and the three groups below
-// always add up to it -- each group is exactly what its own list page shows.
+// Farmer counts come from farmer-registration /dashboard/farmer-counts: one light pass over the
+// farmer table (the full home-stats query is too heavy to run on every list page open).
+// "Registered farmers" = all active farmers; the three groups always add up to it and each group is
+// exactly what its own list page shows. Cached for a few minutes so switching lists doesn't re-query.
 const REGISTRATION_BASE = process.env.REACT_APP_API_BASE_URL_REGISTRATION || "/farmer-registration/v1/";
+
+const CACHE_KEY = "fcs-farmer-counts";
+const CACHE_MS = 5 * 60 * 1000;
+const readCache = () => {
+  try {
+    const c = JSON.parse(sessionStorage.getItem(CACHE_KEY) || "null");
+    return c && Date.now() - c.at < CACHE_MS ? c.data : null;
+  } catch {
+    return null;
+  }
+};
+const writeCache = (data) => {
+  try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), data })); } catch { /* storage unavailable */ }
+};
 
 const fmt = (v) => {
   const n = Number(v);
@@ -21,17 +36,24 @@ const GROUPS = [
 
 /** @param {{ active: "with" | "without" | "other" }} props  the list this page shows */
 function FarmerCountSummary({ active }) {
-  const [stats, setStats] = useState(null);
+  const [stats, setStats] = useState(readCache);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
+    if (stats) return undefined;
     const controller = new AbortController();
-    fetch(`${REGISTRATION_BASE}dashboard/home-stats`, { signal: controller.signal, cache: "no-store" })
+    const timer = setTimeout(() => controller.abort(), 20000); // never leave the strip spinning
+    fetch(`${REGISTRATION_BASE}dashboard/farmer-counts`, { signal: controller.signal, cache: "no-store" })
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-      .then((d) => (d && d.error ? setFailed(true) : setStats(d)))
-      .catch((e) => e.name !== "AbortError" && setFailed(true));
-    return () => controller.abort();
-  }, []);
+      .then((d) => {
+        if (!d || d.error) { setFailed(true); return; }
+        writeCache(d);
+        setStats(d);
+      })
+      .catch(() => setFailed(true))
+      .finally(() => clearTimeout(timer));
+    return () => { clearTimeout(timer); controller.abort(); };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (failed) return null;
   const loading = !stats;
