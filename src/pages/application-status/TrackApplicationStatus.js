@@ -29,21 +29,21 @@ const SEARCH_TYPES = [
   },
   {
     id: "GSC",
-    label: "Seva Sindhu Application No.",
-    short: "Seva Sindhu No.",
-    sub: "For applications made on Seva Sindhu",
+    label: "SevaOne Application No.",
+    short: "SevaOne No.",
+    sub: "For applications made on SevaOne",
     icon: "link",
-    placeholder: "Seva Sindhu application number",
-    hint: "Only for applications submitted through Seva Sindhu.",
+    placeholder: "SevaOne application number",
+    hint: "Only for applications submitted through SevaOne.",
     inputMode: "text",
     maxLength: 50,
-    validate: (v) => (/^[A-Za-z0-9/-]{4,50}$/.test(v) ? "" : "Enter a valid Seva Sindhu application number (letters and numbers only)."),
+    validate: (v) => (/^[A-Za-z0-9/-]{4,50}$/.test(v) ? "" : "Enter a valid SevaOne application number (letters and numbers only)."),
   },
 ];
 
 // statusCategory from the backend (ApplicationStatusCategory) -> badge tone, icon and citizen message.
 const STATUS_UI = {
-  NOT_SUBMITTED: { tone: "warn", icon: "file-docs", text: "Your Seva Sindhu request has been received, but the application has not been submitted yet. Please complete it from Seva Sindhu." },
+  NOT_SUBMITTED: { tone: "warn", icon: "file-docs", text: "Your SevaOne request has been received, but the application has not been submitted yet. Please complete it from SevaOne." },
   SUBMITTED: { tone: "info", icon: "file-docs", text: "Your application has been received and is waiting to be processed." },
   IN_PROGRESS: { tone: "info", icon: "clock", text: "Your application is being processed by the department." },
   ON_HOLD: { tone: "warn", icon: "pause-circle", text: "Your application is currently on hold. Please contact your nearest Sericulture office for details." },
@@ -166,7 +166,7 @@ function ResultCard({ app }) {
 
       <dl className="as-details">
         <Detail icon="file-docs" label="Application No." value={app.arn} />
-        <Detail icon="link" label="Seva Sindhu No." value={app.gscNumber} />
+        <Detail icon="link" label="SevaOne No." value={app.gscNumber} />
         <Detail icon="user" label="Applicant" value={app.applicantName} />
         <Detail icon="building" label="Scheme" value={app.schemeName} />
         <Detail icon="layers" label="Sub-scheme" value={app.subSchemeName !== title ? app.subSchemeName : null} />

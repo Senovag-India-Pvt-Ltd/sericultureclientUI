@@ -54,23 +54,23 @@ function SevaSindhuSimulator() {
   };
 
   return (
-    <Layout title="Seva Sindhu Simulator">
+    <Layout title="SevaOne Simulator">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Seva Sindhu Simulator</Block.Title>
+            <Block.Title tag="h2">SevaOne Simulator</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
 
       <Alert variant="warning" className="mt-3">
-        <Icon name="alert-circle" /> <strong>TEST ONLY.</strong> Plays the part of Seva Sindhu: sends a citizen to e-Reshme
+        <Icon name="alert-circle" /> <strong>TEST ONLY.</strong> Plays the part of SevaOne: sends a citizen to e-Reshme
         with the URL 1 fields from Token_Based_Integration_V3. The citizen page opens in a new tab. Works only when dbt runs
         with <code>SEVASINDHU_URL1_MODE=TEST</code>.
       </Alert>
 
       <Card className="mt-3">
-        <Card.Header style={{ backgroundColor: "#0f6cbe", color: "#fff" }}>Send a citizen from Seva Sindhu (URL 1)</Card.Header>
+        <Card.Header style={{ backgroundColor: "#0f6cbe", color: "#fff" }}>Send a citizen from SevaOne (URL 1)</Card.Header>
         <Card.Body>
           <Form onSubmit={send}>
             <Row className="g-3">
@@ -132,7 +132,7 @@ function SevaSindhuSimulator() {
                 <Form.Group>
                   <Form.Label>Token *</Form.Label>
                   <Form.Control name="Token" value={data.Token} onChange={onChange} required maxLength={4000} />
-                  <Form.Text>Random test value. Not verified in TEST mode (Seva Sindhu has not shared how to verify it).</Form.Text>
+                  <Form.Text>Random test value. Not verified in TEST mode (SevaOne has not shared how to verify it).</Form.Text>
                 </Form.Group>
               </Col>
             </Row>

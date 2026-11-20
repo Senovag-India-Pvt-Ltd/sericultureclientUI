@@ -9,10 +9,10 @@ import "./sevasindhu-source.css";
 //          "notAssigned" (another officer's / unrouted application), "view" (edit pages), "error"
 
 const PILL = {
-  prefilled: { cls: "is-info", icon: "edit", text: "Pre-filled from Seva Sindhu" },
+  prefilled: { cls: "is-info", icon: "edit", text: "Pre-filled from SevaOne" },
   created: { cls: "is-ok", icon: "check-circle", text: "Application created" },
   notAssigned: { cls: "is-warn", icon: "alert-circle", text: "Not assigned to you" },
-  view: { cls: "is-ok", icon: "link", text: "Seva Sindhu application" },
+  view: { cls: "is-ok", icon: "link", text: "SevaOne application" },
   error: { cls: "is-bad", icon: "alert-circle", text: "Could not load" },
 };
 
@@ -56,7 +56,7 @@ function SevaSindhuSourceCard({ info, state = "view", message, createdLink, onVi
         <div className="ssc-hd">
           <span className="ssc-ic is-bad" aria-hidden="true"><Icon name="alert-circle" /></span>
           <div className="ssc-titles">
-            <h3>Seva Sindhu application</h3>
+            <h3>SevaOne application</h3>
             <p>{message}</p>
           </div>
         </div>
@@ -69,14 +69,14 @@ function SevaSindhuSourceCard({ info, state = "view", message, createdLink, onVi
       <div className="ssc-hd">
         <span className="ssc-ic" aria-hidden="true"><Icon name="link" /></span>
         <div className="ssc-titles">
-          <h3>Application received through Seva Sindhu</h3>
+          <h3>Application received through SevaOne</h3>
           <p>{message}</p>
         </div>
         <span className={`ssc-pill ${pill.cls}`}><Icon name={pill.icon} /> {pill.text}</span>
       </div>
 
       <div className="ssc-chips">
-        <Chip label="Seva Sindhu / EDCS reference" value={info.edcsApplicationRefNo} mono copy />
+        <Chip label="SevaOne / EDCS reference" value={info.edcsApplicationRefNo} mono copy />
         <Chip label="e-Reshme reference" value={info.referenceNo} mono copy />
         <Chip label="Applicant" value={info.beneficiary?.name || info.applicantName} />
         <Chip label="Submitted on" value={fmtDate(info.submittedAt)} />
@@ -87,7 +87,7 @@ function SevaSindhuSourceCard({ info, state = "view", message, createdLink, onVi
 
       {docs.length > 0 && (
         <div className="ssc-docs">
-          <div className="ssc-docs-hd"><Icon name="files" /> Documents received through Seva Sindhu <span>{docs.length}</span></div>
+          <div className="ssc-docs-hd"><Icon name="files" /> Documents received through SevaOne <span>{docs.length}</span></div>
           <div className="ssc-docs-grid">
             {docs.map((d) => (
               <button key={d.id} type="button" className="ssc-doc" onClick={() => onViewDocument && onViewDocument(d)} title={`View ${d.fileName}`}>

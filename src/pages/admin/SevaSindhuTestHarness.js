@@ -48,7 +48,7 @@ function SevaSindhuTestHarness() {
       errors.fruitsId = t("FRUITS ID must be FID followed by 13 digits, e.g. FID2806000049272.");
     }
     if (!data.sevaSindhuReference?.trim()) {
-      errors.sevaSindhuReference = t("Seva Sindhu Reference is required.");
+      errors.sevaSindhuReference = t("SevaOne Reference is required.");
     }
     if (!data.mobileNumber && !data.fruitsId) {
       errors.mobileNumber = t("Enter a mobile number or a FRUITS ID.");
@@ -91,11 +91,11 @@ function SevaSindhuTestHarness() {
   };
 
   return (
-    <Layout title={t("Seva Sindhu Test Harness")}>
+    <Layout title={t("SevaOne Test Harness")}>
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">{t("Seva Sindhu Test Harness")}</Block.Title>
+            <Block.Title tag="h2">{t("SevaOne Test Harness")}</Block.Title>
           </Block.HeadContent>
         </Block.HeadBetween>
       </Block.Head>
@@ -113,7 +113,7 @@ function SevaSindhuTestHarness() {
             fontSize: "13.5px",
           }}
         >
-          ⚠️ {t("TEST ONLY — this page simulates the Seva Sindhu citizen redirect for internal testing. It is not connected to any real, external Seva Sindhu system.")}
+          ⚠️ {t("TEST ONLY — this page simulates the SevaOne citizen redirect for internal testing. It is not connected to any real, external SevaOne system.")}
         </div>
 
         <Card>
@@ -157,7 +157,7 @@ function SevaSindhuTestHarness() {
                 </Col>
                 <Col lg="4">
                   <Form.Group className="form-group">
-                    <Form.Label>{t("Seva Sindhu Reference")}</Form.Label>
+                    <Form.Label>{t("SevaOne Reference")}</Form.Label>
                     <Form.Control
                       name="sevaSindhuReference"
                       value={data.sevaSindhuReference}

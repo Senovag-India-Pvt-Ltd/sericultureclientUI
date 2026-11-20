@@ -26,7 +26,7 @@ function SevaSindhuFarmerHistory({ farmerId, registrationSource }) {
       <Card.Body style={{ padding: "12px 18px" }}>
         <div className="d-flex flex-wrap align-items-center justify-content-between gap-2">
           <span>
-            <Badge bg="success" className="me-2">Registered through Seva Sindhu</Badge>
+            <Badge bg="success" className="me-2">Registered through SevaOne</Badge>
             <span className="small text-muted">
               Details were imported from FRUITS. You can correct them here; every change is recorded and the original values are kept.
             </span>

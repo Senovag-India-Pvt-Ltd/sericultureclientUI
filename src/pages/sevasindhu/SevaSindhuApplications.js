@@ -111,7 +111,7 @@ function SevaSindhuApplications() {
         e?.response?.data?.message ||
           (!e?.response ? "Could not reach the DBT service. Check that it is running, then try again."
             : status === 401 || status === 403 ? "Your session has expired or you do not have access. Please log in again."
-            : `Could not load Seva Sindhu applications (error ${status}). Please try again.`)
+            : `Could not load SevaOne applications (error ${status}). Please try again.`)
       );
     } finally {
       setLoading(false);
@@ -180,15 +180,15 @@ function SevaSindhuApplications() {
   const last = Math.min(total, (page + 1) * pageSize);
 
   return (
-    <Layout title="Seva Sindhu Applications">
+    <Layout title="SevaOne Applications">
       <div className="ssa-page">
         <section className="ssa-hero">
           <div className="ssa-hero-main">
             <span className="ssa-hero-ic" aria-hidden="true"><Icon name="link" /></span>
             <div>
-              <span className="ssa-eyebrow">Services · Seva Sindhu</span>
-              <h2>Seva Sindhu Applications</h2>
-              <p>Received from citizens through Seva Sindhu. Open one to continue it in Service Application.</p>
+              <span className="ssa-eyebrow">Services · SevaOne</span>
+              <h2>SevaOne Applications</h2>
+              <p>Received from citizens through SevaOne. Open one to continue it in Service Application.</p>
             </div>
           </div>
           <div className="ssa-hero-side">
@@ -227,7 +227,7 @@ function SevaSindhuApplications() {
           <Form onSubmit={search}>
             <div className="ssa-grid ssa-grid-main">
               <Field icon="search">
-                <Form.Control placeholder="Seva Sindhu / e-Reshme ref. / ARN" value={filters.ref} onChange={set("ref")} aria-label="Reference number" />
+                <Form.Control placeholder="SevaOne / e-Reshme ref. / ARN" value={filters.ref} onChange={set("ref")} aria-label="Reference number" />
               </Field>
               <Field icon="user-check">
                 <Form.Control placeholder="FRUITS ID" value={filters.fruitsId} onChange={set("fruitsId")} aria-label="FRUITS ID" />
@@ -313,8 +313,8 @@ function SevaSindhuApplications() {
           ) : rows.length === 0 ? (
             <div className="ssa-empty">
               <span className="ssa-empty-ic" aria-hidden="true"><Icon name="inbox" /></span>
-              <h4>No Seva Sindhu applications found</h4>
-              <p>{activeCount || applied.status ? "Try changing or clearing the filters." : "New applications from Seva Sindhu will appear here."}</p>
+              <h4>No SevaOne applications found</h4>
+              <p>{activeCount || applied.status ? "Try changing or clearing the filters." : "New applications from SevaOne will appear here."}</p>
               {(activeCount > 0 || applied.status) && <button type="button" className="ssa-btn ssa-btn-ghost" onClick={reset}>Clear filters</button>}
             </div>
           ) : (
@@ -407,8 +407,8 @@ function SevaSindhuApplications() {
           <div className="ssa-mhd-main">
             <span className="ssa-hero-ic" aria-hidden="true"><Icon name="link" /></span>
             <div>
-              <span className="ssa-eyebrow">Application received through Seva Sindhu</span>
-              <h3>{detail?.beneficiary?.name || detail?.referenceNo || "Seva Sindhu application"}</h3>
+              <span className="ssa-eyebrow">Application received through SevaOne</span>
+              <h3>{detail?.beneficiary?.name || detail?.referenceNo || "SevaOne application"}</h3>
               {detail && !detail.loading && (
                 <div className="ssa-mhd-refs">
                   <span><Icon name="link" /> {detail.edcsApplicationRefNo} <CopyButton value={detail.edcsApplicationRefNo} className="ssa-copy is-light" withText={false} /></span>
@@ -438,7 +438,7 @@ function SevaSindhuApplications() {
               </dl>
 
               <div className="ssa-section">
-                <h4><Icon name="files" /> Documents received through Seva Sindhu <span className="ssa-count">{(detail.documents || []).length}</span></h4>
+                <h4><Icon name="files" /> Documents received through SevaOne <span className="ssa-count">{(detail.documents || []).length}</span></h4>
                 {(detail.documents || []).length === 0 ? (
                   <p className="ssa-muted mb-0">No documents were attached.</p>
                 ) : (

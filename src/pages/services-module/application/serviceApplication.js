@@ -7205,7 +7205,7 @@ useEffect(() => {
       runFruitsSearch(d.fruitsId);
     })
     .catch((err) => {
-      setSevaSindhu({ loadError: err?.response?.data?.message || t("The Seva Sindhu application could not be loaded.") });
+      setSevaSindhu({ loadError: err?.response?.data?.message || t("The SevaOne application could not be loaded.") });
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [sevaSindhuApplicationId]);
@@ -7899,10 +7899,10 @@ const serviceApplicationStyles = `
               sevaSindhu.loadError
                 ? sevaSindhu.loadError
                 : sevaSindhu.serviceFormId
-                ? t("The application has been created for this Seva Sindhu reference.")
+                ? t("The application has been created for this SevaOne reference.")
                 : !sevaSindhu.canCreateApplication
-                ? t("This Seva Sindhu application is not assigned to you, or has no officer assigned yet.")
-                : t("FRUITS ID, scheme and component type are filled from Seva Sindhu. Complete the remaining details and save.")
+                ? t("This SevaOne application is not assigned to you, or has no officer assigned yet.")
+                : t("FRUITS ID, scheme and component type are filled from SevaOne. Complete the remaining details and save.")
             }
             createdLink={sevaSindhu.serviceFormId ? `/seriui/service-application-edit/${sevaSindhu.serviceFormId}` : null}
             onViewDocument={viewSevaSindhuDocument}

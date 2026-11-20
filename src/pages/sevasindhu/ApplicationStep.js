@@ -133,7 +133,7 @@ function SchemeCard({ ctx }) {
         <Detail label="Scheme" value={ctx.schemeName} />
         <Detail label="Sub-scheme" value={ctx.subSchemeName} />
         <Detail label="Component" value={ctx.componentName} />
-        <Detail label="Seva Sindhu reference" value={ctx.edcsApplicationRefNo} />
+        <Detail label="SevaOne reference" value={ctx.edcsApplicationRefNo} />
       </dl>
     </section>
   );
@@ -294,9 +294,9 @@ function DocumentsCard({ ctx, documents, setDocuments, disabled }) {
 // ------------------------------------------------------------------ done
 
 const ACK_TEXT = {
-  SENT: { tone: "ok", icon: "check-circle", text: "The acknowledgement has been sent to Seva Sindhu." },
-  PENDING: { tone: "info", icon: "clock", text: "The acknowledgement is being sent to Seva Sindhu. This can take a little while; you do not need to do anything." },
-  FAILED: { tone: "warn", icon: "alert-circle", text: "The acknowledgement could not be sent to Seva Sindhu yet. The department will send it again; your application is safely submitted." },
+  SENT: { tone: "ok", icon: "check-circle", text: "The acknowledgement has been sent to SevaOne." },
+  PENDING: { tone: "info", icon: "clock", text: "The acknowledgement is being sent to SevaOne. This can take a little while; you do not need to do anything." },
+  FAILED: { tone: "warn", icon: "alert-circle", text: "The acknowledgement could not be sent to SevaOne yet. The department will send it again; your application is safely submitted." },
 };
 
 export function DoneStep({ submitted, ctx, alreadySubmitted }) {
@@ -331,7 +331,7 @@ export function DoneStep({ submitted, ctx, alreadySubmitted }) {
         <h2 id="ss-done-title">{alreadySubmitted ? "Application already submitted" : "Application submitted successfully"}</h2>
         <p>
           {alreadySubmitted
-            ? "This Seva Sindhu application was submitted earlier. A second application is not created."
+            ? "This SevaOne application was submitted earlier. A second application is not created."
             : "Your application has been received by the Department of Sericulture."}
         </p>
         <div className="ss-refbox">
@@ -344,7 +344,7 @@ export function DoneStep({ submitted, ctx, alreadySubmitted }) {
       </div>
       <div className="ss-done-body">
       <dl className="ss-details">
-        <Detail label="Seva Sindhu reference" value={submitted.edcsApplicationRefNo} />
+        <Detail label="SevaOne reference" value={submitted.edcsApplicationRefNo} />
         <Detail label="Scheme" value={ctx && (ctx.subSchemeName || ctx.schemeName)} />
         <Detail label="Submitted on" value={when(submitted.submittedAt)} />
         <Detail label="Status" value={submitted.status || "Submitted"} />

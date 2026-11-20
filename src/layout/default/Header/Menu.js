@@ -2613,7 +2613,7 @@ function Menu() {
             {showMenu.Services_Seva_Sindhu_Applications || showMenu.Services_Service_Application ? (
               <MenuItem>
                 <MenuItemLink
-                  text={t("Seva Sindhu Applications")}
+                  text={t("SevaOne Applications")}
                   to="/seriui/sevasindhu-applications"
                 />
               </MenuItem>

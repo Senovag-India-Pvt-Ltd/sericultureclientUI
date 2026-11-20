@@ -30,7 +30,7 @@ function Shell({ children, edcs, title, subtitle }) {
             <span>Government of Karnataka · e-Reshme Portal</span>
           </div>
           {edcs && (
-            <span className="ss-chip" title="Seva Sindhu application reference">
+            <span className="ss-chip" title="SevaOne application reference">
               <Icon name="link" /> {edcs} <CopyButton value={edcs} className="ss-chip-copy" withText={false} />
             </span>
           )}
@@ -40,7 +40,7 @@ function Shell({ children, edcs, title, subtitle }) {
             <h1>{title}</h1>
             {subtitle && <p>{subtitle}</p>}
           </div>
-          <span className="ss-secure"><Icon name="shield-check" /> Secure Seva Sindhu session</span>
+          <span className="ss-secure"><Icon name="shield-check" /> Secure SevaOne session</span>
         </div>
       </header>
       <main className="ss-wrap">{children}</main>
@@ -91,7 +91,7 @@ function SevaSindhuApply() {
       }
       // 2. Reload / return within the same browser tab: reuse the session.
       if (!getSession()) {
-        setState({ phase: "error", error: { code: "NO_SESSION", message: "Please open this page from Seva Sindhu to apply for a Department of Sericulture service." } });
+        setState({ phase: "error", error: { code: "NO_SESSION", message: "Please open this page from SevaOne to apply for a Department of Sericulture service." } });
         return;
       }
       const res = await sevasindhuApi.get("request");
@@ -121,10 +121,10 @@ function SevaSindhuApply() {
 
   if (state.phase === "loading") {
     return (
-      <Shell title="Apply through Seva Sindhu" subtitle="Department of Sericulture services">
+      <Shell title="Apply through SevaOne" subtitle="Department of Sericulture services">
         <div className="ss-center" role="status" aria-live="polite">
           <span className="ss-spin dark" aria-hidden="true" />
-          <p style={{ margin: 0, color: "var(--ss-muted)" }}>Opening your Seva Sindhu application...</p>
+          <p style={{ margin: 0, color: "var(--ss-muted)" }}>Opening your SevaOne application...</p>
         </div>
       </Shell>
     );
@@ -133,7 +133,7 @@ function SevaSindhuApply() {
   if (state.phase === "error") {
     const retryable = ["NETWORK", "TIMEOUT", "SERVICE_UNAVAILABLE", "TOO_MANY_REQUESTS"].includes(state.error.code);
     return (
-      <Shell title="Apply through Seva Sindhu" subtitle="Department of Sericulture services">
+      <Shell title="Apply through SevaOne" subtitle="Department of Sericulture services">
         <section className="ss-card">
           <div className="ss-title" style={{ alignItems: "flex-start" }}>
             <span className="ss-title-ic" aria-hidden="true" style={{ background: "var(--ss-warn-bg)", color: "var(--ss-warn)" }}><Icon name="alert-circle" /></span>
@@ -146,7 +146,7 @@ function SevaSindhuApply() {
             {retryable && (
               <button type="button" className="ss-btn ss-btn-primary" onClick={load}><Icon name="reload" /> Try again</button>
             )}
-            <a className="ss-btn ss-btn-ghost" href="https://sevasindhu.karnataka.gov.in" rel="noreferrer"><Icon name="arrow-left" /> Go to Seva Sindhu</a>
+            <a className="ss-btn ss-btn-ghost" href="https://sevasindhu.karnataka.gov.in" rel="noreferrer"><Icon name="arrow-left" /> Go to SevaOne</a>
           </div>
         </section>
       </Shell>
@@ -160,7 +160,7 @@ function SevaSindhuApply() {
   return (
     <Shell
       edcs={req.edcsApplicationRefNo}
-      title="Apply through Seva Sindhu"
+      title="Apply through SevaOne"
       subtitle={`${serviceTitle || "Department of Sericulture service"}${req.assistedMode ? " · assisted application" : ""}`}
     >
       <ol className="ss-steps" aria-label="Application steps">
@@ -178,7 +178,7 @@ function SevaSindhuApply() {
           <Icon name="alert-circle" />
           <div>
             <p><strong>This service is not available online yet.</strong></p>
-            <p>The Department of Sericulture has not enabled Seva Sindhu service {req.serviceId} yet. Please contact your nearest Sericulture office.</p>
+            <p>The Department of Sericulture has not enabled SevaOne service {req.serviceId} yet. Please contact your nearest Sericulture office.</p>
           </div>
         </div>
       )}
@@ -187,12 +187,12 @@ function SevaSindhuApply() {
         <div className="ss-title">
           <span className="ss-title-ic" aria-hidden="true"><Icon name="file-docs" /></span>
           <div>
-            <h2 id="ss-req-title">Your Seva Sindhu request</h2>
-            <small>Received from Seva Sindhu. Keep the reference number for tracking.</small>
+            <h2 id="ss-req-title">Your SevaOne request</h2>
+            <small>Received from SevaOne. Keep the reference number for tracking.</small>
           </div>
         </div>
         <dl className="ss-tiles">
-          <Tile icon="link" label="Seva Sindhu reference" value={req.edcsApplicationRefNo}>
+          <Tile icon="link" label="SevaOne reference" value={req.edcsApplicationRefNo}>
             <CopyButton value={req.edcsApplicationRefNo} className="ss-tile-copy" withText={false} />
           </Tile>
           <Tile icon="layers" label="Service" value={serviceTitle} />

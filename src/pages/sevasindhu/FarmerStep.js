@@ -204,7 +204,7 @@ function RegisterForm({ fruits, onCancel, onDone }) {
 
       <h3 className="ss-h3">Contact</h3>
       {fruits.mobileFromSevaSindhu ? (
-        <Field id="ss-reg-mobile-ss" label="Mobile number" hint="Taken from your Seva Sindhu login.">
+        <Field id="ss-reg-mobile-ss" label="Mobile number" hint="Taken from your SevaOne login.">
           <input id="ss-reg-mobile-ss" className="ss-input" value={fruits.sevaSindhuMobile} readOnly aria-describedby="ss-reg-mobile-ss-hint" />
         </Field>
       ) : (
@@ -313,7 +313,7 @@ function FarmerStep({ request, onLinked, onContinue }) {
           <span className="ss-title-ic" aria-hidden="true" style={{ background: "var(--ss-ok-bg)", color: "var(--ss-ok)" }}><Icon name="user-check" /></span>
           <div>
             <h2 id="ss-farmer-title">{justRegistered ? "Registration complete" : result && result.beneficiaryType === "Reeler" ? "Registered reeler" : "You are registered with e-Reshme"}</h2>
-            <small>{justRegistered ? result.message : "Your FRUITS ID is linked to this Seva Sindhu request."}</small>
+            <small>{justRegistered ? result.message : "Your FRUITS ID is linked to this SevaOne request."}</small>
           </div>
         </div>
         <div className="ss-idpill" style={{ marginTop: 16 }}>
@@ -351,7 +351,7 @@ function FarmerStep({ request, onLinked, onContinue }) {
           <h2 id="ss-farmer-title">Your details</h2>
           <small>
             {fromSevaSindhu
-              ? "Seva Sindhu has sent your FRUITS ID. We will fetch your details from e-Reshme and FRUITS."
+              ? "SevaOne has sent your FRUITS ID. We will fetch your details from e-Reshme and FRUITS."
               : "A farmer must be registered with e-Reshme before applying. Enter your FRUITS ID to check."}
           </small>
         </div>
@@ -365,7 +365,7 @@ function FarmerStep({ request, onLinked, onContinue }) {
               <small>FRUITS ID</small>
               <strong>{request.fruitsId}</strong>
             </div>
-            <span className="ss-idpill-tag"><Icon name="shield-check" /> From Seva Sindhu</span>
+            <span className="ss-idpill-tag"><Icon name="shield-check" /> From SevaOne</span>
           </div>
         ) : (
           <Field id="ss-fid" label="FRUITS ID" required error={touched ? fieldError : ""} hint="Printed on your FRUITS registration, e.g. FID2806000049272.">
@@ -375,7 +375,7 @@ function FarmerStep({ request, onLinked, onContinue }) {
           </Field>
         )}
         {fromSevaSindhu && (
-          <p className="ss-hint">To apply with a different FRUITS ID, start a new application in Seva Sindhu.</p>
+          <p className="ss-hint">To apply with a different FRUITS ID, start a new application in SevaOne.</p>
         )}
         <div className="ss-actions">
           <button type="submit" className="ss-btn ss-btn-primary ss-btn-lg" disabled={busy} aria-busy={busy}>

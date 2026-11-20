@@ -40,7 +40,7 @@ function SevaSindhuRequests() {
       const res = await api.get(BASE, { params: { page, size } });
       setData(res.data);
     } catch (e) {
-      setError("Could not load Seva Sindhu requests. Please try again.");
+      setError("Could not load SevaOne requests. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -54,7 +54,7 @@ function SevaSindhuRequests() {
       const res = await api.post(`${BASE}/${row.id}/push-again`);
       await Swal.fire({
         icon: res.data.sent ? "success" : "warning",
-        title: res.data.sent ? "Sent to Seva Sindhu" : "Not sent",
+        title: res.data.sent ? "Sent to SevaOne" : "Not sent",
         text: res.data.message,
       });
       load();
@@ -81,11 +81,11 @@ function SevaSindhuRequests() {
   const pages = Math.max(1, Math.ceil(total / size));
 
   return (
-    <Layout title="Seva Sindhu Requests">
+    <Layout title="SevaOne Requests">
       <Block.Head>
         <Block.HeadBetween>
           <Block.HeadContent>
-            <Block.Title tag="h2">Seva Sindhu Requests</Block.Title>
+            <Block.Title tag="h2">SevaOne Requests</Block.Title>
           </Block.HeadContent>
           <Block.HeadContent>
             <Button variant="primary" onClick={load} disabled={loading}><Icon name="reload" /> Refresh</Button>
@@ -95,7 +95,7 @@ function SevaSindhuRequests() {
 
       {data && !data.pushConfigured && (
         <Alert variant="warning" className="mt-3">
-          <Icon name="alert-circle" /> Sending acknowledgements to Seva Sindhu is not configured on this server
+          <Icon name="alert-circle" /> Sending acknowledgements to SevaOne is not configured on this server
           (SEVASINDHU_DEPT_UPDATE_USERNAME / SEVASINDHU_DEPT_UPDATE_PASSWORD). Submitted applications stay <strong>Pending</strong> until it is.
         </Alert>
       )}
@@ -107,13 +107,13 @@ function SevaSindhuRequests() {
             <Table hover className="mb-0 align-middle" size="sm">
               <thead>
                 <tr>
-                  <th>Seva Sindhu ref.</th>
+                  <th>SevaOne ref.</th>
                   <th>Service</th>
                   <th>Received</th>
                   <th>Progress</th>
                   <th>FRUITS ID</th>
                   <th>ARN</th>
-                  <th>Acknowledgement to Seva Sindhu</th>
+                  <th>Acknowledgement to SevaOne</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -122,7 +122,7 @@ function SevaSindhuRequests() {
                   <tr><td colSpan={8} className="text-center py-4"><Spinner size="sm" /> Loading...</td></tr>
                 )}
                 {!loading && rows.length === 0 && (
-                  <tr><td colSpan={8} className="text-center py-4 text-muted">No requests from Seva Sindhu yet.</td></tr>
+                  <tr><td colSpan={8} className="text-center py-4 text-muted">No requests from SevaOne yet.</td></tr>
                 )}
                 {rows.map((r) => {
                   const [rv, rl] = REQ_BADGE[r.requestStatus] || ["secondary", r.requestStatus];

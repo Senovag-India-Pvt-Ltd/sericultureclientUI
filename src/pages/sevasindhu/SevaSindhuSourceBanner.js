@@ -37,7 +37,7 @@ function SevaSindhuSourceBanner({ serviceFormId, applicationFormId }) {
     <SevaSindhuSourceCard
       info={info}
       state="view"
-      message="This application came from Seva Sindhu. The citizen's documents are listed below and in the application's document list."
+      message="This application came from SevaOne. The citizen's documents are listed below and in the application's document list."
       onViewDocument={view}
     />
   );
