@@ -14,6 +14,8 @@ import { createTheme } from "react-data-table-component";
 import ReactSelect from "react-select";
 import api from "../../../../src/services/auth/api";
 import SevaSindhuSourceCard from "../../sevasindhu/SevaSindhuSourceCard";
+import IncentiveReconciliationPanel from "./IncentiveReconciliationPanel";
+import ReelerIncentiveEligibilityPanel from "./ReelerIncentiveEligibilityPanel";
 import React, { useMemo } from "react";
 import {
   getFinancialYearMonths,
@@ -771,6 +773,20 @@ const [scSubSchemeDetailsListData, setScSubSchemeDetailsListData] = useState(
 
  // State to store incentive and bonus data
 const [getIncentiveAndBonusData, setIncentiveAndBonusData] = useState([]);
+// SV-018: CRC sale / rearing record / market sale reconciliation of incentive and bonus claims
+const [reconciliation, setReconciliation] = useState(null);
+const [reconciliationRemarks, setReconciliationRemarks] = useState("");
+const isIncentiveOrBonusScheme = ["2", "3"].includes(String(getIncentiveAndBonusData[0]?.subSchemeType ?? ""));
+// SV-024: reeler silk incentive covers only eligible raw silk sales
+const [silkEligibility, setSilkEligibility] = useState(null);
+const isSilkIncentivePsf = getIncentiveAndBonusData?.[0]?.calculationBasedOn === "Silk Incentive-PSF";
+// same claimed month as the save payload ("APRIL 2026" or "JANUARY-MARCH")
+const silkClaimMonth =
+  isMonthlyPaymentFrequency(getIncentiveAndBonusData?.[0]) && data.monthYear
+    ? data.monthYear
+    : isSilkIncentivePsf && data.fromMonth && data.toMonth
+      ? `${data.fromMonth}-${data.toMonth}`
+      : data.month;
 const [isSanctionForReeling, setIsSanctionForReeling] = useState(false);
 const [armCalculationData, setArmCalculationData] = useState([]);
 const [armTalukListData, setArmTalukListData] = useState([]);
@@ -4766,6 +4782,34 @@ const isUserValid = React.useMemo(() => {
       return; // Exit if the form is not valid
     }
 
+    // SV-018: a CRC sale / rearing record / market sale discrepancy needs the officer's remarks
+    if (isIncentiveOrBonusScheme && reconciliation?.status === "DISCREPANCY" && !reconciliationRemarks.trim()) {
+      Swal.fire({
+        icon: "warning",
+        title: t("Records do not match"),
+        text: t("The CRC sale, rearing record and market sale do not match. Review the discrepancies and enter your remarks before saving."),
+        confirmButtonColor: "#1e67a8",
+      }).then(() => {
+        const panel = document.getElementById("incentive-reconciliation");
+        if (panel) panel.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+      return;
+    }
+
+    // SV-024: the silk incentive can be claimed only for eligible raw silk sales
+    if (isSilkIncentivePsf && silkEligibility?.status === "NOT_ELIGIBLE") {
+      Swal.fire({
+        icon: "warning",
+        title: t("Raw silk sales not eligible"),
+        text: t(silkEligibility.message || "Some raw silk sales are not eligible. Remove or correct them before saving."),
+        confirmButtonColor: "#1e67a8",
+      }).then(() => {
+        const panel = document.getElementById("reeler-incentive-eligibility");
+        if (panel) panel.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+      return;
+    }
+
     // All schemes: Calculate Unit Price must be clicked and amount must not be 0/empty
     const _unitPrice = Number(amountValue.unitPrice);
     if (!unitPriceCalculated || !amountValue.unitPrice || _unitPrice === 0) {
@@ -5405,6 +5449,8 @@ const isUserValid = React.useMemo(() => {
       userMasterId: data.userId,
       farmerId: data.farmerId,
       fruitsId: data.fruitsId,
+      // SV-018: officer's justification when the CRC / field / market records do not match
+      reconciliationRemarks: isIncentiveOrBonusScheme && reconciliation?.status === "DISCREPANCY" ? reconciliationRemarks.trim() : null,
       payToVendor: equipment.payToVendor,
       headOfAccountId: data.scHeadAccountId,
       schemeId: data.scSchemeDetailsId,
@@ -6433,6 +6479,9 @@ const isUserValid = React.useMemo(() => {
     setLandDetailsList([]);
     setShowFarmerDetails(false);
     setShowReelerDetails(false);
+    setReconciliation(null);
+    setReconciliationRemarks("");
+    setSilkEligibility(null);
     // setDisabled(false);
   };
 
@@ -10153,6 +10202,16 @@ const serviceApplicationStyles = `
                         <div className="mt-2 mb-2">
                           <Button variant="secondary" size="sm" onClick={addSilkIncentiveRow}>+ {t("Add Row")}</Button>
                         </div>
+                        {isSilkIncentivePsf && (
+                          <ReelerIncentiveEligibilityPanel
+                            fruitsId={data.fruitsId}
+                            month={silkClaimMonth}
+                            periodFrom={data.periodFrom}
+                            periodTo={data.periodTo}
+                            rows={silkIncentiveList}
+                            onResult={setSilkEligibility}
+                          />
+                        )}
 
                   </Card.Body>
                 </Card>
@@ -12926,6 +12985,20 @@ const serviceApplicationStyles = `
                     </Card>
                   </Block>
                 )}
+
+              {isIncentiveOrBonusScheme && !isSanctionForReeling && data.fruitsId && data.transactionDate && (
+                <IncentiveReconciliationPanel
+                  fruitsId={data.fruitsId}
+                  marketId={data.marketId}
+                  transactionDate={data.transactionDate}
+                  lotNo={data.lotNo}
+                  raceId={data.raceId}
+                  subSchemeId={data.scSubSchemeDetailsId}
+                  remarks={reconciliationRemarks}
+                  onRemarksChange={setReconciliationRemarks}
+                  onResult={setReconciliation}
+                />
+              )}
 
               <div className="gap-col">
                 <ul className="d-flex align-items-center justify-content-center gap g-3">

@@ -21,6 +21,8 @@ import { useEffect } from "react";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import api from "../../../services/auth/api";
+import { useReconciliationFlags, reconciliationColumn } from "./ReconciliationFlag";
+import { useKsrsacFlags } from "./KsrsacFlag";
 import ReactSelect from "react-select";
 import { useTranslation } from "react-i18next";
 import { reference } from "@popperjs/core";
@@ -39,6 +41,12 @@ function DashboardReportList() {
    const { t } = useTranslation();
   const { id } = useParams();
   const [listData, setListData] = useState({});
+  // SV-018: CRC sale / rearing record / market sale check stored with each incentive application
+  const reconciliationFlags = useReconciliationFlags(listData);
+  // IN-009: open the pre-inspection corner / centre photos of a case
+  const navigateTo = useNavigate();
+  // IN-010: KSRSAC location flag of those photos
+  const ksrsacFlags = useKsrsacFlags(listData);
   const [page, setPage] = useState(0);
   const countPerPage = 35;
   const [totalRows, setTotalRows] = useState(0);
@@ -5337,6 +5345,7 @@ const allowedSchemes = [
       hide: "md",
       wrap: true,
     },
+    reconciliationColumn(reconciliationFlags, t),
     {
       name: "Component",
       selector: (row) => row.componentName,
@@ -5375,6 +5384,24 @@ const allowedSchemes = [
           >
             View
           </button>
+          {row.inspection && (
+            <button
+              style={{
+                ..._btnBase,
+                background: ksrsacFlags[row.applicationDocumentId]?.ksrsacStatus === "MISMATCH" ? "#c43257" : "#b45309",
+                color: "#fff",
+              }}
+              onClick={() => navigateTo(`/seriui/pre-inspection-photos/${row.applicationDocumentId}`)}
+              title={
+                ksrsacFlags[row.applicationDocumentId]?.ksrsacStatus === "MISMATCH"
+                  ? t("KSRSAC: a photo location does not match the survey parcel")
+                  : t("Pre-inspection corner and centre photos")
+              }
+            >
+              📷 {t("Photos")}
+              {ksrsacFlags[row.applicationDocumentId]?.ksrsacStatus === "MISMATCH" ? " · KSRSAC ⚠" : ""}
+            </button>
+          )}
         </div>
       ),
       sortable: false,

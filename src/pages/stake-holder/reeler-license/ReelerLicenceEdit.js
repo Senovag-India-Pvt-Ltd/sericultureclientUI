@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import { Icon } from "../../../components";
 import api from "../../../services/auth/api";
 import { useTranslation } from "react-i18next";
+import ReelerRepresentatives from "./ReelerRepresentatives";
 
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
@@ -1759,6 +1760,9 @@ function ReelerLicenceEdit() {
                       </Form.Group>
                     </Col>
                   </Row>
+                  <div className="mt-4">
+                    <ReelerRepresentatives reelerId={id} />
+                  </div>
                 </Card.Body>
               </Card>
             </Block>

@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import api from "../../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
+import ReelerRepresentatives from "./ReelerRepresentatives";
 
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -535,6 +536,11 @@ const clear = () => {
                           />
                         </Col>
                       </Row>
+                      {reeler.reelerId && (
+                        <div className="mt-4">
+                          <ReelerRepresentatives reelerId={reeler.reelerId} readOnly />
+                        </div>
+                      )}
                     </Card.Body>
                   </Card>
                 </Col>

@@ -4,13 +4,14 @@ import Layout from "../../../layout/default";
 import Block from "../../../components/Block/Block";
 // import DatePicker from "../../../components/Form/DatePicker";
 import DatePicker from "react-datepicker";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 // import axios from "axios";
 import { Icon } from "../../../components";
 import api from "../../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
+import ReelerRepresentatives, { saveReelerRepresentatives } from "./ReelerRepresentatives";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -19,6 +20,9 @@ const baseURLFarmer = process.env.REACT_APP_API_BASE_URL_REGISTRATION_FRUITS;
 function NewReelerLicense() {
   // Translation
   const { t, i18n } = useTranslation();
+  // SR-013: representatives collected on this page, saved after the reeler is created
+  const [representatives, setRepresentatives] = useState([]);
+  const repWarningRef = useRef("");
   // Same page for both Registration > Reeler License menu items; the "Without License"
   // menu link adds ?licenseType=without to this URL, which skips the mandatory
   // validation on a few license-specific fields below.
@@ -144,6 +148,7 @@ function NewReelerLicense() {
 
   const clear = (event) => {
     setDisable(false);
+    setRepresentatives([]);
     setData({
       fruitsId: "",
       reelerName: "",
@@ -519,35 +524,46 @@ function NewReelerLicense() {
             saveReelerError(reelerError);
           } else {
             const arnNumber = response.data.content.arnNumber;
-            if (vbAccountList.length > 0) {
-              const reelerId = response.data.content.reelerId;
-              vbAccountList.forEach((list) => {
-                const updatedVb = {
-                  ...list,
-                  reelerId: reelerId,
-                };
-                api
-                  .post(baseURL + `reeler-virtual-bank-account/add`, updatedVb)
-                  .then((response) => {
-                    if (response.data.content.error) {
-                      const bankError = response.data.content.error_description;
-                      saveReelerError(bankError);
-                    } else {
-                      saveSuccess(arnNumber, updatedData.reelerNumber);
-                    }
-                  })
-                  .catch((err) => {
-                    setVbAccount({});
-                    if (
-                      Object.keys(err.response.data.validationErrors).length > 0
-                    ) {
-                      saveError(err.response.data.validationErrors);
-                    }
-                  });
-              });
-            } else {
-              saveSuccess(arnNumber, updatedData.reelerNumber);
-            }
+            const reelerId = response.data.content.reelerId;
+            // SR-013: representatives are saved before the success popup, which navigates away when closed.
+            const repSave =
+              representatives.length > 0 && reelerId
+                ? saveReelerRepresentatives(reelerId, representatives)
+                : Promise.resolve([]);
+            return repSave.then((repErrors) => {
+              repWarningRef.current =
+                repErrors.length > 0
+                  ? `<div style="margin-top:12px;color:#b26a00">${t("Some representatives were not saved")}:<br/>${repErrors.join("<br/>")}<br/>${t("You can add them from Reeler Edit.")}</div>`
+                  : "";
+              if (vbAccountList.length > 0) {
+                vbAccountList.forEach((list) => {
+                  const updatedVb = {
+                    ...list,
+                    reelerId: reelerId,
+                  };
+                  api
+                    .post(baseURL + `reeler-virtual-bank-account/add`, updatedVb)
+                    .then((response) => {
+                      if (response.data.content.error) {
+                        const bankError = response.data.content.error_description;
+                        saveReelerError(bankError);
+                      } else {
+                        saveSuccess(arnNumber, updatedData.reelerNumber);
+                      }
+                    })
+                    .catch((err) => {
+                      setVbAccount({});
+                      if (
+                        Object.keys(err.response.data.validationErrors).length > 0
+                      ) {
+                        saveError(err.response.data.validationErrors);
+                      }
+                    });
+                });
+              } else {
+                saveSuccess(arnNumber, updatedData.reelerNumber);
+              }
+            });
           }
         })
         .catch((err) => {
@@ -884,6 +900,7 @@ function NewReelerLicense() {
     html: `
       Generated ARN Number: <b>${arn}</b><br/>
       Reeler Number: <b>${reelerNumber}</b>
+      ${repWarningRef.current || ""}
     `,
   }).then(() => navigate("/seriui/reeler-license-list"));
 };
@@ -1803,6 +1820,9 @@ function NewReelerLicense() {
                       </Row>
                     </Col>
                   </Row>
+                  <div className="mt-4">
+                    <ReelerRepresentatives value={representatives} onChange={setRepresentatives} />
+                  </div>
                 </Card.Body>
               </Card>
             </Block>

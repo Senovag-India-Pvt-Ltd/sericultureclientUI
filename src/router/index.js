@@ -361,6 +361,7 @@ import GenerateBiddingSlip from "../pages/market-and-auction/GenerateBiddingSlip
 import Weighment from "../pages/market-and-auction/Weighment";
 import ReadyForPayment from "../pages/market-and-auction/ReadyForPayment";
 import BankStatement from "../pages/market-and-auction/BankStatement";
+import LegacyMarketTransactions from "../pages/market-and-auction/LegacyMarketTransactions";
 import BulkSendToBank from "../pages/market-and-auction/BulkSendToBank";
 import IfscUpdate from "../pages/market-and-auction/IfscUpdate";
 import ReelerDeviceMapping from "../pages/masters/reeler-device-mapping/ReelerDeviceMapping";
@@ -892,6 +893,7 @@ import InspectionTypeList from "../pages/masters/inspection-type/InspectionTypeL
 import InspectionTypeView from "../pages/masters/inspection-type/InspectionTypeView";
 import InspectionTypeEdit from "../pages/masters/inspection-type/InspectionTypeEdit";
 import DashboardReportList from "../pages/services-module/application-component/DashboardReportList";
+import PreInspectionPhotos from "../pages/services-module/application-component/PreInspectionPhotos";
 import WithoutFruitsIdStakeHolderEdit from "../pages/stake-holder/WithoutFruitsIdStakeHolderEdit";
 import Spacing from "../pages/masters/spacing/Spacing";
 import SpacingEdit from "../pages/masters/spacing/SpacingEdit";
@@ -1904,6 +1906,10 @@ function Router() {
             <Route
               path="dashboard-report-list/:id"
               element={<DashboardReportList />}
+            />
+            <Route
+              path="pre-inspection-photos/:applicationId"
+              element={<PreInspectionPhotos />}
             />
             <Route
               path="multiple-sanction-order-list"
@@ -4244,6 +4250,7 @@ function Router() {
               element={<ReadyForPaymentForSeedMarket />}
             />
             <Route path="bank-statement" element={<BankStatement />} />
+            <Route path="legacy-market-transactions" element={<LegacyMarketTransactions />} />
             <Route
               path="payment-statement-for-seed-market"
               element={<PaymentStatementForSeedMarket />}

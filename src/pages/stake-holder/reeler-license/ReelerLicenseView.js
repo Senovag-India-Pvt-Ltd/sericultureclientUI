@@ -8,6 +8,7 @@ import ReelerLicenseDatas from "../../../store/reeler-license/ReelerLicenseData"
 // import axios from "axios";
 import api from "../../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
+import ReelerRepresentatives from "./ReelerRepresentatives";
 
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -367,6 +368,9 @@ function ReelerLicenseView() {
                   <span style={{ color: "#9ca3af", fontSize: "12px" }}>No document uploaded</span>
                 )}
               </div>
+            </div>
+            <div className="mt-4">
+              <ReelerRepresentatives reelerId={id} readOnly />
             </div>
           </Card.Body>
         </Card>

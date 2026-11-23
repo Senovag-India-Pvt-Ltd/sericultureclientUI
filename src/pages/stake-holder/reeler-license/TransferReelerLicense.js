@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import api from "../../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
+import ReelerRepresentatives, { saveReelerRepresentatives } from "./ReelerRepresentatives";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
@@ -17,6 +18,8 @@ const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
 function TransferReelerLicense() {
   // Translation
   const { t, i18n } = useTranslation();
+  // SR-013: representatives of the new licence holder (the old holder's agents are not carried over)
+  const [representatives, setRepresentatives] = useState([]);
   const [data, setData] = useState({
     reelerName: "",
     wardNumber: "",
@@ -132,9 +135,23 @@ function TransferReelerLicense() {
           ...data,
           transferReelerId: data.reelerId,
         })
-        .then((response) => {
+        .then(async (response) => {
           if (!response.data.content.error) {
-            saveSuccess(response.data.content.arnNumber);
+            // SR-013: representatives of the new licence holder, saved against the new reeler record
+            const newReelerId = response.data.content.reelerId;
+            const repErrors = representatives.length > 0 && newReelerId
+              ? await saveReelerRepresentatives(newReelerId, representatives)
+              : [];
+            if (repErrors.length > 0) {
+              Swal.fire({
+                icon: "warning",
+                title: "Saved successfully",
+                html: `${response.data.content.arnNumber || ""}<div style="margin-top:12px;color:#b26a00">${t("Some representatives were not saved")}:<br/>${repErrors.join("<br/>")}<br/>${t("You can add them from Reeler Edit.")}</div>`,
+              });
+            } else {
+              setRepresentatives([]);
+              saveSuccess(response.data.content.arnNumber);
+            }
             api
               .delete(baseURL2 + `reeler/delete/${data.reelerId}`)
               .then((response) => {})
@@ -161,6 +178,7 @@ function TransferReelerLicense() {
   };
 
   const clear = () => {
+    setRepresentatives([]);
     setData({
       reelerName: "",
       wardNumber: "",
@@ -1264,6 +1282,9 @@ function TransferReelerLicense() {
                       </Form.Group> */}
                     </Col>
                   </Row>
+                  <div className="mt-4">
+                    <ReelerRepresentatives value={representatives} onChange={setRepresentatives} />
+                  </div>
                 </Card.Body>
               </Card>
             </Block>

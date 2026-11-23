@@ -11,6 +11,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import api from "../../../../src/services/auth/api";
+import { useReconciliationFlags, reconciliationColumn } from "./ReconciliationFlag";
 import ViewAllApplication from "./ViewAllApplication";
 
 const baseURLMasterData = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -129,6 +130,8 @@ const SanctionOrderGeneration = () => {
   }, []);
 
   const [listData, setListData] = useState({});
+  // SV-018: CRC sale / rearing record / market sale check stored with each incentive application
+  const reconciliationFlags = useReconciliationFlags(listData);
   const [page, setPage] = useState(0);
   const countPerPage = 500;
   const [totalRows, setTotalRows] = useState(0);
@@ -614,6 +617,7 @@ const SanctionOrderGeneration = () => {
       sortable: true,
       hide: "md",
     },
+    reconciliationColumn(reconciliationFlags),
     // {
     //   name: "Minimum Quantity",
     //   selector: (row) => row.minQty,
