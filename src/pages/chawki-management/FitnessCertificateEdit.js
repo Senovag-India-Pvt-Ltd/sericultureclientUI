@@ -1,5 +1,5 @@
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import { Icon } from "../../components";
@@ -141,6 +141,19 @@ function FitnessCertificateEdit() {
         setSearchLoading(false);
       });
   };
+
+  // Opened from Farmer Indent: pre-fill FRUITS ID and search once
+  const { state: fiPrefill } = useLocation();
+  const fiPrefillDone = useRef(false);
+  useEffect(() => {
+    if (fiPrefill?.fruitsId) setFarmer({ select: "fruitsId", text: fiPrefill.fruitsId });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (fiPrefill?.fruitsId && !fiPrefillDone.current && farmer.text === fiPrefill.fruitsId) {
+      fiPrefillDone.current = true;
+      searchFarmer({ currentTarget: { checkValidity: () => true }, preventDefault: () => {}, stopPropagation: () => {} });
+    }
+  }, [farmer.text]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadFitnessList = (farmerId) => {
     setListLoading(true);

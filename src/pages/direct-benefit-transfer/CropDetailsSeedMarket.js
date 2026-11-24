@@ -1,6 +1,6 @@
 import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DatePicker from "react-datepicker";
@@ -367,12 +367,26 @@ function CropDetailsForSeedMarket() {
           }
         })
         .catch((err) => {
-          if (Object.keys(err.response.data.validationErrors).length > 0) {
-            saveError(err.response.data.validationErrors);
+          const validationErrors = err.response?.data?.validationErrors;
+          if (validationErrors && Object.keys(validationErrors).length > 0) {
+            saveError(validationErrors);
           }
         });
     }
   };
+
+  // Opened from Farmer Indent → Harvest: pre-fill FRUITS ID and search once
+  const { state: fiPrefill } = useLocation();
+  const fiPrefillDone = useRef(false);
+  useEffect(() => {
+    if (fiPrefill?.fruitsId) setData((prev) => ({ ...prev, fruitsId: fiPrefill.fruitsId }));
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (fiPrefill?.fruitsId && !fiPrefillDone.current && data.fruitsId === fiPrefill.fruitsId) {
+      fiPrefillDone.current = true;
+      search({ currentTarget: { checkValidity: () => true }, preventDefault: () => {}, stopPropagation: () => {} });
+    }
+  }, [data.fruitsId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // to get Market
   const [marketListData, setMarketListData] = useState([]);
