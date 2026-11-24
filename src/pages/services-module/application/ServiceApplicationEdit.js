@@ -2633,6 +2633,18 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                   <span>{t("Service Application List")}</span>
                 </Link>
               </li>
+              {/* SR-012: reopen the reeler profile this subsidy belongs to */}
+              {data.reelerId ? (
+                <li className="ms-2">
+                  <Link
+                    to={`/seriui/reeler-license-view/${data.reelerId}`}
+                    className="btn btn-outline-primary d-inline-flex sh-cta-btn"
+                  >
+                    <Icon name="user" />
+                    <span>{t("Open Reeler Profile")}</span>
+                  </Link>
+                </li>
+              ) : null}
             </ul>
           </Block.HeadContent>
         </Block.HeadBetween>

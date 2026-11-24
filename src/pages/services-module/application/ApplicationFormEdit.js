@@ -264,6 +264,7 @@ useEffect(() => {
 }, [schemeId]);
         
 
+  const [profileReelerId, setProfileReelerId] = useState(null); // SR-012
   const [farmerDetails, setFarmerDetails] = useState({
     farmerName: "",
     hobli: "",
@@ -486,6 +487,7 @@ useEffect(() => {
           return;
         }
 
+        setProfileReelerId(reeler.reelerId); // SR-012: "Open Reeler Profile"
         setFarmerDetails((prev) => ({
           ...prev,
           farmerName: reeler.reelerName || "",
@@ -2333,6 +2335,18 @@ const[applicationFormId ,setApplicationFormId] = useState ("");
                   <span>{t("DBT Rejected Applications")}</span>
                 </Link>
               </li>
+              {/* SR-012: reopen the reeler profile this subsidy belongs to */}
+              {profileReelerId ? (
+                <li>
+                  <Link
+                    to={`/seriui/reeler-license-view/${profileReelerId}`}
+                    className="btn d-inline-flex align-items-center gap-2 px-4 py-2 rounded-pill shadow-sm btn-outline-primary"
+                  >
+                    <Icon name="user" />
+                    <span>{t("Open Reeler Profile")}</span>
+                  </Link>
+                </li>
+              ) : null}
             </ul>
 
 

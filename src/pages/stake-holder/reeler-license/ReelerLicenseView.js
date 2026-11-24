@@ -9,6 +9,7 @@ import ReelerLicenseDatas from "../../../store/reeler-license/ReelerLicenseData"
 import api from "../../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
 import ReelerRepresentatives from "./ReelerRepresentatives";
+import ReelerBenefitHistory from "./ReelerBenefitHistory";
 
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
@@ -539,6 +540,17 @@ function ReelerLicenseView() {
                 <p className="mt-2 mb-0">{t("No records found")}</p>
               </div>
             )}
+          </Card.Body>
+        </Card>
+
+        {/* SR-012: subsidy / benefit history of this reeler */}
+        <Card className="sh-section-card mt-3">
+          <Card.Header className="sh-section-header">
+            <Icon name="coins" />
+            <span>{t("Benefit / Subsidy History")}</span>
+          </Card.Header>
+          <Card.Body>
+            <ReelerBenefitHistory reelerId={id} />
           </Card.Body>
         </Card>
       </Block>
