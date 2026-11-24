@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
 import FarmerRepresentatives from "./FarmerRepresentatives";
+import FarmerFieldInspections from "./FarmerFieldInspections";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
@@ -772,6 +773,18 @@ function StakeHolderViewPage() {
           </Card.Header>
           <Card.Body>
             <FarmerRepresentatives farmerId={id} readOnly />
+          </Card.Body>
+        </Card>
+
+        {/* SR-007: GPS-tagged field inspections of the farm / rearing house */}
+        <Card className="sh-section-card mt-3">
+          <Card.Header className="sh-section-header">
+            <span className="sh-section-accent" />
+            <Icon name="map-pin" className="me-2" />
+            {t("Field Inspections & GPS Location")}
+          </Card.Header>
+          <Card.Body>
+            <FarmerFieldInspections farmerId={id} />
           </Card.Body>
         </Card>
       </Block>
