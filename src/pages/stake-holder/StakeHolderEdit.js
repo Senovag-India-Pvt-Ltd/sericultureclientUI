@@ -2,6 +2,7 @@ import { Card, Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import SevaSindhuFarmerHistory from "./SevaSindhuFarmerHistory";
+import FarmerRepresentatives from "./FarmerRepresentatives";
 import Layout from "../../layout/default";
 import Block from "../../components/Block/Block";
 import DatePicker from "react-datepicker";
@@ -3864,6 +3865,17 @@ function StakeHolderEdit() {
             </div>
           </Row>
         </Form>
+
+        {/* SR-005: authorised agents of the farmer - saved on their own, outside the farmer form */}
+        <Card className="sh-section-card mt-3">
+          <Card.Header className="sh-section-header">
+            <Icon name="users" className="me-2" />
+            {t("Authorised Agents / Representatives")}
+          </Card.Header>
+          <Card.Body>
+            <FarmerRepresentatives farmerId={id} />
+          </Card.Body>
+        </Card>
       </Block>
 
       <Modal show={showModal} onHide={handleCloseModal} size="lg" centered contentClassName="sh-modal-content">

@@ -277,6 +277,48 @@ function BiddingSlip() {
   });
   console.log(data);
 
+  // SR-005: optional "brought by authorised agent". Kept outside `data` so the auction/allot request is unchanged;
+  // the agent is linked to the new transaction by a separate call after a successful e-Inward.
+  const [agents, setAgents] = useState([]);
+  const [agentId, setAgentId] = useState("");
+  useEffect(() => {
+    setAgentId("");
+    if (!data.farmerId) {
+      setAgents([]);
+      return;
+    }
+    api
+      .get(baseURL2 + `farmer-representative/get-by-farmer-id/${data.farmerId}`)
+      .then((res) =>
+        setAgents(
+          (res.data?.content?.farmerRepresentative || []).filter((a) => a.authorisedToday)
+        )
+      )
+      .catch(() => setAgents([]));
+  }, [data.farmerId]);
+
+  const linkAgent = (transactionId, farmerRepresentativeId) => {
+    api
+      .post(baseURL + `farmer-agent-txn/link`, { transactionId, farmerRepresentativeId: Number(farmerRepresentativeId) })
+      .then((res) => {
+        if (res.data?.errorCode === -1) {
+          Swal.fire({
+            icon: "warning",
+            title: t("e-Inward saved, but the agent was not linked"),
+            text: res.data.errorMessages?.[0],
+            customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
+          });
+        }
+      })
+      .catch(() =>
+        Swal.fire({
+          icon: "warning",
+          title: t("e-Inward saved, but the agent was not linked"),
+          customClass: { popup: "sh-swal-popup", confirmButton: "sh-swal-confirm" },
+        })
+      );
+  };
+
   const { id } = useParams();
   // const [data] = useState(EducationDatas);
   // const [farmerDetails, setFarmerDetails] = useState({});
@@ -348,6 +390,9 @@ function BiddingSlip() {
         const response = await api.post(baseURL + `auction/allot`, {...data,godownId:addGodown});
         if (response.data.errorCode === 0) {
           setSourceData(response.data.content);
+          if (agentId && response.data.content.transactionId) {
+            linkAgent(response.data.content.transactionId, agentId); // SR-005
+          }
           increment(response.data.content.farmerId);
           if (response.data.content.allotedLotList) {
             setAllotedLotList(response.data.content.allotedLotList);
@@ -1191,6 +1236,33 @@ function BiddingSlip() {
                               </Col>
                             </Form.Group>
                           </div>
+
+                          {/* SR-005: shown only when the farmer has agents authorised today */}
+                          {agents.length > 0 && (
+                            <Form.Group
+                              as={Row}
+                              className="form-group mt-1"
+                              id="farmerAgent"
+                            >
+                              <Form.Label column sm={4}>
+                                {t("Brought by")}
+                              </Form.Label>
+                              <Col sm={8}>
+                                <Form.Select
+                                  name="farmerRepresentativeId"
+                                  value={agentId}
+                                  onChange={(e) => setAgentId(e.target.value)}
+                                >
+                                  <option value="">{t("Farmer in person")}</option>
+                                  {agents.map((a) => (
+                                    <option key={a.farmerRepresentativeId} value={a.farmerRepresentativeId}>
+                                      {t("Agent")}: {a.name} ({a.mobileNumber}){a.relationshipName ? ` - ${a.relationshipName}` : ""}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                              </Col>
+                            </Form.Group>
+                          )}
                         </Col>
 
                         {/* <Col lg="6">

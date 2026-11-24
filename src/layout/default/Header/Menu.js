@@ -223,6 +223,7 @@ function Menu() {
     Registration_Nsso: false,
     Registration_Farmer_Without_FruitsId: false,
     Registration_Other_State_Farmer: false,
+    Registration_Farmer_Agents: false,
 
     Services: false,
     Services_Service_Application: false,
@@ -2464,6 +2465,14 @@ function Menu() {
                 <MenuItemLink
                   text={t("Farmer Registration")}
                   to="/seriui/stake-holder-registration"
+                />
+              </MenuItem>
+            ) : null}
+            {showMenu.Registration_Farmer_Agents ? (
+              <MenuItem>
+                <MenuItemLink
+                  text={t("Farmer Agents")}
+                  to="/seriui/farmer-agents"
                 />
               </MenuItem>
             ) : null}

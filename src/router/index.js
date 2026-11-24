@@ -84,6 +84,7 @@ import ServiceTypeView from "../pages/masters/serviceType/ServiceTypeView";
 import StakeHolderRegister from "../pages/stake-holder/StakeHolderRegister";
 import StakeHolderList from "../pages/stake-holder/StakeHolderList";
 import StakeHolderViewPage from "../pages/stake-holder/StakeHolderView";
+import FarmerAgents from "../pages/stake-holder/FarmerAgents";
 import NewReelerLicense from "../pages/stake-holder/reeler-license/NewReelerLicense";
 import ReelerLicenseList from "../pages/stake-holder/reeler-license/ReelerLicenseList";
 import ReelerLicenseView from "../pages/stake-holder/reeler-license/ReelerLicenseView";
@@ -1535,6 +1536,7 @@ function Router() {
               element={<StakeHolderViewPage />}
             />
             <Route path="stake-holder-edit/:id" element={<StakeHolderEdit />} />
+            <Route path="farmer-agents" element={<FarmerAgents />} />
             <Route
               path="without-fruits-id-stake-holder-edit/:id"
               element={<WithoutFruitsIdStakeHolderEdit />}

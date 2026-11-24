@@ -7,6 +7,7 @@ import { Icon } from "../../components";
 import { format } from "date-fns";
 import api from "../../../src/services/auth/api";
 import { useTranslation } from "react-i18next";
+import FarmerRepresentatives from "./FarmerRepresentatives";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL_MASTER_DATA;
 const baseURL2 = process.env.REACT_APP_API_BASE_URL_REGISTRATION;
@@ -759,6 +760,18 @@ function StakeHolderViewPage() {
                 </div>
               </div>
             )}
+          </Card.Body>
+        </Card>
+
+        {/* SR-005: authorised agents of the farmer */}
+        <Card className="sh-section-card mt-3">
+          <Card.Header className="sh-section-header">
+            <span className="sh-section-accent" />
+            <Icon name="users" className="me-2" />
+            {t("Authorised Agents / Representatives")}
+          </Card.Header>
+          <Card.Body>
+            <FarmerRepresentatives farmerId={id} readOnly />
           </Card.Body>
         </Card>
       </Block>
