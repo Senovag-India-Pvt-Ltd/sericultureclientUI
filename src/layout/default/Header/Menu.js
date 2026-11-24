@@ -278,6 +278,7 @@ function Menu() {
     Market_Payment_Ready_for_Payment: false,
     Market_Payment_Bulk_Send_To_Bank: false,
     Market_Payment_Bank_Statement: false,
+    Market_Legacy_Transactions: false,
 
     Market_SeedMarket: false,
     Market_SeedMarket_Weighment: false,
@@ -1588,6 +1589,7 @@ function Menu() {
           "Market_Payment",
           "Market_Reject",
           "Market_Show_Lot",
+          "Market_Legacy_Transactions",
         ].includes(item) ||
         item.startsWith("Market_Payment_")
     );
@@ -3133,6 +3135,14 @@ function Menu() {
                         <MenuItemLink
                           text={t("Show Lot Details")}
                           to="/seriui/display-all-lot"
+                        />
+                      </MenuItem>
+                    ) : null}
+                    {showMenu.Market_Legacy_Transactions ? (
+                      <MenuItem>
+                        <MenuItemLink
+                          text={t("Legacy Market Transactions")}
+                          to="/seriui/legacy-market-transactions"
                         />
                       </MenuItem>
                     ) : null}
